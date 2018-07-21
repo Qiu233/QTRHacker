@@ -81,6 +81,8 @@
     <TargetName>KeystoneWrapper</TargetName>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\Debug\</OutDir>
+    <IncludePath>G:\ZJQ\Projects\QTRHacker\KeystoneWrapper\include;$(IncludePath)</IncludePath>
+    <LibraryPath>G:\ZJQ\Projects\QTRHacker\KeystoneWrapper\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>KEYSTONEWRAPPER</TargetName>

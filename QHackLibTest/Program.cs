@@ -1,6 +1,8 @@
 ﻿using QHackLib;
+using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
-using QHackLib.FunctionHelper.InlineHook;
+using QHackLib.FunctionHelper.Assemble;
+using QHackLib.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,29 +15,35 @@ namespace QHackLibTest
 {
 	class Program
 	{
-		[DllImport("kernel32.dll")]
-		public static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-		[DllImport("kernel32.dll")]
-		public static extern int CloseHandle(int dwDesiredAccess);
-
-		public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
-
-		private static int Handle;
+		public static Context context;
 		static void Main(string[] args)
 		{
 			Process[] localByName = Process.GetProcessesByName("Terraria");
+			string pname = localByName[0].ProcessName;
 			int pid = localByName[0].Id;
-			Handle = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
+			context = Context.Create(pname, (UInt32)pid);
 
 			FunctionAddressHelper.Initialize((UInt32)pid, "Terraria.exe");
-			uint f = FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DrawInterface_Resources_Life");
+			uint faddr = FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DrawInterface_Resources_Life");
+
+
+			byte[] bytes = Assembler.Assemble("mov eax,20");
 
 			Ldasm.ldasm_data data = new Ldasm.ldasm_data();
-			UInt32 len = Ldasm.ldasm(new byte[] { 0x8B, 0xEC, 1, 0, 1, 0, 1 }, ref data, false);
+			UInt32 len = Ldasm.ldasm(bytes, ref data, false);
 
-			Console.WriteLine("{0:x8}", f);
+			int addr = AobscanHelper.AobscanASM(context, "sub [edx+00000340H],eax");
+			Console.WriteLine("{0:x8}", addr);
+
+			for (int i = 0; i < bytes.Length; i++)
+			{
+				Console.Write("{0:X2}  ", bytes[i]);
+			}
+			Console.WriteLine();
+
+			Console.WriteLine("{0:X8}", faddr);
 			Console.WriteLine("指令长度：" + len);
-			CloseHandle(Handle);
+			context.Close();
 		}
 	}
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QHackLib.FunctionHelper.InlineHook
+namespace QHackLib.FunctionHelper.Assemble
 {
 	public class Ldasm
 	{

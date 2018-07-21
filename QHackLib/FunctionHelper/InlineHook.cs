@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QHackLib.Utilities
+namespace QHackLib.FunctionHelper
 {
-	public class Aobscan
+	public class InlineHook
 	{
+
 	}
 }
