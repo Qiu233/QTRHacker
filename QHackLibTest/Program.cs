@@ -38,7 +38,7 @@ namespace QHackLibTest
 			InlineHook l = new InlineHook(context);
 
 			AssemblySnippet ass = AssemblySnippet.FromASMCode("mov eax,200");
-			l.Inject("HealthHook", ass, (UInt32)faddr, false, 0);
+			l.Inject(ass, (UInt32)faddr, false, 0);
 
 
 			for (int i = 0; i < bytes.Length; i++)
