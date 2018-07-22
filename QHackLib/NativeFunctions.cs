@@ -34,8 +34,7 @@ namespace QHackLib
 			PAGE_NOCACHE = 0x00000200,
 			PAGE_WRITECOMBINE = 0x00000400
 		}
-
-		[Flags]
+		
 		public enum AllocationType
 		{
 			Commit = 0x1000,
@@ -48,8 +47,7 @@ namespace QHackLib
 			WriteWatch = 0x200000,
 			LargePages = 0x20000000
 		}
-
-		[Flags]
+		
 		public enum MemoryProtection
 		{
 			Execute = 0x10,
@@ -80,7 +78,7 @@ namespace QHackLib
 			UInt32 lpBaseAddress,
 			byte[] lpBuffer,
 			UInt32 nSize,
-			UInt32 BytesRead
+			UInt32 BytesWrite
 		);
 
 		[DllImport("kernel32.dll")]

@@ -21,7 +21,7 @@ namespace QHackLib.Utilities
 				return (byte)(hex - 'a' + 10);
 			return 0;
 		}
-		private static byte[] GetHexCodeFromString(string str)
+		public static byte[] GetHexCodeFromString(string str)
 		{
 			List<byte> bs = new List<byte>();
 
@@ -63,7 +63,7 @@ namespace QHackLib.Utilities
 		public static int Aobscan(Context ctx, string hexCode)
 		{
 			byte[] bytes = GetHexCodeFromString(hexCode);
-			return Aobscan(ctx, hexCode);
+			return Aobscan(ctx, bytes);
 		}
 		public static int Aobscan(Context ctx, byte[] aob)
 		{

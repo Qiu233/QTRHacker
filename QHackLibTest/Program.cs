@@ -29,7 +29,7 @@ namespace QHackLibTest
 			byte[] bytes = AssemblySnippet.FromDotNetCall(0, 100, 0x2a2a2a2a, 0xFF, 0xEE, 0x99).GetByteCode();
 
 
-			InlineHook l = new InlineHook();
+			InlineHook l = new InlineHook(context);
 			for (int i = 0; i < bytes.Length; i++)
 			{
 				Console.Write("{0:X2}  ", bytes[i]);
