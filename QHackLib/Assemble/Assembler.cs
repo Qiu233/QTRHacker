@@ -9,27 +9,37 @@ namespace QHackLib.Assemble
 {
 	public class Assembler
 	{
-		[DllImport("KeystoneWrapper", CharSet = CharSet.Ansi)]
-		private unsafe static extern int GetAsmCode(string code, byte** mcode, int* len);
+		[DllImport("XEDWrapper.dll", CharSet = CharSet.Ansi)]
+		private unsafe static extern void GetAsmCode(string code, byte** mcode, UInt64 IP, int* len);
 
-		[DllImport("KeystoneWrapper", CharSet = CharSet.Ansi)]
-		private unsafe static extern int FreeCode(byte* mcode);
 
 		private Assembler() { }
 
-		public unsafe static byte[] Assemble(string code)
+		public unsafe static byte[] AssembleSingleInstruction(string code, UInt64 IP)
 		{
 			byte[] result;
 			byte* mcode;
 			int len;
-			GetAsmCode(code, &mcode, &len);
+			GetAsmCode(code, &mcode, IP, &len);
 			result = new byte[len];
 			for (int i = 0; i < len; i++)
 			{
 				result[i] = mcode[i];
 			}
-			FreeCode(mcode);
 			return result;
+		}
+
+		public static byte[] AssembleInstructionBlock(string code, UInt64 IP)
+		{
+			List<byte> v = new List<byte>();
+			string[] s = code.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+			foreach (var ss in s)
+			{
+				byte[] y = AssembleSingleInstruction(ss, IP);
+				v.AddRange(y);
+				IP += (UInt32)y.Count();
+			}
+			return v.ToArray();
 		}
 	}
 }

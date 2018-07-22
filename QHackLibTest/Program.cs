@@ -23,18 +23,30 @@ namespace QHackLibTest
 			context = Context.Create(pname, (UInt32)pid);
 
 			FunctionAddressHelper.Initialize((UInt32)pid, "Terraria.exe");
-			uint faddr = FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DrawInterface_Resources_Life");
 
+			int faddr = AobscanHelper.AobscanASM(context, "sub [edx+00000340],eax");
 
-			byte[] bytes = AssemblySnippet.FromDotNetCall(0, 100, 0x2a2a2a2a, 0xFF, 0xEE, 0x99).GetByteCode();
+			byte[] bytes = Assembler.AssembleInstructionBlock("add esp,4", 0);
 
+			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(0x200, 0x3000, 5, 6, 7);
+			byte[] s = snippet.GetByteCode(0x500);
+			foreach (var ss in s)
+			{
+				Console.WriteLine("{0:X2}", ss);
+			}
 
 			InlineHook l = new InlineHook(context);
+
+			AssemblySnippet ass = AssemblySnippet.FromASMCode("mov eax,200");
+			l.Inject("HealthHook", ass, (UInt32)faddr, false, 0);
+
+
 			for (int i = 0; i < bytes.Length; i++)
 			{
 				Console.Write("{0:X2}  ", bytes[i]);
 			}
 			Console.WriteLine();
+
 
 			Console.WriteLine("{0:X8}", faddr);
 			context.Close();
