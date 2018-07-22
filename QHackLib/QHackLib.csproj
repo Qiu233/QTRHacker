@@ -43,10 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemble\Assembler.cs" />
+    <Compile Include="Assemble\AssemblySnippet.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="FunctionHelper\FunctionAddressHelper.cs" />
     <Compile Include="Assemble\Ldasm.cs" />
     <Compile Include="FunctionHelper\InlineHook.cs" />
+    <Compile Include="NativeFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AobscanHelper.cs" />
   </ItemGroup>

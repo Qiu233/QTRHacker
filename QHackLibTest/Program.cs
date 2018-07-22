@@ -1,7 +1,6 @@
 ﻿using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
-using QHackLib.FunctionHelper.Assemble;
 using QHackLib.Utilities;
 using System;
 using System.Collections.Generic;
@@ -27,14 +26,10 @@ namespace QHackLibTest
 			uint faddr = FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DrawInterface_Resources_Life");
 
 
-			byte[] bytes = Assembler.Assemble("mov eax,20");
+			byte[] bytes = AssemblySnippet.FromDotNetCall(0, 100, 0x2a2a2a2a, 0xFF, 0xEE, 0x99).GetByteCode();
 
-			Ldasm.ldasm_data data = new Ldasm.ldasm_data();
-			UInt32 len = Ldasm.ldasm(bytes, ref data, false);
 
-			int addr = AobscanHelper.AobscanASM(context, "sub [edx+00000340H],eax");
-			Console.WriteLine("{0:x8}", addr);
-
+			InlineHook l = new InlineHook();
 			for (int i = 0; i < bytes.Length; i++)
 			{
 				Console.Write("{0:X2}  ", bytes[i]);
@@ -42,7 +37,6 @@ namespace QHackLibTest
 			Console.WriteLine();
 
 			Console.WriteLine("{0:X8}", faddr);
-			Console.WriteLine("指令长度：" + len);
 			context.Close();
 		}
 	}
