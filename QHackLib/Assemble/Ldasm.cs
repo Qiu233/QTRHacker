@@ -607,9 +607,9 @@ namespace QHackLib.Assemble
 			return flags_table_ex[op];
 		}
 
-		public static UInt32 ldasm(byte[] code, ref ldasm_data ld, bool is64)
+		public  unsafe static UInt32 ldasm(byte* code, ref ldasm_data ld, bool is64)
 		{
-			byte[] p = code;
+			byte* p = code;
 			byte s, op, f;
 			byte rexw, pr_66, pr_67;
 			int j = 0;
