@@ -27,7 +27,7 @@ namespace QHackLibTest
 			int faddr = AobscanHelper.AobscanASM(context, "sub [edx+00000340],eax");
 			InlineHook l = new InlineHook(context);
 			AssemblySnippet ass = AssemblySnippet.FromASMCode("mov eax,50");
-			l.Inject(ass, (UInt32)faddr, false, 0);
+			l.Inject(ass, (UInt32)faddr);
 
 			Console.WriteLine("{0:X8}", faddr);
 			context.Close();
