@@ -13,9 +13,9 @@ namespace QHackLib.Assemble
 		{
 			this.Code = code;
 		}
-		public byte[] GetByteCode(UInt64 IP)
+		public byte[] GetByteCode(UInt32 IP)
 		{
-			return Assembler.AssembleSingleInstruction(Code, IP);
+			return Assembler.Assemble(Code, IP);
 		}
 	}
 }

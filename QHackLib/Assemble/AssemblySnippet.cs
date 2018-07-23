@@ -38,7 +38,7 @@ namespace QHackLib.Assemble
 				return "mov edx," + ((int)v).ToString("X8");
 			}
 		}
-		public static AssemblySnippet FromDotNetCall(UInt32 targetAddr, UInt32 retAddr, params ValueType[] arguments)
+		public static AssemblySnippet FromDotNetCall(UInt32 targetAddr, UInt32? retAddr, UInt32[] length, UInt64[] arguments)
 		{
 			AssemblySnippet s = new AssemblySnippet();
 			s.Instructions.Add(new Instruction("push ecx"));
@@ -51,11 +51,8 @@ namespace QHackLib.Assemble
 				i++;
 			}
 			s.Instructions.Add(new Instruction("call " + ((int)targetAddr).ToString("X8")));
-			s.Instructions.Add(new Instruction("mov [" + ((int)retAddr).ToString("X8") + "],eax"));
-			if (i > 2)
-			{
-				s.Instructions.Add(new Instruction("add esp," + ((i - 2) * 4).ToString("X8")));
-			}
+			if (retAddr != null)
+				s.Instructions.Add(new Instruction("mov [" + ((int)retAddr).ToString("X8") + "],eax"));
 			s.Instructions.Add(new Instruction("pop edx"));
 			s.Instructions.Add(new Instruction("pop ecx"));
 			return s;
@@ -64,13 +61,13 @@ namespace QHackLib.Assemble
 		{
 			return Instructions;
 		}
-		public byte[] GetByteCode(UInt64 IP)
+		public byte[] GetByteCode(UInt32 IP)
 		{
 			List<byte> bs = new List<byte>();
 			List<Instruction> s = GetInstructions();
 			foreach (var v in s)
 			{
-				byte[] y = Assembler.AssembleSingleInstruction(v.Code, IP);
+				byte[] y = Assembler.Assemble(v.Code, IP);
 				bs.AddRange(y);
 				IP += (UInt32)y.Count();
 			}

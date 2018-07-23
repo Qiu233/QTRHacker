@@ -57,9 +57,9 @@ namespace QHackLib.FunctionHelper
 			addr += (UInt32)snippetBytes.Length;
 			NativeFunctions.WriteProcessMemory(Context.Handle, addr, headBytes, (UInt32)headBytes.Length, 0);
 			addr += (UInt32)headBytes.Length;
-			byte[] jmpBackBytes = Assembler.AssembleSingleInstruction("jmp " + (targetAddr + headBytes.Length).ToString("X8"), addr);
+			byte[] jmpBackBytes = Assembler.Assemble("jmp " + (targetAddr + headBytes.Length).ToString("X8"), addr);
 			NativeFunctions.WriteProcessMemory(Context.Handle, addr, jmpBackBytes, (UInt32)jmpBackBytes.Length, 0);
-			byte[] jmpToBytesRaw = Assembler.AssembleSingleInstruction("jmp " + codeAddr.ToString("X8"), targetAddr);
+			byte[] jmpToBytesRaw = Assembler.Assemble("jmp " + codeAddr.ToString("X8"), targetAddr);
 			byte[] jmpToBytes = new byte[headBytes.Length];
 			for (int i = 0; i < 5; i++)
 				jmpToBytes[i] = jmpToBytesRaw[i];

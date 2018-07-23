@@ -58,7 +58,7 @@ namespace QHackLib.Utilities
 
 		public static int AobscanASM(Context ctx, string asm)
 		{
-			return Aobscan(ctx, Assembler.AssembleInstructionBlock(asm, 0));
+			return Aobscan(ctx, Assembler.Assemble(asm, 0));
 		}
 		public static int Aobscan(Context ctx, string hexCode)
 		{
