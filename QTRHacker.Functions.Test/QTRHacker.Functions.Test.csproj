@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CC1B3A7E-33AA-487D-AE8E-2B5B2CE3FEF1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QHackLib</RootNamespace>
-    <AssemblyName>QHackLib</AssemblyName>
+    <ProjectGuid>{E823B32B-5DA3-4D92-8AC3-150A2CFADB26}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>QTRHacker.Functions.Test</RootNamespace>
+    <AssemblyName>QTRHacker.Functions.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\Release\</OutputPath>
@@ -42,16 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assemble\Assembler.cs" />
-    <Compile Include="Assemble\AssemblySnippet.cs" />
-    <Compile Include="Context.cs" />
-    <Compile Include="FunctionHelper\FunctionAddressHelper.cs" />
-    <Compile Include="Assemble\Ldasm.cs" />
-    <Compile Include="FunctionHelper\InlineHook.cs" />
-    <Compile Include="NativeFunctions.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\AobscanHelper.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QHackLib\QHackLib.csproj">
+      <Project>{cc1b3a7e-33aa-487d-ae8e-2b5b2ce3fef1}</Project>
+      <Name>QHackLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QTRHacker.Functions\QTRHacker.Functions.csproj">
+      <Project>{f7afcb94-0361-411f-bb41-a84a0f2b6c51}</Project>
+      <Name>QTRHacker.Functions</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

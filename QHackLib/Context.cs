@@ -1,5 +1,7 @@
-﻿using System;
+﻿using QHackLib.FunctionHelper;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -11,34 +13,40 @@ namespace QHackLib
 	{
 
 		[DllImport("kernel32.dll")]
-		private static extern UInt32 OpenProcess(UInt32 dwDesiredAccess, bool bInheritHandle, UInt32 dwProcessId);
+		private static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 		[DllImport("kernel32.dll")]
-		private static extern UInt32 CloseHandle(UInt32 dwDesiredAccess);
+		private static extern int CloseHandle(int dwDesiredAccess);
 
-		private const UInt32 PROCESS_ALL_ACCESS = 0x1F0FFF;
+		private const int PROCESS_ALL_ACCESS = 0x1F0FFF;
 
 		public string ProcessName
 		{
 			get;
 		}
-		public UInt32 ProcessID
+		public int ProcessID
 		{
 			get;
 		}
-		public UInt32 Handle
+		public int Handle
 		{
 			get;
 		}
-		private Context(string name, UInt32 id, UInt32 handle)
+		public FunctionAddressHelper FunctionAddressHelper
+		{
+			get;
+		}
+		private Context(string name, int id, int handle, string moduleName)
 		{
 			this.ProcessName = name;
 			this.ProcessID = id;
 			this.Handle = handle;
+			FunctionAddressHelper = FunctionAddressHelper.Initialize(id, moduleName);
 		}
 
-		public static Context Create(string processName, UInt32 processID)
+		public static Context Create(int processID)
 		{
-			return new Context(processName, processID, OpenProcess(PROCESS_ALL_ACCESS, false, processID));
+			string name = Process.GetProcessById((int)processID).ProcessName;
+			return new Context(name, processID, OpenProcess(PROCESS_ALL_ACCESS, false, processID), name + ".exe");
 		}
 
 		public void Close()

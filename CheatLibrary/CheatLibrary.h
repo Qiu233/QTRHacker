@@ -14,6 +14,10 @@ extern "C" {
 #endif
 	DLL VOID InitCL(UINT pid, BOOL dotNet,wchar_t* module);
 
+	DLL UINT GetNumberFunction();
+
+	DLL void GetFunction(UINT index, PWCHAR name, UINT *address);
+
 	DLL BOOL SearchFunctionByName(const wchar_t* fullName, void**addr, unsigned int times);
 
 	DLL BOOL SearchFunctionByAddress(UINT address, PWCHAR name);

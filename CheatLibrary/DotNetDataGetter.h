@@ -49,7 +49,6 @@ private:
 	ICLRDebugging *CLRDebugging;
 	ICorDebugProcess *CorDebugProcess;
 	ICorDebugProcess5 *CorDebugProcess5;
-	std::vector<MethodInfo> methods;
 	CMyICLRDebuggingLibraryProvider *libprovider;
 	CMyIcorDebugDataTarget *datacallback;
 
@@ -63,6 +62,7 @@ private:
 	void enumTypeDefs(UINT64 hModule, std::vector<TypeInfo> &result);
 	void enumTypeDefMethods(PCWCHAR typeName, UINT64 hModule, mdTypeDef TypeDef, std::vector<MethodInfo> &result);
 public:
+	std::vector<MethodInfo> methods;
 	DotNetDataGetter(ULONG processid,PCWCHAR module);
 	~DotNetDataGetter(void);
 	void Init();

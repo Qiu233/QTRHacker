@@ -7,6 +7,18 @@ UINT processID;
 
 
 
+UINT GetNumberFunction()
+{
+	return getter->methods.size();
+}
+
+void GetFunction(UINT index, PWCHAR name, UINT *address)
+{
+	auto a = getter->methods[index];;
+	lstrcpyW(name, a.name);
+	*address = (UINT)a.NativeCode;
+}
+
 VOID InitCL(UINT pid, BOOL dotNet, wchar_t* module)
 {
 	processID = pid;
@@ -17,7 +29,7 @@ VOID InitCL(UINT pid, BOOL dotNet, wchar_t* module)
 	}
 }
 
-BOOL SearchFunctionByName(const wchar_t* fullName, void** addr,unsigned int times)
+BOOL SearchFunctionByName(const wchar_t* fullName, void** addr, unsigned int times)
 {
 	if (getter == NULL)return false;
 	MethodInfo method;

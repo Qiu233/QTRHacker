@@ -12,13 +12,13 @@ namespace QHackLib
 		[StructLayout(LayoutKind.Sequential)]
 		public struct MEMORY_BASIC_INFORMATION
 		{
-			public uint BaseAddress;
-			public uint AllocationBase;
-			public uint AllocationProtect;
-			public uint RegionSize;
-			public uint State;
-			public uint Protect;
-			public uint Type;
+			public int BaseAddress;
+			public int AllocationBase;
+			public int AllocationProtect;
+			public int RegionSize;
+			public int State;
+			public int Protect;
+			public int Type;
 		}
 		public enum AllocationProtect : uint
 		{
@@ -34,7 +34,7 @@ namespace QHackLib
 			PAGE_NOCACHE = 0x00000200,
 			PAGE_WRITECOMBINE = 0x00000400
 		}
-		
+
 		public enum AllocationType
 		{
 			Commit = 0x1000,
@@ -47,7 +47,7 @@ namespace QHackLib
 			WriteWatch = 0x200000,
 			LargePages = 0x20000000
 		}
-		
+
 		public enum MemoryProtection
 		{
 			Execute = 0x10,
@@ -65,55 +65,78 @@ namespace QHackLib
 		[DllImport("kernel32.dll")]
 		public static extern bool ReadProcessMemory
 		(
-			UInt32 lpProcess,
-			UInt32 lpBaseAddress,
+			int lpProcess,
+			int lpBaseAddress,
 			byte[] lpBuffer,
-			UInt32 nSize,
-			UInt32 BytesRead
+			int nSize,
+			int BytesRead
 		);
 		[DllImport("kernel32.dll")]
 		public static extern bool ReadProcessMemory
 		(
-			UInt32 lpProcess,
-			UInt32 lpBaseAddress,
+			int lpProcess,
+			int lpBaseAddress,
 			ref int lpBuffer,
-			UInt32 nSize,
-			UInt32 BytesRead
+			int nSize,
+			int BytesRead
 		);
 		[DllImport("kernel32.dll")]
 		public static extern bool WriteProcessMemory
 		(
-			UInt32 lpProcess,
-			UInt32 lpBaseAddress,
+			int lpProcess,
+			int lpBaseAddress,
 			byte[] lpBuffer,
-			UInt32 nSize,
-			UInt32 BytesWrite
+			int nSize,
+			int BytesWrite
 		);
 
 		[DllImport("kernel32.dll")]
 		public static extern bool WriteProcessMemory
 		(
-			UInt32 lpProcess,
-			UInt32 lpBaseAddress,
+			int lpProcess,
+			int lpBaseAddress,
 			ref int lpBuffer,
-			UInt32 nSize,
-			UInt32 BytesWrite
+			int nSize,
+			int BytesWrite
 		);
 
 		[DllImport("kernel32.dll")]
-		public static extern UInt32 VirtualQueryEx
+		public static extern int VirtualQueryEx
 		(
-			UInt32 hProcess,
-			UInt32 lpAddress,
+			int hProcess,
+			int lpAddress,
 			out MEMORY_BASIC_INFORMATION lpBuffer,
-			UInt32 dwLength
+			int dwLength
 		);
 
 		[DllImport("kernel32.dll")]
-		public static extern UInt32 VirtualAllocEx(UInt32 hProcess, UInt32 lpAddress, UInt32 dwSize, AllocationType flAllocationType, MemoryProtection flProtect);
+		public static extern int VirtualAllocEx(int hProcess, int lpAddress, int dwSize, AllocationType flAllocationType, MemoryProtection flProtect);
 
 		[DllImport("kernel32.dll")]
-		public static extern UInt32 VirtualFreeEx(UInt32 hProcess, UInt32 lpAddress, UInt32 dwSize, UInt32 dwFreeType = 0x8000);
+		public static extern int VirtualFreeEx(int hProcess, int lpAddress, int dwSize, int dwFreeType = 0x8000);
+
+
+		public static byte[] ReadFromMultiOffsets(int hProcess, int addr, int len, params int[] offsets)
+		{
+			byte[] result = new byte[len];
+			int v = addr;
+			for (int i = 0; i < offsets.Length - 1; i++)
+			{
+				ReadProcessMemory(hProcess, v + offsets[i], ref v, 4, 0);
+			}
+			ReadProcessMemory(hProcess, v + offsets[offsets.Length - 1], result, len, 0);
+			return result;
+		}
+
+		public static void WriteFromMultiOffsets(int hProcess, int addr, byte[] value, params int[] offsets)
+		{
+			int v = addr;
+			for (int i = 0; i < offsets.Length - 1; i++)
+			{
+				ReadProcessMemory(hProcess, v + offsets[i], ref v, 4, 0);
+			}
+			WriteProcessMemory(hProcess, v + offsets[offsets.Length - 1], value, value.Length, 0);
+		}
 
 	}
 }

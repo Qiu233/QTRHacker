@@ -45,27 +45,27 @@ namespace QHackLib.FunctionHelper
 			return v;
 		}
 
-		public UInt32 Inject(AssemblySnippet snippet, UInt32 targetAddr, UInt32 codeSize = 1024)
+		public int Inject(AssemblySnippet snippet, int targetAddr, int codeSize = 1024)
 		{
 			byte[] code = new byte[32];
-			NativeFunctions.ReadProcessMemory(Context.Handle, targetAddr, code, (UInt32)code.Length, 0);
+			NativeFunctions.ReadProcessMemory(Context.Handle, targetAddr, code, code.Length, 0);
 			byte[] headBytes = GetHeadBytes(code);
-			UInt32 codeAddr = NativeFunctions.VirtualAllocEx(Context.Handle, 0, codeSize, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
-			UInt32 addr = codeAddr;
+			int codeAddr = NativeFunctions.VirtualAllocEx(Context.Handle, 0, codeSize, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+			int addr = codeAddr;
 			byte[] snippetBytes = snippet.GetByteCode(addr);
-			NativeFunctions.WriteProcessMemory(Context.Handle, addr, snippetBytes, (UInt32)snippetBytes.Length, 0);
-			addr += (UInt32)snippetBytes.Length;
-			NativeFunctions.WriteProcessMemory(Context.Handle, addr, headBytes, (UInt32)headBytes.Length, 0);
-			addr += (UInt32)headBytes.Length;
-			byte[] jmpBackBytes = Assembler.Assemble("jmp " + (targetAddr + headBytes.Length).ToString("X8"), addr);
-			NativeFunctions.WriteProcessMemory(Context.Handle, addr, jmpBackBytes, (UInt32)jmpBackBytes.Length, 0);
-			byte[] jmpToBytesRaw = Assembler.Assemble("jmp " + codeAddr.ToString("X8"), targetAddr);
+			NativeFunctions.WriteProcessMemory(Context.Handle, addr, snippetBytes, snippetBytes.Length, 0);
+			addr += snippetBytes.Length;
+			NativeFunctions.WriteProcessMemory(Context.Handle, addr, headBytes, headBytes.Length, 0);
+			addr += headBytes.Length;
+			byte[] jmpBackBytes = Assembler.Assemble("jmp 0x" + (targetAddr + headBytes.Length).ToString("X8"), addr);
+			NativeFunctions.WriteProcessMemory(Context.Handle, addr, jmpBackBytes, jmpBackBytes.Length, 0);
+			byte[] jmpToBytesRaw = Assembler.Assemble("jmp 0x" + codeAddr.ToString("X8"), targetAddr);
 			byte[] jmpToBytes = new byte[headBytes.Length];
 			for (int i = 0; i < 5; i++)
 				jmpToBytes[i] = jmpToBytesRaw[i];
 			for (int i = 5; i < headBytes.Length; i++)
 				jmpToBytes[i] = 0x90;//nop
-			NativeFunctions.WriteProcessMemory(Context.Handle, targetAddr, jmpToBytes, (UInt32)jmpToBytes.Length, 0);
+			NativeFunctions.WriteProcessMemory(Context.Handle, targetAddr, jmpToBytes, jmpToBytes.Length, 0);
 			return codeAddr;
 		}
 	}

@@ -42,7 +42,7 @@ namespace QHackLib.Utilities
 			}
 			return bs.ToArray();
 		}
-		private static int Memmem(byte[] a, UInt32 alen, byte[] b, UInt32 blen)
+		private static int Memmem(byte[] a, int alen, byte[] b, int blen)
 		{
 			int i, j;
 			for (i = 0; i < alen - blen; ++i)
@@ -67,11 +67,11 @@ namespace QHackLib.Utilities
 		}
 		public static int Aobscan(Context ctx, byte[] aob)
 		{
-			UInt32 i = 0;
+			int i = 0;
 			NativeFunctions.MEMORY_BASIC_INFORMATION mbi;
 			while (i < 0x7FFFFFFF)
 			{
-				UInt32 flag = NativeFunctions.VirtualQueryEx(ctx.Handle, i, out mbi, 28);
+				int flag = NativeFunctions.VirtualQueryEx(ctx.Handle, i, out mbi, 28);
 				if (flag != 28)
 					break;
 				if ((int)mbi.RegionSize <= 0)
@@ -83,7 +83,7 @@ namespace QHackLib.Utilities
 				}
 				byte[] va = new byte[mbi.RegionSize];
 				NativeFunctions.ReadProcessMemory(ctx.Handle, i, va, mbi.RegionSize, 0);
-				int r = Memmem(va, mbi.RegionSize, aob, (UInt32)aob.Length);
+				int r = Memmem(va, mbi.RegionSize, aob, aob.Length);
 				if (r >= 0)
 				{
 					return (int)(i + r);
