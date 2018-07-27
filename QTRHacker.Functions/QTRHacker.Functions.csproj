@@ -41,6 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameContext.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="ItemSlots.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -14,10 +14,10 @@ namespace QHackLibTest
 {
 	class Program
 	{
-		public static Context context;
 		static void Main(string[] args)
 		{
-			/*Process[] localByName = Process.GetProcessesByName("Terraria");
+			/*Context context;
+			Process[] localByName = Process.GetProcessesByName("Terraria");
 			int pid = localByName[0].Id;
 			context = Context.Create(pid);
 
@@ -32,10 +32,10 @@ namespace QHackLibTest
 			AssemblySnippet ass = AssemblySnippet.FromDotNetCall(func, null, 0x3833D68, 3063, 0);
 			int addr = l.Inject(ass, faddr);
 			Console.WriteLine("{0:X8}", addr);
-			
+
 			Console.WriteLine("{0:X8}", faddr);
-			
-			
+
+
 
 
 			context.Close();*/

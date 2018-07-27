@@ -14,8 +14,7 @@ namespace QTRHacker.Functions.Test
 		static void Main(string[] args)
 		{
 			GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id);
-			int g = gc.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update");
-			Console.WriteLine("{0:X8}",gc.Main_Player_Array_Base);
+			Console.WriteLine(gc.MyPlayer.Inventory[0].Type);
 			gc.Close();
 		}
 	}

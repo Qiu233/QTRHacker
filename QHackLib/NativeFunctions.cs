@@ -71,6 +71,16 @@ namespace QHackLib
 			int nSize,
 			int BytesRead
 		);
+		
+		[DllImport("kernel32.dll")]
+		public static extern bool WriteProcessMemory
+		(
+			int lpProcess,
+			int lpBaseAddress,
+			byte[] lpBuffer,
+			int nSize,
+			int BytesWrite
+		);
 		[DllImport("kernel32.dll")]
 		public static extern bool ReadProcessMemory
 		(
@@ -85,17 +95,25 @@ namespace QHackLib
 		(
 			int lpProcess,
 			int lpBaseAddress,
-			byte[] lpBuffer,
+			ref int lpBuffer,
 			int nSize,
 			int BytesWrite
 		);
-
+		[DllImport("kernel32.dll")]
+		public static extern bool ReadProcessMemory
+		(
+			int lpProcess,
+			int lpBaseAddress,
+			ref bool lpBuffer,
+			int nSize,
+			int BytesRead
+		);
 		[DllImport("kernel32.dll")]
 		public static extern bool WriteProcessMemory
 		(
 			int lpProcess,
 			int lpBaseAddress,
-			ref int lpBuffer,
+			ref bool lpBuffer,
 			int nSize,
 			int BytesWrite
 		);
