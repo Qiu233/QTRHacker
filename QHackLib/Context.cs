@@ -9,8 +9,72 @@ using System.Threading.Tasks;
 
 namespace QHackLib
 {
-	public class Context
+	public class Context : IDisposable
 	{
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		private struct LUID
+		{
+			public int LowPart;
+			public uint HighPart;
+		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		private struct LUID_AND_ATTRIBUTES
+		{
+			public LUID Luid;
+			public uint Attributes;
+		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		private struct TOKEN_PRIVILEGES
+		{
+			public int PrivilegeCount;
+			public LUID_AND_ATTRIBUTES Privilege;
+		}
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		private static extern IntPtr GetCurrentProcess();
+
+		[DllImport("Advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool OpenProcessToken(IntPtr ProcessHandle, uint DesiredAccesss, out IntPtr TokenHandle);
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern Boolean CloseHandle(IntPtr hObject);
+
+		[DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool LookupPrivilegeValue(string lpSystemName, string lpName, [MarshalAs(UnmanagedType.Struct)] ref LUID lpLuid);
+
+		[DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool AdjustTokenPrivileges(IntPtr TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, [MarshalAs(UnmanagedType.Struct)]ref TOKEN_PRIVILEGES NewState, uint BufferLength, IntPtr PreviousState, uint ReturnLength);
+
+
+		private const uint TOKEN_QUERY = 0x0008;
+		private const uint TOKEN_ADJUST_PRIVILEGES = 0x0020;
+		private const uint SE_PRIVILEGE_ENABLED = 0x00000002;
+
+		private static void GrantPrivilege()
+		{
+			bool flag;
+			LUID locallyUniqueIdentifier = new LUID();
+			flag = LookupPrivilegeValue(null, "SeDebugPrivilege", ref locallyUniqueIdentifier);
+			TOKEN_PRIVILEGES tokenPrivileges = new TOKEN_PRIVILEGES();
+			tokenPrivileges.PrivilegeCount = 1;
+
+			LUID_AND_ATTRIBUTES luidAndAtt = new LUID_AND_ATTRIBUTES();
+			// luidAndAtt.Attributes should be SE_PRIVILEGE_ENABLED to enable privilege
+			luidAndAtt.Attributes = SE_PRIVILEGE_ENABLED;
+			luidAndAtt.Luid = locallyUniqueIdentifier;
+			tokenPrivileges.Privilege = luidAndAtt;
+
+			IntPtr tokenHandle = IntPtr.Zero;
+			flag = OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, out tokenHandle);
+			flag = AdjustTokenPrivileges(tokenHandle, false, ref tokenPrivileges, 1024, IntPtr.Zero, 0);
+			flag = CloseHandle(tokenHandle);
+		}
 
 		[DllImport("kernel32.dll")]
 		private static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
@@ -37,6 +101,7 @@ namespace QHackLib
 		}
 		private Context(string name, int id, int handle, string moduleName)
 		{
+			GrantPrivilege();
 			this.ProcessName = name;
 			this.ProcessID = id;
 			this.Handle = handle;
@@ -52,6 +117,11 @@ namespace QHackLib
 		public void Close()
 		{
 			CloseHandle(ProcessID);
+		}
+
+		public void Dispose()
+		{
+			Close();
 		}
 	}
 }

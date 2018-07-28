@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using QHackLib;
 
 namespace QTRHacker.Functions
 {
-	public class GameContext
+	public class GameContext : IDisposable
 	{
 		private int My_Player_Address;
 
@@ -48,7 +49,6 @@ namespace QTRHacker.Functions
 		}
 
 
-
 		private GameContext(int pid)
 		{
 			HContext = Context.Create(pid);
@@ -70,6 +70,11 @@ namespace QTRHacker.Functions
 		public void Close()
 		{
 			HContext?.Close();
+		}
+
+		public void Dispose()
+		{
+			Close();
 		}
 	}
 }

@@ -18,5 +18,4 @@ extern "C" __declspec(dllexport) void ParseAssemble(const char*instr, bool x64, 
 	auto & buffer = code.getSectionEntry(0)->getBuffer();
 	*dest_size = (unsigned int)buffer.getLength();
 	memcpy(dest, buffer.getData(), *dest_size);
-
 }

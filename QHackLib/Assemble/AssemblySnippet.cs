@@ -41,11 +41,14 @@ namespace QHackLib.Assemble
 				return "mov edx,0x" + ((int)v).ToString("X8");
 			}
 		}
-		public static AssemblySnippet FromDotNetCall(UInt32 targetAddr, UInt32? retAddr, params ValueType[] arguments)
+		public static AssemblySnippet FromDotNetCall(int targetAddr, int? retAddr, bool regProtection, params ValueType[] arguments)
 		{
 			AssemblySnippet s = new AssemblySnippet();
-			s.Instructions.Add("push ecx");
-			s.Instructions.Add("push edx");
+			if (regProtection)
+			{
+				s.Instructions.Add("push ecx");
+				s.Instructions.Add("push edx");
+			}
 			int i = 0;
 			foreach (var v in arguments)
 			{
@@ -61,12 +64,20 @@ namespace QHackLib.Assemble
 					s.Instructions.Add(GetArgumentPassing(i, (UInt32)((vv & 0xFFFFFFFF00000000UL) >> 32)));
 					i += 2;
 				}
+				else if (v.GetType() == typeof(bool))
+				{
+					s.Instructions.Add(GetArgumentPassing(i, (bool)v ? 1 : 0));
+					i++;
+				}
 			}
 			s.Instructions.Add("call 0x" + ((int)targetAddr).ToString("X8"));
 			if (retAddr != null)
 				s.Instructions.Add("mov [0x" + ((int)retAddr).ToString("X8") + "],eax");
-			s.Instructions.Add("pop edx");
-			s.Instructions.Add("pop ecx");
+			if (regProtection)
+			{
+				s.Instructions.Add("pop edx");
+				s.Instructions.Add("pop ecx");
+			}
 			return s;
 		}
 		public string GetSnippet()
@@ -75,9 +86,12 @@ namespace QHackLib.Assemble
 			Instructions.ForEach(s => sb.Append(s + "\n"));
 			return sb.ToString();
 		}
-		public byte[] GetByteCode(int IP)
+		public byte[] GetByteCode(int IP, bool ret = false)
 		{
-			byte[] bs = Assembler.Assemble(GetSnippet(), IP);
+			List<byte> bs = new List<byte>();
+			bs.AddRange(Assembler.Assemble(GetSnippet(), IP));
+			if (ret)
+				bs.AddRange(Assembler.Assemble("ret", IP + bs.Count));
 			return bs.ToArray();
 		}
 		public AssemblySnippet Copy()

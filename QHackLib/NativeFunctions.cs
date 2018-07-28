@@ -156,5 +156,16 @@ namespace QHackLib
 			WriteProcessMemory(hProcess, v + offsets[offsets.Length - 1], value, value.Length, 0);
 		}
 
+		[DllImport("kernel32")]
+		public static extern IntPtr CreateRemoteThread(
+		  int hProcess,
+		  int lpThreadAttributes,
+		  int dwStackSize,
+		  int lpStartAddress, // raw Pointer into remote process
+		  int lpParameter,
+		  int dwCreationFlags,
+		  out int lpThreadId
+		);
+
 	}
 }

@@ -1,4 +1,5 @@
-﻿using QHackLib.FunctionHelper;
+﻿using QHackLib.Assemble;
+using QHackLib.FunctionHelper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,9 +14,16 @@ namespace QTRHacker.Functions.Test
 	{
 		static void Main(string[] args)
 		{
-			GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id);
-			Console.WriteLine(gc.MyPlayer.Inventory[0].Type);
-			gc.Close();
+			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
+			{
+				int fAddr = gc.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::SetDefaults");
+				AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(fAddr, null, false, gc.MyPlayer.Inventory[0].BaseAddress, 3063, false);
+				using (RemoteExecution re = RemoteExecution.Create(gc.HContext, snippet))
+				{
+					re.Execute();
+					System.Threading.Thread.Sleep(50);
+				}
+			}
 		}
 	}
 }
