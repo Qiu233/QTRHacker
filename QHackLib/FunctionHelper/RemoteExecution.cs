@@ -9,6 +9,7 @@ namespace QHackLib.FunctionHelper
 {
 	public class RemoteExecution : IDisposable
 	{
+		private int FlagAddress;
 		public int Address
 		{
 			get;
@@ -24,10 +25,19 @@ namespace QHackLib.FunctionHelper
 		}
 		private RemoteExecution(Context c, AssemblySnippet asm)
 		{
+			Thread = 0;
 			Context = c;
+			FlagAddress = NativeFunctions.VirtualAllocEx(c.Handle, 0, 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+			int z = 0;
+			NativeFunctions.WriteProcessMemory(Context.Handle, FlagAddress, ref z, 4, 0);
 			Address = NativeFunctions.VirtualAllocEx(c.Handle, 0, 1024, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
-			byte[] code = asm.GetByteCode(Address, true);
-			NativeFunctions.WriteProcessMemory(c.Handle, Address, code, code.Length, 0);
+			List<byte> code = new List<byte>();
+			byte[] b = asm.GetByteCode(Address, false);
+			code.AddRange(b);
+			code.AddRange(Assembler.Assemble("inc [0x" + FlagAddress.ToString("X8") + "]", 0));
+			code.AddRange(Assembler.Assemble("ret", 0));
+
+			NativeFunctions.WriteProcessMemory(c.Handle, Address, code.ToArray(), code.Count, 0);
 		}
 		public static RemoteExecution Create(Context c, AssemblySnippet asm)
 		{
@@ -41,7 +51,11 @@ namespace QHackLib.FunctionHelper
 
 		public void Close()
 		{
+			int v = 0;
+			while (v == 0 && Thread != 0)
+				NativeFunctions.ReadProcessMemory(Context.Handle, FlagAddress, ref v, 4, 0);
 			NativeFunctions.VirtualFreeEx(Context.Handle, Address, 0);
+			NativeFunctions.VirtualFreeEx(Context.Handle, FlagAddress, 0);
 		}
 
 		public void Dispose()

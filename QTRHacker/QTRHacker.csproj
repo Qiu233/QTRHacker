@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,14 +47,58 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="AntiBlinkListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ExtraForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ExtraForm.designer.cs">
+      <DependentUpon>ExtraForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="InfoView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="INI.cs" />
+    <Compile Include="InvEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InvEditor.designer.cs">
+      <DependentUpon>InvEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lang.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerDetail_Buff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlayerDetail_Buff.designer.cs">
+      <DependentUpon>PlayerDetail_Buff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlayerInventory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlayerInventory.designer.cs">
+      <DependentUpon>PlayerInventory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugin.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.cs" />
+    <Compile Include="SpecialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpecialForm.designer.cs">
+      <DependentUpon>SpecialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TextBoxWriter.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -62,6 +108,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Res.resx" />
+    <None Include="ItemImage.bin" />
+    <None Include="ItemInfo.bin" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -80,6 +129,23 @@
       <Project>{cc1b3a7e-33aa-487d-ae8e-2b5b2ce3fef1}</Project>
       <Name>QHackLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\QTRHacker.Functions\QTRHacker.Functions.csproj">
+      <Project>{f7afcb94-0361-411f-bb41-a84a0f2b6c51}</Project>
+      <Name>QTRHacker.Functions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BuffID.txt" />
+    <Content Include="cross.png" />
+    <Content Include="Debuff.txt" />
+    <Content Include="Icon.ico" />
+    <Content Include="ItemID.txt" />
+    <Content Include="ItemID_Eng.txt" />
+    <Content Include="Mount.txt" />
+    <Content Include="Mount_Eng.txt" />
+    <Content Include="Pet.txt" />
+    <Content Include="Pet_Eng.txt" />
+    <Content Include="PreFix.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

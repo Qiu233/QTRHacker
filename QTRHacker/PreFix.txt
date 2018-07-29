@@ -1,0 +1,8 @@
+﻿None=0
+Demonic=60
+Warding=65
+Menacing=72
+Quick=76
+Legendary=81
+Unreal=82
+Mythical=83

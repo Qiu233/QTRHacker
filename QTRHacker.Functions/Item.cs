@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QHackLib.Assemble;
+using QHackLib.FunctionHelper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -993,9 +995,12 @@ namespace QTRHacker.Functions
 
 		}
 
-		public void SetDefaults()
+		public void SetDefaults(int type)
 		{
-
+			int fAddr = Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::SetDefaults");
+			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(fAddr, null, false, BaseAddress, type, false);
+			using (RemoteExecution re = RemoteExecution.Create(Context.HContext, snippet))
+				re.Execute();
 		}
 	}
 }

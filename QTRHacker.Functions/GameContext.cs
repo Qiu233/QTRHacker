@@ -63,6 +63,13 @@ namespace QTRHacker.Functions
 			My_Player_Address = vvv;
 		}
 
+		public Player GetPlayer(int index)
+		{
+			int v = 0;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, Player_Array_Address + 0x08 + 0x04 * index, ref v, 4, 0);
+			return new Player(this, v);
+		}
+
 		public static GameContext OpenGame(int pid)
 		{
 			return new GameContext(pid);

@@ -1,0 +1,9 @@
+﻿None=0
+Rudolph=90
+Bunny Mount=128
+Pigron Mount=129
+SlimeMount=130
+Turtle Mount=131
+Bee Mount=132
+UFO=141
+DrillMount=142

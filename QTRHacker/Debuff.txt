@@ -1,0 +1,41 @@
+Poisoned buffid 20
+Potion Sickness buffid 21
+Darkness buffid 22
+Cursed buffid 23
+On Fire! buffi 24
+Bleeding buffid 30
+Confused buffid 31
+Slow buffid 32
+Weak buffid 33
+Silenced buffid 35
+Broken Armor buffid 36
+Horrified buffid 37
+The Tongue buffid 38
+Cursed Inferno buffid 39
+Chilled buffid 46
+Frozen buffid 47
+Burning buffid 67
+Suffocation buffid 68
+Ichor buffid 69
+Venom buffid 70
+Midas buffid 72
+Blackout buffid 80
+Chaos State buffid 88
+Mana Sickness buffid 94
+Wet buffid 103
+Electrified buffid 144
+Moon Bite buffid 145
+Feral Bite buffid 148
+Webbed buffid 149
+Shadowflame buffid 153
+Stoned buffid 156
+Dazed buffid 160
+Obstructed buffid 163
+Distorted buffid 164
+Penetrated buffid 169
+Sugar Rush buffid 192
+Mighty Wind buffid 194
+Withered Armor buffid 195
+Withered Weapon buffid 196
+Oozed buffid 197
+Creative Shock buffid 199
