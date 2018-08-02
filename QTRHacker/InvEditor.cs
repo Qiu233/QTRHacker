@@ -498,32 +498,40 @@ namespace QTRHacker
 		}
 		private void PixelData(int slot)
 		{
-			/*Assembly assembly = Assembly.GetExecutingAssembly();
-			Type type = assembly.GetType("Terraria_Hacker.HackFunctions");
+			Item item = Context.MyPlayer.Inventory[slot];
+			Type t = typeof(Item);
 			foreach (DictionaryEntry de in hacks)
 			{
-				object[] args = new object[2];
-				MethodInfo mi = type.GetMethod("set" + de.Key);
+				object[] args = new object[1];
 				args[0] = slot;
-				if (mi.GetParameters()[1].ParameterType == typeof(int))
-				{
-					args[1] = Convert.ToInt32(((TextBox)de.Value).Text);
-				}
-				else if (mi.GetParameters()[1].ParameterType == typeof(float))
-				{
-					args[1] = (float)Convert.ToDouble(((TextBox)de.Value).Text);
-				}
-				mi.Invoke(null, args);
+				var pi = t.GetProperty((string)de.Key);
+				if (pi == null)
+					return;
+				if (pi.PropertyType == typeof(long) || pi.PropertyType == typeof(ulong))
+					pi.SetValue(item, Convert.ToInt64(((TextBox)de.Value).Text));
+				else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(uint))
+					pi.SetValue(item, Convert.ToInt32(((TextBox)de.Value).Text));
+				else if (pi.PropertyType == typeof(short) || pi.PropertyType == typeof(ushort))
+					pi.SetValue(item, Convert.ToInt16(((TextBox)de.Value).Text));
+				else if (pi.PropertyType == typeof(float))
+					pi.SetValue(item, Convert.ToSingle(((TextBox)de.Value).Text));
+				else if (pi.PropertyType == typeof(double))
+					pi.SetValue(item, Convert.ToDouble(((TextBox)de.Value).Text));
+				else if (pi.PropertyType == typeof(bool))
+					pi.SetValue(item, Convert.ToBoolean(((TextBox)de.Value).Text));
+				else if (pi.PropertyType == typeof(byte))
+					pi.SetValue(item, Convert.ToByte(((TextBox)de.Value).Text));
+
 			}
-            {
-                HackFunctions.setItemPrefix(slot, GetPrefixFromIndex(PrefixComboBox.SelectedIndex));
-            }
-            {
-                HackFunctions.setItemAutoReuse(slot, (AutoReuse.CheckState == CheckState.Checked));
-            }
-            {
-                HackFunctions.setItemAccessory(slot, (Equippable.CheckState == CheckState.Checked));
-            }*/
+			{
+				item.Prefix = GetPrefixFromIndex(PrefixComboBox.SelectedIndex);
+			}
+			{
+				item.AutoReuse = AutoReuse.CheckState == CheckState.Checked;
+			}
+			{
+				item.Accessory = Equippable.CheckState == CheckState.Checked;
+			}
 		}
 		public void SaveAltItems()
 		{
@@ -664,7 +672,7 @@ namespace QTRHacker
 				bw.Write(item.Prefix);
 			}
 		}
-		public void LoadInventory( string name)
+		public void LoadInventory(string name)
 		{
 			int j = 0;
 			Form p = new Form();
