@@ -1002,7 +1002,7 @@ namespace QTRHacker.Functions
 				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::SetDefaults"),
 				null,
 				true,
-				Context.MyPlayer.Inventory[0].BaseAddress, type, false);
+				BaseAddress, type, false);
 			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
 		}
 
@@ -1018,7 +1018,7 @@ namespace QTRHacker.Functions
 				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::SetDefaults"),
 				null,
 				false,
-				Context.MyPlayer.Inventory[0].BaseAddress, type, false);
+				BaseAddress, type, false);
 			var b = AssemblySnippet.FromDotNetCall(
 				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::Prefix"),
 				null,

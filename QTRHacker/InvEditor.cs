@@ -403,7 +403,7 @@ namespace QTRHacker
 				};
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
-					//HackFunctions.SaveInv(sfd.FileName);
+					SaveInventory(sfd.FileName);
 					SlotsPanel.Refresh();
 				}
 			};
@@ -421,7 +421,7 @@ namespace QTRHacker
 				};
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
-					//HackFunctions.LoadInv(this, ofd.FileName);
+					LoadInventory(this, ofd.FileName);
 					SlotsPanel.Refresh();
 					InitData(Selected);
 				}
@@ -437,7 +437,6 @@ namespace QTRHacker
 				Item item = Context.MyPlayer.Inventory[Selected];
 				item.SetDefaults(Convert.ToInt32(((TextBox)hacks["Type"]).Text));
 				item.SetPrefix(GetPrefixFromIndex(PrefixComboBox.SelectedIndex));
-				//HackFunctions.SetItemDefaults(Selected, Convert.ToInt32(((TextBox)hacks["ItemType"]).Text), GetPrefixFromIndex(PrefixComboBox.SelectedIndex));
 				int stack = Convert.ToInt32(((TextBox)hacks["Stack"]).Text);
 				item.Stack = stack == 0 ? 1 : stack;
 				RefreshSelected();
@@ -621,5 +620,149 @@ namespace QTRHacker
 			ControlID++;
 			return val;
 		}
+
+
+
+		public void SaveInventory(string name)
+		{
+			if (File.Exists(name)) File.Delete(name);
+			BinaryWriter bw = new BinaryWriter(new FileStream(name, FileMode.OpenOrCreate));
+			var player = Context.MyPlayer;
+			for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
+			{
+				var item = player.Inventory[i];
+				bw.Write(item.Type);
+				bw.Write(item.Stack);
+				bw.Write(item.Prefix);
+			}
+			for (int i = 0; i < Player.ARMOR_MAX_COUNT; i++)
+			{
+				var item = player.Armor[i];
+				bw.Write(item.Type);
+				bw.Write(item.Stack);
+				bw.Write(item.Prefix);
+			}
+			for (int i = 0; i < Player.DYE_MAX_COUNT; i++)
+			{
+				var item = player.Dye[i];
+				bw.Write(item.Type);
+				bw.Write(item.Stack);
+				bw.Write(item.Prefix);
+			}
+			for (int i = 0; i < Player.MISC_MAX_COUNT; i++)
+			{
+				var item = player.Misc[i];
+				bw.Write(item.Type);
+				bw.Write(item.Stack);
+				bw.Write(item.Prefix);
+			}
+			for (int i = 0; i < Player.MISCDYE_MAX_COUNT; i++)
+			{
+				var item = player.MiscDye[i];
+				bw.Write(item.Type);
+				bw.Write(item.Stack);
+				bw.Write(item.Prefix);
+			}
+		}
+		public void LoadInventory(Form f, string name)
+		{
+			int j = 0;
+			Form p = new Form();
+			ProgressBar pb = new ProgressBar();
+			Label tip = new Label(), percent = new Label();
+			tip.Text = "Loading inventory...";
+			tip.Location = new Point(0, 0);
+			tip.Size = new Size(150, 30);
+			tip.TextAlign = ContentAlignment.MiddleCenter;
+			percent.Location = new Point(150, 0);
+			percent.Size = new Size(30, 30);
+			percent.TextAlign = ContentAlignment.MiddleCenter;
+			System.Timers.Timer timer = new System.Timers.Timer(1);
+			p.FormBorderStyle = FormBorderStyle.FixedSingle;
+			p.ClientSize = new Size(300, 60);
+			p.ControlBox = false;
+			pb.Location = new Point(0, 30);
+			pb.Size = new Size(300, 30);
+			pb.Maximum = Player.ITEM_MAX_COUNT + Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT;
+			pb.Minimum = 0;
+			pb.Value = 0;
+			p.Controls.Add(tip);
+			p.Controls.Add(percent);
+			p.Controls.Add(pb);
+			timer.Elapsed += (sender, e) =>
+			{
+				pb.Value = j;
+				percent.Text = pb.Value + "/" + pb.Maximum;
+				if (j >= pb.Maximum) p.Dispose();
+			};
+			timer.Start();
+			p.Show();
+			p.Location = new System.Drawing.Point(f.Location.X + f.Width / 2 - p.ClientSize.Width / 2, f.Location.Y + f.Height / 2 - p.ClientSize.Height / 2);
+			new System.Threading.Thread((s) =>
+			{
+				f.Enabled = false;
+				var player = Context.MyPlayer;
+				BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open));
+				for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
+				{
+					j++;
+					var item = player.Inventory[i];
+					int type = br.ReadInt32();
+					int stack = br.ReadInt32();
+					byte prefix = br.ReadByte();
+					if (type <= 0 && item.Type <= 0) continue;
+					item.SetDefaultsAndPrefix(type, prefix);
+					item.Stack = stack;
+				}
+				for (int i = 0; i < Player.ARMOR_MAX_COUNT; i++)
+				{
+					j++;
+					var item = player.Armor[i];
+					int type = br.ReadInt32();
+					int stack = br.ReadInt32();
+					byte prefix = br.ReadByte();
+					if (type <= 0 && item.Type <= 0) continue;
+					item.SetDefaultsAndPrefix(type, prefix);
+					item.Stack = stack;
+				}
+				for (int i = 0; i < Player.DYE_MAX_COUNT; i++)
+				{
+					j++;
+					var item = player.Dye[i];
+					int type = br.ReadInt32();
+					int stack = br.ReadInt32();
+					byte prefix = br.ReadByte();
+					if (type <= 0 && item.Type <= 0) continue;
+					item.SetDefaultsAndPrefix(type, prefix);
+					item.Stack = stack;
+				}
+				for (int i = 0; i < Player.MISC_MAX_COUNT; i++)
+				{
+					j++;
+					var item = player.Misc[i];
+					int type = br.ReadInt32();
+					int stack = br.ReadInt32();
+					byte prefix = br.ReadByte();
+					if (type <= 0 && item.Type <= 0) continue;
+					item.SetDefaultsAndPrefix(type, prefix);
+					item.Stack = stack;
+				}
+				for (int i = 0; i < Player.MISCDYE_MAX_COUNT; i++)
+				{
+					j++;
+					var item = player.MiscDye[i];
+					int type = br.ReadInt32();
+					int stack = br.ReadInt32();
+					byte prefix = br.ReadByte();
+					if (type <= 0 && item.Type <= 0) continue;
+					item.SetDefaultsAndPrefix(type, prefix);
+					item.Stack = stack;
+				}
+				br.Close();
+				f.Enabled = true;
+			}
+			).Start();
+		}
+
 	}
 }

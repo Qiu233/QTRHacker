@@ -268,6 +268,10 @@ namespace QTRHacker
 
 		private void LoadPlugins()
 		{
+			if(!Directory.Exists(".\\plugins"))
+			{
+				Directory.CreateDirectory(".\\plugins");
+			}
 			Directory.EnumerateFiles(".\\plugins").ToList().ForEach(s =>
 			{
 				if (s.EndsWith(".dll", StringComparison.CurrentCultureIgnoreCase))
