@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace QTRHacker.Functions
 {
@@ -125,7 +126,7 @@ namespace QTRHacker.Functions
 				ReadFromOffset(OFFSET_Stack, out int v);
 				return v;
 			}
-			set=> WriteFromOffset(OFFSET_Stack, value);
+			set => WriteFromOffset(OFFSET_Stack, value);
 		}
 
 		public int FishingPole
@@ -887,7 +888,7 @@ namespace QTRHacker.Functions
 			}
 			set => WriteFromOffset(OFFSET_Potion, value);
 		}
-		
+
 		public bool UseTurn
 		{
 			get
@@ -997,10 +998,53 @@ namespace QTRHacker.Functions
 
 		public void SetDefaults(int type)
 		{
-			int fAddr = Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::SetDefaults");
-			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(fAddr, null, false, BaseAddress, type, false);
-			using (RemoteExecution re = RemoteExecution.Create(Context.HContext, snippet))
-				re.Execute();
+			var snippet = AssemblySnippet.FromDotNetCall(
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::SetDefaults"),
+				null,
+				true,
+				Context.MyPlayer.Inventory[0].BaseAddress, type, false);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
+		}
+
+
+		/// <summary>
+		/// 使用这个函数，效率会优于分别调用SetDefaults和SetPrefix
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="prefix"></param>
+		public void SetDefaultsAndPrefix(int type, int prefix)
+		{
+			var a = AssemblySnippet.FromDotNetCall(
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::SetDefaults"),
+				null,
+				false,
+				Context.MyPlayer.Inventory[0].BaseAddress, type, false);
+			var b = AssemblySnippet.FromDotNetCall(
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::Prefix"),
+				null,
+				false,
+				BaseAddress, prefix);
+			var snippet = AssemblySnippet.FromEmpty();
+			snippet.Content.Add(Instruction.Create("push ecx"));
+			snippet.Content.Add(Instruction.Create("push edx"));
+			snippet.Content.Add(a);
+			snippet.Content.Add(b);
+			snippet.Content.Add(Instruction.Create("pop ecx"));
+			snippet.Content.Add(Instruction.Create("pop edx"));
+
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
+
+		}
+
+		public void SetPrefix(int prefix)
+		{
+			int fAddr = Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::Prefix");
+			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::Prefix"),
+				null,
+				true,
+				BaseAddress, prefix);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
 		}
 	}
 }

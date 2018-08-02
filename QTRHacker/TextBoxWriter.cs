@@ -12,7 +12,7 @@ using System.IO;
 using System.Drawing;
 using System.Text;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	/// <summary>
 	/// Description of TextBoxWriter.

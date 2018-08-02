@@ -13,7 +13,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Text;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	partial class MainForm
 	{
@@ -21,25 +21,27 @@ namespace Terraria_Hacker
 		/// Designer variable used to keep track of non-visual components.
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
-		public static int HEIGHT=470;
-		
+		public static int HEIGHT = 470;
+
 		/// <summary>
 		/// Disposes resources used by the form.
 		/// </summary>
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing) {
-				if (components != null) {
+			if (disposing)
+			{
+				if (components != null)
+				{
 					components.Dispose();
 				}
 			}
-			if(Extra!=null)
+			if (Extra != null)
 				Extra.Dispose();
 			//HackFunctions.stop=true;
 			base.Dispose(disposing);
 		}
-		
+
 		/// <summary>
 		/// This method is required for Windows Forms designer support.
 		/// Do not change the method contents inside the source code editor. The Forms designer might
@@ -50,15 +52,15 @@ namespace Terraria_Hacker
 			// 
 			// MainForm
 			// 
-			this.Icon=(Icon)resource.res.GetObject("Icon");
+			this.Icon = (Icon)resource.res.GetObject("Icon");
 			this.StartPosition = FormStartPosition.CenterScreen;
-			this.ClientSize=new Size(300,MainForm.HEIGHT);
+			this.ClientSize = new Size(300, MainForm.HEIGHT);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Text = Version;
 			this.Name = "MainForm";
-			this.MaximizeBox=false;
-			this.MinimizeBox=false;
-			this.FormBorderStyle=FormBorderStyle.FixedSingle;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
+			this.FormBorderStyle = FormBorderStyle.FixedSingle;
 		}
 	}
 }

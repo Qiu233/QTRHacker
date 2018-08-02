@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	public class MTabControl : TabControl
 	{

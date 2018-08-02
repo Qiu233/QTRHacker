@@ -15,10 +15,19 @@ namespace QTRHacker.Functions.Test
 	{
 		static void Main(string[] args)
 		{
+			/*using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
+			{
+				//gc.MyPlayer.Inventory[0].SetPrefix(0x1);
+				Console.ReadKey();
+			}*/
+
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				gc.MyPlayer.Inventory[0].SetDefaults(3063);//meow
+				gc.MyPlayer.Inventory[0].SetDefaultsAndPrefix(3063, 0);
+
 			}
+
+
 		}
 	}
 }

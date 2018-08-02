@@ -6,24 +6,29 @@ using System.Threading.Tasks;
 
 namespace QHackLib.Assemble
 {
-	public class AssemblySnippet
+	public class AssemblySnippet:AssemblyCode
 	{
-		public List<string> Instructions
+		public List<AssemblyCode> Content
 		{
 			get;
 		}
 
 		private AssemblySnippet()
 		{
-			Instructions = new List<string>();
+			Content = new List<AssemblyCode>();
+		}
+
+		public static AssemblySnippet FromEmpty()
+		{
+			return new AssemblySnippet();
 		}
 
 		public static AssemblySnippet FromASMCode(string asm)
 		{
 			AssemblySnippet s = new AssemblySnippet();
 
-			string[] ss = asm.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-			s.Instructions.AddRange(ss);
+			Instruction[] ss = asm.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).Select(t=>Instruction.Create(t)).ToArray();
+			s.Content.AddRange(ss);
 			return s;
 		}
 		private static string GetArgumentPassing(int index, ValueType v)
@@ -46,58 +51,56 @@ namespace QHackLib.Assemble
 			AssemblySnippet s = new AssemblySnippet();
 			if (regProtection)
 			{
-				s.Instructions.Add("push ecx");
-				s.Instructions.Add("push edx");
+				s.Content.Add(Instruction.Create("push ecx"));
+				s.Content.Add(Instruction.Create("push edx"));
 			}
 			int i = 0;
 			foreach (var v in arguments)
 			{
 				if (v.GetType() == typeof(byte) || v.GetType() == typeof(sbyte) || v.GetType() == typeof(int) || v.GetType() == typeof(uint) || v.GetType() == typeof(char) || v.GetType() == typeof(short) || v.GetType() == typeof(ushort))
 				{
-					s.Instructions.Add(GetArgumentPassing(i, v));
+					s.Content.Add(Instruction.Create(GetArgumentPassing(i, v)));
 					i++;
 				}
 				else if (v.GetType() == typeof(long) || v.GetType() == typeof(ulong))
 				{
 					ulong vv = (ulong)v;
-					s.Instructions.Add(GetArgumentPassing(i, (UInt32)(vv & 0xFFFFFFFFUL)));
-					s.Instructions.Add(GetArgumentPassing(i, (UInt32)((vv & 0xFFFFFFFF00000000UL) >> 32)));
+					s.Content.Add(Instruction.Create(GetArgumentPassing(i, (UInt32)(vv & 0xFFFFFFFFUL))));
+					s.Content.Add(Instruction.Create(GetArgumentPassing(i, (UInt32)((vv & 0xFFFFFFFF00000000UL) >> 32))));
 					i += 2;
 				}
 				else if (v.GetType() == typeof(bool))
 				{
-					s.Instructions.Add(GetArgumentPassing(i, (bool)v ? 1 : 0));
+					s.Content.Add(Instruction.Create(GetArgumentPassing(i, (bool)v ? 1 : 0)));
 					i++;
 				}
 			}
-			s.Instructions.Add("call 0x" + ((int)targetAddr).ToString("X8"));
+			s.Content.Add(Instruction.Create("call 0x" + ((int)targetAddr).ToString("X8")));
 			if (retAddr != null)
-				s.Instructions.Add("mov [0x" + ((int)retAddr).ToString("X8") + "],eax");
+				s.Content.Add(Instruction.Create("mov [0x" + ((int)retAddr).ToString("X8") + "],eax"));
 			if (regProtection)
 			{
-				s.Instructions.Add("pop edx");
-				s.Instructions.Add("pop ecx");
+				s.Content.Add(Instruction.Create("pop edx"));
+				s.Content.Add(Instruction.Create("pop ecx"));
 			}
 			return s;
 		}
-		public string GetSnippet()
+		public override string GetCode()
 		{
 			StringBuilder sb = new StringBuilder("");
-			Instructions.ForEach(s => sb.Append(s + "\n"));
+			Content.ForEach(s => sb.Append(s.GetCode() + "\n"));
 			return sb.ToString();
 		}
-		public byte[] GetByteCode(int IP, bool ret = false)
+		public override byte[] GetByteCode(int IP)
 		{
 			List<byte> bs = new List<byte>();
-			bs.AddRange(Assembler.Assemble(GetSnippet(), IP));
-			if (ret)
-				bs.AddRange(Assembler.Assemble("ret", IP + bs.Count));
+			bs.AddRange(Assembler.Assemble(GetCode(), IP));
 			return bs.ToArray();
 		}
 		public AssemblySnippet Copy()
 		{
 			AssemblySnippet ss = new AssemblySnippet();
-			ss.Instructions.AddRange(Instructions);
+			ss.Content.AddRange(Content);
 			return ss;
 		}
 	}

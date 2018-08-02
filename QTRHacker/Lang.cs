@@ -8,7 +8,7 @@
  */
 using System;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	/// <summary>
 	/// Description of Lang.

@@ -43,7 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemble\Assembler.cs" />
+    <Compile Include="Assemble\AssemblyCode.cs" />
     <Compile Include="Assemble\AssemblySnippet.cs" />
+    <Compile Include="Assemble\Instruction.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="FunctionHelper\FunctionAddressHelper.cs" />
     <Compile Include="Assemble\Ldasm.cs" />

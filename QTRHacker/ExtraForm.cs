@@ -12,8 +12,9 @@ using System.Windows.Forms;
 using System.Collections;
 using System.Reflection;
 using System.Linq;
+using QTRHacker.Functions;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	/// <summary>
 	/// Description of ExtraForm.
@@ -25,9 +26,11 @@ namespace Terraria_Hacker
 		private int ControlID = 0;
 		public SpecialForm specialForm = null;
 		public static Form Window;
+		private GameContext Context;
 
-		public ExtraForm()
+		public ExtraForm(GameContext Context)
 		{
+			this.Context = Context;
 			Window = this;
 			BackColor = Color.LightGray;
 			hacks = new Hashtable();
@@ -204,7 +207,7 @@ namespace Terraria_Hacker
 
 			Button itemHack = AddButton(Lang.hackInv, delegate (object sender, EventArgs e)
 			{
-				InvEditor ie = new InvEditor();
+				InvEditor ie = new InvEditor(Context);
 				ie.Show();
 			}
 			);

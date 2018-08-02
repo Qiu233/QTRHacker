@@ -20,8 +20,9 @@ using System.Resources;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using QTRHacker.Functions;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	/// <summary>
 	/// Description of MainForm.
@@ -29,7 +30,6 @@ namespace Terraria_Hacker
 	public partial class MainForm : Form
 	{
 		private bool flag = false;
-		private int baseAddr;
 		private Label status;
 		private int hProcess;
 		public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
@@ -56,14 +56,11 @@ namespace Terraria_Hacker
 		public static MainForm mainWindow;
 		private Image cross;
 		public static Resources resource = new Resources();
-		[DllImport("TR_Hacker.dll")]
-		public static extern byte PassWord(byte[] b);
-		[DllImport("TR_Hacker.dll")]
-		public static extern void FreeMemory(int v);
-		public static string INIFile = Environment.CurrentDirectory + "\\Hacker.ini";
 		public static string gameVersion = "1.3.5.3";
 		public const int MAX_ITEMS_1353 = 3930;
 		private const int row = 12;
+		public static GameContext Context;
+		public static bool CanHack => !(Context == null || Context.MyPlayer.BaseAddress <= 0);
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct POINT
@@ -98,15 +95,6 @@ namespace Terraria_Hacker
 
 		public void InitControls()
 		{
-
-			/*int index = 0;
-			for (; index < MAX_ITEMS_1353; index++)
-			{
-				if ((img = MainForm.resource.GetItemImageFromIndex(index)) != null)
-				{
-					item_images.Images.Add("Item_" + index, img);
-				}
-			}*/
 			MemoryStream ms = new MemoryStream(resource.ItemImage);
 			BinaryReader br = new BinaryReader(ms);
 			while (true)
@@ -117,7 +105,6 @@ namespace Terraria_Hacker
 				byte[] data = br.ReadBytes((int)length);
 				MemoryStream imgms = new MemoryStream(data);
 				Image img = Image.FromStream(imgms);
-				//ms.Close();
 				item_images.Images.Add(name, img);
 			}
 			br.Close();
@@ -146,14 +133,14 @@ namespace Terraria_Hacker
 			};
 			Extra.Click += delegate (object sender, EventArgs e)
 			 {
-				 if (baseAddr <= 0)
+				 if (!CanHack)
 				 {
 					 MessageBox.Show(Lang.nonePlayerBase);
 					 return;
 				 }
 				 if (ExtraHack == null)
 				 {
-					 ExtraHack = new ExtraForm();
+					 ExtraHack = new ExtraForm(Context);
 					 ExtraHack.Show(this);
 					 ExtraHack.Location = new Point(Location.X + Width, Location.Y);
 					 Extra.Font = new Font("Arial", 10, FontStyle.Bold);
@@ -320,7 +307,7 @@ namespace Terraria_Hacker
 			};
 			b.Click += delegate (object sender, EventArgs e)
 			 {
-				 if (baseAddr != 0)
+				 if (CanHack)
 				 {
 					 hfunc();
 					 status.Text = Lang.sucToHack;
@@ -339,7 +326,7 @@ namespace Terraria_Hacker
 				c.Location = new Point(245, height * rank);
 				c.Click += delegate (object sender, EventArgs e)
 				 {
-					 if (baseAddr != 0)
+					 if (CanHack)
 					 {
 						 cancel();
 						 status.Text = Lang.sucToCancel;
@@ -353,80 +340,10 @@ namespace Terraria_Hacker
 			}
 			return b;
 		}
-		private static byte Register(string str)
-		{
-			byte[] b;
-			{
-				char[] ca = str.ToCharArray();
-				b = new byte[ca.Length + 1];
-				for (int i = 0; i < ca.Length; i++)
-				{
-					b[i] = (byte)ca[i];
-				}
-				b[b.Length - 1] = 0;
-			}
-			return PassWord(b);
-		}
-		private void RegisterDialog()
-		{
-			Form f = new Form();
-			TextBox skey = new TextBox();
-			Button ok = new Button();
-			f.Closing += delegate (object sender, CancelEventArgs e)
-			 {
-				 Environment.Exit(0);
-			 };
-			f.Text = Lang.regTip;
-			f.StartPosition = FormStartPosition.CenterParent;
-			f.FormBorderStyle = FormBorderStyle.FixedSingle;
-			f.MaximizeBox = false;
-			f.Size = new Size(300, 50);
-
-			skey.Location = new Point(0, 0);
-			skey.Size = new Size(235, 50);
-			skey.KeyDown += delegate (object sender, KeyEventArgs e)
-			 {
-				 if (e.KeyCode == Keys.Enter)
-					 ok.PerformClick();
-			 };
-			f.Controls.Add(skey);
-
-			ok.Text = Lang.confirm;
-			ok.Size = new Size(60, 20);
-			ok.Location = new Point(235, 0);
-			ok.Click += delegate (object sender, EventArgs e)
-			 {
-				 byte rst = Register(skey.Text);
-				 if (rst == 0)
-				 {
-					 MessageBox.Show(Lang.regWrong);
-				 }
-				 else if (rst == 1)
-				 {
-					 MessageBox.Show(Lang.sucToReg);
-					 INI.WriteIniKeys("CONFIG", "SKEY", skey.Text, INIFile);
-					 f.Dispose();
-				 }
-			 };
-			f.Controls.Add(ok);
-			f.ShowDialog(this);
-		}
+		
 
 		public MainForm()
 		{
-			/*string SKEY = INI.ReadIniKeys("CONFIG", "SKEY", INIFile);
-            if (SKEY.Length == 0)
-            {
-                RegisterDialog();
-            }
-            else
-            {
-                byte rst = Register(SKEY);
-                if (rst == 0)
-                {
-                    RegisterDialog();
-                }
-            }*/
 
 			BackColor = Color.LightGray;
 			cross = (Image)resource.res.GetObject("cross");
@@ -476,16 +393,11 @@ namespace Terraria_Hacker
 				wnd = WindowFromPoint(p.X, p.Y);
 				GetWindowThreadProcessId(wnd, out processID);
 				hProcess = OpenProcess(PROCESS_ALL_ACCESS, false, processID);
-				//baseAddr = HackFunctions.getPlayerBase(processID, hProcess);
-				if (baseAddr >= 0)
-				{
-					status.Text = string.Format(Lang.baseaddr + ":{0:x8}", baseAddr);
-
-				}
+				Context = GameContext.OpenGame(processID);
+				if (CanHack)
+					status.Text = string.Format(Lang.baseaddr + ":{0:x8}", Context.MyPlayer.BaseAddress);
 				else
-				{
 					status.Text = Lang.faiToGetBase;
-				}
 				flag = false;
 				this.Refresh();
 			}

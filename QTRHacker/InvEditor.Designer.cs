@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	partial class InvEditor
 	{

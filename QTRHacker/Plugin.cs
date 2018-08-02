@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	public abstract class Plugin
 	{

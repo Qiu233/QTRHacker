@@ -10,7 +10,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	/// <summary>
 	/// Description of INI.
@@ -34,7 +34,7 @@ namespace Terraria_Hacker
 			{ }
 			return temp.ToString();
 		}
-		public static string[] ReadIniAllKeys(string section,string filePath)
+		public static string[] ReadIniAllKeys(string section, string filePath)
 		{
 			UInt32 MAX_BUFFER = 32767;
 

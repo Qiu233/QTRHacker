@@ -32,7 +32,7 @@ namespace QHackLib.FunctionHelper
 			NativeFunctions.WriteProcessMemory(Context.Handle, FlagAddress, ref z, 4, 0);
 			Address = NativeFunctions.VirtualAllocEx(c.Handle, 0, 1024, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
 			List<byte> code = new List<byte>();
-			byte[] b = asm.GetByteCode(Address, false);
+			byte[] b = asm.GetByteCode(Address);
 			code.AddRange(b);
 			code.AddRange(Assembler.Assemble("inc [0x" + FlagAddress.ToString("X8") + "]", 0));
 			code.AddRange(Assembler.Assemble("ret", 0));

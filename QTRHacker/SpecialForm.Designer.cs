@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Text;
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	partial class SpecialForm
 	{

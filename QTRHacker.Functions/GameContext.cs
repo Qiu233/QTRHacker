@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using QHackLib;
+using QHackLib.Assemble;
+using QHackLib.FunctionHelper;
 
 namespace QTRHacker.Functions
 {
@@ -22,7 +24,7 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
-
+		
 
 		public int MyPlayerIndex
 		{
@@ -61,6 +63,7 @@ namespace QTRHacker.Functions
 			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_LocalPlayer") + 7;
 			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
 			My_Player_Address = vvv;
+			
 		}
 
 		public Player GetPlayer(int index)

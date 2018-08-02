@@ -13,7 +13,7 @@ using System.Collections;
 using System.Threading;
 using System.Runtime.InteropServices;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	/// <summary>
 	/// Description of SpecialForm.

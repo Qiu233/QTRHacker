@@ -14,7 +14,7 @@ using System.Windows.Forms;
 using System.Resources;
 using System.Drawing;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	/// <summary>
 	/// Description of Resources.
@@ -41,7 +41,7 @@ namespace Terraria_Hacker
 
 		public Resources()
 		{
-			res = new ResourceManager("Terraria_Hacker.Res", this.GetType().Assembly);
+			res = new ResourceManager("QTRHacker.Res", this.GetType().Assembly);
 			ItemImage = (byte[])res.GetObject("ItemImage");
 			Prefix = System.Text.Encoding.UTF8.GetString((byte[])res.GetObject("PreFix")).Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 #if ENG

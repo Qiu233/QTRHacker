@@ -10,7 +10,7 @@ using System;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-namespace Terraria_Hacker
+namespace QTRHacker
 {
 	/// <summary>
 	/// Class with program entry point.
