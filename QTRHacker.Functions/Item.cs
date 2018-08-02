@@ -1038,7 +1038,6 @@ namespace QTRHacker.Functions
 
 		public void SetPrefix(int prefix)
 		{
-			int fAddr = Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::Prefix");
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
 				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::Prefix"),
 				null,
@@ -1046,5 +1045,16 @@ namespace QTRHacker.Functions
 				BaseAddress, prefix);
 			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
 		}
+
+		public static void NewItem(GameContext Context, float x, float y, float width, float height, int type, int stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+		{
+			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::NewItem"),
+				null,
+				true,
+				type, stack, y, x, height, width, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
+		}
+
 	}
 }

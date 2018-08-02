@@ -45,6 +45,7 @@
     <Compile Include="GameObject.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemSlots.cs" />
+    <Compile Include="NPC.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

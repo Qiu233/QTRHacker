@@ -51,7 +51,7 @@ namespace QTRHacker
 			{
 				Location = new Point(80, 0),
 				Size = new Size(100, 20),
-				//Text = HackFunctions.getMaxHealth() + ""
+				Text = Context.MyPlayer.MaxLife + ""
 			};
 			heal.KeyPress += delegate (object sender, KeyPressEventArgs e)
 			 {
@@ -74,7 +74,7 @@ namespace QTRHacker
 			{
 				Location = new Point(80, 20),
 				Size = new Size(100, 20),
-				//Text = HackFunctions.getMaxMana() + ""
+				Text = Context.MyPlayer.MaxMana + ""
 			};
 			mana.KeyPress += delegate (object sender, KeyPressEventArgs e)
 			 {
@@ -95,8 +95,8 @@ namespace QTRHacker
 			 {
 				 if (heal.Text.Trim() != "")
 				 {
-					 //HackFunctions.setMaxHealth(Convert.ToInt32(heal.Text));
-					 //HackFunctions.setMaxMana(Convert.ToInt32(mana.Text));
+					 Context.MyPlayer.MaxLife = Convert.ToInt32(heal.Text);
+					 Context.MyPlayer.MaxMana = Convert.ToInt32(mana.Text);
 				 }
 			 };
 			this.Controls.Add(healok);
@@ -122,7 +122,7 @@ namespace QTRHacker
 				f.FormBorderStyle = FormBorderStyle.FixedSingle;
 				f.MaximizeBox = false;
 				f.MinimizeBox = false;
-				f.Size = new Size(250, 90);
+				f.Size = new Size(265, 105);
 
 				Label tip1 = new Label()
 				{
@@ -193,7 +193,8 @@ namespace QTRHacker
 					var r = MainForm.resource.Items.Where(t => t.name.ToLower().Contains(ItemName.Text.ToLower()));
 					if (r.Count() > 0)
 					{
-						//HackFunctions.AddItem(r.ElementAt(0).id, Convert.ToInt32(ItemCount.Text), InvEditor.GetPrefixFromIndex(prefix.SelectedIndex));
+						var player = Context.MyPlayer;
+						Item.NewItem(Context, player.X, player.Y, 0, 0, r.ElementAt(0).id, Convert.ToInt32(ItemCount.Text), false, InvEditor.GetPrefixFromIndex(prefix.SelectedIndex), true);
 						f.Dispose();
 					}
 				};
@@ -218,8 +219,14 @@ namespace QTRHacker
 			Button addBuff = AddButton(Lang.addBuff, delegate (object sender, EventArgs e)
 										{
 											Form f = new Form();
-											TextBox BuffID = new TextBox();
-											TextBox BuffTime = new TextBox();
+											TextBox BuffID = new TextBox()
+											{
+												Text = "0"
+											};
+											TextBox BuffTime = new TextBox()
+											{
+												Text = "0"
+											};
 											Button et = new Button();
 
 											f.Text = Lang.addBuffWnd;
@@ -227,7 +234,7 @@ namespace QTRHacker
 											f.FormBorderStyle = FormBorderStyle.FixedSingle;
 											f.MaximizeBox = false;
 											f.MinimizeBox = false;
-											f.Size = new Size(250, 70);
+											f.Size = new Size(265, 80);
 
 											Label tip1 = new Label()
 											{
@@ -273,7 +280,7 @@ namespace QTRHacker
 											et.Location = new Point(180, 0);
 											et.Click += delegate (object sender1, EventArgs e1)
 										  {
-											  //HackFunctions.AddBuff(Convert.ToInt32(BuffID.Text), Convert.ToInt32(BuffTime.Text));
+											  Context.MyPlayer.AddBuff(Convert.ToInt32(BuffID.Text), Convert.ToInt32(BuffTime.Text), false);
 											  f.Dispose();
 										  };
 											f.Controls.Add(et);
@@ -294,7 +301,7 @@ namespace QTRHacker
 										   f.FormBorderStyle = FormBorderStyle.FixedSingle;
 										   f.MaximizeBox = false;
 										   f.MinimizeBox = false;
-										   f.Size = new Size(250, 50);
+										   f.Size = new Size(265, 60);
 
 
 										   Label tip = new Label()
@@ -326,7 +333,7 @@ namespace QTRHacker
 										   et.Location = new Point(180, 0);
 										   et.Click += delegate (object sender1, EventArgs e1)
 										 {
-											 //HackFunctions.AddBuff(GetPetFromIndex(pet.SelectedIndex), 18000);
+											 Context.MyPlayer.AddBuff(GetPetFromIndex(pet.SelectedIndex), 18000, false);
 											 f.Dispose();
 										 };
 										   f.Controls.Add(et);
@@ -347,7 +354,7 @@ namespace QTRHacker
 											 f.FormBorderStyle = FormBorderStyle.FixedSingle;
 											 f.MaximizeBox = false;
 											 f.MinimizeBox = false;
-											 f.Size = new Size(250, 50);
+											 f.Size = new Size(265, 60);
 
 
 
@@ -380,7 +387,7 @@ namespace QTRHacker
 											 et.Location = new Point(180, 0);
 											 et.Click += delegate (object sender1, EventArgs e1)
 										   {
-											   //HackFunctions.AddBuff(GetMountFromIndex(mount.SelectedIndex), 18000);
+											   Context.MyPlayer.AddBuff(GetMountFromIndex(mount.SelectedIndex), 18000, false);
 											   f.Dispose();
 										   };
 											 f.Controls.Add(et);
@@ -394,8 +401,14 @@ namespace QTRHacker
 			Button NewNPC = AddButton(Lang.newNpc, delegate (object sender, EventArgs e)
 			{
 				Form f = new Form();
-				TextBox NPCType = new TextBox();
-				TextBox Times = new TextBox();
+				TextBox NPCType = new TextBox()
+				{
+					Text = "50"
+				};
+				TextBox Times = new TextBox()
+				{
+					Text = "1"
+				};
 				Button et = new Button();
 
 				f.Text = Lang.newNpc;
@@ -403,7 +416,7 @@ namespace QTRHacker
 				f.FormBorderStyle = FormBorderStyle.FixedSingle;
 				f.MaximizeBox = false;
 				f.MinimizeBox = false;
-				f.Size = new Size(250, 70);
+				f.Size = new Size(265, 85);
 
 				Label tip1 = new Label()
 				{
@@ -449,7 +462,11 @@ namespace QTRHacker
 				et.Location = new Point(180, 0);
 				et.Click += delegate (object sender1, EventArgs e1)
 				{
-					//HackFunctions.NewNPC(HackFunctions.getX(), HackFunctions.getY(), Convert.ToInt32(NPCType.Text), Convert.ToInt32(Times.Text));
+					var player = Context.MyPlayer;
+					for (int i = 0; i < Convert.ToInt32(Times.Text); i++)
+					{
+						NPC.NewNPC(Context, (int)player.X, (int)player.Y, Convert.ToInt32(NPCType.Text));
+					}
 					f.Dispose();
 				};
 				f.Controls.Add(et);

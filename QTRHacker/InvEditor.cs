@@ -421,7 +421,7 @@ namespace QTRHacker
 				};
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
-					LoadInventory(this, ofd.FileName);
+					LoadInventory(ofd.FileName);
 					SlotsPanel.Refresh();
 					InitData(Selected);
 				}
@@ -664,7 +664,7 @@ namespace QTRHacker
 				bw.Write(item.Prefix);
 			}
 		}
-		public void LoadInventory(Form f, string name)
+		public void LoadInventory( string name)
 		{
 			int j = 0;
 			Form p = new Form();
@@ -697,10 +697,12 @@ namespace QTRHacker
 			};
 			timer.Start();
 			p.Show();
-			p.Location = new System.Drawing.Point(f.Location.X + f.Width / 2 - p.ClientSize.Width / 2, f.Location.Y + f.Height / 2 - p.ClientSize.Height / 2);
+			p.Location = new System.Drawing.Point(this.Location.X + this.Width / 2 - p.ClientSize.Width / 2, this.Location.Y + this.Height / 2 - p.ClientSize.Height / 2);
 			new System.Threading.Thread((s) =>
 			{
-				f.Enabled = false;
+				MainForm.mainWindow.Enabled = false;
+				ExtraForm.Window.Enabled = false;
+				this.Enabled = false;
 				var player = Context.MyPlayer;
 				BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open));
 				for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
@@ -759,7 +761,9 @@ namespace QTRHacker
 					item.Stack = stack;
 				}
 				br.Close();
-				f.Enabled = true;
+				this.Enabled = true;
+				ExtraForm.Window.Enabled = true;
+				MainForm.mainWindow.Enabled = true;
 			}
 			).Start();
 		}

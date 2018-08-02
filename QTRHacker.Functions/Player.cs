@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QHackLib.Assemble;
+using QHackLib.FunctionHelper;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -60,21 +62,21 @@ namespace QTRHacker.Functions
 			set => WriteFromOffset(OFFSET_MaxMana, value);
 		}
 
-		public int X
+		public float X
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_X, out int v);
+				ReadFromOffset(OFFSET_X, out float v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_X, value);
 		}
 
-		public int Y
+		public float Y
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_Y, out int v);
+				ReadFromOffset(OFFSET_Y, out float v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_Y, value);
@@ -125,9 +127,22 @@ namespace QTRHacker.Functions
 			}
 		}
 
+
+
 		public Player(GameContext context, int bAddr) : base(context, bAddr)
 		{
 
+		}
+
+
+		public void AddBuff(int type, int time, bool quiet)
+		{
+			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Player::AddBuff"),
+				null,
+				true,
+				BaseAddress, type, time, quiet);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
 		}
 	}
 }

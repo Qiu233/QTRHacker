@@ -24,7 +24,7 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
-		
+
 
 		public int MyPlayerIndex
 		{
@@ -63,7 +63,7 @@ namespace QTRHacker.Functions
 			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_LocalPlayer") + 7;
 			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
 			My_Player_Address = vvv;
-			
+
 		}
 
 		public Player GetPlayer(int index)
@@ -86,5 +86,7 @@ namespace QTRHacker.Functions
 		{
 			Close();
 		}
+
+		
 	}
 }

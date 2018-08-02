@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QHackLib.Assemble
 {
-	public class AssemblySnippet:AssemblyCode
+	public class AssemblySnippet : AssemblyCode
 	{
 		public List<AssemblyCode> Content
 		{
@@ -27,7 +27,7 @@ namespace QHackLib.Assemble
 		{
 			AssemblySnippet s = new AssemblySnippet();
 
-			Instruction[] ss = asm.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).Select(t=>Instruction.Create(t)).ToArray();
+			Instruction[] ss = asm.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).Select(t => Instruction.Create(t)).ToArray();
 			s.Content.AddRange(ss);
 			return s;
 		}
@@ -61,6 +61,18 @@ namespace QHackLib.Assemble
 				{
 					s.Content.Add(Instruction.Create(GetArgumentPassing(i, v)));
 					i++;
+				}
+				else if (v.GetType() == typeof(float))
+				{
+					s.Content.Add(Instruction.Create(GetArgumentPassing(i, BitConverter.ToInt32(BitConverter.GetBytes((float)v), 0))));
+					i++;
+				}
+				else if (v.GetType() == typeof(double))
+				{
+					ulong vv = BitConverter.ToUInt64(BitConverter.GetBytes((double)v), 0);
+					s.Content.Add(Instruction.Create(GetArgumentPassing(i, (UInt32)(vv & 0xFFFFFFFFUL))));
+					s.Content.Add(Instruction.Create(GetArgumentPassing(i, (UInt32)((vv & 0xFFFFFFFF00000000UL) >> 32))));
+					i += 2;
 				}
 				else if (v.GetType() == typeof(long) || v.GetType() == typeof(ulong))
 				{

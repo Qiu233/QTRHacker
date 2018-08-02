@@ -27,8 +27,8 @@ namespace QTRHacker
 		public static string slot = "Slot", itemID = "ItemID", damage = "Damage", number = "Number", knockBack = "Knockback", crit = "Crit", buff = "Buff", buffTime = "BuffTime";
 		public static string manaInc = "ManaIncrease", lifeIncrease = "LifeIncrease", useCD = "Using CD", waveCD = "Waving CD", effCD = "Effect CD", scale = "Scale", defense = "Defense", projSpeed = "Proj speed";
 		public static string projID = "Proj type", dig = "Dig", hag = "Hag", hammer = "Hammer", digRange = "Dig range", tileID = "Tile ID", prefix = "Prefix", autoReuse = "Auto Reuse", equippable = "Equippable";
-		public static string refresh = "Refresh", confirmHack = "Confirm", addBuff = "Add Buff", addPet = "Add Pet", setMount = "Set Mount", more = "More";
-		public static string addBuffWnd = "Add Buff", wndBuffID = "Buff ID", wndBuffTime = "Buff Time", addPetWnd = "Add Pet", setMountWnd = "Set Mount";
+		public static string refresh = "Refresh", confirmHack = "Confirm", addBuff = "Add Buff", addPet = "Set Pet", setMount = "Set Mount", more = "More";
+		public static string addBuffWnd = "Add Buff", wndBuffID = "Buff ID", wndBuffTime = "Buff Time", addPetWnd = "Set Pet", setMountWnd = "Set Mount";
 		public static string telePoint = "TP Point", descr = "Description", teleport = "TP", teleMessage = "Are you sure to teleport to", addText = "Add", nameText = "Name", exists = "is exists", delete = "Delete", deleteMessage = "Are you sure to delete";
 		public static string rename = "Rename", newName = "New Name", checkInv = "Check Inventory", checkBuff = "Check Buffs", player = "Player", currentLife = "Current Life";
 		public static string seniorMessage = "Only teleport point is available because of single play";
@@ -53,8 +53,8 @@ namespace QTRHacker
 		public static string slot="物品格",itemID="物品ID",damage="攻击力",number="数量",knockBack="击退",crit="暴击",buff="Buff",buffTime="Buff时间";
 		public static string manaInc="魔法恢复",lifeIncrease="生命恢复",useCD="使用CD",waveCD="挥动CD",effCD="特效CD",scale="缩放",defense="防御力",projSpeed="弹幕速度";
 		public static string projID="弹幕ID",dig="挖掘能力",hag="砍伐能力",hammer="锤击能力",digRange="挖掘距离",tileID="放置ID",prefix="前缀",autoReuse="按住连续使用",equippable="可装备";
-		public static string refresh="刷新",confirmHack="确定",addBuff="添加Buff",addPet="添加宠物",setMount="设置坐骑",senior="高级功能";
-		public static string addBuffWnd="添加Buff",wndBuffID="Buff ID",wndBuffTime="Buff时间",addPetWnd="添加宠物",setMountWnd="设置坐骑", more = "高级功能";
+		public static string refresh="刷新",confirmHack="确定",addBuff="添加Buff",addPet="设置宠物",setMount="设置坐骑",senior="高级功能";
+		public static string addBuffWnd="添加Buff",wndBuffID="Buff ID",wndBuffTime="Buff时间",addPetWnd="设置宠物",setMountWnd="设置坐骑", more = "高级功能";
 		public static string telePoint="传送点",descr="描述",teleport="传送",teleMessage="确定要传送到",addText="添加",nameText="名称",exists="已存在",delete="删除",deleteMessage="确定要删除";
 		public static string rename="重命名",newName="新名称",checkInv="查看背包",checkBuff="查看Buff",player="玩家",currentLife="当前生命值";
 		public static string seniorMessage="单人模式下,只有传送点可用";
