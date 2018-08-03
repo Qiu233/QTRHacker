@@ -34,7 +34,7 @@ namespace QTRHacker
 		private int hProcess;
 		public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
 
-		public delegate int HackFunc();
+		public delegate void HackFunc(GameContext c);
 		private Button Extra;
 		private ExtraForm ExtraHack = null;
 		private TabControl mainTab;
@@ -179,11 +179,11 @@ namespace QTRHacker
 
 
 
-			/*AddButton(buttonTabPage1, Lang.infLife, 0, HackFunctions.InfiniteHealth, HackFunctions.De_InfiniteHealth);
-			AddButton(buttonTabPage1, Lang.infOxygen, 1, HackFunctions.InfiniteOxygen, HackFunctions.De_InfiniteOxygen);
-			AddButton(buttonTabPage1, Lang.infSummon, 2, HackFunctions.InfiniteMinion, HackFunctions.De_InfiniteMinion);
-			AddButton(buttonTabPage1, Lang.infMana, 3, HackFunctions.InfiniteMana, HackFunctions.De_InfiniteMana);
-			AddButton(buttonTabPage1, Lang.infItemAndAmmo, 4, delegate () { return HackFunctions.InfiniteBullet() & HackFunctions.InfiniteItems(); }, delegate () { return HackFunctions.De_InfiniteBullet() & HackFunctions.De_InfiniteItems(); });
+			AddButton(buttonTabPage1, Lang.infLife, 0, Utils.InfiniteLife_E, Utils.InfiniteLife_D);
+			AddButton(buttonTabPage1, Lang.infOxygen, 1, Utils.InfiniteOxygen_E, Utils.InfiniteOxygen_D);
+			AddButton(buttonTabPage1, Lang.infSummon, 2, Utils.InfiniteMinion_E, Utils.InfiniteMinion_D);
+			AddButton(buttonTabPage1, Lang.infMana, 3, Utils.InfiniteMana_E, Utils.InfiniteMana_D);
+			/*AddButton(buttonTabPage1, Lang.infItemAndAmmo, 4, delegate () { return HackFunctions.InfiniteBullet() & HackFunctions.InfiniteItems(); }, delegate () { return HackFunctions.De_InfiniteBullet() & HackFunctions.De_InfiniteItems(); });
 			AddButton(buttonTabPage1, Lang.infFly, 5, HackFunctions.InfiniteFly, HackFunctions.De_InfiniteFly);
 			AddButton(buttonTabPage1, Lang.immuneStoned, 6, HackFunctions.immuneBuff, HackFunctions.De_immuneBuff);
 			AddButton(buttonTabPage1, Lang.highLight, 7, HackFunctions.HighLight, HackFunctions.De_HighLight);
@@ -313,7 +313,7 @@ namespace QTRHacker
 			 {
 				 if (CanHack)
 				 {
-					 hfunc();
+					 hfunc(Context);
 					 status.Text = Lang.sucToHack;
 				 }
 				 else
@@ -332,7 +332,7 @@ namespace QTRHacker
 				 {
 					 if (CanHack)
 					 {
-						 cancel();
+						 cancel(Context);
 						 status.Text = Lang.sucToCancel;
 					 }
 					 else

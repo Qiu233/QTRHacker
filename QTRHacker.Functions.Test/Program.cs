@@ -18,10 +18,9 @@ namespace QTRHacker.Functions.Test
 
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				Console.WriteLine(gc.MyPlayer.Name);
-
+				Utils.InfiniteMana_E(gc);
 			}
-
+			Assembler.Assemble("sub [esi+0x344],edi\nmov eax,1\nlea esp,[ebp-08]", 0).ToList().ForEach(t=>Console.WriteLine(t.ToString("X2")));
 
 		}
 	}
