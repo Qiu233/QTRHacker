@@ -79,12 +79,6 @@
     <Compile Include="MTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PlayerDetail_Buff.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PlayerDetail_Buff.designer.cs">
-      <DependentUpon>PlayerDetail_Buff.cs</DependentUpon>
-    </Compile>
     <Compile Include="PlayerInventory.cs">
       <SubType>Form</SubType>
     </Compile>

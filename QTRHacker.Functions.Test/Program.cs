@@ -18,7 +18,7 @@ namespace QTRHacker.Functions.Test
 
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				gc.MyPlayer.Inventory[0].SetDefaultsAndPrefix(3063, 0);
+				Console.WriteLine(gc.MyPlayer.Name);
 
 			}
 

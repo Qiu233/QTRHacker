@@ -481,7 +481,7 @@ namespace QTRHacker
 										{
 											if (specialForm == null)
 											{
-												specialForm = new SpecialForm();
+												specialForm = new SpecialForm(Context);
 												specialForm.Show(this);
 												specialForm.Location = new Point(Location.X + Width, Location.Y);
 												((Button)sender).Font = new Font("Arial", 8, FontStyle.Bold);

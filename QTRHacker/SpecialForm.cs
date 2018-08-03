@@ -12,6 +12,8 @@ using System.Windows.Forms;
 using System.Collections;
 using System.Threading;
 using System.Runtime.InteropServices;
+using QTRHacker.Functions;
+using System.IO;
 
 namespace QTRHacker
 {
@@ -24,24 +26,26 @@ namespace QTRHacker
 		public Form Window;
 		const int WM_NCLBUTTONDOWN = 0x00A1;
 		const int HTCAPTION = 2;
-		public SpecialForm()
+		private GameContext Context;
+		public SpecialForm(GameContext Context)
 		{
+			this.Context = Context;
 			Window = this;
 			BackColor = Color.LightGray;
-			//HackFunctions.WarpLoad();
+			WarpLoad();
 			InitializeComponent();
 			InitControls();
 		}
 		public void UpdateWarpList()
 		{
 			warpList.Items.Clear();
-			/*foreach (DictionaryEntry de in HackFunctions.warps)
+			foreach (DictionaryEntry de in warps)
 			{
 				string name = (string)de.Key;
 				string dec = ((Position)de.Value).Dec;
 				warpList.Items.Add(name, name, 0);
 				warpList.Items[name].SubItems.Add(dec);
-			}*/
+			}
 		}
 		private void InitControls()
 		{
@@ -53,17 +57,17 @@ namespace QTRHacker
 					View = View.Details,
 					MultiSelect = false,
 					FullRowSelect = true,
-			};
+				};
 				warpList.BeginUpdate();
 				warpList.Columns.Add(Lang.telePoint, warpList.Size.Width / 3);
 				warpList.Columns.Add(Lang.descr, warpList.Size.Width / 3 * 2);
-				/*foreach (DictionaryEntry de in HackFunctions.warps)
+				foreach (DictionaryEntry de in warps)
 				{
 					string name = (string)de.Key;
 					string dec = ((Position)de.Value).Dec;
 					warpList.Items.Add(name, name, 0);
 					warpList.Items[name].SubItems.Add(dec);
-				}*/
+				}
 				warpList.EndUpdate();
 				this.Controls.Add(warpList);
 
@@ -133,16 +137,16 @@ namespace QTRHacker
 					ok.Location = new Point(155, 0);
 					ok.Click += delegate (object sender1, EventArgs e1)
 					{
-						/*if (!HackFunctions.warps.Contains(name.Text))
+						if (!warps.Contains(name.Text))
 						{
 							AddWarp(name.Text, dec.Text);
-							HackFunctions.WarpSave();
+							WarpSave();
 							f.Dispose();
 						}
 						else
 						{
 							MessageBox.Show(Lang.telePoint + "\"" + name.Text + "\"" + Lang.exists);
-						}*/
+						}
 					};
 					f.Controls.Add(ok);
 					f.ShowDialog(this);
@@ -207,12 +211,12 @@ namespace QTRHacker
 					{
 						if (warpList.SelectedItems.Count == 0)
 							return;
-						/*Position p = (Position)HackFunctions.warps[warpList.SelectedItems[0].Text];
+						Position p = (Position)warps[warpList.SelectedItems[0].Text];
 						DelWarp();
-						HackFunctions.warps.Add(name.Text, p);
+						warps.Add(name.Text, p);
 						warpList.Items.Add(name.Text, name.Text, 0);
 						warpList.Items[name.Text].SubItems.Add(p.Dec);
-						HackFunctions.WarpSave();*/
+						WarpSave();
 						f.Dispose();
 					};
 					f.Controls.Add(ok);
@@ -279,8 +283,9 @@ namespace QTRHacker
 				ok.Location = new Point(225, 190);
 				ok.Click += delegate (object sender, EventArgs e)
 				{
-					/*HackFunctions.setX((float)Convert.ToDouble(X.Text));
-					HackFunctions.setY((float)Convert.ToDouble(Y.Text));*/
+					var player = Context.MyPlayer;
+					player.X = Convert.ToSingle(X.Text);
+					player.Y = Convert.ToSingle(Y.Text);
 				};
 				this.Controls.Add(ok);
 			}
@@ -296,7 +301,6 @@ namespace QTRHacker
 					cms.Items.Add(Lang.teleport);
 					cms.Items.Add(Lang.convertTo);
 					cms.Items.Add(Lang.checkInv);
-					cms.Items.Add(Lang.checkBuff);
 					cms.ItemClicked += delegate (object sender, ToolStripItemClickedEventArgs e)
 					{
 						if (playerList.SelectedItems.Count > 0)
@@ -317,13 +321,7 @@ namespace QTRHacker
 							{
 								ContextMenuStrip s = sender as ContextMenuStrip;
 								ListView l = (ListView)s.SourceControl;
-								new PlayerInventory(Convert.ToInt32(playerList.SelectedItems[0].SubItems[0].Text), l.SelectedItems[0].SubItems[1].Text).Show();
-							}
-							else if (e.ClickedItem.Text == Lang.checkBuff)
-							{
-								ContextMenuStrip s = sender as ContextMenuStrip;
-								ListView l = (ListView)s.SourceControl;
-								new PlayerDetail_Buff(Convert.ToInt32(playerList.SelectedItems[0].SubItems[0].Text), l.SelectedItems[0].SubItems[1].Text).Show();
+								new PlayerInventory(Context, Convert.ToInt32(playerList.SelectedItems[0].SubItems[0].Text), l.SelectedItems[0].SubItems[1].Text).Show();
 							}
 						}
 					};
@@ -352,25 +350,27 @@ namespace QTRHacker
 			}
 
 		}
-		public static void TPToPlayer(float X, float Y)
+		public void TPToPlayer(float X, float Y)
 		{
-			/*HackFunctions.setX(X);
-			HackFunctions.setY(Y);*/
+			var player = Context.MyPlayer;
+			player.X = X;
+			player.Y = Y;
 		}
 		private void UpdatePlayerList()
 		{
-			/*int i = 0;
+			int i = 0;
 			for (; i < 50; i++)
 			{
-				if (HackFunctions.getPlayerActive(i))
+				Player p = Context.GetPlayer(i);
+				if (p.Active)
 				{
 					if (playerList.Items.ContainsKey(i.ToString()))
 					{
-						float playerX = HackFunctions.getPlayerX(i);
-						float playerY = HackFunctions.getPlayerY(i);
-						int health = HackFunctions.getPlayerHealth(i);
-						int maxHealth = HackFunctions.getPlayerMaxHealth(i);
-						string name = GetPlayerName(i);
+						float playerX = p.X;
+						float playerY = p.Y;
+						int health = p.Life;
+						int maxHealth = p.MaxLife;
+						string name = p.Name;
 						int index = playerList.Items.IndexOfKey(i.ToString());
 						playerList.Items[index].SubItems[1].Text = name;
 						playerList.Items[index].SubItems[2].Text = Convert.ToString(playerX);
@@ -380,11 +380,11 @@ namespace QTRHacker
 					}
 					else
 					{
-						float playerX = HackFunctions.getPlayerX(i);
-						float playerY = HackFunctions.getPlayerY(i);
-						int health = HackFunctions.getPlayerHealth(i);
-						int maxHealth = HackFunctions.getPlayerMaxHealth(i);
-						string name = GetPlayerName(i);
+						float playerX = p.X;
+						float playerY = p.Y;
+						int health = p.Life;
+						int maxHealth = p.MaxLife;
+						string name = p.Name;
 						playerList.Items.Add(i.ToString(), i.ToString(), 0);
 						playerList.Items[i.ToString()].SubItems.Add(name);
 						playerList.Items[i.ToString()].SubItems.Add(Convert.ToString(playerX));
@@ -395,47 +395,105 @@ namespace QTRHacker
 				}
 				else
 				{
-					if(playerList.Items.ContainsKey(i.ToString()))
+					if (playerList.Items.ContainsKey(i.ToString()))
 					{
 						playerList.Items[playerList.Items.IndexOfKey(i.ToString())].Remove();
 					}
 				}
-			}*/
-		}
-		unsafe private static string GetPlayerName(int id)
-		{
-			/*int len = 0;
-			char* str = HackFunctions.getPlayerName(id, &len);
-			if (len == 0)
-				return "";
-			string rst = "";
-			int i = 0;
-			while (i < len)
-			{
-				rst += *(str + i);
-				i++;
 			}
-			MainForm.FreeMemory((int)str);
-			//Marshal.FreeHGlobal((IntPtr)str);
-			return rst;*/
-			return null;
 		}
 		private void DelWarp()
 		{
-			/*HackFunctions.WarpDel(warpList.SelectedItems[0].Text);
-			HackFunctions.WarpSave();
-			warpList.Items.Remove(warpList.SelectedItems[0]);*/
+			WarpDel(warpList.SelectedItems[0].Text);
+			WarpSave();
+			warpList.Items.Remove(warpList.SelectedItems[0]);
 		}
 		private void AddWarp(string name, string dec)
 		{
-			/*if (dec.Trim() == "")
+			if (dec.Trim() == "")
 			{
 				dec = Lang.none;
 			}
-			HackFunctions.WarpAdd(name, dec);
-			HackFunctions.WarpSave();
+			WarpAdd(name, dec);
+			WarpSave();
 			warpList.Items.Add(name, name, 0);
-			warpList.Items[name].SubItems.Add(dec);*/
+			warpList.Items[name].SubItems.Add(dec);
+		}
+
+		public static Hashtable warps = new Hashtable();
+		struct Position
+		{
+			public float X, Y;
+			public string Dec;
+		}
+		public void WarpAdd(string name, string Dec)
+		{
+			if (!warps.Contains(name))
+			{
+				var player = Context.MyPlayer;
+				Position p = new Position();
+				p.X = player.X;
+				p.Y = player.Y;
+				p.Dec = Dec;
+				warps.Add(name, p);
+			}
+		}
+		public void WarpDel(string name)
+		{
+			if (warps.Contains(name))
+			{
+				warps.Remove(name);
+			}
+		}
+		public void WarpRename(string oldName, string newName)
+		{
+			if (warps.Contains(oldName))
+			{
+				Position p = (Position)warps[oldName];
+				warps.Remove(oldName);
+				warps.Add(newName, p);
+			}
+		}
+		public void Warp(string name)
+		{
+			if (warps.Contains(name))
+			{
+				var player = Context.MyPlayer;
+				Position p = (Position)warps[name];
+				player.X = p.X;
+				player.Y = p.Y;
+			}
+		}
+		public void WarpSave()
+		{
+			File.Delete("WarpList");
+			Stream s = File.Open("WarpList", FileMode.OpenOrCreate);
+			StreamWriter sw = new StreamWriter(s);
+			foreach (DictionaryEntry de in warps)
+			{
+				Position p = (Position)de.Value;
+				sw.WriteLine(de.Key + " " + p.X + " " + p.Y + " " + p.Dec);
+			}
+			sw.Close();
+			s.Close();
+		}
+		public void WarpLoad()
+		{
+			warps.Clear();
+			Stream s = File.Open("WarpList", FileMode.OpenOrCreate);
+			StreamReader sr = new StreamReader(s);
+			string[] str = sr.ReadToEnd().Replace("\r", "").Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+			foreach (var tmp in str)
+			{
+				string[] a = tmp.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+				Position p = new Position();
+				p.X = (float)Convert.ToDouble(a[1]);
+				p.Y = (float)Convert.ToDouble(a[2]);
+				p.Dec = a[3];
+				warps.Add(a[0], p);
+			}
+			s.Close();
+			s.Close();
 		}
 	}
 }

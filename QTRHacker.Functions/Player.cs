@@ -1,4 +1,5 @@
-﻿using QHackLib.Assemble;
+﻿using QHackLib;
+using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace QTRHacker.Functions
 		public const int OFFSET_MaxLife = 0x338;
 		public const int OFFSET_Mana = 0x34c;
 		public const int OFFSET_MaxMana = 0x348;
+		public const int OFFSET_Active = 0x18;
 		public const int OFFSET_X = 0x20;
 		public const int OFFSET_Y = 0x24;
 
@@ -127,6 +129,27 @@ namespace QTRHacker.Functions
 			}
 		}
 
+		public bool Active
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_Active, out bool v);
+				return v;
+			}
+		}
+
+		public string Name
+		{
+			get
+			{
+				ReadFromOffset(0x70, out int a);
+				int b = 0;
+				NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 0x4, ref b, 4, 0);
+				byte[] c = new byte[b * 2];
+				NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 0x8, c, c.Length, 0);
+				return Encoding.Unicode.GetString(c);
+			}
+		}
 
 
 		public Player(GameContext context, int bAddr) : base(context, bAddr)
