@@ -183,18 +183,18 @@ namespace QTRHacker
 			AddButton(buttonTabPage1, Lang.infOxygen, 1, Utils.InfiniteOxygen_E, Utils.InfiniteOxygen_D);
 			AddButton(buttonTabPage1, Lang.infSummon, 2, Utils.InfiniteMinion_E, Utils.InfiniteMinion_D);
 			AddButton(buttonTabPage1, Lang.infMana, 3, Utils.InfiniteMana_E, Utils.InfiniteMana_D);
-			/*AddButton(buttonTabPage1, Lang.infItemAndAmmo, 4, delegate () { return HackFunctions.InfiniteBullet() & HackFunctions.InfiniteItems(); }, delegate () { return HackFunctions.De_InfiniteBullet() & HackFunctions.De_InfiniteItems(); });
-			AddButton(buttonTabPage1, Lang.infFly, 5, HackFunctions.InfiniteFly, HackFunctions.De_InfiniteFly);
-			AddButton(buttonTabPage1, Lang.immuneStoned, 6, HackFunctions.immuneBuff, HackFunctions.De_immuneBuff);
-			AddButton(buttonTabPage1, Lang.highLight, 7, HackFunctions.HighLight, HackFunctions.De_HighLight);
-			AddButton(buttonTabPage1, Lang.ghostMode, 8, HackFunctions.GhostMode, HackFunctions.De_GhostMode);
-			AddButton(buttonTabPage1, Lang.respawnAtOnce, 9, HackFunctions.NoRespawnTime, HackFunctions.De_NoRespawnTime);
+			AddButton(buttonTabPage1, Lang.infItemAndAmmo, 4, (ctx) => { Utils.InfiniteItem_E(ctx); Utils.InfiniteAmmo_E(ctx); }, (ctx)=> { Utils.InfiniteItem_D(ctx); Utils.InfiniteAmmo_D(ctx); });
+			AddButton(buttonTabPage1, Lang.infFly, 5, Utils.InfiniteFly_E, Utils.InfiniteFly_D);
+			//AddButton(buttonTabPage1, Lang.immuneStoned, 6, HackFunctions.immuneBuff, HackFunctions.De_immuneBuff);
+			AddButton(buttonTabPage1, Lang.highLight, 7, Utils.HighLight_E, Utils.HighLight_D);
+			AddButton(buttonTabPage1, Lang.ghostMode, 8, Utils.GhostMode_E, Utils.GhostMode_D);
+			/*AddButton(buttonTabPage1, Lang.respawnAtOnce, 9, HackFunctions.NoRespawnTime, HackFunctions.De_NoRespawnTime);
 			AddButton(buttonTabPage1, Lang.attackThroughWalls, 10, HackFunctions.AttackThroughWalls, HackFunctions.De_AttackThroughWalls);
-			AddButton(buttonTabPage1, Lang.noPotionDelay, 11, HackFunctions.NoPotionDelay, HackFunctions.De_NoPotionDelay);
+			AddButton(buttonTabPage1, Lang.noPotionDelay, 11, HackFunctions.NoPotionDelay, HackFunctions.De_NoPotionDelay);*/
 
-			AddButton(buttonTabPage2, Lang.decreaseGravity, 0, HackFunctions.JumpAsFeather, HackFunctions.De_JumpAsFeather);
-			AddButton(buttonTabPage2, Lang.increaseSpeed, 1, HackFunctions.FastSpeed, HackFunctions.De_FastSpeed);
-			AddButton(buttonTabPage2, Lang.killAllNPC, 2, HackFunctions.KillAllNPC, HackFunctions.De_KillAllNPC);
+			AddButton(buttonTabPage2, Lang.decreaseGravity, 0, Utils.LowGravity_E, Utils.LowGravity_D);
+			AddButton(buttonTabPage2, Lang.increaseSpeed, 1, Utils.FastSpeed_E, Utils.FastSpeed_D);
+			/*AddButton(buttonTabPage2, Lang.killAllNPC, 2, HackFunctions.KillAllNPC, HackFunctions.De_KillAllNPC);
 			AddButton(buttonTabPage2, Lang.projectileThroughWalls, 3, HackFunctions.ProjectileIgnoreTiles, HackFunctions.De_ProjectileIgnoreTiles);
 			AddButton(buttonTabPage2, Lang.superPick, 4, HackFunctions.GrabItemFarAway, HackFunctions.De_GrabItemFarAway);
 			AddButton(buttonTabPage2, Lang.extraTwoSlots, 5, HackFunctions.AddExtraSlots, HackFunctions.De_AddExtraSlots);
@@ -268,7 +268,7 @@ namespace QTRHacker
 
 		private void LoadPlugins()
 		{
-			if(!Directory.Exists(".\\plugins"))
+			if (!Directory.Exists(".\\plugins"))
 			{
 				Directory.CreateDirectory(".\\plugins");
 			}
@@ -344,7 +344,7 @@ namespace QTRHacker
 			}
 			return b;
 		}
-		
+
 
 		public MainForm()
 		{

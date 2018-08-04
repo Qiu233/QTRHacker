@@ -19,6 +19,7 @@ namespace QTRHacker.Functions
 		public const int OFFSET_Active = 0x18;
 		public const int OFFSET_X = 0x20;
 		public const int OFFSET_Y = 0x24;
+		public const int OFFSET_Ghost = 0x549;
 
 		public const int OFFSET_INV = 0xBC, OFFSET_ARMOR = 0x98, OFFSET_DYE = 0x9C, OFFSET_MISC = 0xA0, OFFSET_MISCDYE = 0xA4;
 		public const int ITEM_MAX_COUNT = 59, INV_MAX_COUNT = 50, ARMOR_MAX_COUNT = 20, DYE_MAX_COUNT = 10, MISC_MAX_COUNT = 5, MISCDYE_MAX_COUNT = 5;
@@ -82,6 +83,16 @@ namespace QTRHacker.Functions
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_Y, value);
+		}
+
+		public bool Ghost
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_Ghost, out bool v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_Ghost, value);
 		}
 
 		public ItemSlots Inventory
