@@ -194,12 +194,12 @@ namespace QTRHacker
 
 			AddButton(buttonTabPage2, Lang.decreaseGravity, 0, Utils.LowGravity_E, Utils.LowGravity_D);
 			AddButton(buttonTabPage2, Lang.increaseSpeed, 1, Utils.FastSpeed_E, Utils.FastSpeed_D);
-			/*AddButton(buttonTabPage2, Lang.killAllNPC, 2, HackFunctions.KillAllNPC, HackFunctions.De_KillAllNPC);
-			AddButton(buttonTabPage2, Lang.projectileThroughWalls, 3, HackFunctions.ProjectileIgnoreTiles, HackFunctions.De_ProjectileIgnoreTiles);
-			AddButton(buttonTabPage2, Lang.superPick, 4, HackFunctions.GrabItemFarAway, HackFunctions.De_GrabItemFarAway);
-			AddButton(buttonTabPage2, Lang.extraTwoSlots, 5, HackFunctions.AddExtraSlots, HackFunctions.De_AddExtraSlots);
-			AddButton(buttonTabPage2, Lang.goldHoleDropBag, 6, HackFunctions.GoldHoleDropBag, HackFunctions.De_GoldHoleDropBag);
-			AddButton(buttonTabPage2, Lang.slimeGunBurn, 7, HackFunctions.SlimeGunBurn, HackFunctions.De_SlimeGunBurn);
+			//AddButton(buttonTabPage2, Lang.killAllNPC, 2, HackFunctions.KillAllNPC, HackFunctions.De_KillAllNPC);
+			AddButton(buttonTabPage2, Lang.projectileThroughWalls, 3, Utils.ProjectileIgnoreTile_E, Utils.ProjectileIgnoreTile_D);
+			AddButton(buttonTabPage2, Lang.superPick, 4, Utils.GrabItemFarAway_E, Utils.GrabItemFarAway_D);
+			AddButton(buttonTabPage2, Lang.extraTwoSlots, 5, Utils.BonusTwoSlots_E, Utils.BonusTwoSlots_D);
+			AddButton(buttonTabPage2, Lang.goldHoleDropBag, 6, Utils.GoldHoleDropsBag_E, Utils.GoldHoleDropsBag_D);
+			/*AddButton(buttonTabPage2, Lang.slimeGunBurn, 7, HackFunctions.SlimeGunBurn, HackFunctions.De_SlimeGunBurn);
 			AddButton(buttonTabPage2, Lang.fishOnlyCrates, 8, HackFunctions.FishOnlyCrates, HackFunctions.De_FishOnlyCrates);
 			AddButton(buttonTabPage2, Lang.killAllScreen, 9, HackFunctions.KillAllScreen, HackFunctions.De_KillAllScreen);
 			AddButton(buttonTabPage2, Lang.allRecipe, 10, HackFunctions.EnableAllRecipes, HackFunctions.De_EnableAllRecipes);

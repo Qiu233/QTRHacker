@@ -13,18 +13,18 @@ namespace QHackLib.FunctionHelper
 	{
 		private InlineHook() { }
 
-		private static byte[] GetHeadBytes(byte[] code)
+		public static byte[] GetHeadBytes(byte[] code)
 		{
 			IntPtr ptr3 = Marshal.AllocHGlobal(code.Length);
 			Marshal.Copy(code, 0, ptr3, code.Length);
 			UInt32 len = 0;
 			unsafe
 			{
-				Ldasm.ldasm_data data = new Ldasm.ldasm_data();
 				byte* p = (byte*)ptr3.ToPointer();
 				byte* i = p;
 				while (i - p < 5)
 				{
+					Ldasm.ldasm_data data = new Ldasm.ldasm_data();
 					UInt32 t = Ldasm.ldasm(i, ref data, false);
 					i += t;
 				}
@@ -137,7 +137,6 @@ namespace QHackLib.FunctionHelper
 			byte[] jmpBackBytes = Assembler.Assemble("jmp 0x" + (targetAddr + headBytes.Length).ToString("X8"), addr);
 			NativeFunctions.WriteProcessMemory(Context.Handle, addr, jmpBackBytes, jmpBackBytes.Length, 0);
 			addr += jmpBackBytes.Length;
-
 
 			byte[] jmpToBytesRaw = Assembler.Assemble("jmp 0x" + (codeAddr + 32).ToString("X8"), targetAddr);
 			byte[] jmpToBytes = new byte[headBytes.Length];

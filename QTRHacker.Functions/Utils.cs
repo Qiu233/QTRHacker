@@ -182,5 +182,129 @@ fld dword [ebp-0x3c]", 0);
 
 			InlineHook.FreeHook(Context.HContext, t);
 		}
+
+		public static void ProjectileIgnoreTile_E(GameContext Context)
+		{
+			int a = AobscanHelper.AobscanASM(
+				Context.HContext,
+				"mov [ebp-0x20],eax\ncmp byte [ebx+0xE7],0") + 11;
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, new byte[] { 0x8d }, 1, 0);
+		}
+		public static void ProjectileIgnoreTile_D(GameContext Context)
+		{
+			int a = AobscanHelper.AobscanASM(
+				Context.HContext,
+				"mov [ebp-0x20],eax\ncmp byte [ebx+0xE7],0") + 11;
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, new byte[] { 0x84 }, 1, 0);
+		}
+
+		public static void GrabItemFarAway_E(GameContext Context)
+		{
+			int a = AobscanHelper.AobscanASM(
+				Context.HContext,
+				"mov [ebp-0x18],eax\ncmp byte [ebx+0x62e],0") + 3;
+			int b = a + 0x7;
+			int c = a + 0xf;
+			int d = a + 0x14;
+			int e = a + 0x17;
+			int y = 0;
+			int t = 1000;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, e, ref y, 4, 0);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, y, ref t, 4, 0);
+			byte[] bs = { 0x90, 0x90 };
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, bs, bs.Length, 0);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, c, bs, bs.Length, 0);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, d, bs, bs.Length, 0);
+
+		}
+		public static void GrabItemFarAway_D(GameContext Context)
+		{
+			int a = AobscanHelper.AobscanASM(
+				Context.HContext,
+				"mov [ebp-0x18],eax\ncmp byte [ebx+0x62e],0") + 3;
+			int b = a + 0x7;
+			int c = a + 0xf;
+			int d = a + 0x14;
+			byte[] bs = { 0x74, 0x15 };
+			byte[] cs = { 0x7C, 0x0D };
+			byte[] ds = { 0x7F, 0x08 };
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, bs, bs.Length, 0);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, c, cs, cs.Length, 0);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, d, ds, ds.Length, 0);
+		}
+
+		public static void BonusTwoSlots_E(GameContext Context)
+		{
+			int a = AobscanHelper.AobscanASM(
+				Context.HContext,
+				"mov byte [esi+0x5c0],0\nmov byte [esi+0x514],0\nmov byte [esi+0x5aa],0") - 6;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov dword [esi+0x140],2"),
+				a, false, false);
+			byte[] bs = { 0x90, 0x90 };
+
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a - 0x10, bs, bs.Length, 0);
+		}
+		public static void BonusTwoSlots_D(GameContext Context)
+		{
+			int a = AobscanHelper.AobscanASM(
+				Context.HContext,
+				"mov byte [esi+0x5c0],0\nmov byte [esi+0x514],0\nmov byte [esi+0x5aa],0") - 6;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov dword [esi+0x140],2"),
+				a, false, false);
+
+			int y = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
+			y += a + 5;
+
+			byte[] b = Assembler.Assemble("mov [esi+0x140],edx", 0);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
+			InlineHook.FreeHook(Context.HContext, y);
+
+			byte[] bs = { 0x74, 0x0c };
+
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a - 0x10, bs, bs.Length, 0);
+		}
+
+		public static void GoldHoleDropsBag_E(GameContext Context)
+		{
+			int a = AobscanHelper.AobscanASM(
+				Context.HContext,
+				@"push 0
+push 0
+push 0x49
+push 1
+push 0
+push 0
+push 0
+push 0") + 2 * 5;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov dword [esp+8],3332"),
+				a, false);
+		}
+		public static void GoldHoleDropsBag_D(GameContext Context)
+		{
+			int a = AobscanHelper.AobscanASM(
+				   Context.HContext,
+				   @"push 0
+push 0
+push 0x49
+push 1
+push 0") + 2 * 5;
+
+			int y = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
+			y += a + 5;
+			Console.WriteLine(y.ToString("X8"));
+
+			byte[] b = Assembler.Assemble(@"push 0
+push 0
+push 0", 0);
+
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
+
+			InlineHook.FreeHook(Context.HContext, y);
+		}
 	}
 }

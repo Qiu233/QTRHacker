@@ -16,29 +16,19 @@ namespace QHackLibTest
 	{
 		static void Main(string[] args)
 		{
-			/*Context context;
 			Process[] localByName = Process.GetProcessesByName("Terraria");
 			int pid = localByName[0].Id;
-			context = Context.Create(pid);
-
-			FunctionAddressHelper.Initialize((UInt32)pid, "Terraria.exe");
-			UInt32 func = FunctionAddressHelper.GetFunctionAddress("Terraria.Item::SetDefaults");
+			using (Context context = Context.Create(pid))
+			{
 
 
 
+				int faddr = AobscanHelper.AobscanASM(context, "sub [edx+0x00000340],eax");
+				AssemblySnippet ass = AssemblySnippet.FromDotNetCall(context.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::SetDefaults"), null, true, 0x3833D68, 3063, 0);
+				InlineHook.InjectAndWait(context, ass, faddr, true);
 
-			int faddr = AobscanHelper.AobscanASM(context, "sub [edx+0x00000340],eax");
-			InlineHook l = new InlineHook(context);
-			AssemblySnippet ass = AssemblySnippet.FromDotNetCall(func, null, 0x3833D68, 3063, 0);
-			int addr = l.Inject(ass, faddr);
-			Console.WriteLine("{0:X8}", addr);
-
-			Console.WriteLine("{0:X8}", faddr);
-
-
-
-
-			context.Close();*/
+				Console.WriteLine("{0:X8}", faddr);
+			}
 		}
 	}
 }

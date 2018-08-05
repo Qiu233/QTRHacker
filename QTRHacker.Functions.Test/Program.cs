@@ -18,9 +18,8 @@ namespace QTRHacker.Functions.Test
 
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				Utils.LowGravity_E(gc);
+				Utils.GoldHoleDropsBag_D(gc);
 			}
-			//Assembler.Assemble("fldz\nfstp dword [esi+0x410]", 0).ToList().ForEach(t=>Console.WriteLine(t.ToString("X2")));
 
 		}
 	}
