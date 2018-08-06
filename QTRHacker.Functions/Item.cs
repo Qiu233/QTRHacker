@@ -1,4 +1,5 @@
-﻿using QHackLib.Assemble;
+﻿using QHackLib;
+using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using System;
 using System.Collections.Generic;
@@ -1046,14 +1047,17 @@ namespace QTRHacker.Functions
 			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
 		}
 
-		public static void NewItem(GameContext Context, float x, float y, float width, float height, int type, int stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+		public static int NewItem(GameContext Context, float x, float y, float width, float height, int type, int stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 		{
+			int ret = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
 				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Item::NewItem"),
-				null,
+				ret,
 				true,
 				type, stack, y, x, height, width, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, ret, ref ret, 4, 0);
+			return ret;
 		}
 
 	}

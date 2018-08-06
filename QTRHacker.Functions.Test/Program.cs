@@ -18,9 +18,9 @@ namespace QTRHacker.Functions.Test
 
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				Utils.GoldHoleDropsBag_D(gc);
+				//Utils.GoldHoleDropsBag_D(gc);
 			}
-
+			//Assembler.Assemble("word 5", 0).ToList().ForEach(t => Console.WriteLine(t.ToString("X8")));
 		}
 	}
 }

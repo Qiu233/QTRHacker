@@ -199,9 +199,9 @@ namespace QTRHacker
 			AddButton(buttonTabPage2, Lang.superPick, 4, Utils.GrabItemFarAway_E, Utils.GrabItemFarAway_D);
 			AddButton(buttonTabPage2, Lang.extraTwoSlots, 5, Utils.BonusTwoSlots_E, Utils.BonusTwoSlots_D);
 			AddButton(buttonTabPage2, Lang.goldHoleDropBag, 6, Utils.GoldHoleDropsBag_E, Utils.GoldHoleDropsBag_D);
-			/*AddButton(buttonTabPage2, Lang.slimeGunBurn, 7, HackFunctions.SlimeGunBurn, HackFunctions.De_SlimeGunBurn);
-			AddButton(buttonTabPage2, Lang.fishOnlyCrates, 8, HackFunctions.FishOnlyCrates, HackFunctions.De_FishOnlyCrates);
-			AddButton(buttonTabPage2, Lang.killAllScreen, 9, HackFunctions.KillAllScreen, HackFunctions.De_KillAllScreen);
+			AddButton(buttonTabPage2, Lang.slimeGunBurn, 7, Utils.SlimeGunBurn_E, Utils.SlimeGunBurn_D);
+			AddButton(buttonTabPage2, Lang.fishOnlyCrates, 8, Utils.FishOnlyCrates_E, Utils.FishOnlyCrates_D);
+			/*AddButton(buttonTabPage2, Lang.killAllScreen, 9, HackFunctions.KillAllScreen, HackFunctions.De_KillAllScreen);
 			AddButton(buttonTabPage2, Lang.allRecipe, 10, HackFunctions.EnableAllRecipes, HackFunctions.De_EnableAllRecipes);
 			AddButton(buttonTabPage2, Lang.strengthen_Vampire_Knives, 11, HackFunctions.StrengthenVampireKnives, HackFunctions.De_StrengthenVampireKnives);
 

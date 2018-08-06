@@ -306,5 +306,49 @@ push 0", 0);
 
 			InlineHook.FreeHook(Context.HContext, y);
 		}
+
+		public static void SlimeGunBurn_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"8b 85 b8 f3 ff ff 89 45 cc 8b 45 cc 40") - 0x1a;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov dword [esp+8],216000\nmov edx,0x99"),
+				a, false, false);
+		}
+		public static void SlimeGunBurn_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				   Context.HContext,
+				   "8b 85 b8 f3 ff ff 89 45 cc 8b 45 cc 40") - 0x1a;
+
+			int y = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
+			y += a + 5;
+			Console.WriteLine(y.ToString("X8"));
+
+			byte[] b = Assembler.Assemble("mov edx,[ebp-0xc34]", 0);
+
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
+
+			InlineHook.FreeHook(Context.HContext, y);
+		}
+
+		public static void FishOnlyCrates_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"0f 8d 4F 01 00 00 8b 45") - 0x1a;
+			var bs = AobscanHelper.GetHexCodeFromString("90 90 90 90 90 90");
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, bs, bs.Length, 0);
+		}
+		public static void FishOnlyCrates_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"90 90 90 90 90 90 8B 45 A8 0B 45 A4") - 0x1a;
+			var bs = AobscanHelper.GetHexCodeFromString("0f 8d 4F 01 00 00 8b 45");
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, bs, bs.Length, 0);
+		}
 	}
 }
