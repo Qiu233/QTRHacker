@@ -709,7 +709,8 @@ namespace QTRHacker
 			new System.Threading.Thread((s) =>
 			{
 				MainForm.mainWindow.Enabled = false;
-				ExtraForm.Window.Enabled = false;
+				if (ExtraForm.Window != null)
+					ExtraForm.Window.Enabled = false;
 				this.Enabled = false;
 				var player = Context.MyPlayer;
 				BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open));
@@ -770,7 +771,8 @@ namespace QTRHacker
 				}
 				br.Close();
 				this.Enabled = true;
-				ExtraForm.Window.Enabled = true;
+				if (ExtraForm.Window != null)
+					ExtraForm.Window.Enabled = true;
 				MainForm.mainWindow.Enabled = true;
 			}
 			).Start();

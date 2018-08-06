@@ -183,7 +183,7 @@ namespace QTRHacker
 			AddButton(buttonTabPage1, Lang.infOxygen, 1, Utils.InfiniteOxygen_E, Utils.InfiniteOxygen_D);
 			AddButton(buttonTabPage1, Lang.infSummon, 2, Utils.InfiniteMinion_E, Utils.InfiniteMinion_D);
 			AddButton(buttonTabPage1, Lang.infMana, 3, Utils.InfiniteMana_E, Utils.InfiniteMana_D);
-			AddButton(buttonTabPage1, Lang.infItemAndAmmo, 4, (ctx) => { Utils.InfiniteItem_E(ctx); Utils.InfiniteAmmo_E(ctx); }, (ctx)=> { Utils.InfiniteItem_D(ctx); Utils.InfiniteAmmo_D(ctx); });
+			AddButton(buttonTabPage1, Lang.infItemAndAmmo, 4, (ctx) => { Utils.InfiniteItem_E(ctx); Utils.InfiniteAmmo_E(ctx); }, (ctx) => { Utils.InfiniteItem_D(ctx); Utils.InfiniteAmmo_D(ctx); });
 			AddButton(buttonTabPage1, Lang.infFly, 5, Utils.InfiniteFly_E, Utils.InfiniteFly_D);
 			//AddButton(buttonTabPage1, Lang.immuneStoned, 6, HackFunctions.immuneBuff, HackFunctions.De_immuneBuff);
 			AddButton(buttonTabPage1, Lang.highLight, 7, Utils.HighLight_E, Utils.HighLight_D);
@@ -201,15 +201,109 @@ namespace QTRHacker
 			AddButton(buttonTabPage2, Lang.goldHoleDropBag, 6, Utils.GoldHoleDropsBag_E, Utils.GoldHoleDropsBag_D);
 			AddButton(buttonTabPage2, Lang.slimeGunBurn, 7, Utils.SlimeGunBurn_E, Utils.SlimeGunBurn_D);
 			AddButton(buttonTabPage2, Lang.fishOnlyCrates, 8, Utils.FishOnlyCrates_E, Utils.FishOnlyCrates_D);
-			/*AddButton(buttonTabPage2, Lang.killAllScreen, 9, HackFunctions.KillAllScreen, HackFunctions.De_KillAllScreen);
-			AddButton(buttonTabPage2, Lang.allRecipe, 10, HackFunctions.EnableAllRecipes, HackFunctions.De_EnableAllRecipes);
-			AddButton(buttonTabPage2, Lang.strengthen_Vampire_Knives, 11, HackFunctions.StrengthenVampireKnives, HackFunctions.De_StrengthenVampireKnives);
+			//AddButton(buttonTabPage2, Lang.killAllScreen, 9, HackFunctions.KillAllScreen, HackFunctions.De_KillAllScreen);
+			AddButton(buttonTabPage2, Lang.allRecipe, 10, Utils.EnableAllRecipes_E, Utils.EnableAllRecipes_D);
+			AddButton(buttonTabPage2, Lang.strengthen_Vampire_Knives, 11, Utils.StrengthenVampireKnives_E, Utils.StrengthenVampireKnives_D);
 
 
-			AddButton(buttonTabPage6, Lang.blockAttacking, 0, HackFunctions.BlockAttacking, HackFunctions.De_BlockAttacking, true);
-			AddButton(buttonTabPage6, Lang.burnAllNPC, 1, HackFunctions.BurnAllNPC, null, false);
-			AddButton(buttonTabPage6, Lang.burnAllPlayer, 2, HackFunctions.BurnAllPlayer, null, false);
-			AddButton(buttonTabPage6, Lang.dropLava, 3, () =>
+			//AddButton(buttonTabPage6, Lang.blockAttacking, 0, HackFunctions.BlockAttacking, HackFunctions.De_BlockAttacking, true);
+			AddButton(buttonTabPage6, Lang.burnAllNPC, 1, (Context) =>
+			{
+				int i = 0;
+				Form p = new Form();
+				ProgressBar pb = new ProgressBar();
+				Label tip = new Label(), percent = new Label();
+				tip.Text = "Burning NPCS...";
+				tip.Location = new Point(0, 0);
+				tip.Size = new Size(150, 30);
+				tip.TextAlign = ContentAlignment.MiddleCenter;
+				percent.Location = new Point(150, 0);
+				percent.Size = new Size(50, 30);
+				percent.TextAlign = ContentAlignment.MiddleCenter;
+				System.Timers.Timer timer = new System.Timers.Timer(1);
+				p.FormBorderStyle = FormBorderStyle.FixedSingle;
+				p.ClientSize = new Size(300, 60);
+				p.ControlBox = false;
+				pb.Location = new Point(0, 30);
+				pb.Size = new Size(300, 30);
+				pb.Maximum = NPC.MAXNUMBER;
+				pb.Minimum = 0;
+				pb.Value = 0;
+				p.Controls.Add(tip);
+				p.Controls.Add(percent);
+				p.Controls.Add(pb);
+				timer.Elapsed += (sender, e) =>
+				{
+					pb.Value = i;
+					percent.Text = pb.Value + "/" + pb.Maximum;
+					if (i >= pb.Maximum) p.Dispose();
+				};
+				timer.Start();
+				p.Show();
+				p.Location = new Point(MainForm.mainWindow.Location.X + MainForm.mainWindow.Width / 2 - p.ClientSize.Width / 2, MainForm.mainWindow.Location.Y + MainForm.mainWindow.Height / 2 - p.ClientSize.Height / 2);
+				new Thread(() =>
+				{
+					this.Enabled = false;
+					if (ExtraForm.Window != null)
+						ExtraForm.Window.Enabled = false;
+					var npc = Context.NPC;
+					for (; i < NPC.MAXNUMBER; i++)
+						if (npc[i].Active)
+							npc[i].AddBuff(0x99, 216000);
+					if (ExtraForm.Window != null)
+						ExtraForm.Window.Enabled = true;
+					this.Enabled = true;
+				}).Start();
+			}, null, false);
+			AddButton(buttonTabPage6, Lang.burnAllPlayer, 2, (Context)=>
+			{
+				int i = 0;
+				Form p = new Form();
+				ProgressBar pb = new ProgressBar();
+				Label tip = new Label(), percent = new Label();
+				tip.Text = "Burning NPCS...";
+				tip.Location = new Point(0, 0);
+				tip.Size = new Size(150, 30);
+				tip.TextAlign = ContentAlignment.MiddleCenter;
+				percent.Location = new Point(150, 0);
+				percent.Size = new Size(50, 30);
+				percent.TextAlign = ContentAlignment.MiddleCenter;
+				System.Timers.Timer timer = new System.Timers.Timer(1);
+				p.FormBorderStyle = FormBorderStyle.FixedSingle;
+				p.ClientSize = new Size(300, 60);
+				p.ControlBox = false;
+				pb.Location = new Point(0, 30);
+				pb.Size = new Size(300, 30);
+				pb.Maximum = NPC.MAXNUMBER;
+				pb.Minimum = 0;
+				pb.Value = 0;
+				p.Controls.Add(tip);
+				p.Controls.Add(percent);
+				p.Controls.Add(pb);
+				timer.Elapsed += (sender, e) =>
+				{
+					pb.Value = i;
+					percent.Text = pb.Value + "/" + pb.Maximum;
+					if (i >= pb.Maximum) p.Dispose();
+				};
+				timer.Start();
+				p.Show();
+				p.Location = new Point(MainForm.mainWindow.Location.X + MainForm.mainWindow.Width / 2 - p.ClientSize.Width / 2, MainForm.mainWindow.Location.Y + MainForm.mainWindow.Height / 2 - p.ClientSize.Height / 2);
+				new Thread(() =>
+				{
+					this.Enabled = false;
+					if (ExtraForm.Window != null)
+						ExtraForm.Window.Enabled = false;
+					var player = Context.Players;
+					for (; i < NPC.MAXNUMBER; i++)
+						if (player[i].Active)
+							player[i].AddBuff(44, 216000);
+					if (ExtraForm.Window != null)
+						ExtraForm.Window.Enabled = true;
+					this.Enabled = true;
+				}).Start();
+			}, null, false);
+			/*AddButton(buttonTabPage6, Lang.dropLava, 3, () =>
 			{
 				for (int i = 0; i < 50; i++)
 				{

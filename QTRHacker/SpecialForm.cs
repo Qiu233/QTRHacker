@@ -361,7 +361,7 @@ namespace QTRHacker
 			int i = 0;
 			for (; i < 50; i++)
 			{
-				Player p = Context.GetPlayer(i);
+				Player p = Context.Players[i];
 				if (p.Active)
 				{
 					if (playerList.Items.ContainsKey(i.ToString()))

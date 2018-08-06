@@ -24,6 +24,10 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
+		public int NPC_Array_Address
+		{
+			get;
+		}
 
 
 		public int MyPlayerIndex
@@ -37,6 +41,22 @@ namespace QTRHacker.Functions
 			set
 			{
 				NativeFunctions.WriteProcessMemory(HContext.Handle, My_Player_Address, ref value, 4, 0);
+			}
+		}
+
+		public PlayerArray Players
+		{
+			get
+			{
+				return new PlayerArray(this, Player_Array_Address);
+			}
+		}
+
+		public NPCArray NPC
+		{
+			get
+			{
+				return new NPCArray(this, NPC_Array_Address);
 			}
 		}
 
@@ -64,14 +84,14 @@ namespace QTRHacker.Functions
 			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
 			My_Player_Address = vvv;
 
-		}
 
-		public Player GetPlayer(int index)
-		{
-			int v = 0;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, Player_Array_Address + 0x08 + 0x04 * index, ref v, 4, 0);
-			return new Player(this, v);
+			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::NPCAddHeight") + 6;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			NPC_Array_Address = vvv;
+
 		}
+		
 
 		public static GameContext OpenGame(int pid)
 		{

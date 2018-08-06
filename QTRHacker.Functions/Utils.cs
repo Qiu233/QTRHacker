@@ -350,5 +350,54 @@ push 0", 0);
 			var bs = AobscanHelper.GetHexCodeFromString("0f 8d 4F 01 00 00 8b 45");
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, bs, bs.Length, 0);
 		}
+
+		public static void EnableAllRecipes_E(GameContext Context)
+		{
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle,
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Recipe::FindRecipes"),
+				new byte[] { 0xC3 }, 1, 0);
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"33 c9 89 4c 90 08 42 3b") + 0x13;
+			int max = 2000;
+			int v = 0, y = max;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref v, 4, 0);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, v, ref y, 4, 0);
+
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle,
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Recipe::FindRecipes") + 0x1c,
+				ref v, 4, 0);
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, v, ref y, 4, 0);
+
+			for (int i = 0; i < max; i++)
+			{
+				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, y + 0x8 + i * 4, ref i, 4, 0);
+			}
+
+		}
+		public static void EnableAllRecipes_D(GameContext Context)
+		{
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle,
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Recipe::FindRecipes"),
+				new byte[] { 0x55 }, 1, 0);
+		}
+
+		public static void StrengthenVampireKnives_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"81 78 6c 21 06 00 00 0f 85") + 0x13;
+			int v = 100;
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref v, 4, 0);
+		}
+		public static void StrengthenVampireKnives_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"81 78 6c 21 06 00 00 0f 85") + 0x13;
+			int v = 4;
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref v, 4, 0);
+		}
+		
 	}
 }
