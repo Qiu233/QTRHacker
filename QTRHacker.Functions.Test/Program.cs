@@ -18,11 +18,7 @@ namespace QTRHacker.Functions.Test
 
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				for (int i = 0; i < 201; i++)
-				{
-
-					Console.WriteLine(gc.NPC[i].Active);
-				}
+				Console.WriteLine(gc.DayTime);
 			}
 			//Assembler.Assemble("word 5", 0).ToList().ForEach(t => Console.WriteLine(t.ToString("X8")));
 		}

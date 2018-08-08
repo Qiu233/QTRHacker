@@ -296,7 +296,6 @@ push 0") + 2 * 5;
 			int y = 0;
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
 			y += a + 5;
-			Console.WriteLine(y.ToString("X8"));
 
 			byte[] b = Assembler.Assemble(@"push 0
 push 0
@@ -325,7 +324,6 @@ push 0", 0);
 			int y = 0;
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
 			y += a + 5;
-			Console.WriteLine(y.ToString("X8"));
 
 			byte[] b = Assembler.Assemble("mov edx,[ebp-0xc34]", 0);
 
@@ -398,6 +396,159 @@ push 0", 0);
 			int v = 4;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref v, 4, 0);
 		}
-		
+
+		public static void SuperRange_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"89 44 8A 08 41 3B");
+			int b = a + 0x1a;
+			int c = a + 0x24;
+			int v = 999;
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, ref v, 4, 0);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, c, ref v, 4, 0);
+		}
+		public static void SuperRange_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"89 44 8A 08 41 3B");
+			int b = a + 0x1a;
+			int c = a + 0x24;
+			int v1 = 5;
+			int v2 = 4;
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, ref v1, 4, 0);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, c, ref v2, 4, 0);
+		}
+
+		public static void FastTileSpeed_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"d9 98 c8 03 00 00 8b 85 30 f0 ff ff d9");
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov dword [eax+0x3c8],0x3e800000"),
+				a, false, false);
+		}
+		public static void FastTileSpeed_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				   Context.HContext,
+				   "8b 85 30 f0 ff ff d9 80 c4 03 00 00") - 6;
+
+			int y = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
+			y += a + 5;
+
+			byte[] b = Assembler.Assemble("fstp dword [eax+0x3c8]", 0);
+
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
+
+			InlineHook.FreeHook(Context.HContext, y);
+		}
+
+		public static void MachinicalRulerEffect_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"d9 9e c0 03 00 00 88 96 f0 05 00 00") + 12;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov byte [esi+0x5f6],0x1"),
+				a, false, false);
+		}
+		public static void MachinicalRulerEffect_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				   Context.HContext,
+				   "d9 9e c0 03 00 00 88 96 f0 05 00 00") + 12;
+
+			int y = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
+			y += a + 5;
+
+			byte[] b = Assembler.Assemble("mov [esi+0x5f6],dl", 0);
+
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
+
+			InlineHook.FreeHook(Context.HContext, y);
+		}
+
+		public static void RulerEffect_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"88 96 F8 05 00 00 88 96 F9 05 00 00") - 6;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov byte [esi+0x5f7],0x1"),
+				a, false, false);
+		}
+		public static void RulerEffect_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				   Context.HContext,
+				   "88 96 F8 05 00 00 88 96 F9 05 00 00") - 6;
+
+			int y = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
+			y += a + 5;
+
+			byte[] b = Assembler.Assemble("mov [esi+0x5f7],dl", 0);
+
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
+
+			InlineHook.FreeHook(Context.HContext, y);
+		}
+
+		public static void ShowCircuit_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"88 96 1D 06 00 00 88 96 1E 06 00 00") - 6;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov byte [esi+0x62a],0x1"),
+				a, false, false);
+		}
+		public static void ShowCircuit_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				   Context.HContext,
+				   "88 96 F8 05 00 00 88 96 F9 05 00 00") - 6;
+
+			int y = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
+			y += a + 5;
+
+			byte[] b = Assembler.Assemble("mov [esi+0x62a],dl", 0);
+
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
+
+			InlineHook.FreeHook(Context.HContext, y);
+		}
+
+		public static void ShadowDodge_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"88 96 33 05 00 00 88 96 A9 05 00 00") - 6;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov byte [esi+0x532],0x1"),
+				a, false, false);
+		}
+		public static void ShadowDodge_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				   Context.HContext,
+				   "88 96 33 05 00 00 88 96 A9 05 00 00") - 6;
+
+			int y = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
+			y += a + 5;
+
+			byte[] b = Assembler.Assemble("mov [esi+0x532],dl", 0);
+
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
+
+			InlineHook.FreeHook(Context.HContext, y);
+		}
 	}
 }

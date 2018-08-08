@@ -255,7 +255,7 @@ namespace QTRHacker
 					this.Enabled = true;
 				}).Start();
 			}, null, false);
-			AddButton(buttonTabPage6, Lang.burnAllPlayer, 2, (Context)=>
+			AddButton(buttonTabPage6, Lang.burnAllPlayer, 2, (Context) =>
 			{
 				int i = 0;
 				Form p = new Form();
@@ -316,23 +316,14 @@ namespace QTRHacker
 						HackFunctions.SendNetWater(X, Y);
 				}
 				return 1;
-			}, null, false);
+			}, null, false);*/
 			unsafe
 			{
 				Button u = null;
-				u = AddButton(buttonTabPage6, Lang.randomUUID, 4, () =>
+				u = AddButton(buttonTabPage6, Lang.randomUUID, 4, (Context) =>
 				  {
-					  if (HackFunctions.RandomUUID() == 0) return 0;
-					  StringBuilder UUIDString = new StringBuilder(32 + 4);
-					  Int16* UUID = HackFunctions.ReadUUID();
-					  for (int i = 0; i < 32 + 4; i++)
-					  {
-						  UUIDString.Append((char)UUID[i]);
-					  }
-					  u.Text = Lang.randomUUID + ":" + UUIDString.ToString();
-					  FreeMemory((int)UUID);
-					  //Marshal.FreeHGlobal((IntPtr)UUID);
-					  return 1;
+					  Context.UUID = Guid.NewGuid().ToString();
+					  u.Text = Lang.randomUUID + ":" + Context.UUID;
 				  }, null, false);
 				u.Font = new Font("SimSun", 8);
 			}
@@ -340,22 +331,22 @@ namespace QTRHacker
 
 
 
-			AddButton(buttonTabPage3, Lang.toggleDay, 0, HackFunctions.ToggleTime, null, false);
-			AddButton(buttonTabPage3, Lang.toggleSunDial, 1, HackFunctions.SunDial, null, false);
-			AddButton(buttonTabPage3, Lang.toggleBloodMoon, 2, HackFunctions.BloodMoon, null, false);
-			AddButton(buttonTabPage3, Lang.toggleEclipse, 3, HackFunctions.Eclipse, null, false);
-			AddButton(buttonTabPage3, Lang.snowMoon, 4, HackFunctions.SnowMoon, null, false);
-			AddButton(buttonTabPage3, Lang.pumpkinMoon, 5, HackFunctions.PumpkinMoon, null, false);
+			AddButton(buttonTabPage3, Lang.toggleDay, 0, (Context) => Context.DayTime = !Context.DayTime, null, false);
+			AddButton(buttonTabPage3, Lang.toggleSunDial, 1, (Context) => Context.FastForwardTime = !Context.FastForwardTime, null, false);
+			AddButton(buttonTabPage3, Lang.toggleBloodMoon, 2, (Context) => Context.BloodMoon = !Context.BloodMoon, null, false);
+			AddButton(buttonTabPage3, Lang.toggleEclipse, 3, (Context) => Context.Eclipse = !Context.Eclipse, null, false);
+			AddButton(buttonTabPage3, Lang.snowMoon, 4, (Context) => Context.SnowMoon = !Context.SnowMoon, null, false);
+			AddButton(buttonTabPage3, Lang.pumpkinMoon, 5, (Context) => Context.PumpkinMoon = !Context.PumpkinMoon, null, false);
 
 
-			AddButton(buttonTabPage4, Lang.superRange, 0, HackFunctions.IgnoreRange, HackFunctions.De_IgnoreRange);
-			AddButton(buttonTabPage4, Lang.fastTileSpeed, 1, HackFunctions.FastTileSpeed, HackFunctions.De_FastTileSpeed);
-			AddButton(buttonTabPage4, Lang.rulerEffect, 2, HackFunctions.RulerEffect, HackFunctions.De_RulerEffect);
-			AddButton(buttonTabPage4, Lang.machinicalRulerEffect, 3, HackFunctions.MachinicalRulerEffect, HackFunctions.De_MachinicalRulerEffect);
-			AddButton(buttonTabPage4, Lang.showCircuit, 4, HackFunctions.ShowCircuit, HackFunctions.De_ShowCircuit);
+			AddButton(buttonTabPage4, Lang.superRange, 0, Utils.SuperRange_E, Utils.SuperRange_D);
+			AddButton(buttonTabPage4, Lang.fastTileSpeed, 1, Utils.FastTileSpeed_E, Utils.FastTileSpeed_D);
+			AddButton(buttonTabPage4, Lang.rulerEffect, 2, Utils.RulerEffect_E, Utils.RulerEffect_D);
+			AddButton(buttonTabPage4, Lang.machinicalRulerEffect, 3, Utils.MachinicalRulerEffect_E, Utils.MachinicalRulerEffect_D);
+			AddButton(buttonTabPage4, Lang.showCircuit, 4, Utils.ShowCircuit_E, Utils.ShowCircuit_D);
 
-			AddButton(buttonTabPage5, Lang.infernoEffect, 0, HackFunctions.InfernoEffect, HackFunctions.De_InfernoEffect);
-			AddButton(buttonTabPage5, Lang.shadowDodge, 1, HackFunctions.ShadowDodge, HackFunctions.De_ShadowDodge);*/
+			//AddButton(buttonTabPage5, Lang.infernoEffect, 0, HackFunctions.InfernoEffect, HackFunctions.De_InfernoEffect);
+			AddButton(buttonTabPage5, Lang.shadowDodge, 1, Utils.ShadowDodge_E, Utils.ShadowDodge_D);
 
 			LoadPlugins();
 		}

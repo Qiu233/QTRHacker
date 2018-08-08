@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
+using QHackLib.Utilities;
 
 namespace QTRHacker.Functions
 {
@@ -70,6 +71,155 @@ namespace QTRHacker.Functions
 			}
 		}
 
+		public string UUID
+		{
+			get
+			{
+				int v = AobscanHelper.Aobscan(HContext, "89 47 0c 8b cf ff 15") + 0x1e;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+				byte[] bs = new byte[(32 + 4) * 2];
+				NativeFunctions.ReadProcessMemory(HContext.Handle, v + 8, bs, bs.Length, 0);
+				return Encoding.Unicode.GetString(bs);
+			}
+			set
+			{
+				int v = AobscanHelper.Aobscan(HContext, "89 47 0c 8b cf ff 15") + 0x1e;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+				byte[] bs = Encoding.Unicode.GetBytes(value);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, v + 8, bs, (32 + 4) * 2, 0);
+			}
+		}
+
+		public bool DayTime
+		{
+			get
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateMenu") + 0x5E;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				bool v = false;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
+				return v;
+			}
+			set
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateMenu") + 0x5E;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
+			}
+		}
+
+		public bool FastForwardTime
+		{
+			get
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateSundial") + 2;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				bool v = false;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
+				return v;
+			}
+			set
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateSundial") + 2;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
+			}
+		}
+
+		public bool PumpkinMoon
+		{
+			get
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x1d;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				bool v = false;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
+				return v;
+			}
+			set
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x1d;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
+			}
+		}
+
+		public bool BloodMoon
+		{
+			get
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x26;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				bool v = false;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
+				return v;
+			}
+			set
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x26;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
+			}
+		}
+		public bool SnowMoon
+		{
+			get
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x2d;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				bool v = false;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
+				return v;
+			}
+			set
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x2d;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
+			}
+		}
+
+
+		public bool Eclipse
+		{
+			get
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.NPC::AI_007_TownEntities") + 0x48;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				bool v = false;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
+				return v;
+			}
+			set
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.NPC::AI_007_TownEntities") + 0x48;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
+			}
+		}
+
+		public double Time
+		{
+			get
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateMenu") + 0x52;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				var bs = new byte[8];
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, bs, 8, 0);
+				return BitConverter.ToDouble(bs, 0);
+			}
+			set
+			{
+				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateMenu") + 0x52;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				var bs = BitConverter.GetBytes(value);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, bs, 8, 0);
+			}
+		}
+
+
 
 		private GameContext(int pid)
 		{
@@ -91,7 +241,7 @@ namespace QTRHacker.Functions
 			NPC_Array_Address = vvv;
 
 		}
-		
+
 
 		public static GameContext OpenGame(int pid)
 		{
@@ -107,6 +257,6 @@ namespace QTRHacker.Functions
 			Close();
 		}
 
-		
+
 	}
 }

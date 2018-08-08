@@ -79,6 +79,9 @@ namespace QTRHacker
 		private int Selected = 0, LastSelectedID = 0;
 		private AltItemIcon AltSelected;
 		private GameContext Context;
+		private int Clip_ItemType;
+		private int Clip_ItemStack;
+		private byte Clip_ItemPrefix;
 #pragma warning disable CS1690
 		public InvEditor(GameContext Context)
 		{
@@ -101,18 +104,25 @@ namespace QTRHacker
 			cms.Items.Add("Paste");
 			cms.ItemClicked += (sender, e) =>
 			{
-				/*switch (e.ClickedItem.Text)
-                {
-                    case "Copy":
-                        HackFunctions.CopyItem(Selected);
-                        RefreshSelected();
-                        break;
-                    case "Paste":
-                        if (HackFunctions.IsCopiedItem())
-                            HackFunctions.PasteItem(Selected);
-                        RefreshSelected();
-                        break;
-                }*/
+				var item = Context.MyPlayer.Inventory[Selected];
+				switch (e.ClickedItem.Text)
+				{
+					case "Copy":
+
+						Clip_ItemType = item.Type;
+						Clip_ItemStack = item.Stack;
+						Clip_ItemPrefix = item.Prefix;
+						RefreshSelected();
+						break;
+					case "Paste":
+						if (Clip_ItemType != 0)
+						{
+							item.SetDefaultsAndPrefix(Clip_ItemType, Clip_ItemPrefix);
+							item.Stack = Clip_ItemStack;
+						}
+						RefreshSelected();
+						break;
+				}
 			};
 			for (int i = 0; i < ItemSlots.Length; i++)
 			{

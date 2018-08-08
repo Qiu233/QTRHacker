@@ -79,7 +79,7 @@ namespace QTRHacker
 						return;
 					if (MessageBox.Show(Lang.teleMessage + "\"" + warpList.SelectedItems[0].Text + "\"？", "", MessageBoxButtons.OKCancel) == DialogResult.OK)
 					{
-						//HackFunctions.Warp(warpList.SelectedItems[0].Text);
+						Warp(warpList.SelectedItems[0].Text);
 					}
 				};
 				warp.Location = new Point(205, 0);
@@ -315,7 +315,7 @@ namespace QTRHacker
 							{
 								ContextMenuStrip s = sender as ContextMenuStrip;
 								ListView l = (ListView)s.SourceControl;
-								//HackFunctions.setMyPlayer(Convert.ToInt32(l.SelectedItems[0].SubItems[0].Text));
+								Context.MyPlayerIndex = Convert.ToInt32(l.SelectedItems[0].SubItems[0].Text);
 							}
 							else if (e.ClickedItem.Text == Lang.checkInv)
 							{
