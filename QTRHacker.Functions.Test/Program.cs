@@ -3,6 +3,7 @@ using QHackLib.FunctionHelper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -18,7 +19,8 @@ namespace QTRHacker.Functions.Test
 
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				Console.WriteLine(gc.DayTime);
+				//Console.WriteLine(gc.MyPlayer.SerializeInventoryWithProperties());
+				gc.MyPlayer.DeserializeInventoryWithProperties(gc.MyPlayer.SerializeInventoryWithProperties());
 			}
 			//Assembler.Assemble("word 5", 0).ToList().ForEach(t => Console.WriteLine(t.ToString("X8")));
 		}

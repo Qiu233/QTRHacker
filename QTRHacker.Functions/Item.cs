@@ -1,4 +1,5 @@
-﻿using QHackLib;
+﻿using Newtonsoft.Json;
+using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using System;
@@ -52,7 +53,7 @@ namespace QTRHacker.Functions
 		public const int OFFSET_GlowMask = 0x11C;
 		public const int OFFSET_MakeNPC = 0x118;
 		public const int OFFSET_Mana = 0xF0;
-		public const int OFFSET_MaxStack = 0x81;
+		public const int OFFSET_MaxStack = 0x84;
 		public const int OFFSET_NoUseGraphic = 0x13D;
 		public const int OFFSET_UseStyle = 0x74;
 		public const int OFFSET_PlaceStyle = 0xA0;
@@ -410,151 +411,151 @@ namespace QTRHacker.Functions
 			set => WriteFromOffset(OFFSET_NoUseGraphic, value);
 		}
 
-		public byte HeadSlot
+		public sbyte HeadSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_HeadSlot, out byte v);
+				ReadFromOffset(OFFSET_HeadSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_HeadSlot, value);
 		}
 
-		public byte BodySlot
+		public sbyte BodySlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_BodySlot, out byte v);
+				ReadFromOffset(OFFSET_BodySlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_BodySlot, value);
 		}
 
-		public byte LegSlot
+		public sbyte LegSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_LegSlot, out byte v);
+				ReadFromOffset(OFFSET_LegSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_LegSlot, value);
 		}
 
-		public byte BalloonSlot
+		public sbyte BalloonSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_BalloonSlot, out byte v);
+				ReadFromOffset(OFFSET_BalloonSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_BalloonSlot, value);
 		}
 
-		public byte FrontSlot
+		public sbyte FrontSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_FrontSlot, out byte v);
+				ReadFromOffset(OFFSET_FrontSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_FrontSlot, value);
 		}
 
-		public byte WaistSlot
+		public sbyte WaistSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_WaistSlot, out byte v);
+				ReadFromOffset(OFFSET_WaistSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_WaistSlot, value);
 		}
 
-		public byte WingSlot
+		public sbyte WingSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_WingSlot, out byte v);
+				ReadFromOffset(OFFSET_WingSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_WingSlot, value);
 		}
 
-		public byte BackSlot
+		public sbyte BackSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_BackSlot, out byte v);
+				ReadFromOffset(OFFSET_BackSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_BackSlot, value);
 		}
 
-		public byte FaceSlot
+		public sbyte FaceSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_FaceSlot, out byte v);
+				ReadFromOffset(OFFSET_FaceSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_FaceSlot, value);
 		}
 
-		public byte HandOnSlot
+		public sbyte HandOnSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_HandOnSlot, out byte v);
+				ReadFromOffset(OFFSET_HandOnSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_HandOnSlot, value);
 		}
 
-		public byte HandOffSlot
+		public sbyte HandOffSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_HandOffSlot, out byte v);
+				ReadFromOffset(OFFSET_HandOffSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_HandOnSlot, value);
 		}
 
-		public byte NeckSlot
+		public sbyte NeckSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_NeckSlot, out byte v);
+				ReadFromOffset(OFFSET_NeckSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_NeckSlot, value);
 		}
 
-		public byte Dye
+		public sbyte Dye
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_Dye, out byte v);
+				ReadFromOffset(OFFSET_Dye, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_Dye, value);
 		}
 
-		public byte ShieldSlot
+		public sbyte ShieldSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_ShieldSlot, out byte v);
+				ReadFromOffset(OFFSET_ShieldSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_ShieldSlot, value);
 		}
 
-		public byte ShoeSlot
+		public sbyte ShoeSlot
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_ShoeSlot, out byte v);
+				ReadFromOffset(OFFSET_ShoeSlot, out sbyte v);
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_ShoeSlot, value);
@@ -1047,7 +1048,8 @@ namespace QTRHacker.Functions
 			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
 		}
 
-		public static int NewItem(GameContext Context, float x, float y, float width, float height, int type, int stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+		public static int NewItem(GameContext Context, float x, float y, float width, float height, int type, int stack = 1, 
+			bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 		{
 			int ret = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
@@ -1059,6 +1061,6 @@ namespace QTRHacker.Functions
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, ret, ref ret, 4, 0);
 			return ret;
 		}
-
+		
 	}
 }

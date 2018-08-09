@@ -382,7 +382,7 @@ namespace QTRHacker
 			Button OK = new Button();
 			OK.Click += (sender, e) =>
 			{
-				PixelData(Selected);
+				ApplyData(Selected);
 				InitData(Selected);
 				RefreshSelected();
 			};
@@ -441,6 +441,138 @@ namespace QTRHacker
 			LoadInv.Location = new Point(260, 90);
 			HackPanel.Controls.Add(LoadInv);
 
+			Button SaveInvPItem = new Button();
+			SaveInvPItem.Click += (sender, e) =>
+			{
+				SaveFileDialog sfd = new SaveFileDialog()
+				{
+					Filter = "inv files (*.invp)|*.invp"
+				};
+				if (sfd.ShowDialog() == DialogResult.OK)
+				{
+					int j = 0;
+					Form p = new Form();
+					ProgressBar pb = new ProgressBar();
+					Label tip = new Label(), percent = new Label();
+					tip.Text = "Saving inventory...";
+					tip.Location = new Point(0, 0);
+					tip.Size = new Size(150, 30);
+					tip.TextAlign = ContentAlignment.MiddleCenter;
+					percent.Location = new Point(150, 0);
+					percent.Size = new Size(30, 30);
+					percent.TextAlign = ContentAlignment.MiddleCenter;
+					System.Timers.Timer timer = new System.Timers.Timer(1);
+					p.FormBorderStyle = FormBorderStyle.FixedSingle;
+					p.ClientSize = new Size(300, 60);
+					p.ControlBox = false;
+					pb.Location = new Point(0, 30);
+					pb.Size = new Size(300, 30);
+					pb.Maximum = 2;
+					pb.Minimum = 0;
+					pb.Value = 0;
+					p.Controls.Add(tip);
+					p.Controls.Add(percent);
+					p.Controls.Add(pb);
+					timer.Elapsed += (sender1, e1) =>
+					{
+						pb.Value = j;
+						percent.Text = pb.Value + "/" + pb.Maximum;
+						if (j >= pb.Maximum) p.Dispose();
+					};
+					timer.Start();
+					p.Show();
+					p.Location = new System.Drawing.Point(this.Location.X + this.Width / 2 - p.ClientSize.Width / 2, this.Location.Y + this.Height / 2 - p.ClientSize.Height / 2);
+					new System.Threading.Thread((s) =>
+					{
+						j++;
+						MainForm.mainWindow.Enabled = false;
+						if (ExtraForm.Window != null)
+							ExtraForm.Window.Enabled = false;
+						this.Enabled = false;
+
+						File.WriteAllText(sfd.FileName, Context.MyPlayer.SerializeInventoryWithProperties());
+						SlotsPanel.Refresh();
+						j++;
+
+						this.Enabled = true;
+						if (ExtraForm.Window != null)
+							ExtraForm.Window.Enabled = true;
+						MainForm.mainWindow.Enabled = true;
+					}
+					).Start();
+				}
+			};
+			SaveInvPItem.Text = "保存(P)";
+			SaveInvPItem.Size = new Size(80, 30);
+			SaveInvPItem.Location = new Point(260, 120);
+			HackPanel.Controls.Add(SaveInvPItem);
+
+			Button LoadInvPItem = new Button();
+			LoadInvPItem.Click += (sender, e) =>
+			{
+				OpenFileDialog ofd = new OpenFileDialog()
+				{
+					Filter = "inv files (*.invp)|*.invp"
+				};
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					int j = 0;
+					Form p = new Form();
+					ProgressBar pb = new ProgressBar();
+					Label tip = new Label(), percent = new Label();
+					tip.Text = "Loading inventory...";
+					tip.Location = new Point(0, 0);
+					tip.Size = new Size(150, 30);
+					tip.TextAlign = ContentAlignment.MiddleCenter;
+					percent.Location = new Point(150, 0);
+					percent.Size = new Size(30, 30);
+					percent.TextAlign = ContentAlignment.MiddleCenter;
+					System.Timers.Timer timer = new System.Timers.Timer(1);
+					p.FormBorderStyle = FormBorderStyle.FixedSingle;
+					p.ClientSize = new Size(300, 60);
+					p.ControlBox = false;
+					pb.Location = new Point(0, 30);
+					pb.Size = new Size(300, 30);
+					pb.Maximum = 2;
+					pb.Minimum = 0;
+					pb.Value = 0;
+					p.Controls.Add(tip);
+					p.Controls.Add(percent);
+					p.Controls.Add(pb);
+					timer.Elapsed += (sender1, e1) =>
+					{
+						pb.Value = j;
+						percent.Text = pb.Value + "/" + pb.Maximum;
+						if (j >= pb.Maximum) p.Dispose();
+					};
+					timer.Start();
+					p.Show();
+					p.Location = new System.Drawing.Point(this.Location.X + this.Width / 2 - p.ClientSize.Width / 2, this.Location.Y + this.Height / 2 - p.ClientSize.Height / 2);
+					new System.Threading.Thread((s) =>
+					{
+						j++;
+						MainForm.mainWindow.Enabled = false;
+						if (ExtraForm.Window != null)
+							ExtraForm.Window.Enabled = false;
+						this.Enabled = false;
+
+						Context.MyPlayer.DeserializeInventoryWithProperties(File.ReadAllText(ofd.FileName));
+						InitData(Selected);
+						j++;
+
+						this.Enabled = true;
+						if (ExtraForm.Window != null)
+							ExtraForm.Window.Enabled = true;
+						MainForm.mainWindow.Enabled = true;
+					}
+					).Start();
+				}
+			};
+			LoadInvPItem.Text = "加载(P)";
+			LoadInvPItem.Size = new Size(80, 30);
+			LoadInvPItem.Location = new Point(260, 150);
+			HackPanel.Controls.Add(LoadInvPItem);
+
 			Button InitItem = new Button();
 			InitItem.Click += (sender, e) =>
 			{
@@ -454,7 +586,7 @@ namespace QTRHacker
 			};
 			InitItem.Text = Lang.init;
 			InitItem.Size = new Size(80, 30);
-			InitItem.Location = new Point(260, 120);
+			InitItem.Location = new Point(260, 180);
 			HackPanel.Controls.Add(InitItem);
 
 			ItemSlots[0].Selected = true;
@@ -506,7 +638,7 @@ namespace QTRHacker
 				Equippable.CheckState = item.Accessory ? CheckState.Checked : CheckState.Unchecked;
 			}
 		}
-		private void PixelData(int slot)
+		private void ApplyData(int slot)
 		{
 			Item item = Context.MyPlayer.Inventory[slot];
 			Type t = typeof(Item);
@@ -681,6 +813,7 @@ namespace QTRHacker
 				bw.Write(item.Stack);
 				bw.Write(item.Prefix);
 			}
+			bw.Close();
 		}
 		public void LoadInventory(string name)
 		{

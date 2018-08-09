@@ -1,4 +1,5 @@
-﻿using QHackLib;
+﻿using Newtonsoft.Json;
+using QHackLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace QTRHacker.Functions
 	/// </summary>
 	public abstract class GameObject
 	{
+		[JsonIgnore]
 		public int BaseAddress
 		{
 			get;
 		}
+		[JsonIgnore]
 		public GameContext Context
 		{
 			get;
@@ -64,9 +67,15 @@ namespace QTRHacker.Functions
 		}
 		public void ReadFromOffset(int offset, out byte v)
 		{
-			byte[] bs = new byte[2];
+			byte[] bs = new byte[1];
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 1, 0);
 			v = bs[0];
+		}
+		public void ReadFromOffset(int offset, out sbyte v)
+		{
+			byte[] bs = new byte[1];
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 1, 0);
+			v = (sbyte)bs[0];
 		}
 
 
@@ -106,5 +115,11 @@ namespace QTRHacker.Functions
 			byte[] bs = BitConverter.GetBytes(v);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 1, 0);
 		}
+		public void WriteFromOffset(int offset, sbyte v)
+		{
+			byte[] bs = BitConverter.GetBytes(v);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 1, 0);
+		}
+
 	}
 }

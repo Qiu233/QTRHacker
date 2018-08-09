@@ -35,8 +35,9 @@ namespace QTRHacker
 		public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
 
 		public delegate void HackFunc(GameContext c);
-		private Button Extra;
+		private Button Extra, Script;
 		private ExtraForm ExtraHack = null;
+		private ScriptForm ScriptForm = null;
 		private TabControl mainTab;
 		private TabPage buttonTabPage1;
 		private TabPage buttonTabPage2;
@@ -127,7 +128,7 @@ namespace QTRHacker
 
 			Extra = new Button()
 			{
-				Location = new Point(245, 50),
+				Location = new Point(250, 50),
 				Size = new Size(50, 25),
 				Text = Lang.extra
 			};
@@ -153,6 +154,36 @@ namespace QTRHacker
 				 }
 			 };
 			this.Controls.Add(Extra);
+
+			Script = new Button()
+			{
+				Location = new Point(200, 50),
+				Size = new Size(50, 25),
+				Text = "脚本"
+			};
+			Script.Click += delegate (object sender, EventArgs e)
+			{
+				if (ScriptForm == null)
+				{
+					ScriptForm = new ScriptForm(Context);
+					ScriptForm.Show(this);
+					Script.Font = new Font("Arial", 10, FontStyle.Bold);
+				}
+				else
+				{
+					if (ScriptForm.Visible)
+					{
+						ScriptForm.Visible = false;
+						Script.Font = new Font("Arial", 10);
+					}
+					else
+					{
+						ScriptForm.Visible = true;
+						Script.Font = new Font("Arial", 10, FontStyle.Bold);
+					}
+				}
+			};
+			this.Controls.Add(Script);
 
 
 

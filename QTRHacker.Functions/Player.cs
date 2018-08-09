@@ -1,4 +1,6 @@
-﻿using QHackLib;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using System;
@@ -177,6 +179,193 @@ namespace QTRHacker.Functions
 				true,
 				BaseAddress, type, time, quiet);
 			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
+		}
+
+
+		public void SaveInventory(Stream file)
+		{
+			using (BinaryWriter bw = new BinaryWriter(file))
+			{
+				for (int i = 0; i < ITEM_MAX_COUNT; i++)
+				{
+					var item = Inventory[i];
+					bw.Write(item.Type);
+					bw.Write(item.Stack);
+					bw.Write(item.Prefix);
+				}
+				for (int i = 0; i < ARMOR_MAX_COUNT; i++)
+				{
+					var item = Armor[i];
+					bw.Write(item.Type);
+					bw.Write(item.Stack);
+					bw.Write(item.Prefix);
+				}
+				for (int i = 0; i < DYE_MAX_COUNT; i++)
+				{
+					var item = Dye[i];
+					bw.Write(item.Type);
+					bw.Write(item.Stack);
+					bw.Write(item.Prefix);
+				}
+				for (int i = 0; i < MISC_MAX_COUNT; i++)
+				{
+					var item = Misc[i];
+					bw.Write(item.Type);
+					bw.Write(item.Stack);
+					bw.Write(item.Prefix);
+				}
+				for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
+				{
+					var item = MiscDye[i];
+					bw.Write(item.Type);
+					bw.Write(item.Stack);
+					bw.Write(item.Prefix);
+				}
+			}
+		}
+
+
+		public void LoadInventory(Stream file)
+		{
+			using (BinaryReader br = new BinaryReader(file))
+			{
+				for (int i = 0; i < ITEM_MAX_COUNT; i++)
+				{
+					var item = Inventory[i];
+					int type = br.ReadInt32();
+					int stack = br.ReadInt32();
+					byte prefix = br.ReadByte();
+					if (type <= 0 && item.Type <= 0) continue;
+					item.SetDefaultsAndPrefix(type, prefix);
+					item.Stack = stack;
+				}
+				for (int i = 0; i < ARMOR_MAX_COUNT; i++)
+				{
+					var item = Armor[i];
+					int type = br.ReadInt32();
+					int stack = br.ReadInt32();
+					byte prefix = br.ReadByte();
+					if (type <= 0 && item.Type <= 0) continue;
+					item.SetDefaultsAndPrefix(type, prefix);
+					item.Stack = stack;
+				}
+				for (int i = 0; i < DYE_MAX_COUNT; i++)
+				{
+					var item = Dye[i];
+					int type = br.ReadInt32();
+					int stack = br.ReadInt32();
+					byte prefix = br.ReadByte();
+					if (type <= 0 && item.Type <= 0) continue;
+					item.SetDefaultsAndPrefix(type, prefix);
+					item.Stack = stack;
+				}
+				for (int i = 0; i < MISC_MAX_COUNT; i++)
+				{
+					var item = Misc[i];
+					int type = br.ReadInt32();
+					int stack = br.ReadInt32();
+					byte prefix = br.ReadByte();
+					if (type <= 0 && item.Type <= 0) continue;
+					item.SetDefaultsAndPrefix(type, prefix);
+					item.Stack = stack;
+				}
+				for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
+				{
+					var item = MiscDye[i];
+					int type = br.ReadInt32();
+					int stack = br.ReadInt32();
+					byte prefix = br.ReadByte();
+					if (type <= 0 && item.Type <= 0) continue;
+					item.SetDefaultsAndPrefix(type, prefix);
+					item.Stack = stack;
+				}
+			}
+
+		}
+
+		public string SerializeInventoryWithProperties()
+		{
+			JArray arr = new JArray();
+			JArray invArr = new JArray();
+			JArray armArr = new JArray();
+			JArray dyeArr = new JArray();
+			JArray miscArr = new JArray();
+			JArray miscDyeArr = new JArray();
+
+			arr.Add(invArr);
+			arr.Add(armArr);
+			arr.Add(dyeArr);
+			arr.Add(miscArr);
+			arr.Add(miscDyeArr);
+
+			for (int i = 0; i < ITEM_MAX_COUNT; i++)
+			{
+				invArr.Add(JObject.FromObject(Inventory[i]));
+			}
+			for (int i = 0; i < ARMOR_MAX_COUNT; i++)
+			{
+				armArr.Add(JObject.FromObject(Armor[i]));
+			}
+			for (int i = 0; i < DYE_MAX_COUNT; i++)
+			{
+				dyeArr.Add(JObject.FromObject(Dye[i]));
+			}
+			for (int i = 0; i < MISC_MAX_COUNT; i++)
+			{
+				miscArr.Add(JObject.FromObject(Misc[i]));
+			}
+			for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
+			{
+				miscDyeArr.Add(JObject.FromObject(MiscDye[i]));
+			}
+			return arr.ToString(Formatting.Indented);
+		}
+
+		public void DeserializeInventoryWithProperties(string json)
+		{
+			JArray o = JArray.Parse(json);
+			JArray invArr = (JArray)o[0];
+			JArray armArr = (JArray)o[1];
+			JArray dyeArr = (JArray)o[2];
+			JArray miscArr = (JArray)o[3];
+			JArray miscDyeArr = (JArray)o[4];
+			
+
+			for (int i = 0; i < ITEM_MAX_COUNT; i++)
+			{
+				var item = Inventory[i];
+				var a = invArr[i];
+				item.SetDefaultsAndPrefix(Convert.ToInt32(a["Type"]), Convert.ToInt32(a["Prefix"]));
+				JsonConvert.PopulateObject(a.ToString(), item);
+			}
+			for (int i = 0; i < ARMOR_MAX_COUNT; i++)
+			{
+				var item = Armor[i];
+				var a = armArr[i];
+				item.SetDefaultsAndPrefix(Convert.ToInt32(a["Type"]), Convert.ToInt32(a["Prefix"]));
+				JsonConvert.PopulateObject(a.ToString(), item);
+			}
+			for (int i = 0; i < DYE_MAX_COUNT; i++)
+			{
+				var item = Dye[i];
+				var a = dyeArr[i];
+				item.SetDefaultsAndPrefix(Convert.ToInt32(a["Type"]), Convert.ToInt32(a["Prefix"]));
+				JsonConvert.PopulateObject(a.ToString(), item);
+			}
+			for (int i = 0; i < MISC_MAX_COUNT; i++)
+			{
+				var item = Misc[i];
+				var a = miscArr[i];
+				item.SetDefaultsAndPrefix(Convert.ToInt32(a["Type"]), Convert.ToInt32(a["Prefix"]));
+				JsonConvert.PopulateObject(a.ToString(), item);
+			}
+			for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
+			{
+				var item = MiscDye[i];
+				var a = miscDyeArr[i];
+				item.SetDefaultsAndPrefix(Convert.ToInt32(a["Type"]), Convert.ToInt32(a["Prefix"]));
+				JsonConvert.PopulateObject(a.ToString(), item);
+			}
 		}
 	}
 }
