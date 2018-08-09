@@ -184,101 +184,98 @@ namespace QTRHacker.Functions
 
 		public void SaveInventory(Stream file)
 		{
-			using (BinaryWriter bw = new BinaryWriter(file))
+			BinaryWriter bw = new BinaryWriter(file);
+			for (int i = 0; i < ITEM_MAX_COUNT; i++)
 			{
-				for (int i = 0; i < ITEM_MAX_COUNT; i++)
-				{
-					var item = Inventory[i];
-					bw.Write(item.Type);
-					bw.Write(item.Stack);
-					bw.Write(item.Prefix);
-				}
-				for (int i = 0; i < ARMOR_MAX_COUNT; i++)
-				{
-					var item = Armor[i];
-					bw.Write(item.Type);
-					bw.Write(item.Stack);
-					bw.Write(item.Prefix);
-				}
-				for (int i = 0; i < DYE_MAX_COUNT; i++)
-				{
-					var item = Dye[i];
-					bw.Write(item.Type);
-					bw.Write(item.Stack);
-					bw.Write(item.Prefix);
-				}
-				for (int i = 0; i < MISC_MAX_COUNT; i++)
-				{
-					var item = Misc[i];
-					bw.Write(item.Type);
-					bw.Write(item.Stack);
-					bw.Write(item.Prefix);
-				}
-				for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
-				{
-					var item = MiscDye[i];
-					bw.Write(item.Type);
-					bw.Write(item.Stack);
-					bw.Write(item.Prefix);
-				}
+				var item = Inventory[i];
+				bw.Write(item.Type);
+				bw.Write(item.Stack);
+				bw.Write(item.Prefix);
 			}
+			for (int i = 0; i < ARMOR_MAX_COUNT; i++)
+			{
+				var item = Armor[i];
+				bw.Write(item.Type);
+				bw.Write(item.Stack);
+				bw.Write(item.Prefix);
+			}
+			for (int i = 0; i < DYE_MAX_COUNT; i++)
+			{
+				var item = Dye[i];
+				bw.Write(item.Type);
+				bw.Write(item.Stack);
+				bw.Write(item.Prefix);
+			}
+			for (int i = 0; i < MISC_MAX_COUNT; i++)
+			{
+				var item = Misc[i];
+				bw.Write(item.Type);
+				bw.Write(item.Stack);
+				bw.Write(item.Prefix);
+			}
+			for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
+			{
+				var item = MiscDye[i];
+				bw.Write(item.Type);
+				bw.Write(item.Stack);
+				bw.Write(item.Prefix);
+			}
+			bw.Flush();
 		}
 
 
 		public void LoadInventory(Stream file)
 		{
-			using (BinaryReader br = new BinaryReader(file))
+			BinaryReader br = new BinaryReader(file);
+			for (int i = 0; i < ITEM_MAX_COUNT; i++)
 			{
-				for (int i = 0; i < ITEM_MAX_COUNT; i++)
-				{
-					var item = Inventory[i];
-					int type = br.ReadInt32();
-					int stack = br.ReadInt32();
-					byte prefix = br.ReadByte();
-					if (type <= 0 && item.Type <= 0) continue;
-					item.SetDefaultsAndPrefix(type, prefix);
-					item.Stack = stack;
-				}
-				for (int i = 0; i < ARMOR_MAX_COUNT; i++)
-				{
-					var item = Armor[i];
-					int type = br.ReadInt32();
-					int stack = br.ReadInt32();
-					byte prefix = br.ReadByte();
-					if (type <= 0 && item.Type <= 0) continue;
-					item.SetDefaultsAndPrefix(type, prefix);
-					item.Stack = stack;
-				}
-				for (int i = 0; i < DYE_MAX_COUNT; i++)
-				{
-					var item = Dye[i];
-					int type = br.ReadInt32();
-					int stack = br.ReadInt32();
-					byte prefix = br.ReadByte();
-					if (type <= 0 && item.Type <= 0) continue;
-					item.SetDefaultsAndPrefix(type, prefix);
-					item.Stack = stack;
-				}
-				for (int i = 0; i < MISC_MAX_COUNT; i++)
-				{
-					var item = Misc[i];
-					int type = br.ReadInt32();
-					int stack = br.ReadInt32();
-					byte prefix = br.ReadByte();
-					if (type <= 0 && item.Type <= 0) continue;
-					item.SetDefaultsAndPrefix(type, prefix);
-					item.Stack = stack;
-				}
-				for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
-				{
-					var item = MiscDye[i];
-					int type = br.ReadInt32();
-					int stack = br.ReadInt32();
-					byte prefix = br.ReadByte();
-					if (type <= 0 && item.Type <= 0) continue;
-					item.SetDefaultsAndPrefix(type, prefix);
-					item.Stack = stack;
-				}
+				var item = Inventory[i];
+				int type = br.ReadInt32();
+				int stack = br.ReadInt32();
+				byte prefix = br.ReadByte();
+				if (type <= 0 && item.Type <= 0) continue;
+				item.SetDefaultsAndPrefix(type, prefix);
+				item.Stack = stack;
+			}
+			for (int i = 0; i < ARMOR_MAX_COUNT; i++)
+			{
+				var item = Armor[i];
+				int type = br.ReadInt32();
+				int stack = br.ReadInt32();
+				byte prefix = br.ReadByte();
+				if (type <= 0 && item.Type <= 0) continue;
+				item.SetDefaultsAndPrefix(type, prefix);
+				item.Stack = stack;
+			}
+			for (int i = 0; i < DYE_MAX_COUNT; i++)
+			{
+				var item = Dye[i];
+				int type = br.ReadInt32();
+				int stack = br.ReadInt32();
+				byte prefix = br.ReadByte();
+				if (type <= 0 && item.Type <= 0) continue;
+				item.SetDefaultsAndPrefix(type, prefix);
+				item.Stack = stack;
+			}
+			for (int i = 0; i < MISC_MAX_COUNT; i++)
+			{
+				var item = Misc[i];
+				int type = br.ReadInt32();
+				int stack = br.ReadInt32();
+				byte prefix = br.ReadByte();
+				if (type <= 0 && item.Type <= 0) continue;
+				item.SetDefaultsAndPrefix(type, prefix);
+				item.Stack = stack;
+			}
+			for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
+			{
+				var item = MiscDye[i];
+				int type = br.ReadInt32();
+				int stack = br.ReadInt32();
+				byte prefix = br.ReadByte();
+				if (type <= 0 && item.Type <= 0) continue;
+				item.SetDefaultsAndPrefix(type, prefix);
+				item.Stack = stack;
 			}
 
 		}
@@ -329,7 +326,7 @@ namespace QTRHacker.Functions
 			JArray dyeArr = (JArray)o[2];
 			JArray miscArr = (JArray)o[3];
 			JArray miscDyeArr = (JArray)o[4];
-			
+
 
 			for (int i = 0; i < ITEM_MAX_COUNT; i++)
 			{
