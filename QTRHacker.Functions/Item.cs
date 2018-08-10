@@ -1059,6 +1059,7 @@ namespace QTRHacker.Functions
 				type, stack, y, x, height, width, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, ret, ref ret, 4, 0);
+			NativeFunctions.VirtualFreeEx(Context.HContext.Handle, ret, 0);
 			return ret;
 		}
 		

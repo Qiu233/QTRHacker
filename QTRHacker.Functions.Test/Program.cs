@@ -19,10 +19,8 @@ namespace QTRHacker.Functions.Test
 
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				//Console.WriteLine(gc.MyPlayer.SerializeInventoryWithProperties());
-				gc.MyPlayer.DeserializeInventoryWithProperties(gc.MyPlayer.SerializeInventoryWithProperties());
+				NetMessage.SendData(gc, 21, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0);
 			}
-			//Assembler.Assemble("word 5", 0).ToList().ForEach(t => Console.WriteLine(t.ToString("X8")));
 		}
 	}
 }

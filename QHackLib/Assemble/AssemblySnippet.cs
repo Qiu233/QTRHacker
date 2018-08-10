@@ -35,15 +35,15 @@ namespace QHackLib.Assemble
 		{
 			if (index > 1)
 			{
-				return "push 0x" + ((int)v).ToString("X8");
+				return "push " + ((int)v).ToString();
 			}
 			else if (index == 0)
 			{
-				return "mov ecx,0x" + ((int)v).ToString("X8");
+				return "mov ecx," + ((int)v).ToString();
 			}
 			else// if (index == 1)
 			{
-				return "mov edx,0x" + ((int)v).ToString("X8");
+				return "mov edx," + ((int)v).ToString();
 			}
 		}
 		public static AssemblySnippet FromDotNetCall(int targetAddr, int? retAddr, bool regProtection, params ValueType[] arguments)
@@ -87,9 +87,9 @@ namespace QHackLib.Assemble
 					i++;
 				}
 			}
-			s.Content.Add(Instruction.Create("call 0x" + ((int)targetAddr).ToString("X8")));
+			s.Content.Add(Instruction.Create("call " + ((int)targetAddr).ToString()));
 			if (retAddr != null)
-				s.Content.Add(Instruction.Create("mov [0x" + ((int)retAddr).ToString("X8") + "],eax"));
+				s.Content.Add(Instruction.Create("mov [" + ((int)retAddr).ToString() + "],eax"));
 			if (regProtection)
 			{
 				s.Content.Add(Instruction.Create("pop edx"));
