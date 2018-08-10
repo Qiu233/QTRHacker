@@ -75,7 +75,7 @@ namespace QTRHacker.Functions
 		{
 			get
 			{
-				int v = AobscanHelper.Aobscan(HContext, "89 47 0c 8b cf ff 15") + 0x1e;
+				int v = AobscanHelper.Aobscan(HContext, "74 0d 8b 4e 0c 8b 01 8b 40 28 ff 50 10 eb 02") - 0x13;
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 				byte[] bs = new byte[(32 + 4) * 2];
@@ -84,12 +84,22 @@ namespace QTRHacker.Functions
 			}
 			set
 			{
-				int v = AobscanHelper.Aobscan(HContext, "89 47 0c 8b cf ff 15") + 0x1e;
+				int v = AobscanHelper.Aobscan(HContext, "74 0d 8b 4e 0c 8b 01 8b 40 28 ff 50 10 eb 02") - 0x13;
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 				byte[] bs = Encoding.Unicode.GetBytes(value);
 				NativeFunctions.WriteProcessMemory(HContext.Handle, v + 8, bs, (32 + 4) * 2, 0);
 			}
+		}
+
+		public int MaxTilesX
+		{
+			get;
+		}
+
+		public int MaxTilesY
+		{
+			get;
 		}
 
 		public bool DayTime
@@ -240,6 +250,16 @@ namespace QTRHacker.Functions
 			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
 			NPC_Array_Address = vvv;
 
+
+			vvv = AobscanHelper.Aobscan(HContext, "75 08 8d 65 f4 5b 5e 5f 5d c3 a1");
+			int b = vvv + 0xb;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, b, ref b, 4, 0);
+			NativeFunctions.ReadProcessMemory(HContext.Handle, b, ref b, 4, 0);
+			MaxTilesX = b;
+			int c = vvv + 0x1c;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, c, ref c, 4, 0);
+			NativeFunctions.ReadProcessMemory(HContext.Handle, c, ref c, 4, 0);
+			MaxTilesY = c;
 		}
 
 

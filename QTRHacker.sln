@@ -7,7 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QTRHacker", "QTRHacker\QTRH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QHackLib", "QHackLib\QHackLib.csproj", "{CC1B3A7E-33AA-487D-AE8E-2B5B2CE3FEF1}"
 	ProjectSection(ProjectDependencies) = postProject
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE} = {C2935447-E6CD-4F9D-8561-FE372440CAEE}
 		{5A302FD8-7469-4531-9524-107D78FAEEEA} = {5A302FD8-7469-4531-9524-107D78FAEEEA}
 	EndProjectSection
 EndProject
@@ -15,11 +14,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QHackLibTest", "QHackLibTes
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CheatLibrary", "CheatLibrary\CheatLibrary.vcxproj", "{5A302FD8-7469-4531-9524-107D78FAEEEA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "asmjit", "asmjit\asmjit.vcxproj", "{C2935447-E6CD-4F9D-8561-FE372440CAEE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QTRHacker.Functions", "QTRHacker.Functions\QTRHacker.Functions.csproj", "{F7AFCB94-0361-411F-BB41-A84A0F2B6C51}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QTRHacker.Functions.Test", "QTRHacker.Functions.Test\QTRHacker.Functions.Test.csproj", "{E823B32B-5DA3-4D92-8AC3-150A2CFADB26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keystone.Net", "Keystone.Net\Keystone.Net.csproj", "{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,18 +78,6 @@ Global
 		{5A302FD8-7469-4531-9524-107D78FAEEEA}.Release|x64.Build.0 = Release|x64
 		{5A302FD8-7469-4531-9524-107D78FAEEEA}.Release|x86.ActiveCfg = Release|Win32
 		{5A302FD8-7469-4531-9524-107D78FAEEEA}.Release|x86.Build.0 = Release|Win32
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Debug|Any CPU.Build.0 = Debug|Win32
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Debug|x64.ActiveCfg = Release|x64
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Debug|x64.Build.0 = Release|x64
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Debug|x86.ActiveCfg = Debug|Win32
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Debug|x86.Build.0 = Debug|Win32
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Release|Any CPU.ActiveCfg = Release|Win32
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Release|Any CPU.Build.0 = Release|Win32
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Release|x64.ActiveCfg = Release|x64
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Release|x64.Build.0 = Release|x64
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Release|x86.ActiveCfg = Release|Win32
-		{C2935447-E6CD-4F9D-8561-FE372440CAEE}.Release|x86.Build.0 = Release|Win32
 		{F7AFCB94-0361-411F-BB41-A84A0F2B6C51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F7AFCB94-0361-411F-BB41-A84A0F2B6C51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7AFCB94-0361-411F-BB41-A84A0F2B6C51}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -115,6 +102,18 @@ Global
 		{E823B32B-5DA3-4D92-8AC3-150A2CFADB26}.Release|x64.Build.0 = Release|Any CPU
 		{E823B32B-5DA3-4D92-8AC3-150A2CFADB26}.Release|x86.ActiveCfg = Release|Any CPU
 		{E823B32B-5DA3-4D92-8AC3-150A2CFADB26}.Release|x86.Build.0 = Release|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Debug|x64.Build.0 = Debug|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Debug|x86.Build.0 = Debug|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|x64.ActiveCfg = Release|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|x64.Build.0 = Release|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|x86.ActiveCfg = Release|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

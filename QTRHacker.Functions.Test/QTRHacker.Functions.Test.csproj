@@ -54,6 +54,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Keystone.Net\Keystone.Net.csproj">
+      <Project>{5e05a43d-2d9a-4f80-b594-d39bdcd20b9d}</Project>
+      <Name>Keystone.Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QHackLib\QHackLib.csproj">
       <Project>{cc1b3a7e-33aa-487d-ae8e-2b5b2ce3fef1}</Project>
       <Name>QHackLib</Name>

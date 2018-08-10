@@ -105,18 +105,18 @@ namespace QHackLib.FunctionHelper
 				int flagAddr = 0;
 
 				AssemblySnippet a = AssemblySnippet.FromEmpty();
-				a.Content.Add(Instruction.Create("mov dword [0x" + compAddr.ToString("X8") + "],1"));
+				a.Content.Add(Instruction.Create("mov dword ptr [0x" + compAddr.ToString("X8") + "],1"));
 				if (once)
 				{
 					flagAddr = NativeFunctions.VirtualAllocEx(Context.Handle, 0, codeSize, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
 					NativeFunctions.WriteProcessMemory(Context.Handle, flagAddr, ref once, 4, 0);
-					a.Content.Add(Instruction.Create("cmp dword [0x" + flagAddr.ToString("X8") + "],0"));
+					a.Content.Add(Instruction.Create("cmp dword ptr [0x" + flagAddr.ToString("X8") + "],0"));
 					a.Content.Add(Instruction.Create("jle a"));
 				}
 				a.Content.Add(snippet);
 				if (once)
 				{
-					a.Content.Add(Instruction.Create("dec [0x" + flagAddr.ToString("X8") + "]"));
+					a.Content.Add(Instruction.Create("dec dword ptr [0x" + flagAddr.ToString("X8") + "]"));
 					a.Content.Add(Instruction.Create("a:"));
 				}
 				byte[] code = new byte[32];
@@ -130,6 +130,7 @@ namespace QHackLib.FunctionHelper
 				NativeFunctions.WriteProcessMemory(Context.Handle, codeAddr + 4, ref compAddr, 4, 0);
 
 				int addr = codeAddr + 32;
+				Console.WriteLine(a.GetCode());
 				byte[] snippetBytes = a.GetByteCode(addr);
 
 
@@ -143,7 +144,7 @@ namespace QHackLib.FunctionHelper
 				}
 
 
-				byte[] compBytes = Assembler.Assemble("mov dword [0x" + compAddr.ToString("X8") + "],0", addr);
+				byte[] compBytes = Assembler.Assemble("mov dword ptr [0x" + compAddr.ToString("X8") + "],0", addr);
 				NativeFunctions.WriteProcessMemory(Context.Handle, addr, compBytes, compBytes.Length, 0);
 				addr += compBytes.Length;
 

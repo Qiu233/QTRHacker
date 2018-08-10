@@ -1,4 +1,5 @@
-﻿using QHackLib.Assemble;
+﻿using Keystone;
+using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace QTRHacker.Functions.Test
 
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				NetMessage.SendData(gc, 21, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0);
+				gc.MyPlayer.Inventory[0].SetPrefix(2);
 			}
 		}
 	}
