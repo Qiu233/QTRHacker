@@ -40,7 +40,7 @@ namespace QTRHacker
 
 			l.BeginUpdate();
 
-			var player = Context.MyPlayer;
+			var player = Context.Players[id];
 			l.SmallImageList = MainForm.item_images;
 			for (int slot = 0; slot < 50; slot++)
 			{

@@ -20,7 +20,7 @@ namespace QTRHacker.Functions.Test
 
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				gc.MyPlayer.Inventory[0].SetPrefix(2);
+				Utils.RevealMap(gc);
 			}
 		}
 	}

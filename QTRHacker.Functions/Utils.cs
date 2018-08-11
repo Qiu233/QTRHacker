@@ -550,5 +550,26 @@ push 0", 0);
 
 			InlineHook.FreeHook(Context.HContext, y);
 		}
+		
+		public static void RevealMap(GameContext Context)
+		{
+			AssemblySnippet asm = AssemblySnippet.FromEmpty();
+			asm.Content.Add(Instruction.Create("push ecx"));
+			asm.Content.Add(Instruction.Create("push edx"));
+			asm.Content.Add(
+				AssemblySnippet.Loop(
+					AssemblySnippet.Loop(
+						AssemblySnippet.FromDotNetCall(
+							Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Map.WorldMap::UpdateLighting"), null, false,
+							Context.Map.BaseAddress, "[esp+4]", "[esp]", 255), 
+						Context.MaxTilesY, false),
+					Context.MaxTilesX, false));
+			asm.Content.Add(Instruction.Create("pop edx"));
+			asm.Content.Add(Instruction.Create("pop ecx"));
+
+			InlineHook.InjectAndWait(Context.HContext, asm, 
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
+			Context.RefreshMap = true;
+		}
 	}
 }

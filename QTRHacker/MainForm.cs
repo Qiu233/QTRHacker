@@ -348,17 +348,14 @@ namespace QTRHacker
 				}
 				return 1;
 			}, null, false);*/
-			unsafe
-			{
-				Button u = null;
-				u = AddButton(buttonTabPage6, Lang.randomUUID, 4, (Context) =>
-				  {
-					  Context.UUID = Guid.NewGuid().ToString();
-					  u.Text = Lang.randomUUID + ":" + Context.UUID;
-				  }, null, false);
-				u.Font = new Font("SimSun", 8);
-			}
-
+			Button u = null;
+			u = AddButton(buttonTabPage6, Lang.randomUUID, 4, (Context) =>
+			  {
+				  Context.UUID = Guid.NewGuid().ToString();
+				  u.Text = Lang.randomUUID + ":" + Context.UUID;
+			  }, null, false);
+			u.Font = new Font("SimSun", 8);
+			AddButton(buttonTabPage6, "探索整个地图", 5, Utils.RevealMap, null, false);
 
 
 

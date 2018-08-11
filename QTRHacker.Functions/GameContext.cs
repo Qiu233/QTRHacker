@@ -29,6 +29,28 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
+		public int Main_Map_Address
+		{
+			get;
+		}
+		public int Main_RefreshMap_Address
+		{
+			get;
+		}
+
+		public bool RefreshMap
+		{
+			get
+			{
+				bool v = false;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, Main_RefreshMap_Address, ref v, 1, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, Main_RefreshMap_Address, ref value, 1, 0);
+			}
+		}
 
 
 		public int MyPlayerIndex
@@ -68,6 +90,14 @@ namespace QTRHacker.Functions
 				int v = 0;
 				NativeFunctions.ReadProcessMemory(HContext.Handle, Player_Array_Address + 0x08 + 0x04 * MyPlayerIndex, ref v, 4, 0);
 				return new Player(this, v);
+			}
+		}
+
+		public WorldMap Map
+		{
+			get
+			{
+				return new WorldMap(this, Main_Map_Address);
 			}
 		}
 
@@ -260,6 +290,17 @@ namespace QTRHacker.Functions
 			NativeFunctions.ReadProcessMemory(HContext.Handle, c, ref c, 4, 0);
 			NativeFunctions.ReadProcessMemory(HContext.Handle, c, ref c, 4, 0);
 			MaxTilesY = c;
+
+
+			vvv = AobscanHelper.Aobscan(HContext, "8b 40 04 8b 55 f0 8b 4d ec 2b 50 10 3b 50 08") - 4;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			Main_Map_Address = vvv;
+
+			vvv = AobscanHelper.Aobscan(HContext, "01 8b 45 f0 8d 65 f4 5b 5e 5f 5d c2 04 00") - 4;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			Main_RefreshMap_Address = vvv;
+
 		}
 
 
