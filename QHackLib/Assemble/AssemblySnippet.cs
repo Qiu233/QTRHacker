@@ -33,6 +33,13 @@ namespace QHackLib.Assemble
 			return s;
 		}
 
+		public static AssemblySnippet FromCode(IEnumerable<AssemblyCode> code)
+		{
+			AssemblySnippet s = new AssemblySnippet();
+			s.Content.AddRange(code);
+			return s;
+		}
+
 		public static AssemblySnippet Loop(AssemblySnippet body, int times, bool regProtection)
 		{
 
@@ -93,6 +100,15 @@ namespace QHackLib.Assemble
 				}
 			}
 		}
+
+		/// <summary>
+		/// 只适用于参数不含基础类型以外的值类型的函数
+		/// </summary>
+		/// <param name="targetAddr"></param>
+		/// <param name="retAddr"></param>
+		/// <param name="regProtection"></param>
+		/// <param name="arguments"></param>
+		/// <returns></returns>
 		public static AssemblySnippet FromDotNetCall(int targetAddr, int? retAddr, bool regProtection, params object[] arguments)
 		{
 			AssemblySnippet s = new AssemblySnippet();

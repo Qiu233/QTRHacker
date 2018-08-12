@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QTRHacker.Functions.Test", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keystone.Net", "Keystone.Net\Keystone.Net.csproj", "{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvCheck", "EnvCheck\EnvCheck.csproj", "{59CC980D-1DED-4EC3-9F9F-26486F975206}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,6 +116,18 @@ Global
 		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|x64.Build.0 = Release|Any CPU
 		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|x86.ActiveCfg = Release|Any CPU
 		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|x86.Build.0 = Release|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Debug|x64.Build.0 = Debug|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Debug|x86.Build.0 = Debug|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Release|x64.ActiveCfg = Release|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Release|x64.Build.0 = Release|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Release|x86.ActiveCfg = Release|Any CPU
+		{59CC980D-1DED-4EC3-9F9F-26486F975206}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -37,6 +37,183 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
+		public int MapFullScreen_Address
+		{
+			get;
+		}
+		public int MouseRight_Address
+		{
+			get;
+		}
+		public int MouseRightRelease_Address
+		{
+			get;
+		}
+		public int ScreenWidth_Address
+		{
+			get;
+		}
+		public int ScreenHeight_Address
+		{
+			get;
+		}
+		public int MapFullscreenPos_Address
+		{
+			get;
+		}
+
+		public int MouseScreen_X_Address
+		{
+			get;
+		}
+		public int MouseScreen_Y_Address
+		{
+			get;
+		}
+		public int MapFullScreenScale_Address
+		{
+			get;
+		}
+
+		public int MapFullScreenScale
+		{
+			get
+			{
+				int v = 0;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, MapFullScreenScale_Address, ref v, 4, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, MapFullScreenScale_Address, ref value, 4, 0);
+			}
+		}
+
+		public int MouseScreen_X
+		{
+			get
+			{
+				int v = 0;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseScreen_X_Address, ref v, 4, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseScreen_X_Address, ref value, 4, 0);
+			}
+		}
+		public int MouseScreen_Y
+		{
+			get
+			{
+				int v = 0;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseScreen_Y_Address, ref v, 4, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseScreen_Y_Address, ref value, 4, 0);
+			}
+		}
+
+		public float MapFullscreenPos_X
+		{
+			get
+			{
+				byte[] b = new byte[4];
+				NativeFunctions.ReadProcessMemory(HContext.Handle, MapFullscreenPos_Address + 4, b, 4, 0);
+				return BitConverter.ToSingle(b, 0);
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, MapFullscreenPos_Address + 4, BitConverter.GetBytes(value), 4, 0);
+			}
+		}
+		public float MapFullscreenPos_Y
+		{
+			get
+			{
+				byte[] b = new byte[4];
+				NativeFunctions.ReadProcessMemory(HContext.Handle, MapFullscreenPos_Address + 4 + 4, b, 4, 0);
+				return BitConverter.ToSingle(b, 0);
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, MapFullscreenPos_Address + 4 + 4, BitConverter.GetBytes(value), 4, 0);
+			}
+		}
+
+		public int ScreenWidth
+		{
+			get
+			{
+				int v = 0;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, ScreenWidth_Address, ref v, 4, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, ScreenWidth_Address, ref value, 4, 0);
+			}
+		}
+
+		public int ScreenHeight
+		{
+			get
+			{
+				int v = 0;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, ScreenHeight_Address, ref v, 4, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, ScreenHeight_Address, ref value, 4, 0);
+			}
+		}
+
+		public bool MouseRightRelease
+		{
+			get
+			{
+				bool v = false;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseRightRelease_Address, ref v, 1, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseRightRelease_Address, ref value, 1, 0);
+			}
+		}
+
+		public bool MouseRight
+		{
+			get
+			{
+				bool v = false;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseRight_Address, ref v, 1, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseRight_Address, ref value, 1, 0);
+			}
+		}
+
+
+		public bool MapFullScreen
+		{
+			get
+			{
+				bool v = false;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, MapFullScreen_Address, ref v, 1, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, MapFullScreen_Address, ref value, 1, 0);
+			}
+		}
+
 
 		public bool RefreshMap
 		{
@@ -301,6 +478,47 @@ namespace QTRHacker.Functions
 			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
 			Main_RefreshMap_Address = vvv;
 
+
+			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DrawInterface_16_MapOrMinimap") + 0x2f;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			MapFullScreen_Address = vvv;
+
+			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DrawInterface_41_InterfaceLogic4") + 5;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			MouseRight_Address = vvv;
+
+
+			vvv = AobscanHelper.Aobscan(HContext, "89 75 e0 33 d2 89 55 ec 80 3d") + 0x1c;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			MouseRightRelease_Address = vvv;
+
+
+			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_TextMaxLengthForScreen") + 1;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			ScreenWidth_Address = vvv;
+
+
+			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_ShouldDrawInfoIconsHorizontally") + 0x17;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			ScreenHeight_Address = vvv;
+
+
+			vvv = AobscanHelper.Aobscan(HContext, "ff ff d8 28 d9 18 8b 05") + 8;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			MapFullscreenPos_Address = vvv;
+
+			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_MouseScreen") + 0x3;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			MouseScreen_X_Address = vvv;
+
+			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_MouseScreen") + 0xf;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			MouseScreen_Y_Address = vvv;
+			
+			vvv = AobscanHelper.Aobscan(HContext, "d9 5d e0 eb 1d 83 3d") - 4;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			MapFullScreenScale_Address = vvv;
 		}
 
 

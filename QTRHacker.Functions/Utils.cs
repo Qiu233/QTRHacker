@@ -550,7 +550,7 @@ push 0", 0);
 
 			InlineHook.FreeHook(Context.HContext, y);
 		}
-		
+
 		public static void RevealMap(GameContext Context)
 		{
 			AssemblySnippet asm = AssemblySnippet.FromEmpty();
@@ -561,15 +561,77 @@ push 0", 0);
 					AssemblySnippet.Loop(
 						AssemblySnippet.FromDotNetCall(
 							Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Map.WorldMap::UpdateLighting"), null, false,
-							Context.Map.BaseAddress, "[esp+4]", "[esp]", 255), 
+							Context.Map.BaseAddress, "[esp+4]", "[esp]", 255),
 						Context.MaxTilesY, false),
 					Context.MaxTilesX, false));
 			asm.Content.Add(Instruction.Create("pop edx"));
 			asm.Content.Add(Instruction.Create("pop ecx"));
 
-			InlineHook.InjectAndWait(Context.HContext, asm, 
+			InlineHook.InjectAndWait(Context.HContext, asm,
 				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
 			Context.RefreshMap = true;
+		}
+
+		public static void RightClickToTP(GameContext Context)
+		{
+			byte[] s = new byte[1];
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle,
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DoUpdate"), s, 1, 0);
+			if (s[0] != 0x55)//已经被修改，不能再hook
+				return;
+			var ass = AssemblySnippet.FromCode(
+					new AssemblyCode[] {
+						Instruction.Create("pushad"),
+						Instruction.Create($"cmp byte ptr [{Context.MapFullScreen_Address}],0"),
+						Instruction.Create("je _rwualfna"),
+						Instruction.Create($"cmp byte ptr [{Context.MouseRight_Address}],0"),
+						Instruction.Create("je _rwualfna"),
+						Instruction.Create($"cmp byte ptr [{Context.MouseRightRelease_Address}],0"),
+						Instruction.Create("je _rwualfna"),
+						AssemblySnippet.FromCode(
+							new AssemblyCode[]{
+								Instruction.Create($"mov byte ptr [{Context.MapFullScreen_Address}],0"),
+								Instruction.Create($"mov byte ptr [{Context.MouseRightRelease_Address}],0"),
+								AssemblySnippet.FromDotNetCall(
+									Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_LocalPlayer"), null, false),
+								Instruction.Create("mov ebx,eax"),
+								Instruction.Create("push eax"),
+								Instruction.Create("mov dword ptr [esp],2"),
+								Instruction.Create($"fild dword ptr [{Context.ScreenWidth_Address}]"),
+								Instruction.Create("fild dword ptr [esp]"),
+								Instruction.Create("fdivp"),
+								Instruction.Create($"fild dword ptr [{Context.MouseScreen_X_Address}]"),
+								Instruction.Create("fsubp"),
+								Instruction.Create($"fld dword ptr [{Context.MapFullScreenScale_Address}]"),
+								Instruction.Create("fdivp"),
+								Instruction.Create($"fld dword ptr [{Context.MapFullscreenPos_Address + 4}]"),
+								Instruction.Create("fsubrp"),
+								Instruction.Create("mov dword ptr [esp],16"),
+								Instruction.Create("fild dword ptr [esp]"),
+								Instruction.Create("fmulp"),
+								Instruction.Create($"fstp dword ptr [ebx+{Player.OFFSET_X}]"),
+								Instruction.Create("mov dword ptr [esp],2"),
+								Instruction.Create($"fild dword ptr [{Context.ScreenHeight_Address}]"),
+								Instruction.Create("fild dword ptr [esp]"),
+								Instruction.Create("fdivp"),
+								Instruction.Create($"fild dword ptr [{Context.MouseScreen_Y_Address}]"),
+								Instruction.Create("fsubp"),
+								Instruction.Create($"fld dword ptr [{Context.MapFullScreenScale_Address}]"),
+								Instruction.Create("fdivp"),
+								Instruction.Create($"fld dword ptr [{Context.MapFullscreenPos_Address + 8}]"),
+								Instruction.Create("fsubrp"),
+								Instruction.Create("mov dword ptr [esp],16"),
+								Instruction.Create("fild dword ptr [esp]"),
+								Instruction.Create("fmulp"),
+								Instruction.Create($"fstp dword ptr [ebx+{Player.OFFSET_Y}]"),
+
+								Instruction.Create("pop eax"),
+							}),
+						Instruction.Create("_rwualfna:"),
+						Instruction.Create("popad")
+					});
+			InlineHook.Inject(Context.HContext, ass,
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DoUpdate"), false);
 		}
 	}
 }

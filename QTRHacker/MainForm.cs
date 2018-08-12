@@ -356,6 +356,7 @@ namespace QTRHacker
 			  }, null, false);
 			u.Font = new Font("SimSun", 8);
 			AddButton(buttonTabPage6, "探索整个地图", 5, Utils.RevealMap, null, false);
+			AddButton(buttonTabPage6, "右键传送(不能重复开启/关闭)", 6, Utils.RightClickToTP, null, false);
 
 
 
