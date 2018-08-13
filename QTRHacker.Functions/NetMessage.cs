@@ -26,5 +26,14 @@ namespace QTRHacker.Functions
 				msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
 		}
+		public static void SendWater(GameContext Context, int x, int y)
+		{
+			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.NetMessage::sendWater"),
+				null,
+				true,
+				x, y);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
+		}
 	}
 }

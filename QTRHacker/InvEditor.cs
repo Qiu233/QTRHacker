@@ -178,7 +178,7 @@ namespace QTRHacker
 							f.FormBorderStyle = FormBorderStyle.FixedSingle;
 							f.MaximizeBox = false;
 							f.MinimizeBox = false;
-							f.Size = new Size(250, 90);
+							f.Size = new Size(265, 105);
 
 							Label tip1 = new Label()
 							{

@@ -572,6 +572,26 @@ push 0", 0);
 			Context.RefreshMap = true;
 		}
 
+
+		public static void DropLavaOntoPlayers(GameContext Context)
+		{
+			for (int i = 0; i < Player.MAX_PLAYER; i++)
+			{
+				var p = Context.Players[i];
+				if (p.Active)
+				{
+					int x = (int)Math.Round(p.X / 16);
+					int y = (int)Math.Round(p.Y / 16);
+					var tile = Context.Tile[x, y];
+					tile.LiquidType(1);
+					tile.Liquid = 255;
+					WorldGen.SquareTileFrame(Context, x, y, true);
+					if (Context.NetMode == 1)
+						NetMessage.SendWater(Context, x, y);
+				}
+			}
+		}
+
 		public static void RightClickToTP(GameContext Context)
 		{
 			byte[] s = new byte[1];

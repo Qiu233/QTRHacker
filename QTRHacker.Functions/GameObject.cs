@@ -39,7 +39,13 @@ namespace QTRHacker.Functions
 		{
 			byte[] bs = new byte[8];
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 8, 0);
-			v = BitConverter.ToInt32(bs, 0);
+			v = BitConverter.ToInt64(bs, 0);
+		}
+		public void ReadFromOffset(int offset, out ulong v)
+		{
+			byte[] bs = new byte[8];
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 8, 0);
+			v = BitConverter.ToUInt64(bs, 0);
 		}
 		public void ReadFromOffset(int offset, out double v)
 		{
@@ -53,6 +59,12 @@ namespace QTRHacker.Functions
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 4, 0);
 			v = BitConverter.ToInt32(bs, 0);
 		}
+		public void ReadFromOffset(int offset, out uint v)
+		{
+			byte[] bs = new byte[4];
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 4, 0);
+			v = BitConverter.ToUInt32(bs, 0);
+		}
 		public void ReadFromOffset(int offset, out float v)
 		{
 			byte[] bs = new byte[4];
@@ -64,6 +76,12 @@ namespace QTRHacker.Functions
 			byte[] bs = new byte[2];
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 2, 0);
 			v = BitConverter.ToInt16(bs, 0);
+		}
+		public void ReadFromOffset(int offset, out ushort v)
+		{
+			byte[] bs = new byte[2];
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 2, 0);
+			v = BitConverter.ToUInt16(bs, 0);
 		}
 		public void ReadFromOffset(int offset, out byte v)
 		{
@@ -90,6 +108,11 @@ namespace QTRHacker.Functions
 			byte[] bs = BitConverter.GetBytes(v);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 8, 0);
 		}
+		public void WriteFromOffset(int offset, ulong v)
+		{
+			byte[] bs = BitConverter.GetBytes(v);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 8, 0);
+		}
 		public void WriteFromOffset(int offset, double v)
 		{
 			byte[] bs = BitConverter.GetBytes(v);
@@ -100,12 +123,22 @@ namespace QTRHacker.Functions
 			byte[] bs = BitConverter.GetBytes(v);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 4, 0);
 		}
+		public void WriteFromOffset(int offset, uint v)
+		{
+			byte[] bs = BitConverter.GetBytes(v);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 4, 0);
+		}
 		public void WriteFromOffset(int offset, float v)
 		{
 			byte[] bs = BitConverter.GetBytes(v);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 4, 0);
 		}
 		public void WriteFromOffset(int offset, short v)
+		{
+			byte[] bs = BitConverter.GetBytes(v);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 2, 0);
+		}
+		public void WriteFromOffset(int offset, ushort v)
 		{
 			byte[] bs = BitConverter.GetBytes(v);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 2, 0);

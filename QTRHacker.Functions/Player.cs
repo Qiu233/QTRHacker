@@ -27,6 +27,8 @@ namespace QTRHacker.Functions
 		public const int ITEM_MAX_COUNT = 59, INV_MAX_COUNT = 50, ARMOR_MAX_COUNT = 20, DYE_MAX_COUNT = 10, MISC_MAX_COUNT = 5, MISCDYE_MAX_COUNT = 5;
 		public const int BUFF_MAX_COUNT = 22;
 
+		public const int MAX_PLAYER = 256;
+
 		public int Life
 		{
 			get

@@ -54,33 +54,7 @@ namespace QTRHacker
 				lvi.Font = new Font("Arial", 7);
 				l.Items.Add(lvi);
 			}
-
-
-			for (int i = 0; i < 10; i++)
-			{
-				l.Columns.Add(i.ToString());
-			}
-			foreach (ColumnHeader item in l.Columns)
-			{
-				item.Width = l.Size.Width / 10;
-			}
-			for (int i = 0; i < 5; i++)
-			{
-				int h = i * 10;
-				var item = player.Inventory[h];
-				int hid = item.Type;
-				int hnum = item.Stack;
-				string s = GetItemNameFromId(hid);
-				l.Items.Add(h.ToString(), s + "*" + hnum, 0);
-				for (int j = 1; j < 10; j++)
-				{
-					int slot = i * 10 + j;
-					var item2 = player.Inventory[slot];
-					int itemid = item2.Type;
-					int itemnum = item2.Stack;
-					l.Items[h.ToString()].SubItems.Add(GetItemNameFromId(itemid) + "*" + itemnum);
-				}
-			}
+			
 			l.EndUpdate();
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.

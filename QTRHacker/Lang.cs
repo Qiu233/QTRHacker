@@ -39,7 +39,7 @@ namespace QTRHacker
 		public static string fishOnlyCrates = "Fish only crates";
 		public static string Wiki = "Wiki", fishingPower = "Fish Skill", baitPower = "BaitPower", noPotionDelay = "No Potion Delay", killAllScreen = "Weapon Waving Kills All On Screen";
 		public static string placeStyle = "Data", allRecipe = "Enable all recipes", snowMoon = "Toggle Snow Moon", pumpkinMoon = "Toggle Pumpkin Moon", strengthen_Vampire_Knives = "Strengthen the Vampire Knives", burnAllNPC = "Burn all NPCs", randomUUID = "Random UUID";
-		public static string burnAllPlayer = "Burn All Player(without TShock)", dropLava = "Drop Lava On Player(Wasted)", addItem = "Add Item", newNpc = "Summon NPC", save = "Save", load = "Load", init = "Initialize";
+		public static string burnAllPlayer = "Burn All Player(without TShock)", dropLava = "Drop Lava Onto All Players", addItem = "Add Item", newNpc = "Summon NPC", save = "Save", load = "Load", init = "Initialize";
 		public static string convertTo = "Convert to", blockAttacking = "Waving attack blocks";
 
 #else
@@ -65,7 +65,7 @@ namespace QTRHacker
 		public static string fishOnlyCrates="只钓板条箱";
 		public static string Wiki = "百科", fishingPower = "钓技", baitPower = "鱼饵力度", noPotionDelay = "药水无冷却", killAllScreen = "挥砍击杀屏幕上所有生物";
         public static string placeStyle = "特殊值", allRecipe = "全物品合成", snowMoon = "开/关 霜月", pumpkinMoon = "开/关 南瓜月", strengthen_Vampire_Knives = "加强吸血飞刀", burnAllNPC = "燃烧所有NPC", randomUUID = "随机UUID";
-		public static string burnAllPlayer = "燃烧玩家(不支持TShock)",dropLava="给玩家倒岩浆(不可用)", addItem = "添加物品", newNpc = "召唤NPC", save = "保存", load = "加载", init = "初始化";
+		public static string burnAllPlayer = "燃烧玩家(不支持TShock)",dropLava="给所有玩家头上倒岩浆", addItem = "添加物品", newNpc = "召唤NPC", save = "保存", load = "加载", init = "初始化";
 		public static string convertTo = "转换到", blockAttacking = "可攻击方块";
 #endif
 	}

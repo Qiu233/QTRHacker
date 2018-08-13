@@ -334,20 +334,7 @@ namespace QTRHacker
 					this.Enabled = true;
 				}).Start();
 			}, null, false);
-			/*AddButton(buttonTabPage6, Lang.dropLava, 3, () =>
-			{
-				for (int i = 0; i < 50; i++)
-				{
-					if (!HackFunctions.getPlayerActive(i)) continue;
-					if (i == HackFunctions.getMyPlayer()) continue;
-					int X = (int)HackFunctions.getPlayerX(i) / 16;
-					int Y = (int)HackFunctions.getPlayerY(i) / 16;
-					HackFunctions.DropLiquid(X, Y, 32);
-					if (HackFunctions.GetNetMode() == 1)
-						HackFunctions.SendNetWater(X, Y);
-				}
-				return 1;
-			}, null, false);*/
+			AddButton(buttonTabPage6, Lang.dropLava, 3, Utils.DropLavaOntoPlayers, null, false);
 			Button u = null;
 			u = AddButton(buttonTabPage6, Lang.randomUUID, 4, (Context) =>
 			  {
@@ -356,7 +343,7 @@ namespace QTRHacker
 			  }, null, false);
 			u.Font = new Font("SimSun", 8);
 			AddButton(buttonTabPage6, "探索整个地图", 5, Utils.RevealMap, null, false);
-			AddButton(buttonTabPage6, "右键传送(不能重复开启/关闭)", 6, Utils.RightClickToTP, null, false);
+			AddButton(buttonTabPage6, "右键大地图传送(不能重复开启/关闭)", 6, Utils.RightClickToTP, null, false);
 
 
 
