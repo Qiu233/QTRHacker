@@ -249,7 +249,7 @@ fld dword ptr [ebp-0x3c]", 0);
 		{
 			int a = AobscanHelper.AobscanASM(
 				Context.HContext,
-				"mov byte ptr [esi+0x5c0],0\nmov byte ptr [esi+0x514],0\nmov ptr byte ptr [esi+0x5aa],0") - 6;
+				"mov byte ptr [esi+0x5c0],0\nmov byte ptr [esi+0x514],0\nmov byte ptr [esi+0x5aa],0") - 6;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
 				"mov dword ptr [esi+0x140],2"),
 				a, false, false);
