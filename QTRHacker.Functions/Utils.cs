@@ -336,7 +336,7 @@ push 0", 0);
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext,
-				"0f 8d 4F 01 00 00 8b 45") - 0x1a;
+				"0f 8d 4F 01 00 00 8b 45");
 			var bs = AobscanHelper.GetHexCodeFromString("90 90 90 90 90 90");
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, bs, bs.Length, 0);
 		}
@@ -344,7 +344,7 @@ push 0", 0);
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext,
-				"90 90 90 90 90 90 8B 45 A8 0B 45 A4") - 0x1a;
+				"90 90 90 90 90 90 8B 45 A8 0B 45 A4");
 			var bs = AobscanHelper.GetHexCodeFromString("0f 8d 4F 01 00 00 8b 45");
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, bs, bs.Length, 0);
 		}

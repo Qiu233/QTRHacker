@@ -134,13 +134,13 @@ namespace QTRHacker
 			};
 			Extra.Click += delegate (object sender, EventArgs e)
 			 {
-				 if (!CanHack)
-				 {
-					 MessageBox.Show(Lang.nonePlayerBase);
-					 return;
-				 }
 				 if (ExtraHack == null)
 				 {
+					 if (!CanHack)
+					 {
+						 MessageBox.Show(Lang.nonePlayerBase);
+						 return;
+					 }
 					 ExtraHack = new ExtraForm(Context);
 					 ExtraHack.Show(this);
 					 ExtraHack.Location = new Point(Location.X + Width, Location.Y);

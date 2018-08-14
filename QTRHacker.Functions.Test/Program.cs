@@ -17,7 +17,6 @@ namespace QTRHacker.Functions.Test
 	{
 		static void Main(string[] args)
 		{
-
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
 				Utils.DropLavaOntoPlayers(gc);
