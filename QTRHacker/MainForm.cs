@@ -451,7 +451,7 @@ namespace QTRHacker
 		{
 
 			BackColor = Color.LightGray;
-			cross = (Image)resource.res.GetObject("cross");
+			cross = Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.cross.png"));
 			mainWindow = this;
 			InitializeComponent();
 			InitControls();
