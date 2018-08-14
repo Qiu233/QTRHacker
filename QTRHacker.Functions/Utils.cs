@@ -187,14 +187,14 @@ fld dword ptr [ebp-0x3c]", 0);
 		{
 			int a = AobscanHelper.AobscanASM(
 				Context.HContext,
-				"mov [ebp-0x20],eax\ncmp byte [ebx+0xE7],0") + 11;
+				"mov [ebp-0x20],eax\ncmp byte ptr [ebx+0xE7],0") + 11;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, new byte[] { 0x8d }, 1, 0);
 		}
 		public static void ProjectileIgnoreTile_D(GameContext Context)
 		{
 			int a = AobscanHelper.AobscanASM(
 				Context.HContext,
-				"mov [ebp-0x20],eax\ncmp byte [ebx+0xE7],0") + 11;
+				"mov [ebp-0x20],eax\ncmp byte ptr [ebx+0xE7],0") + 11;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, new byte[] { 0x84 }, 1, 0);
 		}
 
@@ -202,7 +202,7 @@ fld dword ptr [ebp-0x3c]", 0);
 		{
 			int a = AobscanHelper.AobscanASM(
 				Context.HContext,
-				"mov [ebp-0x18],eax\ncmp byte [ebx+0x62e],0") + 3;
+				"mov [ebp-0x18],eax\ncmp byte ptr [ebx+0x62e],0") + 3;
 			int b = a + 0x7;
 			int c = a + 0xf;
 			int d = a + 0x14;
@@ -221,7 +221,7 @@ fld dword ptr [ebp-0x3c]", 0);
 		{
 			int a = AobscanHelper.AobscanASM(
 				Context.HContext,
-				"mov [ebp-0x18],eax\ncmp byte [ebx+0x62e],0") + 3;
+				"mov [ebp-0x18],eax\ncmp byte ptr [ebx+0x62e],0") + 3;
 			int b = a + 0x7;
 			int c = a + 0xf;
 			int d = a + 0x14;
@@ -237,7 +237,7 @@ fld dword ptr [ebp-0x3c]", 0);
 		{
 			int a = AobscanHelper.AobscanASM(
 				Context.HContext,
-				"mov byte [esi+0x5c0],0\nmov byte [esi+0x514],0\nmov byte [esi+0x5aa],0") - 6;
+				"mov byte ptr [esi+0x5c0],0\nmov byte ptr [esi+0x514],0\nmov byte ptr [esi+0x5aa],0") - 6;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
 				"mov dword ptr [esi+0x140],2"),
 				a, false, false);
@@ -249,7 +249,7 @@ fld dword ptr [ebp-0x3c]", 0);
 		{
 			int a = AobscanHelper.AobscanASM(
 				Context.HContext,
-				"mov byte [esi+0x5c0],0\nmov byte [esi+0x514],0\nmov byte [esi+0x5aa],0") - 6;
+				"mov byte ptr [esi+0x5c0],0\nmov byte ptr [esi+0x514],0\nmov ptr byte ptr [esi+0x5aa],0") - 6;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
 				"mov dword ptr [esi+0x140],2"),
 				a, false, false);
@@ -453,7 +453,7 @@ push 0", 0);
 				Context.HContext,
 				"d9 9e c0 03 00 00 88 96 f0 05 00 00") + 12;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte [esi+0x5f6],0x1"),
+				"mov byte ptr [esi+0x5f6],0x1"),
 				a, false, false);
 		}
 		public static void MachinicalRulerEffect_D(GameContext Context)
@@ -479,7 +479,7 @@ push 0", 0);
 				Context.HContext,
 				"88 96 F8 05 00 00 88 96 F9 05 00 00") - 6;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte [esi+0x5f7],0x1"),
+				"mov byte ptr [esi+0x5f7],0x1"),
 				a, false, false);
 		}
 		public static void RulerEffect_D(GameContext Context)
@@ -505,7 +505,7 @@ push 0", 0);
 				Context.HContext,
 				"88 96 1D 06 00 00 88 96 1E 06 00 00") - 6;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte [esi+0x62a],0x1"),
+				"mov byte ptr [esi+0x62a],0x1"),
 				a, false, false);
 		}
 		public static void ShowCircuit_D(GameContext Context)
@@ -529,9 +529,9 @@ push 0", 0);
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext,
-				"88 96 33 05 00 00 88 96 A9 05 00 00") - 6;
+				"00 00 88 96 33 05 00 00 88 96 A9 05 00 00") - 4;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte [esi+0x532],0x1"),
+				"mov byte ptr [esi+0x532],0x1"),
 				a, false, false);
 		}
 		public static void ShadowDodge_D(GameContext Context)

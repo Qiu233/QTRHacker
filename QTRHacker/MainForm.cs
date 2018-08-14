@@ -292,7 +292,7 @@ namespace QTRHacker
 				Form p = new Form();
 				ProgressBar pb = new ProgressBar();
 				Label tip = new Label(), percent = new Label();
-				tip.Text = "Burning NPCS...";
+				tip.Text = "Burning Players...";
 				tip.Location = new Point(0, 0);
 				tip.Size = new Size(150, 30);
 				tip.TextAlign = ContentAlignment.MiddleCenter;
