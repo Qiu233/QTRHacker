@@ -1,6 +1,0 @@
-[submodule "asmjit/asmjit"]
-	path = asmjit/asmjit
-	url = git@github.com:asmjit/asmjit.git
-[submodule "asmjit/asmtk"]
-	path = asmjit/asmtk
-	url = git@github.com:asmjit/asmtk.git
