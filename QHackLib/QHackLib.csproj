@@ -63,4 +63,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)..\nativedll\*.dll" "$(OutDir)" /D /F /K /R /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>
