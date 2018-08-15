@@ -363,6 +363,7 @@ namespace QTRHacker
 
 			//AddButton(buttonTabPage5, Lang.infernoEffect, 0, HackFunctions.InfernoEffect, HackFunctions.De_InfernoEffect);
 			AddButton(buttonTabPage5, Lang.shadowDodge, 1, Utils.ShadowDodge_E, Utils.ShadowDodge_D);
+			AddButton(buttonTabPage5, "显示隐身的玩家", 2, Utils.ShowInvisiblePlayers_E, Utils.ShowInvisiblePlayers_D);
 
 			LoadPlugins();
 		}

@@ -653,5 +653,22 @@ push 0", 0);
 			InlineHook.Inject(Context.HContext, ass,
 				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DoUpdate"), false);
 		}
+
+		public static void ShowInvisiblePlayers_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"75 37 8d 45 e8 83 ec 08 f3 0f 7e 00");
+			byte[] b = new byte[] { 0x90, 0x90 };
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, 2, 0);
+		}
+		public static void ShowInvisiblePlayers_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"90 90 8d 45 e8 83 ec 08 f3 0f 7e 00");
+			byte[] b = new byte[] { 0x75, 0x37 };
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, 2, 0);
+		}
 	}
 }
