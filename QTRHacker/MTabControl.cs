@@ -10,8 +10,8 @@ namespace QTRHacker
 {
 	public class MTabControl : TabControl
 	{
-		private Color bColor = Color.FromArgb(200, 200, 200);
-		private Color tColor = Color.FromArgb(160, 160, 200);
+		public Color bColor = Color.FromArgb(200, 200, 200);
+		public Color tColor = Color.FromArgb(160, 160, 200);
 		public MTabControl()
 		{
 			SetStyle(ControlStyles.UserPaint | 

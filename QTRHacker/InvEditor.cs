@@ -486,8 +486,8 @@ namespace QTRHacker
 					{
 						j++;
 						MainForm.mainWindow.Enabled = false;
-						if (ExtraForm.Window != null)
-							ExtraForm.Window.Enabled = false;
+						if (ExtForm.Window != null)
+							ExtForm.Window.Enabled = false;
 						this.Enabled = false;
 
 						File.WriteAllText(sfd.FileName, Context.MyPlayer.SerializeInventoryWithProperties());
@@ -495,8 +495,8 @@ namespace QTRHacker
 						j++;
 
 						this.Enabled = true;
-						if (ExtraForm.Window != null)
-							ExtraForm.Window.Enabled = true;
+						if (ExtForm.Window != null)
+							ExtForm.Window.Enabled = true;
 						MainForm.mainWindow.Enabled = true;
 					}
 					).Start();
@@ -552,8 +552,8 @@ namespace QTRHacker
 					{
 						j++;
 						MainForm.mainWindow.Enabled = false;
-						if (ExtraForm.Window != null)
-							ExtraForm.Window.Enabled = false;
+						if (ExtForm.Window != null)
+							ExtForm.Window.Enabled = false;
 						this.Enabled = false;
 
 						Context.MyPlayer.DeserializeInventoryWithProperties(File.ReadAllText(ofd.FileName));
@@ -561,8 +561,8 @@ namespace QTRHacker
 						j++;
 
 						this.Enabled = true;
-						if (ExtraForm.Window != null)
-							ExtraForm.Window.Enabled = true;
+						if (ExtForm.Window != null)
+							ExtForm.Window.Enabled = true;
 						MainForm.mainWindow.Enabled = true;
 					}
 					).Start();
@@ -852,8 +852,8 @@ namespace QTRHacker
 			new System.Threading.Thread((s) =>
 			{
 				MainForm.mainWindow.Enabled = false;
-				if (ExtraForm.Window != null)
-					ExtraForm.Window.Enabled = false;
+				if (ExtForm.Window != null)
+					ExtForm.Window.Enabled = false;
 				this.Enabled = false;
 				var player = Context.MyPlayer;
 				BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open));
@@ -914,8 +914,8 @@ namespace QTRHacker
 				}
 				br.Close();
 				this.Enabled = true;
-				if (ExtraForm.Window != null)
-					ExtraForm.Window.Enabled = true;
+				if (ExtForm.Window != null)
+					ExtForm.Window.Enabled = true;
 				MainForm.mainWindow.Enabled = true;
 			}
 			).Start();

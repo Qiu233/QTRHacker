@@ -80,11 +80,11 @@
     <Compile Include="AntiBlinkListView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ExtraForm.cs">
+    <Compile Include="ExtForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExtraForm.designer.cs">
-      <DependentUpon>ExtraForm.cs</DependentUpon>
+    <Compile Include="ExtForm.designer.cs">
+      <DependentUpon>ExtForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InfoView.cs">
       <SubType>UserControl</SubType>
@@ -95,6 +95,9 @@
     </Compile>
     <Compile Include="InvEditor.designer.cs">
       <DependentUpon>InvEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemsTabPage.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Lang.cs" />
     <Compile Include="MainForm.cs">
@@ -122,13 +125,19 @@
     <Compile Include="ScriptForm.Designer.cs">
       <DependentUpon>ScriptForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SpecialForm.cs">
+    <Compile Include="AdvForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SpecialForm.designer.cs">
-      <DependentUpon>SpecialForm.cs</DependentUpon>
+    <Compile Include="AdvForm.designer.cs">
+      <DependentUpon>AdvForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TextBoxWriter.cs" />
+    <Compile Include="WikiForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WikiForm.Designer.cs">
+      <DependentUpon>WikiForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -140,7 +149,8 @@
     </Compile>
     <EmbeddedResource Include="Res.resx" />
     <None Include="ItemImage.bin" />
-    <None Include="ItemInfo.bin" />
+    <EmbeddedResource Include="ItemInfo.json" />
+    <EmbeddedResource Include="ItemInfo_cn.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -151,6 +161,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="RecipeInfo.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -166,21 +177,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BuffID.txt" />
     <EmbeddedResource Include="cross.png" />
-    <Content Include="Debuff.txt" />
     <Content Include="Icon.ico" />
-    <Content Include="ItemID.txt" />
-    <Content Include="ItemID_Eng.txt" />
-    <Content Include="Mount.txt" />
-    <Content Include="Mount_Eng.txt" />
-    <Content Include="Pet.txt" />
-    <Content Include="Pet_Eng.txt" />
-    <Content Include="PreFix.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <ProjectExtensions />
 </Project>

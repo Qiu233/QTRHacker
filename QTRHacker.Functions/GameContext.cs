@@ -14,7 +14,7 @@ namespace QTRHacker.Functions
 	public class GameContext : IDisposable
 	{
 		private int My_Player_Address;
-
+		public const int MaxItemTypes = 3930;
 
 		public Context HContext
 		{

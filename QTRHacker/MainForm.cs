@@ -36,7 +36,7 @@ namespace QTRHacker
 
 		public delegate void HackFunc(GameContext c);
 		private Button Extra, Script;
-		private ExtraForm ExtraHack = null;
+		private ExtForm ExtraHack = null;
 		private ScriptForm ScriptForm = null;
 		private TabControl mainTab;
 		private TabPage buttonTabPage1;
@@ -141,7 +141,7 @@ namespace QTRHacker
 						 MessageBox.Show(Lang.nonePlayerBase);
 						 return;
 					 }
-					 ExtraHack = new ExtraForm(Context);
+					 ExtraHack = new ExtForm(Context);
 					 ExtraHack.Show(this);
 					 ExtraHack.Location = new Point(Location.X + Width, Location.Y);
 					 Extra.Font = new Font("Arial", 10, FontStyle.Bold);
@@ -275,14 +275,14 @@ namespace QTRHacker
 				new Thread(() =>
 				{
 					this.Enabled = false;
-					if (ExtraForm.Window != null)
-						ExtraForm.Window.Enabled = false;
+					if (ExtForm.Window != null)
+						ExtForm.Window.Enabled = false;
 					var npc = Context.NPC;
 					for (; i < NPC.MAXNUMBER; i++)
 						if (npc[i].Active)
 							npc[i].AddBuff(0x99, 216000);
-					if (ExtraForm.Window != null)
-						ExtraForm.Window.Enabled = true;
+					if (ExtForm.Window != null)
+						ExtForm.Window.Enabled = true;
 					this.Enabled = true;
 				}).Start();
 			}, null, false);
@@ -323,14 +323,14 @@ namespace QTRHacker
 				new Thread(() =>
 				{
 					this.Enabled = false;
-					if (ExtraForm.Window != null)
-						ExtraForm.Window.Enabled = false;
+					if (ExtForm.Window != null)
+						ExtForm.Window.Enabled = false;
 					var player = Context.Players;
 					for (; i < NPC.MAXNUMBER; i++)
 						if (player[i].Active)
 							player[i].AddBuff(44, 216000);
-					if (ExtraForm.Window != null)
-						ExtraForm.Window.Enabled = true;
+					if (ExtForm.Window != null)
+						ExtForm.Window.Enabled = true;
 					this.Enabled = true;
 				}).Start();
 			}, null, false);

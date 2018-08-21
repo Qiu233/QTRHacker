@@ -11,84 +11,59 @@ namespace QTRHacker
 {
 	public class InfoView : UserControl
 	{
-		public enum View
+		public enum Dock
 		{
-			Image, Text, None
+			Top, Left, Down, Right
 		}
-		public string TipString { get { return Tip.Text; } set { Tip.Text = value; } }
-		public string TextString { get { return ValueText.Text; } set { ValueText.Text = value; } }
-		public Color TipColor { get { return Tip.BackColor; } set { Tip.BackColor = value; } }
-		public Image Image
+		public override string Text
 		{
-			get { return Pic.Image; }
-			set
-			{
-				Pic.Image = value;
-			}
+			get => Tip.Text;
+			set => Tip.Text = value;
 		}
-		private Label Tip;
-		private TextBox ValueText;
-		private PictureBox Pic;
-		private View view;
-		public InfoView(int width, int height, View v, ContentAlignment ca)
+		public Label Tip
 		{
-			Size = new Size(width, height);
-			view = v;
-			BorderStyle = BorderStyle.FixedSingle;
-			Tip = new Label();
-			Tip.Width = width;
-			Tip.Height = 20;
-			Tip.TextAlign = ContentAlignment.MiddleCenter;
-			Tip.BorderStyle = BorderStyle.FixedSingle;
+			get;
+		}
+		public Control View
+		{
+			get;
+		}
+		private Dock ViewDock;
+		private int TipWidth;
+		public InfoView(Control View, Dock Dock, bool Border = true, int TipWidth = 40)
+		{
+			this.TipWidth = TipWidth;
+			this.View = View;
+			this.ViewDock = Dock;
+			this.Tip = new Label();
+			this.Tip.BorderStyle = BorderStyle.FixedSingle;
+			this.BorderStyle = Border ? BorderStyle.FixedSingle : BorderStyle.None;
+			this.Tip.TextAlign = ContentAlignment.MiddleCenter;
 			this.Controls.Add(Tip);
-			if (ca == ContentAlignment.TopCenter)
+			this.Controls.Add(View);
+		}
+		protected override void OnSizeChanged(EventArgs e)
+		{
+			base.OnSizeChanged(e);
+			switch (ViewDock)
 			{
-				if (v == View.Text)
-				{
-					ValueText = new TextBox();
-					ValueText.Multiline = true;
-					ValueText.Location = new Point(0, 20);
-					ValueText.Width = width;
-					ValueText.Height = height - 20;
-					ValueText.BorderStyle = BorderStyle.FixedSingle;
-					this.Controls.Add(ValueText);
-				}
-				else if (v == View.Image)
-				{
-					Pic = new PictureBox();
-					Pic.SizeMode = PictureBoxSizeMode.CenterImage;
-					Pic.Location = new Point(0, 20);
-					Pic.Width = width;
-					Pic.Height = height - 20;
-					Pic.BorderStyle = BorderStyle.FixedSingle;
-					this.Controls.Add(Pic);
-				}
-				else
-				{
-					Tip.Height = this.Height;
-				}
-			}
-			else if (ca == ContentAlignment.MiddleLeft)
-			{
-				Tip.Width = width / 2;
-				Tip.Height = height;
-				if (v == View.Text)
-				{
-					ValueText = new TextBox();
-					ValueText.Multiline = true;
-					ValueText.TextAlign = HorizontalAlignment.Center;
-					ValueText.Location = new Point(Tip.Width, 0);
-					ValueText.Width = width - Tip.Width;
-					ValueText.Height = height;
-					ValueText.BorderStyle = BorderStyle.FixedSingle;
-					this.Controls.Add(ValueText);
-				}
-				else
-				{
-					Tip.Height = this.Height;
-				}
+				case Dock.Top:
+					Tip.Bounds = new Rectangle(0, 0, Width, 20);
+					View.Bounds = new Rectangle(0, 20, Width, Height - 20);
+					break;
+				case Dock.Left:
+					Tip.Bounds = new Rectangle(0, 0, TipWidth, Height);
+					View.Bounds = new Rectangle(TipWidth, 0, Width - TipWidth, Height);
+					break;
+				case Dock.Down:
+					Tip.Bounds = new Rectangle(0, Height - 20, Width, 20);
+					View.Bounds = new Rectangle(0, 0, Width, Height - 20);
+					break;
+				case Dock.Right:
+					Tip.Bounds = new Rectangle(Width - TipWidth, 0, TipWidth, Height);
+					View.Bounds = new Rectangle(0, 0, Width - TipWidth, Height);
+					break;
 			}
 		}
-
 	}
 }
