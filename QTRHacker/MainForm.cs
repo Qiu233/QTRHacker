@@ -159,7 +159,7 @@ namespace QTRHacker
 			{
 				Location = new Point(200, 50),
 				Size = new Size(50, 25),
-				Text = "脚本"
+				Text = Lang.script
 			};
 			Script.Click += delegate (object sender, EventArgs e)
 			{
@@ -342,8 +342,8 @@ namespace QTRHacker
 				  u.Text = Lang.randomUUID + ":" + Context.UUID;
 			  }, null, false);
 			u.Font = new Font("SimSun", 8);
-			AddButton(buttonTabPage6, "探索整个地图", 5, Utils.RevealMap, null, false);
-			AddButton(buttonTabPage6, "右键大地图传送(不能重复开启/关闭)", 6, Utils.RightClickToTP, null, false);
+			AddButton(buttonTabPage6, Lang.exploreAll, 5, Utils.RevealMap, null, false);
+			AddButton(buttonTabPage6, Lang.rightClickToTP, 6, Utils.RightClickToTP, null, false);
 
 
 
@@ -363,7 +363,7 @@ namespace QTRHacker
 
 			//AddButton(buttonTabPage5, Lang.infernoEffect, 0, HackFunctions.InfernoEffect, HackFunctions.De_InfernoEffect);
 			AddButton(buttonTabPage5, Lang.shadowDodge, 1, Utils.ShadowDodge_E, Utils.ShadowDodge_D);
-			AddButton(buttonTabPage5, "显示隐身的玩家", 2, Utils.ShowInvisiblePlayers_E, Utils.ShowInvisiblePlayers_D);
+			AddButton(buttonTabPage5, Lang.showInvisiblePlayers, 2, Utils.ShowInvisiblePlayers_E, Utils.ShowInvisiblePlayers_D);
 
 			LoadPlugins();
 		}

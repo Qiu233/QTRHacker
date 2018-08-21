@@ -344,16 +344,16 @@ namespace QTRHacker
 			AddTextBox(Lang.crit, "Crit", null);
 			AddTextBox(Lang.buff, "BuffType", null);
 			AddTextBox(Lang.buffTime, "BuffTime", null);
-			AddTextBox(Lang.manaInc, "HealMana", null);
-			AddTextBox(Lang.lifeIncrease, "HealLife", null);
+			AddTextBox(Lang.healMana, "HealMana", null);
+			AddTextBox(Lang.healLife, "HealLife", null);
 			AddTextBox(Lang.useCD, "UseTime", null);
 			AddTextBox(Lang.waveCD, "UseAnimation", null);
 			AddTextBox(Lang.scale, "Scale", null, true);
 			AddTextBox(Lang.defense, "Defense", null);
 			AddTextBox(Lang.projSpeed, "ShootSpeed", null, true);
 			AddTextBox(Lang.projID, "Shoot", null);
-			AddTextBox(Lang.dig, "Pick", null);
-			AddTextBox(Lang.hag, "Axe", null);
+			AddTextBox(Lang.pick, "Pick", null);
+			AddTextBox(Lang.axe, "Axe", null);
 			AddTextBox(Lang.hammer, "Hammer", null);
 			AddTextBox(Lang.digRange, "TileBoost", null);
 			AddTextBox(Lang.tileID, "CreateTile", null);
@@ -502,7 +502,7 @@ namespace QTRHacker
 					).Start();
 				}
 			};
-			SaveInvPItem.Text = "保存(P)";
+			SaveInvPItem.Text = Lang.save + "(P)";
 			SaveInvPItem.Size = new Size(80, 30);
 			SaveInvPItem.Location = new Point(260, 120);
 			HackPanel.Controls.Add(SaveInvPItem);
@@ -568,7 +568,7 @@ namespace QTRHacker
 					).Start();
 				}
 			};
-			LoadInvPItem.Text = "加载(P)";
+			LoadInvPItem.Text = Lang.load + "(P)";
 			LoadInvPItem.Size = new Size(80, 30);
 			LoadInvPItem.Location = new Point(260, 150);
 			HackPanel.Controls.Add(LoadInvPItem);
