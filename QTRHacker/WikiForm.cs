@@ -17,7 +17,6 @@ namespace QTRHacker
 	{
 		private MTabControl MainTab;
 		private ItemsTabPage ItemsTabPage;
-		private ListView ItemListView;
 		public WikiForm()
 		{
 			InitializeComponent();
@@ -28,7 +27,6 @@ namespace QTRHacker
 			MainTab.tColor = Color.Gray;
 
 			ItemsTabPage = new ItemsTabPage() { Text = "Items" };
-			ItemsTabPage.Controls.Add(ItemListView);
 
 
 			MainTab.TabPages.Add(ItemsTabPage);
