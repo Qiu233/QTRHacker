@@ -19,8 +19,8 @@ namespace QTRHacker
 		public ListView ItemListView;
 		private TabControl InfoTabs;
 		private TabPage ItemInfoPage, AccInfoPage, SearcherPage;
-		private JArray Items, Items_cn;
-		private JArray Recipes;
+		private static JArray Items, Items_cn;
+		private static JArray Recipes;
 		private InfoView ItemIconInfoView, ItemNameInfoView, ItemTypeInfoView, ItemRareInfoView, ItemDescriptionInfoView, ItemRecipeFromInfoView, ItemRecipeToInfoView, ItemValueInfoView;
 		private InfoView ItemIcon2InfoView, ItemPickaxeInfoView, ItemAxeInfoView, ItemHammerInfoView, ItemDamageInfoView, ItemDefenseInfoView, ItemCritInfoView, ItemUseTimeInfoView, ItemKnockbackInfoView;
 		private InfoView ItemHealLifeInfoView, ItemHealManaInfoView, ItemManaConsumeInfoView, ItemBaitInfoView, ItemShootInfoView, ItemShootSpeedInfoView, ItemCreateTileInfoView, ItemBuffTypeInfoView, ItemBuffTimeInfoView, ItemUseAnimationInfoView, ItemPlaceStyleInfoView, ItemCreateWallInfoView, ItemTileBoostInfoView;
@@ -35,18 +35,15 @@ namespace QTRHacker
 		}
 		public ItemsTabPage()
 		{
-			using (var u = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.ItemInfo.json")))
-			{
-				Items = JArray.Parse(u.ReadToEnd());
-			}
-			using (var u = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.ItemInfo_cn.json")))
-			{
-				Items_cn = JArray.Parse(u.ReadToEnd());
-			}
-			using (var u = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.RecipeInfo.json")))
-			{
-				Recipes = JArray.Parse(u.ReadToEnd());
-			}
+			if (Items == null)
+				using (var u = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.ItemInfo.json")))
+					Items = JArray.Parse(u.ReadToEnd());
+			if (Items_cn == null)
+				using (var u = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.ItemName_cn.json")))
+					Items_cn = JArray.Parse(u.ReadToEnd());
+			if (Recipes == null)
+				using (var u = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.RecipeInfo.json")))
+					Recipes = JArray.Parse(u.ReadToEnd());
 			this.BackColor = Color.LightGray;
 			this.BorderStyle = BorderStyle.None;
 
@@ -413,7 +410,7 @@ namespace QTRHacker
 				filterGroupBox.Controls.Add(OthersCheckBox);
 
 				Label tipSearch = new Label();
-				tipSearch.Text = Lang.keyWord+":";
+				tipSearch.Text = Lang.keyWord + ":";
 				tipSearch.Bounds = new Rectangle(15, 133, 50, 20);
 
 				KeyWordTextBox = new TextBox();
@@ -680,7 +677,7 @@ namespace QTRHacker
 					if (itm["type"].ToString() == "0" || !Filter(itm)) continue;
 					bool flag = false;
 					flag |= itm["type"].ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= Items_cn[i]["Name"].ToString().ToLower().Contains(KeyWord.ToLower());
+					flag |= Items_cn[i].ToString().ToLower().Contains(KeyWord.ToLower());
 					flag |= itm["Name"].ToString().ToLower().Contains(KeyWord.ToLower());
 					flag |= itm["shoot"].ToString().ToLower().Contains(KeyWord.ToLower());
 					flag |= itm["createTile"].ToString().ToLower().Contains(KeyWord.ToLower());
@@ -691,7 +688,7 @@ namespace QTRHacker
 						lvi.Name = itm["type"].ToString();
 						lvi.SubItems.Add(itm["rare"].ToString());
 						lvi.SubItems.Add(itm["Name"].ToString());
-						lvi.SubItems.Add(Items_cn[i]["Name"].ToString());
+						lvi.SubItems.Add(Items_cn[i].ToString());
 						lvi.SubItems.Add(GetItemType(itm));
 						ItemListView.Items.Add(lvi);
 					}
