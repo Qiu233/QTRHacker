@@ -16,22 +16,26 @@ namespace QTRHacker.PlayerEditor
 {
 	public class ItemIcon : PictureBox
 	{
-		public int Number;
+		public int Number, ID;
 		public bool Selected = false;
 		private int lastID;
 		private ToolTip Tip;
 		private GameContext Context;
-		private ItemSlots Slots;
-		public ItemIcon(GameContext Context, ItemSlots slots, int num)
+		public ItemSlots Slots
+		{
+			get;
+		}
+		public ItemIcon(GameContext Context, ItemSlots slots, int num,int id)
 		{
 			this.Context = Context;
 			Slots = slots;
 			Number = num;
+			ID = id;
 			Tip = new ToolTip();
 		}
 		protected override void OnPaint(PaintEventArgs pe)
 		{
-			var item = Slots[Number];
+			var item = Slots[ID];
 			int nowID = item.Type;
 			if (lastID != nowID)
 			{

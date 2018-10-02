@@ -74,7 +74,7 @@ namespace QTRHacker.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)(i / 10));
 				int off = i % 10;
-				ItemSlots[i] = new ItemIcon(Context, Context.MyPlayer.Inventory, i)
+				ItemSlots[i] = new ItemIcon(Context, Context.MyPlayer.Inventory, i, i)
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),

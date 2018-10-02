@@ -44,7 +44,7 @@ namespace QTRHacker.PlayerEditor
 
 			Label Members = new Label();
 			Members.Bounds = new Rectangle(275, 165, 270, 105);
-			Members.BackColor = Color.FromArgb(201,200,170);
+			Members.BackColor = Color.FromArgb(201, 200, 170);
 			Members.Text = "鸣谢(同一批排名不分先后)：\n" +
 				"第一批：Qiu(作者),帅哭,白鼠,魄沫,子不语,\n小兲,鱼,子落,永夜,欧酋,子程,恋恋\n" +
 	"第二批：司机熊,呆呆,子渔,凤凰蛇,提灯,南风南,Ronin,男人,天然大豆,清辞,晨曦(御龙),袁瑞,mz,dio,锐,firmament,面条,心醉\n" +
@@ -84,7 +84,7 @@ namespace QTRHacker.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)(i / 10));
 				int off = i % 10;
-				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.Armor, i)
+				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.Armor, i, i)
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
@@ -100,7 +100,7 @@ namespace QTRHacker.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)(i / 10));
 				int off = i % 10;
-				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.Dye, i - Player.ARMOR_MAX_COUNT)
+				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.Dye, i, i - Player.ARMOR_MAX_COUNT)
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
@@ -116,7 +116,7 @@ namespace QTRHacker.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)(i / 10));
 				int off = i % 10;
-				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.Misc, i - (Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT))
+				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.Misc, i, i - (Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT))
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
@@ -132,7 +132,7 @@ namespace QTRHacker.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)((i + 5) / 10));
 				int off = (i + 5) % 10;
-				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.MiscDye, i - (Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT))
+				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.MiscDye, i, i - (Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT))
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
@@ -246,7 +246,7 @@ namespace QTRHacker.PlayerEditor
 			{
 				s.Selected = false;
 			}
-						((ItemIcon)sender).Selected = true;
+			((ItemIcon)sender).Selected = true;
 			SlotsPanel.Refresh();
 			Selected = ((ItemIcon)sender).Number;
 			InitData(Selected);
@@ -261,22 +261,8 @@ namespace QTRHacker.PlayerEditor
 		}
 		private Item GetTargetItem(int slot)
 		{
-
-			Item item = null;
-			var player = Context.MyPlayer;
-			if (slot >= 0 && slot < Player.ARMOR_MAX_COUNT)
-				item = player.Armor[slot];
-			else if (slot >= Player.ARMOR_MAX_COUNT && slot < Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT)
-				item = player.Dye[slot - Player.ARMOR_MAX_COUNT];
-			else if (slot >= Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT &&
-				slot < Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT)
-				item = player.Misc[slot - (Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT)];
-			else if (slot >= Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT &&
-				slot < Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT)
-				item = player.MiscDye[slot - (Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT)];
-			else
-				item = player.Inventory[0];
-			return item;
+			var a = ArmorSlots[Selected];
+			return a.Slots[a.ID];
 		}
 		private void InitData(int slot)
 		{
