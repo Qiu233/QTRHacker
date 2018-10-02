@@ -102,7 +102,13 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="INI.cs" />
+    <Compile Include="PlayerEditor\ArmorEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PlayerEditor\InvEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\ItemPropertiesPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PlayerEditor\PlayerEditorForm.cs">

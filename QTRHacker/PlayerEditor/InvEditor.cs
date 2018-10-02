@@ -13,17 +13,14 @@ namespace QTRHacker.PlayerEditor
 {
 	public class InvEditor : TabPage
 	{
-		private int ControlID = 0;
-		private Hashtable hacks;
-		private Panel HackPanel, AltPanel;
+		private Panel AltPanel;
+		private ItemPropertiesPanel ItemPropertiesPanel;
 		private ItemIcon[] ItemSlots;
 		private AltItemIcon[] AltSlots;
 		private const int AltPanelWidth = 90, AltPanelHeight = 270, AltGap = 3, AltWidth = 30 - AltGap, HackPanelHeight = 360;
 		private const int SlotsWidth = 50;
 		private const int SlotsGap = 5;
 		private Panel SlotsPanel;
-		private CheckBox AutoReuse, Equippable;
-		private ComboBox PrefixComboBox;
 		private Timer timer;
 		private int Selected = 0, LastSelectedID = 0;
 		private AltItemIcon AltSelected;
@@ -38,14 +35,13 @@ namespace QTRHacker.PlayerEditor
 			this.ParentForm = ParentForm;
 			Text = "背包";
 			BackColor = Color.LightGray;
-			hacks = new Hashtable();
-			HackPanel = new Panel();
+			ItemPropertiesPanel = new ItemPropertiesPanel();
 			ItemSlots = new ItemIcon[Player.ITEM_MAX_COUNT - 9];
 			AltSlots = new AltItemIcon[AltPanelWidth * AltPanelHeight];
 
 			SlotsPanel = new Panel();
 
-			SlotsPanel.Size = new Size(ItemSlots.Length / 5 * (SlotsWidth + SlotsGap), 360);
+			SlotsPanel.Size = new Size(10 * (SlotsWidth + SlotsGap), 300);
 			SlotsPanel.Location = new Point(5, 5);
 			this.Controls.Add(SlotsPanel);
 
@@ -78,7 +74,7 @@ namespace QTRHacker.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)(i / 10));
 				int off = i % 10;
-				ItemSlots[i] = new ItemIcon(Context, i)
+				ItemSlots[i] = new ItemIcon(Context, Context.MyPlayer.Inventory, i)
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
@@ -280,54 +276,10 @@ namespace QTRHacker.PlayerEditor
 			}
 			br.Close();
 
-			HackPanel.Location = new Point(ItemSlots.Length / 5 * (SlotsWidth + SlotsGap) + 105, 5);
-			HackPanel.Size = new Size(350, HackPanelHeight);
-			this.Controls.Add(HackPanel);
+			ItemPropertiesPanel.Location = new Point(ItemSlots.Length / 5 * (SlotsWidth + SlotsGap) + 105, 5);
+			ItemPropertiesPanel.Size = new Size(350, HackPanelHeight);
+			this.Controls.Add(ItemPropertiesPanel);
 
-
-
-
-			AddTextBox(Lang.itemID, "Type", null);
-			AddTextBox(Lang.damage, "Damage", null);
-			AddTextBox(Lang.number, "Stack", null);
-			AddTextBox(Lang.knockBack, "KnockBack", null, true);
-			AddTextBox(Lang.crit, "Crit", null);
-			AddTextBox(Lang.buff, "BuffType", null);
-			AddTextBox(Lang.buffTime, "BuffTime", null);
-			AddTextBox(Lang.healMana, "HealMana", null);
-			AddTextBox(Lang.healLife, "HealLife", null);
-			AddTextBox(Lang.useCD, "UseTime", null);
-			AddTextBox(Lang.waveCD, "UseAnimation", null);
-			AddTextBox(Lang.scale, "Scale", null, true);
-			AddTextBox(Lang.defense, "Defense", null);
-			AddTextBox(Lang.projSpeed, "ShootSpeed", null, true);
-			AddTextBox(Lang.projID, "Shoot", null);
-			AddTextBox(Lang.pick, "Pick", null);
-			AddTextBox(Lang.axe, "Axe", null);
-			AddTextBox(Lang.hammer, "Hammer", null);
-			AddTextBox(Lang.digRange, "TileBoost", null);
-			AddTextBox(Lang.tileID, "CreateTile", null);
-			AddTextBox(Lang.placeStyle, "PlaceStyle", null);
-			AddTextBox(Lang.fishingPower, "FishingPole", null);
-			AddTextBox(Lang.baitPower, "Bait", null);
-
-			PrefixComboBox = AddComboBox(Lang.prefix, MainForm.resource.Prefix);
-
-			AutoReuse = new CheckBox()
-			{
-				Text = Lang.autoReuse,
-				Size = new Size(130, 20),
-				Location = new Point(0, 245)
-			};
-			HackPanel.Controls.Add(AutoReuse);
-
-			Equippable = new CheckBox()
-			{
-				Text = Lang.equippable,
-				Size = new Size(130, 20),
-				Location = new Point(135, 245)
-			};
-			HackPanel.Controls.Add(Equippable);
 
 			Button OK = new Button();
 			OK.Click += (sender, e) =>
@@ -339,7 +291,7 @@ namespace QTRHacker.PlayerEditor
 			OK.Text = Lang.confirmHack;
 			OK.Size = new Size(80, 30);
 			OK.Location = new Point(260, 0);
-			HackPanel.Controls.Add(OK);
+			ItemPropertiesPanel.Controls.Add(OK);
 
 
 			Button Refresh = new Button();
@@ -351,7 +303,7 @@ namespace QTRHacker.PlayerEditor
 			Refresh.Text = Lang.refresh;
 			Refresh.Size = new Size(80, 30);
 			Refresh.Location = new Point(260, 30);
-			HackPanel.Controls.Add(Refresh);
+			ItemPropertiesPanel.Controls.Add(Refresh);
 
 
 			Button SaveInv = new Button();
@@ -370,7 +322,7 @@ namespace QTRHacker.PlayerEditor
 			SaveInv.Text = Lang.save;
 			SaveInv.Size = new Size(80, 30);
 			SaveInv.Location = new Point(260, 60);
-			HackPanel.Controls.Add(SaveInv);
+			ItemPropertiesPanel.Controls.Add(SaveInv);
 
 			Button LoadInv = new Button();
 			LoadInv.Click += (sender, e) =>
@@ -389,7 +341,7 @@ namespace QTRHacker.PlayerEditor
 			LoadInv.Text = Lang.load;
 			LoadInv.Size = new Size(80, 30);
 			LoadInv.Location = new Point(260, 90);
-			HackPanel.Controls.Add(LoadInv);
+			ItemPropertiesPanel.Controls.Add(LoadInv);
 
 			Button SaveInvPItem = new Button();
 			SaveInvPItem.Click += (sender, e) =>
@@ -410,7 +362,7 @@ namespace QTRHacker.PlayerEditor
 			SaveInvPItem.Text = Lang.save + "(P)";
 			SaveInvPItem.Size = new Size(80, 30);
 			SaveInvPItem.Location = new Point(260, 120);
-			HackPanel.Controls.Add(SaveInvPItem);
+			ItemPropertiesPanel.Controls.Add(SaveInvPItem);
 
 			Button LoadInvPItem = new Button();
 			LoadInvPItem.Click += (sender, e) =>
@@ -476,15 +428,15 @@ namespace QTRHacker.PlayerEditor
 			LoadInvPItem.Text = Lang.load + "(P)";
 			LoadInvPItem.Size = new Size(80, 30);
 			LoadInvPItem.Location = new Point(260, 150);
-			HackPanel.Controls.Add(LoadInvPItem);
+			ItemPropertiesPanel.Controls.Add(LoadInvPItem);
 
 			Button InitItem = new Button();
 			InitItem.Click += (sender, e) =>
 			{
 				Item item = Context.MyPlayer.Inventory[Selected];
-				item.SetDefaults(Convert.ToInt32(((TextBox)hacks["Type"]).Text));
-				item.SetPrefix(GetPrefixFromIndex(PrefixComboBox.SelectedIndex));
-				int stack = Convert.ToInt32(((TextBox)hacks["Stack"]).Text);
+				item.SetDefaults(Convert.ToInt32(((TextBox)ItemPropertiesPanel.Hack["Type"]).Text));
+				item.SetPrefix(GetPrefixFromIndex(ItemPropertiesPanel.SelectedPrefix));
+				int stack = Convert.ToInt32(((TextBox)ItemPropertiesPanel.Hack["Stack"]).Text);
 				item.Stack = stack == 0 ? 1 : stack;
 				RefreshSelected();
 				InitData(Selected);
@@ -492,7 +444,7 @@ namespace QTRHacker.PlayerEditor
 			InitItem.Text = Lang.init;
 			InitItem.Size = new Size(80, 30);
 			InitItem.Location = new Point(260, 180);
-			HackPanel.Controls.Add(InitItem);
+			ItemPropertiesPanel.Controls.Add(InitItem);
 
 			ItemSlots[0].Selected = true;
 			InitData(0);
@@ -523,7 +475,7 @@ namespace QTRHacker.PlayerEditor
 		{
 			Item item = Context.MyPlayer.Inventory[slot];
 			Type t = typeof(Item);
-			foreach (DictionaryEntry de in hacks)
+			foreach (DictionaryEntry de in ItemPropertiesPanel.Hack)
 			{
 				object[] args = new object[1];
 				args[0] = slot;
@@ -534,20 +486,20 @@ namespace QTRHacker.PlayerEditor
 
 			}
 			{
-				PrefixComboBox.SelectedIndex = GetIndexFromPrefix(item.Prefix);
+				ItemPropertiesPanel.SelectedPrefix = GetIndexFromPrefix(item.Prefix);
 			}
 			{
-				AutoReuse.CheckState = item.AutoReuse ? CheckState.Checked : CheckState.Unchecked;
+				ItemPropertiesPanel.AutoReuse = item.AutoReuse ? CheckState.Checked : CheckState.Unchecked;
 			}
 			{
-				Equippable.CheckState = item.Accessory ? CheckState.Checked : CheckState.Unchecked;
+				ItemPropertiesPanel.Equippable = item.Accessory ? CheckState.Checked : CheckState.Unchecked;
 			}
 		}
 		private void ApplyData(int slot)
 		{
 			Item item = Context.MyPlayer.Inventory[slot];
 			Type t = typeof(Item);
-			foreach (DictionaryEntry de in hacks)
+			foreach (DictionaryEntry de in ItemPropertiesPanel.Hack)
 			{
 				object[] args = new object[1];
 				args[0] = slot;
@@ -571,13 +523,13 @@ namespace QTRHacker.PlayerEditor
 
 			}
 			{
-				item.Prefix = GetPrefixFromIndex(PrefixComboBox.SelectedIndex);
+				item.Prefix = GetPrefixFromIndex(ItemPropertiesPanel.SelectedPrefix);
 			}
 			{
-				item.AutoReuse = AutoReuse.CheckState == CheckState.Checked;
+				item.AutoReuse = ItemPropertiesPanel.AutoReuse == CheckState.Checked;
 			}
 			{
-				item.Accessory = Equippable.CheckState == CheckState.Checked;
+				item.Accessory = ItemPropertiesPanel.Equippable == CheckState.Checked;
 			}
 		}
 		public void SaveAltItems()
@@ -611,69 +563,6 @@ namespace QTRHacker.PlayerEditor
 				j++;
 			}
 			return 0;
-		}
-		private ComboBox AddComboBox(string tipstr, string[] src)
-		{
-			int a = ControlID % 2, b = (int)Math.Floor((double)ControlID / 2);
-			Label tip = new Label();
-			ComboBox box = new ComboBox();
-			tip.Text = tipstr;
-			tip.Location = new Point(130 * a, 20 * b);
-			tip.Size = new Size(60, 20);
-			tip.Font = new Font("Arial", 9);
-			box.Size = new Size(60, 20);
-			box.Location = new Point(60 + 130 * a, 20 * b);
-			box.DropDownStyle = ComboBoxStyle.DropDownList;
-			box.DropDownHeight = 150;
-			foreach (var o in src)
-			{
-				string[] t = o.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
-				string v = t[0];
-				box.Items.Add(v);
-			}
-			HackPanel.Controls.Add(tip);
-			HackPanel.Controls.Add(box);
-			ControlID++;
-			return box;
-		}
-		private TextBox AddTextBox(string tipstr, string hack, EventHandler handler, bool f = false)
-		{
-			int a = ControlID % 2, b = (int)Math.Floor((double)ControlID / 2);
-			Label tip = new Label();
-			TextBox val = new TextBox();
-			tip.Text = tipstr;
-			tip.Location = new Point(130 * a, 20 * b);
-			tip.Size = new Size(60, 20);
-			tip.Font = new Font("Arial", 9);
-			val.Size = new Size(60, 20);
-			val.Location = new Point(60 + 130 * a, 20 * b);
-			val.Multiline = true;
-			val.MaxLength = 7;
-			val.Font = new Font("Arial", 8);
-			val.KeyDown += delegate (object sender, KeyEventArgs e)
-			{
-				if (e.KeyCode == Keys.Enter)
-				{
-					e.SuppressKeyPress = true;
-				}
-			};
-			val.KeyPress += delegate (object sender, KeyPressEventArgs e)
-			{
-				if (!Char.IsNumber(e.KeyChar) && e.KeyChar != 8 && e.KeyChar != '-')
-				{
-					e.Handled = true;
-				}
-				if (e.KeyChar == '.' && f)
-					e.Handled = false;
-			};
-			if (val != null)
-				val.TextChanged += handler;
-			HackPanel.Controls.Add(tip);
-			HackPanel.Controls.Add(val);
-			if (hack != "")
-				hacks.Add(hack, val);
-			ControlID++;
-			return val;
 		}
 
 

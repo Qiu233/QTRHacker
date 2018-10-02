@@ -21,15 +21,17 @@ namespace QTRHacker.PlayerEditor
 		private int lastID;
 		private ToolTip Tip;
 		private GameContext Context;
-		public ItemIcon(GameContext Context, int num)
+		private ItemSlots Slots;
+		public ItemIcon(GameContext Context, ItemSlots slots, int num)
 		{
 			this.Context = Context;
+			Slots = slots;
 			Number = num;
 			Tip = new ToolTip();
 		}
 		protected override void OnPaint(PaintEventArgs pe)
 		{
-			var item = Context.MyPlayer.Inventory[Number];
+			var item = Slots[Number];
 			int nowID = item.Type;
 			if (lastID != nowID)
 			{
@@ -65,16 +67,19 @@ namespace QTRHacker.PlayerEditor
 	}
 	public partial class PlayerEditorForm : Form
 	{
-		private TabControl Tabs;
+		private MTabControl Tabs;
 		public PlayerEditorForm(GameContext Context)
 		{
 			InitializeComponent();
 			Tabs = new MTabControl();
-			Tabs.Bounds = new Rectangle(0, 0, 1000, 360);
-			Tabs.Controls.Add(new InvEditor(Context,this));
+			Tabs.bColor = Color.FromArgb(175, 215, 230);
+			Tabs.tColor = Color.CadetBlue;
+			Tabs.Bounds = new Rectangle(0, 0, 1005, 360);
+			Tabs.Controls.Add(new InvEditor(Context, this) { BackColor = Color.FromArgb(205, 255, 230) });
+			Tabs.Controls.Add(new ArmorEditor(Context, this) { BackColor = Color.FromArgb(205, 255, 230) });
 			this.Controls.Add(Tabs);
 		}
-		
+
 
 	}
 }
