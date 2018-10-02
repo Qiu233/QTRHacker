@@ -3,9 +3,9 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace QTRHacker
+namespace QTRHacker.PlayerEditor
 {
-	partial class InvEditor
+	partial class PlayerEditorForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -35,11 +35,11 @@ namespace QTRHacker
 		{
 			this.components = new System.ComponentModel.Container();
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Text = "Inventory Editor";
+			this.Text = "Player Editor";
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.FormBorderStyle = FormBorderStyle.FixedSingle;
-			this.ClientSize = new Size(1000, 10 + (SlotsWidth + SlotsGap) * ItemSlots.Length / 10);
+			this.ClientSize = new Size(1005, 310);
 		}
 
 		#endregion

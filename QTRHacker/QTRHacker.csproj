@@ -102,11 +102,14 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="INI.cs" />
-    <Compile Include="InvEditor.cs">
+    <Compile Include="PlayerEditor\InvEditor.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="InvEditor.designer.cs">
-      <DependentUpon>InvEditor.cs</DependentUpon>
+    <Compile Include="PlayerEditor\PlayerEditorForm.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\PlayerEditorForm.designer.cs">
+      <DependentUpon>PlayerEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ItemsTabPage.cs">
       <SubType>Component</SubType>

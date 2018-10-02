@@ -34,7 +34,7 @@ namespace QTRHacker
 		public static string seniorMessage = "Only teleport point is available because of single play";
 		public static string regTip = "Please enter the code to register", regWrong = "Unavailable code", sucToReg = "Successful";
 		public static string builder = "Builder", fastTileSpeed = "Very fast tiling speed", rulerEffect = "Ruler effect", machinicalRulerEffect = "Machinical Ruler effect";
-		public static string hackInv = "Inventory Editor";
+		public static string playerHack = "Inventory Editor";
 		public static string eff = "Effect", infernoEffect = "Inferno potion effect(no damage)", shadowDodge = "Shadow dodge", script = "Script", showCircuit = "Machinical Glass effect";
 		public static string fishOnlyCrates = "Fish only crates";
 		public static string Wiki = "Wiki", fishingPower = "Fish Skill", baitPower = "BaitPower", noPotionDelay = "No Potion Delay", killAllScreen = "Weapon Waving Kills All On Screen";
@@ -65,7 +65,7 @@ namespace QTRHacker
 		public static string seniorMessage = "单人模式下,只有传送点可用";
 		public static string regTip = "请输入注册码", regWrong = "无效的注册码", sucToReg = "注册成功";
 		public static string builder = "建筑师", fastTileSpeed = "极快的放置方块速度", rulerEffect = "标尺：显示玩家与玩家的相对坐标", machinicalRulerEffect = "机械尺：在屏幕上面显示方块格子";
-		public static string hackInv = "修改背包";
+		public static string playerHack = "修改玩家";
 		public static string eff = "装逼", infernoEffect = "地狱降临光环(无伤害)", shadowDodge = "影分身", script = "脚本", showCircuit = "机械眼镜：在屏幕上显示电路";
 		public static string fishOnlyCrates = "只钓板条箱";
 		public static string Wiki = "百科", fishingPower = "钓技", baitPower = "鱼饵力度", noPotionDelay = "药水无冷却", killAllScreen = "挥砍击杀屏幕上所有生物";

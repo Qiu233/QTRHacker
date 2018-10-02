@@ -13,6 +13,7 @@ using System.Collections;
 using System.Reflection;
 using System.Linq;
 using QTRHacker.Functions;
+using QTRHacker.PlayerEditor;
 
 namespace QTRHacker
 {
@@ -194,7 +195,7 @@ namespace QTRHacker
 					if (r.Count() > 0)
 					{
 						var player = Context.MyPlayer;
-						int num = Item.NewItem(Context, player.X, player.Y, 0, 0, r.ElementAt(0).id, Convert.ToInt32(ItemCount.Text), false, InvEditor.GetPrefixFromIndex(prefix.SelectedIndex), true);
+						int num = Item.NewItem(Context, player.X, player.Y, 0, 0, r.ElementAt(0).id, Convert.ToInt32(ItemCount.Text), false, Convert.ToByte(MainForm.resource.Prefix[prefix.SelectedIndex].Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[1]), true);
 						NetMessage.SendData(MainForm.Context, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
 						f.Dispose();
 					}
@@ -207,14 +208,14 @@ namespace QTRHacker
 			itemAdd.Size = new Size(255, 30);
 			itemAdd.Location = new Point(0, 60);
 
-			Button itemHack = AddButton(Lang.hackInv, delegate (object sender, EventArgs e)
+			Button playerHack = AddButton(Lang.playerHack, delegate (object sender, EventArgs e)
 			{
-				InvEditor ie = new InvEditor(Context);
+				PlayerEditorForm ie = new PlayerEditorForm(Context);
 				ie.Show();
 			}
 			);
-			itemHack.Size = new Size(255, 30);
-			itemHack.Location = new Point(0, 30);
+			playerHack.Size = new Size(255, 30);
+			playerHack.Location = new Point(0, 30);
 
 
 			Button addBuff = AddButton(Lang.addBuff, delegate (object sender, EventArgs e)

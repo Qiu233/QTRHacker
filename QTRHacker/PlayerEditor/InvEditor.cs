@@ -2,74 +2,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QTRHacker
+namespace QTRHacker.PlayerEditor
 {
-	class ItemIcon : PictureBox
-	{
-		public int Number;
-		public bool Selected = false;
-		private int lastID;
-		private ToolTip Tip;
-		private GameContext Context;
-		public ItemIcon(GameContext Context, int num)
-		{
-			this.Context = Context;
-			Number = num;
-			Tip = new ToolTip();
-		}
-		protected override void OnPaint(PaintEventArgs pe)
-		{
-			var item = Context.MyPlayer.Inventory[Number];
-			int nowID = item.Type;
-			if (lastID != nowID)
-			{
-				var img = MainForm.item_images.Images["Item_" + nowID];
-				if (img != null)
-				{
-					Graphics g = Graphics.FromImage(img);
-					Image newImg = (Image)img.Clone();
-					g.DrawImage(newImg, 0, 0);
-					this.Image = newImg;
-					g.Dispose();
-					Tip.SetToolTip(this, MainForm.resource.Items.First(i => i.id == nowID).name);
-				}
-				else
-				{
-					Tip.SetToolTip(this, "");
-				}
-				this.lastID = nowID;
-			}
-			base.OnPaint(pe);
-			pe.Graphics.DrawString(item.Stack.ToString(), new Font("Arial", 10), new SolidBrush(Color.Black), 10, 35);
-			if (Selected)
-			{
-				pe.Graphics.DrawRectangle(new Pen(Color.BlueViolet, 3), 1, 1, pe.ClipRectangle.Width - 3, pe.ClipRectangle.Height - 3);
-			}
-		}
-	}
-	class AltItemIcon : PictureBox
-	{
-		public int ID = 0, Stack = 0;
-		public byte Prefix = 0;
-
-	}
-	public partial class InvEditor : Form
+	public class InvEditor : TabPage
 	{
 		private int ControlID = 0;
 		private Hashtable hacks;
 		private Panel HackPanel, AltPanel;
 		private ItemIcon[] ItemSlots;
 		private AltItemIcon[] AltSlots;
-		private const int AltPanelWidth = 90, AltPanelHeight = 270, AltGap = 3, AltWidth = 30 - AltGap;
+		private const int AltPanelWidth = 90, AltPanelHeight = 270, AltGap = 3, AltWidth = 30 - AltGap, HackPanelHeight = 360;
 		private const int SlotsWidth = 50;
 		private const int SlotsGap = 5;
 		private Panel SlotsPanel;
@@ -82,10 +31,12 @@ namespace QTRHacker
 		private int Clip_ItemType;
 		private int Clip_ItemStack;
 		private byte Clip_ItemPrefix;
-#pragma warning disable CS1690
-		public InvEditor(GameContext Context)
+		private Form ParentForm;
+		public InvEditor(GameContext Context, Form ParentForm)
 		{
 			this.Context = Context;
+			this.ParentForm = ParentForm;
+			Text = "背包";
 			BackColor = Color.LightGray;
 			hacks = new Hashtable();
 			HackPanel = new Panel();
@@ -93,9 +44,8 @@ namespace QTRHacker
 			AltSlots = new AltItemIcon[AltPanelWidth * AltPanelHeight];
 
 			SlotsPanel = new Panel();
-			InitializeComponent();
 
-			SlotsPanel.Size = new Size(ItemSlots.Length / 5 * (SlotsWidth + SlotsGap), this.ClientSize.Height);
+			SlotsPanel.Size = new Size(ItemSlots.Length / 5 * (SlotsWidth + SlotsGap), 360);
 			SlotsPanel.Location = new Point(5, 5);
 			this.Controls.Add(SlotsPanel);
 
@@ -138,23 +88,23 @@ namespace QTRHacker
 					SizeMode = PictureBoxSizeMode.CenterImage
 				};
 				ItemSlots[i].Click += (sender, e) =>
-				  {
-					  MouseEventArgs mea = (MouseEventArgs)e;
-					  ItemIcon ii = (ItemIcon)sender;
+				{
+					MouseEventArgs mea = (MouseEventArgs)e;
+					ItemIcon ii = (ItemIcon)sender;
 
-					  foreach (var s in ItemSlots)
-					  {
-						  s.Selected = false;
-					  }
+					foreach (var s in ItemSlots)
+					{
+						s.Selected = false;
+					}
 						((ItemIcon)sender).Selected = true;
-					  SlotsPanel.Refresh();
-					  Selected = ((ItemIcon)sender).Number;
-					  InitData(Selected);
-					  if (mea.Button == MouseButtons.Right)
-					  {
-						  cms.Show(ii, mea.Location.X, mea.Location.Y);
-					  }
-				  };
+					SlotsPanel.Refresh();
+					Selected = ((ItemIcon)sender).Number;
+					InitData(Selected);
+					if (mea.Button == MouseButtons.Right)
+					{
+						cms.Show(ii, mea.Location.X, mea.Location.Y);
+					}
+				};
 				this.SlotsPanel.Controls.Add(ItemSlots[i]);
 			}
 
@@ -331,7 +281,7 @@ namespace QTRHacker
 			br.Close();
 
 			HackPanel.Location = new Point(ItemSlots.Length / 5 * (SlotsWidth + SlotsGap) + 105, 5);
-			HackPanel.Size = new Size(350, this.ClientSize.Height);
+			HackPanel.Size = new Size(350, HackPanelHeight);
 			this.Controls.Add(HackPanel);
 
 
@@ -450,56 +400,11 @@ namespace QTRHacker
 				};
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
-					int j = 0;
-					Form p = new Form();
-					ProgressBar pb = new ProgressBar();
-					Label tip = new Label(), percent = new Label();
-					tip.Text = "Saving inventory...";
-					tip.Location = new Point(0, 0);
-					tip.Size = new Size(150, 30);
-					tip.TextAlign = ContentAlignment.MiddleCenter;
-					percent.Location = new Point(150, 0);
-					percent.Size = new Size(30, 30);
-					percent.TextAlign = ContentAlignment.MiddleCenter;
-					System.Timers.Timer timer = new System.Timers.Timer(1);
-					p.FormBorderStyle = FormBorderStyle.FixedSingle;
-					p.ClientSize = new Size(300, 60);
-					p.ControlBox = false;
-					pb.Location = new Point(0, 30);
-					pb.Size = new Size(300, 30);
-					pb.Maximum = 2;
-					pb.Minimum = 0;
-					pb.Value = 0;
-					p.Controls.Add(tip);
-					p.Controls.Add(percent);
-					p.Controls.Add(pb);
-					timer.Elapsed += (sender1, e1) =>
-					{
-						pb.Value = j;
-						percent.Text = pb.Value + "/" + pb.Maximum;
-						if (j >= pb.Maximum) p.Dispose();
-					};
-					timer.Start();
-					p.Show();
-					p.Location = new System.Drawing.Point(this.Location.X + this.Width / 2 - p.ClientSize.Width / 2, this.Location.Y + this.Height / 2 - p.ClientSize.Height / 2);
-					new System.Threading.Thread((s) =>
-					{
-						j++;
-						MainForm.mainWindow.Enabled = false;
-						if (ExtForm.Window != null)
-							ExtForm.Window.Enabled = false;
-						this.Enabled = false;
 
-						File.WriteAllText(sfd.FileName, Context.MyPlayer.SerializeInventoryWithProperties());
-						SlotsPanel.Refresh();
-						j++;
 
-						this.Enabled = true;
-						if (ExtForm.Window != null)
-							ExtForm.Window.Enabled = true;
-						MainForm.mainWindow.Enabled = true;
-					}
-					).Start();
+					File.WriteAllText(sfd.FileName, Context.MyPlayer.SerializeInventoryWithProperties());
+					SlotsPanel.Refresh();
+
 				}
 			};
 			SaveInvPItem.Text = Lang.save + "(P)";
@@ -547,20 +452,20 @@ namespace QTRHacker
 					};
 					timer.Start();
 					p.Show();
-					p.Location = new System.Drawing.Point(this.Location.X + this.Width / 2 - p.ClientSize.Width / 2, this.Location.Y + this.Height / 2 - p.ClientSize.Height / 2);
+					p.Location = new System.Drawing.Point(ParentForm.Location.X + ParentForm.Width / 2 - p.ClientSize.Width / 2, ParentForm.Location.Y + ParentForm.Height / 2 - p.ClientSize.Height / 2);
 					new System.Threading.Thread((s) =>
 					{
 						j++;
 						MainForm.mainWindow.Enabled = false;
 						if (ExtForm.Window != null)
 							ExtForm.Window.Enabled = false;
-						this.Enabled = false;
+						this.Parent.Enabled = false;
 
 						Context.MyPlayer.DeserializeInventoryWithProperties(File.ReadAllText(ofd.FileName));
 						InitData(Selected);
 						j++;
 
-						this.Enabled = true;
+						this.Parent.Enabled = true;
 						if (ExtForm.Window != null)
 							ExtForm.Window.Enabled = true;
 						MainForm.mainWindow.Enabled = true;
@@ -848,13 +753,13 @@ namespace QTRHacker
 			};
 			timer.Start();
 			p.Show();
-			p.Location = new System.Drawing.Point(this.Location.X + this.Width / 2 - p.ClientSize.Width / 2, this.Location.Y + this.Height / 2 - p.ClientSize.Height / 2);
+			p.Location = new System.Drawing.Point(ParentForm.Location.X + ParentForm.Width / 2 - p.ClientSize.Width / 2, ParentForm.Location.Y + ParentForm.Height / 2 - p.ClientSize.Height / 2);
 			new System.Threading.Thread((s) =>
 			{
 				MainForm.mainWindow.Enabled = false;
 				if (ExtForm.Window != null)
 					ExtForm.Window.Enabled = false;
-				this.Enabled = false;
+				this.Parent.Enabled = false;
 				var player = Context.MyPlayer;
 				BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open));
 				for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
@@ -913,13 +818,12 @@ namespace QTRHacker
 					item.Stack = stack;
 				}
 				br.Close();
-				this.Enabled = true;
+				this.Parent.Enabled = true;
 				if (ExtForm.Window != null)
 					ExtForm.Window.Enabled = true;
 				MainForm.mainWindow.Enabled = true;
 			}
 			).Start();
 		}
-
 	}
 }
