@@ -28,13 +28,12 @@ namespace QTRHacker.PlayerEditor
 		private int Clip_ItemStack;
 		private byte Clip_ItemPrefix;
 		private Form ParentForm;
-		ContextMenuStrip SlotRightClickStrip;
+		private ContextMenuStrip SlotRightClickStrip;
 		public ArmorEditor(GameContext Context, Form ParentForm)
 		{
 			this.Context = Context;
 			this.ParentForm = ParentForm;
 			Text = "装备";
-			BackColor = Color.LightGray;
 
 			ItemPropertiesPanel = new ItemPropertiesPanel();
 			ArmorSlots = new ItemIcon[Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT];

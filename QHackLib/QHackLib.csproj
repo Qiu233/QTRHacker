@@ -68,6 +68,6 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)..\nativedll\*.dll" "$(OutDir)" /D /F /K /R /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)..\nativedll\keystone.dll" "$(OutDir)" /D /F /K /R /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

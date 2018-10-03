@@ -73,6 +73,21 @@
     <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -87,6 +102,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WinFormsGraphicsDevice, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\nativedll\WinFormsGraphicsDevice.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AntiBlinkListView.cs">
@@ -109,6 +128,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PlayerEditor\ItemPropertiesPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\PlayerEditor.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PlayerEditor\PlayerEditorForm.cs">
@@ -198,13 +220,160 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_1.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_10.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_100.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_101.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_102.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_103.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_104.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_105.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_106.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_107.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_108.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_109.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_11.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_110.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_111.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_112.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_113.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_114.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_115.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_116.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_117.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_118.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_119.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_12.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_120.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_121.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_122.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_123.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_124.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_125.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_126.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_127.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_128.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_129.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_13.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_130.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_131.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_132.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_133.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_134.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_14.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_15.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_16.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_17.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_18.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_19.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_2.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_20.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_21.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_22.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_23.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_24.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_25.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_26.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_27.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_28.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_29.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_3.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_30.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_31.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_32.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_33.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_34.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_35.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_36.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_37.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_38.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_39.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_4.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_40.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_41.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_42.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_43.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_44.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_45.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_46.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_47.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_48.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_49.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_5.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_50.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_51.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_52.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_53.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_54.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_55.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_56.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_57.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_58.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_59.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_6.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_60.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_61.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_62.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_63.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_64.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_65.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_66.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_67.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_68.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_69.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_7.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_70.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_71.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_72.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_73.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_74.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_75.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_76.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_77.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_78.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_79.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_8.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_80.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_81.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_82.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_83.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_84.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_85.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_86.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_87.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_88.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_89.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_9.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_90.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_91.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_92.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_93.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_94.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_95.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_96.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_97.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_98.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_99.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_0.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_1.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_10.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_11.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_12.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_13.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_2.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_3.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_4.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_5.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_6.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_7.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_8.png" />
+    <EmbeddedResource Include="PlayerEditor\Textures\Player_0_9.png" />
     <EmbeddedResource Include="cross.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)..\nativedll\WinFormsGraphicsDevice.dll" "$(OutDir)" /D /F /K /R /Y</PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions />
 </Project>

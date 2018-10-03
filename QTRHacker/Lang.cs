@@ -34,7 +34,7 @@ namespace QTRHacker
 		public static string seniorMessage = "Only teleport point is available because of single play";
 		public static string regTip = "Please enter the code to register", regWrong = "Unavailable code", sucToReg = "Successful";
 		public static string builder = "Builder", fastTileSpeed = "Very fast tiling speed", rulerEffect = "Ruler effect", machinicalRulerEffect = "Machinical Ruler effect";
-		public static string playerHack = "Inventory Editor";
+		public static string playerHack = "Player Editor";
 		public static string eff = "Effect", infernoEffect = "Inferno potion effect(no damage)", shadowDodge = "Shadow dodge", script = "Script", showCircuit = "Machinical Glass effect";
 		public static string fishOnlyCrates = "Fish only crates";
 		public static string Wiki = "Wiki", fishingPower = "Fish Skill", baitPower = "BaitPower", noPotionDelay = "No Potion Delay", killAllScreen = "Weapon Waving Kills All On Screen";

@@ -34,7 +34,6 @@ namespace QTRHacker.PlayerEditor
 			this.Context = Context;
 			this.ParentForm = ParentForm;
 			Text = "背包";
-			BackColor = Color.LightGray;
 			ItemPropertiesPanel = new ItemPropertiesPanel();
 			ItemSlots = new ItemIcon[Player.ITEM_MAX_COUNT - 9];
 			AltSlots = new AltItemIcon[AltPanelWidth * AltPanelHeight];
