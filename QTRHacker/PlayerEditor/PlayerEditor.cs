@@ -21,7 +21,7 @@ namespace QTRHacker.PlayerEditor
 		{
 			this.Context = Context;
 			this.ParentForm = ParentForm;
-			Text = "玩家";
+			Text = "人物";
 
 			PlayerView = new PlayerView();
 			PlayerView.Bounds = new Rectangle(5, 5, 150, 250);
