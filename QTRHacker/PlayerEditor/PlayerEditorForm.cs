@@ -72,15 +72,15 @@ namespace QTRHacker.PlayerEditor
 	public partial class PlayerEditorForm : Form
 	{
 		private MTabControl Tabs;
-		public PlayerEditorForm(GameContext Context)
+		public PlayerEditorForm()
 		{
 			InitializeComponent();
 			Tabs = new MTabControl();
 			Tabs.bColor = Color.FromArgb(175, 215, 230);
 			Tabs.tColor = Color.CadetBlue;
 			Tabs.Bounds = new Rectangle(0, 0, 1005, 360);
-			Tabs.Controls.Add(new InvEditor(Context, this) { BackColor = Color.FromArgb(205, 255, 230) });
-			Tabs.Controls.Add(new ArmorEditor(Context, this) { BackColor = Color.FromArgb(205, 255, 230) });
+			Tabs.Controls.Add(new InvEditor(MainForm.Context, this) { BackColor = Color.FromArgb(205, 255, 230) });
+			Tabs.Controls.Add(new ArmorEditor(MainForm.Context, this) { BackColor = Color.FromArgb(205, 255, 230) });
 			this.Controls.Add(Tabs);
 		}
 

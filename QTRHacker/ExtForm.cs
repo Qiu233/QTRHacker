@@ -210,7 +210,7 @@ namespace QTRHacker
 
 			Button playerHack = AddButton(Lang.playerHack, delegate (object sender, EventArgs e)
 			{
-				PlayerEditorForm ie = new PlayerEditorForm(Context);
+				PlayerEditorForm ie = new PlayerEditorForm();
 				ie.Show();
 			}
 			);
