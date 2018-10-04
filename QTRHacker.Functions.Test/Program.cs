@@ -19,7 +19,7 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-
+				Console.WriteLine(gc.MyPlayer.HairColor.ToString("X8"));
 			}
 		}
 	}

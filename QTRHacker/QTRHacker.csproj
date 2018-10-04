@@ -220,6 +220,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Intro.txt" />
     <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_1.png" />
     <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_10.png" />
     <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_100.png" />

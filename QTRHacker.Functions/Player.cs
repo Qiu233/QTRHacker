@@ -24,6 +24,7 @@ namespace QTRHacker.Functions
 		public const int OFFSET_Ghost = 0x549;
 
 		public const int OFFSET_INV = 0xBC, OFFSET_ARMOR = 0x98, OFFSET_DYE = 0x9C, OFFSET_MISC = 0xA0, OFFSET_MISCDYE = 0xA4;
+		public const int OFFSET_Hair = 0x3F4, OFFSET_HairColor = 0x73C, OFFSET_SkinColor = 0x740, OFFSET_EyeColor=0x744, OFFSET_ShirtColor=0x748, OFFSET_UnderShirtColor=0x74C, OFFSET_PantsColor=0x750, OFFSET_ShoesColor=0x754;
 		public const int ITEM_MAX_COUNT = 59, INV_MAX_COUNT = 50, ARMOR_MAX_COUNT = 20, DYE_MAX_COUNT = 10, MISC_MAX_COUNT = 5, MISCDYE_MAX_COUNT = 5;
 		public const int BUFF_MAX_COUNT = 22;
 
@@ -97,6 +98,79 @@ namespace QTRHacker.Functions
 				return v;
 			}
 			set => WriteFromOffset(OFFSET_Ghost, value);
+		}
+
+		public int Hair
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_Hair, out int v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_Hair, value);
+		}
+		public int HairColor
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_HairColor, out int v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_HairColor, value);
+		}
+		public int SkinColor
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_SkinColor, out int v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_SkinColor, value);
+		}
+		public int EyeColor
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_EyeColor, out int v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_EyeColor, value);
+		}
+		public int ShirtColor
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_ShirtColor, out int v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_ShirtColor, value);
+		}
+		public int UnderShirtColor
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_UnderShirtColor, out int v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_UnderShirtColor, value);
+		}
+		public int PantsColor
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_PantsColor, out int v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_PantsColor, value);
+		}
+		public int ShoesColor
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_ShoesColor, out int v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_ShoesColor, value);
 		}
 
 		public ItemSlots Inventory
