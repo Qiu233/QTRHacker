@@ -17,9 +17,12 @@ namespace QTRHacker.Functions.Test
 	{
 		static void Main(string[] args)
 		{
+			ProjectileImage.ProjImage a = ProjectileImage.ProjImage.FromImage("./test.png");
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				Console.WriteLine(gc.MyPlayer.HairColor.ToString("X8"));
+				a.Emit(gc, gc.MyPlayer.X, gc.MyPlayer.Y);
+				//Projectile.NewProjectile(gc, gc.MyPlayer.X, gc.MyPlayer.Y, 0, 0, 27, 100, 0);
+				//Console.WriteLine(gc.HContext.FunctionAddressHelper.FunctionsAddress["Terraria.Projectile::NewProjectile"].ToString("X8"));
 			}
 		}
 	}

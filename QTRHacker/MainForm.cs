@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using QTRHacker.Functions;
+using QTRHacker.Functions.ProjectileImage;
 
 namespace QTRHacker
 {
@@ -344,6 +345,19 @@ namespace QTRHacker
 			u.Font = new Font("SimSun", 8);
 			AddButton(buttonTabPage6, Lang.exploreAll, 5, Utils.RevealMap, null, false);
 			AddButton(buttonTabPage6, Lang.rightClickToTP, 6, Utils.RightClickToTP, null, false);
+			AddButton(buttonTabPage6, "弹幕拼图", 7, (ctx) =>
+			{
+				OpenFileDialog ofd = new OpenFileDialog();
+
+				ofd.Filter = "inv files (*.png)|*.png";
+				if (ofd.ShowDialog(this) == DialogResult.OK)
+				{
+					ProjImage img = ProjImage.FromImage(ofd.FileName);
+					this.Enabled = false;
+					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+					this.Enabled = true;
+				}
+			}, null, false);
 
 
 

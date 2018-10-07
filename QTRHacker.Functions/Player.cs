@@ -24,11 +24,38 @@ namespace QTRHacker.Functions
 		public const int OFFSET_Ghost = 0x549;
 
 		public const int OFFSET_INV = 0xBC, OFFSET_ARMOR = 0x98, OFFSET_DYE = 0x9C, OFFSET_MISC = 0xA0, OFFSET_MISCDYE = 0xA4;
-		public const int OFFSET_Hair = 0x3F4, OFFSET_HairColor = 0x73C, OFFSET_SkinColor = 0x740, OFFSET_EyeColor=0x744, OFFSET_ShirtColor=0x748, OFFSET_UnderShirtColor=0x74C, OFFSET_PantsColor=0x750, OFFSET_ShoesColor=0x754;
+		public const int OFFSET_Bank = 0xC4, OFFSET_Bank2 = 0xC8, OFFSET_Bank3 = 0xCC;
+		public const int OFFSET_Hair = 0x3F4, OFFSET_HairColor = 0x73C, OFFSET_SkinColor = 0x740, OFFSET_EyeColor = 0x744, OFFSET_ShirtColor = 0x748, OFFSET_UnderShirtColor = 0x74C, OFFSET_PantsColor = 0x750, OFFSET_ShoesColor = 0x754;
 		public const int ITEM_MAX_COUNT = 59, INV_MAX_COUNT = 50, ARMOR_MAX_COUNT = 20, DYE_MAX_COUNT = 10, MISC_MAX_COUNT = 5, MISCDYE_MAX_COUNT = 5;
 		public const int BUFF_MAX_COUNT = 22;
 
+
 		public const int MAX_PLAYER = 256;
+
+		public Chest Bank
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_Bank, out int v);
+				return new Chest(Context, v);
+			}
+		}
+		public Chest Bank2
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_Bank2, out int v);
+				return new Chest(Context, v);
+			}
+		}
+		public Chest Bank3
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_Bank3, out int v);
+				return new Chest(Context, v);
+			}
+		}
 
 		public int Life
 		{
