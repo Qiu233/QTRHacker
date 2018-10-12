@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.ProjectileImage
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class ProjImage
 	{
 		public const uint FileVersion = 1;

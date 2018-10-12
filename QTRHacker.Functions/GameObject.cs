@@ -9,21 +9,32 @@ using System.Threading.Tasks;
 namespace QTRHacker.Functions
 {
 	/// <summary>
-	/// You should always get an instance of GameObject from GameContext objects and never save it.
-	/// Because no one can promise that the instance will still be valid later.
+	/// GameObject的实例是从GameContext中现取现用的。
+	/// 不要保存任何GameObject的实例，任何时候都无法保证一个以前获得的GameObject实例仍然可用。
 	/// </summary>
 	public abstract class GameObject
 	{
+		/// <summary>
+		/// 基址
+		/// </summary>
 		[JsonIgnore]
 		public int BaseAddress
 		{
 			get;
 		}
+		/// <summary>
+		/// 相关GameContext实例
+		/// </summary>
 		[JsonIgnore]
 		public GameContext Context
 		{
 			get;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="context">相关GameContext实例</param>
+		/// <param name="bAddr">基址</param>
 		public GameObject(GameContext context, int bAddr)
 		{
 			Context = context;

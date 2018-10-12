@@ -11,14 +11,19 @@ using QHackLib.Utilities;
 
 namespace QTRHacker.Functions
 {
+	/// <summary>
+	/// Terraria游戏上下文环境
+	/// </summary>
 	public class GameContext : IDisposable
 	{
 		public const int MaxItemTypes = 3930;
-
 		public int My_Player_Address
 		{
 			get;
 		}
+		/// <summary>
+		/// 相关的Context实例，不需要手动操作
+		/// </summary>
 		public Context HContext
 		{
 			get;
@@ -471,7 +476,10 @@ namespace QTRHacker.Functions
 		}
 
 
-
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="pid">游戏的进程ID</param>
 		private GameContext(int pid)
 		{
 			HContext = Context.Create(pid);
@@ -565,7 +573,11 @@ namespace QTRHacker.Functions
 			NetMode_Address = vvv;
 		}
 
-
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="pid">游戏的进程ID</param>
+		/// <returns></returns>
 		public static GameContext OpenGame(int pid)
 		{
 			return new GameContext(pid);
