@@ -464,7 +464,11 @@ namespace QTRHacker
 
 		public MainForm()
 		{
-
+			if (!Environment.Is64BitOperatingSystem)
+			{
+				MessageBox.Show("当前环境不是64位操作系统，修改器无法使用\n程序退出");
+				Environment.Exit(0);
+			}
 			BackColor = Color.LightGray;
 			cross = Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.cross.png"));
 			mainWindow = this;
