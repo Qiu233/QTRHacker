@@ -484,7 +484,7 @@ namespace QTRHacker
 				tip = "(无法获取更新)";
 			}
 
-			Text = curVer.ToString() + tip + "---" + gameVersion;
+			Text = curVer.ToString() + tip;
 			BackColor = Color.LightGray;
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.cross.png"))
 				cross = Image.FromStream(s);

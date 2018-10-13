@@ -32,16 +32,7 @@ namespace QTRHacker
 				ScriptForm.Script.o.WriteLine(str);
 			}
 
-
-			public static void Load(string name)
-			{
-				/*StreamReader streamReader = new StreamReader("./scripts/" + name + ".js");
-				string text = streamReader.ReadToEnd();
-				streamReader.Close();
-				ScriptForm.Script.WriteLine(ScriptForm.ve.Execute(text, "V8.NET", false) + "\n");*/
-			}
-
-			// Token: 0x04000143 RID: 323
+			
 			public static TextWriter o;
 		}
 

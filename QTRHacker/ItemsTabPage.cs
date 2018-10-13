@@ -150,17 +150,17 @@ namespace QTRHacker
 
 
 				ItemPickaxeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.Dock.Left, false);
-				ItemPickaxeInfoView.Text = Lang.pick;
+				ItemPickaxeInfoView.Text = Lang.pick1;
 				ItemPickaxeInfoView.Tip.BackColor = ItemsColor;
 				ItemPickaxeInfoView.Bounds = new Rectangle(0, 0, 170, 20);
 
 				ItemAxeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.Dock.Left, false);
-				ItemAxeInfoView.Text = Lang.axe;
+				ItemAxeInfoView.Text = Lang.axe1;
 				ItemAxeInfoView.Tip.BackColor = ItemsColor;
 				ItemAxeInfoView.Bounds = new Rectangle(0, 20, 170, 20);
 
 				ItemHammerInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.Dock.Left, false);
-				ItemHammerInfoView.Text = Lang.hammer;
+				ItemHammerInfoView.Text = Lang.hammer1;
 				ItemHammerInfoView.Tip.BackColor = ItemsColor;
 				ItemHammerInfoView.Bounds = new Rectangle(0, 40, 170, 20);
 
@@ -415,6 +415,15 @@ namespace QTRHacker
 
 				KeyWordTextBox = new TextBox();
 				KeyWordTextBox.Bounds = new Rectangle(65, 130, 175, 20);
+				KeyWordTextBox.KeyDown += (s, e) =>
+				{
+					if (e.KeyCode == Keys.Enter)
+					{
+						e.Handled = true;
+						KeyWord = KeyWordTextBox.Text;
+						RefreshItems();
+					}
+				};
 
 				Button searchButton = new Button();
 				searchButton.Text = Lang.search;
