@@ -470,7 +470,8 @@ namespace QTRHacker
 				Environment.Exit(0);
 			}
 			BackColor = Color.LightGray;
-			cross = Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.cross.png"));
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.cross.png"))
+				cross = Image.FromStream(s);
 			mainWindow = this;
 			InitializeComponent();
 			InitControls();
@@ -480,8 +481,11 @@ namespace QTRHacker
 			base.OnPaint(e);
 			if (!flag)
 				e.Graphics.DrawImage(cross, 20, 15, 25, 25);
-			e.Graphics.DrawString(Lang.dragTip, new Font("Arial", 10), new SolidBrush(Color.Black), 20 + 25 + 20, 20);
-
+			using (var brush = new SolidBrush(Color.Black))
+			{
+				using (var font = new Font("Arial", 10))
+					e.Graphics.DrawString(Lang.dragTip, font, brush, 20 + 25 + 20, 20);
+			}
 
 		}
 		protected override void OnMouseMove(MouseEventArgs e)
