@@ -22,6 +22,7 @@ using System.Linq;
 using System.Reflection;
 using QTRHacker.Functions;
 using QTRHacker.Functions.ProjectileImage;
+using System.Net;
 
 namespace QTRHacker
 {
@@ -53,7 +54,6 @@ namespace QTRHacker
 		private List<Plugin> Plugins = new List<Plugin>();
 
 		public static ImageList item_images = new ImageList();
-		private string Version = Assembly.GetExecutingAssembly().GetName().Version.ToString() + "---" + gameVersion;
 		public int processID;
 		public static MainForm mainWindow;
 		private Image cross;
@@ -469,6 +469,22 @@ namespace QTRHacker
 				MessageBox.Show("当前环境不是64位操作系统，修改器无法使用\n程序退出");
 				Environment.Exit(0);
 			}
+			//https://raw.githubusercontent.com/ZQiu233/QTRHacker/master/version.txt
+			WebClient client = new WebClient();
+			var curVer = Assembly.GetExecutingAssembly().GetName().Version;
+			string tip = null;
+			try
+			{
+				var data = client.DownloadData("https://raw.githubusercontent.com/ZQiu233/QTRHacker/master/version.txt");
+				var newestVer = Version.Parse(Encoding.UTF8.GetString(data));
+				tip = $"(最新:{newestVer.ToString()})";
+			}
+			catch (Exception)
+			{
+				tip = "(无法获取更新)";
+			}
+
+			Text = curVer.ToString() + tip + "---" + gameVersion;
 			BackColor = Color.LightGray;
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.cross.png"))
 				cross = Image.FromStream(s);

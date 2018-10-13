@@ -56,7 +56,6 @@ namespace QTRHacker
 			this.StartPosition = FormStartPosition.CenterScreen;
 			this.ClientSize = new Size(300, MainForm.HEIGHT);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Text = Version;
 			this.Name = "MainForm";
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
