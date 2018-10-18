@@ -78,6 +78,14 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
+		public int TileTargetX_Address
+		{
+			get;
+		}
+		public int TileTargetY_Address
+		{
+			get;
+		}
 		public int MapFullScreenScale_Address
 		{
 			get;
@@ -144,6 +152,33 @@ namespace QTRHacker.Functions
 			set
 			{
 				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseScreen_Y_Address, ref value, 4, 0);
+			}
+		}
+
+		public int TileTargetX
+		{
+			get
+			{
+				int v = 0;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, TileTargetX_Address, ref v, 4, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, TileTargetX_Address, ref value, 4, 0);
+			}
+		}
+		public int TileTargetY
+		{
+			get
+			{
+				int v = 0;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, TileTargetY_Address, ref v, 4, 0);
+				return v;
+			}
+			set
+			{
+				NativeFunctions.WriteProcessMemory(HContext.Handle, TileTargetY_Address, ref value, 4, 0);
 			}
 		}
 
@@ -567,10 +602,17 @@ namespace QTRHacker.Functions
 			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
 			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
 			Tile_Address = vvv;
-			
+
 			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_ShouldPVPDraw") + 0x2;
 			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
 			NetMode_Address = vvv;
+
+			int aaaa = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Player::LookForTileInteractions");
+			NativeFunctions.ReadProcessMemory(HContext.Handle, aaaa + 0x1a, ref vvv, 4, 0);
+			TileTargetX_Address = vvv;
+
+			NativeFunctions.ReadProcessMemory(HContext.Handle, aaaa + 0x20, ref vvv, 4, 0);
+			TileTargetY_Address = vvv;
 		}
 
 		/// <summary>

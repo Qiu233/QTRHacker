@@ -1,0 +1,11 @@
+10
+_zoom	->	10
+_translation	->	18
+_zoomMatrix	->	20
+_transformationMatrix	->	60
+_effects	->	8
+_effectMatrix	->	a0
+_graphicsDevice	->	4
+_viewport	->	e0
+_overrideSystemViewport	->	c
+_needsRebuild	->	d

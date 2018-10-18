@@ -1,0 +1,5 @@
+4
+_random	->	10
+_isActive	->	d
+_isLeaving	->	e
+_opacity	->	14

@@ -1,0 +1,4 @@
+3
+MaxWidth	->	8
+MaxHeight	->	c
+_tiles	->	4

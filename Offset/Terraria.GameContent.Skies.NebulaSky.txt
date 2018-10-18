@@ -1,0 +1,9 @@
+8
+_pillars	->	10
+_random	->	14
+_planetTexture	->	18
+_bgTexture	->	1c
+_beamTexture	->	20
+_rockTextures	->	24
+_isActive	->	d
+_fadeOpacity	->	28

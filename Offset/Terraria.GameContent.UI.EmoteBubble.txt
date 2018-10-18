@@ -1,0 +1,9 @@
+13
+ID	->	8
+anchor	->	4
+lifeTime	->	c
+lifeTimeStart	->	10
+emote	->	14
+metadata	->	18
+frameCounter	->	1c
+frame	->	20

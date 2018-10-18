@@ -1,0 +1,4 @@
+3
+_inputmode	->	d0
+_color	->	d4
+_keybind	->	cc

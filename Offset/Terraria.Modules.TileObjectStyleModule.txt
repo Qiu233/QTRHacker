@@ -1,0 +1,6 @@
+5
+style	->	4
+horizontal	->	14
+styleWrapLimit	->	8
+styleMultiplier	->	c
+styleLineSkip	->	10

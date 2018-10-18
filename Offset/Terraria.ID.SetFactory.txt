@@ -1,0 +1,7 @@
+6
+_size	->	18
+_intBufferCache	->	4
+_ushortBufferCache	->	8
+_boolBufferCache	->	c
+_floatBufferCache	->	10
+_queueLock	->	14

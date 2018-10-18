@@ -1,0 +1,10 @@
+9
+ID	->	8
+<Page>k__BackingField	->	c
+Enabled	->	20
+Position	->	24
+Left	->	10
+Right	->	14
+Up	->	18
+Down	->	1c
+OnSpecialInteracts	->	4

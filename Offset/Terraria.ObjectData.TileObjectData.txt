@@ -1,0 +1,26 @@
+51
+_parent	->	4
+_linkedAlternates	->	34
+_usesCustomCanPlace	->	35
+_alternates	->	8
+_anchor	->	c
+_anchorTiles	->	10
+_liquidDeath	->	14
+_liquidPlacement	->	18
+_placementHooks	->	1c
+_subTiles	->	20
+_tileObjectDraw	->	24
+_tileObjectStyle	->	28
+_tileObjectBase	->	2c
+_tileObjectCoords	->	30
+_hasOwnAlternates	->	36
+_hasOwnAnchor	->	37
+_hasOwnAnchorTiles	->	38
+_hasOwnLiquidDeath	->	39
+_hasOwnLiquidPlacement	->	3a
+_hasOwnPlacementHooks	->	3b
+_hasOwnSubTiles	->	3c
+_hasOwnTileObjectBase	->	3d
+_hasOwnTileObjectDraw	->	3e
+_hasOwnTileObjectStyle	->	3f
+_hasOwnTileObjectCoords	->	40

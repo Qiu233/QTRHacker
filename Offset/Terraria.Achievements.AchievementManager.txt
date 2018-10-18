@@ -1,0 +1,8 @@
+8
+_savePath	->	4
+_isCloudSave	->	1c
+OnAchievementCompleted	->	8
+_achievements	->	c
+_serializerSettings	->	10
+_cryptoKey	->	14
+_achievementIconIndexes	->	18

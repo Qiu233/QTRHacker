@@ -1,0 +1,17 @@
+19
+dustIndex	->	c
+position	->	28
+velocity	->	30
+fadeIn	->	10
+noGravity	->	24
+scale	->	14
+rotation	->	18
+noLight	->	25
+active	->	26
+type	->	1c
+color	->	38
+alpha	->	20
+frame	->	3c
+shader	->	4
+customData	->	8
+firstFrame	->	27

@@ -1,0 +1,15 @@
+20
+_frameBuffer	->	4
+_scaledFrameBuffer	->	8
+_graphics	->	c
+_captureLock	->	10
+_isDisposed	->	34
+_activeSettings	->	14
+_renderQueue	->	18
+_spriteBatch	->	1c
+_scaledFrameData	->	20
+_outputData	->	24
+_outputImageSize	->	38
+_downscaleSampleState	->	28
+_tilesProcessed	->	2c
+_totalTiles	->	30

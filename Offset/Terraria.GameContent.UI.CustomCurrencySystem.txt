@@ -1,0 +1,3 @@
+2
+_valuePerUnit	->	c
+_currencyCap	->	4

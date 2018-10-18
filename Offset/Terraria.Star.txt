@@ -1,0 +1,8 @@
+7
+position	->	1c
+scale	->	4
+rotation	->	8
+type	->	c
+twinkle	->	10
+twinkleSpeed	->	14
+rotationSpeed	->	18

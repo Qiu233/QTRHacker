@@ -1,0 +1,15 @@
+14
+ID	->	28
+PageOnLeft	->	2c
+PageOnRight	->	30
+DefaultPoint	->	34
+CurrentPoint	->	38
+LinkMap	->	4
+ReachEndEvent	->	8
+TravelEvent	->	c
+LeaveEvent	->	10
+EnterEvent	->	14
+UpdateEvent	->	18
+IsValidEvent	->	1c
+CanEnterEvent	->	20
+OnSpecialInteracts	->	24

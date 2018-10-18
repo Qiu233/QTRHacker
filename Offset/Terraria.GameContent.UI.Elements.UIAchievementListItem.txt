@@ -1,0 +1,13 @@
+15
+_achievement	->	d4
+_achievementIcon	->	d8
+_achievementIconBorders	->	dc
+_iconIndex	->	ec
+_iconFrame	->	f4
+_iconFrameUnlocked	->	104
+_iconFrameLocked	->	114
+_innerPanelTopTexture	->	e0
+_innerPanelBottomTexture	->	e4
+_categoryTexture	->	e8
+_locked	->	f0
+_large	->	f1

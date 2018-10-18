@@ -1,0 +1,15 @@
+15
+position	->	24
+velocity	->	2c
+rotation	->	4
+scale	->	8
+alpha	->	c
+type	->	10
+light	->	14
+active	->	1c
+sticky	->	1d
+timeLeft	->	18
+behindTiles	->	1e
+frame	->	1f
+frameCounter	->	20
+numFrames	->	21

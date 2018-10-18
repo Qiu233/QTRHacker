@@ -1,0 +1,13 @@
+22
+position	->	20
+velocity	->	28
+alpha	->	8
+alphaDir	->	c
+text	->	4
+scale	->	10
+rotation	->	14
+color	->	30
+active	->	1c
+lifeTime	->	18
+crit	->	1d
+dot	->	1e

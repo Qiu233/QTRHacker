@@ -1,0 +1,15 @@
+14
+whoAmI	->	4
+active	->	18
+position	->	20
+velocity	->	28
+oldPosition	->	30
+oldVelocity	->	38
+oldDirection	->	8
+direction	->	c
+width	->	10
+height	->	14
+wet	->	19
+honeyWet	->	1a
+wetCount	->	1b
+lavaWet	->	1c

@@ -1,0 +1,23 @@
+27
+OnKeyboard	->	11c
+OnGameplay	->	11d
+_bindsKeyboard	->	cc
+_bindsGamepad	->	d0
+_bindsKeyboardUI	->	d4
+_bindsGamepadUI	->	d8
+_outerContainer	->	dc
+_uilist	->	e0
+_buttonKeyboard	->	e4
+_buttonGamepad	->	e8
+_buttonBorder1	->	ec
+_buttonBorder2	->	f0
+_buttonProfile	->	f4
+_buttonBack	->	f8
+_buttonVs1	->	fc
+_buttonVs2	->	100
+_buttonBorderVs1	->	104
+_buttonBorderVs2	->	108
+_KeyboardGamepadTexture	->	10c
+_keyboardGamepadBorderTexture	->	110
+_GameplayVsUITexture	->	114
+_GameplayVsUIBorderTexture	->	118

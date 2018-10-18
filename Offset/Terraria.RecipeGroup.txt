@@ -1,0 +1,4 @@
+6
+GetText	->	4
+ValidItems	->	8
+IconicItemIndex	->	c

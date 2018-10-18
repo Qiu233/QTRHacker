@@ -1,0 +1,4 @@
+6
+inext	->	8
+inextp	->	c
+SeedArray	->	4

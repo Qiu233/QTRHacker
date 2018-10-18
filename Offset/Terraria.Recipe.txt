@@ -1,0 +1,15 @@
+18
+createItem	->	4
+requiredItem	->	8
+requiredTile	->	c
+needHoney	->	14
+needWater	->	15
+needLava	->	16
+anyWood	->	17
+anyIronBar	->	18
+anyPressurePlate	->	19
+anySand	->	1a
+anyFragment	->	1b
+alchemy	->	1c
+needSnowBiome	->	1d
+acceptedGroups	->	10

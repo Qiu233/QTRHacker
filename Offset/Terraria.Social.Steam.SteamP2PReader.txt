@@ -1,0 +1,7 @@
+7
+SteamLock	->	4
+_pendingReadBuffers	->	8
+_deletionQueue	->	c
+_bufferPool	->	10
+_channel	->	18
+_readEvent	->	14

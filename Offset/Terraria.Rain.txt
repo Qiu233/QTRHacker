@@ -1,0 +1,8 @@
+7
+position	->	14
+velocity	->	1c
+scale	->	4
+rotation	->	8
+alpha	->	c
+active	->	10
+type	->	11

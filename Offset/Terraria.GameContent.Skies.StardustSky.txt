@@ -1,0 +1,8 @@
+7
+_random	->	10
+_planetTexture	->	14
+_bgTexture	->	18
+_starTextures	->	1c
+_isActive	->	d
+_stars	->	20
+_fadeOpacity	->	24

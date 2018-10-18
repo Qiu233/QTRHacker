@@ -1,0 +1,4 @@
+3
+IntendedCooldown	->	4
+SoundType	->	8
+SoundStyle	->	c

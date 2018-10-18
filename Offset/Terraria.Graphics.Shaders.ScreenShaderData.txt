@@ -1,0 +1,13 @@
+12
+_uColor	->	30
+_uSecondaryColor	->	3c
+_uOpacity	->	20
+_globalOpacity	->	24
+_uIntensity	->	28
+_uTargetPosition	->	48
+_uDirection	->	50
+_uProgress	->	2c
+_uImageOffset	->	58
+_uImages	->	14
+_samplerStates	->	18
+_imageScales	->	1c

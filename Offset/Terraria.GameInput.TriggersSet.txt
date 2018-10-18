@@ -1,0 +1,5 @@
+4
+KeyStatus	->	4
+UsedMovementKey	->	10
+HotbarScrollCD	->	8
+HotbarHoldTime	->	c

@@ -1,0 +1,3 @@
+2
+SteamId	->	c
+_friendlyName	->	8

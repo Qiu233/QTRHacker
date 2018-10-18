@@ -1,0 +1,3 @@
+3
+_player	->	cc
+_texture	->	d0

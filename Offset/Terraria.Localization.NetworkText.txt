@@ -1,0 +1,4 @@
+4
+_substitutions	->	4
+_text	->	8
+_mode	->	c

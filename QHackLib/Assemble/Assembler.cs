@@ -10,10 +10,6 @@ namespace QHackLib.Assemble
 {
 	public class Assembler
 	{
-		[DllImport("asmjit.dll", CharSet = CharSet.Ansi)]
-		private unsafe static extern void ParseAssemble(string code, bool x64, int IP, byte* dest, int* len);
-
-
 		private Assembler() { }
 
 		public unsafe static byte[] Assemble(string code, int IP)

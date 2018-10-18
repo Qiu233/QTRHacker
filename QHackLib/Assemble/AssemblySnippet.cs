@@ -39,7 +39,13 @@ namespace QHackLib.Assemble
 			s.Content.AddRange(code);
 			return s;
 		}
-
+		/// <summary>
+		/// 在循环体內，[esp]即迭代的值
+		/// </summary>
+		/// <param name="body"></param>
+		/// <param name="times"></param>
+		/// <param name="regProtection"></param>
+		/// <returns></returns>
 		public static AssemblySnippet Loop(AssemblySnippet body, int times, bool regProtection)
 		{
 

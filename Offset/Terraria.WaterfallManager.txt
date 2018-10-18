@@ -1,0 +1,16 @@
+19
+qualityMax	->	c
+currentMax	->	10
+waterfalls	->	4
+waterfallTexture	->	8
+wFallFrCounter	->	14
+regularFrame	->	18
+wFallFrCounter2	->	1c
+slowFrame	->	20
+rainFrameCounter	->	24
+rainFrameForeground	->	28
+rainFrameBackground	->	2c
+snowFrameCounter	->	30
+snowFrameForeground	->	34
+findWaterfallCount	->	38
+waterfallDist	->	3c

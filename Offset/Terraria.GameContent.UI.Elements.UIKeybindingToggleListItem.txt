@@ -1,0 +1,5 @@
+4
+_color	->	d8
+_TextDisplayFunction	->	cc
+_IsOnFunction	->	d0
+_toggleTexture	->	d4

@@ -1,0 +1,3 @@
+3
+_interface	->	4
+_camera	->	8

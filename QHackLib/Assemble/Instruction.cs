@@ -28,5 +28,9 @@ namespace QHackLib.Assemble
 		{
 			return Assembler.Assemble(Code, ip);
 		}
+		public static explicit operator Instruction(string s)
+		{
+			return Instruction.Create(s);
+		}
 	}
 }

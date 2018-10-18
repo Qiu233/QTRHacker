@@ -1,0 +1,23 @@
+63
+_data	->	4
+_type	->	10
+_flipDraw	->	48
+_frame	->	14
+_frameCounter	->	18
+_frameExtra	->	1c
+_frameExtraCounter	->	20
+_frameState	->	24
+_flyTime	->	28
+_idleTime	->	2c
+_idleTimeNext	->	30
+_fatigue	->	34
+_fatigueMax	->	38
+_abilityCharging	->	49
+_abilityCharge	->	3c
+_abilityCooldown	->	40
+_abilityDuration	->	44
+_abilityActive	->	4a
+_aiming	->	4b
+_debugDraw	->	8
+_mountSpecificData	->	c
+_active	->	4c

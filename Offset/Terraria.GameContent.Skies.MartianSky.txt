@@ -1,0 +1,7 @@
+6
+_ufos	->	10
+_random	->	14
+_maxUfos	->	18
+_active	->	d
+_leaving	->	e
+_activeUfos	->	1c

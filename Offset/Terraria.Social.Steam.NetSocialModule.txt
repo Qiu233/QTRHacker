@@ -1,0 +1,7 @@
+13
+_reader	->	4
+_writer	->	8
+_lobby	->	c
+_connectionStateMap	->	10
+_steamLock	->	14
+_lobbyChatMessage	->	18

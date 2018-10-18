@@ -1,0 +1,8 @@
+7
+_gameLobbyJoinRequested	->	1c
+_p2pSessionRequest	->	20
+_p2pSessionConnectfail	->	24
+_authTicket	->	34
+_authData	->	28
+_authDataLength	->	2c
+_hasLocalHost	->	30

@@ -1,0 +1,5 @@
+5
+_userStatsReceived	->	4
+_areStatsReceived	->	10
+_intStatCache	->	8
+_floatStatCache	->	c

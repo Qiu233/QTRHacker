@@ -1,0 +1,6 @@
+5
+_frame	->	8
+_frameCount	->	c
+_nextSequenceAppendTime	->	10
+_isActive	->	14
+_sequences	->	4

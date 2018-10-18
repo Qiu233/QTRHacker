@@ -1,0 +1,7 @@
+6
+_text	->	d4
+_textScale	->	d8
+_textSize	->	e0
+_isLarge	->	dc
+_color	->	e8
+_drawPanel	->	dd

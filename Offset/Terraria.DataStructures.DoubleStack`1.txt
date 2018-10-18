@@ -1,0 +1,9 @@
+8
+_segmentList	->	4
+_segmentSize	->	8
+_segmentCount	->	c
+_segmentShiftPosition	->	10
+_start	->	14
+_end	->	18
+_size	->	1c
+_last	->	20

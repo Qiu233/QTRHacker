@@ -1,0 +1,4 @@
+3
+_texture	->	cc
+_frame	->	d0
+Color	->	e0

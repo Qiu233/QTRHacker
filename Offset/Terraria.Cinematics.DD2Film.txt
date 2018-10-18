@@ -1,0 +1,7 @@
+6
+_dryad	->	18
+_ogre	->	1c
+_portal	->	20
+_army	->	24
+_critters	->	28
+_startPoint	->	2c

@@ -12,6 +12,7 @@ namespace QHackLib.FunctionHelper
 	public class InlineHook
 	{
 		private static readonly Object thisLock = new Object();
+		private const int CodeOffset = 64;
 		private InlineHook() { }
 
 		public static byte[] GetHeadBytes(byte[] code)
@@ -105,6 +106,7 @@ namespace QHackLib.FunctionHelper
 				int flagAddr = 0;
 
 				AssemblySnippet a = AssemblySnippet.FromEmpty();
+				a.Content.Add(Instruction.Create("__$$__:"));//very begin
 				a.Content.Add(Instruction.Create("mov dword ptr [0x" + compAddr.ToString("X8") + "],1"));
 				if (once)
 				{
@@ -129,7 +131,7 @@ namespace QHackLib.FunctionHelper
 				NativeFunctions.WriteProcessMemory(Context.Handle, codeAddr, ref flagAddr, 4, 0);
 				NativeFunctions.WriteProcessMemory(Context.Handle, codeAddr + 4, ref compAddr, 4, 0);
 
-				int addr = codeAddr + 32;
+				int addr = codeAddr + CodeOffset;
 				byte[] snippetBytes = a.GetByteCode(addr);
 
 
@@ -151,7 +153,7 @@ namespace QHackLib.FunctionHelper
 				NativeFunctions.WriteProcessMemory(Context.Handle, addr, jmpBackBytes, jmpBackBytes.Length, 0);
 				addr += jmpBackBytes.Length;
 				
-				byte[] jmpToBytesRaw = Assembler.Assemble("jmp 0x" + (codeAddr + 32).ToString("X8"), targetAddr);
+				byte[] jmpToBytesRaw = Assembler.Assemble("jmp 0x" + (codeAddr + CodeOffset).ToString("X8"), targetAddr);
 				byte[] jmpToBytes = new byte[headBytes.Length];
 				for (int i = 0; i < 5; i++)
 					jmpToBytes[i] = jmpToBytesRaw[i];

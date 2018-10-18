@@ -1,0 +1,7 @@
+6
+_textures	->	10
+_slimes	->	14
+_random	->	18
+_slimesRemaining	->	1c
+_isActive	->	d
+_isLeaving	->	e

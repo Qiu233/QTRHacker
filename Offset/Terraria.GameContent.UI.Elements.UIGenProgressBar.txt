@@ -1,0 +1,9 @@
+8
+_texInnerDirt	->	cc
+_texOuterCrimson	->	d0
+_texOuterCorrupt	->	d4
+_texOuterLower	->	d8
+_visualOverallProgress	->	dc
+_targetOverallProgress	->	e0
+_visualCurrentProgress	->	e4
+_targetCurrentProgress	->	e8

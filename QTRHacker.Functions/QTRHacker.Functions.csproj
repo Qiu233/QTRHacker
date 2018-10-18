@@ -55,6 +55,7 @@
     <Compile Include="GameObjectArray.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemSlots.cs" />
+    <Compile Include="MathFunctions.cs" />
     <Compile Include="NetMessage.cs" />
     <Compile Include="NPC.cs" />
     <Compile Include="NPCArray.cs" />

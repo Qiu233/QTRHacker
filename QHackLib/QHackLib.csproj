@@ -49,6 +49,7 @@
     <Compile Include="Assemble\AssemblySnippet.cs" />
     <Compile Include="Assemble\Instruction.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="FunctionHelper\CustomFunctions.cs" />
     <Compile Include="FunctionHelper\FunctionAddressHelper.cs" />
     <Compile Include="Assemble\Ldasm.cs" />
     <Compile Include="FunctionHelper\InlineHook.cs" />

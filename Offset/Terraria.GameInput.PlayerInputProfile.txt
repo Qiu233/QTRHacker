@@ -1,0 +1,16 @@
+15
+InputModes	->	4
+Name	->	8
+AllowEditting	->	2c
+HotbarRadialHoldTimeRequired	->	c
+TriggersDeadzone	->	10
+InterfaceDeadzoneX	->	14
+LeftThumbstickDeadzoneX	->	18
+LeftThumbstickDeadzoneY	->	1c
+RightThumbstickDeadzoneX	->	20
+RightThumbstickDeadzoneY	->	24
+LeftThumbstickInvertX	->	2d
+LeftThumbstickInvertY	->	2e
+RightThumbstickInvertX	->	2f
+RightThumbstickInvertY	->	30
+InventoryMoveCD	->	28

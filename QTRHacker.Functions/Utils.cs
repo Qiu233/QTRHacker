@@ -670,5 +670,44 @@ push 0", 0);
 			byte[] b = new byte[] { 0x75, 0x37 };
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, 2, 0);
 		}
+
+		/// <summary>
+		/// 未完成，不太想做这个
+		/// </summary>
+		/// <param name="Context"></param>
+		public static void HookHarp_E(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"8B 8D E4 F9 FF FF FF 15") - 5;
+			byte[] j = new byte[1];
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, j, 1, 0);
+			if (j[0] != 0xE9)
+			{
+				var player = Context.MyPlayer;
+				InlineHook.Inject(Context.HContext,
+					AssemblySnippet.FromCode(
+						new AssemblyCode[]{
+						}),
+					a, false);
+			}
+		}
+		public static void HookHarp_D(GameContext Context)
+		{
+			int a = AobscanHelper.Aobscan(
+				Context.HContext,
+				"8B 8D E4 F9 FF FF FF 15") - 5;
+			byte[] j = new byte[1];
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, j, 1, 0);
+			if (j[0] == 0xE9)
+			{
+				int y = 0;
+				NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
+				y += a + 5;
+				byte[] b = Assembler.Assemble("movq [esp],xmm0", 0);
+				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
+				InlineHook.FreeHook(Context.HContext, y);
+			}
+		}
 	}
 }

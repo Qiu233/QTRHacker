@@ -1,0 +1,11 @@
+14
+_graphicsDevice	->	4
+_spriteDataQueue	->	8
+_spriteTextures	->	c
+_queuedSpriteCount	->	24
+_spriteBatch	->	10
+_vertexBuffer	->	14
+_indexBuffer	->	18
+_fallbackIndexData	->	1c
+_vertices	->	20
+_vertexBufferPosition	->	28

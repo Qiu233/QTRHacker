@@ -1,0 +1,4 @@
+4
+_style	->	10
+_styleVariations	->	14
+_soundId	->	18

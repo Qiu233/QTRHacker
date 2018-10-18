@@ -1,0 +1,8 @@
+18
+item	->	4
+x	->	c
+y	->	10
+bankChest	->	1c
+name	->	8
+frameCounter	->	14
+frame	->	18

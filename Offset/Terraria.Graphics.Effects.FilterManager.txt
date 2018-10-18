@@ -1,0 +1,7 @@
+7
+OnPostDraw	->	c
+_activeFilters	->	10
+_filterLimit	->	14
+_priorityThreshold	->	18
+_activeFilterCount	->	1c
+_captureThisFrame	->	9

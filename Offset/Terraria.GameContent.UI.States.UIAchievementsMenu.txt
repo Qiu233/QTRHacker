@@ -1,0 +1,6 @@
+5
+_achievementsList	->	cc
+_achievementElements	->	d0
+_categoryButtons	->	d4
+_backpanel	->	d8
+_outerContainer	->	dc

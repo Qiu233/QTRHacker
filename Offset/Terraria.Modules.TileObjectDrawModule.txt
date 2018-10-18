@@ -1,0 +1,5 @@
+4
+yOffset	->	4
+flipHorizontal	->	c
+flipVertical	->	d
+stepDown	->	8

@@ -1,0 +1,5 @@
+4
+color	->	10
+showTime	->	c
+text	->	4
+parsedText	->	8

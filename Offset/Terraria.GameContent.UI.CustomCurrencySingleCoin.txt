@@ -1,0 +1,4 @@
+3
+CurrencyDrawScale	->	14
+CurrencyTextKey	->	10
+CurrencyTextColor	->	18

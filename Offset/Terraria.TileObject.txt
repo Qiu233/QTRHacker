@@ -1,0 +1,7 @@
+8
+xCoord	->	0
+yCoord	->	4
+type	->	8
+style	->	c
+alternate	->	10
+random	->	14
