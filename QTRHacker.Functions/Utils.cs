@@ -671,10 +671,7 @@ push 0", 0);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, 2, 0);
 		}
 
-		/// <summary>
-		/// 未完成，不太想做这个
-		/// </summary>
-		/// <param name="Context"></param>
+
 		public static void HookHarp_E(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
@@ -688,6 +685,20 @@ push 0", 0);
 				InlineHook.Inject(Context.HContext,
 					AssemblySnippet.FromCode(
 						new AssemblyCode[]{
+						(Instruction)"pushad",
+
+						(Instruction)$"push [{Context.MyPlayer.BaseAddress+Player.OFFSET_Y}]",
+						(Instruction)$"fld dword ptr [esp]",
+						(Instruction)$"push 16",
+						(Instruction)$"fild dword ptr [esp]",
+						(Instruction)$"fadd",
+						(Instruction)$"fstp dword ptr [esp]",
+						(Instruction)$"mov eax,[esp]",
+						(Instruction)$"add esp,8",
+						Projectile.GetSnippet_Call_NewProjectile(Context,null,false,
+							$"[{Context.MyPlayer.BaseAddress+Player.OFFSET_X}]",
+							$"eax",10f,0f,304,0,0f,255,0f,0f),
+						(Instruction)"popad",
 						}),
 					a, false);
 			}

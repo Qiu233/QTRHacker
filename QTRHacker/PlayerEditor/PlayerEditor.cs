@@ -30,6 +30,21 @@ namespace QTRHacker.PlayerEditor
 
 			PlayerView = new PlayerView();
 			PlayerView.Bounds = new Rectangle(5, 5, 200, 250);
+			PlayerView.MouseClick += (s, e) =>
+			{
+				if (e.Button == MouseButtons.Right)
+				{
+					SaveFileDialog sfd = new SaveFileDialog();
+					sfd.Filter = "PNG files(*.png)|*.png";
+					if (sfd.ShowDialog(this) == DialogResult.OK)
+					{
+						var stream = File.Open(sfd.FileName, FileMode.OpenOrCreate);
+						var a = PlayerView.CreateDTexture(PlayerView.GraphicsDevice);
+						a.SaveAsPng(stream, a.Width, a.Height);
+						stream.Close();
+					}
+				}
+			};
 
 			PlayerView.HairType = 0;
 
@@ -359,6 +374,36 @@ namespace QTRHacker.PlayerEditor
 
 			Batch.Draw(HairTextures[HairType + 1], tR, sR, HairColor);
 			Batch.End();
+		}
+
+		public Texture2D CreateDTexture(GraphicsDevice graphcisDevice)
+		{
+
+			RenderTarget2D rt = new RenderTarget2D(graphcisDevice, 40, 50);
+			graphcisDevice.SetRenderTarget(rt);
+
+			graphcisDevice.Clear(ClearOptions.Target, Microsoft.Xna.Framework.Color.Transparent, 0, 0);
+
+			SpriteBatch spriteBatch = new SpriteBatch(graphcisDevice);
+			spriteBatch.Begin();
+			var sR = new Microsoft.Xna.Framework.Rectangle(0, 5, 40, 50);
+			var tR = new Microsoft.Xna.Framework.Rectangle(0, 0, 40, 50);
+			spriteBatch.Draw(BodyTextures[0], tR, sR, Colors[0]);
+			spriteBatch.Draw(BodyTextures[1], tR, sR, Colors[1]);
+			spriteBatch.Draw(BodyTextures[2], tR, sR, Colors[2]);
+			spriteBatch.Draw(BodyTextures[4], tR, sR, Colors[4]);
+			spriteBatch.Draw(BodyTextures[5], tR, sR, Colors[5]);
+			spriteBatch.Draw(BodyTextures[6], tR, sR, Colors[6]);
+			spriteBatch.Draw(BodyTextures[10], tR, sR, Colors[10]);
+			spriteBatch.Draw(BodyTextures[11], tR, sR, Colors[11]);
+			spriteBatch.Draw(BodyTextures[12], tR, sR, Colors[12]);
+			spriteBatch.Draw(HairTextures[HairType + 1], tR, sR, HairColor);
+			spriteBatch.End();
+
+			graphcisDevice.SetRenderTarget(null);
+			spriteBatch.Dispose();
+
+			return rt;
 		}
 
 		public PlayerView()

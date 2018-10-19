@@ -19,6 +19,9 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
+				Utils.HookHarp_E(gc);
+				Console.ReadKey();
+				Utils.HookHarp_D(gc);
 				
 				/*MathFunctions c = new MathFunctions(gc.HContext);
 				c.Functions.ToList().ForEach(t => Console.WriteLine(t.Key + ":\t" + t.Value.ToString("X8")));*/
