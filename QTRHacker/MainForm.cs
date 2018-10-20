@@ -217,7 +217,7 @@ namespace QTRHacker
 			AddButton(buttonTabPage1, Lang.infMana, 3, Utils.InfiniteMana_E, Utils.InfiniteMana_D);
 			AddButton(buttonTabPage1, Lang.infItemAndAmmo, 4, (ctx) => { Utils.InfiniteItem_E(ctx); Utils.InfiniteAmmo_E(ctx); }, (ctx) => { Utils.InfiniteItem_D(ctx); Utils.InfiniteAmmo_D(ctx); });
 			AddButton(buttonTabPage1, Lang.infFly, 5, Utils.InfiniteFly_E, Utils.InfiniteFly_D);
-			//AddButton(buttonTabPage1, Lang.immuneStoned, 6, HackFunctions.immuneBuff, HackFunctions.De_immuneBuff);
+			AddButton(buttonTabPage1, Lang.immuneStoned, 6, Utils.ImmuneDebuffs_E, Utils.ImmuneDebuffs_D, true);
 			AddButton(buttonTabPage1, Lang.highLight, 7, Utils.HighLight_E, Utils.HighLight_D);
 			AddButton(buttonTabPage1, Lang.ghostMode, 8, Utils.GhostMode_E, Utils.GhostMode_D);
 			/*AddButton(buttonTabPage1, Lang.respawnAtOnce, 9, HackFunctions.NoRespawnTime, HackFunctions.De_NoRespawnTime);

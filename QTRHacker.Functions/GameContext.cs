@@ -99,6 +99,15 @@ namespace QTRHacker.Functions
 			get;
 		}
 
+		public int[] Debuff
+		{
+			get;
+		}
+
+		public int DebuffAddress
+		{
+			get;
+		}
 
 		public int NetMode
 		{
@@ -317,6 +326,7 @@ namespace QTRHacker.Functions
 				return new Tile2DArray(this, Tile_Address);
 			}
 		}
+
 
 		public PlayerArray Players
 		{
@@ -613,6 +623,16 @@ namespace QTRHacker.Functions
 
 			NativeFunctions.ReadProcessMemory(HContext.Handle, aaaa + 0x20, ref vvv, 4, 0);
 			TileTargetY_Address = vvv;
+
+			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::TryRemovingBuff") + 0xd;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			DebuffAddress = vvv;
+			int bbbb = 0;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv + 4, ref bbbb, 4, 0);
+			Debuff = new int[bbbb];
+			for (int i = 0; i < bbbb; i++)
+				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv + 8 + i, ref Debuff[i], 1, 0);
 		}
 
 		/// <summary>

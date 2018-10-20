@@ -671,7 +671,6 @@ push 0", 0);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, 2, 0);
 		}
 
-
 		public static void HarpToTP_E(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
@@ -719,6 +718,45 @@ push 0", 0);
 				NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
 				y += a + 5;
 				byte[] b = Assembler.Assemble("movq [esp],xmm0", 0);
+				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
+				InlineHook.FreeHook(Context.HContext, y);
+			}
+		}
+
+		public static void ImmuneDebuffs_E(GameContext Context)
+		{
+			int a = Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Player::AddBuff");
+			byte[] j = new byte[1];
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, j, 1, 0);
+			if (j[0] != 0xE9)
+			{
+				var player = Context.MyPlayer;
+				InlineHook.Inject(Context.HContext,
+					AssemblySnippet.FromCode(
+						new AssemblyCode[]{
+							(Instruction)$"pushad",
+							(Instruction)$"mov ebx,{Context.DebuffAddress}",
+							(Instruction)$"cmp byte ptr [ebx+edx+8],0",
+							(Instruction)$"je end",
+							(Instruction)$"popad",
+							(Instruction)$"ret 8",
+							(Instruction)$"end:",
+							(Instruction)$"popad",
+						}),
+					a, false);
+			}
+		}
+		public static void ImmuneDebuffs_D(GameContext Context)
+		{
+			int a = Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Player::AddBuff");
+			byte[] j = new byte[1];
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, j, 1, 0);
+			if (j[0] == 0xE9)
+			{
+				int y = 0;
+				NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
+				y += a + 5;
+				byte[] b = AobscanHelper.GetHexCodeFromString("55 8B EC 57 56");
 				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
 				InlineHook.FreeHook(Context.HContext, y);
 			}

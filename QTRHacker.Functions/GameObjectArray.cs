@@ -8,7 +8,6 @@ namespace QTRHacker.Functions
 {
 	public abstract class GameObjectArray<T> : GameObject where T : GameObject
 	{
-
 		public T this[int i]
 		{
 			get
@@ -19,7 +18,6 @@ namespace QTRHacker.Functions
 		}
 		public GameObjectArray(GameContext Context, int bAddr) : base(Context, bAddr)
 		{
-
 		}
 	}
 }

@@ -19,12 +19,7 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				Utils.HarpToTP_E(gc);
-				Console.ReadKey();
-				Utils.HarpToTP_D(gc);
-				
-				/*MathFunctions c = new MathFunctions(gc.HContext);
-				c.Functions.ToList().ForEach(t => Console.WriteLine(t.Key + ":\t" + t.Value.ToString("X8")));*/
+				//Assembler.Assemble("a:loop a",0).ToList().ForEach(t => Console.WriteLine(t.ToString("X2")));
 			}
 		}
 	}
