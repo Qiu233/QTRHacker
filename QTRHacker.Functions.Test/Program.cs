@@ -21,7 +21,7 @@ namespace QTRHacker.Functions.Test
 			{
 				Utils.HarpToTP_E(gc);
 				Console.ReadKey();
-				Utils.HookHarp_D(gc);
+				Utils.HarpToTP_D(gc);
 				
 				/*MathFunctions c = new MathFunctions(gc.HContext);
 				c.Functions.ToList().ForEach(t => Console.WriteLine(t.Key + ":\t" + t.Value.ToString("X8")));*/

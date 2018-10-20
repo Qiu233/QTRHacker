@@ -358,6 +358,7 @@ namespace QTRHacker
 					this.Enabled = true;
 				}
 			}, null, false);
+			AddButton(buttonTabPage6, "竖琴左键传送", 8, Utils.HarpToTP_E, Utils.HarpToTP_D, true);
 
 
 
@@ -469,15 +470,14 @@ namespace QTRHacker
 				MessageBox.Show("当前环境不是64位操作系统，修改器无法使用\n程序退出");
 				Environment.Exit(0);
 			}
-			//https://raw.githubusercontent.com/ZQiu233/QTRHacker/master/version.txt
 			WebClient client = new WebClient();
 			var curVer = Assembly.GetExecutingAssembly().GetName().Version;
 			string tip = null;
 			try
 			{
-				var data = client.DownloadData("https://raw.githubusercontent.com/ZQiu233/QTRHacker/master/version.txt");
-				var newestVer = Version.Parse(Encoding.UTF8.GetString(data));
-				tip = $"(最新:{newestVer.ToString()})";
+				var data = client.DownloadData("https://raw.githubusercontent.com/ZQiu233/QTRHackerUpdatesHistory/master/version.txt");
+				var newestVer = Encoding.UTF8.GetString(data);
+				tip = $"(最新:{newestVer})";
 			}
 			catch (Exception)
 			{
@@ -485,7 +485,9 @@ namespace QTRHacker
 			}
 
 			Text = curVer.ToString() + tip;
+
 			BackColor = Color.LightGray;
+
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.cross.png"))
 				cross = Image.FromStream(s);
 			mainWindow = this;

@@ -685,13 +685,28 @@ push 0", 0);
 				InlineHook.Inject(Context.HContext,
 					AssemblySnippet.FromCode(
 						new AssemblyCode[]{
-						(Instruction)"pushad",
-						(Instruction)"popad",
+							(Instruction)$"pushad",
+							AssemblySnippet.FromDotNetCall(
+								Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_LocalPlayer"), 
+								null, false),
+							(Instruction)$"mov ebx,eax",
+							(Instruction)$"push 16",
+							(Instruction)$"fild dword ptr [{Context.TileTargetX_Address}]",
+							(Instruction)$"fild dword ptr [esp]",
+							(Instruction)$"fmul",
+							(Instruction)$"fstp dword ptr [ebx+{Player.OFFSET_X}]",
+
+							(Instruction)$"fild dword ptr [{Context.TileTargetY_Address}]",
+							(Instruction)$"fild dword ptr [esp]",
+							(Instruction)$"fmul",
+							(Instruction)$"fstp dword ptr [ebx+{Player.OFFSET_Y}]",
+							(Instruction)$"add esp,4",
+							(Instruction)$"popad",
 						}),
 					a, false);
 			}
 		}
-		public static void HookHarp_D(GameContext Context)
+		public static void HarpToTP_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext,
