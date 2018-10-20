@@ -434,10 +434,16 @@ namespace QTRHacker.PlayerEditor
 				res.Close();
 			}
 
-			Application.Idle += (s, e) =>
-			{
-				Invalidate();
-			};
+			Application.Idle += OnIdle;
+		}
+		private void OnIdle(object sender, EventArgs e)
+		{
+			Invalidate();
+		}
+		protected override void Dispose(bool disposing)
+		{
+			base.Dispose(disposing);
+			Application.Idle -= OnIdle;
 		}
 
 

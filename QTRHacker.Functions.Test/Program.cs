@@ -19,7 +19,7 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				Utils.HookHarp_E(gc);
+				Utils.HarpToTP_E(gc);
 				Console.ReadKey();
 				Utils.HookHarp_D(gc);
 				
