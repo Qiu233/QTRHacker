@@ -4,11 +4,12 @@
 const IID IID_ICorDebugProcess = { 0x3d6f5f64, 0x7538, 0x11d3, 0x8d, 0x5b, 0x00, 0x10, 0x4b, 0x35, 0xe7, 0xef };
 const IID IID_ICorDebugProcess5 = { 0x21e9d9c0, 0xfcb8, 0x11df, 0x8c, 0xff, 0x08, 0x00, 0x20, 0x0c ,0x9a, 0x66 };
 const IID IID_ICorDebugCode2 = { 0x5F696509,0x452F,0x4436,0xA3,0xFE,0x4D,0x11,0xFE,0x7E,0x23,0x47 }; //5F696509-452F-4436-A3FE-4D11FE7E2347
-
+const IID My_IID_ICorDebugSymbolProvider = { 0x3948A999, 0xFD8A, 0x4C38, 0xA7, 0x08, 0x8A, 0x71, 0xE9, 0xB0, 0x4D, 0xBB };
+const IID My_IID_ICorDebugSymbolProvider2 = { 0xF9801807, 0x4764, 0x4330, 0x9E, 0x67, 0x4F, 0x68, 0x50, 0x94, 0x16, 0x5E };
 
 using namespace std;
 
-DotNetDataGetter::DotNetDataGetter(ULONG processid,PCWCHAR module)
+DotNetDataGetter::DotNetDataGetter(ULONG processid, PCWCHAR module)
 {
 	processhandle = 0;
 	CorDebugProcess5 = NULL;
@@ -424,25 +425,26 @@ void DotNetDataGetter::enumTypeDefMethods(PCWCHAR typeName, UINT64 hModule, mdTy
 	}
 }
 
+
+
 void DotNetDataGetter::Init()
 {
 	OpenOrAttachToProcess();
-	vector<DomainInfo> domains;
 	enumDomains(domains);
 	for (UINT i = 0; i < domains.size(); i++)
 	{
-		vector<ModuleInfo> modules;
 		enumModules(domains[i].ID, modules);
 		for (UINT j = 0; j < modules.size(); j++)
 		{
 			if (lstrcmpW(modules[j].name, this->ModuleName) == 0)
 			{
-				vector<TypeInfo> types;
+				MInfo = modules[j];
 				enumTypeDefs(modules[j].handle, types);
 				for (UINT r = 0; r < types.size(); r++)
 				{
 					enumTypeDefMethods(types[r].name, modules[j].handle, types[r].token, methods);
 				}
+				break;
 			}
 		}
 	}
@@ -457,7 +459,7 @@ bool DotNetDataGetter::SearchMethodByName(PCWCHAR fullName, MethodInfo &method, 
 		if (lstrcmpW(it->name, fullName) == 0)
 		{
 			i++;
-			if (i == times) 
+			if (i == times)
 			{
 				method.ILCode = it->ILCode;
 				method.name = it->name;

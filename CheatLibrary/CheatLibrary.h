@@ -12,7 +12,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	DLL PVOID InitCL(UINT pid, wchar_t* module);
+	DLL PVOID InitCL(UINT pid, const wchar_t* module);
 
 	DLL UINT GetNumberFunction(PVOID getter);
 
@@ -21,6 +21,7 @@ extern "C" {
 	DLL BOOL SearchFunctionByName(PVOID getter, const wchar_t* fullName, void**addr, unsigned int times);
 
 	DLL BOOL SearchFunctionByAddress(PVOID getter, UINT address, PWCHAR name);
+
 
 #ifdef __cplusplus
 }

@@ -16,7 +16,7 @@ void GetFunction(PVOID getter, UINT index, PWCHAR name, UINT *address)
 	*address = (UINT)a.NativeCode;
 }
 
-PVOID InitCL(UINT pid, wchar_t* module)
+PVOID InitCL(UINT pid, const wchar_t* module)
 {
 	DotNetDataGetter *getter = new DotNetDataGetter(pid, module);
 	getter->Init();
@@ -39,3 +39,4 @@ BOOL SearchFunctionByAddress(PVOID getter, UINT address, PWCHAR name)
 	wsprintf(name, L"%ws", method.name);
 	return b;
 }
+

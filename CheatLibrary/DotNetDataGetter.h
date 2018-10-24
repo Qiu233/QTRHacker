@@ -50,8 +50,11 @@ private:
 	ICorDebugProcess *CorDebugProcess;
 	ICorDebugProcess5 *CorDebugProcess5;
 	CMyICLRDebuggingLibraryProvider *libprovider;
-	CMyIcorDebugDataTarget *datacallback;
-
+	CMyIcorDebugDataTarget *datacallback; 
+	std::vector<DomainInfo> domains;
+	std::vector<ModuleInfo> modules;
+	std::vector<TypeInfo> types;
+	ModuleInfo MInfo;
 	std::map<ICorDebugModule*, IMetaDataImport*> moduleMetaData;
 
 	IMetaDataImport *getMetaData(ICorDebugModule *module);
