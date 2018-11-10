@@ -23,6 +23,8 @@ using System.Reflection;
 using QTRHacker.Functions;
 using QTRHacker.Functions.ProjectileImage;
 using System.Net;
+using Newtonsoft.Json;
+using QTRHacker.Configs;
 
 namespace QTRHacker
 {
@@ -63,6 +65,9 @@ namespace QTRHacker
 		private const int row = 12;
 		public static GameContext Context;
 		public static bool CanHack => !(Context == null || Context.MyPlayer.BaseAddress <= 0);
+
+
+		public CFG_ProjDrawer Config_ProjDrawer;
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct POINT
@@ -354,7 +359,7 @@ namespace QTRHacker
 				{
 					ProjImage img = ProjImage.FromImage(ofd.FileName);
 					this.Enabled = false;
-					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y, Config_ProjDrawer.Resolution, Config_ProjDrawer.ProjType);
 					this.Enabled = true;
 				}
 			}, null, false);
@@ -380,7 +385,33 @@ namespace QTRHacker
 			AddButton(buttonTabPage5, Lang.shadowDodge, 1, Utils.ShadowDodge_E, Utils.ShadowDodge_D);
 			AddButton(buttonTabPage5, Lang.showInvisiblePlayers, 2, Utils.ShowInvisiblePlayers_E, Utils.ShowInvisiblePlayers_D);
 
+			LoadConfigs();
 			LoadPlugins();
+		}
+
+		private void LoadConfigs()
+		{
+			if (!Directory.Exists(".\\configs"))
+				Directory.CreateDirectory(".\\configs");
+			LoadConfig<CFG_ProjDrawer>("CFG_ProjDrawer", out Config_ProjDrawer);
+		}
+		private void LoadConfig<T>(string name, out T obj) where T : new()
+		{
+			string s = $".\\configs\\{name}.json";
+			if (File.Exists(s))
+			{
+				obj = JsonConvert.DeserializeObject<T>(File.ReadAllText(s));
+			}
+			else
+			{
+				obj = new T();
+				SaveConfig(name, obj);
+			}
+		}
+		private void SaveConfig(string name, object obj)
+		{
+			string s = $".\\configs\\{name}.json";
+			File.WriteAllText(s, JsonConvert.SerializeObject(obj, Formatting.Indented));
 		}
 
 		private void LoadPlugins()

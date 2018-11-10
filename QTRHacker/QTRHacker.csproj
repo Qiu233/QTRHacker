@@ -112,6 +112,7 @@
     <Compile Include="AntiBlinkListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Configs\CFG_ProjDrawer.cs" />
     <Compile Include="ExtForm.cs">
       <SubType>Form</SubType>
     </Compile>

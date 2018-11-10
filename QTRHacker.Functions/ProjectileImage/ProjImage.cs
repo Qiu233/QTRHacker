@@ -35,7 +35,7 @@ namespace QTRHacker.Functions.ProjectileImage
 			Value = new bool[Width, Height];
 		}
 
-		public void Emit(GameContext context, float X, float Y)
+		public void Emit(GameContext context, float X, float Y, int resolution, int projType)
 		{
 			for (int i = 0; i < Width; i++)
 			{
@@ -43,7 +43,7 @@ namespace QTRHacker.Functions.ProjectileImage
 				{
 					if (!Value[i, j])
 						continue;
-					Projectile.NewProjectile(context, X + i * 16, Y + j * 16, 0, 0, 355, 0, 0, context.MyPlayerIndex);
+					Projectile.NewProjectile(context, X + i * resolution, Y + j * resolution, 0, 0, projType, 0, 0, context.MyPlayerIndex);
 				}
 			}
 		}

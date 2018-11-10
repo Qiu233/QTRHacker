@@ -19,7 +19,7 @@ namespace UpdateTool
 	{
 		private TextBox UpdateLog;
 		private MListBox Updates;
-		private Button RefreshInfo, InstallEnvironment, Install, InstallNewest;
+		private Button RefreshInfo, Install, InstallNewest;
 		private Label Tip;
 		private string CurVersion;
 		private string[] Versions;
@@ -58,57 +58,14 @@ namespace UpdateTool
 			InstallNewest.Click += InstallNewest_Click;
 			InstallNewest.Text = "安装最新版";
 			InstallNewest.Bounds = new Rectangle(450, 220, 150, 40);
-
-			InstallEnvironment = new Button();
-			InstallEnvironment.Click += InstallEnviroment_Click;
-			InstallEnvironment.Text = "安装所需环境";
-			InstallEnvironment.Bounds = new Rectangle(450, 260, 150, 40);
-
+			
 			this.Controls.Add(UpdateLog);
 			this.Controls.Add(Updates);
 			this.Controls.Add(Tip);
 			this.Controls.Add(RefreshInfo);
 			this.Controls.Add(Install);
 			this.Controls.Add(InstallNewest);
-			this.Controls.Add(InstallEnvironment);
 
-		}
-
-		private void InstallEnviroment_Click(object sender, EventArgs e)
-		{
-			if (!Directory.Exists("./Env"))
-				Directory.CreateDirectory("./Env");
-			WebClient client = new WebClient();
-			string MSVBCRT = $"./Env/MSVBCRT.exe";
-			string NDP462 = $"./Env/NDP462.exe";
-			if (!File.Exists(MSVBCRT))
-			{
-				string uri = "https://raw.githubusercontent.com/ZQiu233/QTRHackerUpdatesHistory/master/Env/MSVBCRT.exe";
-				byte[] data = client.DownloadData(uri);
-				File.WriteAllBytes(MSVBCRT, data);
-			}
-			if (!File.Exists(NDP462))
-			{
-				string uri = "https://raw.githubusercontent.com/ZQiu233/QTRHackerUpdatesHistory/master/Env/NDP462.exe";
-				byte[] data = client.DownloadData(uri);
-				File.WriteAllBytes(NDP462, data);
-			}
-			using (Process p = new Process())
-			{
-				p.StartInfo.FileName = "cmd.exe";
-				p.StartInfo.UseShellExecute = false;
-				p.StartInfo.RedirectStandardInput = true;
-				p.StartInfo.RedirectStandardOutput = false;
-				p.StartInfo.RedirectStandardError = false;
-				p.StartInfo.CreateNoWindow = true;
-				p.Start();
-
-				p.StandardInput.WriteLine("start ./Env/NDP462.exe");
-				p.StandardInput.WriteLine("start ./Env/MSVBCRT.exe");
-				p.StandardInput.AutoFlush = true;
-				
-				p.Close();
-			}
 		}
 
 		protected override void OnShown(EventArgs e)
