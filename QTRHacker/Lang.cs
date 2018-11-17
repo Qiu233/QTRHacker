@@ -22,7 +22,7 @@ namespace QTRHacker
 		public static string attackThroughWalls = "Attack Ignoring Blocks", decreaseGravity = "Decrease Gravity", increaseSpeed = "Increase Movement Speed", killAllNPC = "Kill All NPC", projectileThroughWalls = "Projectiles Through Walls", superPick = "Pick Far Away", extraTwoSlots = "Another Two Slots";
 		public static string toggleDay = "Toggle Day/Night", toggleSunDial = "Toggle Sundial", toggleBloodMoon = "Toggle Blood Moon", toggleEclipse = "Toggle Eclipse";
 		public static string none = "None", Event = "Event", nonePlayerBase = "No player base address found", extra = "Extra", dragTip = "Drag the cross onto Terraria window", off = "OFF";
-		public static string sucToHack = "Success to Hack", faiToHack = "Failed to Hack", sucToCancel = "Success to Cancel", faiToCancel = "Failed to Cancel", faiToGetBase = "Failed to get base address", baseaddr = "BaseAddr";
+		public static string sucToHack = "Successful", faiToHack = "Failed to Hack", sucToCancel = "Success to Cancel", faiToCancel = "Failed to Cancel", faiToGetBase = "Failed to get base address", baseaddr = "BaseAddr";
 		public static string maxLife = "Max Life", maxMana = "Max Mana", confirm = "Confirm";
 		public static string slot = "Slot", itemID = "ItemID", damage = "Damage", number = "Stack", knockBack = "Knockback", crit = "Crit", buff = "Buff", buffTime = "BuffTime";
 		public static string healMana = "HealMana", healLife = "HealLife", useCD = "UseCD", waveCD = "WaveCD", effCD = "Effect CD", scale = "Scale", defense = "Defense", projSpeed = "ProjSpeed";
