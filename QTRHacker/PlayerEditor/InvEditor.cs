@@ -310,8 +310,11 @@ namespace QTRHacker.PlayerEditor
 			{
 				SaveFileDialog sfd = new SaveFileDialog()
 				{
-					Filter = "inv files (*.inv)|*.inv"
+					Filter = "inv files (*.inv)|*.inv",
 				};
+				if (!Directory.Exists("./invs"))
+					Directory.CreateDirectory("./invs");
+				sfd.InitialDirectory = Path.GetFullPath("./invs");
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 					SaveInventory(sfd.FileName);
@@ -330,6 +333,9 @@ namespace QTRHacker.PlayerEditor
 				{
 					Filter = "inv files (*.inv)|*.inv"
 				};
+				if (!Directory.Exists("./invs"))
+					Directory.CreateDirectory("./invs");
+				ofd.InitialDirectory = Path.GetFullPath("./invs");
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
 					LoadInventory(ofd.FileName);
@@ -349,6 +355,9 @@ namespace QTRHacker.PlayerEditor
 				{
 					Filter = "inv files (*.invp)|*.invp"
 				};
+				if (!Directory.Exists("./invs"))
+					Directory.CreateDirectory("./invs");
+				sfd.InitialDirectory = Path.GetFullPath("./invs");
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 
@@ -370,6 +379,9 @@ namespace QTRHacker.PlayerEditor
 				{
 					Filter = "inv files (*.invp)|*.invp"
 				};
+				if (!Directory.Exists("./invs"))
+					Directory.CreateDirectory("./invs");
+				ofd.InitialDirectory = Path.GetFullPath("./invs");
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
 					int j = 0;

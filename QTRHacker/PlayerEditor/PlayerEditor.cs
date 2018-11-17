@@ -162,7 +162,7 @@ namespace QTRHacker.PlayerEditor
 
 
 			Label Intro = new Label();
-			using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Intro.txt"))
+			using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Resource.Intro.txt"))
 				Intro.Text = new StreamReader(stream).ReadToEnd();
 			Intro.Bounds = new Rectangle(580, 5, 380, 270);
 			Controls.Add(Intro);

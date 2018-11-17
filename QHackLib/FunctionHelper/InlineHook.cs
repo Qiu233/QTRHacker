@@ -159,6 +159,8 @@ namespace QHackLib.FunctionHelper
 					jmpToBytes[i] = jmpToBytesRaw[i];
 				for (int i = 5; i < headBytes.Length; i++)
 					jmpToBytes[i] = 0x90;//nop
+				//Console.WriteLine(codeAddr.ToString("X8"));
+				//Console.ReadKey();
 				NativeFunctions.WriteProcessMemory(Context.Handle, targetAddr, jmpToBytes, jmpToBytes.Length, 0);
 				return new Tuple<int, int, int, byte[]>(codeAddr, flagAddr, compAddr, headBytes);
 			}

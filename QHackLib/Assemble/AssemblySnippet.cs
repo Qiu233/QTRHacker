@@ -41,6 +41,7 @@ namespace QHackLib.Assemble
 		}
 		/// <summary>
 		/// 在循环体內，[esp]即迭代的值
+		/// 会影响ecx寄存器
 		/// </summary>
 		/// <param name="body"></param>
 		/// <param name="times"></param>

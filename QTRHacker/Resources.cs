@@ -13,6 +13,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Resources;
 using System.Drawing;
+using System.Reflection;
 
 namespace QTRHacker
 {
@@ -41,8 +42,8 @@ namespace QTRHacker
 
 		public Resources()
 		{
-			res = new ResourceManager("QTRHacker.Res", this.GetType().Assembly);
-			ItemImage = (byte[])res.GetObject("ItemImage");
+			res = new ResourceManager("QTRHacker.Resource.Res", this.GetType().Assembly);
+			ItemImage = GetRes("QTRHacker.Resource.ItemImage.bin");
 			Prefix = System.Text.Encoding.UTF8.GetString((byte[])res.GetObject("PreFix")).Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 #if ENG
 			Pets = System.Text.Encoding.UTF8.GetString((byte[])res.GetObject("Pet_Eng")).Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -70,9 +71,19 @@ namespace QTRHacker
 			}
 
 		}
+		public static byte[] GetRes(string name)
+		{
+			byte[] data;
+			using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
+			{
+				data = new byte[stream.Length];
+				stream.Read(data, 0, (int)stream.Length);
+			}
+			return data;
+		}
 		public BinaryReader GetItemInfoStream()
 		{
-			byte[] data = (byte[])res.GetObject("ItemInfo");
+			byte[] data = GetRes("QTRHacker.Resource.ItemInfo.json");
 			return new BinaryReader(new MemoryStream(data));
 		}
 		//used to read file list

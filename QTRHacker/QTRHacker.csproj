@@ -94,6 +94,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -162,6 +164,12 @@
     </Compile>
     <Compile Include="Plugin.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ProjMaker\ProjMakerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjMaker\ProjMakerForm.Designer.cs">
+      <DependentUpon>ProjMakerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.cs" />
     <Compile Include="ScriptForm.cs">
@@ -193,10 +201,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Res.resx" />
-    <None Include="ItemImage.bin" />
-    <EmbeddedResource Include="ItemInfo.json" />
-    <EmbeddedResource Include="ItemName_cn.json" />
+    <EmbeddedResource Include="Resource\Res.resx" />
+    <EmbeddedResource Include="Resource\ItemImage.bin" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -207,7 +213,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="RecipeInfo.json" />
+    <EmbeddedResource Include="Resource\WikiRes.zip" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -223,7 +229,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Intro.txt" />
+    <EmbeddedResource Include="Resource\Intro.txt" />
     <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_1.png" />
     <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_10.png" />
     <EmbeddedResource Include="PlayerEditor\Textures\Player_Hair_100.png" />
@@ -372,7 +378,7 @@
     <EmbeddedResource Include="PlayerEditor\Textures\Player_0_7.png" />
     <EmbeddedResource Include="PlayerEditor\Textures\Player_0_8.png" />
     <EmbeddedResource Include="PlayerEditor\Textures\Player_0_9.png" />
-    <EmbeddedResource Include="cross.png" />
+    <EmbeddedResource Include="Resource\cross.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

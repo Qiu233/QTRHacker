@@ -39,7 +39,7 @@ namespace QTRHacker
 		public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
 
 		public delegate void HackFunc(GameContext c);
-		private Button Extra, Script;
+		private Button Extra, Script, UpdateTool;
 		private ExtForm ExtraHack = null;
 		private ScriptForm ScriptForm = null;
 		private TabControl mainTab;
@@ -127,10 +127,23 @@ namespace QTRHacker
 			{
 				Text = Lang.none,
 				Location = new Point(0, 50),
-				Size = new Size(190, 25),
+				Size = new Size(140, 25),
 				Font = new Font("Arial", 10)
 			};
 			this.Controls.Add(status);
+
+			UpdateTool = new Button()
+			{
+				Location = new Point(150, 50),
+				Size = new Size(50, 25),
+				Text = "更新"
+			};
+			UpdateTool.Click += delegate (object sender, EventArgs e)
+			{
+				System.Diagnostics.Process.Start(Path.GetFullPath("./VersionManager.exe"));
+				Environment.Exit(0);
+			};
+			this.Controls.Add(UpdateTool);
 
 			Extra = new Button()
 			{
@@ -354,12 +367,12 @@ namespace QTRHacker
 			{
 				OpenFileDialog ofd = new OpenFileDialog();
 
-				ofd.Filter = "inv files (*.png)|*.png";
+				ofd.Filter = "png files (*.png)|*.png";
 				if (ofd.ShowDialog(this) == DialogResult.OK)
 				{
-					ProjImage img = ProjImage.FromImage(ofd.FileName);
+					ProjImage img = ProjImage.FromImage(ofd.FileName, Config_ProjDrawer.ProjType, Config_ProjDrawer.Resolution);
 					this.Enabled = false;
-					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y, Config_ProjDrawer.Resolution, Config_ProjDrawer.ProjType);
+					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
 					this.Enabled = true;
 				}
 			}, null, false);
@@ -519,7 +532,7 @@ namespace QTRHacker
 
 			BackColor = Color.LightGray;
 
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.cross.png"))
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Resource.cross.png"))
 				cross = Image.FromStream(s);
 			mainWindow = this;
 			InitializeComponent();

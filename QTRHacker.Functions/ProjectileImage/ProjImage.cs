@@ -1,4 +1,7 @@
-﻿using System;
+﻿using QHackLib;
+using QHackLib.Assemble;
+using QHackLib.FunctionHelper;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -8,44 +11,114 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.ProjectileImage
 {
-	/// <summary>
-	/// 
-	/// </summary>
+	public class Proj
+	{
+		public int ProjType
+		{
+			get;
+			set;
+		}
+		public PointF Speed
+		{
+			get;
+			set;
+		}
+		public PointF Location
+		{
+			get;
+			set;
+		}
+	}
 	public class ProjImage
 	{
-		public const uint FileVersion = 1;
+		public const uint FileVersion = 2;
 		public const ushort FileHead = 0xA8;
-		public uint Width
+		public int Width
 		{
 			get;
 		}
-		public uint Height
+		public int Height
 		{
 			get;
 		}
-		public bool[,] Value
+		/// <summary>
+		/// 只在加载图片时这个东西才有效
+		/// </summary>
+		public int Resolution
 		{
 			get;
 			private set;
 		}
-		public ProjImage(uint Width, uint Height)
+		public Proj[,] Projs
+		{
+			get;
+		}
+		public ProjImage(int Width, int Height)
 		{
 			this.Width = Width;
 			this.Height = Height;
-			Value = new bool[Width, Height];
+			Projs = new Proj[Width, Height];
+			for (int i = 0; i < Projs.GetLength(0); i++)
+				for (int j = 0; j < Projs.GetLength(1); j++)
+					Projs[i, j] = new Proj
+					{
+						Speed = new PointF(0, 0)
+					};
 		}
 
-		public void Emit(GameContext context, float X, float Y, int resolution, int projType)
+		public void Emit(GameContext context, float X, float Y)
 		{
-			for (int i = 0; i < Width; i++)
+			/*for (int i = 0; i < Width; i++)
 			{
 				for (int j = 0; j < Height; j++)
 				{
-					if (!Value[i, j])
+					var p = Projs[i, j];
+					if (!p.Valid)
 						continue;
-					Projectile.NewProjectile(context, X + i * resolution, Y + j * resolution, 0, 0, projType, 0, 0, context.MyPlayerIndex);
+
+					Projectile.NewProjectile(context, X + i * resolution, Y + j * resolution, 0, 0, p.ProjType, 0, 0, context.MyPlayerIndex);
+					//snippet.Content.Add(Projectile.GetSnippet_Call_NewProjectile(context, null, false, X + i * resolution, Y + j * resolution, 0f, 0f, projType, 0, 0f, context.MyPlayerIndex, 0f, 0f));
+				}
+			}*/
+			int data = NativeFunctions.VirtualAllocEx(context.HContext.Handle, 0, (int)(32 * Width * Height), NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+			NativeFunctions.WriteProcessMemory(context.HContext.Handle, data, BitConverter.GetBytes(Width), 4, 0);
+			NativeFunctions.WriteProcessMemory(context.HContext.Handle, data + 4, BitConverter.GetBytes(Height), 4, 0);
+			for (int i = 0; i < Projs.GetLength(0); i++)
+			{
+				for (int j = 0; j < Projs.GetLength(1); j++)
+				{
+					int t = data + 8 + (int)(j * Width + i) * 32;
+					NativeFunctions.WriteProcessMemory(context.HContext.Handle, t, BitConverter.GetBytes(Projs[i, j].ProjType), 4, 0);
+					NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 4, BitConverter.GetBytes(context.MyPlayer.X + Projs[i, j].Location.X), 4, 0);
+					NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 8, BitConverter.GetBytes(context.MyPlayer.Y + Projs[i, j].Location.Y), 4, 0);
+					NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 12, BitConverter.GetBytes(Projs[i, j].Speed.X), 4, 0);
+					NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 16, BitConverter.GetBytes(Projs[i, j].Speed.Y), 4, 0);
 				}
 			}
+			AssemblySnippet snippet = AssemblySnippet.FromCode(
+				new AssemblyCode[] {
+					(Instruction)$"pushad",
+					(Instruction)$"mov ebx,{data}",
+			});
+			snippet.Content.Add(AssemblySnippet.Loop(
+				AssemblySnippet.Loop(
+					AssemblySnippet.FromCode(
+						new AssemblyCode[] {
+							(Instruction)$"mov eax,[esp]",//j
+							(Instruction)$"mul dword ptr [ebx]",//宽度，用到了edx
+							(Instruction)$"add eax,[esp+4]",//i
+							(Instruction)$"shl eax,5",
+							(Instruction)$"lea eax,[ebx+8+eax]",
+							Projectile.GetSnippet_Call_NewProjectile(context,null,false,
+								"[eax+4]","[eax+8]","[eax+12]","[eax+16]","[eax]",0,0f,context.MyPlayerIndex,0f,0f),
+				}),
+				(int)Height, false),
+				(int)Width, true));
+			snippet.Content.Add((Instruction)"popad");
+			InlineHook.InjectAndWait(context.HContext, snippet,
+				context.HContext.FunctionAddressHelper.FunctionsAddress["Terraria.Main::Update"], true);
+			NativeFunctions.VirtualFreeEx(context.HContext.Handle, data, 0);
+
 		}
 		public void ToStream(Stream stream)
 		{
@@ -55,8 +128,16 @@ namespace QTRHacker.Functions.ProjectileImage
 			bw.Write(Width);
 			bw.Write(Height);
 			for (int i = 0; i < Width; i++)
+			{
 				for (int j = 0; j < Height; j++)
-					bw.Write(Value[i, j]);
+				{
+					bw.Write(Projs[i, j].ProjType);
+					bw.Write(Projs[i, j].Location.X);
+					bw.Write(Projs[i, j].Location.Y);
+					bw.Write(Projs[i, j].Speed.X);
+					bw.Write(Projs[i, j].Speed.Y);
+				}
+			}
 		}
 		public static ProjImage FromStream(Stream stream)
 		{
@@ -65,28 +146,39 @@ namespace QTRHacker.Functions.ProjectileImage
 				throw new Exception("错误的文件格式");
 			if (br.ReadUInt32() != FileVersion)
 				throw new Exception("不支持的(老)文件版本");
-			uint Width, Height;
-			Width = br.ReadUInt32();
-			Height = br.ReadUInt32();
+			int Width, Height;
+			Width = br.ReadInt32();
+			Height = br.ReadInt32();
 			ProjImage img = new ProjImage(Width, Height);
 			for (int i = 0; i < Width; i++)
+			{
 				for (int j = 0; j < Height; j++)
-					img.Value[i, j] = br.ReadBoolean();
+				{
+					img.Projs[i, j].ProjType = br.ReadInt32();
+					float a = br.ReadSingle();
+					float b = br.ReadSingle();
+					img.Projs[i, j].Location = new PointF(a, b);
+					float c = br.ReadSingle();
+					float d = br.ReadSingle();
+					img.Projs[i, j].Speed = new PointF(c, d);
+				}
+			}
 			return img;
 		}
-		public static ProjImage FromImage(string file)
+		public static ProjImage FromImage(string file, int projType, int resolution)
 		{
-
 			Bitmap img = (Bitmap)Image.FromFile(file);
-			ProjImage proj = new ProjImage((uint)img.Width, (uint)img.Height);
+			ProjImage proj = new ProjImage(img.Width, img.Height);
+			proj.Resolution = resolution;
 			for (int i = 0; i < proj.Width; i++)
 			{
 				for (int j = 0; j < proj.Height; j++)
 				{
-					if (img.GetPixel(i, j).A == 0)
-						proj.Value[i, j] = false;
-					else
-						proj.Value[i, j] = true;
+					if (img.GetPixel(i, j).A != 0)
+					{
+						proj.Projs[i, j].ProjType = projType;
+						proj.Projs[i, j].Location = new PointF(i * resolution, j * resolution);
+					}
 				}
 			}
 			return proj;

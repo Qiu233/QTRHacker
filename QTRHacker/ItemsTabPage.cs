@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -36,14 +37,18 @@ namespace QTRHacker
 		public ItemsTabPage()
 		{
 			if (Items == null)
-				using (var u = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.ItemInfo.json")))
-					Items = JArray.Parse(u.ReadToEnd());
-			if (Items_cn == null)
-				using (var u = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.ItemName_cn.json")))
-					Items_cn = JArray.Parse(u.ReadToEnd());
-			if (Recipes == null)
-				using (var u = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.RecipeInfo.json")))
-					Recipes = JArray.Parse(u.ReadToEnd());
+			{
+				using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Resource.WikiRes.zip"))
+				{
+					ZipArchive z = new ZipArchive(s);
+					using (var u = new StreamReader(z.GetEntry("ItemInfo.json").Open()))
+						Items = JArray.Parse(u.ReadToEnd());
+					using (var u = new StreamReader(z.GetEntry("ItemName_cn.json").Open()))
+						Items_cn = JArray.Parse(u.ReadToEnd());
+					using (var u = new StreamReader(z.GetEntry("RecipeInfo.json").Open()))
+						Recipes = JArray.Parse(u.ReadToEnd());
+				}
+			}
 			this.BackColor = Color.LightGray;
 			this.BorderStyle = BorderStyle.None;
 
