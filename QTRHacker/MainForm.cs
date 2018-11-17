@@ -132,6 +132,8 @@ namespace QTRHacker
 			};
 			this.Controls.Add(status);
 
+#if ENG
+#else
 			UpdateTool = new Button()
 			{
 				Location = new Point(150, 50),
@@ -144,6 +146,7 @@ namespace QTRHacker
 				Environment.Exit(0);
 			};
 			this.Controls.Add(UpdateTool);
+#endif
 
 			Extra = new Button()
 			{
@@ -363,7 +366,7 @@ namespace QTRHacker
 			u.Font = new Font("SimSun", 8);
 			AddButton(buttonTabPage6, Lang.exploreAll, 5, Utils.RevealMap, null, false);
 			AddButton(buttonTabPage6, Lang.rightClickToTP, 6, Utils.RightClickToTP, null, false);
-			AddButton(buttonTabPage6, "弹幕拼图", 7, (ctx) =>
+			AddButton(buttonTabPage6, Lang.drawProjs, 7, (ctx) =>
 			{
 				OpenFileDialog ofd = new OpenFileDialog();
 
@@ -376,7 +379,7 @@ namespace QTRHacker
 					this.Enabled = true;
 				}
 			}, null, false);
-			AddButton(buttonTabPage6, "竖琴左键传送", 8, Utils.HarpToTP_E, Utils.HarpToTP_D, true);
+			AddButton(buttonTabPage6, Lang.harpTP, 8, Utils.HarpToTP_E, Utils.HarpToTP_D, true);
 
 
 
@@ -511,7 +514,11 @@ namespace QTRHacker
 		{
 			if (!Environment.Is64BitOperatingSystem)
 			{
+#if ENG
+				MessageBox.Show("x64 Windows needed\nHack is closing...");
+#else
 				MessageBox.Show("当前环境不是64位操作系统，修改器无法使用\n程序退出");
+#endif
 				Environment.Exit(0);
 			}
 			WebClient client = new WebClient();
@@ -521,11 +528,19 @@ namespace QTRHacker
 			{
 				var data = client.DownloadData("https://raw.githubusercontent.com/ZQiu233/QTRHackerUpdatesHistory/master/version.txt");
 				var newestVer = Encoding.UTF8.GetString(data);
+#if ENG
+				tip = $"(newest:{newestVer})";
+#else
 				tip = $"(最新:{newestVer})";
+#endif
 			}
 			catch (Exception)
 			{
-				tip = "(无法获取更新)";
+#if ENG
+				tip = $"Can't fetch updates";
+#else
+				tip = $"无法获取更新";
+#endif
 			}
 
 			Text = curVer.ToString() + tip;

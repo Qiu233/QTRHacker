@@ -33,23 +33,29 @@ namespace QTRHacker.PlayerEditor
 		{
 			this.Context = Context;
 			this.ParentForm = ParentForm;
+#if ENG
+			Text = "Armor";
+#else
 			Text = "装备";
+#endif
 
 			ItemPropertiesPanel = new ItemPropertiesPanel();
 			ArmorSlots = new ItemIcon[Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT];
 			AltSlots = new AltItemIcon[AltPanelWidth * AltPanelHeight];
 
 			SlotsPanel = new Panel();
-
+			
 			Label Members = new Label();
 			Members.Bounds = new Rectangle(275, 165, 270, 105);
 			Members.BackColor = Color.FromArgb(201, 200, 170);
+#if ENG
+#else
 			Members.Text = "鸣谢(同一批排名不分先后)：\n" +
 				"第一批：Qiu(作者),帅哭,白鼠,魄沫,子不语,\n小兲,鱼,子落,永夜,欧酋,子程,恋恋\n" +
 	"第二批：司机熊,呆呆,子渔,凤凰蛇,提灯,南风南,Ronin,男人,天然大豆,清辞,晨曦(御龙),袁瑞,mz,dio,锐,firmament,面条,心醉\n" +
  "感谢他们这一路的支持，修改器才有今天，在此列下名单，以作纪念";
+#endif
 			SlotsPanel.Controls.Add(Members);
-
 			SlotsPanel.Size = new Size(10 * (SlotsWidth + SlotsGap), 300);
 			SlotsPanel.Location = new Point(5, 5);
 			this.Controls.Add(SlotsPanel);

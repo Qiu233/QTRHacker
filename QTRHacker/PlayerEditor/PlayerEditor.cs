@@ -26,7 +26,11 @@ namespace QTRHacker.PlayerEditor
 		{
 			this.Context = Context;
 			this.ParentForm = ParentForm;
+#if ENG
+			Text = "Character";
+#else
 			Text = "人物";
+#endif
 
 			PlayerView = new PlayerView();
 			PlayerView.Bounds = new Rectangle(5, 5, 200, 250);
@@ -47,32 +51,41 @@ namespace QTRHacker.PlayerEditor
 			};
 
 			PlayerView.HairType = 0;
-
+#if ENG
+			HairColorControl = new ColorSelectControl("Hair:");
+			SkinColorControl = new ColorSelectControl("Skin:");
+			EyeColorControl = new ColorSelectControl("Eyes:");
+			ShirtColorControl = new ColorSelectControl("Shirt:");
+			UnderShirtColorControl = new ColorSelectControl("UShirt:");
+			PantsColorControl = new ColorSelectControl("Pants:");
+			ShoesColorControl = new ColorSelectControl("Shoes:");
+#else
 			HairColorControl = new ColorSelectControl("头发:");
+			SkinColorControl = new ColorSelectControl("皮肤:");
+			EyeColorControl = new ColorSelectControl("眼睛:");
+			ShirtColorControl = new ColorSelectControl("衬衣:");
+			UnderShirtColorControl = new ColorSelectControl("内衬:");
+			PantsColorControl = new ColorSelectControl("裤子:");
+			ShoesColorControl = new ColorSelectControl("鞋子:");
+#endif
 			HairColorControl.OnColorChanged += (c) => PlayerView.HairColor = c;
 			HairColorControl.Location = new Point(0, 30);
-
-			SkinColorControl = new ColorSelectControl("皮肤:");
+			
 			SkinColorControl.OnColorChanged += (c) => PlayerView.SkinColor = c;
 			SkinColorControl.Location = new Point(0, 60);
-
-			EyeColorControl = new ColorSelectControl("眼睛:");
+			
 			EyeColorControl.OnColorChanged += (c) => PlayerView.EyeBlackColor = c;
 			EyeColorControl.Location = new Point(0, 90);
 
-			ShirtColorControl = new ColorSelectControl("衬衣:");
 			ShirtColorControl.OnColorChanged += (c) => PlayerView.ShirtColor = c;
 			ShirtColorControl.Location = new Point(0, 120);
 
-			UnderShirtColorControl = new ColorSelectControl("内衬:");
 			UnderShirtColorControl.OnColorChanged += (c) => PlayerView.UnderShirtColor = c;
 			UnderShirtColorControl.Location = new Point(0, 150);
 
-			PantsColorControl = new ColorSelectControl("裤子:");
 			PantsColorControl.OnColorChanged += (c) => PlayerView.PantsColor = c;
 			PantsColorControl.Location = new Point(0, 180);
 
-			ShoesColorControl = new ColorSelectControl("鞋子:");
 			ShoesColorControl.OnColorChanged += (c) => PlayerView.ShoesColor = c;
 			ShoesColorControl.Location = new Point(0, 210);
 
@@ -143,7 +156,7 @@ namespace QTRHacker.PlayerEditor
 
 
 			Button RefreshButton = new Button();
-			RefreshButton.Text = "刷新";
+			RefreshButton.Text = Lang.refresh;
 			RefreshButton.Bounds = new Rectangle(220, 60, 100, 30);
 			RefreshButton.Click += (s, e) =>
 			{
@@ -152,7 +165,7 @@ namespace QTRHacker.PlayerEditor
 			PropertiesSelectPanel.Controls.Add(RefreshButton);
 
 			Button ConfirmButton = new Button();
-			ConfirmButton.Text = "确定";
+			ConfirmButton.Text = Lang.confirm;
 			ConfirmButton.Bounds = new Rectangle(220, 100, 100, 30);
 			ConfirmButton.Click += (s, e) =>
 			{
@@ -160,13 +173,14 @@ namespace QTRHacker.PlayerEditor
 			};
 			PropertiesSelectPanel.Controls.Add(ConfirmButton);
 
-
+#if ENG
+#else
 			Label Intro = new Label();
 			using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Resource.Intro.txt"))
 				Intro.Text = new StreamReader(stream).ReadToEnd();
 			Intro.Bounds = new Rectangle(580, 5, 380, 270);
 			Controls.Add(Intro);
-
+#endif
 			Controls.Add(PlayerView);
 			Controls.Add(PropertiesSelectPanel);
 

@@ -33,7 +33,11 @@ namespace QTRHacker.PlayerEditor
 		{
 			this.Context = Context;
 			this.ParentForm = ParentForm;
+#if ENG
+			Text = "Inventory";
+#else
 			Text = "背包";
+#endif
 			ItemPropertiesPanel = new ItemPropertiesPanel();
 			ItemSlots = new ItemIcon[Player.ITEM_MAX_COUNT - 9];
 			AltSlots = new AltItemIcon[AltPanelWidth * AltPanelHeight];

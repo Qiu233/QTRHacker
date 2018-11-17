@@ -46,6 +46,7 @@ namespace QTRHacker
 		public static string description = "Description", recipeFrom = "Recipe(From)", recipeTo = "Recipe(To)", value = "Value";
 		public static string bait = "Bait", block = "Block", wallw = "Wall", head = "Head", body = "Body", leg = "Leg", accessory = "Acc", melee = "Melee", ranged = "Ranged", magic = "Magic", summon = "Summon", consumable = "Consumable", others = "Others", keyWord = "Keyword", search = "Search", reset = "Reset";
 		public static string itemInfo = "ItemInfo", equipInfo = "EquipInfo", wall = "Wall ID", tileBoost = "TileBoost", mana = "Mana", properties = "Properties", filter = "Filter";
+		public static string drawProjs="Draw Projectiles",harpTP="Harp left click to TP";
 
 #else
 		public static string infLife = "无限生命", infOxygen = "无限氧气", infSummon = "无限召唤", infMana = "无限魔法", infItemAndAmmo = "无限物品/弹药", superRange = "超远距离";
