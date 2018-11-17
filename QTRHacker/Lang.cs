@@ -78,6 +78,7 @@ namespace QTRHacker
 		public static string description = "描述", recipeFrom = "合成(From)", recipeTo = "合成(To)", value = "价值";
 		public static string bait = "诱饵", block = "方块", wallw = "墙壁", head = "头部", body = "身体", leg = "腿部", accessory = "饰品", melee = "近战", ranged = "远程", magic = "魔法", summon = "召唤", consumable = "消耗品", others = "其他", keyWord = "关键词", search = "搜索", reset = "重置";
 		public static string itemInfo = "物品信息", equipInfo = "装备信息", wall = "墙壁ID", tileBoost = "物品距离", mana = "魔法消耗", properties = "属性", filter = "筛选";
+		public static string drawProjs = "弹幕拼图", harpTP = "竖琴左键传送";
 #endif
 	}
 }
