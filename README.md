@@ -1,6 +1,7 @@
 # QTRHacker
 ## QTRHacker is in place of the old hack: 
 **https://github.com/ZQiu233/TR_Hacker**
+
 All releases: https://github.com/ZQiu233/QTRHackerUpdatesHistory/tree/master/Updates
 Now QTRHacker is much stronger than the old one.
 Sorry for that there's no English version for the newest version.
