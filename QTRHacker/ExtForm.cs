@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Linq;
 using QTRHacker.Functions;
 using QTRHacker.PlayerEditor;
+using QTRHacker.ProjMaker;
 
 namespace QTRHacker
 {
@@ -479,13 +480,22 @@ namespace QTRHacker
 			NewNPC.Location = new Point(0, 90);
 			NewNPC.Size = new Size(255, 30);
 
+			Button Projs = AddButton("弹幕编辑器", delegate (object sender, EventArgs e)
+			{
+				ProjMakerForm form = new ProjMakerForm();
+				form.Show();
+			}
+			);
+			Projs.Location = new Point(0, 120);
+			Projs.Size = new Size(255, 30);
+
 			Button wiki = AddButton("Wiki", delegate (object sender, EventArgs e)
 			{
 				WikiForm wikiform = new WikiForm();
 				wikiform.Show();
 			}
 			);
-			wiki.Location = new Point(0, 120);
+			wiki.Location = new Point(0, 150);
 			wiki.Size = new Size(255, 30);
 
 			Button advanced = AddButton(Lang.more, delegate (object sender, EventArgs e)
@@ -507,7 +517,7 @@ namespace QTRHacker
 									);
 			advanced.Font = new Font("Arial", 8);
 			advanced.ForeColor = Color.Red;
-			advanced.Location = new Point(0, 150);
+			advanced.Location = new Point(0, 180);
 			advanced.Size = new Size(255, 30);
 
 			//slot.Text = "1";

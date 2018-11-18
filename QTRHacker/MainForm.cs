@@ -552,6 +552,7 @@ namespace QTRHacker
 			mainWindow = this;
 			InitializeComponent();
 			InitControls();
+			new ProjMaker.ProjMakerForm().Show();
 		}
 		protected override void OnPaint(PaintEventArgs e)
 		{

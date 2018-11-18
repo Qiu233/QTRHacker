@@ -164,6 +164,14 @@
     </Compile>
     <Compile Include="Plugin.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ProjMaker\CodeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProjMaker\CodeView.Designer.cs">
+      <DependentUpon>CodeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjMaker\Parse\Parser.cs" />
+    <Compile Include="ProjMaker\Parse\Tokenizer.cs" />
     <Compile Include="ProjMaker\ProjMakerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,6 +199,9 @@
     <Compile Include="WikiForm.Designer.cs">
       <DependentUpon>WikiForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ProjMaker\CodeView.resx">
+      <DependentUpon>CodeView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
