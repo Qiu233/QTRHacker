@@ -45,6 +45,11 @@ namespace QTRHacker.Functions.ProjectileImage
 		{
 			get;
 		}
+		public string Description
+		{
+			get;
+			private set;
+		}
 		public ProjImage()
 		{
 			Projs = new List<Proj>();
@@ -89,6 +94,7 @@ namespace QTRHacker.Functions.ProjectileImage
 			BinaryWriter bw = new BinaryWriter(stream);
 			bw.Write(FileHead);
 			bw.Write(FileVersion);
+			bw.Write(Description);
 			bw.Write(Projs.Count);
 			for (int i = 0; i < Projs.Count; i++)
 			{
@@ -106,9 +112,11 @@ namespace QTRHacker.Functions.ProjectileImage
 				throw new Exception("错误的文件格式");
 			if (br.ReadUInt32() != FileVersion)
 				throw new Exception("不支持的(老)文件版本");
-			int len = br.ReadInt32();
+			string des = br.ReadString();
+			int count = br.ReadInt32();
 			ProjImage img = new ProjImage();
-			for (int i = 0; i < len; i++)
+			img.Description = des;
+			for (int i = 0; i < count; i++)
 			{
 				Proj p = new Proj();
 				p.ProjType = br.ReadInt32();

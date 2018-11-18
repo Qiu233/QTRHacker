@@ -12,7 +12,10 @@ namespace QTRHacker.ProjMaker
 {
 	public partial class CodeView : UserControl
 	{
-		private TextBox CodeBox;
+		public TextBox CodeBox
+		{
+			get;
+		}
 		private const int LinesPerPage = 17;
 		private const int UnitsPerPage = 10;
 		public override string Text { get => CodeBox.Text; set => CodeBox.Text = value; }

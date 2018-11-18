@@ -552,7 +552,9 @@ namespace QTRHacker
 			mainWindow = this;
 			InitializeComponent();
 			InitControls();
-			new ProjMaker.ProjMakerForm().Show();
+			if (!Directory.Exists(".\\Projs"))
+				Directory.CreateDirectory(".\\Projs");
+			new ProjMaker.ProjMakerForm("A").Show();
 		}
 		protected override void OnPaint(PaintEventArgs e)
 		{

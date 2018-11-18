@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QTRHacker.Functions.ProjectileImage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace QTRHacker.ProjMaker.Parse
 	{
 		LEFT_BRACKET,
 		RIGHT_BRACKET,
+		LABEL,
+		NAME,
 		NUMBER,
 		COMMA,
 	}
@@ -36,6 +39,10 @@ namespace QTRHacker.ProjMaker.Parse
 	}
 	public class Tokenizer
 	{
+		public Dictionary<string, Func<float, float, IEnumerable<Proj>>> Labels
+		{
+			get;
+		}
 		public string Source
 		{
 			get;
@@ -45,10 +52,11 @@ namespace QTRHacker.ProjMaker.Parse
 			get;
 			private set;
 		}
-		public Tokenizer(string s)
+		public Tokenizer(string s, Dictionary<string, Func<float, float, IEnumerable<Proj>>> handler)
 		{
 			Source = s;
 			Index = 0;
+			Labels = handler;
 		}
 		public Token Next()
 		{
@@ -59,20 +67,37 @@ namespace QTRHacker.ProjMaker.Parse
 				Index++;
 				return Next();
 			}
-			if (Char.IsNumber(Source[Index]))
+			else if (Source[Index] == '#')
+			{
+				Index++;
+				while (Index < Source.Length && Source[Index] != '\n' && Source[Index] != '#') Index++;
+				return Next();
+			}
+			else if (Char.IsNumber(Source[Index]) || Source[Index] == '-')
 			{
 				string n = "";
-				while (Index < Source.Length && (Char.IsNumber(Source[Index]) || Source[Index] == '.'))
+				int i = Index;
+				while (Index < Source.Length && (Char.IsNumber(Source[Index]) || Source[Index] == '.' || Source[Index] == '-'))
 					n += Source[Index++];
-				return new Token(n, TokenType.NUMBER, Index);
+				return new Token(n, TokenType.NUMBER, i);
+			}
+			else if (Char.IsLetter(Source[Index]))
+			{
+				string n = "";
+				int i = Index;
+				while (Index < Source.Length && (Char.IsLetterOrDigit(Source[Index]) || Source[Index] == '_'))
+					n += Source[Index++];
+				if (Labels.Keys.Contains(n))
+					return new Token(n, TokenType.LABEL, i);
+				return new Token(n, TokenType.NAME, i);
 			}
 			else if (Source[Index] == '(')
-				return new Token(Source[Index++].ToString(), TokenType.LEFT_BRACKET, Index);
+				return new Token(Source[Index].ToString(), TokenType.LEFT_BRACKET, Index++);
 			else if (Source[Index] == ')')
-				return new Token(Source[Index++].ToString(), TokenType.RIGHT_BRACKET, Index);
+				return new Token(Source[Index].ToString(), TokenType.RIGHT_BRACKET, Index++);
 			else if (Source[Index] == ',')
-				return new Token(Source[Index++].ToString(), TokenType.COMMA, Index);
-			throw new Exception("un," + Index);//未知Token
+				return new Token(Source[Index].ToString(), TokenType.COMMA, Index++);
+			throw new ParseException("un," + Index);//未知Token
 		}
 	}
 }

@@ -1,9 +1,11 @@
-﻿using QTRHacker.ProjMaker.Parse;
+﻿using QTRHacker.Functions.ProjectileImage;
+using QTRHacker.ProjMaker.Parse;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,6 +51,7 @@ namespace QTRHacker.ProjMaker
 		}
 		private MenuStrip MenuStrip;
 		private CodeView CodeView;
+		private string FileName;
 
 		private static void AddMenuItem(ToolStripMenuItem menu, string text, Action<object, EventArgs> click)
 		{
@@ -60,8 +63,9 @@ namespace QTRHacker.ProjMaker
 			item.Click += new EventHandler(click);
 			menu.DropDownItems.Add(item);
 		}
-		public ProjMakerForm()
+		public ProjMakerForm(string file)
 		{
+			FileName = $".\\Projs\\{file}.projimg";
 			InitializeComponent();
 			this.BackColor = sBlackColor;
 			MenuStrip = new MenuStrip()
@@ -74,10 +78,16 @@ namespace QTRHacker.ProjMaker
 			{
 				ForeColor = Color.White,
 			};
-			AddMenuItem(FileMenuItem, "打开", (s, e) => Open());
 			AddMenuItem(FileMenuItem, "保存", (s, e) => Save());
+			AddMenuItem(FileMenuItem, "重新打开", (s, e) => Open());
 			MenuStrip.Items.Add(FileMenuItem);
 
+			ToolStripMenuItem CompileMenuItem = new ToolStripMenuItem("编译")
+			{
+				ForeColor = Color.White,
+			};
+			CompileMenuItem.Click += CompileMenuItem_Click;
+			MenuStrip.Items.Add(CompileMenuItem);
 			Controls.Add(MenuStrip);
 
 			CodeView = new CodeView()
@@ -85,17 +95,57 @@ namespace QTRHacker.ProjMaker
 				Location = new Point(5, 30)
 			};
 			Controls.Add(CodeView);
+			Open();
+		}
+
+		private void CompileMenuItem_Click(object sender, EventArgs e)
+		{
+			Save();
+			Parser p = new Parser(CodeView.Text);
+			var ctx = MainForm.Context;
+			ProjImage img = null;
+			try
+			{
+				img = p.Parse();
+				img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+			}
+			catch (ParseException pe)
+			{
+				string[] s = pe.Message.Split(new string[] { "," }, StringSplitOptions.None);
+				if (s[0] == "un")
+				{
+					MessageBox.Show($"编译失败，索引为{s[1]}开头的Token类型未知");
+				}
+				else if (s[0] == "ex")
+				{
+					MessageBox.Show($"编译失败，索引为{s[1]}开头的Token超出预期");
+				}
+				CodeView.CodeBox.Select(Convert.ToInt32(s[1]), 1);
+				CodeView.CodeBox.ScrollToCaret();
+			}
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			base.OnFormClosed(e);
 		}
 
 		private void Save()
 		{
-			Parser p = new Parser(CodeView.Text);
-			var ps = p.Parse();
-			MessageBox.Show(ps.Projs.Count.ToString());
+			using (var f = new StreamWriter(File.Open(FileName, FileMode.Create)))
+			{
+				f.Write(CodeView.Text);
+				f.Flush();
+			}
 		}
 
 		private void Open()
 		{
+			using (var f = new StreamReader(File.Open(FileName, FileMode.OpenOrCreate)))
+			{
+				CodeView.Text = f.ReadToEnd();
+			}
 		}
+
 	}
 }

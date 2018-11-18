@@ -15,6 +15,7 @@ using System.Linq;
 using QTRHacker.Functions;
 using QTRHacker.PlayerEditor;
 using QTRHacker.ProjMaker;
+using System.IO;
 
 namespace QTRHacker
 {
@@ -482,7 +483,7 @@ namespace QTRHacker
 
 			Button Projs = AddButton("弹幕编辑器", delegate (object sender, EventArgs e)
 			{
-				ProjMakerForm form = new ProjMakerForm();
+				ProjMakerForm form = new ProjMakerForm("A");
 				form.Show();
 			}
 			);
