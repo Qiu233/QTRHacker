@@ -15,6 +15,10 @@ namespace QTRHacker.ProjMaker.Parse
 		NAME,
 		NUMBER,
 		COMMA,
+		OPTR_ADD,
+		OPTR_SUB,
+		OPTR_MUL,
+		OPTR_DIV,
 	}
 	public class Token
 	{
@@ -39,7 +43,7 @@ namespace QTRHacker.ProjMaker.Parse
 	}
 	public class Tokenizer
 	{
-		public Dictionary<string, Func<float, float, IEnumerable<Proj>>> Labels
+		public Dictionary<string, Func<FixedProperties, IEnumerable<Proj>>> Labels
 		{
 			get;
 		}
@@ -52,7 +56,7 @@ namespace QTRHacker.ProjMaker.Parse
 			get;
 			private set;
 		}
-		public Tokenizer(string s, Dictionary<string, Func<float, float, IEnumerable<Proj>>> handler)
+		public Tokenizer(string s, Dictionary<string, Func<FixedProperties, IEnumerable<Proj>>> handler)
 		{
 			Source = s;
 			Index = 0;
@@ -95,6 +99,14 @@ namespace QTRHacker.ProjMaker.Parse
 				return new Token(Source[Index].ToString(), TokenType.LEFT_BRACKET, Index++);
 			else if (Source[Index] == ')')
 				return new Token(Source[Index].ToString(), TokenType.RIGHT_BRACKET, Index++);
+			else if (Source[Index] == '+')
+				return new Token(Source[Index].ToString(), TokenType.OPTR_ADD, Index++);
+			else if (Source[Index] == '-')
+				return new Token(Source[Index].ToString(), TokenType.OPTR_SUB, Index++);
+			else if (Source[Index] == '*')
+				return new Token(Source[Index].ToString(), TokenType.OPTR_MUL, Index++);
+			else if (Source[Index] == '/')
+				return new Token(Source[Index].ToString(), TokenType.OPTR_DIV, Index++);
 			else if (Source[Index] == ',')
 				return new Token(Source[Index].ToString(), TokenType.COMMA, Index++);
 			throw new ParseException("un," + Index);//未知Token

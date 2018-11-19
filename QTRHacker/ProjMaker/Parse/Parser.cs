@@ -11,16 +11,28 @@ namespace QTRHacker.ProjMaker.Parse
 	{
 		private Tokenizer Tokenizer;
 		private Token Current;
+		public Dictionary<string, float> Macros
+		{
+			get;
+		}
+
+		public void SetMacro(string name, float v)
+		{
+			Macros[name] = v;
+		}
 		public Parser(string s)
 		{
 			Tokenizer = new Tokenizer(s,
-				new Dictionary<string, Func<float, float, IEnumerable<Proj>>>
+				new Dictionary<string, Func<FixedProperties, IEnumerable<Proj>>>
 				{
-					{ "SPEED",GetSpeed },
+					{ "MACRO",null },//不会被执行，只是让MACRO作为Label被识别
+
+					{ "FIXED",GetFixed },
 					{ "POINT",GetPoint },
 					{ "RECT",GetRect },
 					{ "RECT_FILLED",GetRect_Filled },
 				});
+			this.Macros = new Dictionary<string, float>();
 		}
 
 		private void Assert(TokenType t)
@@ -67,57 +79,94 @@ namespace QTRHacker.ProjMaker.Parse
 		{
 			Current = Tokenizer.Next();
 			ProjImage img = new ProjImage();
-			IEnumerable<Proj> p = GetProj(0, 0);
+			IEnumerable<Proj> p = GetProj(FixedProperties.GetGlobalProperties());
 			img.Projs.AddRange(p);
 			return img;
 		}
-		private IEnumerable<Proj> GetProj(float SpeedXOrigin, float SpeedYOrigin)
+		private IEnumerable<Proj> GetProj(FixedProperties prop)
 		{
 			if (Current == null)
 				return new Proj[] { };
 			string s = Current.Value;
 			if (Match(TokenType.LABEL))
 			{
-				return GetLabels(SpeedXOrigin, SpeedYOrigin);
+				return GetLabels(prop);
 			}
 			throw new ParseException("ex," + Current.Index);//读取到类型错误的Token
 		}
 
-		private IEnumerable<Proj> GetLabels(float SpeedXOrigin, float SpeedYOrigin)
+		private IEnumerable<Proj> GetLabels(FixedProperties prop)
 		{
 			List<Proj> ps = new List<Proj>();
 			IEnumerable<Proj> p = null;
-			while (Match(TokenType.LABEL) && (p = GetSingleLabel(SpeedXOrigin, SpeedYOrigin)) != null)
+			while (Match(TokenType.LABEL) && (p = GetSingleLabel(prop)) != null)
 				ps.AddRange(p);
 			return ps;
 		}
 
-		private IEnumerable<Proj> GetSingleLabel(float SpeedXOrigin, float SpeedYOrigin)
+		private IEnumerable<Proj> GetSingleLabel(FixedProperties prop)
 		{
 			string s = Current.Value;
+			if (Match("MACRO"))
+			{
+				ProcessMacro();
+				return GetSingleLabel(prop);
+			}
 			Accept(TokenType.LABEL);
-			return Tokenizer.Labels[s](SpeedXOrigin, SpeedYOrigin);
+			return Tokenizer.Labels[s](prop);
 		}
 
-		private string GetNumberArg()
+		private void ProcessMacro()
 		{
-			Assert(TokenType.NUMBER);
-			var v = Current.Value;
-			Accept();
+			Accept("MACRO");
+			Accept(TokenType.LEFT_BRACKET);
+			string name = Current.Value;
+			Accept(TokenType.NAME);
+			Accept(TokenType.COMMA);
+			float v = E();
+			Accept(TokenType.RIGHT_BRACKET);
+			Macros[name] = v;
+		}
+
+		private string GetNumberArg<T>()
+		{
+			//var v = Current.Value;
+			float f = E();
+			string v = null;
+			if (typeof(T) == typeof(int))
+				v = ((int)f).ToString();
+			else
+				v = f.ToString();
 			if (Match(TokenType.COMMA))
 				Accept();
 			return v;
 		}
 
-
-		private IEnumerable<Proj> GetSpeed(float SpeedXOrigin, float SpeedYOrigin)
+		private Tuple<string, string> GetDoubleTuple<T>()
 		{
 			Accept(TokenType.LEFT_BRACKET);
-			float SpeedX = Convert.ToSingle(GetNumberArg());
-			float SpeedY = Convert.ToSingle(GetNumberArg());
+			string s1 = GetNumberArg<T>();
+			string s2 = GetNumberArg<T>();
+			Accept(TokenType.RIGHT_BRACKET);
+			if (Match(TokenType.COMMA))
+				Accept();
+			return new Tuple<string, string>(s1, s2);
+		}
+
+
+		private IEnumerable<Proj> GetFixed(FixedProperties prop)
+		{
+			Accept(TokenType.LEFT_BRACKET);
+			var t1 = GetDoubleTuple<float>();
+			var t2 = GetDoubleTuple<float>();
+			float X = Convert.ToSingle(t1.Item1);
+			float Y = Convert.ToSingle(t1.Item2);
+			float SpeedX = Convert.ToSingle(t2.Item1);
+			float SpeedY = Convert.ToSingle(t2.Item2);
 			Accept(TokenType.RIGHT_BRACKET);
 			Accept(TokenType.LEFT_BRACKET);
-			var a = GetProj(SpeedXOrigin + SpeedX, SpeedYOrigin + SpeedY);
+			var np = new FixedProperties(prop.X + X, prop.Y + Y, prop.SpeedX + SpeedX, prop.SpeedY + SpeedY);
+			var a = GetProj(np);
 			Accept(TokenType.RIGHT_BRACKET);
 			return a;
 		}
@@ -126,21 +175,25 @@ namespace QTRHacker.ProjMaker.Parse
 		/// (Type,UnitX,UnitY,X,Y,Width,Height,SpeedX,SpeedY)
 		/// </summary>
 		/// <returns></returns>
-		private IEnumerable<Proj> GetRect(float SpeedXOrigin, float SpeedYOrigin)
+		private IEnumerable<Proj> GetRect(FixedProperties prop)
 		{
 			Accept(TokenType.LEFT_BRACKET);
-			int Type = Convert.ToInt32(GetNumberArg());
-			float UnitX = Convert.ToInt32(GetNumberArg());
-			float UnitY = Convert.ToInt32(GetNumberArg());
+			int Type = Convert.ToInt32(GetNumberArg<int>());
+			var t1 = GetDoubleTuple<float>();
+			var t2 = GetDoubleTuple<float>();
+			var t3 = GetDoubleTuple<int>();
+			var t4 = GetDoubleTuple<float>();
+			float UnitX = Convert.ToInt32(t1.Item1);
+			float UnitY = Convert.ToInt32(t1.Item2);
 
-			float X = Convert.ToSingle(GetNumberArg());
-			float Y = Convert.ToSingle(GetNumberArg());
+			float X = Convert.ToSingle(t2.Item1) + prop.X;
+			float Y = Convert.ToSingle(t2.Item2) + prop.Y;
 
-			int Width = Convert.ToInt32(GetNumberArg());
-			int Height = Convert.ToInt32(GetNumberArg());
+			int Width = Convert.ToInt32(t3.Item1);
+			int Height = Convert.ToInt32(t3.Item2);
 
-			float SpeedX = Convert.ToSingle(GetNumberArg()) + SpeedXOrigin;
-			float SpeedY = Convert.ToSingle(GetNumberArg()) + SpeedYOrigin;
+			float SpeedX = Convert.ToSingle(t4.Item1) + prop.SpeedX;
+			float SpeedY = Convert.ToSingle(t4.Item2) + prop.SpeedY;
 
 			Accept(TokenType.RIGHT_BRACKET);
 
@@ -178,21 +231,25 @@ namespace QTRHacker.ProjMaker.Parse
 			return ps;
 		}
 
-		private IEnumerable<Proj> GetRect_Filled(float SpeedXOrigin, float SpeedYOrigin)
+		private IEnumerable<Proj> GetRect_Filled(FixedProperties prop)
 		{
 			Accept(TokenType.LEFT_BRACKET);
-			int Type = Convert.ToInt32(GetNumberArg());
-			float UnitX = Convert.ToInt32(GetNumberArg());
-			float UnitY = Convert.ToInt32(GetNumberArg());
+			int Type = Convert.ToInt32(GetNumberArg<int>());
+			var t1 = GetDoubleTuple<float>();
+			var t2 = GetDoubleTuple<float>();
+			var t3 = GetDoubleTuple<int>();
+			var t4 = GetDoubleTuple<float>();
+			float UnitX = Convert.ToInt32(t1.Item1);
+			float UnitY = Convert.ToInt32(t1.Item2);
 
-			float X = Convert.ToSingle(GetNumberArg());
-			float Y = Convert.ToSingle(GetNumberArg());
+			float X = Convert.ToSingle(t2.Item1) + prop.X;
+			float Y = Convert.ToSingle(t2.Item2) + prop.Y;
 
-			int Width = Convert.ToInt32(GetNumberArg());
-			int Height = Convert.ToInt32(GetNumberArg());
+			int Width = Convert.ToInt32(t3.Item1);
+			int Height = Convert.ToInt32(t3.Item2);
 
-			float SpeedX = Convert.ToSingle(GetNumberArg()) + SpeedXOrigin;
-			float SpeedY = Convert.ToSingle(GetNumberArg()) + SpeedYOrigin;
+			float SpeedX = Convert.ToSingle(t4.Item1) + prop.SpeedX;
+			float SpeedY = Convert.ToSingle(t4.Item2) + prop.SpeedY;
 
 			Accept(TokenType.RIGHT_BRACKET);
 
@@ -215,16 +272,17 @@ namespace QTRHacker.ProjMaker.Parse
 		/// (Type,X,Y,SpeedX,SpeedY)
 		/// </summary>
 		/// <returns></returns>
-		private IEnumerable<Proj> GetPoint(float SpeedXOrigin, float SpeedYOrigin)
+		private IEnumerable<Proj> GetPoint(FixedProperties prop)
 		{
 			Accept(TokenType.LEFT_BRACKET);
-			int Type = Convert.ToInt32(GetNumberArg());
+			int Type = Convert.ToInt32(GetNumberArg<int>());
+			var t1 = GetDoubleTuple<float>();
+			var t2 = GetDoubleTuple<float>();
+			float X = Convert.ToSingle(t1.Item1) + prop.X;
+			float Y = Convert.ToSingle(t1.Item2) + prop.Y;
 
-			float X = Convert.ToSingle(GetNumberArg());
-			float Y = Convert.ToSingle(GetNumberArg());
-
-			float SpeedX = Convert.ToSingle(GetNumberArg()) + SpeedXOrigin;
-			float SpeedY = Convert.ToSingle(GetNumberArg()) + SpeedYOrigin;
+			float SpeedX = Convert.ToSingle(t2.Item1) + prop.SpeedX;
+			float SpeedY = Convert.ToSingle(t2.Item2) + prop.SpeedY;
 
 			Accept(TokenType.RIGHT_BRACKET);
 
@@ -235,6 +293,78 @@ namespace QTRHacker.ProjMaker.Parse
 				Speed = new System.Drawing.PointF(SpeedX, SpeedY)
 			};
 			return new Proj[] { p };
+		}
+
+
+
+		private float E()
+		{
+			return E1(D());
+		}
+
+		private float E1(float f)
+		{
+			if (Match(TokenType.OPTR_ADD))
+			{
+				Accept();
+				return E1(f + D());
+			}
+			else if (Match(TokenType.OPTR_SUB))
+			{
+				Accept();
+				return E1(f - D());
+			}
+			return f;
+		}
+
+		private float D()
+		{
+			return D1(F());
+		}
+
+		private float D1(float d)
+		{
+			if (Match(TokenType.OPTR_MUL))
+			{
+				Accept();
+				return D1(d * F());
+			}
+			else if (Match(TokenType.OPTR_DIV))
+			{
+				Accept();
+				return D1(d / F());
+			}
+			return d;
+		}
+		private float F()
+		{
+			if (Match(TokenType.OPTR_SUB))
+			{
+				Accept();
+				return -E();
+			}
+			else if (Match(TokenType.LEFT_BRACKET))
+			{
+				Accept();
+				var e = E();
+				Accept(TokenType.RIGHT_BRACKET);
+				return e;
+			}
+			else if (Match(TokenType.NUMBER))
+			{
+				string v = Current.Value;
+				Accept();
+				return Convert.ToSingle(v);
+			}
+			else if (Match(TokenType.NAME))
+			{
+				string v = Current.Value;
+				if (!Macros.ContainsKey(v))
+					throw new ParseException($"ab,{Current.Index},{Current.Value}");
+				Accept();
+				return Convert.ToSingle(Macros[v]);
+			}
+			throw new ParseException("ex," + Current?.Index);
 		}
 	}
 }

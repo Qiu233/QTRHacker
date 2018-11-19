@@ -170,6 +170,7 @@
     <Compile Include="ProjMaker\CodeView.Designer.cs">
       <DependentUpon>CodeView.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProjMaker\Parse\FixedProperties.cs" />
     <Compile Include="ProjMaker\Parse\ParseException.cs" />
     <Compile Include="ProjMaker\Parse\Parser.cs" />
     <Compile Include="ProjMaker\Parse\Tokenizer.cs" />

@@ -104,6 +104,10 @@ namespace QTRHacker.ProjMaker
 			Parser p = new Parser(CodeView.Text);
 			var ctx = MainForm.Context;
 			ProjImage img = null;
+#if DEBUG
+				img = p.Parse();
+				img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+#else
 			try
 			{
 				img = p.Parse();
@@ -120,9 +124,14 @@ namespace QTRHacker.ProjMaker
 				{
 					MessageBox.Show($"编译失败，索引为{s[1]}开头的Token超出预期");
 				}
+				else if (s[0] == "ab")
+				{
+					MessageBox.Show($"编译失败，名称为{s[2]}的宏不存在");
+				}
 				CodeView.CodeBox.Select(Convert.ToInt32(s[1]), 1);
 				CodeView.CodeBox.ScrollToCaret();
 			}
+#endif
 		}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
