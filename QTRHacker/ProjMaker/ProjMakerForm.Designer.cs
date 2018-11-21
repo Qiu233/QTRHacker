@@ -30,7 +30,7 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.ClientSize = new System.Drawing.Size(900, 450);
 			this.Text = "弹幕编辑器";
 			this.MaximizeBox = false;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

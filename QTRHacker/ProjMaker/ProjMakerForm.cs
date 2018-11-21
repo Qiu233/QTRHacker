@@ -1,4 +1,5 @@
-﻿using QTRHacker.Functions.ProjectileImage;
+﻿using ICSharpCode.AvalonEdit;
+using QTRHacker.Functions.ProjectileImage;
 using QTRHacker.ProjMaker.Parse;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 
 namespace QTRHacker.ProjMaker
 {
@@ -51,7 +53,10 @@ namespace QTRHacker.ProjMaker
 		}
 		private MenuStrip MenuStrip;
 		private CodeView CodeView;
+		private TextEditor LogBox;
 		private string FileName;
+
+		private static string[] KEYS = { "MACRO", "POINT", "RECT", "RECT_FILLED", "FIXED" };
 
 		private static void AddMenuItem(ToolStripMenuItem menu, string text, Action<object, EventArgs> click)
 		{
@@ -90,12 +95,30 @@ namespace QTRHacker.ProjMaker
 			MenuStrip.Items.Add(CompileMenuItem);
 			Controls.Add(MenuStrip);
 
-			CodeView = new CodeView()
+			CodeView = new CodeView(KEYS)
 			{
 				Location = new Point(5, 30)
 			};
 			Controls.Add(CodeView);
+
+			LogBox = new TextEditor()
+			{
+				Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 92, 92, 94)),
+				Foreground = System.Windows.Media.Brushes.White,
+				FontFamily = new System.Windows.Media.FontFamily("Consolas"),
+				FontSize = 14,
+				HorizontalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto,
+				VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto,
+				WordWrap = true
+			};
+			Controls.Add(new ElementHost() { Bounds = new Rectangle(700, 30, 195, 415), Child = LogBox });
+
 			Open();
+		}
+
+		public void OutputLog(string s)
+		{
+			LogBox.AppendText(s + "\n");
 		}
 
 		private void CompileMenuItem_Click(object sender, EventArgs e)
@@ -105,32 +128,37 @@ namespace QTRHacker.ProjMaker
 			var ctx = MainForm.Context;
 			ProjImage img = null;
 #if DEBUG
-				img = p.Parse();
-				img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+			img = p.Parse();
+			img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
 #else
 			try
 			{
+				LogBox.Text = "";
+				OutputLog(DateTime.Now.ToString());
 				img = p.Parse();
-				img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+				OutputLog($"编译成功，生成了{img.Projs.Count}个弹幕");
+				if (ctx != null)
+				{
+					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+					OutputLog($"已经发射到游戏");
+				}
+				else
+				{
+					OutputLog($"未锁定游戏进程，发射弹幕失败");
+				}
 			}
 			catch (ParseException pe)
 			{
 				string[] s = pe.Message.Split(new string[] { "," }, StringSplitOptions.None);
 				if (s[0] == "un")
-				{
-					MessageBox.Show($"编译失败，索引为{s[1]}开头的Token类型未知");
-				}
+					OutputLog($"编译失败，索引为{s[1]}开头的Token类型未知");
 				else if (s[0] == "ex")
-				{
-					MessageBox.Show($"编译失败，索引为{s[1]}开头的Token超出预期");
-				}
+					OutputLog($"编译失败，索引为{s[1]}开头的Token超出预期");
 				else if (s[0] == "ab")
-				{
-					MessageBox.Show($"编译失败，名称为{s[2]}的宏不存在");
-				}
+					OutputLog($"编译失败，名称为{s[2]}的宏不存在");
 				CodeView.CodeBox.Select(Convert.ToInt32(s[1]), 1);
-				CodeView.CodeBox.ScrollToCaret();
 			}
+			OutputLog("\n\n");
 #endif
 		}
 

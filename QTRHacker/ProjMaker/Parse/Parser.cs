@@ -364,7 +364,7 @@ namespace QTRHacker.ProjMaker.Parse
 				Accept();
 				return Convert.ToSingle(Macros[v]);
 			}
-			throw new ParseException("ex," + Current?.Index);
+			throw new ParseException("ex," + (Current == null ? 0 : Current.Index));
 		}
 	}
 }

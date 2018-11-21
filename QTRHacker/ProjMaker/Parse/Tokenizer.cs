@@ -74,7 +74,7 @@ namespace QTRHacker.ProjMaker.Parse
 			else if (Source[Index] == '#')
 			{
 				Index++;
-				while (Index < Source.Length && Source[Index] != '\n' && Source[Index] != '#') Index++;
+				while (Index < Source.Length && Source[Index] != '\n') Index++;
 				return Next();
 			}
 			else if (Char.IsNumber(Source[Index]) || Source[Index] == '-')

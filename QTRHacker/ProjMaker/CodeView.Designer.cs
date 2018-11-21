@@ -36,7 +36,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(64)))));
 			this.Name = "CodeView";
-			this.Size = new System.Drawing.Size(790, 415);
+			this.Size = new System.Drawing.Size(690, 415);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
