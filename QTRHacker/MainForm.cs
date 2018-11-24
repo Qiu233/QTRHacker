@@ -25,6 +25,7 @@ using QTRHacker.Functions.ProjectileImage;
 using System.Net;
 using Newtonsoft.Json;
 using QTRHacker.Configs;
+using QTRHacker.ProjMaker;
 
 namespace QTRHacker
 {
@@ -554,7 +555,6 @@ namespace QTRHacker
 			InitControls();
 			if (!Directory.Exists(".\\Projs"))
 				Directory.CreateDirectory(".\\Projs");
-			new ProjMaker.ProjMakerForm("A").Show();
 		}
 		protected override void OnPaint(PaintEventArgs e)
 		{

@@ -72,6 +72,7 @@ namespace QTRHacker.ProjMaker
 		{
 			FileName = $".\\Projs\\{file}.projimg";
 			InitializeComponent();
+			this.Text = "弹幕编辑器-名称：" + file;
 			this.BackColor = sBlackColor;
 			MenuStrip = new MenuStrip()
 			{
@@ -103,7 +104,7 @@ namespace QTRHacker.ProjMaker
 
 			LogBox = new TextEditor()
 			{
-				Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 92, 92, 94)),
+				Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(250, 92, 92, 94)),
 				Foreground = System.Windows.Media.Brushes.White,
 				FontFamily = new System.Windows.Media.FontFamily("Consolas"),
 				FontSize = 14,
@@ -111,7 +112,7 @@ namespace QTRHacker.ProjMaker
 				VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto,
 				WordWrap = true
 			};
-			Controls.Add(new ElementHost() { Bounds = new Rectangle(700, 30, 195, 415), Child = LogBox });
+			Controls.Add(new ElementHost() { Bounds = new Rectangle(5, 450, 790, 195), Child = LogBox });
 
 			Open();
 		}
@@ -149,14 +150,16 @@ namespace QTRHacker.ProjMaker
 			}
 			catch (ParseException pe)
 			{
-				string[] s = pe.Message.Split(new string[] { "," }, StringSplitOptions.None);
+				/*string[] s = pe.Message.Split(new string[] { "," }, StringSplitOptions.None);
 				if (s[0] == "un")
 					OutputLog($"编译失败，索引为{s[1]}开头的Token类型未知");
 				else if (s[0] == "ex")
 					OutputLog($"编译失败，索引为{s[1]}开头的Token超出预期");
 				else if (s[0] == "ab")
 					OutputLog($"编译失败，名称为{s[2]}的宏不存在");
-				CodeView.CodeBox.Select(Convert.ToInt32(s[1]), 1);
+				CodeView.CodeBox.Select(Convert.ToInt32(s[1]), 1);*/
+				OutputLog(pe.Message);
+				CodeView.CodeBox.Select(pe.Offset, 1);
 			}
 			OutputLog("\n\n");
 #endif

@@ -1,6 +1,8 @@
-﻿namespace QTRHacker.ProjMaker
+﻿using System.Drawing;
+
+namespace QTRHacker.ProjMaker
 {
-	partial class ProjMakerForm
+	partial class ProjsBrowser
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -30,10 +32,12 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 650);
 			this.MaximizeBox = false;
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MinimizeBox = false;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.ClientSize = new System.Drawing.Size(400, 200);
+			this.BackColor = Color.Gray;
+			this.Text = "ProjsBrowser";
 		}
 
 		#endregion

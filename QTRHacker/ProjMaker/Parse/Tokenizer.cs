@@ -109,7 +109,7 @@ namespace QTRHacker.ProjMaker.Parse
 				return new Token(Source[Index].ToString(), TokenType.OPTR_DIV, Index++);
 			else if (Source[Index] == ',')
 				return new Token(Source[Index].ToString(), TokenType.COMMA, Index++);
-			throw new ParseException("un," + Index);//未知Token
+			throw new ParseException("编译失败，Token类型未知：" + Index, Index);//未知Token
 		}
 	}
 }

@@ -67,7 +67,7 @@ namespace QTRHacker.ProjMaker
 					{
 						Foreground = new CustomizedBrush(System.Windows.Media.Colors.CadetBlue)
 					},
-					Regex = new System.Text.RegularExpressions.Regex(string.Format(@"\b({0})\w*\b", string.Join("|", wordList)))
+					Regex = new System.Text.RegularExpressions.Regex(string.Format(@"\b({0})\b", string.Join("|", wordList)))
 				});
 
 				n.Rules.Add(new HighlightingRule()
@@ -136,7 +136,7 @@ namespace QTRHacker.ProjMaker
 			/*BracketRender = new BracketHighlightRenderer();
 			CodeBox.TextArea.TextView.BackgroundRenderers.Add(BracketRender);
 			CodeBox.TextArea.Caret.PositionChanged += BracketHighlighting;*/
-			Controls.Add(new ElementHost() { Bounds = new Rectangle(5, 5, 680, 405), Child = CodeBox });
+			Controls.Add(new ElementHost() { Bounds = new Rectangle(5, 5, 780, 405), Child = CodeBox });
 
 		}
 

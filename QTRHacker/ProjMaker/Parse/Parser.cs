@@ -38,16 +38,16 @@ namespace QTRHacker.ProjMaker.Parse
 		private void Assert(TokenType t)
 		{
 			if (Current == null)
-				throw new ParseException("ex," + (Tokenizer.Source.Length - 1));
+				throw new ParseException("编译失败，Token超出预期：" + (Tokenizer.Source.Length - 1), (Tokenizer.Source.Length - 1));
 			else if (Current.Type != t)
-				throw new ParseException("ex," + Current.Index);//读取到类型错误的Token
+				throw new ParseException("编译失败，Token超出预期：" + Current.Index, Current.Index);//读取到类型错误的Token
 		}
 		private void Assert(string s)
 		{
 			if (Current == null)
-				throw new ParseException("ex," + (Tokenizer.Source.Length - 1));
+				throw new ParseException("编译失败，Token超出预期：" + (Tokenizer.Source.Length - 1), (Tokenizer.Source.Length - 1));
 			else if (Current.Value != s)
-				throw new ParseException("ex," + Current.Index);//读取到类型错误的Token
+				throw new ParseException("编译失败，Token超出预期：" + Current.Index, Current.Index);//读取到类型错误的Token
 		}
 		private bool Match(TokenType t)
 		{
@@ -92,7 +92,7 @@ namespace QTRHacker.ProjMaker.Parse
 			{
 				return GetLabels(prop);
 			}
-			throw new ParseException("ex," + Current.Index);//读取到类型错误的Token
+			throw new ParseException("编译失败，Token超出预期：" + Current.Index, Current.Index);//读取到类型错误的Token
 		}
 
 		private IEnumerable<Proj> GetLabels(FixedProperties prop)
@@ -360,11 +360,12 @@ namespace QTRHacker.ProjMaker.Parse
 			{
 				string v = Current.Value;
 				if (!Macros.ContainsKey(v))
-					throw new ParseException($"ab,{Current.Index},{Current.Value}");
+					throw new ParseException($"不存在名为:{Current.Index}的宏：{Current.Value}", Current.Index);
 				Accept();
 				return Convert.ToSingle(Macros[v]);
 			}
-			throw new ParseException("ex," + (Current == null ? 0 : Current.Index));
+			int k = (Current == null ? 0 : Current.Index);
+			throw new ParseException("编译失败，Token超出预期：" + k, k);
 		}
 	}
 }

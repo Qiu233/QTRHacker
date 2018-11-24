@@ -481,10 +481,10 @@ namespace QTRHacker
 			NewNPC.Location = new Point(0, 90);
 			NewNPC.Size = new Size(255, 30);
 
-			Button Projs = AddButton("弹幕编辑器", delegate (object sender, EventArgs e)
+			Button Projs = AddButton("弹幕管理", delegate (object sender, EventArgs e)
 			{
-				ProjMakerForm form = new ProjMakerForm("A");
-				form.Show();
+				ProjsBrowser pb = new ProjsBrowser();
+				pb.ShowDialog();
 			}
 			);
 			Projs.Location = new Point(0, 120);

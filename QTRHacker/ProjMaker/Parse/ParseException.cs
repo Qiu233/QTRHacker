@@ -8,9 +8,13 @@ namespace QTRHacker.ProjMaker.Parse
 {
 	public class ParseException : Exception
 	{
-		public ParseException(string t) : base(t)
+		public int Offset
 		{
-
+			get;
+		}
+		public ParseException(string t, int offset) : base(t)
+		{
+			Offset = offset;
 		}
 	}
 }
