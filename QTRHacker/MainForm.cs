@@ -555,6 +555,7 @@ namespace QTRHacker
 			InitControls();
 			if (!Directory.Exists(".\\Projs"))
 				Directory.CreateDirectory(".\\Projs");
+			//new ProjMakerForm("A").Show();
 		}
 		protected override void OnPaint(PaintEventArgs e)
 		{

@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Functions.ProjectileImage;
+using QTRHacker.ProjMaker.Parse.AST;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,28 +12,22 @@ namespace QTRHacker.ProjMaker.Parse
 	{
 		private Tokenizer Tokenizer;
 		private Token Current;
-		public Dictionary<string, float> Macros
-		{
-			get;
-		}
+		private bool InFunction = false;
 
-		public void SetMacro(string name, float v)
-		{
-			Macros[name] = v;
-		}
 		public Parser(string s)
 		{
 			Tokenizer = new Tokenizer(s,
-				new Dictionary<string, Func<FixedProperties, IEnumerable<Proj>>>
+				new Dictionary<string, Func<Statement>>
 				{
-					{ "MACRO",null },//不会被执行，只是让MACRO作为Label被识别
+					{ "MACRO",GetMacro },
+					{ "DEF",GetDef },
+					{ "INSERT",GetInsert },
 
 					{ "FIXED",GetFixed },
 					{ "POINT",GetPoint },
 					{ "RECT",GetRect },
 					{ "RECT_FILLED",GetRect_Filled },
 				});
-			this.Macros = new Dictionary<string, float>();
 		}
 
 		private void Assert(TokenType t)
@@ -79,269 +74,195 @@ namespace QTRHacker.ProjMaker.Parse
 		{
 			Current = Tokenizer.Next();
 			ProjImage img = new ProjImage();
-			IEnumerable<Proj> p = GetProj(FixedProperties.GetGlobalProperties());
-			img.Projs.AddRange(p);
+			IEnumerable<Statement> p = GetProj();
+			//System.Windows.Forms.MessageBox.Show((p.ElementAt(0) as Stmt_FIXED).Statements.Count().ToString());
+			img.Projs.AddRange(new Generator(p).Genetate());
 			return img;
 		}
-		private IEnumerable<Proj> GetProj(FixedProperties prop)
+		private IEnumerable<Statement> GetProj()
 		{
 			if (Current == null)
-				return new Proj[] { };
+				return new Statement[] { };
 			string s = Current.Value;
 			if (Match(TokenType.LABEL))
 			{
-				return GetLabels(prop);
+				return GetLabels();
 			}
 			throw new ParseException("编译失败，Token超出预期：" + Current.Index, Current.Index);//读取到类型错误的Token
 		}
 
-		private IEnumerable<Proj> GetLabels(FixedProperties prop)
+		private IEnumerable<Statement> GetLabels()
 		{
-			List<Proj> ps = new List<Proj>();
-			IEnumerable<Proj> p = null;
-			while (Match(TokenType.LABEL) && (p = GetSingleLabel(prop)) != null)
-				ps.AddRange(p);
+			List<Statement> ps = new List<Statement>();
+			Statement p = null;
+			while (Match(TokenType.LABEL) && (p = GetSingleLabel()) != null)
+				ps.Add(p);
 			return ps;
 		}
 
-		private IEnumerable<Proj> GetSingleLabel(FixedProperties prop)
+		private Statement GetSingleLabel()
 		{
 			string s = Current.Value;
-			if (Match("MACRO"))
-			{
-				ProcessMacro();
-				return GetSingleLabel(prop);
-			}
 			Accept(TokenType.LABEL);
-			return Tokenizer.Labels[s](prop);
+			return Tokenizer.Labels[s]();
 		}
 
-		private void ProcessMacro()
+		private Expression GetExprArg()
 		{
-			Accept("MACRO");
-			Accept(TokenType.LEFT_BRACKET);
-			string name = Current.Value;
-			Accept(TokenType.NAME);
-			Accept(TokenType.COMMA);
-			float v = E();
-			Accept(TokenType.RIGHT_BRACKET);
-			Macros[name] = v;
-		}
-
-		private string GetNumberArg<T>()
-		{
-			//var v = Current.Value;
-			float f = E();
-			string v = null;
-			if (typeof(T) == typeof(int))
-				v = ((int)f).ToString();
-			else
-				v = f.ToString();
+			Expression v = E();
 			if (Match(TokenType.COMMA))
 				Accept();
 			return v;
 		}
 
-		private Tuple<string, string> GetDoubleTuple<T>()
+		private Expr_BTuple GetBTuple()
 		{
+			Expr_BTuple T = new Expr_BTuple(Current.Index);
 			Accept(TokenType.LEFT_BRACKET);
-			string s1 = GetNumberArg<T>();
-			string s2 = GetNumberArg<T>();
+			T.A = GetExprArg();
+			T.B = GetExprArg();
 			Accept(TokenType.RIGHT_BRACKET);
 			if (Match(TokenType.COMMA))
 				Accept();
-			return new Tuple<string, string>(s1, s2);
+			return T;
 		}
 
-
-		private IEnumerable<Proj> GetFixed(FixedProperties prop)
+		private Stmt_MACRO GetMacro()
 		{
+			Stmt_MACRO stmt = new Stmt_MACRO(Current.Index);
 			Accept(TokenType.LEFT_BRACKET);
-			var t1 = GetDoubleTuple<float>();
-			var t2 = GetDoubleTuple<float>();
-			float X = Convert.ToSingle(t1.Item1);
-			float Y = Convert.ToSingle(t1.Item2);
-			float SpeedX = Convert.ToSingle(t2.Item1);
-			float SpeedY = Convert.ToSingle(t2.Item2);
+			stmt.Name = Current.Value;
+			Accept(TokenType.NAME);
+			Accept(TokenType.COMMA);
+			stmt.Value = E();
 			Accept(TokenType.RIGHT_BRACKET);
-			Accept(TokenType.LEFT_BRACKET);
-			var np = new FixedProperties(prop.X + X, prop.Y + Y, prop.SpeedX + SpeedX, prop.SpeedY + SpeedY);
-			var a = GetProj(np);
-			Accept(TokenType.RIGHT_BRACKET);
-			return a;
+			return stmt;
 		}
 
-		/// <summary>
-		/// (Type,UnitX,UnitY,X,Y,Width,Height,SpeedX,SpeedY)
-		/// </summary>
-		/// <returns></returns>
-		private IEnumerable<Proj> GetRect(FixedProperties prop)
+		private Stmt_POINT GetPoint()
 		{
+			Stmt_POINT stmt = new Stmt_POINT(Current.Index);
 			Accept(TokenType.LEFT_BRACKET);
-			int Type = Convert.ToInt32(GetNumberArg<int>());
-			var t1 = GetDoubleTuple<float>();
-			var t2 = GetDoubleTuple<float>();
-			var t3 = GetDoubleTuple<int>();
-			var t4 = GetDoubleTuple<float>();
-			float UnitX = Convert.ToInt32(t1.Item1);
-			float UnitY = Convert.ToInt32(t1.Item2);
-
-			float X = Convert.ToSingle(t2.Item1) + prop.X;
-			float Y = Convert.ToSingle(t2.Item2) + prop.Y;
-
-			int Width = Convert.ToInt32(t3.Item1);
-			int Height = Convert.ToInt32(t3.Item2);
-
-			float SpeedX = Convert.ToSingle(t4.Item1) + prop.SpeedX;
-			float SpeedY = Convert.ToSingle(t4.Item2) + prop.SpeedY;
-
+			stmt.Type = GetExprArg();
+			stmt.Location = GetBTuple();
+			stmt.Speed = GetBTuple();
 			Accept(TokenType.RIGHT_BRACKET);
-
-			if (Width <= 0 || Height <= 0) return null;
-
-			List<Proj> ps = new List<Proj>();
-			for (int i = 0; i < Width; i++)
-			{
-				Proj p1 = new Proj();
-				p1.ProjType = Type;
-				p1.Location = new System.Drawing.PointF(X + i * UnitX, Y);
-				p1.Speed = new System.Drawing.PointF(SpeedX, SpeedY);
-				ps.Add(p1);
-
-				Proj p2 = new Proj();
-				p2.ProjType = Type;
-				p2.Location = new System.Drawing.PointF(X + i * UnitX, Y + (Height - 1) * UnitY);
-				p2.Speed = new System.Drawing.PointF(SpeedX, SpeedY);
-				ps.Add(p2);
-			}
-			for (int j = 0; j < Height; j++)
-			{
-				Proj p1 = new Proj();
-				p1.ProjType = Type;
-				p1.Location = new System.Drawing.PointF(X, Y + j * UnitY);
-				p1.Speed = new System.Drawing.PointF(SpeedX, SpeedY);
-				ps.Add(p1);
-
-				Proj p2 = new Proj();
-				p2.ProjType = Type;
-				p2.Location = new System.Drawing.PointF(X + (Width - 1) * UnitX, Y + j * UnitY);
-				p2.Speed = new System.Drawing.PointF(SpeedX, SpeedY);
-				ps.Add(p2);
-			}
-			return ps;
+			return stmt;
 		}
 
-		private IEnumerable<Proj> GetRect_Filled(FixedProperties prop)
+		private Stmt_RECT GetRect()
 		{
+			Stmt_RECT stmt = new Stmt_RECT(Current.Index);
 			Accept(TokenType.LEFT_BRACKET);
-			int Type = Convert.ToInt32(GetNumberArg<int>());
-			var t1 = GetDoubleTuple<float>();
-			var t2 = GetDoubleTuple<float>();
-			var t3 = GetDoubleTuple<int>();
-			var t4 = GetDoubleTuple<float>();
-			float UnitX = Convert.ToInt32(t1.Item1);
-			float UnitY = Convert.ToInt32(t1.Item2);
-
-			float X = Convert.ToSingle(t2.Item1) + prop.X;
-			float Y = Convert.ToSingle(t2.Item2) + prop.Y;
-
-			int Width = Convert.ToInt32(t3.Item1);
-			int Height = Convert.ToInt32(t3.Item2);
-
-			float SpeedX = Convert.ToSingle(t4.Item1) + prop.SpeedX;
-			float SpeedY = Convert.ToSingle(t4.Item2) + prop.SpeedY;
-
+			stmt.Type = GetExprArg();
+			stmt.Unit = GetBTuple();
+			stmt.Location = GetBTuple();
+			stmt.Size = GetBTuple();
+			stmt.Speed = GetBTuple();
 			Accept(TokenType.RIGHT_BRACKET);
-
-			List<Proj> ps = new List<Proj>();
-			for (int i = 0; i < Width; i++)
-			{
-				for (int j = 0; j < Height; j++)
-				{
-					Proj p = new Proj();
-					p.ProjType = Type;
-					p.Location = new System.Drawing.PointF(X + i * UnitX, Y + j * UnitY);
-					p.Speed = new System.Drawing.PointF(SpeedX, SpeedY);
-					ps.Add(p);
-				}
-			}
-			return ps;
+			return stmt;
 		}
 
-		/// <summary>
-		/// (Type,X,Y,SpeedX,SpeedY)
-		/// </summary>
-		/// <returns></returns>
-		private IEnumerable<Proj> GetPoint(FixedProperties prop)
+		private Stmt_RECT_FILLED GetRect_Filled()
 		{
+			Stmt_RECT_FILLED stmt = new Stmt_RECT_FILLED(Current.Index);
 			Accept(TokenType.LEFT_BRACKET);
-			int Type = Convert.ToInt32(GetNumberArg<int>());
-			var t1 = GetDoubleTuple<float>();
-			var t2 = GetDoubleTuple<float>();
-			float X = Convert.ToSingle(t1.Item1) + prop.X;
-			float Y = Convert.ToSingle(t1.Item2) + prop.Y;
-
-			float SpeedX = Convert.ToSingle(t2.Item1) + prop.SpeedX;
-			float SpeedY = Convert.ToSingle(t2.Item2) + prop.SpeedY;
-
+			stmt.Type = GetExprArg();
+			stmt.Unit = GetBTuple();
+			stmt.Location = GetBTuple();
+			stmt.Size = GetBTuple();
+			stmt.Speed = GetBTuple();
 			Accept(TokenType.RIGHT_BRACKET);
-
-			Proj p = new Proj()
-			{
-				ProjType = Type,
-				Location = new System.Drawing.PointF(X, Y),
-				Speed = new System.Drawing.PointF(SpeedX, SpeedY)
-			};
-			return new Proj[] { p };
+			return stmt;
 		}
 
+		private Stmt_FIXED GetFixed()
+		{
+			Stmt_FIXED stmt = new Stmt_FIXED(Current.Index);
+			Accept(TokenType.LEFT_BRACKET);
+			stmt.RelativeLocation = GetBTuple();
+			stmt.RelativeSpeed = GetBTuple();
+			Accept(TokenType.RIGHT_BRACKET);
+			Accept(TokenType.LEFT_BRACKET);
+			stmt.Statements = GetLabels();
+			Accept(TokenType.RIGHT_BRACKET);
+			return stmt;
+		}
 
+		private Stmt_DEF GetDef()
+		{
+			if (InFunction) throw new ParseException("在DEF语句内不能再定义DEF语句：" + Current.Index, Current.Index);
+			Stmt_DEF stmt = new Stmt_DEF(Current.Index);
+			Accept(TokenType.LEFT_BRACKET);
+			stmt.Name = Current.Value;
+			Accept(TokenType.NAME);
+			Accept(TokenType.RIGHT_BRACKET);
+			Accept(TokenType.LEFT_BRACKET);
+			InFunction = true;
+			stmt.Statements = GetLabels();
+			InFunction = false;
+			Accept(TokenType.RIGHT_BRACKET);
+			return stmt;
+		}
 
-		private float E()
+		private Stmt_INSERT GetInsert()
+		{
+			Stmt_INSERT stmt = new Stmt_INSERT(Current.Index);
+			Accept(TokenType.LEFT_BRACKET);
+			stmt.Name = Current.Value;
+			Accept(TokenType.NAME);
+			Accept(TokenType.COMMA);
+			stmt.Location = GetBTuple();
+			stmt.Speed = GetBTuple();
+			Accept(TokenType.RIGHT_BRACKET);
+			return stmt;
+		}
+
+		private Expression E()
 		{
 			return E1(D());
 		}
 
-		private float E1(float f)
+		private Expression E1(Expression f)
 		{
 			if (Match(TokenType.OPTR_ADD))
 			{
 				Accept();
-				return E1(f + D());
+				return new Expr_Binary(Current.Index) { OPTR = "+", Left = f, Right = D() };
 			}
 			else if (Match(TokenType.OPTR_SUB))
 			{
 				Accept();
-				return E1(f - D());
+				return new Expr_Binary(Current.Index) { OPTR = "-", Left = f, Right = D() };
 			}
 			return f;
 		}
 
-		private float D()
+		private Expression D()
 		{
 			return D1(F());
 		}
 
-		private float D1(float d)
+		private Expression D1(Expression d)
 		{
 			if (Match(TokenType.OPTR_MUL))
 			{
 				Accept();
-				return D1(d * F());
+				return new Expr_Binary(Current.Index) { OPTR = "*", Left = d, Right = F() };
 			}
 			else if (Match(TokenType.OPTR_DIV))
 			{
 				Accept();
-				return D1(d / F());
+				return new Expr_Binary(Current.Index) { OPTR = "/", Left = d, Right = F() };
 			}
 			return d;
 		}
-		private float F()
+		private Expression F()
 		{
 			if (Match(TokenType.OPTR_SUB))
 			{
 				Accept();
-				return -E();
+				return new Expr_Binary(Current.Index) { OPTR = "-", Left = new Expr_Value(Current.Index) { Value = "0" }, Right = E() };
 			}
 			else if (Match(TokenType.LEFT_BRACKET))
 			{
@@ -354,15 +275,13 @@ namespace QTRHacker.ProjMaker.Parse
 			{
 				string v = Current.Value;
 				Accept();
-				return Convert.ToSingle(v);
+				return new Expr_Value(Current.Index) { Value = v };
 			}
 			else if (Match(TokenType.NAME))
 			{
 				string v = Current.Value;
-				if (!Macros.ContainsKey(v))
-					throw new ParseException($"不存在名为:{Current.Index}的宏：{Current.Value}", Current.Index);
 				Accept();
-				return Convert.ToSingle(Macros[v]);
+				return new Expr_MACRO(Current.Index) { Name = v };
 			}
 			int k = (Current == null ? 0 : Current.Index);
 			throw new ParseException("编译失败，Token超出预期：" + k, k);

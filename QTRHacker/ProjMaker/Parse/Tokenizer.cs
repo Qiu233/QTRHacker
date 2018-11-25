@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Functions.ProjectileImage;
+using QTRHacker.ProjMaker.Parse.AST;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace QTRHacker.ProjMaker.Parse
 	}
 	public class Tokenizer
 	{
-		public Dictionary<string, Func<FixedProperties, IEnumerable<Proj>>> Labels
+		public Dictionary<string, Func<Statement>> Labels
 		{
 			get;
 		}
@@ -56,7 +57,7 @@ namespace QTRHacker.ProjMaker.Parse
 			get;
 			private set;
 		}
-		public Tokenizer(string s, Dictionary<string, Func<FixedProperties, IEnumerable<Proj>>> handler)
+		public Tokenizer(string s, Dictionary<string, Func<Statement>> handler)
 		{
 			Source = s;
 			Index = 0;

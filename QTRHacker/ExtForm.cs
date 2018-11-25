@@ -42,75 +42,22 @@ namespace QTRHacker
 		}
 		unsafe private void InitControls()
 		{
-			Label healtip = new Label()
-			{
-				Text = Lang.maxLife,
-				Location = new Point(0, 5),
-				Size = new Size(80, 20)
-			};
-			this.Controls.Add(healtip);
-
-			TextBox heal = new TextBox()
-			{
-				Location = new Point(80, 0),
-				Size = new Size(100, 20),
-				Text = Context.MyPlayer.MaxLife + ""
-			};
-			heal.KeyPress += delegate (object sender, KeyPressEventArgs e)
-			 {
-				 if (!Char.IsNumber(e.KeyChar) && e.KeyChar != 8 && e.KeyChar != '-')
-				 {
-					 e.Handled = true;
-				 }
-			 };
-			this.Controls.Add(heal);
-
-			Label manatip = new Label()
-			{
-				Text = Lang.maxMana,
-				Location = new Point(0, 25),
-				Size = new Size(80, 20)
-			};
-			this.Controls.Add(manatip);
-
-			TextBox mana = new TextBox()
-			{
-				Location = new Point(80, 20),
-				Size = new Size(100, 20),
-				Text = Context.MyPlayer.MaxMana + ""
-			};
-			mana.KeyPress += delegate (object sender, KeyPressEventArgs e)
-			 {
-				 if (!Char.IsNumber(e.KeyChar) && e.KeyChar != 8 && e.KeyChar != '-')
-				 {
-					 e.Handled = true;
-				 }
-			 };
-			this.Controls.Add(mana);
-
-			Button healok = new Button()
-			{
-				Text = Lang.confirm,
-				Location = new Point(185, 0),
-				Size = new Size(70, 40)
-			};
-			healok.Click += delegate (object sender, EventArgs e)
-			 {
-				 if (heal.Text.Trim() != "")
-				 {
-					 Context.MyPlayer.MaxLife = Convert.ToInt32(heal.Text);
-					 Context.MyPlayer.MaxMana = Convert.ToInt32(mana.Text);
-				 }
-			 };
-			this.Controls.Add(healok);
-
 			MainPanel = new Panel()
 			{
 				Size = new Size(260, 450),
-				Location = new Point(0, 50)
+				Location = new Point(0, 0)
 			};
 			this.Controls.Add(MainPanel);
 
+			
+			Button playerHack = AddButton(Lang.playerHack, delegate (object sender, EventArgs e)
+			{
+				PlayerEditorForm ie = new PlayerEditorForm();
+				ie.Show();
+			}
+			);
+			playerHack.Size = new Size(255, 30);
+			playerHack.Location = new Point(0, 30);
 
 			Button itemAdd = AddButton(Lang.addItem, delegate (object sender, EventArgs e)
 			{
@@ -209,15 +156,6 @@ namespace QTRHacker
 			);
 			itemAdd.Size = new Size(255, 30);
 			itemAdd.Location = new Point(0, 60);
-
-			Button playerHack = AddButton(Lang.playerHack, delegate (object sender, EventArgs e)
-			{
-				PlayerEditorForm ie = new PlayerEditorForm();
-				ie.Show();
-			}
-			);
-			playerHack.Size = new Size(255, 30);
-			playerHack.Location = new Point(0, 30);
 
 
 			Button addBuff = AddButton(Lang.addBuff, delegate (object sender, EventArgs e)
@@ -484,7 +422,7 @@ namespace QTRHacker
 			Button Projs = AddButton("弹幕管理", delegate (object sender, EventArgs e)
 			{
 				ProjsBrowser pb = new ProjsBrowser();
-				pb.ShowDialog();
+				pb.Show();
 			}
 			);
 			Projs.Location = new Point(0, 120);

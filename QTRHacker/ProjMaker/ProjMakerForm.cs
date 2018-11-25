@@ -56,7 +56,7 @@ namespace QTRHacker.ProjMaker
 		private TextEditor LogBox;
 		private string FileName;
 
-		private static string[] KEYS = { "MACRO", "POINT", "RECT", "RECT_FILLED", "FIXED" };
+		private static string[] KEYS = { "MACRO", "DEF","INSERT", "POINT", "RECT", "RECT_FILLED", "FIXED" };
 
 		private static void AddMenuItem(ToolStripMenuItem menu, string text, Action<object, EventArgs> click)
 		{
@@ -112,7 +112,7 @@ namespace QTRHacker.ProjMaker
 				VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto,
 				WordWrap = true
 			};
-			Controls.Add(new ElementHost() { Bounds = new Rectangle(5, 450, 790, 195), Child = LogBox });
+			Controls.Add(new ElementHost() { Bounds = new Rectangle(5, 450, 790, 105), Child = LogBox });
 
 			Open();
 		}

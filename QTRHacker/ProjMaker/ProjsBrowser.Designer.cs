@@ -37,7 +37,7 @@ namespace QTRHacker.ProjMaker
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.ClientSize = new System.Drawing.Size(400, 200);
 			this.BackColor = Color.Gray;
-			this.Text = "ProjsBrowser";
+			this.Text = "弹幕管理器";
 		}
 
 		#endregion

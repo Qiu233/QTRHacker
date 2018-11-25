@@ -18,12 +18,12 @@ namespace QTRHacker.Functions.ProjectileImage
 			get;
 			set;
 		}
-		public PointF Speed
+		public MPointF Speed
 		{
 			get;
 			set;
 		}
-		public PointF Location
+		public MPointF Location
 		{
 			get;
 			set;
@@ -122,10 +122,10 @@ namespace QTRHacker.Functions.ProjectileImage
 				p.ProjType = br.ReadInt32();
 				float a = br.ReadSingle();
 				float b = br.ReadSingle();
-				p.Location = new PointF(a, b);
+				p.Location = new MPointF(a, b);
 				float c = br.ReadSingle();
 				float d = br.ReadSingle();
-				p.Speed = new PointF(c, d);
+				p.Speed = new MPointF(c, d);
 				img.Projs.Add(p);
 			}
 			return img;
@@ -143,7 +143,7 @@ namespace QTRHacker.Functions.ProjectileImage
 					{
 						Proj p = new Proj();
 						p.ProjType = projType;
-						p.Location = new PointF(i * resolution, j * resolution);
+						p.Location = new MPointF(i * resolution, j * resolution);
 						proj.Projs.Add(p);
 					}
 				}

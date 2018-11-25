@@ -1,5 +1,7 @@
-﻿using System;
+﻿using QTRHacker.Functions.ProjectileImage;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,32 +10,22 @@ namespace QTRHacker.ProjMaker.Parse
 {
 	public class FixedProperties
 	{
-		public float X
+		public MPointF Location
 		{
 			get;
 		}
-		public float Y
+		public MPointF Speed
 		{
 			get;
 		}
-		public float SpeedX
+		public FixedProperties(MPointF Location, MPointF Speed)
 		{
-			get;
-		}
-		public float SpeedY
-		{
-			get;
-		}
-		public FixedProperties(float X, float Y, float SpeedX, float SpeedY)
-		{
-			this.X = X;
-			this.Y = Y;
-			this.SpeedX = SpeedX;
-			this.SpeedY = SpeedY;
+			this.Location = Location;
+			this.Speed = Speed;
 		}
 		public static FixedProperties GetGlobalProperties()
 		{
-			return new FixedProperties(0, 0, 0, 0);
+			return new FixedProperties(new MPointF(0, 0), new MPointF(0, 0));
 		}
 	}
 }
