@@ -262,7 +262,7 @@ namespace QTRHacker.ProjMaker.Parse
 			if (Match(TokenType.OPTR_SUB))
 			{
 				Accept();
-				return new Expr_Binary(Current.Index) { OPTR = "-", Left = new Expr_Value(Current.Index) { Value = "0" }, Right = E() };
+				return new Expr_Binary(Current.Index) { OPTR = "-", Left = new Expr_Value(Current.Index) { Value = "0" }, Right = F() };
 			}
 			else if (Match(TokenType.LEFT_BRACKET))
 			{

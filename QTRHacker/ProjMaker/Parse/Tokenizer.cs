@@ -78,11 +78,11 @@ namespace QTRHacker.ProjMaker.Parse
 				while (Index < Source.Length && Source[Index] != '\n') Index++;
 				return Next();
 			}
-			else if (Char.IsNumber(Source[Index]) || Source[Index] == '-')
+			else if (Char.IsNumber(Source[Index]))
 			{
-				string n = "";
+				string n = Source[Index++].ToString();
 				int i = Index;
-				while (Index < Source.Length && (Char.IsNumber(Source[Index]) || Source[Index] == '.' || Source[Index] == '-'))
+				while (Index < Source.Length && (Char.IsNumber(Source[Index]) || Source[Index] == '.'))
 					n += Source[Index++];
 				return new Token(n, TokenType.NUMBER, i);
 			}

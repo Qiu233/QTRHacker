@@ -51,7 +51,9 @@ namespace QTRHacker.ProjMaker.Parse
 		private float V(Expression e)
 		{
 			if (e is Expr_Value)
+			{
 				return Convert.ToSingle((e as Expr_Value).Value);
+			}
 			else if (e is Expr_MACRO)
 				return Convert.ToSingle(Macros[(e as Expr_MACRO).Name]);
 			else if (e is Expr_Binary)
