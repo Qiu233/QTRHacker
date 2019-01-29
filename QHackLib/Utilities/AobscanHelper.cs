@@ -42,7 +42,15 @@ namespace QHackLib.Utilities
 			}
 			return bs.ToArray();
 		}
-		private static int Memmem(byte[] a, int alen, byte[] b, int blen)
+		/// <summary>
+		/// 搜索Byte数组
+		/// </summary>
+		/// <param name="a">源数组</param>
+		/// <param name="alen">长度</param>
+		/// <param name="b">被搜索的数组</param>
+		/// <param name="blen">被搜数组的长度</param>
+		/// <returns>失败返回-1</returns>
+		public static int Memmem(byte[] a, int alen, byte[] b, int blen)
 		{
 			int i, j;
 			for (i = 0; i < alen - blen; ++i)
@@ -56,15 +64,33 @@ namespace QHackLib.Utilities
 			return -1;
 		}
 
+		/// <summary>
+		/// 失败返回-1
+		/// </summary>
+		/// <param name="ctx"></param>
+		/// <param name="asm"></param>
+		/// <returns></returns>
 		public static int AobscanASM(Context ctx, string asm)
 		{
 			return Aobscan(ctx, Assembler.Assemble(asm, 0));
 		}
+		/// <summary>
+		/// 失败返回-1
+		/// </summary>
+		/// <param name="ctx"></param>
+		/// <param name="hexCode"></param>
+		/// <returns></returns>
 		public static int Aobscan(Context ctx, string hexCode)
 		{
 			byte[] bytes = GetHexCodeFromString(hexCode);
 			return Aobscan(ctx, bytes);
 		}
+		/// <summary>
+		/// 失败返回-1
+		/// </summary>
+		/// <param name="ctx"></param>
+		/// <param name="aob"></param>
+		/// <returns></returns>
 		public static int Aobscan(Context ctx, byte[] aob)
 		{
 			int i = 0;

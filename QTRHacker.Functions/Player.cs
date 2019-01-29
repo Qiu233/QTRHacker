@@ -22,6 +22,8 @@ namespace QTRHacker.Functions
 		public const int OFFSET_X = 0x20;
 		public const int OFFSET_Y = 0x24;
 		public const int OFFSET_Ghost = 0x549;
+		public const int OFFSET_BuffType = 0xAC;
+		public const int OFFSET_BuffTime = 0xB0;
 
 		public const int OFFSET_INV = 0xBC, OFFSET_ARMOR = 0x98, OFFSET_DYE = 0x9C, OFFSET_MISC = 0xA0, OFFSET_MISCDYE = 0xA4;
 		public const int OFFSET_Bank = 0xC4, OFFSET_Bank2 = 0xC8, OFFSET_Bank3 = 0xCC;
