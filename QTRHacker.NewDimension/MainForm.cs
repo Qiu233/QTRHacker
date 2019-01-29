@@ -17,6 +17,7 @@ namespace QTRHacker.NewDimension
 	public partial class MainForm : Form
 	{
 		private Color FormBack = Color.FromArgb(45, 45, 48);
+		private Label VersionLabel;
 		private Point Drag_MousePos;
 		private Panel MainPanel, ButtonsPanel, ContentPanel;
 		private PictureBox MinButton, CloseButton;
@@ -31,7 +32,7 @@ namespace QTRHacker.NewDimension
 		}
 		public MainForm()
 		{
-			if (System.Diagnostics.Process.GetProcessesByName("QTRHackerND").Length > 1 )
+			if (System.Diagnostics.Process.GetProcessesByName("QTRHackerND").Length > 1)
 			{
 				Environment.Exit(0);
 			}
@@ -68,6 +69,12 @@ namespace QTRHacker.NewDimension
 			ButtonsPanel.Bounds = new Rectangle(0, 0, 100, MainPanel.Height);
 			ButtonsPanel.BackColor = Color.FromArgb(50, 255, 255, 255);
 			MainPanel.Controls.Add(ButtonsPanel);
+
+			VersionLabel = new Label();
+			VersionLabel.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			VersionLabel.BackColor = Color.Transparent;
+			VersionLabel.Bounds = new Rectangle(3, 350, 100, 20);
+			ButtonsPanel.Controls.Add(VersionLabel);
 
 
 			Image img_MainPage = null;
@@ -121,7 +128,14 @@ namespace QTRHacker.NewDimension
 			{
 				(c as Control).Enabled = true;
 			}
-			(ButtonsPanel.Controls[0] as ImageButton).Selected = true;
+			foreach (var i in ButtonsPanel.Controls)
+			{
+				if(i is ImageButton)
+				{
+					(i as ImageButton).Selected = true;
+					break;
+				}
+			}
 		}
 
 		/// <summary>

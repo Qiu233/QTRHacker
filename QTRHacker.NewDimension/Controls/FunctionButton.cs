@@ -100,10 +100,8 @@ namespace QTRHacker.NewDimension.Controls
 			if (Closable)
 				g.DrawEllipse(Pens.White, 5, 3, 12, 12);
 			if (FunctionEnabled && Closable)
-			{
 				using (Brush b = new SolidBrush(SelectedColor_Closable))
 					g.FillEllipse(b, 7, 5, 8, 8);
-			}
 		}
 	}
 }

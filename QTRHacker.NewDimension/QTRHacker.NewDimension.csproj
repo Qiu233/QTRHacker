@@ -57,6 +57,9 @@
     <Compile Include="Controls\MProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\PopupProgressBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\TextButton.cs">
       <SubType>UserControl</SubType>
     </Compile>

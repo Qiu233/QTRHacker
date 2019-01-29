@@ -64,48 +64,16 @@ namespace QTRHacker.NewDimension
 				g =>
 				{
 					int i = 0;
-					Form p = new Form
-					{
-						FormBorderStyle = FormBorderStyle.FixedSingle,
-						ClientSize = new Size(300, 60),
-						ControlBox = false,
-						BackColor = Color.LightGray
-					};
-					Label tip = new Label
-					{
-						BackColor = Color.Transparent,
-						Text = "请稍等...",
-						Location = new Point(0, 0),
-						Size = new Size(150, 30),
-						TextAlign = ContentAlignment.MiddleCenter
-					};
-					Label percent = new Label
-					{
-						BackColor = Color.Transparent,
-						Location = new Point(150, 0),
-						Size = new Size(50, 30),
-						TextAlign = ContentAlignment.MiddleCenter
-					};
-
+					PopupProgressBar p = new PopupProgressBar();
+					p.MainProgressBar.Maximum = NPC.MAXNUMBER;
 					System.Timers.Timer timer = new System.Timers.Timer(1);
-
-					ProgressBar pb = new MProgressBar
-					{
-						Location = new Point(0, 30),
-						Size = new Size(300, 30),
-						Maximum = NPC.MAXNUMBER,
-						Minimum = 0,
-						Value = 0
-					};
-					p.Controls.Add(tip);
-					p.Controls.Add(percent);
-					p.Controls.Add(pb);
 					timer.Elapsed += (sender, e) =>
 					{
-						pb.Value = i;
-						pb.Invalidate();
-						percent.Text = pb.Value + "/" + pb.Maximum;
-						if (i >= pb.Maximum) p.Dispose();
+						var b = p.MainProgressBar;
+						b.Value = i;
+						b.Invalidate();
+						b.Text = b.Value + "/" + b.Maximum;
+						if (i >= b.Maximum) p.Dispose();
 					};
 					timer.Start();
 					p.Show();
@@ -145,13 +113,11 @@ namespace QTRHacker.NewDimension
 				var btn = (s as FunctionButton);
 				OnEnabled?.Invoke(HackContext.GameContext);
 				HackContext.SetSign((s as FunctionButton).Identity, 1);
-				btn.FunctionEnabled = true;
 			};
 			b.OnDisable += (s, e) =>
 			{
 				OnDisabled?.Invoke(HackContext.GameContext);
 				HackContext.SetSign((s as FunctionButton).Identity, 0);
-				(s as FunctionButton).FunctionEnabled = false;
 			};
 			b.Location = new Point(0, 20 * FunctionsNumber[p]);
 			b.Text = Text;
