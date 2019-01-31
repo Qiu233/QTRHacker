@@ -35,7 +35,6 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		{
 			this.components = new System.ComponentModel.Container();
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Text = "Player Editor";
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.FormBorderStyle = FormBorderStyle.FixedSingle;

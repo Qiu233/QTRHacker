@@ -30,12 +30,16 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		private byte Clip_ItemPrefix;
 		private Form ParentForm;
 		private ContextMenuStrip SlotRightClickStrip;
-		public ArmorEditor(GameContext Context, Form ParentForm)
+		private readonly Player TargetPlayer;
+		private bool Editable = true;
+		public ArmorEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
 		{
 			this.Context = Context;
 			this.ParentForm = ParentForm;
+			this.TargetPlayer = TargetPlayer;
+			this.Editable = Editable;
 			Text = "装备";
-			ItemPropertiesPanel = new ItemPropertiesPanel();
+			ItemPropertiesPanel = new ItemPropertiesPanel() { Enabled = Editable };
 			ArmorSlots = new ItemIcon[Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT];
 			AltSlots = new AltItemIcon[AltPanelWidth * AltPanelHeight];
 
@@ -75,7 +79,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)(i / 10));
 				int off = i % 10;
-				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.Armor, i, i)
+				ArmorSlots[i] = new ItemIcon(Context, TargetPlayer.Armor, i, i)
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
@@ -91,7 +95,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)(i / 10));
 				int off = i % 10;
-				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.Dye, i, i - Player.ARMOR_MAX_COUNT)
+				ArmorSlots[i] = new ItemIcon(Context, TargetPlayer.Dye, i, i - Player.ARMOR_MAX_COUNT)
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
@@ -107,7 +111,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)(i / 10));
 				int off = i % 10;
-				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.Misc, i, i - (Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT))
+				ArmorSlots[i] = new ItemIcon(Context, TargetPlayer.Misc, i, i - (Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT))
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
@@ -123,7 +127,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)((i + 5) / 10));
 				int off = (i + 5) % 10;
-				ArmorSlots[i] = new ItemIcon(Context, Context.MyPlayer.MiscDye, i, i - (Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT))
+				ArmorSlots[i] = new ItemIcon(Context, TargetPlayer.MiscDye, i, i - (Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT))
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
@@ -250,7 +254,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			InitData(Selected);
 			if (mea.Button == MouseButtons.Right)
 			{
-				SlotRightClickStrip.Show(ii, mea.Location.X, mea.Location.Y);
+				if (Editable)
+					SlotRightClickStrip.Show(ii, mea.Location.X, mea.Location.Y);
 			}
 		}
 		private void RefreshSelected()

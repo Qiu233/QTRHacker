@@ -88,12 +88,14 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		private int Clip_ItemStack;
 		private byte Clip_ItemPrefix;
 		private Form ParentForm;
-		public InvEditor(GameContext Context, Form ParentForm)
+		private readonly Player TargetPlayer;
+		public InvEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
 		{
 			this.Context = Context;
 			this.ParentForm = ParentForm;
+			this.TargetPlayer = TargetPlayer;
 			Text = "背包";
-			ItemPropertiesPanel = new ItemPropertiesPanel();
+			ItemPropertiesPanel = new ItemPropertiesPanel() { Enabled = Editable };
 			ItemSlots = new ItemIcon[Player.ITEM_MAX_COUNT - 9];
 			AltSlots = new AltItemIcon[AltPanelWidth * AltPanelHeight];
 
@@ -108,7 +110,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			cms.Items.Add("粘贴");
 			cms.ItemClicked += (sender, e) =>
 			{
-				var item = Context.MyPlayer.Inventory[Selected];
+				var item = TargetPlayer.Inventory[Selected];
 				switch (e.ClickedItem.Text)
 				{
 					case "复制":
@@ -132,7 +134,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			{
 				int row = (int)Math.Floor((double)(i / 10));
 				int off = i % 10;
-				ItemSlots[i] = new ItemIcon(Context, Context.MyPlayer.Inventory, i, i)
+				ItemSlots[i] = new ItemIcon(Context, TargetPlayer.Inventory, i, i)
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
@@ -150,13 +152,14 @@ namespace QTRHacker.NewDimension.PlayerEditor
 					{
 						s.Selected = false;
 					}
-						((ItemIcon)sender).Selected = true;
+					((ItemIcon)sender).Selected = true;
 					SlotsPanel.Refresh();
 					Selected = ((ItemIcon)sender).Number;
 					InitData(Selected);
 					if (mea.Button == MouseButtons.Right)
 					{
-						cms.Show(ii, mea.Location.X, mea.Location.Y);
+						if (Editable)
+							cms.Show(ii, mea.Location.X, mea.Location.Y);
 					}
 				};
 				this.SlotsPanel.Controls.Add(ItemSlots[i]);
@@ -317,7 +320,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 					};
 					AltSlots[n].DoubleClick += (sender, e) =>
 					{
-						var p = Context.MyPlayer;
+						var p = TargetPlayer;
 						for (int h = 0; h < Player.ITEM_MAX_COUNT - 9; h++)
 						{
 							var item = p.Inventory[h];
@@ -426,7 +429,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				{
 
 
-					File.WriteAllText(sfd.FileName, Context.MyPlayer.SerializeInventoryWithProperties());
+					File.WriteAllText(sfd.FileName, TargetPlayer.SerializeInventoryWithProperties());
 					SlotsPanel.Refresh();
 
 				}
@@ -485,7 +488,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 					{
 						j++;
 
-						Context.MyPlayer.DeserializeInventoryWithProperties(File.ReadAllText(ofd.FileName));
+						TargetPlayer.DeserializeInventoryWithProperties(File.ReadAllText(ofd.FileName));
 						InitData(Selected);
 						j++;
 
@@ -502,7 +505,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			Button InitItem = new Button();
 			InitItem.Click += (sender, e) =>
 			{
-				Item item = Context.MyPlayer.Inventory[Selected];
+				Item item = TargetPlayer.Inventory[Selected];
 				item.SetDefaults(Convert.ToInt32(((TextBox)ItemPropertiesPanel.Hack["Type"]).Text));
 				item.SetPrefix(GetPrefixFromIndex(ItemPropertiesPanel.SelectedPrefix));
 				int stack = Convert.ToInt32(((TextBox)ItemPropertiesPanel.Hack["Stack"]).Text);
@@ -527,7 +530,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				if (Enabled)
 				{
 					SlotsPanel.Refresh();
-					Item item = Context.MyPlayer.Inventory[Selected];
+					Item item = TargetPlayer.Inventory[Selected];
 					if (LastSelectedID != item.Type)
 					{
 						InitData(Selected);
@@ -543,7 +546,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		}
 		private void InitData(int slot)
 		{
-			Item item = Context.MyPlayer.Inventory[slot];
+			Item item = TargetPlayer.Inventory[slot];
 			Type t = typeof(Item);
 			foreach (DictionaryEntry de in ItemPropertiesPanel.Hack)
 			{
@@ -567,7 +570,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		}
 		private void ApplyData(int slot)
 		{
-			Item item = Context.MyPlayer.Inventory[slot];
+			Item item = TargetPlayer.Inventory[slot];
 			Type t = typeof(Item);
 			foreach (DictionaryEntry de in ItemPropertiesPanel.Hack)
 			{
@@ -635,7 +638,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		{
 			if (File.Exists(name)) File.Delete(name);
 			BinaryWriter bw = new BinaryWriter(new FileStream(name, FileMode.OpenOrCreate));
-			var player = Context.MyPlayer;
+			var player = TargetPlayer;
 			for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
 			{
 				var item = player.Inventory[i];
@@ -709,7 +712,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			p.Location = new System.Drawing.Point(ParentForm.Location.X + ParentForm.Width / 2 - p.ClientSize.Width / 2, ParentForm.Location.Y + ParentForm.Height / 2 - p.ClientSize.Height / 2);
 			new System.Threading.Thread((s) =>
 			{
-				var player = Context.MyPlayer;
+				var player = TargetPlayer;
 				BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open));
 				for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
 				{

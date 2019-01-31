@@ -28,7 +28,8 @@ namespace QTRHacker.NewDimension.PagePanels
 			EditPlayerInfoButton.Bounds = new Rectangle(Width - 102, 335, 100, 30);
 			EditPlayerInfoButton.Click += (s, e) =>
 			{
-				PlayerEditorForm f = new PlayerEditorForm();
+				int i = Convert.ToInt32(PlayerListView.SelectedItems[0].Text);
+				PlayerEditorForm f = new PlayerEditorForm(HackContext.GameContext.Players[i], i == HackContext.GameContext.MyPlayerIndex);
 				f.Show();
 			};
 

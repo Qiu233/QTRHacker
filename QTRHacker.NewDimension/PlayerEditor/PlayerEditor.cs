@@ -22,10 +22,12 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		private ColorSelectControl HairColorControl, SkinColorControl, EyeColorControl, ShirtColorControl, UnderShirtColorControl, PantsColorControl, ShoesColorControl;
 		private NumericUpDown HairStyleControl;
 		private TextBox ManaTextBox, HealthTextBox;
-		public PlayerEditor(GameContext Context, Form ParentForm)
+		private readonly Player TargetPlayer;
+		public PlayerEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
 		{
 			this.Context = Context;
 			this.ParentForm = ParentForm;
+			this.TargetPlayer = TargetPlayer;
 			Text = "人物";
 
 			PlayerView = new PlayerView();
@@ -47,13 +49,13 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			};
 
 			PlayerView.HairType = 0;
-			HairColorControl = new ColorSelectControl("头发:");
-			SkinColorControl = new ColorSelectControl("皮肤:");
-			EyeColorControl = new ColorSelectControl("眼睛:");
-			ShirtColorControl = new ColorSelectControl("衬衣:");
-			UnderShirtColorControl = new ColorSelectControl("内衬:");
-			PantsColorControl = new ColorSelectControl("裤子:");
-			ShoesColorControl = new ColorSelectControl("鞋子:");
+			HairColorControl = new ColorSelectControl("头发:") { Enabled = Editable };
+			SkinColorControl = new ColorSelectControl("皮肤:") { Enabled = Editable };
+			EyeColorControl = new ColorSelectControl("眼睛:") { Enabled = Editable };
+			ShirtColorControl = new ColorSelectControl("衬衣:") { Enabled = Editable };
+			UnderShirtColorControl = new ColorSelectControl("内衬:") { Enabled = Editable };
+			PantsColorControl = new ColorSelectControl("裤子:") { Enabled = Editable };
+			ShoesColorControl = new ColorSelectControl("鞋子:") { Enabled = Editable };
 			HairColorControl.OnColorChanged += (c) => PlayerView.HairColor = c;
 			HairColorControl.Location = new Point(0, 30);
 
@@ -75,7 +77,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			ShoesColorControl.OnColorChanged += (c) => PlayerView.ShoesColor = c;
 			ShoesColorControl.Location = new Point(0, 210);
 
-			HairStyleControl = new NumericUpDown();
+			HairStyleControl = new NumericUpDown() { Enabled = Editable };
 			HairStyleControl.BackColor = Color.FromArgb(120, 120, 120);
 			HairStyleControl.TextAlign = HorizontalAlignment.Center;
 			HairStyleControl.Bounds = new Rectangle(5, 5, 145, 29);
@@ -99,7 +101,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			{
 				Text = "最大生命",
 				Location = new Point(160, 8),
-				Size = new Size(60, 20)
+				Size = new Size(60, 20),
 			};
 
 			HealthTextBox = new TextBox()
@@ -108,7 +110,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				Size = new Size(100, 20),
 				BorderStyle = BorderStyle.FixedSingle,
 				BackColor = Color.FromArgb(120, 120, 120),
-				Text = Context.MyPlayer.MaxLife.ToString()
+				Text = Context.MyPlayer.MaxLife.ToString(),
+				Enabled = Editable
 			};
 			HealthTextBox.KeyPress += delegate (object sender, KeyPressEventArgs e)
 			{
@@ -122,7 +125,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			{
 				Text = "最大魔法",
 				Location = new Point(160, 33),
-				Size = new Size(60, 20)
+				Size = new Size(60, 20),
 			};
 
 			ManaTextBox = new TextBox()
@@ -131,7 +134,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				Size = new Size(100, 20),
 				BorderStyle = BorderStyle.FixedSingle,
 				BackColor = Color.FromArgb(120, 120, 120),
-				Text = Context.MyPlayer.MaxMana.ToString()
+				Text = Context.MyPlayer.MaxMana.ToString(),
+				Enabled = Editable
 			};
 			ManaTextBox.KeyPress += delegate (object sender, KeyPressEventArgs e)
 			{
@@ -156,7 +160,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			};
 			PropertiesSelectPanel.Controls.Add(RefreshButton);
 
-			Button ConfirmButton = new Button();
+			Button ConfirmButton = new Button() { Enabled = Editable };
 			ConfirmButton.Text = "确定";
 			ConfirmButton.FlatStyle = FlatStyle.Flat;
 			ConfirmButton.Bounds = new Rectangle(220, 100, 100, 30);
@@ -175,32 +179,32 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		private void InitData()
 		{
 
-			HairStyleControl.Value = Context.MyPlayer.Hair;
-			HairColorControl.Color = ColorFromIntABGR(Context.MyPlayer.HairColor);
-			SkinColorControl.Color = ColorFromIntABGR(Context.MyPlayer.SkinColor);
-			EyeColorControl.Color = ColorFromIntABGR(Context.MyPlayer.EyeColor);
-			ShirtColorControl.Color = ColorFromIntABGR(Context.MyPlayer.ShirtColor);
-			UnderShirtColorControl.Color = ColorFromIntABGR(Context.MyPlayer.UnderShirtColor);
-			PantsColorControl.Color = ColorFromIntABGR(Context.MyPlayer.PantsColor);
-			ShoesColorControl.Color = ColorFromIntABGR(Context.MyPlayer.ShoesColor);
+			HairStyleControl.Value = TargetPlayer.Hair;
+			HairColorControl.Color = ColorFromIntABGR(TargetPlayer.HairColor);
+			SkinColorControl.Color = ColorFromIntABGR(TargetPlayer.SkinColor);
+			EyeColorControl.Color = ColorFromIntABGR(TargetPlayer.EyeColor);
+			ShirtColorControl.Color = ColorFromIntABGR(TargetPlayer.ShirtColor);
+			UnderShirtColorControl.Color = ColorFromIntABGR(TargetPlayer.UnderShirtColor);
+			PantsColorControl.Color = ColorFromIntABGR(TargetPlayer.PantsColor);
+			ShoesColorControl.Color = ColorFromIntABGR(TargetPlayer.ShoesColor);
 
-			HealthTextBox.Text = Context.MyPlayer.MaxLife.ToString();
-			ManaTextBox.Text = Context.MyPlayer.MaxMana.ToString();
+			HealthTextBox.Text = TargetPlayer.MaxLife.ToString();
+			ManaTextBox.Text = TargetPlayer.MaxMana.ToString();
 		}
 
 		private void ApplyData()
 		{
-			Context.MyPlayer.Hair = (int)HairStyleControl.Value;
-			Context.MyPlayer.HairColor = IntABGRFromColor(HairColorControl.Color);
-			Context.MyPlayer.SkinColor = IntABGRFromColor(SkinColorControl.Color);
-			Context.MyPlayer.EyeColor = IntABGRFromColor(EyeColorControl.Color);
-			Context.MyPlayer.ShirtColor = IntABGRFromColor(ShirtColorControl.Color);
-			Context.MyPlayer.UnderShirtColor = IntABGRFromColor(UnderShirtColorControl.Color);
-			Context.MyPlayer.PantsColor = IntABGRFromColor(PantsColorControl.Color);
-			Context.MyPlayer.ShoesColor = IntABGRFromColor(ShoesColorControl.Color);
+			TargetPlayer.Hair = (int)HairStyleControl.Value;
+			TargetPlayer.HairColor = IntABGRFromColor(HairColorControl.Color);
+			TargetPlayer.SkinColor = IntABGRFromColor(SkinColorControl.Color);
+			TargetPlayer.EyeColor = IntABGRFromColor(EyeColorControl.Color);
+			TargetPlayer.ShirtColor = IntABGRFromColor(ShirtColorControl.Color);
+			TargetPlayer.UnderShirtColor = IntABGRFromColor(UnderShirtColorControl.Color);
+			TargetPlayer.PantsColor = IntABGRFromColor(PantsColorControl.Color);
+			TargetPlayer.ShoesColor = IntABGRFromColor(ShoesColorControl.Color);
 
-			Context.MyPlayer.MaxLife = Convert.ToInt32(HealthTextBox.Text);
-			Context.MyPlayer.MaxMana = Convert.ToInt32(ManaTextBox.Text);
+			TargetPlayer.MaxLife = Convert.ToInt32(HealthTextBox.Text);
+			TargetPlayer.MaxMana = Convert.ToInt32(ManaTextBox.Text);
 		}
 
 

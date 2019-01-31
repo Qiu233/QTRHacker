@@ -22,10 +22,10 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		public static Color ButtonNormalColor = Color.Transparent;
 		public static Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
 		private Point Drag_MousePos;
-		public PlayerEditorForm()
+		public PlayerEditorForm(Player TargetPlayer, bool Editable)
 		{
 			InitializeComponent();
-
+			Text = TargetPlayer.Name + (Editable ? "" : " (不可编辑)");
 			BackColor = Color.FromArgb(30, 30, 30);
 
 			var CloseButton = new PictureBox();
@@ -35,16 +35,16 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			CloseButton.Bounds = new Rectangle(this.Width - 32, -1, 32, 32);
 			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.close.png"))
 				CloseButton.Image = Image.FromStream(st);
-			
+
 			this.Controls.Add(CloseButton);
 
 			Tabs = new MTabControl();
 			Tabs.bColor = Color.FromArgb(70, 70, 70);
 			Tabs.tColor = Color.FromArgb(90, 90, 90);
 			Tabs.Bounds = new Rectangle(0, 31, 1005, 360);
-			Tabs.Controls.Add(new PlayerEditor(HackContext.GameContext, this) { BackColor = Tabs.bColor });
-			Tabs.Controls.Add(new InvEditor(HackContext.GameContext, this) { BackColor = Tabs.bColor });
-			Tabs.Controls.Add(new ArmorEditor(HackContext.GameContext, this) { BackColor = Tabs.bColor });
+			Tabs.Controls.Add(new PlayerEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
+			Tabs.Controls.Add(new InvEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
+			Tabs.Controls.Add(new ArmorEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
 			this.Controls.Add(Tabs);
 		}
 		protected override void OnMouseDown(MouseEventArgs e)
