@@ -42,11 +42,8 @@ namespace QTRHacker.PlayerEditor
 				var img = MainForm.item_images.Images["Item_" + nowID];
 				if (img != null)
 				{
-					Graphics g = Graphics.FromImage(img);
 					Image newImg = (Image)img.Clone();
-					g.DrawImage(newImg, 0, 0);
 					this.Image = newImg;
-					g.Dispose();
 					Tip.SetToolTip(this, MainForm.resource.Items.First(i => i.id == nowID).name);
 				}
 				else

@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Functions;
+using QTRHacker.NewDimension.Res;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +10,66 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QTRHacker.PlayerEditor
+namespace QTRHacker.NewDimension.PlayerEditor
 {
+
+	public class ItemIcon : PictureBox
+	{
+		public int Number, ID;
+		public bool Selected = false;
+		private int lastID;
+		private ToolTip Tip;
+		private GameContext Context;
+		public ItemSlots Slots
+		{
+			get;
+		}
+		public ItemIcon(GameContext Context, ItemSlots slots, int num, int id)
+		{
+			this.Context = Context;
+			Slots = slots;
+			Number = num;
+			ID = id;
+			Tip = new ToolTip();
+		}
+		/// <summary>
+		/// 更新的代码写在Paint里面，原因是每500ms都会进行一次更新，就不分开写了
+		/// 需要注意的是这个更新是需要手动调用的，比如执行Refresh
+		/// </summary>
+		/// <param name="pe"></param>
+		protected override void OnPaint(PaintEventArgs pe)
+		{
+			var item = Slots[ID];
+			int nowID = item.Type;
+			if (lastID != nowID)
+			{
+				var img = GameResLoader.ItemImages.Images[nowID.ToString()];
+				if (img != null)
+				{
+					Image newImg = (Image)img.Clone();
+					this.Image = newImg;
+					Tip.SetToolTip(this, GameResLoader.ItemToID.First(i => i.Value == nowID).Key);
+				}
+				else
+				{
+					Tip.SetToolTip(this, "");
+				}
+				this.lastID = nowID;
+			}
+			base.OnPaint(pe);
+			pe.Graphics.DrawString(item.Stack.ToString(), new Font("Arial", 10), new SolidBrush(Color.Black), 10, 35);
+			if (Selected)
+			{
+				pe.Graphics.DrawRectangle(new Pen(Color.BlueViolet, 3), 1, 1, pe.ClipRectangle.Width - 3, pe.ClipRectangle.Height - 3);
+			}
+		}
+	}
+	public class AltItemIcon : PictureBox
+	{
+		public int ID = 0, Stack = 0;
+		public byte Prefix = 0;
+
+	}
 	public class InvEditor : TabPage
 	{
 		private Panel AltPanel;
@@ -45,21 +104,21 @@ namespace QTRHacker.PlayerEditor
 			this.Controls.Add(SlotsPanel);
 
 			ContextMenuStrip cms = new ContextMenuStrip();
-			cms.Items.Add("Copy");
-			cms.Items.Add("Paste");
+			cms.Items.Add("复制");
+			cms.Items.Add("粘贴");
 			cms.ItemClicked += (sender, e) =>
 			{
 				var item = Context.MyPlayer.Inventory[Selected];
 				switch (e.ClickedItem.Text)
 				{
-					case "Copy":
+					case "复制":
 
 						Clip_ItemType = item.Type;
 						Clip_ItemStack = item.Stack;
 						Clip_ItemPrefix = item.Prefix;
 						RefreshSelected();
 						break;
-					case "Paste":
+					case "粘贴":
 						if (Clip_ItemType != 0)
 						{
 							item.SetDefaultsAndPrefix(Clip_ItemType, Clip_ItemPrefix);
@@ -79,7 +138,7 @@ namespace QTRHacker.PlayerEditor
 					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
 
 
-					BackColor = Color.CadetBlue,
+					BackColor = Color.FromArgb(90, 90, 90),
 					SizeMode = PictureBoxSizeMode.CenterImage
 				};
 				ItemSlots[i].Click += (sender, e) =>
@@ -104,13 +163,13 @@ namespace QTRHacker.PlayerEditor
 			}
 
 			ContextMenuStrip altCms = new ContextMenuStrip();
-			altCms.Items.Add("Edit");
+			altCms.Items.Add("编辑");
 
 			altCms.ItemClicked += (sender, e) =>
 			{
 				switch (e.ClickedItem.Text)
 				{
-					case "Edit":
+					case "编辑":
 						{
 							Form f = new Form();
 							TextBox ItemID = new TextBox();
@@ -118,7 +177,7 @@ namespace QTRHacker.PlayerEditor
 							ComboBox prefix = new ComboBox();
 							Button et = new Button();
 
-							f.Text = "Edit";
+							f.Text = "备用物品";
 							f.StartPosition = FormStartPosition.CenterParent;
 							f.FormBorderStyle = FormBorderStyle.FixedSingle;
 							f.MaximizeBox = false;
@@ -127,7 +186,7 @@ namespace QTRHacker.PlayerEditor
 
 							Label tip1 = new Label()
 							{
-								Text = "ItemID",
+								Text = "物品类型",
 								Location = new Point(0, 5),
 								Size = new Size(80, 20)
 							};
@@ -170,7 +229,7 @@ namespace QTRHacker.PlayerEditor
 							prefix.Size = new Size(95, 20);
 							prefix.DropDownStyle = ComboBoxStyle.DropDownList;
 							prefix.DropDownHeight = 150;
-							foreach (var o in MainForm.resource.Prefix)
+							foreach (var o in GameResLoader.Prefixes)
 							{
 								string[] t = o.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
 								string v = t[0];
@@ -189,7 +248,7 @@ namespace QTRHacker.PlayerEditor
 							f.Controls.Add(tip3);
 
 
-							et.Text = Lang.confirm;
+							et.Text = "确定";
 							et.Size = new Size(65, 60);
 							et.Location = new Point(180, 0);
 							et.Click += delegate (object sender1, EventArgs e1)
@@ -198,7 +257,7 @@ namespace QTRHacker.PlayerEditor
 								AltSelected.Stack = Convert.ToInt32(ItemCount.Text);
 								AltSelected.Prefix = GetPrefixFromIndex(prefix.SelectedIndex);
 								f.Dispose();
-								var img = MainForm.item_images.Images["Item_" + AltSelected.ID];
+								var img = GameResLoader.ItemImages.Images[AltSelected.ID.ToString()];
 								if (img != null)
 									AltSelected.Image = img;
 								SaveAltItems();
@@ -239,11 +298,12 @@ namespace QTRHacker.PlayerEditor
 						Prefix = br.ReadByte(),
 					};
 					Image img;
-					if ((img = MainForm.item_images.Images["Item_" + AltSlots[n].ID]) != null)
+					int id = AltSlots[n].ID;
+					if ((img = GameResLoader.ItemImages.Images[id.ToString()]) != null)
 					{
 						AltSlots[n].Image = img;
 					}
-					AltSlots[n].BackColor = Color.CadetBlue;
+					AltSlots[n].BackColor = Color.FromArgb(90, 90, 90);
 					AltSlots[n].Click += (sender, e) =>
 					{
 
@@ -287,7 +347,8 @@ namespace QTRHacker.PlayerEditor
 				InitData(Selected);
 				RefreshSelected();
 			};
-			OK.Text = Lang.confirmHack;
+			OK.FlatStyle = FlatStyle.Flat;
+			OK.Text = "确定";
 			OK.Size = new Size(80, 30);
 			OK.Location = new Point(260, 0);
 			ItemPropertiesPanel.Controls.Add(OK);
@@ -299,7 +360,8 @@ namespace QTRHacker.PlayerEditor
 				InitData(Selected);
 				SlotsPanel.Refresh();
 			};
-			Refresh.Text = Lang.refresh;
+			Refresh.FlatStyle = FlatStyle.Flat;
+			Refresh.Text = "刷新";
 			Refresh.Size = new Size(80, 30);
 			Refresh.Location = new Point(260, 30);
 			ItemPropertiesPanel.Controls.Add(Refresh);
@@ -321,7 +383,8 @@ namespace QTRHacker.PlayerEditor
 					SlotsPanel.Refresh();
 				}
 			};
-			SaveInv.Text = Lang.save;
+			SaveInv.FlatStyle = FlatStyle.Flat;
+			SaveInv.Text = "保存";
 			SaveInv.Size = new Size(80, 30);
 			SaveInv.Location = new Point(260, 60);
 			ItemPropertiesPanel.Controls.Add(SaveInv);
@@ -343,7 +406,8 @@ namespace QTRHacker.PlayerEditor
 					InitData(Selected);
 				}
 			};
-			LoadInv.Text = Lang.load;
+			LoadInv.FlatStyle = FlatStyle.Flat;
+			LoadInv.Text = "加载";
 			LoadInv.Size = new Size(80, 30);
 			LoadInv.Location = new Point(260, 90);
 			ItemPropertiesPanel.Controls.Add(LoadInv);
@@ -367,7 +431,8 @@ namespace QTRHacker.PlayerEditor
 
 				}
 			};
-			SaveInvPItem.Text = Lang.save + "(P)";
+			SaveInvPItem.FlatStyle = FlatStyle.Flat;
+			SaveInvPItem.Text = "保存(P)";
 			SaveInvPItem.Size = new Size(80, 30);
 			SaveInvPItem.Location = new Point(260, 120);
 			ItemPropertiesPanel.Controls.Add(SaveInvPItem);
@@ -419,24 +484,17 @@ namespace QTRHacker.PlayerEditor
 					new System.Threading.Thread((s) =>
 					{
 						j++;
-						MainForm.mainWindow.Enabled = false;
-						if (ExtForm.Window != null)
-							ExtForm.Window.Enabled = false;
-						this.Parent.Enabled = false;
 
 						Context.MyPlayer.DeserializeInventoryWithProperties(File.ReadAllText(ofd.FileName));
 						InitData(Selected);
 						j++;
 
-						this.Parent.Enabled = true;
-						if (ExtForm.Window != null)
-							ExtForm.Window.Enabled = true;
-						MainForm.mainWindow.Enabled = true;
 					}
 					).Start();
 				}
 			};
-			LoadInvPItem.Text = Lang.load + "(P)";
+			LoadInvPItem.FlatStyle = FlatStyle.Flat;
+			LoadInvPItem.Text = "加载(P)";
 			LoadInvPItem.Size = new Size(80, 30);
 			LoadInvPItem.Location = new Point(260, 150);
 			ItemPropertiesPanel.Controls.Add(LoadInvPItem);
@@ -452,7 +510,8 @@ namespace QTRHacker.PlayerEditor
 				RefreshSelected();
 				InitData(Selected);
 			};
-			InitItem.Text = Lang.init;
+			InitItem.FlatStyle = FlatStyle.Flat;
+			InitItem.Text = "初始化";
 			InitItem.Size = new Size(80, 30);
 			InitItem.Location = new Point(260, 180);
 			ItemPropertiesPanel.Controls.Add(InitItem);
@@ -465,7 +524,7 @@ namespace QTRHacker.PlayerEditor
 			};
 			timer.Tick += (sender, e) =>
 			{
-				if (this.Enabled)
+				if (Enabled)
 				{
 					SlotsPanel.Refresh();
 					Item item = Context.MyPlayer.Inventory[Selected];
@@ -560,20 +619,14 @@ namespace QTRHacker.PlayerEditor
 		}
 		public static byte GetPrefixFromIndex(int id)
 		{
-			return Convert.ToByte(MainForm.resource.Prefix[id].Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[1]);
+			return Convert.ToByte(GameResLoader.PrefixToID[GameResLoader.Prefixes[id]]);
 		}
 		private int GetIndexFromPrefix(byte id)
 		{
-			int j = 0;
-			foreach (var o in MainForm.resource.Prefix)
-			{
-				string[] t = o.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
-				byte i = Convert.ToByte(t[1]);
-				if (i == id)
-					return j;
-				j++;
-			}
-			return 0;
+			var a = GameResLoader.PrefixToID.Where(t => t.Value == id);
+			if (a.Count() == 0)
+				return 0;
+			return GameResLoader.Prefixes.ToList().IndexOf(a.ElementAt(0).Key);
 		}
 
 
@@ -656,10 +709,6 @@ namespace QTRHacker.PlayerEditor
 			p.Location = new System.Drawing.Point(ParentForm.Location.X + ParentForm.Width / 2 - p.ClientSize.Width / 2, ParentForm.Location.Y + ParentForm.Height / 2 - p.ClientSize.Height / 2);
 			new System.Threading.Thread((s) =>
 			{
-				MainForm.mainWindow.Enabled = false;
-				if (ExtForm.Window != null)
-					ExtForm.Window.Enabled = false;
-				this.Parent.Enabled = false;
 				var player = Context.MyPlayer;
 				BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open));
 				for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
@@ -718,10 +767,6 @@ namespace QTRHacker.PlayerEditor
 					item.Stack = stack;
 				}
 				br.Close();
-				this.Parent.Enabled = true;
-				if (ExtForm.Window != null)
-					ExtForm.Window.Enabled = true;
-				MainForm.mainWindow.Enabled = true;
 			}
 			).Start();
 		}

@@ -349,7 +349,7 @@ namespace QTRHacker
 					if (ExtForm.Window != null)
 						ExtForm.Window.Enabled = false;
 					var player = Context.Players;
-					for (; i < NPC.MAXNUMBER; i++)
+					for (; i < Player.MAX_PLAYER; i++)
 						if (player[i].Active)
 							player[i].AddBuff(44, 216000);
 					if (ExtForm.Window != null)

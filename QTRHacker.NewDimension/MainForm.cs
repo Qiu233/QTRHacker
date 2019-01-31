@@ -10,7 +10,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using QTRHacker.NewDimension.Configs;
 using QTRHacker.NewDimension.Controls;
+using QTRHacker.NewDimension.PagePanels;
 
 namespace QTRHacker.NewDimension
 {
@@ -26,6 +29,7 @@ namespace QTRHacker.NewDimension
 		public static Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
 		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, TPPointPagePanel, ScriptPagePanel;
 		public static MainForm MainFormInstance { get; private set; }
+		public static CFG_ProjDrawer Config_ProjDrawer;
 		protected override void OnShown(EventArgs e)
 		{
 			base.OnShown(e);
@@ -102,8 +106,8 @@ namespace QTRHacker.NewDimension
 
 			MainPagePanel = new PagePanel_MainPage(MainPanel.Width - 100, MainPanel.Height);
 			BasicPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
-			/*PlayerPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
-			ProjectilePagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
+			PlayerPagePanel = new PagePanel_Player(MainPanel.Width - 100, MainPanel.Height);
+			/*ProjectilePagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
 			TPPointPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
 			ScriptPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);*/
 
@@ -120,6 +124,8 @@ namespace QTRHacker.NewDimension
 
 			Icon = ConvertToIcon(img_Basic, true);
 
+
+			LoadConfigs();
 		}
 
 		public void OnInitialized()
@@ -130,7 +136,7 @@ namespace QTRHacker.NewDimension
 			}
 			foreach (var i in ButtonsPanel.Controls)
 			{
-				if(i is ImageButton)
+				if (i is ImageButton)
 				{
 					(i as ImageButton).Selected = true;
 					break;
@@ -230,6 +236,31 @@ namespace QTRHacker.NewDimension
 				this.Top = MousePosition.Y - Drag_MousePos.Y;
 				this.Left = MousePosition.X - Drag_MousePos.X;
 			}
+		}
+
+		private void LoadConfigs()
+		{
+			if (!Directory.Exists(".\\configs"))
+				Directory.CreateDirectory(".\\configs");
+			LoadConfig("CFG_ProjDrawer", out Config_ProjDrawer);
+		}
+		private void LoadConfig<T>(string name, out T obj) where T : new()
+		{
+			string s = $".\\configs\\{name}.json";
+			if (File.Exists(s))
+			{
+				obj = JsonConvert.DeserializeObject<T>(File.ReadAllText(s));
+			}
+			else
+			{
+				obj = new T();
+				SaveConfig(name, obj);
+			}
+		}
+		private void SaveConfig(string name, object obj)
+		{
+			string s = $".\\configs\\{name}.json";
+			File.WriteAllText(s, JsonConvert.SerializeObject(obj, Formatting.Indented));
 		}
 	}
 }

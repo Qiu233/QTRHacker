@@ -11,6 +11,21 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -35,6 +50,18 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,15 +73,26 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WinFormsGraphicsDevice, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\nativedll\WinFormsGraphicsDevice.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configs\CFG_ProjDrawer.cs" />
     <Compile Include="Controls\FunctionButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\FunctionButton.Designer.cs">
       <DependentUpon>FunctionButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\MProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PopupProgressBar.cs">
@@ -82,17 +120,40 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PagePanel.cs">
+    <Compile Include="PagePanels\PagePanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PagePanel_Basic.cs">
+    <Compile Include="PagePanels\PagePanel_Basic.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PagePanel_MainPage.cs">
+    <Compile Include="PagePanels\PagePanel_MainPage.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PagePanels\PagePanel_Player.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\ArmorEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\InvEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\ItemPropertiesPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\PlayerEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\PlayerEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\PlayerEditorForm.designer.cs">
+      <DependentUpon>PlayerEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResBinFileReader.cs" />
+    <Compile Include="Res\GameResLoader.cs" />
     <EmbeddedResource Include="Controls\FunctionButton.resx">
       <DependentUpon>FunctionButton.cs</DependentUpon>
     </EmbeddedResource>
@@ -111,6 +172,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
+    <EmbeddedResource Include="Res\Game\PlayerModelsRaw.bin" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -120,6 +183,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Res\Game\ItemImage.bin" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -163,6 +227,23 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <EmbeddedResource Include="Res\Game\ItemID.txt" />
+    <EmbeddedResource Include="Res\Game\BuffType.txt" />
+    <EmbeddedResource Include="Res\Game\Mount.txt" />
+    <EmbeddedResource Include="Res\Game\Pet.txt" />
+    <EmbeddedResource Include="Res\Game\Prefix.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
