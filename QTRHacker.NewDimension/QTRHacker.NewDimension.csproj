@@ -26,6 +26,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -109,6 +110,9 @@
     <Compile Include="Controls\MTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\MTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\PopupProgressBar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +147,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PagePanels\PagePanel_Basic.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PagePanels\PagePanel_GameData.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PagePanels\PagePanel_MainPage.cs">
@@ -199,6 +206,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <EmbeddedResource Include="Res\Game\PlayerModelsRaw.bin" />
@@ -235,20 +243,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Res\Image\Item_171.png" />
-    <EmbeddedResource Include="Res\Image\Item_990.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Res\Image\player.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Res\Image\Item_272.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Res\Image\Item_42.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Res\Image\Item_1315.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Res\Image\cross.png" />

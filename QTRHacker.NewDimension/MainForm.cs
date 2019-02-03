@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using QTRHacker.NewDimension.Configs;
 using QTRHacker.NewDimension.Controls;
 using QTRHacker.NewDimension.PagePanels;
+using QTRHacker.NewDimension.Res;
 
 namespace QTRHacker.NewDimension
 {
@@ -27,7 +28,7 @@ namespace QTRHacker.NewDimension
 		private int ButtonsNumber = 0;
 		public static readonly Color ButtonNormalColor = Color.Transparent;
 		public static readonly Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
-		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, ScriptPagePanel;
+		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, GameDataPagePanel;
 		public static MainForm MainFormInstance { get; private set; }
 		public static CFG_ProjDrawer Config_ProjDrawer;
 		protected override void OnShown(EventArgs e)
@@ -47,14 +48,13 @@ namespace QTRHacker.NewDimension
 			MainPanel = new Panel();
 			MainPanel.BackColor = Color.FromArgb(30, 30, 30);
 			MainPanel.Bounds = new Rectangle(2, 30, this.Width - 4, this.Height - 32);
-			//MainPanel.BackColor = Color.Red;
 			this.Controls.Add(MainPanel);
 
 			MinButton = new PictureBox();
 			MinButton.Click += (s, e) => WindowState = FormWindowState.Minimized;
 			MinButton.MouseEnter += (s, e) => MinButton.BackColor = ButtonHoverColor;
 			MinButton.MouseLeave += (s, e) => MinButton.BackColor = ButtonNormalColor;
-			MinButton.Bounds = new Rectangle(this.Width - 64, -1, 32, 32);
+			MinButton.Bounds = new Rectangle(Width - 64, -1, 32, 32);
 			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.min.png"))
 				MinButton.Image = Image.FromStream(st);
 
@@ -62,12 +62,12 @@ namespace QTRHacker.NewDimension
 			CloseButton.MouseEnter += (s, e) => CloseButton.BackColor = ButtonHoverColor;
 			CloseButton.MouseLeave += (s, e) => CloseButton.BackColor = ButtonNormalColor;
 			CloseButton.Click += (s, e) => Dispose();
-			CloseButton.Bounds = new Rectangle(this.Width - 32, -1, 32, 32);
+			CloseButton.Bounds = new Rectangle(Width - 32, -1, 32, 32);
 			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.close.png"))
 				CloseButton.Image = Image.FromStream(st);
 
-			this.Controls.Add(MinButton);
-			this.Controls.Add(CloseButton);
+			Controls.Add(MinButton);
+			Controls.Add(CloseButton);
 
 			ButtonsPanel = new Panel();
 			ButtonsPanel.Bounds = new Rectangle(0, 0, 100, MainPanel.Height);
@@ -85,20 +85,17 @@ namespace QTRHacker.NewDimension
 			Image img_Basic = null;
 			Image img_Player = null;
 			Image img_Projectile = null;
-			Image img_TPPoint = null;
-			Image img_Script = null;
-			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.Item_171.png"))
+			Image img_GameData = null;
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_171"]))
 				img_MainPage = Image.FromStream(st);
-			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.Item_990.png"))
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_990"]))
 				img_Basic = Image.FromStream(st);
 			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.player.png"))
 				img_Player = Image.FromStream(st);
-			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.Item_42.png"))
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_42"]))
 				img_Projectile = Image.FromStream(st);
-			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.Item_1315.png"))
-				img_TPPoint = Image.FromStream(st);
-			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.Item_272.png"))
-				img_Script = Image.FromStream(st);
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_3124"]))
+				img_GameData = Image.FromStream(st);
 
 			ContentPanel = new Panel();
 			ContentPanel.Bounds = new Rectangle(100, 0, MainPanel.Width - 100, MainPanel.Height);
@@ -108,13 +105,13 @@ namespace QTRHacker.NewDimension
 			BasicPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
 			PlayerPagePanel = new PagePanel_Player(MainPanel.Width - 100, MainPanel.Height);
 			ProjectilePagePanel = new PagePanel_Projectile(MainPanel.Width - 100, MainPanel.Height);
-			/*ScriptPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);*/
+			GameDataPagePanel = new PagePanel_GameData(MainPanel.Width - 100, MainPanel.Height);
 
 
 			AddButton("基础功能", img_Basic, BasicPagePanel).Enabled = false;
 			AddButton("玩家", img_Player, PlayerPagePanel).Enabled = false;
 			AddButton("弹幕管理", img_Projectile, ProjectilePagePanel).Enabled = false;
-			AddButton("脚本", img_Script, ScriptPagePanel).Enabled = false;
+			AddButton("游戏数据", img_GameData, GameDataPagePanel).Enabled = false;
 
 
 			AddButton("主页", img_MainPage, MainPagePanel).Selected = true;

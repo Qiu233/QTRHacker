@@ -21,11 +21,13 @@ namespace QTRHacker.NewDimension.Res
 		public static Dictionary<string, int> ItemToID { get; }
 		public static Dictionary<string, int> PetToID { get; }
 		public static Dictionary<string, int> MountToID { get; }
+
+		public static Dictionary<string, byte[]> ItemImageData { get; }
 		static GameResLoader()
 		{
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.ItemImage.bin"))
 			{
-				var ItemImageData = ResBinFileReader.ReadFromStream(s);
+				ItemImageData = ResBinFileReader.ReadFromStream(s);
 				ItemImages = new ImageList();
 				foreach (var data in ItemImageData)
 				{

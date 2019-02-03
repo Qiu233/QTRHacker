@@ -27,7 +27,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		{
 			InitializeComponent();
 			Text = TargetPlayer.Name + (Editable ? "" : " (不可编辑)");
-			BackColor = Color.FromArgb(30, 30, 30);
+			BackColor = Color.FromArgb(45, 45, 48);
 
 			var CloseButton = new PictureBox();
 			CloseButton.MouseEnter += (s, e) => CloseButton.BackColor = ButtonHoverColor;
