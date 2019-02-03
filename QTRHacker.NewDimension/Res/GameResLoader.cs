@@ -15,8 +15,12 @@ namespace QTRHacker.NewDimension.Res
 		public static ImageList ItemImages { get; }
 		public static string[] Prefixes { get; }
 		public static string[] Items { get; }
+		public static string[] Pets { get; }
+		public static string[] Mounts { get; }
 		public static Dictionary<string, int> PrefixToID { get; }
 		public static Dictionary<string, int> ItemToID { get; }
+		public static Dictionary<string, int> PetToID { get; }
+		public static Dictionary<string, int> MountToID { get; }
 		static GameResLoader()
 		{
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.ItemImage.bin"))
@@ -62,6 +66,36 @@ namespace QTRHacker.NewDimension.Res
 					string u = e[0];
 					Items[p++] = u;
 					ItemToID[u] = y;
+				}
+			}
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.Pet.txt"))
+			{
+				string[] t = new StreamReader(s).ReadToEnd().Split('\n');
+				Pets = new string[t.Length];
+				int p = 0;
+				PetToID = new Dictionary<string, int>();
+				foreach (var r in t)
+				{
+					string[] e = r.Split('=');
+					int y = Convert.ToInt32(e[1]);
+					string u = e[0];
+					Pets[p++] = u;
+					PetToID[u] = y;
+				}
+			}
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.Mount.txt"))
+			{
+				string[] t = new StreamReader(s).ReadToEnd().Split('\n');
+				Mounts = new string[t.Length];
+				int p = 0;
+				MountToID = new Dictionary<string, int>();
+				foreach (var r in t)
+				{
+					string[] e = r.Split('=');
+					int y = Convert.ToInt32(e[1]);
+					string u = e[0];
+					Mounts[p++] = u;
+					MountToID[u] = y;
 				}
 			}
 		}

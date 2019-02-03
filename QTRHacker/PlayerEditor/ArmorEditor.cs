@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Functions;
+using QTRHacker.Functions.GameObjects;
 using System;
 using System.Collections;
 using System.Collections.Generic;

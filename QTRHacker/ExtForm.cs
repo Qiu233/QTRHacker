@@ -16,6 +16,7 @@ using QTRHacker.Functions;
 using QTRHacker.PlayerEditor;
 using QTRHacker.ProjMaker;
 using System.IO;
+using QTRHacker.Functions.GameObjects;
 
 namespace QTRHacker
 {
@@ -49,7 +50,7 @@ namespace QTRHacker
 			};
 			this.Controls.Add(MainPanel);
 
-			
+
 			Button playerHack = AddButton(Lang.playerHack, delegate (object sender, EventArgs e)
 			{
 				PlayerEditorForm ie = new PlayerEditorForm();

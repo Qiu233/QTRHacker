@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Functions;
+using QTRHacker.Functions.GameObjects;
 using QTRHacker.NewDimension.Controls;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,10 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.PagePanels
 {
-	public class AddressInfoView : InfoView
+	public class InfoViewEx : InfoView
 	{
-		private static readonly Color EditBoxBackColor = Color.FromArgb(30, 30, 30);
-		public AddressInfoView(int TipWidth) : base(
+		private static readonly Color EditBoxBackColor = Color.FromArgb(40, 40, 40);
+		public InfoViewEx(int TipWidth) : base(
 			new TextBox()
 			{
 				BackColor = EditBoxBackColor,
@@ -27,6 +28,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			}, TipDock.Left, false, TipWidth)
 		{
 			Tip.ForeColor = Color.White;
+			Tip.BackColor = EditBoxBackColor;
 		}
 	}
 	public class PagePanel_MainPage : PagePanel
@@ -69,84 +71,84 @@ namespace QTRHacker.NewDimension.PagePanels
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.cross.png"))
 				CrossImage = Image.FromStream(s);
 
-			PlayerArrayBaseAddressInfoView = new AddressInfoView(220)
+			PlayerArrayBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 60, Width, 20),
 				Text = "玩家数组基址"
 			};
 			Controls.Add(PlayerArrayBaseAddressInfoView);
 
-			CurrentPlayerBaseAddressInfoView = new AddressInfoView(220)
+			CurrentPlayerBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 80, Width, 20),
 				Text = "当前玩家基址"
 			};
 			Controls.Add(CurrentPlayerBaseAddressInfoView);
 
-			CurrentPlayerInventoryBaseAddressInfoView = new AddressInfoView(220)
+			CurrentPlayerInventoryBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 100, Width, 20),
 				Text = "当前玩家背包基址"
 			};
 			Controls.Add(CurrentPlayerInventoryBaseAddressInfoView);
 
-			CurrentPlayerArmorBaseAddressInfoView = new AddressInfoView(220)
+			CurrentPlayerArmorBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 120, Width, 20),
 				Text = "当前玩家装备基址"
 			};
 			Controls.Add(CurrentPlayerArmorBaseAddressInfoView);
 
-			CurrentPlayerDyeBaseAddressInfoView = new AddressInfoView(220)
+			CurrentPlayerDyeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 140, Width, 20),
 				Text = "当前玩家染料基址"
 			};
 			Controls.Add(CurrentPlayerDyeBaseAddressInfoView);
 
-			CurrentPlayerMiscBaseAddressInfoView = new AddressInfoView(220)
+			CurrentPlayerMiscBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 160, Width, 20),
 				Text = "当前玩家配件基址"
 			};
 			Controls.Add(CurrentPlayerMiscBaseAddressInfoView);
 
-			CurrentPlayerMiscDyeBaseAddressInfoView = new AddressInfoView(220)
+			CurrentPlayerMiscDyeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 180, Width, 20),
 				Text = "当前玩家配件染料基址"
 			};
 			Controls.Add(CurrentPlayerMiscDyeBaseAddressInfoView);
 
-			CurrentPlayerBuffTypeBaseAddressInfoView = new AddressInfoView(220)
+			CurrentPlayerBuffTypeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 200, Width, 20),
 				Text = "当前Buff基址"
 			};
 			Controls.Add(CurrentPlayerBuffTypeBaseAddressInfoView);
 
-			CurrentPlayerBuffTimeBaseAddressInfoView = new AddressInfoView(220)
+			CurrentPlayerBuffTimeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 220, Width, 20),
 				Text = "当前Buff时间基址"
 			};
 			Controls.Add(CurrentPlayerBuffTimeBaseAddressInfoView);
 
-			CurrentPlayerFirstItemBaseAddressInfoView = new AddressInfoView(220)
+			CurrentPlayerFirstItemBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 240, Width, 20),
 				Text = "第一格物品基址"
 			};
 			Controls.Add(CurrentPlayerFirstItemBaseAddressInfoView);
 
-			Terraria_Main_Update_BaseAddressInfoView = new AddressInfoView(220)
+			Terraria_Main_Update_BaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 260, Width, 20),
 				Text = "Terraria_Main::Update"
 			};
 			Controls.Add(Terraria_Main_Update_BaseAddressInfoView);
 			
-			SignHeadBaseAddressInfoView = new AddressInfoView(220)
+			SignHeadBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 280, Width, 20),
 				Text = "Sign Head地址"

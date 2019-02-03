@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using QTRHacker.Functions;
+using QTRHacker.Functions.GameObjects;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -163,7 +164,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			Button ConfirmButton = new Button() { Enabled = Editable };
 			ConfirmButton.Text = "确定";
 			ConfirmButton.FlatStyle = FlatStyle.Flat;
-			ConfirmButton.Bounds = new Rectangle(220, 100, 100, 30);
+			ConfirmButton.Bounds = new Rectangle(220, 93, 100, 30);
 			ConfirmButton.Click += (s, e) =>
 			{
 				ApplyData();

@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Functions;
+using QTRHacker.Functions.GameObjects;
 using QTRHacker.NewDimension.Controls;
 using QTRHacker.NewDimension.Res;
 using System;
@@ -19,8 +20,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 	public partial class PlayerEditorForm : Form
 	{
 		private MTabControl Tabs;
-		public static Color ButtonNormalColor = Color.Transparent;
-		public static Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
+		public static readonly Color ButtonNormalColor = Color.Transparent;
+		public static readonly Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
 		private Point Drag_MousePos;
 		public PlayerEditorForm(Player TargetPlayer, bool Editable)
 		{
@@ -31,7 +32,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			var CloseButton = new PictureBox();
 			CloseButton.MouseEnter += (s, e) => CloseButton.BackColor = ButtonHoverColor;
 			CloseButton.MouseLeave += (s, e) => CloseButton.BackColor = ButtonNormalColor;
-			CloseButton.Click += (s, e) => this.Close();
+			CloseButton.Click += (s, e) => Dispose();
 			CloseButton.Bounds = new Rectangle(this.Width - 32, -1, 32, 32);
 			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.close.png"))
 				CloseButton.Image = Image.FromStream(st);

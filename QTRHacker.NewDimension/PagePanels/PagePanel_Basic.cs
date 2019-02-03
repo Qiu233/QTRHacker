@@ -1,5 +1,6 @@
 ﻿using QHackLib.Utilities;
 using QTRHacker.Functions;
+using QTRHacker.Functions.GameObjects;
 using QTRHacker.Functions.ProjectileImage;
 using QTRHacker.NewDimension.Controls;
 using System;

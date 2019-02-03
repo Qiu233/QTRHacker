@@ -1,6 +1,6 @@
 ﻿using ICSharpCode.AvalonEdit;
 using QTRHacker.Functions.ProjectileImage;
-using QTRHacker.ProjMaker.Parse;
+using QTRHacker.Functions.ProjectileMaker.Parse;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

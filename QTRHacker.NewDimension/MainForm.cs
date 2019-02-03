@@ -25,9 +25,9 @@ namespace QTRHacker.NewDimension
 		private Panel MainPanel, ButtonsPanel, ContentPanel;
 		private PictureBox MinButton, CloseButton;
 		private int ButtonsNumber = 0;
-		public static Color ButtonNormalColor = Color.Transparent;
-		public static Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
-		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, TPPointPagePanel, ScriptPagePanel;
+		public static readonly Color ButtonNormalColor = Color.Transparent;
+		public static readonly Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
+		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, ScriptPagePanel;
 		public static MainForm MainFormInstance { get; private set; }
 		public static CFG_ProjDrawer Config_ProjDrawer;
 		protected override void OnShown(EventArgs e)
@@ -61,7 +61,7 @@ namespace QTRHacker.NewDimension
 			CloseButton = new PictureBox();
 			CloseButton.MouseEnter += (s, e) => CloseButton.BackColor = ButtonHoverColor;
 			CloseButton.MouseLeave += (s, e) => CloseButton.BackColor = ButtonNormalColor;
-			CloseButton.Click += (s, e) => this.Close();
+			CloseButton.Click += (s, e) => Dispose();
 			CloseButton.Bounds = new Rectangle(this.Width - 32, -1, 32, 32);
 			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.close.png"))
 				CloseButton.Image = Image.FromStream(st);
@@ -107,15 +107,13 @@ namespace QTRHacker.NewDimension
 			MainPagePanel = new PagePanel_MainPage(MainPanel.Width - 100, MainPanel.Height);
 			BasicPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
 			PlayerPagePanel = new PagePanel_Player(MainPanel.Width - 100, MainPanel.Height);
-			/*ProjectilePagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
-			TPPointPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
-			ScriptPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);*/
+			ProjectilePagePanel = new PagePanel_Projectile(MainPanel.Width - 100, MainPanel.Height);
+			/*ScriptPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);*/
 
 
 			AddButton("基础功能", img_Basic, BasicPagePanel).Enabled = false;
 			AddButton("玩家", img_Player, PlayerPagePanel).Enabled = false;
 			AddButton("弹幕管理", img_Projectile, ProjectilePagePanel).Enabled = false;
-			AddButton("传送点", img_TPPoint, TPPointPagePanel).Enabled = false;
 			AddButton("脚本", img_Script, ScriptPagePanel).Enabled = false;
 
 

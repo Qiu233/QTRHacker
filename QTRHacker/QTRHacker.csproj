@@ -180,24 +180,6 @@
     <Compile Include="ProjMaker\CodeView.Designer.cs">
       <DependentUpon>CodeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProjMaker\Parse\AST\Expression.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Expr_Binary.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Expr_BTuple.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Expr_MACRO.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Expr_Value.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Statement.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Stmt_DEF.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Stmt_FIXED.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Stmt_INSERT.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Stmt_MACRO.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Stmt_POINT.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Stmt_RECT.cs" />
-    <Compile Include="ProjMaker\Parse\AST\Stmt_RECT_FILLED.cs" />
-    <Compile Include="ProjMaker\Parse\FixedProperties.cs" />
-    <Compile Include="ProjMaker\Parse\Generator.cs" />
-    <Compile Include="ProjMaker\Parse\ParseException.cs" />
-    <Compile Include="ProjMaker\Parse\Parser.cs" />
-    <Compile Include="ProjMaker\Parse\Tokenizer.cs" />
     <Compile Include="ProjMaker\ProjMakerForm.cs">
       <SubType>Form</SubType>
     </Compile>

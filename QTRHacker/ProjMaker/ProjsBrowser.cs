@@ -39,13 +39,13 @@ namespace QTRHacker.ProjMaker
 					MessageBox.Show("请先锁定游戏");
 					return;
 				}
-				ProjMaker.Parse.Parser p = new Parse.Parser(File.ReadAllText(($"./Projs/{(string)FilesBox.SelectedItem}.projimg")));
+				QTRHacker.Functions.ProjectileMaker.Parse.Parser p = new QTRHacker.Functions.ProjectileMaker.Parse.Parser(File.ReadAllText(($"./Projs/{(string)FilesBox.SelectedItem}.projimg")));
 				try
 				{
 					var img = p.Parse();
 					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
 				}
-				catch (Parse.ParseException ex)
+				catch (QTRHacker.Functions.ProjectileMaker.Parse.ParseException ex)
 				{
 					MessageBox.Show("请检查代码\n错误：\n" + ex.Message, "出现编译错误");
 				}

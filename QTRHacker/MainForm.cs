@@ -26,6 +26,7 @@ using System.Net;
 using Newtonsoft.Json;
 using QTRHacker.Configs;
 using QTRHacker.ProjMaker;
+using QTRHacker.Functions.GameObjects;
 
 namespace QTRHacker
 {

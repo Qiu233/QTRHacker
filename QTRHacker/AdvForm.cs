@@ -14,6 +14,7 @@ using System.Threading;
 using System.Runtime.InteropServices;
 using QTRHacker.Functions;
 using System.IO;
+using QTRHacker.Functions.GameObjects;
 
 namespace QTRHacker
 {

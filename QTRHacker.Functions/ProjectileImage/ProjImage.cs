@@ -1,6 +1,7 @@
 ﻿using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
+using QTRHacker.Functions.GameObjects;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

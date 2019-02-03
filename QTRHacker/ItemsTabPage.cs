@@ -68,8 +68,8 @@ namespace QTRHacker
 			{
 				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
 				var player = MainForm.Context.MyPlayer;
-				int num = QTRHacker.Functions.Item.NewItem(MainForm.Context, player.X, player.Y, 0, 0, id, Items[id]["maxStack"].ToObject<int>(), false, 0, true);
-				QTRHacker.Functions.NetMessage.SendData(MainForm.Context, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
+				int num = QTRHacker.Functions.GameObjects.Item.NewItem(MainForm.Context, player.X, player.Y, 0, 0, id, Items[id]["maxStack"].ToObject<int>(), false, 0, true);
+				QTRHacker.Functions.GameObjects.NetMessage.SendData(MainForm.Context, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
 			};
 			ItemListView.SelectedIndexChanged += ItemListView_SelectedIndexChanged;
 

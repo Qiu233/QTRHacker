@@ -8,6 +8,7 @@ using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using QHackLib.Utilities;
+using QTRHacker.Functions.GameObjects;
 
 namespace QTRHacker.Functions
 {
@@ -95,6 +96,10 @@ namespace QTRHacker.Functions
 			get;
 		}
 		public int NetMode_Address
+		{
+			get;
+		}
+		public int ActiveWorldFileData_Address
 		{
 			get;
 		}
@@ -520,6 +525,16 @@ namespace QTRHacker.Functions
 			}
 		}
 
+		public WorldFileData ActiveWorldFileData
+		{
+			get
+			{
+				int v = 0;
+				NativeFunctions.ReadProcessMemory(HContext.Handle, ActiveWorldFileData_Address, ref v, 4, 0);
+				return new WorldFileData(this, v);
+			}
+		}
+
 
 		/// <summary>
 		/// 
@@ -633,6 +648,11 @@ namespace QTRHacker.Functions
 			Debuff = new int[bbbb];
 			for (int i = 0; i < bbbb; i++)
 				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv + 8 + i, ref Debuff[i], 1, 0);
+
+			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.IO.WorldFileData::SetAsActive") + 0x2;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+			ActiveWorldFileData_Address = vvv;
+
 		}
 
 		/// <summary>
