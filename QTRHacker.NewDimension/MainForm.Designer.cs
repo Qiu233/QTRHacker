@@ -31,7 +31,7 @@
 			this.components = new System.ComponentModel.Container();
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(400, 400);
-			this.Text = "QTRHackerND";
+			this.Text = "QTRHacker";
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 		}
 

@@ -12,6 +12,11 @@ namespace QTRHacker.NewDimension.Controls
 	{
 		public Color bColor = Color.FromArgb(200, 200, 200);
 		public Color tColor = Color.FromArgb(160, 160, 200);
+		public override Color ForeColor
+		{
+			get => base.ForeColor;
+			set => base.ForeColor = value;
+		}
 		public MTabControl()
 		{
 			SetStyle(ControlStyles.UserPaint |
@@ -38,7 +43,8 @@ namespace QTRHacker.NewDimension.Controls
 					PointF textPoint = new PointF(bounds.X + bounds.Width / 2 - textSize.Width / 2, bounds.Y + bounds.Height / 2 - textSize.Height / 2);
 
 					GetTabRect(i);
-					e.Graphics.DrawString(TabPages[i].Text, Font, Brushes.White, textPoint);
+					using (Brush b = new SolidBrush(ForeColor))
+						e.Graphics.DrawString(TabPages[i].Text, Font, b, textPoint);
 				}
 				e.Graphics.DrawLine(new Pen(tColor, 3), new Point(0, 23), new Point(Width, 23));
 			}

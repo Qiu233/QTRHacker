@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
-	public class Tile2DArray : GameObject
+	public class GameObjectArray2D<T> : GameObject where T : GameObject
 	{
-		public Tile this[int x, int y]
+		public virtual T this[int x, int y]
 		{
 			get
 			{
 				ReadFromOffset((x * D2 + y) * 4 + 0x18, out int vv);
-				return new Tile(Context, vv);
+				return (T)typeof(T).GetConstructor(new Type[] { typeof(GameContext), typeof(int) }).Invoke(new object[] { Context, vv });
 			}
 		}
-
 		public int D1
 		{
 			get
@@ -33,9 +32,8 @@ namespace QTRHacker.Functions.GameObjects
 				return v;
 			}
 		}
-		public Tile2DArray(GameContext Context, int bAddr) : base(Context, bAddr)
+		public GameObjectArray2D(GameContext context, int bAddr) : base(context, bAddr)
 		{
-
 		}
 	}
 }

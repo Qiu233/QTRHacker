@@ -28,7 +28,7 @@ namespace QTRHacker.NewDimension
 		private int ButtonsNumber = 0;
 		public static readonly Color ButtonNormalColor = Color.Transparent;
 		public static readonly Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
-		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, GameDataPagePanel;
+		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, MiscPagePanel;
 		public static MainForm MainFormInstance { get; private set; }
 		public static CFG_ProjDrawer Config_ProjDrawer;
 		protected override void OnShown(EventArgs e)
@@ -37,7 +37,7 @@ namespace QTRHacker.NewDimension
 		}
 		public MainForm()
 		{
-			if (System.Diagnostics.Process.GetProcessesByName("QTRHackerND").Length > 1)
+			if (System.Diagnostics.Process.GetProcessesByName("QTRHacker").Length > 1)
 			{
 				Environment.Exit(0);
 			}
@@ -85,7 +85,7 @@ namespace QTRHacker.NewDimension
 			Image img_Basic = null;
 			Image img_Player = null;
 			Image img_Projectile = null;
-			Image img_GameData = null;
+			Image img_Misc = null;
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_171"]))
 				img_MainPage = Image.FromStream(st);
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_990"]))
@@ -95,7 +95,7 @@ namespace QTRHacker.NewDimension
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_42"]))
 				img_Projectile = Image.FromStream(st);
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_3124"]))
-				img_GameData = Image.FromStream(st);
+				img_Misc = Image.FromStream(st);
 
 			ContentPanel = new Panel();
 			ContentPanel.Bounds = new Rectangle(100, 0, MainPanel.Width - 100, MainPanel.Height);
@@ -105,13 +105,13 @@ namespace QTRHacker.NewDimension
 			BasicPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
 			PlayerPagePanel = new PagePanel_Player(MainPanel.Width - 100, MainPanel.Height);
 			ProjectilePagePanel = new PagePanel_Projectile(MainPanel.Width - 100, MainPanel.Height);
-			GameDataPagePanel = new PagePanel_GameData(MainPanel.Width - 100, MainPanel.Height);
+			MiscPagePanel = new PagePanel_Misc(MainPanel.Width - 100, MainPanel.Height);
 
 
 			AddButton("基础功能", img_Basic, BasicPagePanel).Enabled = false;
 			AddButton("玩家", img_Player, PlayerPagePanel).Enabled = false;
 			AddButton("弹幕管理", img_Projectile, ProjectilePagePanel).Enabled = false;
-			AddButton("游戏数据", img_GameData, GameDataPagePanel).Enabled = false;
+			AddButton("杂项", img_Misc, MiscPagePanel).Enabled = false;
 
 
 			AddButton("主页", img_MainPage, MainPagePanel).Selected = true;

@@ -95,7 +95,7 @@ namespace QTRHacker.Functions.GameObjects
 			}
 			set => WriteFromOffset(OFFSET_MaxMana, value);
 		}
-		
+
 
 		public bool Ghost
 		{
@@ -179,7 +179,7 @@ namespace QTRHacker.Functions.GameObjects
 			}
 			set => WriteFromOffset(OFFSET_ShoesColor, value);
 		}
-
+		
 		public ItemSlots Inventory
 		{
 			get

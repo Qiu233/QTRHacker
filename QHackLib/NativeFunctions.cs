@@ -117,6 +117,24 @@ namespace QHackLib
 			int nSize,
 			int BytesWrite
 		);
+		[DllImport("kernel32.dll")]
+		public static extern bool ReadProcessMemory
+		(
+			int lpProcess,
+			int lpBaseAddress,
+			ref float lpBuffer,
+			int nSize,
+			int BytesRead
+		);
+		[DllImport("kernel32.dll")]
+		public static extern bool WriteProcessMemory
+		(
+			int lpProcess,
+			int lpBaseAddress,
+			ref float lpBuffer,
+			int nSize,
+			int BytesWrite
+		);
 
 		[DllImport("kernel32.dll")]
 		public static extern int VirtualQueryEx

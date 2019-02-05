@@ -44,7 +44,7 @@ namespace QTRHacker.NewDimension.Controls
 			else
 				using (Brush bb = new SolidBrush(BackColor))
 					e.Graphics.FillRectangle(bb, 0, e.Bounds.Y, Width, e.Bounds.Height);
-			e.Graphics.DrawString(e.Node.Text, Font, Brushes.White, e.Bounds.X + 4 + e.Node.Level * 15, e.Bounds.Y + 1);
+			e.Graphics.DrawString(e.Node.Text, Font, Brushes.White, e.Bounds.X + 4 + e.Node.Level * 20, e.Bounds.Y + 1);
 		}
 	}
 }

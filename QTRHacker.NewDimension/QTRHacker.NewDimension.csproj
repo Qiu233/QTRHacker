@@ -7,7 +7,7 @@
     <ProjectGuid>{C3CC73C7-CE6A-444D-A99B-D9B04BF5E5D8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>QTRHacker.NewDimension</RootNamespace>
-    <AssemblyName>QTRHackerND</AssemblyName>
+    <AssemblyName>QTRHacker</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -71,6 +71,8 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -149,11 +151,11 @@
     <Compile Include="PagePanels\PagePanel_Basic.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PagePanels\PagePanel_GameData.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="PagePanels\PagePanel_MainPage.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PagePanels\PagePanel_Misc.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="PagePanels\PagePanel_Player.cs">
       <SubType>Component</SubType>
@@ -186,6 +188,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResBinFileReader.cs" />
     <Compile Include="Res\GameResLoader.cs" />
+    <Compile Include="Wiki\ItemsTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Wiki\WikiForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Wiki\WikiForm.Designer.cs">
+      <DependentUpon>WikiForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Controls\FunctionButton.resx">
       <DependentUpon>FunctionButton.cs</DependentUpon>
     </EmbeddedResource>
@@ -220,6 +231,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Res\Game\ItemImage.bin" />
+    <EmbeddedResource Include="Res\Game\WikiRes.zip" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

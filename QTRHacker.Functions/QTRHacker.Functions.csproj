@@ -55,6 +55,7 @@
     <Compile Include="GameObjects\FileData.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameObjectArray.cs" />
+    <Compile Include="GameObjects\GameObjectArray2D.cs" />
     <Compile Include="GameObjects\Item.cs" />
     <Compile Include="GameObjects\ItemSlots.cs" />
     <Compile Include="MathFunctions.cs" />
@@ -87,7 +88,6 @@
     <Compile Include="ProjectileMaker\Parse\Tokenizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Tile.cs" />
-    <Compile Include="GameObjects\Tile2DArray.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="GameObjects\WorldFileData.cs" />
     <Compile Include="GameObjects\WorldGen.cs" />

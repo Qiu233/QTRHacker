@@ -110,7 +110,7 @@ namespace QHackLib
 
 		public static Context Create(int processID)
 		{
-			string name = Process.GetProcessById((int)processID).ProcessName;
+			string name = Process.GetProcessById(processID).ProcessName;
 			return new Context(name, processID, OpenProcess(PROCESS_ALL_ACCESS, false, processID), name + ".exe");
 		}
 

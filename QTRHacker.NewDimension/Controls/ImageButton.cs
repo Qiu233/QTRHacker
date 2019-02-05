@@ -34,6 +34,7 @@ namespace QTRHacker.NewDimension.Controls
 		public static Color NormalColor = Color.Transparent;
 		public static Color HoverColor = Color.FromArgb(50, 50, 45);
 		public static Color SelectedColor = Color.FromArgb(30, 30, 30);
+		public static Color MouseDownColor = Color.FromArgb(40, 40, 37);
 		public ImageButton()
 		{
 			SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
@@ -44,6 +45,18 @@ namespace QTRHacker.NewDimension.Controls
 			Selected = false;
 			TextFont = new Font("Consolas", 10);
 			//BorderStyle = BorderStyle.FixedSingle;
+		}
+		protected override void OnMouseDown(MouseEventArgs e)
+		{
+			base.OnMouseDown(e);
+			if (!Selected)
+				this.BackColor = MouseDownColor;
+		}
+		protected override void OnMouseUp(MouseEventArgs e)
+		{
+			base.OnMouseUp(e);
+			if (!Selected)
+				this.BackColor = HoverColor;
 		}
 		protected override void OnMouseEnter(EventArgs e)
 		{

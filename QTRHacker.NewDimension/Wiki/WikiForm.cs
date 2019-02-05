@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using QTRHacker.NewDimension.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QTRHacker
+namespace QTRHacker.NewDimension.Wiki
 {
 	public partial class WikiForm : Form
 	{
@@ -26,7 +27,7 @@ namespace QTRHacker
 			MainTab.bColor = Color.DarkGray;
 			MainTab.tColor = Color.Gray;
 
-			ItemsTabPage = new ItemsTabPage() { Text = "物品" };
+			ItemsTabPage = new ItemsTabPage() { Text = "Items" };
 
 
 			MainTab.TabPages.Add(ItemsTabPage);

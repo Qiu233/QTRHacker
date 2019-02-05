@@ -8,7 +8,7 @@ namespace QTRHacker.Functions.GameObjects
 {
 	public abstract class GameObjectArray<T> : GameObject where T : GameObject
 	{
-		public T this[int i]
+		public virtual T this[int i]
 		{
 			get
 			{

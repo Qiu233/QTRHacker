@@ -128,11 +128,11 @@ namespace QTRHacker.Functions
 			}
 		}
 
-		public int MapFullScreenScale
+		public float MapFullScreenScale
 		{
 			get
 			{
-				int v = 0;
+				float v = 0;
 				NativeFunctions.ReadProcessMemory(HContext.Handle, MapFullScreenScale_Address, ref v, 4, 0);
 				return v;
 			}
@@ -324,11 +324,11 @@ namespace QTRHacker.Functions
 			}
 		}
 
-		public Tile2DArray Tile
+		public GameObjectArray2D<Tile> Tile
 		{
 			get
 			{
-				return new Tile2DArray(this, Tile_Address);
+				return new GameObjectArray2D<Tile>(this, Tile_Address);
 			}
 		}
 
