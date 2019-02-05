@@ -49,7 +49,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				{
 					Image newImg = (Image)img.Clone();
 					this.Image = newImg;
-					Tip.SetToolTip(this, GameResLoader.ItemToID.First(i => i.Value == nowID).Key);
+					Tip.SetToolTip(this, GameResLoader.IDToItem[nowID]);
 				}
 				else
 				{

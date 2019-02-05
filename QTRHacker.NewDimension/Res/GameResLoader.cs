@@ -18,7 +18,7 @@ namespace QTRHacker.NewDimension.Res
 		public static string[] Pets { get; }
 		public static string[] Mounts { get; }
 		public static Dictionary<string, int> PrefixToID { get; }
-		public static Dictionary<string, int> ItemToID { get; }
+		public static Dictionary<int, string> IDToItem { get; }
 		public static Dictionary<string, int> PetToID { get; }
 		public static Dictionary<string, int> MountToID { get; }
 
@@ -60,14 +60,14 @@ namespace QTRHacker.NewDimension.Res
 				string[] t = new StreamReader(s).ReadToEnd().Split('\n');
 				Items = new string[t.Length];
 				int p = 0;
-				ItemToID = new Dictionary<string, int>();
+				IDToItem = new Dictionary<int, string>();
 				foreach (var r in t)
 				{
 					string[] e = r.Split('=');
 					int y = Convert.ToInt32(e[1]);
 					string u = e[0];
 					Items[p++] = u;
-					ItemToID[u] = y;
+					IDToItem[y] = u;
 				}
 			}
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.Pet.txt"))
