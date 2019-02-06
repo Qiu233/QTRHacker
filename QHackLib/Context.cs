@@ -1,4 +1,5 @@
-﻿using QHackLib.FunctionHelper;
+﻿using Microsoft.Diagnostics.Runtime;
+using QHackLib.FunctionHelper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -95,17 +96,34 @@ namespace QHackLib
 		{
 			get;
 		}
-		public FunctionAddressHelper FunctionAddressHelper
+
+		public DataTarget DataTarget
 		{
 			get;
 		}
+		public ClrRuntime Runtime
+		{
+			get;
+		}
+		public AddressHelper AddressHelper
+		{
+			get;
+		}
+
 		private Context(string name, int id, int handle, string moduleName)
 		{
 			GrantPrivilege();
-			this.ProcessName = name;
-			this.ProcessID = id;
-			this.Handle = handle;
-			FunctionAddressHelper = FunctionAddressHelper.Initialize(id, moduleName);
+			ProcessName = name;
+			ProcessID = id;
+			Handle = handle;
+			DataTarget = DataTarget.AttachToProcess(id, 2000, AttachFlag.Passive);
+			Runtime = DataTarget.ClrVersions[0].CreateRuntime();
+			AddressHelper = new AddressHelper(this, moduleName);//这句必须最后执行，因为需要用到Context里面的一点信息
+		}
+
+		public AddressHelper CreateFunctionAddressHelper(string subModuleName)
+		{
+			return new AddressHelper(this, subModuleName);
 		}
 
 		public static Context Create(int processID)
@@ -116,6 +134,7 @@ namespace QHackLib
 
 		public void Close()
 		{
+			DataTarget.Dispose();
 			CloseHandle(ProcessID);
 		}
 

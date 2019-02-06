@@ -15,9 +15,21 @@ namespace QTRHacker.NewDimension
 		[STAThread]
 		static void Main()
 		{
+			Application.ApplicationExit += Application_ApplicationExit;
+			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new MainForm());
+		}
+
+		private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+		{
+			MessageBox.Show(e.ToString());
+		}
+
+		private static void Application_ApplicationExit(object sender, EventArgs e)
+		{
+			HackContext.GameContext?.Close();
 		}
 	}
 }

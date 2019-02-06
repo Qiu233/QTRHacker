@@ -19,11 +19,11 @@ namespace QTRHacker.Functions.GameObjects
 		{
 			int ret = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
-				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Map.WorldMap::UpdateLighting"),
+				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting"),
 				ret,
 				true,
 				BaseAddress, x, y, light);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 			bool rv = false;
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, ret, ref rv, 1, 0);
 			NativeFunctions.VirtualFreeEx(Context.HContext.Handle, ret, 0);

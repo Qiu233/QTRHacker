@@ -20,7 +20,13 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				Console.WriteLine(gc.ActiveWorldFileData.Name);
+				/*Stopwatch watch = new Stopwatch();
+				watch.Start();
+
+				watch.Stop();
+				TimeSpan timespan = watch.Elapsed;
+				Console.WriteLine("执行时间：{0}(毫秒)", timespan.TotalMilliseconds);*/
+
 			}
 		}
 	}

@@ -179,7 +179,7 @@ namespace QTRHacker.Functions.GameObjects
 			}
 			set => WriteFromOffset(OFFSET_ShoesColor, value);
 		}
-		
+
 		public ItemSlots Inventory
 		{
 			get
@@ -248,11 +248,11 @@ namespace QTRHacker.Functions.GameObjects
 		public void AddBuff(int type, int time, bool quiet = false)
 		{
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
-				Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Player::AddBuff"),
+				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Player", "AddBuff"),
 				null,
 				true,
 				BaseAddress, type, time, quiet);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 		}
 
 

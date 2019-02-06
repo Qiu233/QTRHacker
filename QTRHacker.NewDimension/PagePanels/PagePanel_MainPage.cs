@@ -147,7 +147,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				Text = "Terraria_Main::Update"
 			};
 			Controls.Add(Terraria_Main_Update_BaseAddressInfoView);
-			
+
 			SignHeadBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 280, Width, 20),
@@ -155,7 +155,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			};
 			Controls.Add(SignHeadBaseAddressInfoView);
 
-			
+
 
 			RefreshButton = new Button();
 			RefreshButton.FlatStyle = FlatStyle.Flat;
@@ -235,7 +235,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			CurrentPlayerBuffTypeBaseAddressInfoView.View.Text = buffTypeBaseAddress.ToString("X8");
 			CurrentPlayerBuffTimeBaseAddressInfoView.View.Text = buffTimeBaseAddress.ToString("X8");
 			CurrentPlayerFirstItemBaseAddressInfoView.View.Text = ctx.MyPlayer.Inventory[0].BaseAddress.ToString("X8");
-			Terraria_Main_Update_BaseAddressInfoView.View.Text = ctx.HContext.FunctionAddressHelper.FunctionsAddress["Terraria.Main::Update"].ToString("X8");
+			Terraria_Main_Update_BaseAddressInfoView.View.Text = ctx.HContext.AddressHelper["Terraria.Main", "Update"].ToString("X8");
 			SignHeadBaseAddressInfoView.View.Text = HackContext.SignHead.ToString("X8");
 		}
 	}

@@ -34,11 +34,23 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
+		public int Player_Array_Pointer
+		{
+			get;
+		}
 		public int NPC_Array_Address
 		{
 			get;
 		}
+		public int NPC_Array_Pointer
+		{
+			get;
+		}
 		public int Main_Map_Address
+		{
+			get;
+		}
+		public int Main_Map_Pointer
 		{
 			get;
 		}
@@ -70,12 +82,16 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
-
-		public int MouseScreen_X_Address
+		public int MapFullscreenPos_Pointer
 		{
 			get;
 		}
-		public int MouseScreen_Y_Address
+
+		public int MouseX_Address
+		{
+			get;
+		}
+		public int MouseY_Address
 		{
 			get;
 		}
@@ -95,11 +111,19 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
+		public int Tile_Pointer
+		{
+			get;
+		}
 		public int NetMode_Address
 		{
 			get;
 		}
 		public int ActiveWorldFileData_Address
+		{
+			get;
+		}
+		public int ActiveWorldFileData_Pointer
 		{
 			get;
 		}
@@ -109,7 +133,11 @@ namespace QTRHacker.Functions
 			get;
 		}
 
-		public int DebuffAddress
+		public int Debuff_Address
+		{
+			get;
+		}
+		public int Debuff_Pointer
 		{
 			get;
 		}
@@ -142,30 +170,30 @@ namespace QTRHacker.Functions
 			}
 		}
 
-		public int MouseScreen_X
+		public int MouseX
 		{
 			get
 			{
 				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseScreen_X_Address, ref v, 4, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseX_Address, ref v, 4, 0);
 				return v;
 			}
 			set
 			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseScreen_X_Address, ref value, 4, 0);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseX_Address, ref value, 4, 0);
 			}
 		}
-		public int MouseScreen_Y
+		public int MouseY
 		{
 			get
 			{
 				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseScreen_Y_Address, ref v, 4, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseY_Address, ref v, 4, 0);
 				return v;
 			}
 			set
 			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseScreen_Y_Address, ref value, 4, 0);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseY_Address, ref value, 4, 0);
 			}
 		}
 
@@ -371,8 +399,7 @@ namespace QTRHacker.Functions
 		{
 			get
 			{
-				int v = AobscanHelper.Aobscan(HContext, "74 0d 8b 4e 0c 8b 01 8b 40 28 ff 50 10 eb 02") - 0x13;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+				int v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "clientUUID");
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 				byte[] bs = new byte[(32 + 4) * 2];
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v + 8, bs, bs.Length, 0);
@@ -380,8 +407,7 @@ namespace QTRHacker.Functions
 			}
 			set
 			{
-				int v = AobscanHelper.Aobscan(HContext, "74 0d 8b 4e 0c 8b 01 8b 40 28 ff 50 10 eb 02") - 0x13;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+				int v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "clientUUID");
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 				byte[] bs = Encoding.Unicode.GetBytes(value);
 				NativeFunctions.WriteProcessMemory(HContext.Handle, v + 8, bs, (32 + 4) * 2, 0);
@@ -402,16 +428,14 @@ namespace QTRHacker.Functions
 		{
 			get
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateMenu") + 0x5E;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "dayTime");
 				bool v = false;
 				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
 				return v;
 			}
 			set
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateMenu") + 0x5E;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "dayTime");
 				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
 			}
 		}
@@ -420,16 +444,14 @@ namespace QTRHacker.Functions
 		{
 			get
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateSundial") + 2;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "fastForwardTime");
 				bool v = false;
 				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
 				return v;
 			}
 			set
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateSundial") + 2;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "fastForwardTime");
 				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
 			}
 		}
@@ -438,16 +460,14 @@ namespace QTRHacker.Functions
 		{
 			get
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x1d;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "pumpkinMoon");
 				bool v = false;
 				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
 				return v;
 			}
 			set
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x1d;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "pumpkinMoon");
 				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
 			}
 		}
@@ -456,16 +476,14 @@ namespace QTRHacker.Functions
 		{
 			get
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x26;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "bloodMoon");
 				bool v = false;
 				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
 				return v;
 			}
 			set
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x26;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "bloodMoon");
 				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
 			}
 		}
@@ -473,16 +491,14 @@ namespace QTRHacker.Functions
 		{
 			get
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x2d;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "snowMoon");
 				bool v = false;
 				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
 				return v;
 			}
 			set
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateTime") + 0x2d;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "snowMoon");
 				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
 			}
 		}
@@ -492,16 +508,14 @@ namespace QTRHacker.Functions
 		{
 			get
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.NPC::AI_007_TownEntities") + 0x48;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "eclipse");
 				bool v = false;
 				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
 				return v;
 			}
 			set
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.NPC::AI_007_TownEntities") + 0x48;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "eclipse");
 				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
 			}
 		}
@@ -510,16 +524,14 @@ namespace QTRHacker.Functions
 		{
 			get
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateMenu") + 0x52;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "time");
 				var bs = new byte[8];
 				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, bs, 8, 0);
 				return BitConverter.ToDouble(bs, 0);
 			}
 			set
 			{
-				int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::UpdateMenu") + 0x52;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
+				int vvv = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "time");
 				var bs = BitConverter.GetBytes(value);
 				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, bs, 8, 0);
 			}
@@ -529,129 +541,116 @@ namespace QTRHacker.Functions
 		{
 			get
 			{
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, ActiveWorldFileData_Address, ref v, 4, 0);
-				return new WorldFileData(this, v);
+				return new WorldFileData(this, ActiveWorldFileData_Address);
 			}
 		}
 
 
 		/// <summary>
-		/// 
+		/// 凡是没有标明Pointer的，获取的均为基址，而非指向该地址的指针
+		/// 基础数据类型没有基址，获得的是地址，而非基址
 		/// </summary>
 		/// <param name="pid">游戏的进程ID</param>
 		private GameContext(int pid)
 		{
 			HContext = Context.Create(pid);
-			int vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_LocalPlayer") + 1;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			Player_Array_Address = vvv;
+			int v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "player");
+			Player_Array_Pointer = v;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+			Player_Array_Address = v;
 
 
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_LocalPlayer") + 7;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			My_Player_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "myPlayer");
+			My_Player_Address = v;
 
 
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::NPCAddHeight") + 6;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			NPC_Array_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "npc");
+			NPC_Array_Pointer = v;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+			NPC_Array_Address = v;
+
+			//下面两个取的是值，而非地址
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "maxTilesX");
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+			MaxTilesX = v;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "maxTilesY");
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+			MaxTilesY = v;
 
 
-			vvv = AobscanHelper.Aobscan(HContext, "75 08 8d 65 f4 5b 5e 5f 5d c3 a1");
-			int b = vvv + 0xb;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, b, ref b, 4, 0);
-			NativeFunctions.ReadProcessMemory(HContext.Handle, b, ref b, 4, 0);
-			MaxTilesX = b;
-			int c = vvv + 0x1c;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, c, ref c, 4, 0);
-			NativeFunctions.ReadProcessMemory(HContext.Handle, c, ref c, 4, 0);
-			MaxTilesY = c;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "Map");
+			Main_Map_Pointer = v;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+			Main_Map_Address = v;
+
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "refreshMap");
+			Main_RefreshMap_Address = v;
 
 
-			vvv = AobscanHelper.Aobscan(HContext, "8b 40 04 8b 55 f0 8b 4d ec 2b 50 10 3b 50 08") - 4;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			Main_Map_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "mapFullscreen");
+			MapFullScreen_Address = v;
 
-			vvv = AobscanHelper.Aobscan(HContext, "01 8b 45 f0 8d 65 f4 5b 5e 5f 5d c2 04 00") - 4;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			Main_RefreshMap_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "mouseRight");
+			MouseRight_Address = v;
 
 
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DrawInterface_16_MapOrMinimap") + 0x2f;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			MapFullScreen_Address = vvv;
-
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::DrawInterface_41_InterfaceLogic4") + 5;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			MouseRight_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "mouseRightRelease");
+			MouseRightRelease_Address = v;
 
 
-			vvv = AobscanHelper.Aobscan(HContext, "89 75 e0 33 d2 89 55 ec 80 3d") + 0x1c;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			MouseRightRelease_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "screenWidth");
+			ScreenWidth_Address = v;
 
 
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_TextMaxLengthForScreen") + 1;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			ScreenWidth_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "screenHeight");
+			ScreenHeight_Address = v;
 
 
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_ShouldDrawInfoIconsHorizontally") + 0x17;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			ScreenHeight_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "mapFullscreenPos");
+			MapFullscreenPos_Pointer = v;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+			MapFullscreenPos_Address = v;
+
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "mouseX");
+			MouseX_Address = v;
+
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "mouseY");
+			MouseY_Address = v;
+
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "mapFullscreenScale");
+			MapFullScreenScale_Address = v;
 
 
-			vvv = AobscanHelper.Aobscan(HContext, "ff ff d8 28 d9 18 8b 05") + 8;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			MapFullscreenPos_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "tile");
+			Tile_Pointer = v;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+			Tile_Address = v;
 
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_MouseScreen") + 0x3;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			MouseScreen_X_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "netMode");
+			NetMode_Address = v;
 
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_MouseScreen") + 0xf;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			MouseScreen_Y_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Player", "tileTargetX");
+			TileTargetX_Address = v;
 
-			vvv = AobscanHelper.Aobscan(HContext, "d9 5d e0 eb 1d 83 3d") - 4;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			MapFullScreenScale_Address = vvv;
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Player", "tileTargetY");
+			TileTargetY_Address = v;
 
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "debuff");
+			Debuff_Pointer = v;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+			Debuff_Address = v;
 
-			vvv = AobscanHelper.Aobscan(HContext, "89 45 e0 89 4d f0 8b fa 8b 45 f0 8b d7") + 0xf;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			Tile_Address = vvv;
-
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::get_ShouldPVPDraw") + 0x2;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			NetMode_Address = vvv;
-
-			int aaaa = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Player::LookForTileInteractions");
-			NativeFunctions.ReadProcessMemory(HContext.Handle, aaaa + 0x1a, ref vvv, 4, 0);
-			TileTargetX_Address = vvv;
-
-			NativeFunctions.ReadProcessMemory(HContext.Handle, aaaa + 0x20, ref vvv, 4, 0);
-			TileTargetY_Address = vvv;
-
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::TryRemovingBuff") + 0xd;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			DebuffAddress = vvv;
 			int bbbb = 0;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv + 4, ref bbbb, 4, 0);
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v + 4, ref bbbb, 4, 0);
 			Debuff = new int[bbbb];
 			for (int i = 0; i < bbbb; i++)
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv + 8 + i, ref Debuff[i], 1, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, v + 8 + i, ref Debuff[i], 1, 0);
 
-			vvv = HContext.FunctionAddressHelper.GetFunctionAddress("Terraria.IO.WorldFileData::SetAsActive") + 0x2;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref vvv, 4, 0);
-			ActiveWorldFileData_Address = vvv;
+
+			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "ActiveWorldFileData");
+			ActiveWorldFileData_Pointer = v;
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
+			ActiveWorldFileData_Address = v;
 
 		}
 
