@@ -24,7 +24,7 @@ namespace QTRHacker.NewDimension
 
 		private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
-			MessageBox.Show(e.ToString());
+			MessageBox.Show(e.Exception.ToString());
 		}
 
 		private static void Application_ApplicationExit(object sender, EventArgs e)
