@@ -52,10 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameObjects\GameFieldOffsetFieldNameAttribute.cs" />
+    <Compile Include="GameObjects\GameFieldOffsetTypeNameAttribute.cs" />
     <Compile Include="GameObjects\Chest.cs" />
     <Compile Include="GameContext.cs" />
     <Compile Include="GameObjects\Entity.cs" />
-    <Compile Include="GameObjects\FileData.cs" />
+    <Compile Include="GameObjects\IO\FileData.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameObjectArray.cs" />
     <Compile Include="GameObjects\GameObjectArray2D.cs" />
@@ -92,9 +94,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Tile.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="GameObjects\WorldFileData.cs" />
+    <Compile Include="GameObjects\IO\WorldFileData.cs" />
     <Compile Include="GameObjects\WorldGen.cs" />
-    <Compile Include="GameObjects\WorldMap.cs" />
+    <Compile Include="GameObjects\Map\WorldMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QHackLib\QHackLib.csproj">

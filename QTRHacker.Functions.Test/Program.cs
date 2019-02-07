@@ -1,6 +1,8 @@
 ﻿using Keystone;
+using Microsoft.Diagnostics.Runtime;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
+using QTRHacker.Functions.GameObjects;
 using QTRHacker.Functions.ProjectileImage;
 using System;
 using System.Collections.Generic;
@@ -20,13 +22,7 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				/*Stopwatch watch = new Stopwatch();
-				watch.Start();
-
-				watch.Stop();
-				TimeSpan timespan = watch.Elapsed;
-				Console.WriteLine("执行时间：{0}(毫秒)", timespan.TotalMilliseconds);*/
-
+				Console.WriteLine(Item.OFFSET_Type.ToString("X8"));
 			}
 		}
 	}

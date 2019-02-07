@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
+	[GameFieldOffsetTypeName("Terraria.Chest")]
 	public class Chest : GameObject
 	{
-
-		public const int OFFSET_Item = 0x4;
+		[GameFieldOffsetFieldName("item")]
+		public static int OFFSET_Item = 0x4;
 		public ItemSlots Item
 		{
 			get

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,9 +22,15 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		private int lastID;
 		private ToolTip Tip;
 		private GameContext Context;
+		public static Image TMLIconImage;
 		public ItemSlots Slots
 		{
 			get;
+		}
+		static ItemIcon()
+		{
+			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.TMLIcon.png"))
+				TMLIconImage = Image.FromStream(st);
 		}
 		public ItemIcon(GameContext Context, ItemSlots slots, int num, int id)
 		{
@@ -44,18 +51,17 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			int nowID = item.Type;
 			if (lastID != nowID)
 			{
-				var img = GameResLoader.ItemImages.Images[nowID.ToString()];
-				if (img != null)
+				if (GameResLoader.ItemImages.Images.ContainsKey(nowID.ToString()))
 				{
-					Image newImg = (Image)img.Clone();
-					this.Image = newImg;
+					Image = (Image)GameResLoader.ItemImages.Images[nowID.ToString()].Clone();
 					Tip.SetToolTip(this, GameResLoader.IDToItem[nowID]);
 				}
 				else
 				{
+					Image = TMLIconImage;
 					Tip.SetToolTip(this, "");
 				}
-				this.lastID = nowID;
+				lastID = nowID;
 			}
 			base.OnPaint(pe);
 			pe.Graphics.DrawString(item.Stack.ToString(), new Font("Arial", 10), new SolidBrush(Color.Black), 10, 35);

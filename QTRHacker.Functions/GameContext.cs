@@ -9,6 +9,8 @@ using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using QHackLib.Utilities;
 using QTRHacker.Functions.GameObjects;
+using QTRHacker.Functions.GameObjects.IO;
+using QTRHacker.Functions.GameObjects.Map;
 
 namespace QTRHacker.Functions
 {
@@ -17,6 +19,10 @@ namespace QTRHacker.Functions
 	/// </summary>
 	public class GameContext : IDisposable
 	{
+		public static bool OffsetsInitialized
+		{
+			get;
+		}
 		public const int MaxItemTypes = 3930;
 		public int My_Player_Address
 		{
@@ -26,6 +32,10 @@ namespace QTRHacker.Functions
 		/// 相关的Context实例，不需要手动操作
 		/// </summary>
 		public Context HContext
+		{
+			get;
+		}
+		public int ArrayHeadLength
 		{
 			get;
 		}
@@ -382,7 +392,7 @@ namespace QTRHacker.Functions
 			get
 			{
 				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, Player_Array_Address + 0x08 + 0x04 * MyPlayerIndex, ref v, 4, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, Player_Array_Address + HContext.ArrayHeadLength + 0x04 * MyPlayerIndex, ref v, 4, 0);
 				return new Player(this, v);
 			}
 		}
@@ -395,6 +405,9 @@ namespace QTRHacker.Functions
 			}
 		}
 
+		/// <summary>
+		/// 这里的8被替换成了自适应的长度，如果在低版本.NET中无效将会被修改
+		/// </summary>
 		public string UUID
 		{
 			get
@@ -402,7 +415,7 @@ namespace QTRHacker.Functions
 				int v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "clientUUID");
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 				byte[] bs = new byte[(32 + 4) * 2];
-				NativeFunctions.ReadProcessMemory(HContext.Handle, v + 8, bs, bs.Length, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, v + HContext.ArrayHeadLength, bs, bs.Length, 0);
 				return Encoding.Unicode.GetString(bs);
 			}
 			set
@@ -410,7 +423,7 @@ namespace QTRHacker.Functions
 				int v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "clientUUID");
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 				byte[] bs = Encoding.Unicode.GetBytes(value);
-				NativeFunctions.WriteProcessMemory(HContext.Handle, v + 8, bs, (32 + 4) * 2, 0);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, v + HContext.ArrayHeadLength, bs, (32 + 4) * 2, 0);
 			}
 		}
 
@@ -545,6 +558,39 @@ namespace QTRHacker.Functions
 			}
 		}
 
+		private void InitalizeOffsets()
+		{
+			if (OffsetsInitialized)
+				return;
+			foreach (var t in System.Reflection.Assembly.GetExecutingAssembly().DefinedTypes)
+			{
+				if (t.Namespace != "QTRHacker.Functions.GameObjects")
+					continue;
+				var typeNameAttr = t.GetCustomAttributes(typeof(GameFieldOffsetTypeNameAttribute), false);
+				foreach (var f in t.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public))
+				{
+					if (!f.IsStatic ||
+						!(f.FieldType == typeof(int) || f.FieldType == typeof(uint) ||
+						f.FieldType == typeof(long) || f.FieldType == typeof(ulong)))
+						continue;
+					var fieldNameAttr = f.GetCustomAttributes(typeof(GameFieldOffsetFieldNameAttribute), false);
+					if (fieldNameAttr.Length == 0)
+						continue;
+					GameFieldOffsetFieldNameAttribute gfofna = fieldNameAttr[0] as GameFieldOffsetFieldNameAttribute;
+					if (gfofna.TypeName == null && typeNameAttr.Length == 0)//信息不足
+						continue;
+					Microsoft.Diagnostics.Runtime.ClrType clrType = null;
+					if (gfofna.TypeName != null)
+						clrType = HContext.AddressHelper.Module.GetTypeByName(gfofna.TypeName);
+					else
+						clrType = HContext.AddressHelper.Module.GetTypeByName((typeNameAttr[0] as GameFieldOffsetTypeNameAttribute).TypeName);
+					var field = clrType.GetFieldByName(gfofna.FieldName);
+					if (field == null)
+						throw new Exception("Field named " + gfofna.FieldName + " not found.(" + f.DeclaringType.FullName + "." + f.Name + ")");
+					f.SetValue(null, field.Offset + 4);//需要+4，原因是Offset比真实的"偏移"要少了一个指针的位置
+				}
+			}
+		}
 
 		/// <summary>
 		/// 凡是没有标明Pointer的，获取的均为基址，而非指向该地址的指针
@@ -554,6 +600,11 @@ namespace QTRHacker.Functions
 		private GameContext(int pid)
 		{
 			HContext = Context.Create(pid);
+			ArrayHeadLength = HContext.ArrayHeadLength;
+			InitalizeOffsets();
+
+
+
 			int v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "player");
 			Player_Array_Pointer = v;
 			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
@@ -640,11 +691,12 @@ namespace QTRHacker.Functions
 			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 			Debuff_Address = v;
 
+			//这里使用了自适应的数组头部长度，如果无效将会被修改
 			int bbbb = 0;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v + 4, ref bbbb, 4, 0);
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v + HContext.ArrayHeadLength - 4, ref bbbb, 4, 0);
 			Debuff = new int[bbbb];
 			for (int i = 0; i < bbbb; i++)
-				NativeFunctions.ReadProcessMemory(HContext.Handle, v + 8 + i, ref Debuff[i], 1, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, Debuff_Address + HContext.ArrayHeadLength + i, ref Debuff[i], 1, 0);
 
 
 			v = HContext.AddressHelper.GetStaticFieldAddress("Terraria.Main", "ActiveWorldFileData");

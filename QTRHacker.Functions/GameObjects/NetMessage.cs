@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
+	[GameFieldOffsetTypeName("Terraria.NetMessage")]
 	public class NetMessage : GameObject
 	{
 		public NetMessage(GameContext Context, int bAddr) : base(Context, bAddr)

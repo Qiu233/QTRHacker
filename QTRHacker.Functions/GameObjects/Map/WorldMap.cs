@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QTRHacker.Functions.GameObjects
+namespace QTRHacker.Functions.GameObjects.Map
 {
+	[GameFieldOffsetTypeName("Terraria.Map.WorldMap")]
 	public class WorldMap : GameObject
 	{
 		public WorldMap(GameContext Context, int bAddr) : base(Context, bAddr)

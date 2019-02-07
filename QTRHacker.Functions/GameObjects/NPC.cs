@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
+	[GameFieldOffsetTypeName("Terraria.NPC")]
 	public class NPC : Entity
 	{
 		public const int MAXNUMBER = 201;

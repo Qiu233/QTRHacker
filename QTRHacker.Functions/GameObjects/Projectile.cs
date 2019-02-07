@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
+	[GameFieldOffsetTypeName("Terraria.Projectile")]
 	public class Projectile : GameObject
 	{
 		public Projectile(GameContext context, int bAddr) : base(context, bAddr)

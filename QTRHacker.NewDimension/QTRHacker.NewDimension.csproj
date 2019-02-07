@@ -265,6 +265,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <EmbeddedResource Include="Res\Image\TMLIcon.png" />
     <EmbeddedResource Include="Res\Game\ItemID.txt" />
     <EmbeddedResource Include="Res\Game\BuffType.txt" />
     <EmbeddedResource Include="Res\Game\Mount.txt" />

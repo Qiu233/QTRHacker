@@ -6,23 +6,32 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
+	[GameFieldOffsetTypeName("Terraria.Tile")]
 	public class Tile : GameObject
 	{
-		public const int OFFSET_Type = 0x4;
-		public const int OFFSET_Wall = 0xc;
-		public const int OFFSET_Liquid = 0xd;
-		public const int OFFSET_STileHeader = 0x6;
-		public const int OFFSET_BTileHeader = 0xe;
-		public const int OFFSET_BTileHeader2 = 0xf;
-		public const int OFFSET_BTileHeader3 = 0x10;
-		public const int OFFSET_FrameX = 0x8;
-		public const int OFFSET_FrameY = 0xa;
+		[GameFieldOffsetFieldName("type")]
+		public static int OFFSET_Type = 0x4;
+		[GameFieldOffsetFieldName("wall")]
+		public static int OFFSET_Wall = 0xc;
+		[GameFieldOffsetFieldName("liquid")]
+		public static int OFFSET_Liquid = 0xd;
+		[GameFieldOffsetFieldName("sTileHeader")]
+		public static int OFFSET_STileHeader = 0x6;
+		[GameFieldOffsetFieldName("bTileHeader")]
+		public static int OFFSET_BTileHeader = 0xe;
+		[GameFieldOffsetFieldName("bTileHeader2")]
+		public static int OFFSET_BTileHeader2 = 0xf;
+		[GameFieldOffsetFieldName("bTileHeader3")]
+		public static int OFFSET_BTileHeader3 = 0x10;
+		[GameFieldOffsetFieldName("frameX")]
+		public static int OFFSET_FrameX = 0x8;
+		[GameFieldOffsetFieldName("frameY")]
+		public static int OFFSET_FrameY = 0xa;
 
-
+		
 		public const int Liquid_Honey = 2;
 		public const int Liquid_Lava = 1;
 		public const int Liquid_Water = 0;
-
 
 		public const int Type_Halfbrick = 1;
 		public const int Type_SlopeDownLeft = 3;

@@ -109,6 +109,15 @@ namespace QHackLib
 		{
 			get;
 		}
+		public int ArrayHeadLength
+		{
+			get
+			{
+				return (bool)typeof(ClrRuntime).GetProperty("HasArrayComponentMethodTables",
+					System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).
+					GetValue(Runtime) ? 12 : 8;
+			}
+		}
 
 		private Context(string name, int id, int handle, string moduleName)
 		{
@@ -135,7 +144,7 @@ namespace QHackLib
 		public void Close()
 		{
 			DataTarget.Dispose();
-			CloseHandle(ProcessID);
+			CloseHandle(Handle);
 		}
 
 		public void Dispose()

@@ -12,23 +12,66 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
+	[GameFieldOffsetTypeName("Terraria.Player")]
 	public class Player : Entity
 	{
-		public const int OFFSET_Life = 0x340;
-		public const int OFFSET_MaxLife = 0x338;
-		public const int OFFSET_Mana = 0x34c;
-		public const int OFFSET_MaxMana = 0x348;
-		public const int OFFSET_Ghost = 0x549;
-		public const int OFFSET_BuffType = 0xAC;
-		public const int OFFSET_BuffTime = 0xB0;
+		[GameFieldOffsetFieldName("statLife")]
+		public static int OFFSET_Life = 0x340;
+		[GameFieldOffsetFieldName("statLifeMax")]
+		public static int OFFSET_MaxLife = 0x338;
+		[GameFieldOffsetFieldName("statMana")]
+		public static int OFFSET_Mana = 0x34c;
+		[GameFieldOffsetFieldName("statManaMax")]
+		public static int OFFSET_MaxMana = 0x348;
+		[GameFieldOffsetFieldName("ghost")]
+		public static int OFFSET_Ghost = 0x549;
+		[GameFieldOffsetFieldName("buffType")]
+		public static int OFFSET_BuffType = 0xAC;
+		[GameFieldOffsetFieldName("buffTime")]
+		public static int OFFSET_BuffTime = 0xB0;
 
-		public const int OFFSET_INV = 0xBC, OFFSET_ARMOR = 0x98, OFFSET_DYE = 0x9C, OFFSET_MISC = 0xA0, OFFSET_MISCDYE = 0xA4;
-		public const int OFFSET_Bank = 0xC4, OFFSET_Bank2 = 0xC8, OFFSET_Bank3 = 0xCC;
-		public const int OFFSET_Hair = 0x3F4, OFFSET_HairColor = 0x73C, OFFSET_SkinColor = 0x740, OFFSET_EyeColor = 0x744, OFFSET_ShirtColor = 0x748, OFFSET_UnderShirtColor = 0x74C, OFFSET_PantsColor = 0x750, OFFSET_ShoesColor = 0x754;
-		public const int ITEM_MAX_COUNT = 59, INV_MAX_COUNT = 50, ARMOR_MAX_COUNT = 20, DYE_MAX_COUNT = 10, MISC_MAX_COUNT = 5, MISCDYE_MAX_COUNT = 5;
+		[GameFieldOffsetFieldName("inventory")]
+		public static int OFFSET_INV = 0xBC;
+		[GameFieldOffsetFieldName("armor")]
+		public static int OFFSET_ARMOR = 0x98;
+		[GameFieldOffsetFieldName("dye")]
+		public static int OFFSET_DYE = 0x9C;
+		[GameFieldOffsetFieldName("miscEquips")]
+		public static int OFFSET_MISC = 0xA0;
+		[GameFieldOffsetFieldName("miscDyes")]
+		public static int OFFSET_MISCDYE = 0xA4;
+		[GameFieldOffsetFieldName("bank")]
+		public static int OFFSET_Bank = 0xC4;
+		[GameFieldOffsetFieldName("bank2")]
+		public static int OFFSET_Bank2 = 0xC8;
+		[GameFieldOffsetFieldName("bank3")]
+		public static int OFFSET_Bank3 = 0xCC;
+		[GameFieldOffsetFieldName("hair")]
+		public static int OFFSET_Hair = 0x3F4;
+		[GameFieldOffsetFieldName("hairColor")]
+		public static int OFFSET_HairColor = 0x73C;
+		[GameFieldOffsetFieldName("skinColor")]
+		public static int OFFSET_SkinColor = 0x740;
+		[GameFieldOffsetFieldName("eyeColor")]
+		public static int OFFSET_EyeColor = 0x744;
+		[GameFieldOffsetFieldName("shirtColor")]
+		public static int OFFSET_ShirtColor = 0x748;
+		[GameFieldOffsetFieldName("underShirtColor")]
+		public static int OFFSET_UnderShirtColor = 0x74C;
+		[GameFieldOffsetFieldName("pantsColor")]
+		public static int OFFSET_PantsColor = 0x750;
+		[GameFieldOffsetFieldName("shoeColor")]
+		public static int OFFSET_ShoeColor = 0x754;
+
+
+
+		public const int ITEM_MAX_COUNT = 59;
+		public const int INV_MAX_COUNT = 50;
+		public const int ARMOR_MAX_COUNT = 20;
+		public const int DYE_MAX_COUNT = 10;
+		public const int MISC_MAX_COUNT = 5;
+		public const int MISCDYE_MAX_COUNT = 5;
 		public const int BUFF_MAX_COUNT = 22;
-
-
 		public const int MAX_PLAYER = 256;
 
 		public Chest Bank
@@ -170,14 +213,14 @@ namespace QTRHacker.Functions.GameObjects
 			}
 			set => WriteFromOffset(OFFSET_PantsColor, value);
 		}
-		public int ShoesColor
+		public int ShoeColor
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_ShoesColor, out int v);
+				ReadFromOffset(OFFSET_ShoeColor, out int v);
 				return v;
 			}
-			set => WriteFromOffset(OFFSET_ShoesColor, value);
+			set => WriteFromOffset(OFFSET_ShoeColor, value);
 		}
 
 		public ItemSlots Inventory

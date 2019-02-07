@@ -11,95 +11,183 @@ using System.Windows.Forms;
 
 namespace QTRHacker.Functions.GameObjects
 {
+	[GameFieldOffsetTypeName("Terraria.Item")]
 	public class Item : Entity
 	{
-		public const int OFFSET_Type = 0x6C;
-		public const int OFFSET_Type2 = 0x6c + 0xA0;
-		public const int OFFSET_Stack = 0x80;
-		public const int OFFSET_FishingPole = 0x58;
-		public const int OFFSET_Bait = 0x5C;
-		public const int OFFSET_KnockBack = 0xA8;
-		public const int OFFSET_Shoot = 0xD8;
-		public const int OFFSET_ShootSpeed = 0xDC;
-		public const int OFFSET_Crit = 0x110;
-		public const int OFFSET_Damage = 0xA4;
-		public const int OFFSET_HealLife = 0xAC;
-		public const int OFFSET_HealMana = 0xB0;
-		public const int OFFSET_UseTime = 0x7C;
-		public const int OFFSET_Pick = 0x88;
-		public const int OFFSET_Axe = 0x8C;
-		public const int OFFSET_Hammer = 0x90;
-		public const int OFFSET_TileBoost = 0x94;
-		public const int OFFSET_AutoReuse = 0x12E;
-		public const int OFFSET_UseAnimation = 0x78;
-		public const int OFFSET_BuffType = 0xFC;
-		public const int OFFSET_BuffTime = 0x100;
-		public const int OFFSET_Prefix = 0x147;
-		public const int OFFSET_Scale = 0xB8;
-		public const int OFFSET_Defense = 0xBC;
-		public const int OFFSET_Accessory = 0x12B;
-		public const int OFFSET_CreateTile = 0x98;
-		public const int OFFSET_CreateWall = 0x9C;
-		public const int OFFSET_Ammo = 0xE0;
-		public const int OFFSET_HeadSlot = 0xC0;
-		public const int OFFSET_BodySlot = 0xC4;
-		public const int OFFSET_LegSlot = 0xC8;
-		public const int OFFSET_BalloonSlot = 0x13A;
-		public const int OFFSET_CartTrack = 0x122;
-		public const int OFFSET_Consumable = 0x12D;
-		public const int OFFSET_FrontSlot = 0x133;
-		public const int OFFSET_GlowMask = 0x11C;
-		public const int OFFSET_MakeNPC = 0x118;
-		public const int OFFSET_Mana = 0xF0;
-		public const int OFFSET_MaxStack = 0x84;
-		public const int OFFSET_NoUseGraphic = 0x13D;
-		public const int OFFSET_UseStyle = 0x74;
-		public const int OFFSET_PlaceStyle = 0xA0;
-		public const int OFFSET_Rare = 0xD4;
-		public const int OFFSET_ReuseDelay = 0x114;
-		public const int OFFSET_TileWand = 0x54;
-		public const int OFFSET_UseAmmo = 0xE4;
-		public const int OFFSET_Value = 0xF8;
-		public const int OFFSET_WaistSlot = 0x135;
-		public const int OFFSET_WingSlot = 0x136;
-		public const int OFFSET_LifeRegen = 0xE8;
-		public const int OFFSET_BackSlot = 0x132;
-		public const int OFFSET_FaceSlot = 0x139;
-		public const int OFFSET_HandOnSlot = 0x130;
-		public const int OFFSET_HandOffSlot = 0x131;
-		public const int OFFSET_HoldStyle = 0x70;
-		public const int OFFSET_Magic = 0x149;
-		public const int OFFSET_Mech = 0x120;
-		public const int OFFSET_Melee = 0x148;
-		public const int OFFSET_NoMelee = 0x13E;
-		public const int OFFSET_NeckSlot = 0x138;
-		public const int OFFSET_Ranged = 0x14A;
-		public const int OFFSET_ShoeSlot = 0x134;
-		public const int OFFSET_Material = 0x142;
-		public const int OFFSET_Sentry = 0x14D;
-		public const int OFFSET_MountType = 0x104;
-		public const int OFFSET_HairDye = 0x11A;
-		public const int OFFSET_Dye = 0x124;
-		public const int OFFSET_QuestItem = 0x11E;
-		public const int OFFSET_Thrown = 0x14B;
-		public const int OFFSET_Instanced = 0x128;
-		public const int OFFSET_ExpertOnly = 0x125;
-		public const int OFFSET_Expert = 0x126;
-		public const int OFFSET_Summon = 0x14C;
-		public const int OFFSET_NoWet = 0x143;
-		public const int OFFSET_Vanity = 0x141;
-		public const int OFFSET_Channel = 0x12A;
-		public const int OFFSET_ManaIncrease = 0xEC;
-		public const int OFFSET_Release = 0xF4;
-		public const int OFFSET_Alpha = 0xB4;
-		public const int OFFSET_Potion = 0x12C;
-		public const int OFFSET_UseTurn = 0x12F;
-		public const int OFFSET_Buy = 0x13F;
-		public const int OFFSET_ShieldSlot = 0x137;
-		public const int OFFSET_UniqueStack = 0x145;
-		public const int OFFSET_Favorited = 0x129;
-		public const int OFFSET_Flame = 0x11f;
-		public const int OFFSET_Paint = 0x127;
+		[GameFieldOffsetFieldName("type")]
+		public static int OFFSET_Type = 0x6C;
+		[GameFieldOffsetFieldName("netID")]
+		public static int OFFSET_Type2 = 0x6c + 0xA0;
+		[GameFieldOffsetFieldName("stack")]
+		public static int OFFSET_Stack = 0x80;
+		[GameFieldOffsetFieldName("fishingPole")]
+		public static int OFFSET_FishingPole = 0x58;
+		[GameFieldOffsetFieldName("bait")]
+		public static int OFFSET_Bait = 0x5C;
+		[GameFieldOffsetFieldName("knockBack")]
+		public static int OFFSET_KnockBack = 0xA8;
+		[GameFieldOffsetFieldName("shoot")]
+		public static int OFFSET_Shoot = 0xD8;
+		[GameFieldOffsetFieldName("shootSpeed")]
+		public static int OFFSET_ShootSpeed = 0xDC;
+		[GameFieldOffsetFieldName("crit")]
+		public static int OFFSET_Crit = 0x110;
+		[GameFieldOffsetFieldName("damage")]
+		public static int OFFSET_Damage = 0xA4;
+		[GameFieldOffsetFieldName("healLife")]
+		public static int OFFSET_HealLife = 0xAC;
+		[GameFieldOffsetFieldName("healMana")]
+		public static int OFFSET_HealMana = 0xB0;
+		[GameFieldOffsetFieldName("useTime")]
+		public static int OFFSET_UseTime = 0x7C;
+		[GameFieldOffsetFieldName("pick")]
+		public static int OFFSET_Pick = 0x88;
+		[GameFieldOffsetFieldName("axe")]
+		public static int OFFSET_Axe = 0x8C;
+		[GameFieldOffsetFieldName("hammer")]
+		public static int OFFSET_Hammer = 0x90;
+		[GameFieldOffsetFieldName("tileBoost")]
+		public static int OFFSET_TileBoost = 0x94;
+		[GameFieldOffsetFieldName("autoReuse")]
+		public static int OFFSET_AutoReuse = 0x12E;
+		[GameFieldOffsetFieldName("useAnimation")]
+		public static int OFFSET_UseAnimation = 0x78;
+		[GameFieldOffsetFieldName("buffType")]
+		public static int OFFSET_BuffType = 0xFC;
+		[GameFieldOffsetFieldName("buffTime")]
+		public static int OFFSET_BuffTime = 0x100;
+		[GameFieldOffsetFieldName("prefix")]
+		public static int OFFSET_Prefix = 0x147;
+		[GameFieldOffsetFieldName("scale")]
+		public static int OFFSET_Scale = 0xB8;
+		[GameFieldOffsetFieldName("defense")]
+		public static int OFFSET_Defense = 0xBC;
+		[GameFieldOffsetFieldName("accessory")]
+		public static int OFFSET_Accessory = 0x12B;
+		[GameFieldOffsetFieldName("createTile")]
+		public static int OFFSET_CreateTile = 0x98;
+		[GameFieldOffsetFieldName("createWall")]
+		public static int OFFSET_CreateWall = 0x9C;
+		[GameFieldOffsetFieldName("ammo")]
+		public static int OFFSET_Ammo = 0xE0;
+		[GameFieldOffsetFieldName("headSlot")]
+		public static int OFFSET_HeadSlot = 0xC0;
+		[GameFieldOffsetFieldName("bodySlot")]
+		public static int OFFSET_BodySlot = 0xC4;
+		[GameFieldOffsetFieldName("legSlot")]
+		public static int OFFSET_LegSlot = 0xC8;
+		[GameFieldOffsetFieldName("balloonSlot")]
+		public static int OFFSET_BalloonSlot = 0x13A;
+		[GameFieldOffsetFieldName("cartTrack")]
+		public static int OFFSET_CartTrack = 0x122;
+		[GameFieldOffsetFieldName("consumable")]
+		public static int OFFSET_Consumable = 0x12D;
+		[GameFieldOffsetFieldName("frontSlot")]
+		public static int OFFSET_FrontSlot = 0x133;
+		[GameFieldOffsetFieldName("glowMask")]
+		public static int OFFSET_GlowMask = 0x11C;
+		[GameFieldOffsetFieldName("makeNPC")]
+		public static int OFFSET_MakeNPC = 0x118;
+		[GameFieldOffsetFieldName("mana")]
+		public static int OFFSET_Mana = 0xF0;
+		[GameFieldOffsetFieldName("maxStack")]
+		public static int OFFSET_MaxStack = 0x84;
+		[GameFieldOffsetFieldName("noUseGraphic")]
+		public static int OFFSET_NoUseGraphic = 0x13D;
+		[GameFieldOffsetFieldName("useStyle")]
+		public static int OFFSET_UseStyle = 0x74;
+		[GameFieldOffsetFieldName("placeStyle")]
+		public static int OFFSET_PlaceStyle = 0xA0;
+		[GameFieldOffsetFieldName("rare")]
+		public static int OFFSET_Rare = 0xD4;
+		[GameFieldOffsetFieldName("reuseDelay")]
+		public static int OFFSET_ReuseDelay = 0x114;
+		[GameFieldOffsetFieldName("tileWand")]
+		public static int OFFSET_TileWand = 0x54;
+		[GameFieldOffsetFieldName("useAmmo")]
+		public static int OFFSET_UseAmmo = 0xE4;
+		[GameFieldOffsetFieldName("value")]
+		public static int OFFSET_Value = 0xF8;
+		[GameFieldOffsetFieldName("waistSlot")]
+		public static int OFFSET_WaistSlot = 0x135;
+		[GameFieldOffsetFieldName("wingSlot")]
+		public static int OFFSET_WingSlot = 0x136;
+		[GameFieldOffsetFieldName("lifeRegen")]
+		public static int OFFSET_LifeRegen = 0xE8;
+		[GameFieldOffsetFieldName("backSlot")]
+		public static int OFFSET_BackSlot = 0x132;
+		[GameFieldOffsetFieldName("faceSlot")]
+		public static int OFFSET_FaceSlot = 0x139;
+		[GameFieldOffsetFieldName("handOnSlot")]
+		public static int OFFSET_HandOnSlot = 0x130;
+		[GameFieldOffsetFieldName("handOffSlot")]
+		public static int OFFSET_HandOffSlot = 0x131;
+		[GameFieldOffsetFieldName("holdStyle")]
+		public static int OFFSET_HoldStyle = 0x70;
+		[GameFieldOffsetFieldName("magic")]
+		public static int OFFSET_Magic = 0x149;
+		[GameFieldOffsetFieldName("mech")]
+		public static int OFFSET_Mech = 0x120;
+		[GameFieldOffsetFieldName("melee")]
+		public static int OFFSET_Melee = 0x148;
+		[GameFieldOffsetFieldName("noMelee")]
+		public static int OFFSET_NoMelee = 0x13E;
+		[GameFieldOffsetFieldName("neckSlot")]
+		public static int OFFSET_NeckSlot = 0x138;
+		[GameFieldOffsetFieldName("ranged")]
+		public static int OFFSET_Ranged = 0x14A;
+		[GameFieldOffsetFieldName("shoeSlot")]
+		public static int OFFSET_ShoeSlot = 0x134;
+		[GameFieldOffsetFieldName("material")]
+		public static int OFFSET_Material = 0x142;
+		[GameFieldOffsetFieldName("sentry")]
+		public static int OFFSET_Sentry = 0x14D;
+		[GameFieldOffsetFieldName("mountType")]
+		public static int OFFSET_MountType = 0x104;
+		[GameFieldOffsetFieldName("hairDye")]
+		public static int OFFSET_HairDye = 0x11A;
+		[GameFieldOffsetFieldName("dye")]
+		public static int OFFSET_Dye = 0x124;
+		[GameFieldOffsetFieldName("questItem")]
+		public static int OFFSET_QuestItem = 0x11E;
+		[GameFieldOffsetFieldName("thrown")]
+		public static int OFFSET_Thrown = 0x14B;
+		[GameFieldOffsetFieldName("instanced")]
+		public static int OFFSET_Instanced = 0x128;
+		[GameFieldOffsetFieldName("expertOnly")]
+		public static int OFFSET_ExpertOnly = 0x125;
+		[GameFieldOffsetFieldName("expert")]
+		public static int OFFSET_Expert = 0x126;
+		[GameFieldOffsetFieldName("summon")]
+		public static int OFFSET_Summon = 0x14C;
+		[GameFieldOffsetFieldName("noWet")]
+		public static int OFFSET_NoWet = 0x143;
+		[GameFieldOffsetFieldName("vanity")]
+		public static int OFFSET_Vanity = 0x141;
+		[GameFieldOffsetFieldName("channel")]
+		public static int OFFSET_Channel = 0x12A;
+		[GameFieldOffsetFieldName("manaIncrease")]
+		public static int OFFSET_ManaIncrease = 0xEC;
+		[GameFieldOffsetFieldName("release")]
+		public static int OFFSET_Release = 0xF4;
+		[GameFieldOffsetFieldName("alpha")]
+		public static int OFFSET_Alpha = 0xB4;
+		[GameFieldOffsetFieldName("potion")]
+		public static int OFFSET_Potion = 0x12C;
+		[GameFieldOffsetFieldName("useTurn")]
+		public static int OFFSET_UseTurn = 0x12F;
+		[GameFieldOffsetFieldName("buy")]
+		public static int OFFSET_Buy = 0x13F;
+		[GameFieldOffsetFieldName("shieldSlot")]
+		public static int OFFSET_ShieldSlot = 0x137;
+		[GameFieldOffsetFieldName("uniqueStack")]
+		public static int OFFSET_UniqueStack = 0x145;
+		[GameFieldOffsetFieldName("favorited")]
+		public static int OFFSET_Favorited = 0x129;
+		[GameFieldOffsetFieldName("flame")]
+		public static int OFFSET_Flame = 0x11f;
+		[GameFieldOffsetFieldName("paint")]
+		public static int OFFSET_Paint = 0x127;
 
 		public int Type
 		{

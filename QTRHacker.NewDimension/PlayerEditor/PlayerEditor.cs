@@ -187,7 +187,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			ShirtColorControl.Color = ColorFromIntABGR(TargetPlayer.ShirtColor);
 			UnderShirtColorControl.Color = ColorFromIntABGR(TargetPlayer.UnderShirtColor);
 			PantsColorControl.Color = ColorFromIntABGR(TargetPlayer.PantsColor);
-			ShoesColorControl.Color = ColorFromIntABGR(TargetPlayer.ShoesColor);
+			ShoesColorControl.Color = ColorFromIntABGR(TargetPlayer.ShoeColor);
 
 			HealthTextBox.Text = TargetPlayer.MaxLife.ToString();
 			ManaTextBox.Text = TargetPlayer.MaxMana.ToString();
@@ -202,7 +202,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			TargetPlayer.ShirtColor = IntABGRFromColor(ShirtColorControl.Color);
 			TargetPlayer.UnderShirtColor = IntABGRFromColor(UnderShirtColorControl.Color);
 			TargetPlayer.PantsColor = IntABGRFromColor(PantsColorControl.Color);
-			TargetPlayer.ShoesColor = IntABGRFromColor(ShoesColorControl.Color);
+			TargetPlayer.ShoeColor = IntABGRFromColor(ShoesColorControl.Color);
 
 			TargetPlayer.MaxLife = Convert.ToInt32(HealthTextBox.Text);
 			TargetPlayer.MaxMana = Convert.ToInt32(ManaTextBox.Text);

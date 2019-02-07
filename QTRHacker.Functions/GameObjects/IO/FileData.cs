@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QTRHacker.Functions.GameObjects
+namespace QTRHacker.Functions.GameObjects.IO
 {
+	[GameFieldOffsetTypeName("Terraria.IO.FileData")]
 	public class FileData : GameObject
 	{
+		[GameFieldOffsetFieldName("Name")]
 		public const int OFFSET_Name = 0xc;
 		public string Name
 		{

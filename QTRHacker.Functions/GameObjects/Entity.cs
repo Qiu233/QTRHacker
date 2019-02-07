@@ -6,24 +6,35 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
+	[GameFieldOffsetTypeName("Terraria.Entity")]
 	public class Entity : GameObject
 	{
-		public const int OFFSET_WhoAmI = 0x4;
-		public const int OFFSET_Active = 0x18;
-		public const int OFFSET_Width = 0x10;
-		public const int OFFSET_Height = 0x14;
-		public const int OFFSET_X = 0x20;
-		public const int OFFSET_Y = 0x24;
-		public const int OFFSET_VelocityX = 0x28;
-		public const int OFFSET_VelocityY = 0x2c;
-		public const int OFFSET_OldX = 0x30;
-		public const int OFFSET_OldY = 0x34;
-		public const int OFFSET_Direction = 0xc;
-		public const int OFFSET_OldDirection = 0x8;
-		public const int OFFSET_Wet = 0x19;
-		public const int OFFSET_HoneyWet = 0x1a;
-		public const int OFFSET_WetCount = 0x1b;
-		public const int OFFSET_LavaWet = 0x1c;
+		[GameFieldOffsetFieldName("whoAmI")]
+		public static int OFFSET_WhoAmI = 0x4;
+		[GameFieldOffsetFieldName("active")]
+		public static int OFFSET_Active = 0x18;
+		[GameFieldOffsetFieldName("width")]
+		public static int OFFSET_Width = 0x10;
+		[GameFieldOffsetFieldName("height")]
+		public static int OFFSET_Height = 0x14;
+		[GameFieldOffsetFieldName("position")]
+		public static int OFFSET_Position = 0x20;
+		[GameFieldOffsetFieldName("velocity")]
+		public static int OFFSET_Velocity = 0x28;
+		[GameFieldOffsetFieldName("oldPosition")]
+		public static int OFFSET_OldPosition = 0x30;
+		[GameFieldOffsetFieldName("direction")]
+		public static int OFFSET_Direction = 0xc;
+		[GameFieldOffsetFieldName("oldDirection")]
+		public static int OFFSET_OldDirection = 0x8;
+		[GameFieldOffsetFieldName("wet")]
+		public static int OFFSET_Wet = 0x19;
+		[GameFieldOffsetFieldName("honeyWet")]
+		public static int OFFSET_HoneyWet = 0x1a;
+		[GameFieldOffsetFieldName("wetCount")]
+		public static int OFFSET_WetCount = 0x1b;
+		[GameFieldOffsetFieldName("lavaWet")]
+		public static int OFFSET_LavaWet = 0x1c;
 
 		public int WhoAmI
 		{
@@ -38,55 +49,55 @@ namespace QTRHacker.Functions.GameObjects
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_X, out float v);
+				ReadFromOffset(OFFSET_Position, out float v);
 				return v;
 			}
-			set => WriteFromOffset(OFFSET_X, value);
+			set => WriteFromOffset(OFFSET_Position, value);
 		}
 		public float Y
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_Y, out float v);
+				ReadFromOffset(OFFSET_Position + 0x4, out float v);
 				return v;
 			}
-			set => WriteFromOffset(OFFSET_Y, value);
+			set => WriteFromOffset(OFFSET_Position + 0x4, value);
 		}
 		public float OldX
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_OldX, out float v);
+				ReadFromOffset(OFFSET_OldPosition, out float v);
 				return v;
 			}
-			set => WriteFromOffset(OFFSET_OldX, value);
+			set => WriteFromOffset(OFFSET_OldPosition, value);
 		}
 		public float OldY
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_OldY, out float v);
+				ReadFromOffset(OFFSET_OldPosition + 0x4, out float v);
 				return v;
 			}
-			set => WriteFromOffset(OFFSET_OldY, value);
+			set => WriteFromOffset(OFFSET_OldPosition + 0x4, value);
 		}
 		public float VelocityX
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_VelocityX, out float v);
+				ReadFromOffset(OFFSET_Velocity, out float v);
 				return v;
 			}
-			set => WriteFromOffset(OFFSET_VelocityX, value);
+			set => WriteFromOffset(OFFSET_Velocity, value);
 		}
 		public float VelocityY
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_VelocityY, out float v);
+				ReadFromOffset(OFFSET_Velocity + 0x4, out float v);
 				return v;
 			}
-			set => WriteFromOffset(OFFSET_VelocityY, value);
+			set => WriteFromOffset(OFFSET_Velocity + 0x4, value);
 		}
 		public int Width
 		{

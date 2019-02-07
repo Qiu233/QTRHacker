@@ -8,11 +8,17 @@ namespace QTRHacker.Functions.GameObjects
 {
 	public class GameObjectArray2D<T> : GameObject where T : GameObject
 	{
+		/// <summary>
+		/// 在低版本的.NET下运行的游戏可能无法使用，慎用
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns></returns>
 		public virtual T this[int x, int y]
 		{
 			get
 			{
-				ReadFromOffset((x * D2 + y) * 4 + 0x18, out int vv);
+				ReadFromOffset(0x18 + (x * D2 + y) * 4, out int vv);
 				return (T)typeof(T).GetConstructor(new Type[] { typeof(GameContext), typeof(int) }).Invoke(new object[] { Context, vv });
 			}
 		}

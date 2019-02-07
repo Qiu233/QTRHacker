@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
+	[GameFieldOffsetTypeName("Terraria.WorldGen")]
 	public class WorldGen : GameObject
 	{
 		public WorldGen(GameContext Context, int bAddr) : base(Context, bAddr)
