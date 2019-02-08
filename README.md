@@ -9,8 +9,8 @@ Sorry for that there's no English version for the newest version.
 Maybe you should compile it by yourself.
 
 ## Environmental requests
-* Windows 7 or above(x64) needed.
-* .Net Framework 4.5 or above needed.
+* Windows 7 or above(32/64) needed.
+* .Net Framework 4.6.2 or above needed.
 * VC Runtime(VC Redist) needed.
 
 ## How to compile:
