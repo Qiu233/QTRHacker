@@ -74,6 +74,7 @@ Axe	砍伐力
 Hammer	锤击力
 TileBoost	额外距离
 CreateTile	放置ID
+CreateWall	墙壁ID
 PlaceStyle	特殊值
 FishingPole	鱼竿
 Bait	鱼饵
@@ -135,7 +136,7 @@ Magic	魔法
 Summon	召唤
 Buff	Buff
 Consumable	消耗
-Other	其他
+Others	其他
 
 KeyWord	关键词
 Reset	重置
@@ -208,3 +209,10 @@ MechanicalGlassesEffect	机械眼镜：在屏幕上显示电路
 
 ShadowDodge	影分身
 ShowInvisiblePlayers	显示隐身的玩家
+
+File	文件
+
+Platinum	铂
+Gold	金
+Silver	银
+Copper	铜

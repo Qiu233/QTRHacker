@@ -76,7 +76,11 @@ namespace QTRHacker.NewDimension.PagePanels
 		{
 			ClientSize = new Size(800, 590);
 			FileName = $".\\Projs\\{file}.projimg";
+#if ENG
+			Text = "ProjMaker-Name：" + file;
+#else
 			Text = "弹幕编辑器-名称：" + file;
+#endif
 			BackColor = sBlackColor;
 			MenuStrip = new MenuStrip()
 			{
@@ -84,15 +88,15 @@ namespace QTRHacker.NewDimension.PagePanels
 				ForeColor = Color.White,
 				Renderer = new MenuStripRender()
 			};
-			ToolStripMenuItem FileMenuItem = new ToolStripMenuItem("文件")
+			ToolStripMenuItem FileMenuItem = new ToolStripMenuItem(MainForm.CurrentLanguage["File"])
 			{
 				ForeColor = Color.White,
 			};
-			AddMenuItem(FileMenuItem, "保存", (s, e) => Save());
-			AddMenuItem(FileMenuItem, "重新打开", (s, e) => Open());
+			AddMenuItem(FileMenuItem, MainForm.CurrentLanguage["Save"], (s, e) => Save());
+			AddMenuItem(FileMenuItem, MainForm.CurrentLanguage["Reopen"], (s, e) => Open());
 			MenuStrip.Items.Add(FileMenuItem);
 
-			ToolStripMenuItem CompileMenuItem = new ToolStripMenuItem("编译")
+			ToolStripMenuItem CompileMenuItem = new ToolStripMenuItem(MainForm.CurrentLanguage["Compile"])
 			{
 				ForeColor = Color.White,
 			};
@@ -141,15 +145,27 @@ namespace QTRHacker.NewDimension.PagePanels
 				LogBox.Text = "";
 				OutputLog(DateTime.Now.ToString());
 				img = p.Parse();
+#if ENG
+				OutputLog($"Compilation completed，{img.Projs.Count} projectiles generated");
+#else
 				OutputLog($"编译成功，生成了{img.Projs.Count}个弹幕");
+#endif
 				if (ctx != null)
 				{
 					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+#if ENG
+					OutputLog($"Projectiles has been emited");
+#else
 					OutputLog($"已经发射到游戏");
+#endif
 				}
 				else
 				{
+#if ENG
+					OutputLog($"Game isn't locked.Failed.");
+#else
 					OutputLog($"未锁定游戏进程，发射弹幕失败");
+#endif
 				}
 			}
 			catch (ParseException pe)
@@ -167,7 +183,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			}
 			OutputLog("\n\n");
 #endif
-		}
+				}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
 		{

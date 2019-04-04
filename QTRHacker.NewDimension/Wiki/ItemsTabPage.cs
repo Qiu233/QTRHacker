@@ -60,11 +60,11 @@ namespace QTRHacker.NewDimension.Wiki
 			ItemListView.MultiSelect = false;
 			ItemListView.HideSelection = false;
 			ItemListView.View = View.Details;
-			ItemListView.Columns.Add("ID", 50);
-			ItemListView.Columns.Add("品质", 50);
-			ItemListView.Columns.Add("英文名称", 125);
-			ItemListView.Columns.Add("中文名称", 125);
-			ItemListView.Columns.Add("类型", 70);
+			ItemListView.Columns.Add(MainForm.CurrentLanguage["Index"], 50);
+			ItemListView.Columns.Add(MainForm.CurrentLanguage["Rare"], 50);
+			ItemListView.Columns.Add(MainForm.CurrentLanguage["EnglishName"], 125);
+			ItemListView.Columns.Add(MainForm.CurrentLanguage["ChineseName"], 125);
+			ItemListView.Columns.Add(MainForm.CurrentLanguage["Type"], 70);
 
 			ItemListView.MouseDoubleClick += (s, e) =>
 			{
@@ -75,26 +75,26 @@ namespace QTRHacker.NewDimension.Wiki
 			};
 			ItemListView.SelectedIndexChanged += ItemListView_SelectedIndexChanged;
 
-			ItemInfoPage = new TabPage("物品信息");
+			ItemInfoPage = new TabPage(MainForm.CurrentLanguage["ItemInfo"]);
 
 			{
 				ItemIconInfoView = new InfoView(new PictureBox() { SizeMode = PictureBoxSizeMode.CenterImage }, InfoView.TipDock.Top);
-				ItemIconInfoView.Text = "图标";
+				ItemIconInfoView.Text = MainForm.CurrentLanguage["Icon"];
 				ItemIconInfoView.Bounds = new Rectangle(5, 5, 80, 80);
 				ItemIconInfoView.Tip.BackColor = ItemsColor;
 
 				ItemNameInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
-				ItemNameInfoView.Text = "名称";
+				ItemNameInfoView.Text = MainForm.CurrentLanguage["Name"];
 				ItemNameInfoView.Tip.BackColor = ItemsColor;
 				ItemNameInfoView.Bounds = new Rectangle(0, 0, 170, 20);
 
 				ItemTypeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
-				ItemTypeInfoView.Text = "类型";
+				ItemTypeInfoView.Text = MainForm.CurrentLanguage["Type"];
 				ItemTypeInfoView.Tip.BackColor = ItemsColor;
 				ItemTypeInfoView.Bounds = new Rectangle(0, 20, 170, 20);
 
 				ItemRareInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
-				ItemRareInfoView.Text = "品质";
+				ItemRareInfoView.Text = MainForm.CurrentLanguage["Rare"];
 				ItemRareInfoView.Tip.BackColor = ItemsColor;
 				ItemRareInfoView.Bounds = new Rectangle(0, 40, 170, 20);
 
@@ -103,12 +103,12 @@ namespace QTRHacker.NewDimension.Wiki
 				ItemDetailInfoViewContent.Controls.Add(ItemNameInfoView);
 				ItemDetailInfoViewContent.Controls.Add(ItemTypeInfoView);
 				ItemDetailInfoViewContent.Controls.Add(ItemRareInfoView);
-				ItemDetailInfoView.Text = "详细信息";
+				ItemDetailInfoView.Text = MainForm.CurrentLanguage["Details"];
 				ItemDetailInfoView.Tip.BackColor = ItemsColor;
 				ItemDetailInfoView.Bounds = new Rectangle(90, 5, 170, 80);
 
 				ItemDescriptionInfoView = new InfoView(new TextBox() { Multiline = true }, InfoView.TipDock.Left);
-				ItemDescriptionInfoView.Text = "描述";
+				ItemDescriptionInfoView.Text = MainForm.CurrentLanguage["Description"];
 				ItemDescriptionInfoView.Tip.BackColor = ItemsColor;
 				ItemDescriptionInfoView.Bounds = new Rectangle(5, 90, 255, 80);
 
@@ -118,7 +118,7 @@ namespace QTRHacker.NewDimension.Wiki
 				};
 				requireItems.MouseDoubleClick += RequireItems_MouseDoubleClick;
 				ItemRecipeFromInfoView = new InfoView(requireItems, InfoView.TipDock.Top);
-				ItemRecipeFromInfoView.Text = "合成(From)";
+				ItemRecipeFromInfoView.Text = MainForm.CurrentLanguage["Recipe"] + "(From)";
 				ItemRecipeFromInfoView.Tip.BackColor = ItemsColor;
 				ItemRecipeFromInfoView.Bounds = new Rectangle(5, 175, 255, 100);
 
@@ -128,12 +128,12 @@ namespace QTRHacker.NewDimension.Wiki
 				};
 				recipeToItems.MouseDoubleClick += RecipeToItems_MouseDoubleClick;
 				ItemRecipeToInfoView = new InfoView(recipeToItems, InfoView.TipDock.Top);
-				ItemRecipeToInfoView.Text = "合成(To)";
+				ItemRecipeToInfoView.Text = MainForm.CurrentLanguage["Recipe"] + "(To)";
 				ItemRecipeToInfoView.Tip.BackColor = ItemsColor;
 				ItemRecipeToInfoView.Bounds = new Rectangle(5, 280, 255, 100);
 
 				ItemValueInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left);
-				ItemValueInfoView.Text = "价值";
+				ItemValueInfoView.Text = MainForm.CurrentLanguage["Rare"];
 				ItemValueInfoView.Tip.BackColor = ItemsColor;
 				ItemValueInfoView.Bounds = new Rectangle(5, 385, 255, 20);
 
@@ -147,27 +147,27 @@ namespace QTRHacker.NewDimension.Wiki
 				ItemInfoPage.Controls.Add(ItemValueInfoView);
 			}
 
-			AccInfoPage = new TabPage("装备信息");
+			AccInfoPage = new TabPage(MainForm.CurrentLanguage["ArmorInfo"]);
 
 			{
 				ItemIcon2InfoView = new InfoView(new PictureBox() { SizeMode = PictureBoxSizeMode.CenterImage }, InfoView.TipDock.Top);
-				ItemIcon2InfoView.Text = "图标";
+				ItemIcon2InfoView.Text = MainForm.CurrentLanguage["Icon"];
 				ItemIcon2InfoView.Bounds = new Rectangle(5, 5, 80, 80);
 				ItemIcon2InfoView.Tip.BackColor = ItemsColor;
 
 
 				ItemPickaxeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
-				ItemPickaxeInfoView.Text = "挖掘";
+				ItemPickaxeInfoView.Text = MainForm.CurrentLanguage["Pick"];
 				ItemPickaxeInfoView.Tip.BackColor = ItemsColor;
 				ItemPickaxeInfoView.Bounds = new Rectangle(0, 0, 170, 20);
 
 				ItemAxeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
-				ItemAxeInfoView.Text = "砍伐";
+				ItemAxeInfoView.Text = MainForm.CurrentLanguage["Axe"];
 				ItemAxeInfoView.Tip.BackColor = ItemsColor;
 				ItemAxeInfoView.Bounds = new Rectangle(0, 20, 170, 20);
 
 				ItemHammerInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
-				ItemHammerInfoView.Text = "锤击";
+				ItemHammerInfoView.Text = MainForm.CurrentLanguage["Hammer"];
 				ItemHammerInfoView.Tip.BackColor = ItemsColor;
 				ItemHammerInfoView.Bounds = new Rectangle(0, 40, 170, 20);
 
@@ -177,105 +177,105 @@ namespace QTRHacker.NewDimension.Wiki
 				ItemDetailInfoViewContent.Controls.Add(ItemPickaxeInfoView);
 				ItemDetailInfoViewContent.Controls.Add(ItemAxeInfoView);
 				ItemDetailInfoViewContent.Controls.Add(ItemHammerInfoView);
-				ItemDetailInfoView.Text = "详细信息";
+				ItemDetailInfoView.Text = MainForm.CurrentLanguage["Details"];
 				ItemDetailInfoView.Tip.BackColor = ItemsColor;
 				ItemDetailInfoView.Bounds = new Rectangle(90, 5, 170, 80);
 
 				ItemDamageInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemDamageInfoView.Text = "攻击力";
+				ItemDamageInfoView.Text = MainForm.CurrentLanguage["Damage"];
 				ItemDamageInfoView.Tip.BackColor = ItemsColor;
 				ItemDamageInfoView.Bounds = new Rectangle(0, 0, 127, 20);
 
 				ItemDefenseInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemDefenseInfoView.Text = "防御力";
+				ItemDefenseInfoView.Text = MainForm.CurrentLanguage["Defense"];
 				ItemDefenseInfoView.Tip.BackColor = ItemsColor;
 				ItemDefenseInfoView.Bounds = new Rectangle(128, 0, 127, 20);
 
 
 				ItemCritInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemCritInfoView.Text = "暴击";
+				ItemCritInfoView.Text = MainForm.CurrentLanguage["Crit"];
 				ItemCritInfoView.Tip.BackColor = ItemsColor;
 				ItemCritInfoView.Bounds = new Rectangle(0, 20, 127, 20);
 
 				ItemKnockbackInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemKnockbackInfoView.Text = "击退";
+				ItemKnockbackInfoView.Text = MainForm.CurrentLanguage["KnockBack"];
 				ItemKnockbackInfoView.Tip.BackColor = ItemsColor;
 				ItemKnockbackInfoView.Bounds = new Rectangle(128, 20, 127, 20);
 
 
 				ItemShootInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemShootInfoView.Text = "弹幕ID";
+				ItemShootInfoView.Text = MainForm.CurrentLanguage["Shoot"];
 				ItemShootInfoView.Tip.BackColor = ItemsColor;
 				ItemShootInfoView.Bounds = new Rectangle(0, 40, 127, 20);
 
 				ItemShootSpeedInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemShootSpeedInfoView.Text = "弹幕速度";
+				ItemShootSpeedInfoView.Text = MainForm.CurrentLanguage["ShootSpeed"];
 				ItemShootSpeedInfoView.Tip.BackColor = ItemsColor;
 				ItemShootSpeedInfoView.Bounds = new Rectangle(128, 40, 127, 20);
 
 
 				ItemUseTimeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemUseTimeInfoView.Text = "使用CD";
+				ItemUseTimeInfoView.Text = MainForm.CurrentLanguage["UseTime"];
 				ItemUseTimeInfoView.Tip.BackColor = ItemsColor;
 				ItemUseTimeInfoView.Bounds = new Rectangle(0, 60, 127, 20);
 
 				ItemUseAnimationInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemUseAnimationInfoView.Text = "挥动CD";
+				ItemUseAnimationInfoView.Text = MainForm.CurrentLanguage["UseAnimation"];
 				ItemUseAnimationInfoView.Tip.BackColor = ItemsColor;
 				ItemUseAnimationInfoView.Bounds = new Rectangle(128, 60, 127, 20);
 
 
 				ItemHealLifeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemHealLifeInfoView.Text = "生命回复";
+				ItemHealLifeInfoView.Text = MainForm.CurrentLanguage["HealLife"];
 				ItemHealLifeInfoView.Tip.BackColor = ItemsColor;
 				ItemHealLifeInfoView.Bounds = new Rectangle(0, 80, 127, 20);
 
 				ItemHealManaInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemHealManaInfoView.Text = "魔法回复";
+				ItemHealManaInfoView.Text = MainForm.CurrentLanguage["HealMana"];
 				ItemHealManaInfoView.Tip.BackColor = ItemsColor;
 				ItemHealManaInfoView.Bounds = new Rectangle(128, 80, 127, 20);
 
 
 				ItemCreateTileInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemCreateTileInfoView.Text = "放置ID";
+				ItemCreateTileInfoView.Text = MainForm.CurrentLanguage["CreateTile"];
 				ItemCreateTileInfoView.Tip.BackColor = ItemsColor;
 				ItemCreateTileInfoView.Bounds = new Rectangle(0, 100, 127, 20);
 
 				ItemPlaceStyleInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemPlaceStyleInfoView.Text = "特殊值";
+				ItemPlaceStyleInfoView.Text = MainForm.CurrentLanguage["PlaceStyle"];
 				ItemPlaceStyleInfoView.Tip.BackColor = ItemsColor;
 				ItemPlaceStyleInfoView.Bounds = new Rectangle(128, 100, 127, 20);
 
 
 				ItemCreateWallInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemCreateWallInfoView.Text = "墙壁ID";
+				ItemCreateWallInfoView.Text = MainForm.CurrentLanguage["CreateWall"];
 				ItemCreateWallInfoView.Tip.BackColor = ItemsColor;
 				ItemCreateWallInfoView.Bounds = new Rectangle(0, 120, 127, 20);
 
 				ItemTileBoostInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemTileBoostInfoView.Text = "额外距离";
+				ItemTileBoostInfoView.Text = MainForm.CurrentLanguage["TileBoost"];
 				ItemTileBoostInfoView.Tip.BackColor = ItemsColor;
 				ItemTileBoostInfoView.Bounds = new Rectangle(128, 120, 127, 20);
 
 
 				ItemBuffTypeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemBuffTypeInfoView.Text = "Buff";
+				ItemBuffTypeInfoView.Text = MainForm.CurrentLanguage["Buff"];
 				ItemBuffTypeInfoView.Tip.BackColor = ItemsColor;
 				ItemBuffTypeInfoView.Bounds = new Rectangle(0, 140, 127, 20);
 
 				ItemBuffTimeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemBuffTimeInfoView.Text = "Buff时间";
+				ItemBuffTimeInfoView.Text = MainForm.CurrentLanguage["BuffTime"];
 				ItemBuffTimeInfoView.Tip.BackColor = ItemsColor;
 				ItemBuffTimeInfoView.Bounds = new Rectangle(128, 140, 127, 20);
 
 
 				ItemManaConsumeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemManaConsumeInfoView.Text = "魔法消耗";
+				ItemManaConsumeInfoView.Text = MainForm.CurrentLanguage["ManaConsume"];
 				ItemManaConsumeInfoView.Tip.BackColor = ItemsColor;
 				ItemManaConsumeInfoView.Bounds = new Rectangle(0, 160, 127, 20);
 
 				ItemBaitInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
-				ItemBaitInfoView.Text = "鱼饵";
+				ItemBaitInfoView.Text = MainForm.CurrentLanguage["Bait"];
 				ItemBaitInfoView.Tip.BackColor = ItemsColor;
 				ItemBaitInfoView.Bounds = new Rectangle(128, 160, 127, 20);
 
@@ -300,14 +300,14 @@ namespace QTRHacker.NewDimension.Wiki
 				ItemPropertiesInfoViewContent.Controls.Add(ItemBuffTimeInfoView);
 				ItemPropertiesInfoViewContent.Controls.Add(ItemManaConsumeInfoView);
 				ItemPropertiesInfoViewContent.Controls.Add(ItemBaitInfoView);
-				ItemPropertiesInfoView.Text = "属性";
+				ItemPropertiesInfoView.Text = MainForm.CurrentLanguage["Properties"];
 				ItemPropertiesInfoView.Tip.BackColor = ItemsColor;
 				ItemPropertiesInfoView.Bounds = new Rectangle(5, 105, 255, 10 * 20);
 
 
 
 				ItemDescription2InfoView = new InfoView(new TextBox() { Multiline = true }, InfoView.TipDock.Left);
-				ItemDescription2InfoView.Text = "描述";
+				ItemDescription2InfoView.Text = MainForm.CurrentLanguage["Description"];
 				ItemDescription2InfoView.Tip.BackColor = ItemsColor;
 				ItemDescription2InfoView.Bounds = new Rectangle(5, 320, 255, 80);
 
@@ -317,87 +317,87 @@ namespace QTRHacker.NewDimension.Wiki
 				AccInfoPage.Controls.Add(ItemDescription2InfoView);
 			}
 
-			SearcherPage = new TabPage("搜索");
+			SearcherPage = new TabPage(MainForm.CurrentLanguage["Search"]);
 
 			{
 				GroupBox filterGroupBox = new GroupBox();
-				filterGroupBox.Text = "筛选";
+				filterGroupBox.Text = MainForm.CurrentLanguage["Filter"];
 				filterGroupBox.Bounds = new Rectangle(5, 10, 255, 105);
 
 				BlockCheckBox = new CheckBox();
-				BlockCheckBox.Text = "方块";
+				BlockCheckBox.Text = MainForm.CurrentLanguage["Blocks"];
 				BlockCheckBox.Checked = true;
 				BlockCheckBox.Bounds = new Rectangle(5, 20, 50, 20);
 				BlockCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				WallCheckBox = new CheckBox();
-				WallCheckBox.Text = "墙壁";
+				WallCheckBox.Text = MainForm.CurrentLanguage["Walls"];
 				WallCheckBox.Checked = true;
 				WallCheckBox.Bounds = new Rectangle(70, 20, 50, 20);
 				WallCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				HeadCheckBox = new CheckBox();
-				HeadCheckBox.Text = "头部";
+				HeadCheckBox.Text = MainForm.CurrentLanguage["Head"];
 				HeadCheckBox.Checked = true;
 				HeadCheckBox.Bounds = new Rectangle(5, 40, 50, 20);
 				HeadCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				BodyCheckBox = new CheckBox();
-				BodyCheckBox.Text = "身体";
+				BodyCheckBox.Text = MainForm.CurrentLanguage["Body"];
 				BodyCheckBox.Checked = true;
 				BodyCheckBox.Bounds = new Rectangle(70, 40, 50, 20);
 				BodyCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				LegCheckBox = new CheckBox();
-				LegCheckBox.Text = "腿部";
+				LegCheckBox.Text = MainForm.CurrentLanguage["Leg"];
 				LegCheckBox.Checked = true;
 				LegCheckBox.Bounds = new Rectangle(135, 40, 50, 20);
 				LegCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				AccessoryCheckBox = new CheckBox();
-				AccessoryCheckBox.Text = "饰品";
+				AccessoryCheckBox.Text = MainForm.CurrentLanguage["Accessory"];
 				AccessoryCheckBox.Checked = true;
 				AccessoryCheckBox.Bounds = new Rectangle(200, 40, 50, 20);
 				AccessoryCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				MeleeCheckBox = new CheckBox();
-				MeleeCheckBox.Text = "近战";
+				MeleeCheckBox.Text = MainForm.CurrentLanguage["Melee"];
 				MeleeCheckBox.Checked = true;
 				MeleeCheckBox.Bounds = new Rectangle(5, 60, 50, 20);
 				MeleeCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				RangedCheckBox = new CheckBox();
-				RangedCheckBox.Text = "远程";
+				RangedCheckBox.Text = MainForm.CurrentLanguage["Ranged"];
 				RangedCheckBox.Checked = true;
 				RangedCheckBox.Bounds = new Rectangle(70, 60, 50, 20);
 				RangedCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				MagicCheckBox = new CheckBox();
-				MagicCheckBox.Text = "魔法";
+				MagicCheckBox.Text = MainForm.CurrentLanguage["Magic"];
 				MagicCheckBox.Checked = true;
 				MagicCheckBox.Bounds = new Rectangle(135, 60, 50, 20);
 				MagicCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				SummonCheckBox = new CheckBox();
-				SummonCheckBox.Text = "召唤";
+				SummonCheckBox.Text = MainForm.CurrentLanguage["Summon"];
 				SummonCheckBox.Checked = true;
 				SummonCheckBox.Bounds = new Rectangle(200, 60, 50, 20);
 				SummonCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				BuffCheckBox = new CheckBox();
-				BuffCheckBox.Text = "Buff";
+				BuffCheckBox.Text = MainForm.CurrentLanguage["Buff"];
 				BuffCheckBox.Checked = true;
 				BuffCheckBox.Bounds = new Rectangle(5, 80, 50, 20);
 				BuffCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				ConsumableCheckBox = new CheckBox();
-				ConsumableCheckBox.Text = "消耗";
+				ConsumableCheckBox.Text = MainForm.CurrentLanguage["Consumable"];
 				ConsumableCheckBox.Checked = true;
 				ConsumableCheckBox.Bounds = new Rectangle(70, 80, 50, 20);
 				ConsumableCheckBox.CheckedChanged += Filter_CheckedChanged;
 
 				OthersCheckBox = new CheckBox();
-				OthersCheckBox.Text = "其他";
+				OthersCheckBox.Text = MainForm.CurrentLanguage["Others"];
 				OthersCheckBox.Checked = true;
 				OthersCheckBox.Bounds = new Rectangle(135, 80, 50, 20);
 				OthersCheckBox.CheckedChanged += Filter_CheckedChanged;
@@ -417,7 +417,7 @@ namespace QTRHacker.NewDimension.Wiki
 				filterGroupBox.Controls.Add(OthersCheckBox);
 
 				Label tipSearch = new Label();
-				tipSearch.Text = "关键词:";
+				tipSearch.Text = MainForm.CurrentLanguage["KeyWord"] + ":";
 				tipSearch.Bounds = new Rectangle(15, 133, 50, 20);
 
 				KeyWordTextBox = new TextBox();
@@ -433,7 +433,7 @@ namespace QTRHacker.NewDimension.Wiki
 				};
 
 				Button searchButton = new Button();
-				searchButton.Text = "搜索";
+				searchButton.Text = MainForm.CurrentLanguage["Search"];
 				searchButton.Bounds = new Rectangle(70, 160, 60, 20);
 				searchButton.Click += (s, e) =>
 				{
@@ -442,7 +442,7 @@ namespace QTRHacker.NewDimension.Wiki
 				};
 
 				Button resetButton = new Button();
-				resetButton.Text = "重置";
+				resetButton.Text = MainForm.CurrentLanguage["Reset"];
 				resetButton.Bounds = new Rectangle(130, 160, 60, 20);
 				resetButton.Click += (s, e) =>
 				{
@@ -517,7 +517,10 @@ namespace QTRHacker.NewDimension.Wiki
 			a = a % VALUE_S;
 			int c = a / VALUE_C;
 			a = a % VALUE_C;
-			return p + "铂 " + g + "金 " + s + "银 " + c + "铜";
+			return p + MainForm.CurrentLanguage["Platinum"]+" " + g + 
+				MainForm.CurrentLanguage["Gold"] + " " + s + 
+				MainForm.CurrentLanguage["Silver"] + " " + c + 
+				MainForm.CurrentLanguage["Copper"] + "";
 		}
 
 		private void ItemListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -657,18 +660,18 @@ namespace QTRHacker.NewDimension.Wiki
 		private string GetItemType(JToken j)
 		{
 			List<bool> b = new List<bool>();
-			if (j["createTile"].ToObject<int>() != -1) return "方块";
-			if (j["createWall"].ToObject<int>() != -1) return "墙壁";
-			if (j["headSlot"].ToObject<int>() != -1) return "头部";
-			if (j["bodySlot"].ToObject<int>() != -1) return "身体";
-			if (j["legSlot"].ToObject<int>() != -1) return "腿部";
-			if (j["accessory"].ToObject<bool>()) return "饰品";
-			if (j["melee"].ToObject<bool>()) return "近战";
-			if ((j["ranged"].ToObject<bool>() || j["thrown"].ToObject<bool>())) return "远程";
-			if (j["magic"].ToObject<bool>()) return "魔法";
-			if ((j["summon"].ToObject<bool>() || j["sentry"].ToObject<bool>())) return "召唤";
-			if (j["buffType"].ToObject<int>() != 0) return "Buff";
-			if (j["consumable"].ToObject<bool>()) return "消耗";
+			if (j["createTile"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Blocks"];
+			if (j["createWall"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Walls"];
+			if (j["headSlot"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Head"];
+			if (j["bodySlot"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Body"];
+			if (j["legSlot"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Leg"];
+			if (j["accessory"].ToObject<bool>()) return MainForm.CurrentLanguage["Accessory"];
+			if (j["melee"].ToObject<bool>()) return MainForm.CurrentLanguage["Melee"];
+			if ((j["ranged"].ToObject<bool>() || j["thrown"].ToObject<bool>())) return MainForm.CurrentLanguage["Ranged"];
+			if (j["magic"].ToObject<bool>()) return MainForm.CurrentLanguage["Magic"];
+			if ((j["summon"].ToObject<bool>() || j["sentry"].ToObject<bool>())) return MainForm.CurrentLanguage["Summon"];
+			if (j["buffType"].ToObject<int>() != 0) return MainForm.CurrentLanguage["Buff"];
+			if (j["consumable"].ToObject<bool>()) return MainForm.CurrentLanguage["Consumable"];
 			return "无";
 		}
 

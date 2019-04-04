@@ -74,6 +74,7 @@ Axe	Axe
 Hammer	Hammer
 TileBoost	TileBoost
 CreateTile	CreateTile
+CreateWall	CreateWall
 PlaceStyle	PlaceStyle
 FishingPole	FishingPole
 Bait	Bait
@@ -116,7 +117,7 @@ ArmorInfo	ArmorInfo
 Search	Search
 Icon	Icon
 Details	Details
-Description	Description
+Description	Descr
 Recipe	Recipe
 Value	Value
 
@@ -135,7 +136,7 @@ Magic	Magic
 Summon	Summon
 Buff	Buff
 Consumable	Consu
-Other	Other
+Others	Others
 
 KeyWord	Keyword
 Reset	Reset
@@ -208,3 +209,10 @@ MechanicalGlassesEffect	MechanicalGlasses Effect
 
 ShadowDodge	ShadowDodge
 ShowInvisiblePlayers	Show Invisible Players
+
+File	File
+
+Platinum	P
+Gold	G
+Silver	S
+Copper	C
