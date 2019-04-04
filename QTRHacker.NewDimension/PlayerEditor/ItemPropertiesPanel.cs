@@ -40,37 +40,37 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		public ItemPropertiesPanel()
 		{
 			Hack = new Hashtable();
-			AddTextBox("类型", "Type", null);
-			AddTextBox("攻击力", "Damage", null);
-			AddTextBox("数量", "Stack", null);
-			AddTextBox("击退", "KnockBack", null, true);
-			AddTextBox("暴击", "Crit", null);
-			AddTextBox("Buff类型", "BuffType", null);
-			AddTextBox("Buff时间", "BuffTime", null);
-			AddTextBox("回蓝", "HealMana", null);
-			AddTextBox("回血", "HealLife", null);
-			AddTextBox("挥动间隔", "UseTime", null);
-			AddTextBox("挥动时间", "UseAnimation", null);
-			AddTextBox("缩放", "Scale", null, true);
-			AddTextBox("防御", "Defense", null);
-			AddTextBox("弹幕速度", "ShootSpeed", null, true);
-			AddTextBox("弹幕", "Shoot", null);
-			AddTextBox("挖掘力", "Pick", null);
-			AddTextBox("砍伐力", "Axe", null);
-			AddTextBox("锤击力", "Hammer", null);
-			AddTextBox("挖掘距离", "TileBoost", null);
-			AddTextBox("放置ID", "CreateTile", null);
-			AddTextBox("特殊值", "PlaceStyle", null);
-			AddTextBox("鱼竿", "FishingPole", null);
-			AddTextBox("鱼饵", "Bait", null);
+			AddTextBox(MainForm.CurrentLanguage["Type"], "Type", null);
+			AddTextBox(MainForm.CurrentLanguage["Damage"], "Damage", null);
+			AddTextBox(MainForm.CurrentLanguage["Stack"], "Stack", null);
+			AddTextBox(MainForm.CurrentLanguage["KnockBack"], "KnockBack", null, true);
+			AddTextBox(MainForm.CurrentLanguage["Crit"], "Crit", null);
+			AddTextBox(MainForm.CurrentLanguage["BuffType"], "BuffType", null);
+			AddTextBox(MainForm.CurrentLanguage["BuffTime"], "BuffTime", null);
+			AddTextBox(MainForm.CurrentLanguage["HealMana"], "HealMana", null);
+			AddTextBox(MainForm.CurrentLanguage["HealLife"], "HealLife", null);
+			AddTextBox(MainForm.CurrentLanguage["UseTime"], "UseTime", null);
+			AddTextBox(MainForm.CurrentLanguage["UseAnimation"], "UseAnimation", null);
+			AddTextBox(MainForm.CurrentLanguage["Scale"], "Scale", null, true);
+			AddTextBox(MainForm.CurrentLanguage["Defense"], "Defense", null);
+			AddTextBox(MainForm.CurrentLanguage["ShootSpeed"], "ShootSpeed", null, true);
+			AddTextBox(MainForm.CurrentLanguage["Shoot"], "Shoot", null);
+			AddTextBox(MainForm.CurrentLanguage["Pick"], "Pick", null);
+			AddTextBox(MainForm.CurrentLanguage["Axe"], "Axe", null);
+			AddTextBox(MainForm.CurrentLanguage["Hammer"], "Hammer", null);
+			AddTextBox(MainForm.CurrentLanguage["TileBoost"], "TileBoost", null);
+			AddTextBox(MainForm.CurrentLanguage["CreateTile"], "CreateTile", null);
+			AddTextBox(MainForm.CurrentLanguage["PlaceStyle"], "PlaceStyle", null);
+			AddTextBox(MainForm.CurrentLanguage["FishingPole"], "FishingPole", null);
+			AddTextBox(MainForm.CurrentLanguage["Bait"], "Bait", null);
 
 
-			PrefixComboBox = AddComboBox("前缀", GameResLoader.Prefixes);
+			PrefixComboBox = AddComboBox(MainForm.CurrentLanguage["Prefix"], GameResLoader.Prefixes);
 			PrefixComboBox.BackColor = Color.FromArgb(120, 120, 120);
 
 			AutoReuseCheckBox = new CheckBox()
 			{
-				Text = "按住鼠标连续使用",
+				Text = MainForm.CurrentLanguage["AutoReuse"],
 				Size = new Size(130, 20),
 				Location = new Point(0, 245)
 			};
@@ -78,7 +78,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 			EquippableCheckBox = new CheckBox()
 			{
-				Text = "可装备",
+				Text = MainForm.CurrentLanguage["Accessory"],
 				Size = new Size(130, 20),
 				Location = new Point(135, 245)
 			};

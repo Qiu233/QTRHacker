@@ -43,7 +43,7 @@ namespace QTRHacker.NewDimension.Controls
 			BackColor = NormalColor;
 			ForeColor = Color.White;
 			Selected = false;
-			TextFont = new Font("Consolas", 10);
+			TextFont = new Font("Arial", 10);
 			//BorderStyle = BorderStyle.FixedSingle;
 		}
 		protected override void OnMouseDown(MouseEventArgs e)

@@ -48,11 +48,11 @@ namespace QTRHacker.NewDimension
 
 		private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
-			if (e.Exception is DllNotFoundException && e.Exception.ToString().Contains("keystone"))
+			/*if (e.Exception is DllNotFoundException && e.Exception.ToString().Contains("keystone"))
 			{
 				MessageBox.Show("请先安装VC运行库");
 			}
-			else
+			else*/
 			{
 				MessageBox.Show(e.Exception.ToString());
 			}

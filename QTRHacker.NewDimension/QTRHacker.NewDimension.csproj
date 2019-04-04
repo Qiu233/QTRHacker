@@ -50,13 +50,45 @@
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ENG|AnyCPU'">
+    <OutputPath>..\ENG\</OutputPath>
+    <DefineConstants>TRACE;ENG</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.AvalonEdit, Version=4.4.1.9729, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\nativedll\ICSharpCode.AvalonEdit.dll</HintPath>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <HintPath>..\packages\AvalonEdit.5.0.4\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython, Version=2.7.9.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.9\lib\net45\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Modules, Version=2.7.9.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.9\lib\net45\IronPython.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.SQLite, Version=2.7.9.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.9\lib\net45\IronPython.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Wpf, Version=2.7.9.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.9\lib\net45\IronPython.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Diagnostics.Runtime, Version=1.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Diagnostics.Runtime.1.0.2\lib\net45\Microsoft.Diagnostics.Runtime.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\nativedll\Microsoft.Diagnostics.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic, Version=1.2.2.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.2\lib\net45\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.2.2.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.2\lib\net45\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.2.2.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.2\lib\net45\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -137,6 +169,7 @@
     <Compile Include="Controls\InfoView.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Languages\Processor.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,9 +177,9 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PagePanels\BracketHighlightRenderer.cs" />
-    <Compile Include="PagePanels\CodeView.cs" />
-    <Compile Include="PagePanels\CodeView.Designer.cs">
-      <DependentUpon>CodeView.cs</DependentUpon>
+    <Compile Include="PagePanels\ProjectileCodeView.cs" />
+    <Compile Include="PagePanels\ProjectileCodeView.Designer.cs">
+      <DependentUpon>ProjectileCodeView.cs</DependentUpon>
     </Compile>
     <Compile Include="PagePanels\PagePanel.cs">
       <SubType>Component</SubType>
@@ -164,6 +197,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PagePanels\PagePanel_Projectile.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PagePanels\PagePanel_Scripts.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PagePanels\ProjMakerForm.cs">
@@ -209,8 +245,8 @@
     <EmbeddedResource Include="Controls\TextButton.resx">
       <DependentUpon>TextButton.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PagePanels\CodeView.resx">
-      <DependentUpon>CodeView.cs</DependentUpon>
+    <EmbeddedResource Include="PagePanels\ProjectileCodeView.resx">
+      <DependentUpon>ProjectileCodeView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -265,6 +301,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <EmbeddedResource Include="Languages\en.txt" />
+    <EmbeddedResource Include="Languages\zh-cn.txt" />
     <EmbeddedResource Include="Res\Image\TMLIcon.png" />
     <EmbeddedResource Include="Res\Game\ItemID.txt" />
     <EmbeddedResource Include="Res\Game\BuffType.txt" />

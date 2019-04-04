@@ -1,9 +1,11 @@
-﻿using QHackLib;
+﻿using Microsoft.Scripting.Hosting;
+using QHackLib;
 using QHackLib.Utilities;
 using QTRHacker.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -82,6 +84,13 @@ namespace QTRHacker.NewDimension
 				u++;
 				NativeFunctions.WriteProcessMemory(GameContext.HContext.Handle, SignHead - 4, ref u, 4, 0);//长度+1
 			}
+		}
+
+		public static ScriptScope CreateScriptScope(ScriptEngine engine)
+		{
+			ScriptScope s = engine.CreateScope();
+			s.SetVariable("game_context", GameContext);
+			return s;
 		}
 	}
 }

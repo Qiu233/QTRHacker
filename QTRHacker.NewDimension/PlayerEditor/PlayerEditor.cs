@@ -29,7 +29,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.Context = Context;
 			this.ParentForm = ParentForm;
 			this.TargetPlayer = TargetPlayer;
-			Text = "人物";
+			Text = MainForm.CurrentLanguage["Character"];
 
 			PlayerView = new PlayerView();
 			PlayerView.Bounds = new Rectangle(5, 5, 200, 250);
@@ -50,13 +50,13 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			};
 
 			PlayerView.HairType = 0;
-			HairColorControl = new ColorSelectControl("头发:") { Enabled = Editable };
-			SkinColorControl = new ColorSelectControl("皮肤:") { Enabled = Editable };
-			EyeColorControl = new ColorSelectControl("眼睛:") { Enabled = Editable };
-			ShirtColorControl = new ColorSelectControl("衬衣:") { Enabled = Editable };
-			UnderShirtColorControl = new ColorSelectControl("内衬:") { Enabled = Editable };
-			PantsColorControl = new ColorSelectControl("裤子:") { Enabled = Editable };
-			ShoesColorControl = new ColorSelectControl("鞋子:") { Enabled = Editable };
+			HairColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Hair"]) { Enabled = Editable };
+			SkinColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Skin"]) { Enabled = Editable };
+			EyeColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Eye"]) { Enabled = Editable };
+			ShirtColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Shirt"]) { Enabled = Editable };
+			UnderShirtColorControl = new ColorSelectControl(MainForm.CurrentLanguage["UnderShirt"]) { Enabled = Editable };
+			PantsColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Pants"]) { Enabled = Editable };
+			ShoesColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Shoes"]) { Enabled = Editable };
 			HairColorControl.OnColorChanged += (c) => PlayerView.HairColor = c;
 			HairColorControl.Location = new Point(0, 30);
 
@@ -100,7 +100,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 			Label HealthTipLabel = new Label()
 			{
-				Text = "最大生命",
+				Text = MainForm.CurrentLanguage["MaxLife"],
 				Location = new Point(160, 8),
 				Size = new Size(60, 20),
 			};
@@ -124,7 +124,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 			Label ManaTipLabel = new Label()
 			{
-				Text = "最大魔法",
+				Text = MainForm.CurrentLanguage["MaxMana"],
 				Location = new Point(160, 33),
 				Size = new Size(60, 20),
 			};
@@ -152,7 +152,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 
 			Button RefreshButton = new Button();
-			RefreshButton.Text = "刷新";
+			RefreshButton.Text = MainForm.CurrentLanguage["Refresh"];
 			RefreshButton.FlatStyle = FlatStyle.Flat;
 			RefreshButton.Bounds = new Rectangle(220, 60, 100, 30);
 			RefreshButton.Click += (s, e) =>
@@ -162,7 +162,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			PropertiesSelectPanel.Controls.Add(RefreshButton);
 
 			Button ConfirmButton = new Button() { Enabled = Editable };
-			ConfirmButton.Text = "确定";
+			ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
 			ConfirmButton.FlatStyle = FlatStyle.Flat;
 			ConfirmButton.Bounds = new Rectangle(220, 93, 100, 30);
 			ConfirmButton.Click += (s, e) =>

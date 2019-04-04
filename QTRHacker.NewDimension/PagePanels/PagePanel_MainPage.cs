@@ -74,84 +74,84 @@ namespace QTRHacker.NewDimension.PagePanels
 			PlayerArrayBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 60, Width, 20),
-				Text = "玩家数组基址"
+				Text = MainForm.CurrentLanguage["PlayerArrayAddress"]
 			};
 			Controls.Add(PlayerArrayBaseAddressInfoView);
 
 			CurrentPlayerBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 80, Width, 20),
-				Text = "当前玩家基址"
+				Text = MainForm.CurrentLanguage["MyPlayerAddress"]
 			};
 			Controls.Add(CurrentPlayerBaseAddressInfoView);
 
 			CurrentPlayerInventoryBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 100, Width, 20),
-				Text = "当前玩家背包基址"
+				Text = MainForm.CurrentLanguage["MyPlayerInvAddress"]
 			};
 			Controls.Add(CurrentPlayerInventoryBaseAddressInfoView);
 
 			CurrentPlayerArmorBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 120, Width, 20),
-				Text = "当前玩家装备基址"
+				Text = MainForm.CurrentLanguage["MyPlayerArmorAddress"]
 			};
 			Controls.Add(CurrentPlayerArmorBaseAddressInfoView);
 
 			CurrentPlayerDyeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 140, Width, 20),
-				Text = "当前玩家染料基址"
+				Text = MainForm.CurrentLanguage["MyPlayerDyeAddress"]
 			};
 			Controls.Add(CurrentPlayerDyeBaseAddressInfoView);
 
 			CurrentPlayerMiscBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 160, Width, 20),
-				Text = "当前玩家配件基址"
+				Text = MainForm.CurrentLanguage["MyPlayerMiscAddress"]
 			};
 			Controls.Add(CurrentPlayerMiscBaseAddressInfoView);
 
 			CurrentPlayerMiscDyeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 180, Width, 20),
-				Text = "当前玩家配件染料基址"
+				Text = MainForm.CurrentLanguage["MyPlayerMiscDyeAddress"]
 			};
 			Controls.Add(CurrentPlayerMiscDyeBaseAddressInfoView);
 
 			CurrentPlayerBuffTypeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 200, Width, 20),
-				Text = "当前Buff基址"
+				Text = MainForm.CurrentLanguage["MyPlayerBuffAddress"]
 			};
 			Controls.Add(CurrentPlayerBuffTypeBaseAddressInfoView);
 
 			CurrentPlayerBuffTimeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 220, Width, 20),
-				Text = "当前Buff时间基址"
+				Text = MainForm.CurrentLanguage["MyPlayerBuffTimeAddress"]
 			};
 			Controls.Add(CurrentPlayerBuffTimeBaseAddressInfoView);
 
 			CurrentPlayerFirstItemBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 240, Width, 20),
-				Text = "第一格物品基址"
+				Text = MainForm.CurrentLanguage["InvFirstItemAddress"]
 			};
 			Controls.Add(CurrentPlayerFirstItemBaseAddressInfoView);
 
 			Terraria_Main_Update_BaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 260, Width, 20),
-				Text = "Terraria_Main::Update"
+				Text = MainForm.CurrentLanguage["Terraria_Main_Update"]
 			};
 			Controls.Add(Terraria_Main_Update_BaseAddressInfoView);
 
 			SignHeadBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 280, Width, 20),
-				Text = "Sign Head地址"
+				Text = MainForm.CurrentLanguage["SignHead"]
 			};
 			Controls.Add(SignHeadBaseAddressInfoView);
 
@@ -160,7 +160,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			RefreshButton = new Button();
 			RefreshButton.FlatStyle = FlatStyle.Flat;
 			RefreshButton.ForeColor = Color.White;
-			RefreshButton.Text = "重新获取地址信息";
+			RefreshButton.Text = MainForm.CurrentLanguage["FetchAddressesAgain"];
 			RefreshButton.Bounds = new Rectangle(Width - 130, Height - 40, 120, 30);
 			RefreshButton.Click += (s, e) =>
 			{
@@ -175,7 +175,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			base.OnPaint(e);
 			if (!Dragging)
 				e.Graphics.DrawImage(CrossImage, Width - 50, 15, 25, 25);
-			e.Graphics.DrawString("拖动右边准星到Terraria游戏窗口", TextFont, Brushes.White, Width - 280, 20);
+			e.Graphics.DrawString(MainForm.CurrentLanguage["DragTip"], TextFont, Brushes.White, Width - 280, 20);
 		}
 		protected override void OnMouseDown(MouseEventArgs e)
 		{

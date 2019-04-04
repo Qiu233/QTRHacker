@@ -101,7 +101,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.Context = Context;
 			this.ParentForm = ParentForm;
 			this.TargetPlayer = TargetPlayer;
-			Text = "背包";
+			Text = MainForm.CurrentLanguage["Inventory"];
 			ItemPropertiesPanel = new ItemPropertiesPanel() { Enabled = Editable };
 			ItemSlots = new ItemIcon[Player.ITEM_MAX_COUNT - 9];
 			AltSlots = new AltItemIcon[AltPanelWidth * AltPanelHeight];
@@ -113,28 +113,26 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.Controls.Add(SlotsPanel);
 
 			ContextMenuStrip cms = new ContextMenuStrip();
-			cms.Items.Add("复制");
-			cms.Items.Add("粘贴");
+			cms.Items.Add(MainForm.CurrentLanguage["Copy"]);
+			cms.Items.Add(MainForm.CurrentLanguage["Paste"]);
 			cms.ItemClicked += (sender, e) =>
 			{
 				var item = TargetPlayer.Inventory[Selected];
-				switch (e.ClickedItem.Text)
+				if (e.ClickedItem.Text == MainForm.CurrentLanguage["Copy"])
 				{
-					case "复制":
-
-						Clip_ItemType = item.Type;
-						Clip_ItemStack = item.Stack;
-						Clip_ItemPrefix = item.Prefix;
-						RefreshSelected();
-						break;
-					case "粘贴":
-						if (Clip_ItemType != 0)
-						{
-							item.SetDefaultsAndPrefix(Clip_ItemType, Clip_ItemPrefix);
-							item.Stack = Clip_ItemStack;
-						}
-						RefreshSelected();
-						break;
+					Clip_ItemType = item.Type;
+					Clip_ItemStack = item.Stack;
+					Clip_ItemPrefix = item.Prefix;
+					RefreshSelected();
+				}
+				else if (e.ClickedItem.Text == MainForm.CurrentLanguage["Paste"])
+				{
+					if (Clip_ItemType != 0)
+					{
+						item.SetDefaultsAndPrefix(Clip_ItemType, Clip_ItemPrefix);
+						item.Stack = Clip_ItemStack;
+					}
+					RefreshSelected();
 				}
 			};
 			for (int i = 0; i < ItemSlots.Length; i++)
@@ -173,110 +171,107 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			}
 
 			ContextMenuStrip altCms = new ContextMenuStrip();
-			altCms.Items.Add("编辑");
+			altCms.Items.Add(MainForm.CurrentLanguage["Edit"]);
 
 			altCms.ItemClicked += (sender, e) =>
 			{
-				switch (e.ClickedItem.Text)
+				if (e.ClickedItem.Text == MainForm.CurrentLanguage["Edit"])
 				{
-					case "编辑":
+
+					Form f = new Form();
+					TextBox ItemID = new TextBox();
+					TextBox ItemCount = new TextBox();
+					ComboBox prefix = new ComboBox();
+					Button et = new Button();
+
+					f.Text = MainForm.CurrentLanguage["QuickItem"];
+					f.StartPosition = FormStartPosition.CenterParent;
+					f.FormBorderStyle = FormBorderStyle.FixedSingle;
+					f.MaximizeBox = false;
+					f.MinimizeBox = false;
+					f.Size = new Size(265, 105);
+
+					Label tip1 = new Label()
+					{
+						Text = MainForm.CurrentLanguage["Type"],
+						Location = new Point(0, 5),
+						Size = new Size(80, 20)
+					};
+					f.Controls.Add(tip1);
+
+					ItemID.Location = new Point(85, 0);
+					ItemID.Size = new Size(95, 20);
+					ItemID.Text = AltSelected.ID.ToString();
+					ItemID.KeyPress += delegate (object sender1, KeyPressEventArgs e1)
+					{
+						if (!Char.IsNumber(e1.KeyChar) && e1.KeyChar != 8)
 						{
-							Form f = new Form();
-							TextBox ItemID = new TextBox();
-							TextBox ItemCount = new TextBox();
-							ComboBox prefix = new ComboBox();
-							Button et = new Button();
-
-							f.Text = "备用物品";
-							f.StartPosition = FormStartPosition.CenterParent;
-							f.FormBorderStyle = FormBorderStyle.FixedSingle;
-							f.MaximizeBox = false;
-							f.MinimizeBox = false;
-							f.Size = new Size(265, 105);
-
-							Label tip1 = new Label()
-							{
-								Text = "物品类型",
-								Location = new Point(0, 5),
-								Size = new Size(80, 20)
-							};
-							f.Controls.Add(tip1);
-
-							ItemID.Location = new Point(85, 0);
-							ItemID.Size = new Size(95, 20);
-							ItemID.Text = AltSelected.ID.ToString();
-							ItemID.KeyPress += delegate (object sender1, KeyPressEventArgs e1)
-							{
-								if (!Char.IsNumber(e1.KeyChar) && e1.KeyChar != 8)
-								{
-									e1.Handled = true;
-								}
-							};
-							f.Controls.Add(ItemID);
-
-
-							Label tip2 = new Label()
-							{
-								Text = "ItemStack",
-								Location = new Point(0, 25),
-								Size = new Size(80, 20)
-							};
-							f.Controls.Add(tip2);
-
-							ItemCount.Location = new Point(85, 20);
-							ItemCount.Size = new Size(95, 20);
-							ItemCount.Text = AltSelected.Stack.ToString();
-							ItemCount.KeyPress += delegate (object sender1, KeyPressEventArgs e1)
-							{
-								if (!Char.IsNumber(e1.KeyChar) && e1.KeyChar != 8)
-								{
-									e1.Handled = true;
-								}
-							};
-							f.Controls.Add(ItemCount);
-
-							prefix.Location = new Point(85, 40);
-							prefix.Size = new Size(95, 20);
-							prefix.DropDownStyle = ComboBoxStyle.DropDownList;
-							prefix.DropDownHeight = 150;
-							foreach (var o in GameResLoader.Prefixes)
-							{
-								string[] t = o.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
-								string v = t[0];
-								prefix.Items.Add(v);
-							}
-							prefix.SelectedIndex = GetIndexFromPrefix(AltSelected.Prefix);
-
-							f.Controls.Add(prefix);
-
-							Label tip3 = new Label()
-							{
-								Text = "ItemPrefix",
-								Location = new Point(0, 45),
-								Size = new Size(80, 20)
-							};
-							f.Controls.Add(tip3);
-
-
-							et.Text = "确定";
-							et.Size = new Size(65, 60);
-							et.Location = new Point(180, 0);
-							et.Click += delegate (object sender1, EventArgs e1)
-							{
-								AltSelected.ID = Convert.ToInt32(ItemID.Text);
-								AltSelected.Stack = Convert.ToInt32(ItemCount.Text);
-								AltSelected.Prefix = GetPrefixFromIndex(prefix.SelectedIndex);
-								f.Dispose();
-								var img = GameResLoader.ItemImages.Images[AltSelected.ID.ToString()];
-								if (img != null)
-									AltSelected.Image = img;
-								SaveAltItems();
-							};
-							f.Controls.Add(et);
-							f.StartPosition = FormStartPosition.CenterParent;
-							f.ShowDialog(this);
+							e1.Handled = true;
 						}
-						break;
+					};
+					f.Controls.Add(ItemID);
+
+
+					Label tip2 = new Label()
+					{
+						Text = MainForm.CurrentLanguage["Stack"],
+						Location = new Point(0, 25),
+						Size = new Size(80, 20)
+					};
+					f.Controls.Add(tip2);
+
+					ItemCount.Location = new Point(85, 20);
+					ItemCount.Size = new Size(95, 20);
+					ItemCount.Text = AltSelected.Stack.ToString();
+					ItemCount.KeyPress += delegate (object sender1, KeyPressEventArgs e1)
+					{
+						if (!Char.IsNumber(e1.KeyChar) && e1.KeyChar != 8)
+						{
+							e1.Handled = true;
+						}
+					};
+					f.Controls.Add(ItemCount);
+
+					prefix.Location = new Point(85, 40);
+					prefix.Size = new Size(95, 20);
+					prefix.DropDownStyle = ComboBoxStyle.DropDownList;
+					prefix.DropDownHeight = 150;
+					foreach (var o in GameResLoader.Prefixes)
+					{
+						string[] t = o.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+						string v = t[0];
+						prefix.Items.Add(v);
+					}
+					prefix.SelectedIndex = GetIndexFromPrefix(AltSelected.Prefix);
+
+					f.Controls.Add(prefix);
+
+					Label tip3 = new Label()
+					{
+						Text = "ItemPrefix",
+						Location = new Point(0, 45),
+						Size = new Size(80, 20)
+					};
+					f.Controls.Add(tip3);
+
+
+					et.Text = MainForm.CurrentLanguage["Confirm"];
+					et.Size = new Size(65, 60);
+					et.Location = new Point(180, 0);
+					et.Click += delegate (object sender1, EventArgs e1)
+					{
+						AltSelected.ID = Convert.ToInt32(ItemID.Text);
+						AltSelected.Stack = Convert.ToInt32(ItemCount.Text);
+						AltSelected.Prefix = GetPrefixFromIndex(prefix.SelectedIndex);
+						f.Dispose();
+						var img = GameResLoader.ItemImages.Images[AltSelected.ID.ToString()];
+						if (img != null)
+							AltSelected.Image = img;
+						SaveAltItems();
+					};
+					f.Controls.Add(et);
+					f.StartPosition = FormStartPosition.CenterParent;
+					f.ShowDialog(this);
 				}
 			};
 			AltPanel = new Panel() { Location = new Point(560, 5), Size = new Size(AltPanelWidth, AltPanelHeight) };
@@ -358,7 +353,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				RefreshSelected();
 			};
 			OK.FlatStyle = FlatStyle.Flat;
-			OK.Text = "确定";
+			OK.Text = MainForm.CurrentLanguage["Confirm"];
 			OK.Size = new Size(80, 30);
 			OK.Location = new Point(260, 0);
 			ItemPropertiesPanel.Controls.Add(OK);
@@ -371,7 +366,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				SlotsPanel.Refresh();
 			};
 			Refresh.FlatStyle = FlatStyle.Flat;
-			Refresh.Text = "刷新";
+			Refresh.Text = MainForm.CurrentLanguage["Refresh"];
 			Refresh.Size = new Size(80, 30);
 			Refresh.Location = new Point(260, 30);
 			ItemPropertiesPanel.Controls.Add(Refresh);
@@ -394,7 +389,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				}
 			};
 			SaveInv.FlatStyle = FlatStyle.Flat;
-			SaveInv.Text = "保存";
+			SaveInv.Text = MainForm.CurrentLanguage["Save"];
 			SaveInv.Size = new Size(80, 30);
 			SaveInv.Location = new Point(260, 60);
 			ItemPropertiesPanel.Controls.Add(SaveInv);
@@ -417,7 +412,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				}
 			};
 			LoadInv.FlatStyle = FlatStyle.Flat;
-			LoadInv.Text = "加载";
+			LoadInv.Text = MainForm.CurrentLanguage["Load"];
 			LoadInv.Size = new Size(80, 30);
 			LoadInv.Location = new Point(260, 90);
 			ItemPropertiesPanel.Controls.Add(LoadInv);
@@ -442,7 +437,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				}
 			};
 			SaveInvPItem.FlatStyle = FlatStyle.Flat;
-			SaveInvPItem.Text = "保存(P)";
+			SaveInvPItem.Text = $"{MainForm.CurrentLanguage["Save"]}(P)";
 			SaveInvPItem.Size = new Size(80, 30);
 			SaveInvPItem.Location = new Point(260, 120);
 			ItemPropertiesPanel.Controls.Add(SaveInvPItem);
@@ -504,7 +499,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				}
 			};
 			LoadInvPItem.FlatStyle = FlatStyle.Flat;
-			LoadInvPItem.Text = "加载(P)";
+			LoadInvPItem.Text = $"{MainForm.CurrentLanguage["Load"]}(P)";
 			LoadInvPItem.Size = new Size(80, 30);
 			LoadInvPItem.Location = new Point(260, 150);
 			ItemPropertiesPanel.Controls.Add(LoadInvPItem);
@@ -521,7 +516,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				InitData(Selected);
 			};
 			InitItem.FlatStyle = FlatStyle.Flat;
-			InitItem.Text = "初始化";
+			InitItem.Text = MainForm.CurrentLanguage["Init"];
 			InitItem.Size = new Size(80, 30);
 			InitItem.Location = new Point(260, 180);
 			ItemPropertiesPanel.Controls.Add(InitItem);

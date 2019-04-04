@@ -45,6 +45,7 @@ namespace QTRHacker.NewDimension.PagePanels
 	{
 		public string Name => "PMHighlightingDefinition";
 		private string[] Keys;
+		private Dictionary<string, string> propDict = new Dictionary<string, string>();
 		public HighlightingRuleSet MainRuleSet
 		{
 			get
@@ -58,7 +59,7 @@ namespace QTRHacker.NewDimension.PagePanels
 					{
 						Foreground = new CustomizedBrush(System.Windows.Media.Colors.DarkGreen)
 					},
-					Regex = new System.Text.RegularExpressions.Regex(@"#.*")
+					Regex = new Regex(@"#.*")
 				});
 
 				n.Rules.Add(new HighlightingRule()
@@ -67,7 +68,7 @@ namespace QTRHacker.NewDimension.PagePanels
 					{
 						Foreground = new CustomizedBrush(System.Windows.Media.Colors.CadetBlue)
 					},
-					Regex = new System.Text.RegularExpressions.Regex(string.Format(@"\b({0})\b", string.Join("|", wordList)))
+					Regex = new Regex(string.Format(@"\b({0})\b", string.Join("|", wordList)))
 				});
 
 				n.Rules.Add(new HighlightingRule()
@@ -76,7 +77,7 @@ namespace QTRHacker.NewDimension.PagePanels
 					{
 						Foreground = new CustomizedBrush(System.Windows.Media.Colors.LightGreen)
 					},
-					Regex = new System.Text.RegularExpressions.Regex(@"\d+(\.[0-9]+)?")
+					Regex = new Regex(@"\d+(\.[0-9]+)?")
 				});
 				return n;
 			}
@@ -96,6 +97,8 @@ namespace QTRHacker.NewDimension.PagePanels
 			}
 		}
 
+		public IDictionary<string, string> Properties => propDict;
+
 		public HighlightingColor GetNamedColor(string name)
 		{
 			throw new NotImplementedException();
@@ -106,7 +109,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			throw new NotImplementedException();
 		}
 	}
-	public partial class CodeView : UserControl
+	public partial class ProjectileCodeView : UserControl
 	{
 		public TextEditor CodeBox
 		{
@@ -117,7 +120,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			get;
 		}
 		public override string Text { get => CodeBox.Text; set => CodeBox.Text = value; }
-		public CodeView(IEnumerable<string> Keys)
+		public ProjectileCodeView(IEnumerable<string> Keys)
 		{
 			InitializeComponent();
 

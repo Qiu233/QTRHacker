@@ -57,7 +57,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			BackgroundGeometryBuilder builder = new BackgroundGeometryBuilder();
 
 			builder.CornerRadius = 1;
-			builder.AlignToMiddleOfPixels = true;
+			builder.AlignToWholePixels = true;
 
 			builder.AddSegment(textView, new TextSegment() { StartOffset = Begin, Length = 1 });
 			builder.CloseFigure();

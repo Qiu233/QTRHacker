@@ -10,6 +10,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
 using Newtonsoft.Json;
 using QTRHacker.NewDimension.Configs;
 using QTRHacker.NewDimension.Controls;
@@ -21,16 +23,19 @@ namespace QTRHacker.NewDimension
 	public partial class MainForm : Form
 	{
 		private Color FormBack = Color.FromArgb(45, 45, 48);
-		private Label VersionLabel;
+		private Label VersionLabel, QQGroupLabel;
 		private Point Drag_MousePos;
 		private Panel MainPanel, ButtonsPanel, ContentPanel;
 		private PictureBox MinButton, CloseButton;
 		private int ButtonsNumber = 0;
 		public static readonly Color ButtonNormalColor = Color.Transparent;
 		public static readonly Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
-		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, MiscPagePanel;
+		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, ScriptsPagePanel, MiscPagePanel;
 		public static MainForm MainFormInstance { get; private set; }
 		public static CFG_ProjDrawer Config_ProjDrawer;
+		public static ScriptRuntime QHScriptRuntime { get; private set; }
+		public static ScriptEngine QHScriptEngine { get; private set; }
+		public static Languages.Processor CurrentLanguage;
 		protected override void OnShown(EventArgs e)
 		{
 			base.OnShown(e);
@@ -41,9 +46,21 @@ namespace QTRHacker.NewDimension
 			{
 				Environment.Exit(0);
 			}
+
+			CreateDirectories();
+			LoadConfigs();
+#if ENG
+			CurrentLanguage = Languages.Processor.GetLanguage("en");
+#else
+			CurrentLanguage = Languages.Processor.GetLanguage("zh-cn");
+#endif
+
 			MainFormInstance = this;
 			InitializeComponent();
 			BackColor = FormBack;
+
+			QHScriptRuntime = Python.CreateRuntime();
+			QHScriptEngine = QHScriptRuntime.GetEngine("Python");
 
 			MainPanel = new Panel();
 			MainPanel.BackColor = Color.FromArgb(30, 30, 30);
@@ -74,9 +91,20 @@ namespace QTRHacker.NewDimension
 			ButtonsPanel.BackColor = Color.FromArgb(50, 255, 255, 255);
 			MainPanel.Controls.Add(ButtonsPanel);
 
+			QQGroupLabel = new Label();
+			QQGroupLabel.Text = "官方QQ群：453858025";
+			QQGroupLabel.BackColor = Color.Transparent;
+			QQGroupLabel.ForeColor = Color.White;
+			QQGroupLabel.Bounds = new Rectangle(3, 310, 100, 40);
+#if ENG
+#else
+			ButtonsPanel.Controls.Add(QQGroupLabel);
+#endif
+
 			VersionLabel = new Label();
 			VersionLabel.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			VersionLabel.BackColor = Color.Transparent;
+			VersionLabel.ForeColor = Color.White;
 			VersionLabel.Bounds = new Rectangle(3, 350, 100, 20);
 			ButtonsPanel.Controls.Add(VersionLabel);
 
@@ -86,6 +114,7 @@ namespace QTRHacker.NewDimension
 			Image img_Player = null;
 			Image img_Projectile = null;
 			Image img_Misc = null;
+			Image img_Scripts = null;
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_171"]))
 				img_MainPage = Image.FromStream(st);
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_990"]))
@@ -94,6 +123,8 @@ namespace QTRHacker.NewDimension
 				img_Player = Image.FromStream(st);
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_42"]))
 				img_Projectile = Image.FromStream(st);
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_518"]))
+				img_Scripts = Image.FromStream(st);
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_3124"]))
 				img_Misc = Image.FromStream(st);
 
@@ -105,22 +136,22 @@ namespace QTRHacker.NewDimension
 			BasicPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
 			PlayerPagePanel = new PagePanel_Player(MainPanel.Width - 100, MainPanel.Height);
 			ProjectilePagePanel = new PagePanel_Projectile(MainPanel.Width - 100, MainPanel.Height);
+			ScriptsPagePanel = new PagePanel_Scripts(MainPanel.Width - 100, MainPanel.Height);
 			MiscPagePanel = new PagePanel_Misc(MainPanel.Width - 100, MainPanel.Height);
 
 
-			AddButton("基础功能", img_Basic, BasicPagePanel).Enabled = false;
-			AddButton("玩家", img_Player, PlayerPagePanel).Enabled = false;
-			AddButton("弹幕管理", img_Projectile, ProjectilePagePanel).Enabled = false;
-			AddButton("杂项", img_Misc, MiscPagePanel).Enabled = false;
+			AddButton(CurrentLanguage["Basic"], img_Basic, BasicPagePanel).Enabled = false;
+			AddButton(CurrentLanguage["Players"], img_Player, PlayerPagePanel).Enabled = false;
+			AddButton(CurrentLanguage["Projectiles"], img_Projectile, ProjectilePagePanel).Enabled = false;
+			//AddButton(CurrentLanguage["Basic"], img_Scripts, ScriptsPagePanel).Enabled = false;
+			AddButton(CurrentLanguage["Miscs"], img_Misc, MiscPagePanel).Enabled = false;
 
 
-			AddButton("主页", img_MainPage, MainPagePanel).Selected = true;
+			AddButton(CurrentLanguage["MainPage"], img_MainPage, MainPagePanel).Selected = true;
 
 
 			Icon = ConvertToIcon(img_Basic, true);
 
-
-			LoadConfigs();
 		}
 
 		public void OnInitialized()
@@ -233,6 +264,13 @@ namespace QTRHacker.NewDimension
 			}
 		}
 
+		private void CreateDirectories()
+		{
+			if (!Directory.Exists(".\\Projs"))
+				Directory.CreateDirectory(".\\Projs");
+			if (!Directory.Exists(".\\Scripts"))
+				Directory.CreateDirectory(".\\Scripts");
+		}
 		private void LoadConfigs()
 		{
 			if (!Directory.Exists(".\\configs"))

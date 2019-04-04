@@ -11,10 +11,10 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.PagePanels
 {
-	public class PagePanel_Projectile : PagePanel
+	public class PagePanel_Scripts : PagePanel
 	{
 		private MListBox FilesBox;
-		public PagePanel_Projectile(int Width, int Height) : base(Width, Height)
+		public PagePanel_Scripts(int Width, int Height) : base(Width, Height)
 		{
 			FilesBox = new MListBox()
 			{
@@ -25,7 +25,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button CompileButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Compile"],
+				Text = "执行",
 				Bounds = new Rectangle(204, 3, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -36,29 +36,18 @@ namespace QTRHacker.NewDimension.PagePanels
 				var ctx = HackContext.GameContext;
 				if (ctx == null)
 				{
-					MessageBox.Show(MainForm.CurrentLanguage["PleaseLockGame"]);
+					MessageBox.Show("请先锁定游戏");
 					return;
 				}
-				Parser p = new Parser(File.ReadAllText(($"./Projs/{(string)FilesBox.SelectedItem}.projimg")));
-				try
-				{
-					var img = p.Parse();
-					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
-				}
-				catch (ParseException ex)
-				{
-					MessageBox.Show($"{MainForm.CurrentLanguage["PleaseCheckCode"]}\n{MainForm.CurrentLanguage["Error"]}：\n" + ex.Message, $"{MainForm.CurrentLanguage["CompilationError"]}");
-				}
-				catch (Exception)
-				{
-					MessageBox.Show(MainForm.CurrentLanguage["UnknownError"], MainForm.CurrentLanguage["UnknownError"]);
-				}
+				string t = File.ReadAllText(File.ReadAllText(($"./Scripts/{(string)FilesBox.SelectedItem}.qhscript")));
+				var scope = HackContext.CreateScriptScope(MainForm.QHScriptEngine);
+				MainForm.QHScriptEngine.Execute(t, scope);
 			};
 			Controls.Add(CompileButton);
 
 			Button CreateNewButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Create"],
+				Text = "新建",
 				Bounds = new Rectangle(204, 33, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -68,14 +57,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm CreateNewMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["Create"],
+					Text = "新建",
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label NameTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["Name"] + "：",
+					Text = "名称：",
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -93,17 +82,17 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(NameTextBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = "确定";
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
 				ConfirmButton.Click += (s1, e1) =>
 				{
-					string str = $"./Projs/{NameTextBox.Text}.projimg";
+					string str = $"./Scripts/{NameTextBox.Text}.qhscript";
 					if (!File.Exists(str))
 						File.Create(str).Close();
 					else
-						MessageBox.Show(MainForm.CurrentLanguage["NameRepeated"]);
+						MessageBox.Show("该名称的弹幕已存在");
 					UpdateList();
 					CreateNewMForm.Dispose();
 				};
@@ -114,7 +103,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button EditButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Edit"],
+				Text = "编辑",
 				Bounds = new Rectangle(204, 63, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -122,14 +111,14 @@ namespace QTRHacker.NewDimension.PagePanels
 			EditButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
-				ProjMakerForm p = new ProjMakerForm((string)FilesBox.SelectedItem);
-				p.ShowDialog(this);
+				/*ProjMakerForm p = new ProjMakerForm((string)FilesBox.SelectedItem);
+				p.ShowDialog(this);*/
 			};
 			Controls.Add(EditButton);
 
 			Button RenameButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Rename"],
+				Text = "重命名",
 				Bounds = new Rectangle(204, 93, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -140,14 +129,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm CreateNewMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["Rename"],
+					Text = "重命名",
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label NewNameTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["NewName"] + "：",
+					Text = "新名称：",
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -165,17 +154,17 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(NewNameTextBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = "确定";
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
 				ConfirmButton.Click += (s1, e1) =>
 				{
-					string str = $"./Projs/{NewNameTextBox.Text}.projimg";
+					string str = $"./Scripts/{NewNameTextBox.Text}.qhscript";
 					if (!File.Exists(str))
-						File.Move($"./Projs/{(string)FilesBox.SelectedItem}.projimg", str);
+						File.Move($"./Scripts/{(string)FilesBox.SelectedItem}.qhscript", str);
 					else
-						MessageBox.Show(MainForm.CurrentLanguage["NameRepeated"]);
+						MessageBox.Show("该名称的脚本已存在");
 					UpdateList();
 					CreateNewMForm.Dispose();
 				};
@@ -186,7 +175,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button DeleteButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Delete"],
+				Text = "删除",
 				Bounds = new Rectangle(204, 123, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -194,8 +183,8 @@ namespace QTRHacker.NewDimension.PagePanels
 			DeleteButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
-				if (MessageBox.Show(MainForm.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
-				File.Delete(($"./Projs/{(string)FilesBox.SelectedItem}.projimg"));
+				if (MessageBox.Show("确定删除吗？", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+				File.Delete(($"./Scripts/{(string)FilesBox.SelectedItem}.qhscript"));
 				UpdateList();
 			};
 			this.Controls.Add(DeleteButton);
@@ -203,7 +192,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button RefreshButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Refresh"],
+				Text = "刷新",
 				Bounds = new Rectangle(204, 153, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -218,7 +207,7 @@ namespace QTRHacker.NewDimension.PagePanels
 		public void UpdateList()
 		{
 			FilesBox.Items.Clear();
-			foreach (var f in Directory.EnumerateFiles("./Projs/", "*.projimg"))
+			foreach (var f in Directory.EnumerateFiles("./Scripts/", "*.qhscript"))
 			{
 				FilesBox.Items.Add(Path.GetFileNameWithoutExtension(f));
 			}

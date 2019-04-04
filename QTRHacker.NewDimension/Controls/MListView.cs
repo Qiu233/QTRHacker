@@ -64,10 +64,27 @@ namespace QTRHacker.NewDimension.Controls
 				e.Graphics.FillRectangle(Brushes.Gray, e.Bounds);
 			var ts = e.Graphics.MeasureString(e.SubItem.Text, Font);
 			using (Brush b = new SolidBrush(e.SubItem.ForeColor))
-				e.Graphics.DrawString(e.SubItem.Text, Font, b,
-					e.Bounds.X + e.Bounds.Width / 2 - ts.Width / 2 - 1,
-					e.Bounds.Y + e.Bounds.Height / 2 - ts.Height / 2);
-
+			{
+				if (ts.Width > e.Bounds.Width - 5)
+				{
+					string sb = e.SubItem.Text;
+					while (ts.Width > e.Bounds.Width - 20)
+					{
+						sb = sb.Substring(0, sb.Length - 1);
+						ts = e.Graphics.MeasureString(sb, Font);
+					}
+					sb += "...";
+					e.Graphics.DrawString(sb, Font, b,
+						e.Bounds.X + e.Bounds.Width / 2 - ts.Width / 2 - 1,
+						e.Bounds.Y + e.Bounds.Height / 2 - ts.Height / 2);
+				}
+				else
+				{
+					e.Graphics.DrawString(e.SubItem.Text, Font, b,
+						e.Bounds.X + e.Bounds.Width / 2 - ts.Width / 2 - 1,
+						e.Bounds.Y + e.Bounds.Height / 2 - ts.Height / 2);
+				}
+			}
 		}
 	}
 }

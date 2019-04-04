@@ -1,6 +1,6 @@
 ﻿namespace QTRHacker.NewDimension.PagePanels
 {
-	partial class CodeView
+	partial class ProjectileCodeView
 	{
 		/// <summary> 
 		/// 必需的设计器变量。

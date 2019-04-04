@@ -56,7 +56,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			}
 		}
 		private MenuStrip MenuStrip;
-		private CodeView CodeView;
+		private ProjectileCodeView CodeView;
 		private TextEditor LogBox;
 		private string FileName;
 
@@ -100,7 +100,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			MenuStrip.Items.Add(CompileMenuItem);
 			MainPanel.Controls.Add(MenuStrip);
 
-			CodeView = new CodeView(KEYS)
+			CodeView = new ProjectileCodeView(KEYS)
 			{
 				Location = new Point(5, 30)
 			};

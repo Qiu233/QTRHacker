@@ -25,20 +25,20 @@ namespace QTRHacker.NewDimension.PagePanels
 				img_Wiki = Image.FromStream(st);
 			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.player.png"))
 				img_Player = Image.FromStream(st);
-			AddButton(img_Wiki, "物品Wiki", () => { new WikiForm().Show(); });
-			AddButton(img_Player, "召唤NPC", () =>
+			AddButton(img_Wiki, MainForm.CurrentLanguage["ItemWiki"], () => { new WikiForm().Show(); });
+			AddButton(img_Player, MainForm.CurrentLanguage["SummonNPC"], () =>
 			{
 				MForm SummonNPCMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = "召唤NPC",
+					Text = MainForm.CurrentLanguage["SummonNPC"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 72)
 				};
 
 				Label NPCTypeTip = new Label()
 				{
-					Text = "NPC类型",
+					Text = MainForm.CurrentLanguage["NPCType"],
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -59,7 +59,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 				Label TimesTip = new Label()
 				{
-					Text = "数量",
+					Text = MainForm.CurrentLanguage["Number"],
 					Location = new Point(0, 20),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -78,7 +78,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				SummonNPCMForm.MainPanel.Controls.Add(Times);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = "确定";
+				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 40);
 				ConfirmButton.Location = new Point(180, 0);

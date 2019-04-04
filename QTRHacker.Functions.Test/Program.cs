@@ -22,8 +22,9 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				//Console.WriteLine(Item.OFFSET_Type.ToString("X8"));
-				Console.WriteLine(Environment.Version);
+				Console.WriteLine(gc.Tile.D1);
+				Console.WriteLine(gc.Tile.D2);
+				Console.ReadKey();
 			}
 		}
 	}
