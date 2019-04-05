@@ -1,6 +1,6 @@
 ﻿namespace QTRHacker.NewDimension.PagePanels
 {
-	partial class ProjectileCodeView
+	partial class ScriptCodeView
 	{
 		/// <summary> 
 		/// 必需的设计器变量。
@@ -28,21 +28,13 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.SuspendLayout();
-			// 
-			// CodeView
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+			components = new System.ComponentModel.Container();
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(64)))));
-			this.Name = "ProjectileCodeView";
-			this.Size = new System.Drawing.Size(790, 415);
-			this.ResumeLayout(false);
-			this.PerformLayout();
-
+			this.Name = "ScriptCodeView";
+			this.Size = new System.Drawing.Size(690, 415);
 		}
 
 		#endregion
-		
 	}
 }

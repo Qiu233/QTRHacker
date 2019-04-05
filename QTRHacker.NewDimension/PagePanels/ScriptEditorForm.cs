@@ -19,7 +19,7 @@ using System.Windows.Forms.Integration;
 
 namespace QTRHacker.NewDimension.PagePanels
 {
-	public class ProjMakerForm : MForm
+	public class ScriptEditorForm : MForm
 	{
 		public static Color bColor = Color.FromArgb(37, 37, 38);
 		public static Color sColor = Color.FromArgb(62, 62, 64);
@@ -49,6 +49,75 @@ namespace QTRHacker.NewDimension.PagePanels
 			public override Color ImageMarginGradientMiddle => sBlackColor;
 
 		}
+		private class TextEditorWriter : TextWriter
+		{
+			private TextEditor tb;
+			public TextEditorWriter(TextEditor tb)
+			{
+				this.tb = tb;
+			}
+			public override void Write(string v)
+			{
+				tb.AppendText(v);
+			}
+			public override void WriteLine(string v)
+			{
+				tb.AppendText(v);
+				tb.AppendText(NewLine);
+			}
+			public override Encoding Encoding
+			{
+				get { return Encoding.Unicode; }
+			}
+		}
+		private class OnWrittenEventArgs<T> : EventArgs
+		{
+			public T Value
+			{
+				get;
+				private set;
+			}
+			public OnWrittenEventArgs(T value)
+			{
+				this.Value = value;
+			}
+		}
+
+
+		private class EventRaisingStreamWriter : StreamWriter
+		{
+			#region Event
+			public event EventHandler<OnWrittenEventArgs<string>> StringWritten;
+			#endregion
+
+			#region CTOR
+			public EventRaisingStreamWriter(Stream s) : base(s)
+			{ }
+			#endregion
+
+			#region Private Methods
+			private void LaunchEvent(string txtWritten)
+			{
+				if (StringWritten != null)
+				{
+					StringWritten(this, new OnWrittenEventArgs<string>(txtWritten));
+				}
+			}
+			#endregion
+
+
+			#region Overrides
+
+			public override void Write(string value)
+			{
+				base.Write(value);
+				LaunchEvent(value);
+			}
+
+			// here override all writing methods...
+
+			#endregion
+		}
 		private class MenuStripRender : ToolStripProfessionalRenderer
 		{
 			public MenuStripRender() : base(new MenuColorTable())
@@ -56,11 +125,11 @@ namespace QTRHacker.NewDimension.PagePanels
 			}
 		}
 		private MenuStrip MenuStrip;
-		private ProjectileCodeView CodeView;
+		private ScriptCodeView CodeView;
 		private TextEditor LogBox;
+		private TextEditorWriter LogBoxWriter;
 		private string FileName;
 
-		private static string[] KEYS = { "MACRO", "DEF", "INSERT", "POINT", "RECT", "RECT_FILLED", "FIXED" };
 
 		private static void AddMenuItem(ToolStripMenuItem menu, string text, Action<object, EventArgs> click)
 		{
@@ -72,14 +141,14 @@ namespace QTRHacker.NewDimension.PagePanels
 			item.Click += new EventHandler(click);
 			menu.DropDownItems.Add(item);
 		}
-		public ProjMakerForm(string file)
+		public ScriptEditorForm(string file)
 		{
-			ClientSize = new Size(800, 590);
-			FileName = $".\\Projs\\{file}.projimg";
+			ClientSize = new Size(700, 650);
+			FileName = $".\\Scripts\\{file}.qhscript";
 #if ENG
-			Text = "ProjMaker-Name：" + file;
+			Text = "ScriptEditor-Name：" + file;
 #else
-			Text = "弹幕编辑器-名称：" + file;
+			Text = "脚本编辑器-名称：" + file;
 #endif
 			BackColor = sBlackColor;
 			MenuStrip = new MenuStrip()
@@ -96,7 +165,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			AddMenuItem(FileMenuItem, MainForm.CurrentLanguage["Reopen"], (s, e) => Open());
 			MenuStrip.Items.Add(FileMenuItem);
 
-			ToolStripMenuItem CompileMenuItem = new ToolStripMenuItem(MainForm.CurrentLanguage["Compile"])
+			ToolStripMenuItem CompileMenuItem = new ToolStripMenuItem(MainForm.CurrentLanguage["Execute"])
 			{
 				ForeColor = Color.White,
 			};
@@ -104,11 +173,17 @@ namespace QTRHacker.NewDimension.PagePanels
 			MenuStrip.Items.Add(CompileMenuItem);
 			MainPanel.Controls.Add(MenuStrip);
 
-			CodeView = new ProjectileCodeView(KEYS)
+			CodeView = new ScriptCodeView()
 			{
 				Location = new Point(5, 30)
 			};
+			CodeView.CodeBox.KeyDown += (s, e) =>
+			{
+				if (e.Key == System.Windows.Input.Key.F5)
+					Execute();
+			};
 			MainPanel.Controls.Add(CodeView);
+
 
 			LogBox = new TextEditor()
 			{
@@ -118,72 +193,40 @@ namespace QTRHacker.NewDimension.PagePanels
 				FontSize = 14,
 				HorizontalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto,
 				VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto,
-				WordWrap = true
+				WordWrap = false
 			};
-			MainPanel.Controls.Add(new ElementHost() { Bounds = new Rectangle(5, 450, 790, 105), Child = LogBox });
+			MainPanel.Controls.Add(new ElementHost() { Bounds = new Rectangle(5, 450, 690, 160), Child = LogBox });
+			LogBoxWriter = new TextEditorWriter(LogBox);
 
 			Open();
 		}
 
-		public void OutputLog(string s)
+		private void Execute()
 		{
-			LogBox.AppendText(s + "\n");
+			Save();
+
+			LogBox.Clear();
+			LogBox.AppendText(DateTime.Now.ToString() + "\n");
+			MemoryStream ms = new MemoryStream();
+			EventRaisingStreamWriter outputWr = new EventRaisingStreamWriter(ms);
+			outputWr.StringWritten += sWr_StringWritten;
+
+			var o = MainForm.QHScriptEngine.Runtime.IO.OutputStream;
+			MainForm.QHScriptEngine.Runtime.IO.SetOutput(ms, outputWr);
+			var scope = HackContext.CreateScriptScope(MainForm.QHScriptEngine);
+			MainForm.QHScriptEngine.Execute(CodeView.Text, scope);
+			MainForm.QHScriptEngine.Runtime.IO.SetOutput(o, Encoding.UTF8);
+
+			void sWr_StringWritten(object sd, OnWrittenEventArgs<string> ev)
+			{
+				LogBox.AppendText(ev.Value);
+			}
 		}
 
 		private void CompileMenuItem_Click(object sender, EventArgs e)
 		{
-			Save();
-			Parser p = new Parser(CodeView.Text);
-			var ctx = HackContext.GameContext;
-			ProjImage img = null;
-#if DEBUG
-			img = p.Parse();
-			img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
-#else
-			try
-			{
-				LogBox.Text = "";
-				OutputLog(DateTime.Now.ToString());
-				img = p.Parse();
-#if ENG
-				OutputLog($"Compilation completed，{img.Projs.Count} projectiles generated");
-#else
-				OutputLog($"编译成功，生成了{img.Projs.Count}个弹幕");
-#endif
-				if (ctx != null)
-				{
-					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
-#if ENG
-					OutputLog($"Projectiles has been emited");
-#else
-					OutputLog($"已经发射到游戏");
-#endif
-				}
-				else
-				{
-#if ENG
-					OutputLog($"Game isn't locked.Failed.");
-#else
-					OutputLog($"未锁定游戏进程，发射弹幕失败");
-#endif
-				}
-			}
-			catch (ParseException pe)
-			{
-				/*string[] s = pe.Message.Split(new string[] { "," }, StringSplitOptions.None);
-				if (s[0] == "un")
-					OutputLog($"编译失败，索引为{s[1]}开头的Token类型未知");
-				else if (s[0] == "ex")
-					OutputLog($"编译失败，索引为{s[1]}开头的Token超出预期");
-				else if (s[0] == "ab")
-					OutputLog($"编译失败，名称为{s[2]}的宏不存在");
-				CodeView.CodeBox.Select(Convert.ToInt32(s[1]), 1);*/
-				OutputLog(pe.Message);
-				CodeView.CodeBox.Select(pe.Offset, 1);
-			}
-			OutputLog("\n\n");
-#endif
-				}
+			Execute();
+		}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
 		{

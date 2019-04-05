@@ -162,6 +162,7 @@ namespace QTRHacker.NewDimension.PagePanels
 					Location = new Point(85, 0),
 					Size = new Size(95, 20)
 				};
+				NewNameTextBox.Text = (string)FilesBox.SelectedItem;
 				CreateNewMForm.MainPanel.Controls.Add(NewNameTextBox);
 
 				Button ConfirmButton = new Button();

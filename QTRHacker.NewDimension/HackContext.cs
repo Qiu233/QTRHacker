@@ -90,6 +90,7 @@ namespace QTRHacker.NewDimension
 		{
 			ScriptScope s = engine.CreateScope();
 			s.SetVariable("game_context", GameContext);
+			engine.Execute("import clr\nclr.AddReference('QHackLib')\nclr.AddReference('QTRHacker')\nclr.AddReference('QTRHacker.Functions')\nfrom QHackLib import *\nfrom QTRHacker import *\nfrom QTRHacker.Functions import *", s);
 			return s;
 		}
 	}

@@ -12,6 +12,15 @@ namespace QTRHacker.NewDimension.Res
 {
 	public class GameResLoader
 	{
+#if ENG
+		public const string File_Prefix = "QTRHacker.NewDimension.Res.Game.Prefix_en.txt";
+		public const string File_Pet = "QTRHacker.NewDimension.Res.Game.Pet_en.txt";
+		public const string File_Mount = "QTRHacker.NewDimension.Res.Game.Mount_en.txt";
+#else
+		public const string File_Prefix = "QTRHacker.NewDimension.Res.Game.Prefix_cn.txt";
+		public const string File_Pet = "QTRHacker.NewDimension.Res.Game.Pet_cn.txt";
+		public const string File_Mount = "QTRHacker.NewDimension.Res.Game.Mount_cn.txt";
+#endif
 		public static ImageList ItemImages { get; }
 		public static string[] Prefixes { get; }
 		public static string[] Items { get; }
@@ -40,7 +49,7 @@ namespace QTRHacker.NewDimension.Res
 				ItemImages.ColorDepth = ColorDepth.Depth32Bit;
 				ItemImages.ImageSize = new Size(20, 20);
 			}
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.Prefix.txt"))
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(File_Prefix))
 			{
 				string[] t = new StreamReader(s).ReadToEnd().Split('\n');
 				Prefixes = new string[t.Length];
@@ -70,7 +79,7 @@ namespace QTRHacker.NewDimension.Res
 					IDToItem[y] = u;
 				}
 			}
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.Pet.txt"))
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(File_Pet))
 			{
 				string[] t = new StreamReader(s).ReadToEnd().Split('\n');
 				Pets = new string[t.Length];
@@ -85,7 +94,7 @@ namespace QTRHacker.NewDimension.Res
 					PetToID[u] = y;
 				}
 			}
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.Mount.txt"))
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(File_Mount))
 			{
 				string[] t = new StreamReader(s).ReadToEnd().Split('\n');
 				Mounts = new string[t.Length];

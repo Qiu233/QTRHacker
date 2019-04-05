@@ -23,31 +23,32 @@ namespace QTRHacker.NewDimension.PagePanels
 			UpdateList();
 			Controls.Add(FilesBox);
 
-			Button CompileButton = new Button()
+			Button ExecuteButton = new Button()
 			{
-				Text = "执行",
+				Text = MainForm.CurrentLanguage["Execute"],
 				Bounds = new Rectangle(204, 3, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
 			};
-			CompileButton.Click += (s, e) =>
+			ExecuteButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
 				var ctx = HackContext.GameContext;
 				if (ctx == null)
 				{
-					MessageBox.Show("请先锁定游戏");
+					MessageBox.Show(MainForm.CurrentLanguage["PleaseLockGame"]);
 					return;
 				}
-				string t = File.ReadAllText(File.ReadAllText(($"./Scripts/{(string)FilesBox.SelectedItem}.qhscript")));
+				string h = $"./Scripts/{(string)FilesBox.SelectedItem}.qhscript";
+				string t = File.ReadAllText(($"./Scripts/{(string)FilesBox.SelectedItem}.qhscript"));
 				var scope = HackContext.CreateScriptScope(MainForm.QHScriptEngine);
 				MainForm.QHScriptEngine.Execute(t, scope);
 			};
-			Controls.Add(CompileButton);
+			Controls.Add(ExecuteButton);
 
 			Button CreateNewButton = new Button()
 			{
-				Text = "新建",
+				Text = MainForm.CurrentLanguage["Create"],
 				Bounds = new Rectangle(204, 33, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -57,14 +58,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm CreateNewMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = "新建",
+					Text = MainForm.CurrentLanguage["Create"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label NameTip = new Label()
 				{
-					Text = "名称：",
+					Text = MainForm.CurrentLanguage["Name"] + "：",
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -82,7 +83,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(NameTextBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = "确定";
+				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
@@ -92,7 +93,7 @@ namespace QTRHacker.NewDimension.PagePanels
 					if (!File.Exists(str))
 						File.Create(str).Close();
 					else
-						MessageBox.Show("该名称的弹幕已存在");
+						MessageBox.Show(MainForm.CurrentLanguage["NameRepeated"]);
 					UpdateList();
 					CreateNewMForm.Dispose();
 				};
@@ -103,7 +104,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button EditButton = new Button()
 			{
-				Text = "编辑",
+				Text = MainForm.CurrentLanguage["Edit"],
 				Bounds = new Rectangle(204, 63, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -111,14 +112,14 @@ namespace QTRHacker.NewDimension.PagePanels
 			EditButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
-				/*ProjMakerForm p = new ProjMakerForm((string)FilesBox.SelectedItem);
-				p.ShowDialog(this);*/
+				ScriptEditorForm p = new ScriptEditorForm((string)FilesBox.SelectedItem);
+				p.Show();
 			};
 			Controls.Add(EditButton);
 
 			Button RenameButton = new Button()
 			{
-				Text = "重命名",
+				Text = MainForm.CurrentLanguage["Rename"],
 				Bounds = new Rectangle(204, 93, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -129,14 +130,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm CreateNewMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = "重命名",
+					Text = MainForm.CurrentLanguage["Rename"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label NewNameTip = new Label()
 				{
-					Text = "新名称：",
+					Text = MainForm.CurrentLanguage["NewName"] + "：",
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -151,10 +152,11 @@ namespace QTRHacker.NewDimension.PagePanels
 					Location = new Point(85, 0),
 					Size = new Size(95, 20)
 				};
+				NewNameTextBox.Text = (string)FilesBox.SelectedItem;
 				CreateNewMForm.MainPanel.Controls.Add(NewNameTextBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = "确定";
+				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
@@ -164,7 +166,7 @@ namespace QTRHacker.NewDimension.PagePanels
 					if (!File.Exists(str))
 						File.Move($"./Scripts/{(string)FilesBox.SelectedItem}.qhscript", str);
 					else
-						MessageBox.Show("该名称的脚本已存在");
+						MessageBox.Show(MainForm.CurrentLanguage["NameRepeated"]);
 					UpdateList();
 					CreateNewMForm.Dispose();
 				};
@@ -175,7 +177,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button DeleteButton = new Button()
 			{
-				Text = "删除",
+				Text = MainForm.CurrentLanguage["Delete"],
 				Bounds = new Rectangle(204, 123, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -183,7 +185,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			DeleteButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
-				if (MessageBox.Show("确定删除吗？", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+				if (MessageBox.Show(MainForm.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
 				File.Delete(($"./Scripts/{(string)FilesBox.SelectedItem}.qhscript"));
 				UpdateList();
 			};
@@ -192,7 +194,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button RefreshButton = new Button()
 			{
-				Text = "刷新",
+				Text = MainForm.CurrentLanguage["Refresh"],
 				Bounds = new Rectangle(204, 153, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)

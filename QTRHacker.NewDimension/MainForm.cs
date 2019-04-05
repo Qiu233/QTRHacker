@@ -61,6 +61,9 @@ namespace QTRHacker.NewDimension
 
 			QHScriptRuntime = Python.CreateRuntime();
 			QHScriptEngine = QHScriptRuntime.GetEngine("Python");
+			var paths = QHScriptEngine.GetSearchPaths();
+			paths.Add(Path.GetFullPath(".\\Scripts\\"));
+			QHScriptEngine.SetSearchPaths(paths);
 
 			MainPanel = new Panel();
 			MainPanel.BackColor = Color.FromArgb(30, 30, 30);
@@ -143,7 +146,7 @@ namespace QTRHacker.NewDimension
 			AddButton(CurrentLanguage["Basic"], img_Basic, BasicPagePanel).Enabled = false;
 			AddButton(CurrentLanguage["Players"], img_Player, PlayerPagePanel).Enabled = false;
 			AddButton(CurrentLanguage["Projectiles"], img_Projectile, ProjectilePagePanel).Enabled = false;
-			//AddButton(CurrentLanguage["Basic"], img_Scripts, ScriptsPagePanel).Enabled = false;
+			AddButton(CurrentLanguage["Scripts"], img_Scripts, ScriptsPagePanel).Enabled = false;
 			AddButton(CurrentLanguage["Miscs"], img_Misc, MiscPagePanel).Enabled = false;
 
 

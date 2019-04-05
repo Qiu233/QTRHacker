@@ -216,3 +216,5 @@ Platinum	铂
 Gold	金
 Silver	银
 Copper	铜
+
+Execute	执行

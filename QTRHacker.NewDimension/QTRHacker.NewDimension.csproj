@@ -205,6 +205,15 @@
     <Compile Include="PagePanels\ProjMakerForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="PagePanels\ScriptCodeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PagePanels\ScriptCodeView.Designer.cs">
+      <DependentUpon>ScriptCodeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PagePanels\ScriptEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PlayerEditor\ArmorEditor.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -271,6 +280,9 @@
     </Compile>
     <EmbeddedResource Include="Res\Game\ItemImage.bin" />
     <EmbeddedResource Include="Res\Game\WikiRes.zip" />
+    <EmbeddedResource Include="XSHD\Python.xshd">
+      <SubType>UserControl</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -301,14 +313,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <EmbeddedResource Include="Res\Game\Prefix_en.txt" />
+    <EmbeddedResource Include="Res\Game\Mount_en.txt" />
+    <EmbeddedResource Include="Res\Game\Pet_en.txt" />
     <EmbeddedResource Include="Languages\en.txt" />
     <EmbeddedResource Include="Languages\zh-cn.txt" />
     <EmbeddedResource Include="Res\Image\TMLIcon.png" />
     <EmbeddedResource Include="Res\Game\ItemID.txt" />
     <EmbeddedResource Include="Res\Game\BuffType.txt" />
-    <EmbeddedResource Include="Res\Game\Mount.txt" />
-    <EmbeddedResource Include="Res\Game\Pet.txt" />
-    <EmbeddedResource Include="Res\Game\Prefix.txt" />
+    <EmbeddedResource Include="Res\Game\Mount_cn.txt" />
+    <EmbeddedResource Include="Res\Game\Pet_cn.txt" />
+    <EmbeddedResource Include="Res\Game\Prefix_cn.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

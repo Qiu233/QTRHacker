@@ -216,3 +216,5 @@ Platinum	P
 Gold	G
 Silver	S
 Copper	C
+
+Execute	Execute
