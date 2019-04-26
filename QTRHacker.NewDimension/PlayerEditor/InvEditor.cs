@@ -102,7 +102,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.ParentForm = ParentForm;
 			this.TargetPlayer = TargetPlayer;
 			Text = MainForm.CurrentLanguage["Inventory"];
-			ItemPropertiesPanel = new ItemPropertiesPanel() { Enabled = Editable };
+			ItemPropertiesPanel = new ItemPropertiesPanel();
 			ItemSlots = new ItemIcon[Player.ITEM_MAX_COUNT - 9];
 			AltSlots = new AltItemIcon[AltPanelWidth * AltPanelHeight];
 
@@ -346,6 +346,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 
 			Button OK = new Button();
+			OK.Enabled = Editable;
 			OK.Click += (sender, e) =>
 			{
 				ApplyData(Selected);
@@ -395,6 +396,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			ItemPropertiesPanel.Controls.Add(SaveInv);
 
 			Button LoadInv = new Button();
+			LoadInv.Enabled = Editable;
 			LoadInv.Click += (sender, e) =>
 			{
 				OpenFileDialog ofd = new OpenFileDialog()
@@ -418,6 +420,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			ItemPropertiesPanel.Controls.Add(LoadInv);
 
 			Button SaveInvPItem = new Button();
+			SaveInvPItem.Enabled = Editable;
 			SaveInvPItem.Click += (sender, e) =>
 			{
 				SaveFileDialog sfd = new SaveFileDialog()
@@ -443,6 +446,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			ItemPropertiesPanel.Controls.Add(SaveInvPItem);
 
 			Button LoadInvPItem = new Button();
+			LoadInvPItem.Enabled = Editable;
 			LoadInvPItem.Click += (sender, e) =>
 			{
 				OpenFileDialog ofd = new OpenFileDialog()
@@ -505,6 +509,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			ItemPropertiesPanel.Controls.Add(LoadInvPItem);
 
 			Button InitItem = new Button();
+			InitItem.Enabled = Editable;
 			InitItem.Click += (sender, e) =>
 			{
 				Item item = TargetPlayer.Inventory[Selected];
