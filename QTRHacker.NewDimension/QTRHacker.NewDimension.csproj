@@ -233,7 +233,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResBinFileReader.cs" />
+    <Compile Include="Res\ResBinFileReader.cs" />
     <Compile Include="Res\GameResLoader.cs" />
     <Compile Include="Wiki\ItemsTabPage.cs">
       <SubType>Component</SubType>

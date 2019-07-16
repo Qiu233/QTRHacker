@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QTRHacker.NewDimension
+namespace QTRHacker.NewDimension.Res
 {
 	public class ResBinFileReader
 	{

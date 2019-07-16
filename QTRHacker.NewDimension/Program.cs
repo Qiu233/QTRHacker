@@ -55,6 +55,7 @@ namespace QTRHacker.NewDimension
 			else*/
 			{
 				MessageBox.Show(e.Exception.ToString());
+				MessageBox.Show("如果持续出现此问题\n请尝试以管理员权限启动修改器");
 			}
 		}
 

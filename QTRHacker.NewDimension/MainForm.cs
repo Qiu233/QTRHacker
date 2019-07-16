@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,7 +24,7 @@ namespace QTRHacker.NewDimension
 	public partial class MainForm : Form
 	{
 		private Color FormBack = Color.FromArgb(45, 45, 48);
-		private Label VersionLabel, QQGroupLabel;
+		private Label VersionLabel, QQGroupLabel, AdminTipLabel;
 		private Point Drag_MousePos;
 		private Panel MainPanel, ButtonsPanel, ContentPanel;
 		private PictureBox MinButton, CloseButton;
@@ -56,6 +57,7 @@ namespace QTRHacker.NewDimension
 #endif
 
 			MainFormInstance = this;
+
 			InitializeComponent();
 			BackColor = FormBack;
 
@@ -93,6 +95,18 @@ namespace QTRHacker.NewDimension
 			ButtonsPanel.Bounds = new Rectangle(0, 0, 100, MainPanel.Height);
 			ButtonsPanel.BackColor = Color.FromArgb(50, 255, 255, 255);
 			MainPanel.Controls.Add(ButtonsPanel);
+
+
+			WindowsIdentity identity = WindowsIdentity.GetCurrent();
+			if (!new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator))
+			{
+				AdminTipLabel = new Label();
+				AdminTipLabel.Text = "如果出现报错\n请以管理员权限启动修改器";
+				AdminTipLabel.BackColor = Color.Transparent;
+				AdminTipLabel.ForeColor = Color.Red;
+				AdminTipLabel.Bounds = new Rectangle(3, 260, 100, 40);
+				ButtonsPanel.Controls.Add(AdminTipLabel);
+			}
 
 			QQGroupLabel = new Label();
 			QQGroupLabel.Text = "官方QQ群：453858025";

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using QTRHacker.Functions;
 using QTRHacker.Functions.GameObjects;
+using QTRHacker.NewDimension.Res;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

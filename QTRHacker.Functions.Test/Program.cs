@@ -22,8 +22,11 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				Console.WriteLine(gc.Tile.D1);
-				Console.WriteLine(gc.Tile.D2);
+				var player = gc.MyPlayer;
+				var itm = player.Inventory[0];
+				itm.SetDefaults(3063);
+				itm.Stack = 1;
+				itm.Damage = 2000;
 				Console.ReadKey();
 			}
 		}
