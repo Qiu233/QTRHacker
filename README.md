@@ -9,9 +9,9 @@ Sorry for that there's no English version for the newest version.
 Maybe you should compile it by yourself.
 
 ## Environmental requests
-* Windows 7 or above(32/64) needed.
-* .Net Framework 4.6.2 or above needed.
-* VC Runtime(VC Redist) needed.
+* Windows 7 or above(32/64).
+* .Net Framework 4.6.2 or above.
+* VC Runtime(VC Redist).
 
 ## How to compile:
 1. Install Visual Studio 2017
@@ -20,4 +20,3 @@ Maybe you should compile it by yourself.
 4. Open the Solution named "QTRHacker" by Visual Studio(Version Selector)
 5. Ctrl + F5
 6. Then you can see the hack ran.
-
