@@ -20,3 +20,6 @@ Maybe you should compile it by yourself.
 4. Open the Solution named "QTRHacker" by Visual Studio(Version Selector)
 5. Ctrl + F5
 6. Then you can see the hack ran.
+
+## Screenshots
+![](./Screenshots/1.png)
