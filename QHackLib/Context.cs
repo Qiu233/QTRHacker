@@ -105,7 +105,7 @@ namespace QHackLib
 		{
 			get;
 		}
-		public AddressHelper AddressHelper
+		public AddressHelper MainAddressHelper
 		{
 			get;
 		}
@@ -127,7 +127,7 @@ namespace QHackLib
 			Handle = handle;
 			DataTarget = DataTarget.AttachToProcess(id, 2000, AttachFlag.Passive);
 			Runtime = DataTarget.ClrVersions[0].CreateRuntime();
-			AddressHelper = new AddressHelper(this, moduleName);//这句必须最后执行，因为需要用到Context里面的一点信息
+			MainAddressHelper = new AddressHelper(this, moduleName);//这句必须最后执行，因为需要用到Context里面的一点信息
 		}
 
 		public AddressHelper CreateFunctionAddressHelper(string subModuleName)

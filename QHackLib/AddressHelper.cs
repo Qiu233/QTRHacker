@@ -11,12 +11,14 @@ namespace QHackLib
 	{
 		public Context Context { get; }
 		public ClrModule Module { get; }
+		public string ModuleName { get; }
 		public int this[string TypeName, string FunctionName]
 		{
 			get => GetFunctionAddress(TypeName, FunctionName);
 		}
 		internal AddressHelper(Context ctx, string subModuleName)
 		{
+			ModuleName = subModuleName;
 			Context = ctx;
 			Module = Context.Runtime.Modules.First(t => t.Name.EndsWith("\\" + subModuleName));
 		}

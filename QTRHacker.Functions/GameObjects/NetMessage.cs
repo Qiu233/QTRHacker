@@ -21,20 +21,20 @@ namespace QTRHacker.Functions.GameObjects
 			int number5 = 0, int number6 = 0, int number7 = 0)
 		{
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.NetMessage", "SendData"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.NetMessage", "SendData"),
 				null,
 				true,
 				msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 		}
 		public static void SendWater(GameContext Context, int x, int y)
 		{
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.NetMessage", "sendWater"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.NetMessage", "sendWater"),
 				null,
 				true,
 				x, y);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 		}
 	}
 }

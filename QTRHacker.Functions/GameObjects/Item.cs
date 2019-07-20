@@ -1053,11 +1053,11 @@ namespace QTRHacker.Functions.GameObjects
 		public void SetDefaults(int type)
 		{
 			var snippet = AssemblySnippet.FromDotNetCall(
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Item", "SetDefaults"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item", "SetDefaults"),
 				null,
 				true,
 				BaseAddress, type, false);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 		}
 
 
@@ -1073,29 +1073,29 @@ namespace QTRHacker.Functions.GameObjects
 					Instruction.Create("push ecx"),
 					Instruction.Create("push edx"),
 					AssemblySnippet.FromDotNetCall(
-						Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Item","SetDefaults"),
+						Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item","SetDefaults"),
 						null, false,
 						BaseAddress, type, false),
 					AssemblySnippet.FromDotNetCall(
-						Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Item","Prefix"),
+						Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item","Prefix"),
 						null,false,
 						BaseAddress, prefix),
 					Instruction.Create("pop edx"),
 					Instruction.Create("pop ecx")
 				});
 
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 
 		}
 
 		public void SetPrefix(int prefix)
 		{
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Item", "Prefix"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item", "Prefix"),
 				null,
 				true,
 				BaseAddress, prefix);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 		}
 
 		public static int NewItem(GameContext Context, float x, float y, float width, float height, int type, int stack = 1,
@@ -1103,11 +1103,11 @@ namespace QTRHacker.Functions.GameObjects
 		{
 			int ret = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Item", "NewItem"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item", "NewItem"),
 				ret,
 				true,
 				type, stack, y, x, height, width, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, ret, ref ret, 4, 0);
 			NativeFunctions.VirtualFreeEx(Context.HContext.Handle, ret, 0);
 			return ret;

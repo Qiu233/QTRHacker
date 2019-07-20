@@ -4,6 +4,7 @@ Projectiles	Projectiles
 Scripts	Scripts
 Miscs	Miscs
 MainPage	MainPage
+ChatSender	ChatSender
 
 DragTip	Drag the cross to Terraria
 PlayerArrayAddress	Player Array Address
@@ -218,3 +219,4 @@ Silver	S
 Copper	C
 
 Execute	Execute
+Send	Send

@@ -235,7 +235,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			CurrentPlayerBuffTypeBaseAddressInfoView.View.Text = buffTypeBaseAddress.ToString("X8");
 			CurrentPlayerBuffTimeBaseAddressInfoView.View.Text = buffTimeBaseAddress.ToString("X8");
 			CurrentPlayerFirstItemBaseAddressInfoView.View.Text = ctx.MyPlayer.Inventory[0].BaseAddress.ToString("X8");
-			Terraria_Main_Update_BaseAddressInfoView.View.Text = ctx.HContext.AddressHelper["Terraria.Main", "Update"].ToString("X8");
+			Terraria_Main_Update_BaseAddressInfoView.View.Text = ctx.HContext.MainAddressHelper["Terraria.Main", "Update"].ToString("X8");
 			SignHeadBaseAddressInfoView.View.Text = HackContext.SignHead.ToString("X8");
 		}
 	}

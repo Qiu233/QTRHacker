@@ -31,7 +31,7 @@ namespace QTRHacker.NewDimension
 		private int ButtonsNumber = 0;
 		public static readonly Color ButtonNormalColor = Color.Transparent;
 		public static readonly Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
-		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, ScriptsPagePanel, MiscPagePanel;
+		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, ScriptsPagePanel, MiscPagePanel, ChatSenderPanel;
 		public static MainForm MainFormInstance { get; private set; }
 		public static CFG_ProjDrawer Config_ProjDrawer;
 		public static ScriptRuntime QHScriptRuntime { get; private set; }
@@ -132,6 +132,7 @@ namespace QTRHacker.NewDimension
 			Image img_Projectile = null;
 			Image img_Misc = null;
 			Image img_Scripts = null;
+			Image img_ChatSender = null;
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_171"]))
 				img_MainPage = Image.FromStream(st);
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_990"]))
@@ -144,6 +145,8 @@ namespace QTRHacker.NewDimension
 				img_Scripts = Image.FromStream(st);
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_3124"]))
 				img_Misc = Image.FromStream(st);
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_531"]))
+				img_ChatSender = Image.FromStream(st);
 
 			ContentPanel = new Panel();
 			ContentPanel.Bounds = new Rectangle(100, 0, MainPanel.Width - 100, MainPanel.Height);
@@ -155,12 +158,14 @@ namespace QTRHacker.NewDimension
 			ProjectilePagePanel = new PagePanel_Projectile(MainPanel.Width - 100, MainPanel.Height);
 			ScriptsPagePanel = new PagePanel_Scripts(MainPanel.Width - 100, MainPanel.Height);
 			MiscPagePanel = new PagePanel_Misc(MainPanel.Width - 100, MainPanel.Height);
+			ChatSenderPanel = new PagePanel_ChatSender(MainPanel.Width - 100, MainPanel.Height);
 
 
 			AddButton(CurrentLanguage["Basic"], img_Basic, BasicPagePanel).Enabled = false;
 			AddButton(CurrentLanguage["Players"], img_Player, PlayerPagePanel).Enabled = false;
 			AddButton(CurrentLanguage["Projectiles"], img_Projectile, ProjectilePagePanel).Enabled = false;
 			AddButton(CurrentLanguage["Scripts"], img_Scripts, ScriptsPagePanel).Enabled = false;
+			AddButton(CurrentLanguage["ChatSender"], img_ChatSender, ChatSenderPanel).Enabled = false;
 			AddButton(CurrentLanguage["Miscs"], img_Misc, MiscPagePanel).Enabled = false;
 
 
@@ -287,6 +292,8 @@ namespace QTRHacker.NewDimension
 				Directory.CreateDirectory(".\\Projs");
 			if (!Directory.Exists(".\\Scripts"))
 				Directory.CreateDirectory(".\\Scripts");
+			if (!Directory.Exists(".\\ChatTemplates"))
+				Directory.CreateDirectory(".\\ChatTemplates");
 		}
 		private void LoadConfigs()
 		{

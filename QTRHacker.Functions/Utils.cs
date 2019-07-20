@@ -353,7 +353,7 @@ push 0", 0);
 		public static void EnableAllRecipes_E(GameContext Context)
 		{
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle,
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
 				new byte[] { 0xC3 }, 1, 0);
 			int a = AobscanHelper.Aobscan(
 				Context.HContext,
@@ -364,7 +364,7 @@ push 0", 0);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, v, ref y, 4, 0);
 
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle,
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes") + 0x1c,
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes") + 0x1c,
 				ref v, 4, 0);
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, v, ref y, 4, 0);
 
@@ -377,7 +377,7 @@ push 0", 0);
 		public static void EnableAllRecipes_D(GameContext Context)
 		{
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle,
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
 				new byte[] { 0x55 }, 1, 0);
 		}
 
@@ -561,7 +561,7 @@ push 0", 0);
 				AssemblySnippet.Loop(
 					AssemblySnippet.Loop(
 						AssemblySnippet.FromDotNetCall(
-							Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting"), null, false,
+							Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting"), null, false,
 							Context.Map.BaseAddress, "[esp+4]", "[esp]", 255),
 						Context.MaxTilesY, false),
 					Context.MaxTilesX, false));
@@ -569,7 +569,7 @@ push 0", 0);
 			asm.Content.Add(Instruction.Create("pop ecx"));
 
 			InlineHook.InjectAndWait(Context.HContext, asm,
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 			Context.RefreshMap = true;
 		}
 
@@ -597,7 +597,7 @@ push 0", 0);
 		{
 			byte[] s = new byte[1];
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle,
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), s, 1, 0);
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), s, 1, 0);
 			if (s[0] != 0x55)//已经被修改，不能再hook
 				return;
 			var ass = AssemblySnippet.FromCode(
@@ -614,7 +614,7 @@ push 0", 0);
 								Instruction.Create($"mov byte ptr [{Context.MapFullScreen_Address}],0"),
 								Instruction.Create($"mov byte ptr [{Context.MouseRightRelease_Address}],0"),
 								AssemblySnippet.FromDotNetCall(
-									Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main","get_LocalPlayer"), null, false),
+									Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main","get_LocalPlayer"), null, false),
 								Instruction.Create("mov ebx,eax"),
 								Instruction.Create("push eax"),
 								Instruction.Create("mov dword ptr [esp],2"),
@@ -652,7 +652,7 @@ push 0", 0);
 						Instruction.Create("popad")
 					});
 			InlineHook.Inject(Context.HContext, ass,
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), false);
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), false);
 		}
 
 		public static void ShowInvisiblePlayers_E(GameContext Context)
@@ -687,7 +687,7 @@ push 0", 0);
 						new AssemblyCode[]{
 							(Instruction)$"pushad",
 							AssemblySnippet.FromDotNetCall(
-								Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main","get_LocalPlayer"),
+								Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main","get_LocalPlayer"),
 								null, false),
 							(Instruction)$"mov ebx,eax",
 							(Instruction)$"push 16",
@@ -726,7 +726,7 @@ push 0", 0);
 
 		public static void ImmuneDebuffs_E(GameContext Context)
 		{
-			int a = Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Player", "AddBuff");
+			int a = Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Player", "AddBuff");
 			byte[] j = new byte[1];
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, j, 1, 0);
 			if (j[0] != 0xE9)
@@ -749,7 +749,7 @@ push 0", 0);
 		}
 		public static void ImmuneDebuffs_D(GameContext Context)
 		{
-			int a = Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Player", "AddBuff");
+			int a = Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Player", "AddBuff");
 			byte[] j = new byte[1];
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, j, 1, 0);
 			if (j[0] == 0xE9)
@@ -761,6 +761,33 @@ push 0", 0);
 				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
 				InlineHook.FreeHook(Context.HContext, y);
 			}
+		}
+		public static void SendChat(GameContext Context, string Text)
+		{
+			byte[] bs = Encoding.Unicode.GetBytes(Text);
+			int strEnd = 0;
+			int strMem = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, Text.Length + 10,
+				NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, strMem, bs, bs.Length, 0);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, strMem + bs.Length, ref strEnd, 4, 0);
+
+			var mscorlib_AddrHelper = Context.HContext.CreateFunctionAddressHelper("mscorlib.dll");
+			int ctor = mscorlib_AddrHelper.GetFunctionAddress("System.String", "CtorCharPtr");
+			AssemblySnippet asm = AssemblySnippet.FromCode(
+				new AssemblyCode[] {
+						(Instruction)"push ecx",
+						(Instruction)"push edx",
+						AssemblySnippet.FromDotNetCall(ctor, Context.HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "chatText"), false, 0, strMem),
+						(Instruction)$"mov byte ptr [{Context.HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "drawingPlayerChat")}],1",
+						(Instruction)$"mov byte ptr [{Context.HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "inputTextEnter")}],1",
+						(Instruction)$"mov byte ptr [{Context.HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "chatRelease")}],1",
+						(Instruction)"pop edx",
+						(Instruction)"pop ecx"
+			});
+
+			InlineHook.InjectAndWait(Context.HContext, asm, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			NativeFunctions.VirtualFreeEx(Context.HContext.Handle, strMem, 0);
 		}
 	}
 }

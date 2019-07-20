@@ -19,7 +19,7 @@ namespace QTRHacker.Functions.GameObjects
 		public static AssemblySnippet GetSnippet_Call_NewProjectile(GameContext Context, int? ret, bool regProtection, object X, object Y, object SpeedX, object SpeedY, object Type, object Damage, object KnockBack, object Owner, object ai0, object ai1)
 		{
 			return AssemblySnippet.FromDotNetCall(
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Projectile", "NewProjectile"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Projectile", "NewProjectile"),
 				ret,
 				regProtection,
 				Type, Damage, Y, X, SpeedY, SpeedX, KnockBack, Owner, ai0, ai1);
@@ -33,7 +33,7 @@ namespace QTRHacker.Functions.GameObjects
 				ret,
 				true,
 				X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, ret, ref ret, 4, 0);
 			NativeFunctions.VirtualFreeEx(Context.HContext.Handle, ret, 0);
 			return ret;

@@ -125,6 +125,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configs\CFG_ProjDrawer.cs" />
+    <Compile Include="Controls\ChatSnippetBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ChatSnippetBox.Designer.cs">
+      <DependentUpon>ChatSnippetBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FunctionButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -176,6 +182,9 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PagePanels\BracketHighlightRenderer.cs" />
+    <Compile Include="PagePanels\PagePanel_ChatSender.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PagePanels\ProjectileCodeView.cs" />
     <Compile Include="PagePanels\ProjectileCodeView.Designer.cs">
       <DependentUpon>ProjectileCodeView.cs</DependentUpon>

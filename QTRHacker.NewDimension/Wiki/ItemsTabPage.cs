@@ -421,6 +421,7 @@ namespace QTRHacker.NewDimension.Wiki
 				tipSearch.Bounds = new Rectangle(15, 133, 50, 20);
 
 				KeyWordTextBox = new TextBox();
+				KeyWordTextBox.ImeMode = ImeMode.OnHalf;
 				KeyWordTextBox.Bounds = new Rectangle(65, 130, 175, 20);
 				KeyWordTextBox.KeyDown += (s, e) =>
 				{

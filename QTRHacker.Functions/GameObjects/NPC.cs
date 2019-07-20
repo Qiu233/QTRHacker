@@ -22,22 +22,22 @@ namespace QTRHacker.Functions.GameObjects
 		{
 
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.NPC", "NewNPC"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.NPC", "NewNPC"),
 				null,
 				true,
 				x, y, type, start, ai0, ai1, ai2, ai3, target);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 		}
 
 		public void AddBuff(int type, int time, bool quiet = false)
 		{
 
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.NPC", "AddBuff"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.NPC", "AddBuff"),
 				null,
 				true,
 				BaseAddress, type, time, quiet);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 		}
 	}
 }

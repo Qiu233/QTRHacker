@@ -4,6 +4,7 @@ Projectiles	弹幕管理
 Scripts	脚本管理
 Miscs	杂项
 MainPage	主页
+ChatSender	聊天消息
 
 DragTip	拖动右边准星到Terraria游戏窗口
 PlayerArrayAddress	玩家数组基址
@@ -218,3 +219,4 @@ Silver	银
 Copper	铜
 
 Execute	执行
+Send	发送

@@ -18,11 +18,11 @@ namespace QTRHacker.Functions.GameObjects
 		public static void SquareTileFrame(GameContext Context, int i, int j, bool resetFrame = true)
 		{
 			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
-				Context.HContext.AddressHelper.GetFunctionAddress("Terraria.WorldGen", "SquareTileFrame"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.WorldGen", "SquareTileFrame"),
 				null,
 				true,
 				i, j, true);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.AddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 		}
 	}
 }

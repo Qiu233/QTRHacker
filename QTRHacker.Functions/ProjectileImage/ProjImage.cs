@@ -86,7 +86,7 @@ namespace QTRHacker.Functions.ProjectileImage
 				(int)Projs.Count, true));
 			snippet.Content.Add((Instruction)"popad");
 			InlineHook.InjectAndWait(context.HContext, snippet,
-				context.HContext.AddressHelper["Terraria.Main", "Update"], true);
+				context.HContext.MainAddressHelper["Terraria.Main", "Update"], true);
 			NativeFunctions.VirtualFreeEx(context.HContext.Handle, data, 0);
 
 		}

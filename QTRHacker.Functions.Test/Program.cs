@@ -1,5 +1,6 @@
 ﻿using Keystone;
 using Microsoft.Diagnostics.Runtime;
+using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using QTRHacker.Functions.GameObjects;
@@ -22,12 +23,8 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				var player = gc.MyPlayer;
-				var itm = player.Inventory[0];
-				itm.SetDefaults(3063);
-				itm.Stack = 1;
-				itm.Damage = 2000;
-				Console.ReadKey();
+				string str = "[C/FF0000:abcabcabc][C/00FF00:abcabcabc][i:3063]";
+				Utils.SendChat(gc, str);
 			}
 		}
 	}
