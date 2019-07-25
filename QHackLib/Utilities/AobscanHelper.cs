@@ -79,11 +79,82 @@ namespace QHackLib.Utilities
 		/// </summary>
 		/// <param name="ctx"></param>
 		/// <param name="hexCode"></param>
+		/// <param name="matching"></param>
 		/// <returns></returns>
-		public static int Aobscan(Context ctx, string hexCode)
+		public static int Aobscan(Context ctx, string hexCode, bool matching = false)
 		{
-			byte[] bytes = GetHexCodeFromString(hexCode);
-			return Aobscan(ctx, bytes);
+			if (!matching)
+			{
+				byte[] bytes = GetHexCodeFromString(hexCode);
+				return Aobscan(ctx, bytes);
+			}
+			int i = 0;
+			Dictionary<int, byte> pattern = new Dictionary<int, byte>();
+			List<int> match = new List<int>();
+			foreach (var c in hexCode)
+			{
+				if (c == ' ') continue;
+				else if (c == '*' || i == '?')
+					match.Add(i++);
+				else
+					pattern[i++] = Convert.ToByte(c.ToString(), 16);
+			}
+			return AobscanMatch(ctx, pattern, match);
+		}
+		private static int AobscanMatch(Context ctx, Dictionary<int, byte> pattern, List<int> match)
+		{
+			int i = 0;
+			NativeFunctions.MEMORY_BASIC_INFORMATION mbi;
+			while (i < 0x7FFFFFFF)
+			{
+				int flag = NativeFunctions.VirtualQueryEx(ctx.Handle, i, out mbi, 28);
+				if (flag != 28)
+					break;
+				if ((int)mbi.RegionSize <= 0)
+					break;
+				if (mbi.Protect != (UInt32)NativeFunctions.AllocationProtect.PAGE_EXECUTE_READWRITE || mbi.State != 0x00001000)
+				{
+					i += mbi.RegionSize;
+					continue;
+				}
+				byte[] va = new byte[mbi.RegionSize];
+				NativeFunctions.ReadProcessMemory(ctx.Handle, i, va, mbi.RegionSize, 0);
+				int r = MemmemMatch(va, pattern, match);
+				if (r >= 0)
+				{
+					return (int)(i + r);
+				}
+				i += mbi.RegionSize;
+			}
+			return -1;
+		}
+		private static int MemmemMatch(byte[] v, Dictionary<int, byte> pattern, List<int> match)
+		{
+			byte GetV(int i)
+			{
+				int j = v[i / 2];
+				if (i % 2 == 0)
+					return (byte)(j >> 4);
+				else
+					return (byte)(j & 0xF);
+			}
+			int alen = v.Length * 2;
+			int blen = pattern.Count + match.Count;
+
+			for (int i = 0; i < alen - blen; i++)
+			{
+				int j = 0;
+				for (; j < blen; j++)
+				{
+					byte t = GetV(i + j);
+					if (match.Contains(j) || t == pattern[j])
+						continue;
+					break;
+				}
+				if (j == blen && i % 2 == 0)
+					return i / 2;
+			}
+			return -1;
 		}
 		/// <summary>
 		/// 失败返回-1

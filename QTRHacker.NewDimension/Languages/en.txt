@@ -185,6 +185,7 @@ SlimeGunBurnNPCS	SlimeGun Burn NPCS
 FishOnlyCrates	Fish Only Crates
 EnableAllRecipes	Enable All Recipes
 StengthenedVampireKnives	Stengthen VampireKnives
+SwingIgnoringTiles	Swing Ignoring Tiles
 
 BurnAllNPCS	Burn All NPCS
 BurnAllPlayers	Burn All Players

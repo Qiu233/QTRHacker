@@ -20,9 +20,6 @@ namespace QHackLibTest
 			int pid = localByName[0].Id;
 			using (Context context = Context.Create(pid))
 			{
-				//Console.WriteLine(context.FunctionAddressHelper.GetFunctionAddress("Terraria.Main::Update").ToString("X8"));
-				//FunctionAddressHelper a = FunctionAddressHelper.Initialize(context.ProcessID, "mscorlib.dll");
-				//Console.WriteLine(a.FunctionsAddress.ElementAt(100).Key);
 			}
 		}
 	}

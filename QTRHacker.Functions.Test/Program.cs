@@ -23,8 +23,6 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				string str = "[C/FF0000:abcabcabc][C/00FF00:abcabcabc][i:3063]";
-				Utils.SendChat(gc, str);
 			}
 		}
 	}

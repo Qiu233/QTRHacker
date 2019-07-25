@@ -67,6 +67,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			AddFunction(Page2, MainForm.CurrentLanguage["FishOnlyCrates"], "77D322DE31DDE8C328C44A8A7E63AD04", true, Utils.FishOnlyCrates_E, Utils.FishOnlyCrates_D);
 			AddFunction(Page2, MainForm.CurrentLanguage["EnableAllRecipes"], "DA840529BCE9704EF4F1BA5CB6C6ECD4", true, Utils.EnableAllRecipes_E, Utils.EnableAllRecipes_D);
 			AddFunction(Page2, MainForm.CurrentLanguage["StengthenedVampireKnives"], "418C48524EA50ECC6717C5D629AF7B32", true, Utils.StrengthenVampireKnives_E, Utils.StrengthenVampireKnives_D);
+			AddFunction(Page2, MainForm.CurrentLanguage["SwingIgnoringTiles"], "4B246B44592B441C9DC23E9EBC077A98", true, Utils.SwingIgnoringTils_E, Utils.SwingIgnoringTils_D);
 
 			AddFunction(Page3, MainForm.CurrentLanguage["BurnAllNPCS"], "9A3F870D0DDB5B46F6E1B1266D6882AD", false,
 				g =>

@@ -116,15 +116,7 @@ fld dword ptr [ebp-0x3c]"
 			int a = AobscanHelper.Aobscan(Context.HContext, "df f1 dd d8 7a 0a 73 08 d9 46 08 d9 5d c4 eb 2c d9 45 c4 dd 05") - 6;
 			if (a <= 0)
 				return;
-			var ass = Assembler.Assemble(@"fld dword ptr [esi+0x8]
-fld dword ptr [ebp-0x3c]", 0);
-			int y = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-			y += a + 5;
-
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ass, ass.Length, 0);
-
-			InlineHook.FreeHook(Context.HContext, y);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void GhostMode_E(GameContext Context)
@@ -148,15 +140,7 @@ fld dword ptr [ebp-0x3c]", 0);
 			int a = AobscanHelper.AobscanASM(
 				Context.HContext,
 				"fldz\nfstp dword ptr [esi+0x410]") + 8;
-
-			int t = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref t, 4, 0);
-			t += a + 5;
-
-			var ass = Assembler.Assemble("mov [esi+0x414],edx", 0);
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ass, ass.Length, 0);
-
-			InlineHook.FreeHook(Context.HContext, t);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void FastSpeed_E(GameContext Context)
@@ -173,15 +157,7 @@ fld dword ptr [ebp-0x3c]", 0);
 			int a = AobscanHelper.AobscanASM(
 				Context.HContext,
 				"mov [esi+0x54b],dl\nmov [esi+0x54d],dl") - 6;
-
-			int t = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref t, 4, 0);
-			t += a + 5;
-
-			var ass = Assembler.Assemble("fstp dword ptr [esi+0x3bc]", 0);
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ass, ass.Length, 0);
-
-			InlineHook.FreeHook(Context.HContext, t);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void ProjectileIgnoreTile_E(GameContext Context)
@@ -255,13 +231,7 @@ fld dword ptr [ebp-0x3c]", 0);
 				"mov dword ptr [esi+0x140],2"),
 				a, false, false);
 
-			int y = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-			y += a + 5;
-
-			byte[] b = Assembler.Assemble("mov [esi+0x140],edx", 0);
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
-			InlineHook.FreeHook(Context.HContext, y);
+			InlineHook.FreeHook(Context.HContext, a);
 
 			byte[] bs = { 0x74, 0x0c };
 
@@ -294,17 +264,7 @@ push 0x49
 push 1
 push 0") + 2 * 5;
 
-			int y = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-			y += a + 5;
-
-			byte[] b = Assembler.Assemble(@"push 0
-push 0
-push 0", 0);
-
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
-
-			InlineHook.FreeHook(Context.HContext, y);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void SlimeGunBurn_E(GameContext Context)
@@ -322,15 +282,7 @@ push 0", 0);
 				   Context.HContext,
 				   "8b 85 b8 f3 ff ff 89 45 cc 8b 45 cc 40") - 0x1a;
 
-			int y = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-			y += a + 5;
-
-			byte[] b = Assembler.Assemble("mov edx,[ebp-0xc34]", 0);
-
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
-
-			InlineHook.FreeHook(Context.HContext, y);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void FishOnlyCrates_E(GameContext Context)
@@ -437,15 +389,7 @@ push 0", 0);
 				   Context.HContext,
 				   "8b 85 30 f0 ff ff d9 80 c4 03 00 00") - 6;
 
-			int y = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-			y += a + 5;
-
-			byte[] b = Assembler.Assemble("fstp dword ptr [eax+0x3c8]", 0);
-
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
-
-			InlineHook.FreeHook(Context.HContext, y);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void MachinicalRulerEffect_E(GameContext Context)
@@ -462,16 +406,7 @@ push 0", 0);
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext,
 				   "d9 9e c0 03 00 00 88 96 f0 05 00 00") + 12;
-
-			int y = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-			y += a + 5;
-
-			byte[] b = Assembler.Assemble("mov [esi+0x5f6],dl", 0);
-
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
-
-			InlineHook.FreeHook(Context.HContext, y);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void RulerEffect_E(GameContext Context)
@@ -489,15 +424,7 @@ push 0", 0);
 				   Context.HContext,
 				   "88 96 F8 05 00 00 88 96 F9 05 00 00") - 6;
 
-			int y = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-			y += a + 5;
-
-			byte[] b = Assembler.Assemble("mov [esi+0x5f7],dl", 0);
-
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
-
-			InlineHook.FreeHook(Context.HContext, y);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void ShowCircuit_E(GameContext Context)
@@ -514,16 +441,7 @@ push 0", 0);
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext,
 				   "88 96 F8 05 00 00 88 96 F9 05 00 00") - 6;
-
-			int y = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-			y += a + 5;
-
-			byte[] b = Assembler.Assemble("mov [esi+0x62a],dl", 0);
-
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
-
-			InlineHook.FreeHook(Context.HContext, y);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void ShadowDodge_E(GameContext Context)
@@ -540,16 +458,7 @@ push 0", 0);
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext,
 				   "88 96 33 05 00 00 88 96 A9 05 00 00") - 6;
-
-			int y = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-			y += a + 5;
-
-			byte[] b = Assembler.Assemble("mov [esi+0x532],dl", 0);
-
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
-
-			InlineHook.FreeHook(Context.HContext, y);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void RevealMap(GameContext Context)
@@ -595,10 +504,10 @@ push 0", 0);
 
 		public static void RightClickToTP(GameContext Context)
 		{
-			byte[] s = new byte[1];
+			byte s = 0;
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle,
-				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), s, 1, 0);
-			if (s[0] != 0x55)//已经被修改，不能再hook
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), ref s, 1, 0);
+			if (s != 0x55)//已经被修改，不能再hook
 				return;
 			var ass = AssemblySnippet.FromCode(
 					new AssemblyCode[] {
@@ -711,17 +620,10 @@ push 0", 0);
 			int a = AobscanHelper.Aobscan(
 				Context.HContext,
 				"8B 8D E4 F9 FF FF FF 15") - 5;
-			byte[] j = new byte[1];
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, j, 1, 0);
-			if (j[0] == 0xE9)
-			{
-				int y = 0;
-				NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-				y += a + 5;
-				byte[] b = Assembler.Assemble("movq [esp],xmm0", 0);
-				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
-				InlineHook.FreeHook(Context.HContext, y);
-			}
+			byte j = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref j, 1, 0);
+			if (j == 0xE9)
+				InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void ImmuneDebuffs_E(GameContext Context)
@@ -750,16 +652,11 @@ push 0", 0);
 		public static void ImmuneDebuffs_D(GameContext Context)
 		{
 			int a = Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Player", "AddBuff");
-			byte[] j = new byte[1];
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, j, 1, 0);
-			if (j[0] == 0xE9)
+			byte j = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref j, 1, 0);
+			if (j == 0xE9)
 			{
-				int y = 0;
-				NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 1, ref y, 4, 0);
-				y += a + 5;
-				byte[] b = AobscanHelper.GetHexCodeFromString("55 8B EC 57 56");
-				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, b.Length, 0);
-				InlineHook.FreeHook(Context.HContext, y);
+				InlineHook.FreeHook(Context.HContext, a);
 			}
 		}
 		public static void SendChat(GameContext Context, string Text)
@@ -789,5 +686,25 @@ push 0", 0);
 			InlineHook.InjectAndWait(Context.HContext, asm, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
 			NativeFunctions.VirtualFreeEx(Context.HContext.Handle, strMem, 0);
 		}
+
+		public static void SwingIgnoringTils_E(GameContext Context)
+		{
+			byte s = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle,
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Collision", "CanHit"), ref s, 1, 0);
+			if (s != 0x55)//已经被修改，不能再hook
+				return;
+			var code = AssemblySnippet.FromCode(new AssemblyCode[] {
+				(Instruction)"mov eax,1",
+				(Instruction)"ret"
+			});
+			InlineHook.Inject(Context.HContext, code, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Collision", "CanHit"), false, false);
+		}
+		public static void SwingIgnoringTils_D(GameContext Context)
+		{
+			int a = Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Collision", "CanHit");
+			InlineHook.FreeHook(Context.HContext, a);
+		}
+
 	}
 }

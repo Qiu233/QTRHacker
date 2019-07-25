@@ -11,6 +11,21 @@ namespace QHackLib.FunctionHelper
 {
 	public class InlineHook
 	{
+		public struct HookInfo
+		{
+			public int CodeAddress;
+			public int ComparisonFlagAddress;
+			public int ComparisonInstructionAddress;
+			public byte[] RawCodeBytes;
+
+			public HookInfo(int codeAddress, int comparisonFlagAddress, int comparisonInstructionAddress, byte[] rawCodeBytes)
+			{
+				CodeAddress = codeAddress;
+				ComparisonFlagAddress = comparisonFlagAddress;
+				ComparisonInstructionAddress = comparisonInstructionAddress;
+				RawCodeBytes = rawCodeBytes;
+			}
+		}
 		private static readonly Object thisLock = new Object();
 		private const int CodeOffset = 64;
 		private InlineHook() { }
@@ -48,25 +63,25 @@ namespace QHackLib.FunctionHelper
 			while (true)
 			{
 				int y = 0;
-				NativeFunctions.ReadProcessMemory(Context.Handle, t.Item3, ref y, 4, 0);
+				NativeFunctions.ReadProcessMemory(Context.Handle, t.ComparisonInstructionAddress, ref y, 4, 0);
 				if (y == 0)
 				{
-					if (t.Item2 == 0)
+					if (t.ComparisonFlagAddress == 0)
 					{
-						NativeFunctions.WriteProcessMemory(Context.Handle, targetAddr, t.Item4, t.Item4.Length, 0);
-						NativeFunctions.VirtualFreeEx(Context.Handle, t.Item1, 0);
-						NativeFunctions.VirtualFreeEx(Context.Handle, t.Item3, 0);
+						NativeFunctions.WriteProcessMemory(Context.Handle, targetAddr, t.RawCodeBytes, t.RawCodeBytes.Length, 0);
+						NativeFunctions.VirtualFreeEx(Context.Handle, t.CodeAddress, 0);
+						NativeFunctions.VirtualFreeEx(Context.Handle, t.ComparisonInstructionAddress, 0);
 						return;
 					}
 					else
 					{
-						NativeFunctions.ReadProcessMemory(Context.Handle, t.Item2, ref y, 4, 0);
+						NativeFunctions.ReadProcessMemory(Context.Handle, t.ComparisonFlagAddress, ref y, 4, 0);
 						if (y == 0)
 						{
-							NativeFunctions.WriteProcessMemory(Context.Handle, targetAddr, t.Item4, t.Item4.Length, 0);
-							NativeFunctions.VirtualFreeEx(Context.Handle, t.Item1, 0);
-							NativeFunctions.VirtualFreeEx(Context.Handle, t.Item2, 0);
-							NativeFunctions.VirtualFreeEx(Context.Handle, t.Item3, 0);
+							NativeFunctions.WriteProcessMemory(Context.Handle, targetAddr, t.RawCodeBytes, t.RawCodeBytes.Length, 0);
+							NativeFunctions.VirtualFreeEx(Context.Handle, t.CodeAddress, 0);
+							NativeFunctions.VirtualFreeEx(Context.Handle, t.ComparisonFlagAddress, 0);
+							NativeFunctions.VirtualFreeEx(Context.Handle, t.ComparisonInstructionAddress, 0);
 							return;
 						}
 					}
@@ -76,10 +91,23 @@ namespace QHackLib.FunctionHelper
 
 		public static void FreeHook(Context Context, int targetAddr)
 		{
-			int t = 0, y = 0;
+			int t = 0, y = 0, j = 0, k = targetAddr;
+			int headLen = 0;
+			byte[] head;
 
-			NativeFunctions.ReadProcessMemory(Context.Handle, targetAddr, ref t, 4, 0);
-			NativeFunctions.ReadProcessMemory(Context.Handle, targetAddr + 4, ref y, 4, 0);
+			byte h = 0;
+			NativeFunctions.ReadProcessMemory(Context.Handle, targetAddr, ref h, 1, 0);
+			if (h != 0xE9) return;
+
+			NativeFunctions.ReadProcessMemory(Context.Handle, targetAddr + 1, ref j, 4, 0);
+			k += j + 5 - CodeOffset;
+			NativeFunctions.ReadProcessMemory(Context.Handle, k, ref t, 4, 0);
+			NativeFunctions.ReadProcessMemory(Context.Handle, k + 4, ref y, 4, 0);
+			NativeFunctions.ReadProcessMemory(Context.Handle, k + 8, ref headLen, 4, 0);
+			head = new byte[headLen];
+			NativeFunctions.ReadProcessMemory(Context.Handle, k + 0xc, head, headLen, 0);
+
+			NativeFunctions.WriteProcessMemory(Context.Handle, targetAddr, head, headLen, 0);
 
 			NativeFunctions.VirtualFreeEx(Context.Handle, targetAddr, 0);
 			NativeFunctions.VirtualFreeEx(Context.Handle, t, 0);
@@ -97,7 +125,7 @@ namespace QHackLib.FunctionHelper
 		/// <param name="execRaw"></param>
 		/// <param name="codeSize"></param>
 		/// <returns></returns>
-		public static Tuple<int, int, int, byte[]> Inject(Context Context, AssemblySnippet snippet, int targetAddr, bool once, bool execRaw = true, int codeSize = 1024)
+		public static HookInfo Inject(Context Context, AssemblySnippet snippet, int targetAddr, bool once, bool execRaw = true, int codeSize = 1024)
 		{
 			lock (thisLock)
 			{
@@ -126,10 +154,12 @@ namespace QHackLib.FunctionHelper
 
 
 				byte[] headBytes = GetHeadBytes(code);
+				int headLen = headBytes.Length;
 
-
-				NativeFunctions.WriteProcessMemory(Context.Handle, codeAddr, ref flagAddr, 4, 0);
-				NativeFunctions.WriteProcessMemory(Context.Handle, codeAddr + 4, ref compAddr, 4, 0);
+				NativeFunctions.WriteProcessMemory(Context.Handle, codeAddr, ref flagAddr, 4, 0);//0-4
+				NativeFunctions.WriteProcessMemory(Context.Handle, codeAddr + 4, ref compAddr, 4, 0);//4-8
+				NativeFunctions.WriteProcessMemory(Context.Handle, codeAddr + 8, ref headLen, 4, 0);//8-c
+				NativeFunctions.WriteProcessMemory(Context.Handle, codeAddr + 0xc, headBytes, headLen, 0);//c-1c
 
 				int addr = codeAddr + CodeOffset;
 				byte[] snippetBytes = a.GetByteCode(addr);
@@ -152,17 +182,15 @@ namespace QHackLib.FunctionHelper
 				byte[] jmpBackBytes = Assembler.Assemble("jmp " + (targetAddr + headBytes.Length), addr);
 				NativeFunctions.WriteProcessMemory(Context.Handle, addr, jmpBackBytes, jmpBackBytes.Length, 0);
 				addr += jmpBackBytes.Length;
-				
+
 				byte[] jmpToBytesRaw = Assembler.Assemble("jmp " + (codeAddr + CodeOffset), targetAddr);
 				byte[] jmpToBytes = new byte[headBytes.Length];
 				for (int i = 0; i < 5; i++)
 					jmpToBytes[i] = jmpToBytesRaw[i];
 				for (int i = 5; i < headBytes.Length; i++)
 					jmpToBytes[i] = 0x90;//nop
-				//Console.WriteLine(codeAddr.ToString("X8"));
-				//Console.ReadKey();
 				NativeFunctions.WriteProcessMemory(Context.Handle, targetAddr, jmpToBytes, jmpToBytes.Length, 0);
-				return new Tuple<int, int, int, byte[]>(codeAddr, flagAddr, compAddr, headBytes);
+				return new HookInfo(codeAddr, flagAddr, compAddr, headBytes);
 			}
 		}
 	}
