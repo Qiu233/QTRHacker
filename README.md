@@ -8,7 +8,7 @@ Now QTRHacker is much stronger than the old one.
 Sorry for that there's no English version for the newest version.
 Maybe you should compile it by yourself.
 
-## Environmental requests
+## Environment requests
 * Windows 7 or above(32/64).
 * .Net Framework 4.6.2 or above.
 * VC Runtime(VC Redist).
@@ -19,4 +19,13 @@ Maybe you should compile it by yourself.
 3. Extract all files if you choice to download.
 4. Open the Solution named "QTRHacker" by Visual Studio(Version Selector)
 5. Ctrl + F5
-6. Then you can see the hack ran.
+6. Then you can see the hack running.
+
+## Screenshots
+![](./Screenshots/1.png)
+![](./Screenshots/2.png)
+![](./Screenshots/3.png)
+![](./Screenshots/4.png)
+![](./Screenshots/5.png)
+![](./Screenshots/6.png)
+![](./Screenshots/7.png)
