@@ -620,10 +620,7 @@ push 0") + 2 * 5;
 			int a = AobscanHelper.Aobscan(
 				Context.HContext,
 				"8B 8D E4 F9 FF FF FF 15") - 5;
-			byte j = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref j, 1, 0);
-			if (j == 0xE9)
-				InlineHook.FreeHook(Context.HContext, a);
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void ImmuneDebuffs_E(GameContext Context)
@@ -652,12 +649,7 @@ push 0") + 2 * 5;
 		public static void ImmuneDebuffs_D(GameContext Context)
 		{
 			int a = Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Player", "AddBuff");
-			byte j = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref j, 1, 0);
-			if (j == 0xE9)
-			{
-				InlineHook.FreeHook(Context.HContext, a);
-			}
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 		public static void SendChat(GameContext Context, string Text)
 		{
@@ -696,7 +688,6 @@ push 0") + 2 * 5;
 				return;
 			var code = AssemblySnippet.FromCode(new AssemblyCode[] {
 				(Instruction)"mov eax,1",
-				(Instruction)"ret"
 			});
 			InlineHook.Inject(Context.HContext, code, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Collision", "CanHit"), false, false);
 		}
@@ -704,6 +695,29 @@ push 0") + 2 * 5;
 		{
 			int a = Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Collision", "CanHit");
 			InlineHook.FreeHook(Context.HContext, a);
+		}
+
+		public static void SwingingAttacksAll_E(GameContext Context)
+		{
+			int a = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF938].StartAddress;
+			int b = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF962].StartAddress;
+			byte s = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref s, 1, 0);
+			if (s == 0xE9)//已经被修改，不能再hook
+				return;
+
+			var code = AssemblySnippet.FromCode(new AssemblyCode[] {
+				(Instruction)"mov eax,1",
+			});
+			InlineHook.Inject(Context.HContext, code, a, false, false);
+			InlineHook.Inject(Context.HContext, code, b, false, false);
+		}
+		public static void SwingingAttacksAll_D(GameContext Context)
+		{
+			int a = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF938].StartAddress;
+			int b = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF962].StartAddress;
+			InlineHook.FreeHook(Context.HContext, a);
+			InlineHook.FreeHook(Context.HContext, b);
 		}
 
 	}

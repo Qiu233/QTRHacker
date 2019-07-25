@@ -23,6 +23,7 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
+				Utils.SwingingAttacksAll_E(gc);
 			}
 		}
 	}

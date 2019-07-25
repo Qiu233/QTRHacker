@@ -16,6 +16,10 @@ namespace QHackLib
 		{
 			get => GetFunctionAddress(TypeName, FunctionName);
 		}
+		public ILToNativeMap this[string TypeName, string FunctionName, int ILOffset]
+		{
+			get => GetFunctionInstruction(TypeName, FunctionName, ILOffset);
+		}
 		internal AddressHelper(Context ctx, string subModuleName)
 		{
 			ModuleName = subModuleName;
@@ -25,6 +29,10 @@ namespace QHackLib
 		public int GetFunctionAddress(string TypeName, string FunctionName)
 		{
 			return (int)Module.GetTypeByName(TypeName).Methods.First(t => t.Name == FunctionName).NativeCode;
+		}
+		public ILToNativeMap GetFunctionInstruction(string TypeName, string FunctionName, int ILOffset)
+		{
+			return Module.GetTypeByName(TypeName).Methods.First(t => t.Name == FunctionName).ILOffsetMap.First(t => t.ILOffset == ILOffset);
 		}
 		public int GetStaticFieldAddress(string TypeName, string FieldName)
 		{

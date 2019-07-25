@@ -186,6 +186,7 @@ FishOnlyCrates	Fish Only Crates
 EnableAllRecipes	Enable All Recipes
 StengthenedVampireKnives	Stengthen VampireKnives
 SwingIgnoringTiles	Swing Ignoring Tiles
+SwingingAttacksAll	Swinging Attacks All
 
 BurnAllNPCS	Burn All NPCS
 BurnAllPlayers	Burn All Players

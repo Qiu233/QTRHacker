@@ -20,6 +20,8 @@ namespace QHackLibTest
 			int pid = localByName[0].Id;
 			using (Context context = Context.Create(pid))
 			{
+				Console.WriteLine(context.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF938].StartAddress.ToString("X8"));
+				Console.WriteLine(context.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF962].StartAddress.ToString("X8"));
 			}
 		}
 	}

@@ -186,6 +186,7 @@ FishOnlyCrates	只钓板条箱
 EnableAllRecipes	全物品合成
 StengthenedVampireKnives	加强吸血飞刀
 SwingIgnoringTiles	挥砍无视方块
+SwingingAttacksAll	挥砍攻击所有生物
 
 BurnAllNPCS	燃烧所有NPC
 BurnAllPlayers	燃烧所有玩家
