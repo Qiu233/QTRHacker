@@ -222,3 +222,6 @@ Copper	C
 
 Execute	Execute
 Send	Send
+
+AddToInvMax	Add to Inventory(Max Stack)
+AddToInvOne	Add to Inventory(One)

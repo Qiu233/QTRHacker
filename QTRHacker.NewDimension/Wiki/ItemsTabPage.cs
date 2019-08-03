@@ -70,8 +70,24 @@ namespace QTRHacker.NewDimension.Wiki
 			{
 				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
 				var player = HackContext.GameContext.MyPlayer;
-				int num = QTRHacker.Functions.GameObjects.Item.NewItem(HackContext.GameContext, player.X, player.Y, 0, 0, id, Items[id]["maxStack"].ToObject<int>(), false, 0, true);
-				QTRHacker.Functions.GameObjects.NetMessage.SendData(HackContext.GameContext, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
+				int num = Functions.GameObjects.Item.NewItem(HackContext.GameContext, player.X, player.Y, 0, 0, id, Items[id]["maxStack"].ToObject<int>(), false, 0, true);
+				Functions.GameObjects.NetMessage.SendData(HackContext.GameContext, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
+
+			};
+			ContextMenuStrip strip = ItemListView.ContextMenuStrip = new ContextMenuStrip();
+			strip.Items.Add(MainForm.CurrentLanguage["AddToInvMax"]).Click += (s, e) =>
+			{
+				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
+				var player = HackContext.GameContext.MyPlayer;
+				int num = Functions.GameObjects.Item.NewItem(HackContext.GameContext, player.X, player.Y, 0, 0, id, Items[id]["maxStack"].ToObject<int>(), false, 0, true);
+				Functions.GameObjects.NetMessage.SendData(HackContext.GameContext, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
+			};
+			strip.Items.Add(MainForm.CurrentLanguage["AddToInvOne"]).Click += (s, e) =>
+			{
+				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
+				var player = HackContext.GameContext.MyPlayer;
+				int num = Functions.GameObjects.Item.NewItem(HackContext.GameContext, player.X, player.Y, 0, 0, id, 1, false, 0, true);
+				Functions.GameObjects.NetMessage.SendData(HackContext.GameContext, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
 			};
 			ItemListView.SelectedIndexChanged += ItemListView_SelectedIndexChanged;
 
@@ -518,9 +534,9 @@ namespace QTRHacker.NewDimension.Wiki
 			a = a % VALUE_S;
 			int c = a / VALUE_C;
 			a = a % VALUE_C;
-			return p + MainForm.CurrentLanguage["Platinum"]+" " + g + 
-				MainForm.CurrentLanguage["Gold"] + " " + s + 
-				MainForm.CurrentLanguage["Silver"] + " " + c + 
+			return p + MainForm.CurrentLanguage["Platinum"] + " " + g +
+				MainForm.CurrentLanguage["Gold"] + " " + s +
+				MainForm.CurrentLanguage["Silver"] + " " + c +
 				MainForm.CurrentLanguage["Copper"] + "";
 		}
 

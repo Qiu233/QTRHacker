@@ -222,3 +222,6 @@ Copper	铜
 
 Execute	执行
 Send	发送
+
+AddToInvMax	添加到背包(一组)
+AddToInvOne	添加到背包(一个)
