@@ -112,6 +112,7 @@ namespace QHackLib.FunctionHelper
 			NativeFunctions.VirtualFreeEx(Context.Handle, targetAddr, 0);
 			NativeFunctions.VirtualFreeEx(Context.Handle, t, 0);
 			NativeFunctions.VirtualFreeEx(Context.Handle, y, 0);
+			NativeFunctions.VirtualFreeEx(Context.Handle, k, 0);
 		}
 
 
