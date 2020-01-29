@@ -51,7 +51,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			AddSnippetButton = new Button();
 			AddSnippetButton.FlatStyle = FlatStyle.Flat;
-			AddSnippetButton.Text = "添加";
+			AddSnippetButton.Text = MainForm.CurrentLanguage["Add"];
 			AddSnippetButton.ForeColor = Color.White;
 			AddSnippetButton.Size = new Size(40, 20);
 			AddSnippetButton.Font = new Font(AddSnippetButton.Font.Name, 7);

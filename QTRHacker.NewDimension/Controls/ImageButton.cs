@@ -44,8 +44,18 @@ namespace QTRHacker.NewDimension.Controls
 			ForeColor = Color.White;
 			Selected = false;
 			TextFont = new Font("Arial", 10);
-			//BorderStyle = BorderStyle.FixedSingle;
+			Click += ImageButton_Click;
+			
 		}
+
+		private void ImageButton_Click(object sender, EventArgs e)
+		{
+			ImageButton bs = (sender as ImageButton);
+			if (bs.Selected)
+				return;
+			bs.Selected = true;
+		}
+
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);

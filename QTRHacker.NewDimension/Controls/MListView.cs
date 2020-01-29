@@ -10,9 +10,31 @@ namespace QTRHacker.NewDimension.Controls
 {
 	public class MListView : ListView
 	{
+		[System.Runtime.InteropServices.DllImport("user32.dll")]
+		public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int wndproc);
+		[System.Runtime.InteropServices.DllImport("user32.dll")]
+		public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+		public const int GWL_STYLE = -16;
+		public const int WS_DISABLED = 0x8000000;
+		
 		private readonly Brush ColumnBackBrush;
 		private readonly Brush ColumnTextBrush;
 		private readonly Brush SubItemTextBrush;
+		private bool _enabled;
+
+		public new bool Enabled
+		{
+			get => _enabled;
+			set
+			{
+				_enabled = value;
+				if(_enabled)
+					SetWindowLong(Handle, GWL_STYLE, (~WS_DISABLED) & GetWindowLong(Handle, GWL_STYLE));
+				else
+					SetWindowLong(Handle, GWL_STYLE, WS_DISABLED + GetWindowLong(Handle, GWL_STYLE));
+			}
+		}
 
 		public MListView()
 		{

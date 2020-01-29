@@ -70,9 +70,9 @@ Scale	缩放
 Defense	防御
 ShootSpeed	弹幕速度
 Shoot	弹幕类型
-Pick	挖掘力
-Axe	砍伐力
-Hammer	锤击力
+PickCap	挖掘力
+AxeCap	砍伐力
+HammerCap	锤击力
 TileBoost	额外距离
 CreateTile	放置ID
 CreateWall	墙壁ID
@@ -225,3 +225,17 @@ Send	发送
 
 AddToInvMax	添加到背包(一组)
 AddToInvOne	添加到背包(一个)
+
+Pick	挖掘
+Axe	砍伐
+Hammer	锤击
+
+Generate	生成
+Sches	建筑
+
+Add	添加
+
+AimBot	自瞄
+About	关于
+Lock	锁定
+Unlock	解锁

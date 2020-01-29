@@ -478,7 +478,7 @@ push 0") + 2 * 5;
 			asm.Content.Add(Instruction.Create("pop ecx"));
 
 			InlineHook.InjectAndWait(Context.HContext, asm,
-				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
 			Context.RefreshMap = true;
 		}
 
@@ -661,13 +661,13 @@ push 0") + 2 * 5;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, strMem, bs, bs.Length, 0);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, strMem + bs.Length, ref strEnd, 4, 0);
 
-			var mscorlib_AddrHelper = Context.HContext.CreateFunctionAddressHelper("mscorlib.dll");
+			var mscorlib_AddrHelper = Context.HContext.GetAddressHelper("mscorlib.dll");
 			int ctor = mscorlib_AddrHelper.GetFunctionAddress("System.String", "CtorCharPtr");
 			AssemblySnippet asm = AssemblySnippet.FromCode(
 				new AssemblyCode[] {
 						(Instruction)"push ecx",
 						(Instruction)"push edx",
-						AssemblySnippet.FromDotNetCall(ctor, Context.HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "chatText"), false, 0, strMem),
+						AssemblySnippet.ConstructString(Context.HContext, strMem, Context.HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "chatText")),
 						(Instruction)$"mov byte ptr [{Context.HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "drawingPlayerChat")}],1",
 						(Instruction)$"mov byte ptr [{Context.HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "inputTextEnter")}],1",
 						(Instruction)$"mov byte ptr [{Context.HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "chatRelease")}],1",
@@ -675,7 +675,7 @@ push 0") + 2 * 5;
 						(Instruction)"pop ecx"
 			});
 
-			InlineHook.InjectAndWait(Context.HContext, asm, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, asm, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
 			NativeFunctions.VirtualFreeEx(Context.HContext.Handle, strMem, 0);
 		}
 

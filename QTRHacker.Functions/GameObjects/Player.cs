@@ -295,7 +295,7 @@ namespace QTRHacker.Functions.GameObjects
 				null,
 				true,
 				BaseAddress, type, time, quiet);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
 		}
 
 

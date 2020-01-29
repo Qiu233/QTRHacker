@@ -13,6 +13,19 @@ namespace QTRHacker.Functions.GameObjects
 	{
 		public const int MAXNUMBER = 201;
 
+		[GameFieldOffsetFieldName("friendly")]
+		public static int OFFSET_Friendly;
+
+
+		public bool Friendly
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_Friendly, out bool v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_Friendly, value);
+		}
 
 		public NPC(GameContext Context, int bAddr) : base(Context, bAddr)
 		{
@@ -26,7 +39,7 @@ namespace QTRHacker.Functions.GameObjects
 				null,
 				true,
 				x, y, type, start, ai0, ai1, ai2, ai3, target);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
 		}
 
 		public void AddBuff(int type, int time, bool quiet = false)
@@ -37,7 +50,7 @@ namespace QTRHacker.Functions.GameObjects
 				null,
 				true,
 				BaseAddress, type, time, quiet);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
 		}
 	}
 }

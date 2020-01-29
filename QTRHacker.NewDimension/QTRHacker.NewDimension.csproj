@@ -183,7 +183,19 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PagePanels\BracketHighlightRenderer.cs" />
+    <Compile Include="Controls\PageGroup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PagePanels\PagePanel_About.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PagePanels\PagePanel_AimBot.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PagePanels\PagePanel_ChatSender.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PagePanels\PagePanel_Sches.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PagePanels\ProjectileCodeView.cs" />
@@ -322,6 +334,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <EmbeddedResource Include="Res\Text\About.txt" />
     <EmbeddedResource Include="Res\Game\Prefix_en.txt" />
     <EmbeddedResource Include="Res\Game\Mount_en.txt" />
     <EmbeddedResource Include="Res\Game\Pet_en.txt" />

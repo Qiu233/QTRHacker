@@ -24,19 +24,23 @@ namespace QTRHacker.NewDimension
 	public partial class MainForm : Form
 	{
 		private Color FormBack = Color.FromArgb(45, 45, 48);
-		private Label VersionLabel, QQGroupLabel, AdminTipLabel;
 		private Point Drag_MousePos;
 		private Panel MainPanel, ButtonsPanel, ContentPanel;
 		private PictureBox MinButton, CloseButton;
-		private int ButtonsNumber = 0;
 		public static readonly Color ButtonNormalColor = Color.Transparent;
 		public static readonly Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
-		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, ScriptsPagePanel, MiscPagePanel, ChatSenderPanel;
+		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel,
+			ProjectilePagePanel, ScriptsPagePanel, SchesPagePanel,
+			MiscPagePanel, ChatSenderPanel, AimBotPagePanel,
+			AboutPagePanel;
 		public static MainForm MainFormInstance { get; private set; }
 		public static CFG_ProjDrawer Config_ProjDrawer;
 		public static ScriptRuntime QHScriptRuntime { get; private set; }
 		public static ScriptEngine QHScriptEngine { get; private set; }
 		public static Languages.Processor CurrentLanguage;
+		public static PageGroup Group1, Group2;
+		public static PageGroup ExpandedGroup;
+		public static int ButtonsPanelWidth = 132;
 		protected override void OnShown(EventArgs e)
 		{
 			base.OnShown(e);
@@ -92,47 +96,16 @@ namespace QTRHacker.NewDimension
 			Controls.Add(CloseButton);
 
 			ButtonsPanel = new Panel();
-			ButtonsPanel.Bounds = new Rectangle(0, 0, 100, MainPanel.Height);
-			ButtonsPanel.BackColor = Color.FromArgb(50, 255, 255, 255);
+			ButtonsPanel.Bounds = new Rectangle(0, 0, ButtonsPanelWidth, MainPanel.Height);
+			ButtonsPanel.BackColor = Color.FromArgb(255, 90, 90, 90);
 			MainPanel.Controls.Add(ButtonsPanel);
 
 
-			WindowsIdentity identity = WindowsIdentity.GetCurrent();
-			if (!new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator))
-			{
-				AdminTipLabel = new Label();
-				AdminTipLabel.Text = "如果出现报错\n请以管理员权限启动修改器";
-				AdminTipLabel.BackColor = Color.Transparent;
-				AdminTipLabel.ForeColor = Color.Red;
-				AdminTipLabel.Bounds = new Rectangle(3, 260, 100, 40);
-				ButtonsPanel.Controls.Add(AdminTipLabel);
-			}
 
-			QQGroupLabel = new Label();
-			QQGroupLabel.Text = "官方QQ群：453858025";
-			QQGroupLabel.BackColor = Color.Transparent;
-			QQGroupLabel.ForeColor = Color.White;
-			QQGroupLabel.Bounds = new Rectangle(3, 310, 100, 40);
-#if ENG
-#else
-			ButtonsPanel.Controls.Add(QQGroupLabel);
-#endif
-
-			VersionLabel = new Label();
-			VersionLabel.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-			VersionLabel.BackColor = Color.Transparent;
-			VersionLabel.ForeColor = Color.White;
-			VersionLabel.Bounds = new Rectangle(3, 350, 100, 20);
-			ButtonsPanel.Controls.Add(VersionLabel);
-
-
-			Image img_MainPage = null;
-			Image img_Basic = null;
-			Image img_Player = null;
-			Image img_Projectile = null;
-			Image img_Misc = null;
-			Image img_Scripts = null;
-			Image img_ChatSender = null;
+			Image img_MainPage = null, img_Basic = null, img_Player = null,
+				img_Projectile = null, img_Misc = null, img_Scripts = null,
+				img_Sche = null, img_ChatSender = null, img_AimBot = null,
+				img_About = null;
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_171"]))
 				img_MainPage = Image.FromStream(st);
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_990"]))
@@ -145,31 +118,53 @@ namespace QTRHacker.NewDimension
 				img_Scripts = Image.FromStream(st);
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_3124"]))
 				img_Misc = Image.FromStream(st);
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_109"]))
+				img_About = Image.FromStream(st);
 			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_531"]))
 				img_ChatSender = Image.FromStream(st);
 
+
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_3"]))
+				img_Sche = Image.FromStream(st);
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_164"]))
+				img_AimBot = Image.FromStream(st);
+
 			ContentPanel = new Panel();
-			ContentPanel.Bounds = new Rectangle(100, 0, MainPanel.Width - 100, MainPanel.Height);
+			ContentPanel.Bounds = new Rectangle(ButtonsPanel.Width, 0, MainPanel.Width - ButtonsPanel.Width, MainPanel.Height);
 			MainPanel.Controls.Add(ContentPanel);
 
-			MainPagePanel = new PagePanel_MainPage(MainPanel.Width - 100, MainPanel.Height);
-			BasicPagePanel = new PagePanel_Basic(MainPanel.Width - 100, MainPanel.Height);
-			PlayerPagePanel = new PagePanel_Player(MainPanel.Width - 100, MainPanel.Height);
-			ProjectilePagePanel = new PagePanel_Projectile(MainPanel.Width - 100, MainPanel.Height);
-			ScriptsPagePanel = new PagePanel_Scripts(MainPanel.Width - 100, MainPanel.Height);
-			MiscPagePanel = new PagePanel_Misc(MainPanel.Width - 100, MainPanel.Height);
-			ChatSenderPanel = new PagePanel_ChatSender(MainPanel.Width - 100, MainPanel.Height);
+			int pageWidth = ContentPanel.Width;
+
+			MainPagePanel = new PagePanel_MainPage(pageWidth, MainPanel.Height);
+			AboutPagePanel = new PagePanel_About(pageWidth, MainPanel.Height);
+			BasicPagePanel = new PagePanel_Basic(pageWidth, MainPanel.Height);
+			PlayerPagePanel = new PagePanel_Player(pageWidth, MainPanel.Height);
+			ProjectilePagePanel = new PagePanel_Projectile(pageWidth, MainPanel.Height);
+			ScriptsPagePanel = new PagePanel_Scripts(pageWidth, MainPanel.Height);
+			MiscPagePanel = new PagePanel_Misc(pageWidth, MainPanel.Height);
+			ChatSenderPanel = new PagePanel_ChatSender(pageWidth, MainPanel.Height);
 
 
-			AddButton(CurrentLanguage["Basic"], img_Basic, BasicPagePanel).Enabled = false;
-			AddButton(CurrentLanguage["Players"], img_Player, PlayerPagePanel).Enabled = false;
-			AddButton(CurrentLanguage["Projectiles"], img_Projectile, ProjectilePagePanel).Enabled = false;
-			AddButton(CurrentLanguage["Scripts"], img_Scripts, ScriptsPagePanel).Enabled = false;
-			AddButton(CurrentLanguage["ChatSender"], img_ChatSender, ChatSenderPanel).Enabled = false;
-			AddButton(CurrentLanguage["Miscs"], img_Misc, MiscPagePanel).Enabled = false;
+			SchesPagePanel = new PagePanel_Sches(pageWidth, MainPanel.Height);
+			AimBotPagePanel = new PagePanel_AimBot(pageWidth, MainPanel.Height);
 
 
-			AddButton(CurrentLanguage["MainPage"], img_MainPage, MainPagePanel).Selected = true;
+			ExpandedGroup = Group1 = AddGroup(32, true);
+			Group2 = AddGroup(0);
+
+
+			AddButton(Group1, CurrentLanguage["Basic"], img_Basic, BasicPagePanel).Enabled = false;
+			AddButton(Group1, CurrentLanguage["Players"], img_Player, PlayerPagePanel).Enabled = false;
+			AddButton(Group1, CurrentLanguage["Projectiles"], img_Projectile, ProjectilePagePanel).Enabled = false;
+			AddButton(Group1, CurrentLanguage["Scripts"], img_Scripts, ScriptsPagePanel).Enabled = false;
+			AddButton(Group1, CurrentLanguage["ChatSender"], img_ChatSender, ChatSenderPanel).Enabled = false;
+			AddButton(Group1, CurrentLanguage["Miscs"], img_Misc, MiscPagePanel).Enabled = false;
+			AddButton(Group1, CurrentLanguage["About"], img_About, AboutPagePanel).Enabled = true;
+			AddButton(Group1, CurrentLanguage["MainPage"], img_MainPage, MainPagePanel).Selected = true;
+
+			//AddButton(Group2, CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;
+			AddButton(Group2, CurrentLanguage["AimBot"], img_AimBot, AimBotPagePanel).Enabled = false;
+
 
 
 			Icon = ConvertToIcon(img_Basic, true);
@@ -180,16 +175,12 @@ namespace QTRHacker.NewDimension
 		{
 			foreach (var c in ButtonsPanel.Controls)
 			{
-				(c as Control).Enabled = true;
-			}
-			foreach (var i in ButtonsPanel.Controls)
-			{
-				if (i is ImageButton)
+				foreach (var cc in ((Control)c).Controls)
 				{
-					(i as ImageButton).Selected = true;
-					break;
+					(cc as Control).Enabled = true;
 				}
 			}
+			(Group1.Controls[0] as ImageButton).Selected = true;
 		}
 
 		/// <summary>
@@ -233,34 +224,45 @@ namespace QTRHacker.NewDimension
 			}
 		}
 
-		private ImageButton AddButton(string Text, Image Icon, Control Content)
+		private PageGroup AddGroup(int leftMargin, bool expand = false)
 		{
-			ImageButton b = new ImageButton();
-			b.Location = new Point(0, 30 * (ButtonsNumber++));
-			b.Image = Icon;
-			b.Text = Text;
-			ButtonsPanel.Controls.Add(b);
-			b.OnSelected += (s, e) =>
-			{
-				ImageButton bs = (s as ImageButton);
-				if (!bs.Selected)
-					return;
-				foreach (var i in ButtonsPanel.Controls)
-					if (i is ImageButton && i != bs)
-						(i as ImageButton).Selected = false;
-				if (Content == null)
-					return;
-				ContentPanel.Controls.Clear();
-				ContentPanel.Controls.Add(Content);
-			};
-			b.Click += (s, e) =>
-			{
-				ImageButton bs = (s as ImageButton);
-				if (bs.Selected)
-					return;
-				bs.Selected = true;
-			};
-			return b;
+			PageGroup group = new PageGroup();
+			group.Location = new Point(leftMargin, 0);
+			group.Expanded = expand;
+			group.Height = ButtonsPanel.Height;
+			ButtonsPanel.Controls.Add(group);
+			return group;
+		}
+
+		private ImageButton AddButton(PageGroup group, string Text, Image Icon, Control Content)
+		{
+			return group.AddButton(Text, Icon, Content, (s, e) =>
+			 {
+				 ImageButton bs = (s as ImageButton);
+				 if (!bs.Selected)
+					 return;
+				 PageGroup previousGroup = ExpandedGroup;
+				 PageGroup targetGroup = bs.Parent as PageGroup;
+
+				 foreach (var i in ExpandedGroup.Controls)
+					 if (i is ImageButton ii && i != bs)
+						 ii.Selected = false;
+
+				 Point tmpP = previousGroup.Location;
+				 previousGroup.Location = targetGroup.Location;
+				 targetGroup.Location = tmpP;
+
+				 Size tmpS = previousGroup.Size;
+				 previousGroup.Size = targetGroup.Size;
+				 targetGroup.Size = tmpS;
+
+				 ExpandedGroup = targetGroup;
+
+				 if (Content == null)
+					 return;
+				 ContentPanel.Controls.Clear();
+				 ContentPanel.Controls.Add(Content);
+			 });
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -292,6 +294,8 @@ namespace QTRHacker.NewDimension
 				Directory.CreateDirectory(".\\Projs");
 			if (!Directory.Exists(".\\Scripts"))
 				Directory.CreateDirectory(".\\Scripts");
+			if (!Directory.Exists(".\\Sches"))
+				Directory.CreateDirectory(".\\Sches");
 			if (!Directory.Exists(".\\ChatTemplates"))
 				Directory.CreateDirectory(".\\ChatTemplates");
 		}

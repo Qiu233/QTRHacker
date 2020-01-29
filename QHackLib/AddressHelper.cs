@@ -1,6 +1,7 @@
 ﻿using Microsoft.Diagnostics.Runtime;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace QHackLib
 	{
 		public Context Context { get; }
 		public ClrModule Module { get; }
-		public string ModuleName { get; }
+		public string ModuleName { get => Module.Name; }
 		public int this[string TypeName, string FunctionName]
 		{
 			get => GetFunctionAddress(TypeName, FunctionName);
@@ -20,11 +21,10 @@ namespace QHackLib
 		{
 			get => GetFunctionInstruction(TypeName, FunctionName, ILOffset);
 		}
-		internal AddressHelper(Context ctx, string subModuleName)
+		internal AddressHelper(Context ctx, ClrModule module)
 		{
-			ModuleName = subModuleName;
+			Module = module;
 			Context = ctx;
-			Module = Context.Runtime.Modules.First(t => t.Name.EndsWith("\\" + subModuleName));
 		}
 		public int GetFunctionAddress(string TypeName, string FunctionName)
 		{
@@ -37,6 +37,10 @@ namespace QHackLib
 		public int GetStaticFieldAddress(string TypeName, string FieldName)
 		{
 			return (int)Module.GetTypeByName(TypeName).GetStaticFieldByName(FieldName).GetAddress(Module.AppDomains[0]);
+		}
+		public int GetFieldOffset(string TypeName, string FieldName)
+		{
+			return Module.GetTypeByName(TypeName).Fields.First(t => t.Name == FieldName).Offset + 4;//to get true offset must +4
 		}
 	}
 }

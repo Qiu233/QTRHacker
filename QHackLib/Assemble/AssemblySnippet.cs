@@ -40,8 +40,8 @@ namespace QHackLib.Assemble
 			return s;
 		}
 		/// <summary>
-		/// 在循环体內，[esp]即迭代的值
-		/// 会影响ecx寄存器
+		/// inside loop,[esp] is the iterator
+		/// ecx will be changed
 		/// </summary>
 		/// <param name="body"></param>
 		/// <param name="times"></param>
@@ -72,6 +72,37 @@ namespace QHackLib.Assemble
 			if (regProtection)
 				s.Content.Add(Instruction.Create("pop ecx"));
 			return s;
+		}
+
+		/// <summary>
+		/// ecx,edx,eax will be changed
+		/// eax will keep the return value
+		/// </summary>
+		/// <param name="ctx"></param>
+		/// <param name="strMemPtr">char* pointer of the string to be constructed</param>
+		/// <param name="retPtr">the pointer to receive the result</param>
+		/// <returns></returns>
+		public static AssemblySnippet ConstructString(Context ctx, int strMemPtr, int? retPtr)
+		{
+			var mscorlib_AddrHelper = ctx.GetAddressHelper("mscorlib.dll");
+			int ctor = mscorlib_AddrHelper.GetFunctionAddress("System.String", "CtorCharPtr");
+			if (retPtr == null)
+				return FromDotNetCall(ctor, null, false, 0, strMemPtr);
+			return FromDotNetCall(ctor, retPtr, false, 0, strMemPtr);
+		}
+
+		/// <summary>
+		/// load an assembly
+		/// ecx,eax will be changed
+		/// </summary>
+		/// <param name="ctx"></param>
+		/// <param name="assemblyFileNamePtr"></param>
+		/// <returns></returns>
+		public static AssemblySnippet LoadAssembly(Context ctx, int assemblyFileNamePtr)
+		{
+			var mscorlib_AddrHelper = ctx.GetAddressHelper("mscorlib.dll");
+			int loadFrom = mscorlib_AddrHelper.GetFunctionAddress("System.Reflection.Assembly", "LoadFrom");
+			return FromDotNetCall(loadFrom, null, false, assemblyFileNamePtr);
 		}
 
 		private static string GetArgumentPassing(int index, object v)
@@ -109,7 +140,7 @@ namespace QHackLib.Assemble
 		}
 
 		/// <summary>
-		/// 只适用于参数不含基础类型以外的值类型的函数
+		/// only for the functions with parameters of ValueType
 		/// </summary>
 		/// <param name="targetAddr"></param>
 		/// <param name="retAddr"></param>

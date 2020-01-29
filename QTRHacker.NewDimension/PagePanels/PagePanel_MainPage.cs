@@ -1,4 +1,5 @@
-﻿using QTRHacker.Functions;
+﻿using QHackLib;
+using QTRHacker.Functions;
 using QTRHacker.Functions.GameObjects;
 using QTRHacker.NewDimension.Controls;
 using System;
@@ -51,7 +52,9 @@ namespace QTRHacker.NewDimension.PagePanels
 		[DllImport("User32.dll")]
 		public static extern int GetWindowThreadProcessId(IntPtr hwnd, out int ID);
 		[DllImport("kernel32.dll")]
-		public static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+		private static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+		[DllImport("kernel32.dll")]
+		private static extern int CloseHandle(int dwDesiredAccess);
 		public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
 		private bool Dragging = false;
 		private readonly Font TextFont;
@@ -199,6 +202,16 @@ namespace QTRHacker.NewDimension.PagePanels
 					this.Cursor = Cursors.Default;
 			}
 		}
+
+		private void InitGame(int pid)
+		{
+			HackContext.GameContext = GameContext.OpenGame(pid);
+			HackContext.InitSign();
+			//这个是获得最终信息的，必须最后执行
+			InitializeAddresses();
+
+		}
+
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			base.OnMouseUp(e);
@@ -212,10 +225,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				Dragging = false;
 				Refresh();
 				//获取游戏信息的操作最后执行，避免鼠标十字滞留
-				HackContext.GameContext = GameContext.OpenGame(processID);
-				HackContext.InitSign();
-				//这个是获得最终信息的，必须最后执行
-				InitializeAddresses();
+				InitGame(processID);
 
 				MainForm.MainFormInstance.OnInitialized();
 			}

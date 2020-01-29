@@ -33,7 +33,7 @@ namespace QTRHacker.Functions.GameObjects
 				ret,
 				true,
 				X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, ret, ref ret, 4, 0);
 			NativeFunctions.VirtualFreeEx(Context.HContext.Handle, ret, 0);
 			return ret;

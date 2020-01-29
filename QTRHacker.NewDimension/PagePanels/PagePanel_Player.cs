@@ -286,13 +286,14 @@ namespace QTRHacker.NewDimension.PagePanels
 
 
 			UpdatePlayerTimer = new Timer();
-			UpdatePlayerTimer.Interval = 50;//每隔50ms进行一次玩家列表的检查和更新
+			UpdatePlayerTimer.Interval = 500;//每隔500ms进行一次玩家列表的检查和更新
 			UpdatePlayerTimer.Tick += (s, e) =>
 			{
+				if (!Visible)
+					return;
 				if (PlayerListView.SelectedIndices.Count > 0)
 					UpdatePlayerAttribute(HackContext.GameContext.Players[Convert.ToInt32(PlayerListView.SelectedItems[0].Text)]);
-				if (Visible)
-					UpdatePlayerList();
+				UpdatePlayerList();
 			};
 			UpdatePlayerTimer.Start();//开启更新线程
 		}

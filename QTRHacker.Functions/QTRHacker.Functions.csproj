@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,6 +45,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net45\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Diagnostics.Runtime, Version=1.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Diagnostics.Runtime.1.0.5\lib\net45\Microsoft.Diagnostics.Runtime.dll</HintPath>
     </Reference>
@@ -73,7 +77,7 @@
     <Compile Include="GameObjects\GameObjectArray2D.cs" />
     <Compile Include="GameObjects\Item.cs" />
     <Compile Include="GameObjects\ItemSlots.cs" />
-    <Compile Include="MathFunctions.cs" />
+    <Compile Include="InjectHook\InjectHookHelper.cs" />
     <Compile Include="GameObjects\NetMessage.cs" />
     <Compile Include="GameObjects\NPC.cs" />
     <Compile Include="GameObjects\NPCArray.cs" />
@@ -103,6 +107,9 @@
     <Compile Include="ProjectileMaker\Parse\Tokenizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Tile.cs" />
+    <Compile Include="ScheMaker\RawTile.cs" />
+    <Compile Include="ScheMaker\ScheMaker.cs" />
+    <Compile Include="ScheMaker\Schematic.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="GameObjects\IO\WorldFileData.cs" />
     <Compile Include="GameObjects\WorldGen.cs" />
@@ -113,9 +120,14 @@
       <Project>{cc1b3a7e-33aa-487d-ae8e-2b5b2ce3fef1}</Project>
       <Name>QHackLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\QTRInjectionBase\QTRInjectionBase.csproj">
+      <Project>{8a518167-06f5-46fa-b0ab-f7aa93858127}</Project>
+      <Name>QTRInjectionBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

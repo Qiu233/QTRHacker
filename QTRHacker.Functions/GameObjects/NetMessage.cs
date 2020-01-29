@@ -25,7 +25,7 @@ namespace QTRHacker.Functions.GameObjects
 				null,
 				true,
 				msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
 		}
 		public static void SendWater(GameContext Context, int x, int y)
 		{
@@ -34,7 +34,7 @@ namespace QTRHacker.Functions.GameObjects
 				null,
 				true,
 				x, y);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update"), true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
 		}
 	}
 }

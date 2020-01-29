@@ -1,4 +1,6 @@
-﻿namespace QTRHacker.NewDimension
+﻿using System.Reflection;
+
+namespace QTRHacker.NewDimension
 {
 	partial class MainForm
 	{
@@ -30,8 +32,8 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(400, 400);
-			this.Text = "QTRHacker";
+			this.ClientSize = new System.Drawing.Size(300 + ButtonsPanelWidth, 400);
+			this.Text = $"QTRHacker-V{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 		}
 

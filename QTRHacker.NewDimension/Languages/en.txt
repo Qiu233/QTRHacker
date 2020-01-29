@@ -70,9 +70,9 @@ Scale	Scale
 Defense	Defense
 ShootSpeed	ShootSpeed
 Shoot	Shoot
-Pick	Pick
-Axe	Axe
-Hammer	Hammer
+PickCap	Pick
+AxeCap	Axe
+HammerCap	Hammer
 TileBoost	TileBoost
 CreateTile	CreateTile
 CreateWall	CreateWall
@@ -225,3 +225,17 @@ Send	Send
 
 AddToInvMax	Add to Inventory(Max Stack)
 AddToInvOne	Add to Inventory(One)
+
+Pick	Pick
+Axe	Axe
+Hammer	Hammer
+
+Generate	Generate
+Sches	Schematics
+
+Add	Add
+
+AimBot	AimBot
+About	About
+Lock	Lock
+Unlock	Unlock

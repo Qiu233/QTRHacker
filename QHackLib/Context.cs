@@ -3,6 +3,7 @@ using QHackLib.FunctionHelper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -52,6 +53,9 @@ namespace QHackLib
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool AdjustTokenPrivileges(IntPtr TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, [MarshalAs(UnmanagedType.Struct)]ref TOKEN_PRIVILEGES NewState, uint BufferLength, IntPtr PreviousState, uint ReturnLength);
 
+
+		[DllImport("QInject.dll")]
+		public static extern int Inject(int processId, int assembly, int assemblySize, [MarshalAs(UnmanagedType.LPWStr)]string typeName);
 
 		private const uint TOKEN_QUERY = 0x0008;
 		private const uint TOKEN_ADJUST_PRIVILEGES = 0x0020;
@@ -109,6 +113,14 @@ namespace QHackLib
 		{
 			get;
 		}
+		public AddressHelper[] AddressHelpers
+		{
+			get;
+		}
+		private Dictionary<string, AddressHelper> NameToAddressHelper
+		{
+			get;
+		}
 		public int ArrayHeadLength
 		{
 			get
@@ -119,6 +131,23 @@ namespace QHackLib
 			}
 		}
 
+		public static void LoadAssembly(int pid, string fileFullPath, string typeToInstantiate)
+		{
+			int handle = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
+			byte[] bs = File.ReadAllBytes(fileFullPath);
+			int assembly = NativeFunctions.VirtualAllocEx(handle, 0, bs.Length, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+			NativeFunctions.WriteProcessMemory(handle, assembly, bs, bs.Length, 0);
+			Inject(pid, assembly, bs.Length, typeToInstantiate);
+			NativeFunctions.VirtualFreeEx(handle, assembly, 0);
+			CloseHandle(handle);
+		}
+
+		private void LoadAllAddressHelpers()
+		{
+			for (int i = 0; i < Runtime.Modules.Count; i++)
+				AddressHelpers[i] = CreateFunctionAddressHelper(Runtime.Modules[i]);
+		}
+
 		private Context(string name, int id, int handle, string moduleName)
 		{
 			GrantPrivilege();
@@ -127,12 +156,27 @@ namespace QHackLib
 			Handle = handle;
 			DataTarget = DataTarget.AttachToProcess(id, 2000, AttachFlag.Passive);
 			Runtime = DataTarget.ClrVersions[0].CreateRuntime();
-			MainAddressHelper = new AddressHelper(this, moduleName);//这句必须最后执行，因为需要用到Context里面的一点信息
+
+
+			AddressHelpers = new AddressHelper[Runtime.Modules.Count];
+			NameToAddressHelper = new Dictionary<string, AddressHelper>();
+			LoadAllAddressHelpers();
+
+			MainAddressHelper = GetAddressHelper(moduleName);//这句必须最后执行，因为需要用到Context里面的一点信息
 		}
 
-		public AddressHelper CreateFunctionAddressHelper(string subModuleName)
+		public AddressHelper GetAddressHelper(string ModuleName)
 		{
-			return new AddressHelper(this, subModuleName);
+			if (NameToAddressHelper.ContainsKey(ModuleName))
+				return NameToAddressHelper[ModuleName];
+			var m = AddressHelpers.First(t => t.Module.Name.Contains("\\") ? Path.GetFileName(t.Module.Name) == ModuleName : t.Module.Name.Substring(0, t.Module.Name.IndexOf(",")) == Path.GetFileNameWithoutExtension(ModuleName));
+			NameToAddressHelper[ModuleName] = m;
+			return m;
+		}
+
+		private AddressHelper CreateFunctionAddressHelper(ClrModule module)
+		{
+			return new AddressHelper(this, module);
 		}
 
 		public static Context Create(int processID)

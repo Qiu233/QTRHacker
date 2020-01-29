@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +13,7 @@ using QHackLib.Utilities;
 using QTRHacker.Functions.GameObjects;
 using QTRHacker.Functions.GameObjects.IO;
 using QTRHacker.Functions.GameObjects.Map;
+using QTRHacker.Functions.InjectHook;
 
 namespace QTRHacker.Functions
 {
@@ -19,6 +22,11 @@ namespace QTRHacker.Functions
 	/// </summary>
 	public class GameContext : IDisposable
 	{
+		public bool AssembliesLoaded
+		{
+			get;
+			private set;
+		}
 		public static bool OffsetsInitialized
 		{
 			get;
@@ -592,6 +600,43 @@ namespace QTRHacker.Functions
 			}
 		}
 
+
+		/// <summary>
+		/// 如果你不知道这是干什么的
+		/// 请不要调用
+		/// </summary>
+		/// <param name="pid"></param>
+		private void LoadAllInjections(int pid)
+		{
+			if (AssembliesLoaded)
+				return;
+			using (Context tmpC = Context.Create(pid))
+			{
+				byte b = 0;
+				NativeFunctions.ReadProcessMemory(tmpC.Handle, tmpC.MainAddressHelper["Terraria.Main", "Update"], ref b, 1, 0);
+				if (b == 0xE9)//already loaded
+				{
+					AssembliesLoaded = true;
+					return;
+				}
+			}
+
+			Context.LoadAssembly(pid, Path.GetFullPath("QTRInjectionBase.dll"), "QTRInjectionBase.QTRInjectionBase");
+			Context.LoadAssembly(pid, Path.GetFullPath("TRInjections.dll"), "TRInjections.TRInjections");
+		}
+
+		/// <summary>
+		/// 如果你不知道这是干什么的
+		/// 请不要调用
+		/// </summary>
+		private void ProcessAllInjections()
+		{
+			if (AssembliesLoaded)
+				return;
+			InjectHookHelper.Process(this, "QTRInjectionBase.dll");
+			InjectHookHelper.Process(this, "TRInjections.dll");
+		}
+
 		/// <summary>
 		/// 凡是没有标明Pointer的，获取的均为基址，而非指向该地址的指针
 		/// 基础数据类型没有基址，获得的是地址，而非基址
@@ -599,7 +644,11 @@ namespace QTRHacker.Functions
 		/// <param name="pid">游戏的进程ID</param>
 		private GameContext(int pid)
 		{
+			LoadAllInjections(pid);
 			HContext = Context.Create(pid);
+			ProcessAllInjections();
+
+
 			ArrayHeadLength = HContext.ArrayHeadLength;
 			InitalizeOffsets();
 
