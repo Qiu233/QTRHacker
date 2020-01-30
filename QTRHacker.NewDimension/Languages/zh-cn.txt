@@ -192,7 +192,7 @@ BurnAllNPCS	燃烧所有NPC
 BurnAllPlayers	燃烧所有玩家
 PourLavaOntoPlayers	给玩家倒岩浆
 RandomUUID	随机UUID
-ExploreWholeWorld	探索全地图
+ExploreWholeWorld	探索全地图(单机)
 RightClickToTP	右键大地图传送
 ProjectilePuzzle	弹幕拼图
 HarpLeftClickTP	竖琴右键传送

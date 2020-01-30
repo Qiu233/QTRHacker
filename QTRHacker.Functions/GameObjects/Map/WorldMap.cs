@@ -24,7 +24,7 @@ namespace QTRHacker.Functions.GameObjects.Map
 				ret,
 				true,
 				BaseAddress, x, y, light);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), true);
 			bool rv = false;
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, ret, ref rv, 1, 0);
 			NativeFunctions.VirtualFreeEx(Context.HContext.Handle, ret, 0);

@@ -192,7 +192,7 @@ BurnAllNPCS	Burn All NPCS
 BurnAllPlayers	Burn All Players
 PourLavaOntoPlayers	Pour Lava Onto Players
 RandomUUID	Random UUID
-ExploreWholeWorld	Explore The Whole World
+ExploreWholeWorld	Explore The Whole World(SinglePlayer)
 RightClickToTP	Right Click On MAP To TP
 ProjectilePuzzle	Jigsaw With Pixel Image
 HarpLeftClickTP	Harp Left Click To TP

@@ -39,7 +39,7 @@ namespace QTRHacker.Functions.GameObjects
 				null,
 				true,
 				x, y, type, start, ai0, ai1, ai2, ai3, target);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), true);
 		}
 
 		public void AddBuff(int type, int time, bool quiet = false)
@@ -50,7 +50,7 @@ namespace QTRHacker.Functions.GameObjects
 				null,
 				true,
 				BaseAddress, type, time, quiet);
-			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, true);
+			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), true);
 		}
 	}
 }
