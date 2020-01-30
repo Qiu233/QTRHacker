@@ -17,23 +17,26 @@ namespace QTRHacker.Functions
 			int addr = addrHelper.GetFunctionAddress(typeName, functionName);
 			Dictionary<int, int> strAddrs = new Dictionary<int, int>();
 
-			object[] trueArgs = args.Select(t =>
+			object[] trueArgs = new object[args.Length];
+			for (int i = 0; i < args.Length; i++)
 			{
-				if (!(t is string))
-					return t;
+				var t = args[i];
+				if (!(t is string) || !(t as string).TrimStart().StartsWith("@"))
+				{
+					trueArgs[i] = args[i];
+					continue;
+				}
 				string str = t as string;
-				if (!str.TrimStart().StartsWith("@"))
-					return t;
 				string trueStr = str.Substring(str.IndexOf("@") + 1);
 				int strEnd = 0;
-				byte[] bs = Encoding.Unicode.GetBytes(str);
+				byte[] bs = Encoding.Unicode.GetBytes(trueStr);
 				int maddr = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, bs.Length + 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
 				int taddr = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
 				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, maddr, bs, bs.Length, 0);
 				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, maddr + bs.Length, ref strEnd, 4, 0);
 				strAddrs[taddr] = maddr;
-				return taddr;
-			}).ToArray();
+				trueArgs[i] = taddr;
+			}
 
 
 			AssemblySnippet snippet = AssemblySnippet.FromCode(
@@ -51,8 +54,11 @@ namespace QTRHacker.Functions
 
 			InlineHook.InjectAndWait(Context.HContext, snippet, hookAddress, true);
 
-			foreach (var addrs in trueArgs)
-				NativeFunctions.VirtualFreeEx(Context.HContext.Handle, addr, 0);
+			foreach (var addrs in strAddrs)
+			{
+				NativeFunctions.VirtualFreeEx(Context.HContext.Handle, addrs.Key, 0);
+				NativeFunctions.VirtualFreeEx(Context.HContext.Handle, addrs.Value, 0);
+			}
 
 		}
 	}
