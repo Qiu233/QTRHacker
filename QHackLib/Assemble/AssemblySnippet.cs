@@ -87,8 +87,8 @@ namespace QHackLib.Assemble
 			var mscorlib_AddrHelper = ctx.GetAddressHelper("mscorlib.dll");
 			int ctor = mscorlib_AddrHelper.GetFunctionAddress("System.String", "CtorCharPtr");
 			if (retPtr == null)
-				return FromDotNetCall(ctor, null, false, 0, strMemPtr);
-			return FromDotNetCall(ctor, retPtr, false, 0, strMemPtr);
+				return FromClrCall(ctor, null, false, 0, strMemPtr);
+			return FromClrCall(ctor, retPtr, false, 0, strMemPtr);
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace QHackLib.Assemble
 		{
 			var mscorlib_AddrHelper = ctx.GetAddressHelper("mscorlib.dll");
 			int loadFrom = mscorlib_AddrHelper.GetFunctionAddress("System.Reflection.Assembly", "LoadFrom");
-			return FromDotNetCall(loadFrom, null, false, assemblyFileNamePtr);
+			return FromClrCall(loadFrom, null, false, assemblyFileNamePtr);
 		}
 
 		private static string GetArgumentPassing(int index, object v)
@@ -147,7 +147,7 @@ namespace QHackLib.Assemble
 		/// <param name="regProtection"></param>
 		/// <param name="arguments"></param>
 		/// <returns></returns>
-		public static AssemblySnippet FromDotNetCall(int targetAddr, int? retAddr, bool regProtection, params object[] arguments)
+		public static AssemblySnippet FromClrCall(int targetAddr, int? retAddr, bool regProtection, params object[] arguments)
 		{
 			AssemblySnippet s = new AssemblySnippet();
 			if (regProtection)
@@ -158,31 +158,31 @@ namespace QHackLib.Assemble
 			int i = 0;
 			foreach (var v in arguments)
 			{
-				if (v.GetType() == typeof(byte) || v.GetType() == typeof(sbyte) || v.GetType() == typeof(int) || v.GetType() == typeof(uint) || v.GetType() == typeof(char) || v.GetType() == typeof(short) || v.GetType() == typeof(ushort) || v.GetType() == typeof(string))
+				if (v is byte || v is sbyte || v is int|| v is uint || v is char || v is short|| v is ushort|| v is string)
 				{
 					s.Content.Add(Instruction.Create(GetArgumentPassing(i, v)));
 					i++;
 				}
-				else if (v.GetType() == typeof(float))
+				else if (v is float)
 				{
 					s.Content.Add(Instruction.Create(GetArgumentPassing(i, BitConverter.ToInt32(BitConverter.GetBytes((float)v), 0))));
 					i++;
 				}
-				else if (v.GetType() == typeof(double))
+				else if (v is double)
 				{
 					ulong vv = BitConverter.ToUInt64(BitConverter.GetBytes((double)v), 0);
 					s.Content.Add(Instruction.Create(GetArgumentPassing(i, (UInt32)(vv & 0xFFFFFFFFUL))));
 					s.Content.Add(Instruction.Create(GetArgumentPassing(i, (UInt32)((vv & 0xFFFFFFFF00000000UL) >> 32))));
 					i += 2;
 				}
-				else if (v.GetType() == typeof(long) || v.GetType() == typeof(ulong))
+				else if (v is long || v is ulong)
 				{
 					ulong vv = (ulong)v;
 					s.Content.Add(Instruction.Create(GetArgumentPassing(i, (UInt32)(vv & 0xFFFFFFFFUL))));
 					s.Content.Add(Instruction.Create(GetArgumentPassing(i, (UInt32)((vv & 0xFFFFFFFF00000000UL) >> 32))));
 					i += 2;
 				}
-				else if (v.GetType() == typeof(bool))
+				else if (v is bool)
 				{
 					s.Content.Add(Instruction.Create(GetArgumentPassing(i, (bool)v ? 1 : 0)));
 					i++;

@@ -1052,7 +1052,7 @@ namespace QTRHacker.Functions.GameObjects
 
 		public void SetDefaults(int type)
 		{
-			var snippet = AssemblySnippet.FromDotNetCall(
+			var snippet = AssemblySnippet.FromClrCall(
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item", "SetDefaults"),
 				null,
 				true,
@@ -1072,11 +1072,11 @@ namespace QTRHacker.Functions.GameObjects
 				new AssemblyCode[] {
 					Instruction.Create("push ecx"),
 					Instruction.Create("push edx"),
-					AssemblySnippet.FromDotNetCall(
+					AssemblySnippet.FromClrCall(
 						Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item","SetDefaults"),
 						null, false,
 						BaseAddress, type, false),
-					AssemblySnippet.FromDotNetCall(
+					AssemblySnippet.FromClrCall(
 						Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item","Prefix"),
 						null,false,
 						BaseAddress, prefix),
@@ -1090,7 +1090,7 @@ namespace QTRHacker.Functions.GameObjects
 
 		public void SetPrefix(int prefix)
 		{
-			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+			AssemblySnippet snippet = AssemblySnippet.FromClrCall(
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item", "Prefix"),
 				null,
 				true,
@@ -1102,7 +1102,7 @@ namespace QTRHacker.Functions.GameObjects
 			bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 		{
 			int ret = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
-			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+			AssemblySnippet snippet = AssemblySnippet.FromClrCall(
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item", "NewItem"),
 				ret,
 				true,

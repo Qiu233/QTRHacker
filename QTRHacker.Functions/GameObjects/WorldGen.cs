@@ -17,7 +17,7 @@ namespace QTRHacker.Functions.GameObjects
 		}
 		public static void SquareTileFrame(GameContext Context, int i, int j, bool resetFrame = true)
 		{
-			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+			AssemblySnippet snippet = AssemblySnippet.FromClrCall(
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.WorldGen", "SquareTileFrame"),
 				null,
 				true,

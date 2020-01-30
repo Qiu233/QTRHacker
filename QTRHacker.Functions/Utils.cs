@@ -469,7 +469,7 @@ push 0") + 2 * 5;
 			asm.Content.Add(
 				AssemblySnippet.Loop(
 					AssemblySnippet.Loop(
-						AssemblySnippet.FromDotNetCall(
+						AssemblySnippet.FromClrCall(
 							Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting"), null, false,
 							Context.Map.BaseAddress, "[esp+4]", "[esp]", 255),
 						Context.MaxTilesY, false),
@@ -522,7 +522,7 @@ push 0") + 2 * 5;
 							new AssemblyCode[]{
 								Instruction.Create($"mov byte ptr [{Context.MapFullScreen_Address}],0"),
 								Instruction.Create($"mov byte ptr [{Context.MouseRightRelease_Address}],0"),
-								AssemblySnippet.FromDotNetCall(
+								AssemblySnippet.FromClrCall(
 									Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main","get_LocalPlayer"), null, false),
 								Instruction.Create("mov ebx,eax"),
 								Instruction.Create("push eax"),
@@ -595,7 +595,7 @@ push 0") + 2 * 5;
 					AssemblySnippet.FromCode(
 						new AssemblyCode[]{
 							(Instruction)$"pushad",
-							AssemblySnippet.FromDotNetCall(
+							AssemblySnippet.FromClrCall(
 								Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main","get_LocalPlayer"),
 								null, false),
 							(Instruction)$"mov ebx,eax",

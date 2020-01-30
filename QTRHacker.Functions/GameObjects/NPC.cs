@@ -34,7 +34,7 @@ namespace QTRHacker.Functions.GameObjects
 		public static void NewNPC(GameContext Context, int x, int y, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
 		{
 
-			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+			AssemblySnippet snippet = AssemblySnippet.FromClrCall(
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.NPC", "NewNPC"),
 				null,
 				true,
@@ -45,7 +45,7 @@ namespace QTRHacker.Functions.GameObjects
 		public void AddBuff(int type, int time, bool quiet = false)
 		{
 
-			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+			AssemblySnippet snippet = AssemblySnippet.FromClrCall(
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.NPC", "AddBuff"),
 				null,
 				true,

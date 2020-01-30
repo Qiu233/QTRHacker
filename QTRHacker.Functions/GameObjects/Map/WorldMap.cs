@@ -19,7 +19,7 @@ namespace QTRHacker.Functions.GameObjects.Map
 		public bool UpdateLighting(int x, int y, byte light)
 		{
 			int ret = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
-			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+			AssemblySnippet snippet = AssemblySnippet.FromClrCall(
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting"),
 				ret,
 				true,

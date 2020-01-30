@@ -18,7 +18,7 @@ namespace QTRHacker.Functions.GameObjects
 		}
 		public static AssemblySnippet GetSnippet_Call_NewProjectile(GameContext Context, int? ret, bool regProtection, object X, object Y, object SpeedX, object SpeedY, object Type, object Damage, object KnockBack, object Owner, object ai0, object ai1)
 		{
-			return AssemblySnippet.FromDotNetCall(
+			return AssemblySnippet.FromClrCall(
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Projectile", "NewProjectile"),
 				ret,
 				regProtection,

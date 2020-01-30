@@ -18,7 +18,7 @@ namespace QTRHacker.NewDimension.PagePanels
 		{
 			FilesBox = new MListBox()
 			{
-				Bounds = new Rectangle(3, 3, 200, 364)
+				Bounds = new Rectangle(3, 3, 210, 364)
 			};
 			UpdateList();
 			Controls.Add(FilesBox);
@@ -26,7 +26,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			Button ExecuteButton = new Button()
 			{
 				Text = MainForm.CurrentLanguage["Execute"],
-				Bounds = new Rectangle(204, 3, 90, 30),
+				Bounds = new Rectangle(214, 3, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
 			};
@@ -49,7 +49,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			Button CreateNewButton = new Button()
 			{
 				Text = MainForm.CurrentLanguage["Create"],
-				Bounds = new Rectangle(204, 33, 90, 30),
+				Bounds = new Rectangle(214, 33, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
 			};
@@ -105,7 +105,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			Button EditButton = new Button()
 			{
 				Text = MainForm.CurrentLanguage["Edit"],
-				Bounds = new Rectangle(204, 63, 90, 30),
+				Bounds = new Rectangle(214, 63, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
 			};
@@ -120,7 +120,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			Button RenameButton = new Button()
 			{
 				Text = MainForm.CurrentLanguage["Rename"],
-				Bounds = new Rectangle(204, 93, 90, 30),
+				Bounds = new Rectangle(214, 93, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
 			};
@@ -178,7 +178,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			Button DeleteButton = new Button()
 			{
 				Text = MainForm.CurrentLanguage["Delete"],
-				Bounds = new Rectangle(204, 123, 90, 30),
+				Bounds = new Rectangle(214, 123, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
 			};
@@ -195,7 +195,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			Button RefreshButton = new Button()
 			{
 				Text = MainForm.CurrentLanguage["Refresh"],
-				Bounds = new Rectangle(204, 153, 90, 30),
+				Bounds = new Rectangle(214, 153, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
 			};

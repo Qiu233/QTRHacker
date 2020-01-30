@@ -290,7 +290,7 @@ namespace QTRHacker.Functions.GameObjects
 
 		public void AddBuff(int type, int time, bool quiet = false)
 		{
-			AssemblySnippet snippet = AssemblySnippet.FromDotNetCall(
+			AssemblySnippet snippet = AssemblySnippet.FromClrCall(
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Player", "AddBuff"),
 				null,
 				true,
