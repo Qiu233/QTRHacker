@@ -23,7 +23,7 @@ namespace QHackLibTest
 			int pid = localByName[0].Id;
 			using (Context context = Context.Create(pid))
 			{
-				context.Runtime.Modules.ToList().ForEach(t => Console.WriteLine(t));
+				context.Runtime.Modules.ToList().ForEach(t => Console.WriteLine(t.Name));
 				Console.Read();
 			}
 		}

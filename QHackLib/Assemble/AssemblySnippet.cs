@@ -107,34 +107,34 @@ namespace QHackLib.Assemble
 
 		private static string GetArgumentPassing(int index, object v)
 		{
-			if (v.GetType() == typeof(string))
+			if (v is string s)
 			{
 				if (index > 1)
 				{
-					return "push " + (v as string);
+					return "push " + s;
 				}
 				else if (index == 0)
 				{
-					return "mov ecx," + (v as string);
+					return "mov ecx," + s;
 				}
 				else// if (index == 1)
 				{
-					return "mov edx," + (v as string);
+					return "mov edx," + s;
 				}
 			}
 			else
 			{
 				if (index > 1)
 				{
-					return "push " + ((int)v).ToString();
+					return "push " + (Convert.ToInt32(v)).ToString();
 				}
 				else if (index == 0)
 				{
-					return "mov ecx," + ((int)v).ToString();
+					return "mov ecx," + (Convert.ToInt32(v)).ToString();
 				}
 				else// if (index == 1)
 				{
-					return "mov edx," + ((int)v).ToString();
+					return "mov edx," + (Convert.ToInt32(v)).ToString();
 				}
 			}
 		}

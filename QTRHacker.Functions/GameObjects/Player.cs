@@ -281,6 +281,7 @@ namespace QTRHacker.Functions.GameObjects
 			}
 		}
 
+		public const int MAXNUMBER = 256;
 
 		public Player(GameContext context, int bAddr) : base(context, bAddr)
 		{

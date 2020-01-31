@@ -30,6 +30,10 @@ namespace QHackLib
 		{
 			return (int)Module.GetTypeByName(TypeName).Methods.First(t => t.Name == FunctionName).NativeCode;
 		}
+		public int GetFunctionAddress(string TypeName, Func<ClrMethod, bool> filter)
+		{
+			return (int)Module.GetTypeByName(TypeName).Methods.First(t => filter(t)).NativeCode;
+		}
 		public ILToNativeMap GetFunctionInstruction(string TypeName, string FunctionName, int ILOffset)
 		{
 			return Module.GetTypeByName(TypeName).Methods.First(t => t.Name == FunctionName).ILOffsetMap.First(t => t.ILOffset == ILOffset);

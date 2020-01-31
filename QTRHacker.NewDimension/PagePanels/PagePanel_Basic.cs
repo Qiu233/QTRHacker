@@ -94,7 +94,7 @@ namespace QTRHacker.NewDimension.PagePanels
 						var npc = HackContext.GameContext.NPC;
 						for (; i < NPC.MAXNUMBER; i++)
 							if (npc[i].Active)
-								npc[i].AddBuff(0x99, 216000);
+								npc[i].AddBuff(153, 216000);
 						MainForm.MainFormInstance.Enabled = true;
 					}).Start();
 				}, null);
@@ -103,7 +103,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				{
 					int i = 0;
 					PopupProgressBar p = new PopupProgressBar();
-					p.MainProgressBar.Maximum = NPC.MAXNUMBER;
+					p.MainProgressBar.Maximum = Player.MAXNUMBER;
 					System.Timers.Timer timer = new System.Timers.Timer(1);
 					timer.Elapsed += (sender, e) =>
 					{
@@ -151,7 +151,19 @@ namespace QTRHacker.NewDimension.PagePanels
 						this.Enabled = true;
 					}
 				}, null);
-			AddFunction(Page3, MainForm.CurrentLanguage["HarpLeftClickTP"], "800DE5238B9475F09B2D49BAD8CF56D6", true, Utils.HarpToTP_E, Utils.HarpToTP_D);
+
+			AddFunction(Page3, MainForm.CurrentLanguage["CoronaVirus"], "7FF4CE10ED9B4924BA63F92E2443C79A", false,
+				g =>
+				{
+					var player = g.MyPlayer;
+					for (int i = 0; i < 3; i++)
+						NPC.NewNPC(g, Convert.ToInt32(player.X), Convert.ToInt32(player.Y) - 2, 51);
+					player.AddBuff(44, 600, true);
+					player.AddBuff(153, 600, true);
+					player.AddBuff(67, 600, true);
+					player.AddBuff(24, 600, true);
+				}, null);
+			//AddFunction(Page3, MainForm.CurrentLanguage["HarpLeftClickTP"], "800DE5238B9475F09B2D49BAD8CF56D6", true, Utils.HarpToTP_E, Utils.HarpToTP_D);
 
 			AddFunction(PageEvent, MainForm.CurrentLanguage["ToggleDayNight"], "E6F33D980A95291E6D0C0033F39E6629", false, g => g.DayTime = !g.DayTime, null);
 			AddFunction(PageEvent, MainForm.CurrentLanguage["ToggleSunDial"], "6FFF093BA44EEFD41C9E3585FA18EBBA", false, g => g.FastForwardTime = !g.FastForwardTime, null);

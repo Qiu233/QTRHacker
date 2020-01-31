@@ -600,6 +600,13 @@ namespace QTRHacker.Functions
 			}
 		}
 
+		public static void NewText(GameContext Context, string Text, byte R = 255, byte G = 255, byte B = 255, bool force = false)
+		{
+			int addr = Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main",
+				t => t.GetFullSignature() ==
+				"Terraria.Main.NewText(System.String, Byte, Byte, Byte, Boolean)");
+			CLRFunctionCaller.Call(Context, addr, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), $"@{Text}", R, G, B, force);
+		}
 
 		/// <summary>
 		/// 如果你不知道这是干什么的

@@ -15,9 +15,28 @@ namespace QTRHacker.Functions
 		{
 			AddressHelper addrHelper = Context.HContext.GetAddressHelper(moduleName);
 			int addr = addrHelper.GetFunctionAddress(typeName, functionName);
+			Call(Context, addr, hookAddress, args);
+		}
+
+		public static void Call(GameContext Context, int targetAddr, int hookAddress, params object[] args)
+		{
 			Dictionary<int, int> strAddrs = new Dictionary<int, int>();
 
-			object[] trueArgs = new object[args.Length];
+			object[] trueArgs = args.Select(t =>
+			{
+				if (!(t is string) || !(t as string).TrimStart().StartsWith("@"))
+					return t;
+				string str = t as string;
+				string trueStr = str.Substring(str.IndexOf("@") + 1);
+				int strEnd = 0;
+				byte[] bs = Encoding.Unicode.GetBytes(trueStr);
+				int maddr = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, bs.Length + 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+				int taddr = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, maddr, bs, bs.Length, 0);
+				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, maddr + bs.Length, ref strEnd, 4, 0);
+				strAddrs[taddr] = maddr;
+				return taddr;
+			}).ToArray();
 			for (int i = 0; i < args.Length; i++)
 			{
 				var t = args[i];
@@ -35,7 +54,7 @@ namespace QTRHacker.Functions
 				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, maddr, bs, bs.Length, 0);
 				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, maddr + bs.Length, ref strEnd, 4, 0);
 				strAddrs[taddr] = maddr;
-				trueArgs[i] = taddr;
+				trueArgs[i] = $"dword ptr [{taddr}]";
 			}
 
 
@@ -47,13 +66,14 @@ namespace QTRHacker.Functions
 							Context.HContext,t.Value,t.Key
 							))),
 					AssemblySnippet.FromClrCall(
-						Context.HContext.GetAddressHelper(moduleName).GetFunctionAddress(typeName,functionName),null,false,
+						targetAddr,null,false,
 						trueArgs),
 					(Instruction)"popad"
 			});
 
 			InlineHook.InjectAndWait(Context.HContext, snippet, hookAddress, true);
 
+			//Console.WriteLine(snippet.GetCode());
 			foreach (var addrs in strAddrs)
 			{
 				NativeFunctions.VirtualFreeEx(Context.HContext.Handle, addrs.Key, 0);

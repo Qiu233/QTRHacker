@@ -239,3 +239,4 @@ AimBot	AimBot
 About	About
 Lock	Lock
 Unlock	Unlock
+CoronaVirus	Corona Virus(Single Player)
