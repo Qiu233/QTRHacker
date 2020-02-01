@@ -116,6 +116,30 @@ namespace QHackLib.FunctionHelper
 		}
 
 
+		private static byte[] ProcessJmps(byte[] b, int rawAddr, int targetAddr)
+		{
+
+			IntPtr ptr3 = Marshal.AllocHGlobal(b.Length);
+			Marshal.Copy(b, 0, ptr3, b.Length);
+			unsafe
+			{
+				byte* p = (byte*)ptr3;
+				byte* i = p;
+				while (i - p < b.Length)
+				{
+					if (*i == 0xe9 || *i == 0xe8)//jmp or call
+						*((int*)(i + 1)) += rawAddr - targetAddr;//move the call
+					Ldasm.ldasm_data data = new Ldasm.ldasm_data();
+					uint t = Ldasm.ldasm(i, ref data, false);
+					i += t;
+				}
+			}
+			byte[] result = new byte[b.Length];
+			Marshal.Copy(ptr3, result, 0, b.Length);
+			Marshal.FreeHGlobal(ptr3);
+			return result;
+		}
+
 		/// <summary>
 		/// 这个函数被lock了，无法被多个线程同时调用，预防了一些错误
 		/// </summary>
@@ -171,7 +195,8 @@ namespace QHackLib.FunctionHelper
 
 				if (execRaw)
 				{
-					NativeFunctions.WriteProcessMemory(Context.Handle, addr, headBytes, headBytes.Length, 0);
+					byte[] bs = ProcessJmps(headBytes, targetAddr, addr);
+					NativeFunctions.WriteProcessMemory(Context.Handle, addr, bs, bs.Length, 0);
 					addr += headBytes.Length;
 				}
 

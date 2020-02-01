@@ -239,4 +239,4 @@ AimBot	自瞄
 About	关于
 Lock	锁定
 Unlock	解锁
-CoronaVirus	冠状病毒(单机)
+CoronaVirus	新型冠状病毒(单机)

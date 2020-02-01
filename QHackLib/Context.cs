@@ -55,7 +55,7 @@ namespace QHackLib
 
 
 		[DllImport("QInject.dll")]
-		public static extern int Inject(int processId, int assembly, int assemblySize, [MarshalAs(UnmanagedType.LPWStr)]string typeName);
+		public static extern int Inject(int handle, int assembly, int assemblySize, [MarshalAs(UnmanagedType.LPWStr)]string typeName);
 
 		private const uint TOKEN_QUERY = 0x0008;
 		private const uint TOKEN_ADJUST_PRIVILEGES = 0x0020;
@@ -131,15 +131,13 @@ namespace QHackLib
 			}
 		}
 
-		public static void LoadAssembly(int pid, string fileFullPath, string typeToInstantiate)
+		public static void LoadAssembly(int handle, string fileFullPath, string typeToInstantiate)
 		{
-			int handle = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
 			byte[] bs = File.ReadAllBytes(fileFullPath);
 			int assembly = NativeFunctions.VirtualAllocEx(handle, 0, bs.Length, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
 			NativeFunctions.WriteProcessMemory(handle, assembly, bs, bs.Length, 0);
-			Inject(pid, assembly, bs.Length, typeToInstantiate);
+			Inject(handle, assembly, bs.Length, typeToInstantiate);
 			NativeFunctions.VirtualFreeEx(handle, assembly, 0);
-			CloseHandle(handle);
 		}
 
 		private void LoadAllAddressHelpers()
@@ -171,7 +169,7 @@ namespace QHackLib
 				return NameToAddressHelper[ModuleName];
 			var m = AddressHelpers.First(t =>
 			{
-				if (t == null || t.Module == null|| t.Module.Name == null)
+				if (t == null || t.Module == null || t.Module.Name == null)
 					return false;
 				return t.Module.Name.Contains("\\") ? Path.GetFileName(t.Module.Name) == ModuleName :
 				t.Module.Name == "dynamic" ? false : t.Module.Name.Substring(0, t.Module.Name.IndexOf(",")) == Path.GetFileNameWithoutExtension(ModuleName);

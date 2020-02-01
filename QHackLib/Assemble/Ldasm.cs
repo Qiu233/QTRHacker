@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -607,7 +608,7 @@ namespace QHackLib.Assemble
 			return flags_table_ex[op];
 		}
 
-		public  unsafe static UInt32 ldasm(byte* code, ref ldasm_data ld, bool is64)
+		public unsafe static UInt32 ldasm(byte* code, ref ldasm_data ld, bool is64)
 		{
 			byte* p = code;
 			byte s, op, f;
@@ -777,7 +778,19 @@ namespace QHackLib.Assemble
 
 			return s;
 		}
-		
+
+		public static int GetASMLength(byte[] b, int index, bool x64)
+		{
+			unsafe
+			{
+				IntPtr addr = Marshal.AllocHGlobal(b.Length);
+				Marshal.Copy(b, 0, addr, b.Length);
+				ldasm_data data = new ldasm_data();
+				uint i = ldasm((byte*)addr, ref data, x64);
+				Marshal.FreeHGlobal(addr);
+				return (int)i;
+			}
+		}
 
 	}
 }

@@ -25,7 +25,7 @@ namespace QTRHacker.NewDimension
 		}
 		public static void InitSign()
 		{
-			int s = AobscanHelper.Aobscan(GameContext.HContext, SignHeadAob);
+			int s = AobscanHelper.Aobscan(GameContext.HContext.Handle, SignHeadAob);
 			SignHead = s + 20;
 			if (s != -1)
 				return;

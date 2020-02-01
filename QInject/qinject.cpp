@@ -234,9 +234,7 @@ int Inject(const InjectionOptions * options, InjectionResult * result) {
 	int retVal = 0;
 	memset(result, 0, sizeof(InjectionResult));
 
-	HANDLE process = OpenProcess(PROCESS_ALL_ACCESS, FALSE, options->processId);
-	if (!process)
-		INJECT_ERROR(0, "OpenProcess on processId %d failed!", options->processId);
+	HANDLE process = options->handle;
 
 	void * remoteSection = NULL;
 	SIZE_T remoteSectionLen = 0;
@@ -301,16 +299,14 @@ cleanup3:
 cleanup2:
 	VirtualFreeEx(process, remoteSectionAddr, 0, MEM_RELEASE);
 cleanup1:
-	CloseHandle(process);
-cleanup0:
 	return retVal;
 }
 
-void Inject(DWORD processId, void*assembly, int assemblySize, OLECHAR* typeName) {
+void Inject(HANDLE handle, void*assembly, int assemblySize, OLECHAR* typeName) {
 	InjectionOptions options;
 	options.enumerate = false;
 	options.appDomainIndex = 0;
-	options.processId = processId;
+	options.handle = handle;
 	//lstrcpyW(options.assemblyFile, assemblyFile);
 	options.assembly = assembly;
 	options.assemblySize = assemblySize;

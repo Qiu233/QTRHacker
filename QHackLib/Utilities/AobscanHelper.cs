@@ -70,9 +70,9 @@ namespace QHackLib.Utilities
 		/// <param name="ctx"></param>
 		/// <param name="asm"></param>
 		/// <returns></returns>
-		public static int AobscanASM(Context ctx, string asm)
+		public static int AobscanASM(int handle, string asm)
 		{
-			return Aobscan(ctx, Assembler.Assemble(asm, 0));
+			return Aobscan(handle, Assembler.Assemble(asm, 0));
 		}
 		/// <summary>
 		/// 失败返回-1
@@ -81,12 +81,12 @@ namespace QHackLib.Utilities
 		/// <param name="hexCode"></param>
 		/// <param name="matching"></param>
 		/// <returns></returns>
-		public static int Aobscan(Context ctx, string hexCode, bool matching = false, int block = 0)
+		public static int Aobscan(int handle, string hexCode, bool matching = false, int block = 0)
 		{
 			if (!matching)
 			{
 				byte[] bytes = GetHexCodeFromString(hexCode);
-				return Aobscan(ctx, bytes, block);
+				return Aobscan(handle, bytes, block);
 			}
 			int i = 0;
 			Dictionary<int, byte> pattern = new Dictionary<int, byte>();
@@ -99,15 +99,15 @@ namespace QHackLib.Utilities
 				else
 					pattern[i++] = Convert.ToByte(c.ToString(), 16);
 			}
-			return AobscanMatch(ctx, pattern, match, block);
+			return AobscanMatch(handle, pattern, match, block);
 		}
-		private static int AobscanMatch(Context ctx, Dictionary<int, byte> pattern, List<int> match, int block = 0)
+		private static int AobscanMatch(int handle, Dictionary<int, byte> pattern, List<int> match, int block = 0)
 		{
 			int i = block;
 			NativeFunctions.MEMORY_BASIC_INFORMATION mbi;
 			while (i < 0x7FFFFFFF)
 			{
-				int flag = NativeFunctions.VirtualQueryEx(ctx.Handle, i, out mbi, 28);
+				int flag = NativeFunctions.VirtualQueryEx(handle, i, out mbi, 28);
 				if (flag != 28)
 					break;
 				if ((int)mbi.RegionSize <= 0)
@@ -118,7 +118,7 @@ namespace QHackLib.Utilities
 					continue;
 				}
 				byte[] va = new byte[mbi.RegionSize];
-				NativeFunctions.ReadProcessMemory(ctx.Handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
+				NativeFunctions.ReadProcessMemory(handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
 				int r = MemmemMatch(va, pattern, match);
 				if (r >= 0)
 				{
@@ -162,13 +162,13 @@ namespace QHackLib.Utilities
 		/// <param name="ctx"></param>
 		/// <param name="aob"></param>
 		/// <returns></returns>
-		public static int Aobscan(Context ctx, byte[] aob, int block = 0)
+		public static int Aobscan(int handle, byte[] aob, int blockToStart = 0)
 		{
-			int i = block;
+			int i = blockToStart;
 			NativeFunctions.MEMORY_BASIC_INFORMATION mbi;
 			while (i < 0x7FFFFFFF)
 			{
-				int flag = NativeFunctions.VirtualQueryEx(ctx.Handle, i, out mbi, 28);
+				int flag = NativeFunctions.VirtualQueryEx(handle, i, out mbi, 28);
 				if (flag != 28)
 					break;
 				if ((int)mbi.RegionSize <= 0)
@@ -179,7 +179,7 @@ namespace QHackLib.Utilities
 					continue;
 				}
 				byte[] va = new byte[mbi.RegionSize];
-				NativeFunctions.ReadProcessMemory(ctx.Handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
+				NativeFunctions.ReadProcessMemory(handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
 				int r = Memmem(va, mbi.RegionSize, aob, aob.Length);
 				if (r >= 0)
 				{

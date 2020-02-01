@@ -36,7 +36,7 @@ struct InjectionResult {
 struct InjectionOptions {
 	bool enumerate;
 	int appDomainIndex;
-	DWORD processId;
+	HANDLE handle;
 	void* assembly;
 	int assemblySize;
 	OLECHAR typeName[256];
@@ -44,4 +44,4 @@ struct InjectionOptions {
 
 int Inject(const InjectionOptions * options, InjectionResult * result);
 
-extern "C" QLIB void Inject(DWORD processId, void*assembly, int assemblySize, OLECHAR* typeName);
+extern "C" QLIB void Inject(HANDLE handle, void*assembly, int assemblySize, OLECHAR* typeName);

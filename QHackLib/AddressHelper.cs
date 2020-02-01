@@ -26,25 +26,13 @@ namespace QHackLib
 			Module = module;
 			Context = ctx;
 		}
-		public int GetFunctionAddress(string TypeName, string FunctionName)
-		{
-			return (int)Module.GetTypeByName(TypeName).Methods.First(t => t.Name == FunctionName).NativeCode;
-		}
-		public int GetFunctionAddress(string TypeName, Func<ClrMethod, bool> filter)
-		{
-			return (int)Module.GetTypeByName(TypeName).Methods.First(t => filter(t)).NativeCode;
-		}
-		public ILToNativeMap GetFunctionInstruction(string TypeName, string FunctionName, int ILOffset)
-		{
-			return Module.GetTypeByName(TypeName).Methods.First(t => t.Name == FunctionName).ILOffsetMap.First(t => t.ILOffset == ILOffset);
-		}
-		public int GetStaticFieldAddress(string TypeName, string FieldName)
-		{
-			return (int)Module.GetTypeByName(TypeName).GetStaticFieldByName(FieldName).GetAddress(Module.AppDomains[0]);
-		}
-		public int GetFieldOffset(string TypeName, string FieldName)
-		{
-			return Module.GetTypeByName(TypeName).Fields.First(t => t.Name == FieldName).Offset + 4;//to get true offset must +4
-		}
+		public ClrType GetClrType(string TypeName) => Module.GetTypeByName(TypeName);
+		public ClrMethod GetClrMethod(string TypeName, string MethodName) => GetClrType(TypeName).Methods.First(t => t.Name == MethodName);
+		public ClrMethod GetClrMethod(string TypeName, Func<ClrMethod, bool> filter) => GetClrType(TypeName).Methods.First(t => filter(t));
+		public int GetFunctionAddress(string TypeName, string FunctionName) => (int)GetClrType(TypeName).Methods.First(t => t.Name == FunctionName).NativeCode;
+		public int GetFunctionAddress(string TypeName, Func<ClrMethod, bool> filter) => (int)GetClrType(TypeName).Methods.First(t => filter(t)).NativeCode;
+		public ILToNativeMap GetFunctionInstruction(string TypeName, string FunctionName, int ILOffset) => GetClrType(TypeName).Methods.First(t => t.Name == FunctionName).ILOffsetMap.First(t => t.ILOffset == ILOffset);
+		public int GetStaticFieldAddress(string TypeName, string FieldName) => (int)GetClrType(TypeName).GetStaticFieldByName(FieldName).GetAddress(Module.AppDomains[0]);
+		public int GetFieldOffset(string TypeName, string FieldName) => GetClrType(TypeName).Fields.First(t => t.Name == FieldName).Offset + 4;//to get true offset must +4
 	}
 }

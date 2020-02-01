@@ -30,7 +30,33 @@ namespace QTRHacker.Functions.InjectHook
 						continue;
 					HookAttribute hook = method.GetCustomAttribute<HookAttribute>();
 					int targetAddress = hookAddressHelper[type.FullName, method.Name];
-					int rawAddress = Context.HContext.GetAddressHelper(hook.AssemblyName)[hook.TargetType, hook.TargetMethodName];
+					int rawAddress = 0;
+					if (hook.HookType == HookType.BEFORE)
+					{
+						rawAddress = Context.HContext.GetAddressHelper(hook.AssemblyName)[hook.TargetType, hook.TargetMethodName];
+					}
+					else
+					{
+						var ah = Context.HContext.GetAddressHelper(hook.AssemblyName);
+						var clrmethod = ah.GetClrMethod(hook.TargetType, hook.TargetMethodName);
+						int offset = clrmethod.ILOffsetMap.Max(t => t.ILOffset);
+						rawAddress = (int)clrmethod.ILOffsetMap.First(t => t.ILOffset == offset).StartAddress;
+
+
+						//wrong,reserved
+						/*int address = (int)clrmethod.ILOffsetMap.First(t => t.ILOffset == offset).StartAddress;
+						byte[] j = new byte[16];
+						NativeFunctions.ReadProcessMemory(Context.HContext.Handle, address, j, j.Length, 0);
+						int u = 0;
+						while (u < j.Length)
+						{
+							if (j[u] == 0xC3)
+								break;
+							u += Ldasm.GetASMLength(j, u, false);
+						}
+
+						rawAddress = address + u + 1;//pass the 'ret'*/
+					}
 					var snippet = AssemblySnippet.FromCode(new List<AssemblyCode>
 					{
 						(Instruction)"pushad",

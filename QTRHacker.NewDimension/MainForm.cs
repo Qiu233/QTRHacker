@@ -146,7 +146,7 @@ namespace QTRHacker.NewDimension
 
 
 			SchesPagePanel = new PagePanel_Sches(pageWidth, MainPanel.Height);
-			AimBotPagePanel = new PagePanel_AimBot(pageWidth, MainPanel.Height);
+			//AimBotPagePanel = new PagePanel_AimBot(pageWidth, MainPanel.Height);
 
 
 			ExpandedGroup = Group1 = AddGroup(32, true);
@@ -162,8 +162,8 @@ namespace QTRHacker.NewDimension
 			AddButton(Group1, CurrentLanguage["About"], img_About, AboutPagePanel).Enabled = true;
 			AddButton(Group1, CurrentLanguage["MainPage"], img_MainPage, MainPagePanel).Selected = true;
 
-			//AddButton(Group2, CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;
-			AddButton(Group2, CurrentLanguage["AimBot"], img_AimBot, AimBotPagePanel).Enabled = false;
+			AddButton(Group2, CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;
+			//AddButton(Group2, CurrentLanguage["AimBot"], img_AimBot, AimBotPagePanel).Enabled = false;
 
 
 

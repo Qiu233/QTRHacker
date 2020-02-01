@@ -16,7 +16,7 @@ namespace QTRHacker.NewDimension.PagePanels
 	public class PagePanel_Player : PagePanel
 	{
 		private readonly MListView PlayerListView;
-		private readonly Timer UpdatePlayerTimer;
+		private readonly System.Timers.Timer UpdatePlayerTimer;
 		private readonly Button EditPlayerInfoButton, TpToPlayerButton,
 			AddBuffButton, SetPetButton, SetMountButton;
 		private readonly Panel PlayerAttributePanel;
@@ -285,9 +285,9 @@ namespace QTRHacker.NewDimension.PagePanels
 			Controls.Add(PlayerListView);
 
 
-			UpdatePlayerTimer = new Timer();
+			UpdatePlayerTimer = new System.Timers.Timer();
 			UpdatePlayerTimer.Interval = 100;//每隔500ms进行一次玩家列表的检查和更新
-			UpdatePlayerTimer.Tick += (s, e) =>
+			UpdatePlayerTimer.Elapsed += (s, e) =>
 			{
 				if (!Visible)
 					return;
@@ -348,9 +348,12 @@ namespace QTRHacker.NewDimension.PagePanels
 					else//更新数据
 					{
 						var t = ps[0];
-						t.SubItems[1].Text = p.Name;
-						t.SubItems[2].Text = p.Life.ToString();
-						t.SubItems[3].Text = p.Mana.ToString();
+						if (t.SubItems.Count == 4)
+						{
+							t.SubItems[1].Text = p.Name;
+							t.SubItems[2].Text = p.Life.ToString();
+							t.SubItems[3].Text = p.Mana.ToString();
+						}
 					}
 				}
 				else//不存在

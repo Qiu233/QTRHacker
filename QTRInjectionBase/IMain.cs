@@ -9,17 +9,18 @@ namespace QTRInjectionBase
 	public class IMain
 	{
 		public static event Action PreMainCalled = () => { };
+		public static event Action AfterMainCalled = () => { };
 
 
-		public static void ResetHook()
-		{
-			PreMainCalled = () => { };
-		}
-
-		[Hook("Terraria.exe", "Terraria.Main", "Update", PassArguments = false)]
-		public void MainHook()
+		[Hook("Terraria.exe", "Terraria.Main", "Update", HookType.BEFORE, PassArguments = false)]
+		public void MainPreHook()
 		{
 			PreMainCalled();
+		}
+		[Hook("Terraria.exe", "Terraria.Main", "Update", HookType.AFTER, PassArguments = false)]
+		public void MainAfterHook()
+		{
+			AfterMainCalled();
 		}
 	}
 }

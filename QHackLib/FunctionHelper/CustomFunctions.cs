@@ -68,7 +68,6 @@ namespace QHackLib.FunctionHelper
 		}
 		public CustomFunctions(Context ctx)
 		{
-			Context = ctx;
 			Functions = new Dictionary<string, int>();
 			var fs = this.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Static).Where(
 				f => f.CustomAttributes.Where(
@@ -76,7 +75,7 @@ namespace QHackLib.FunctionHelper
 			fs.Sort((a, b) => a.Name.CompareTo(b.Name));
 			HashAlgorithm md5 = HashAlgorithm.Create("SHA256");
 			byte[] hash = md5.ComputeHash(Encoding.ASCII.GetBytes(string.Concat(fs)));
-			int addr = Utilities.AobscanHelper.Aobscan(Context, hash);
+			int addr = Utilities.AobscanHelper.Aobscan(ctx.Handle, hash);
 			if (addr == -1)
 				CreateFunctions(fs, hash);
 			else

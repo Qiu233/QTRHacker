@@ -67,8 +67,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="Terraria">
-      <HintPath>C:\Users\lopi2\Documents\My Games\Terraria\ModLoader\Mod Sources\FancyProjectileMod\Terraria.exe</HintPath>
-      <Private>False</Private>
+      <HintPath>D:\TR 1353 H\Terraria.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

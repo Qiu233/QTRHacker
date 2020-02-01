@@ -1,9 +1,12 @@
-﻿using QTRHacker.NewDimension.Controls;
+﻿using QHackLib;
+using QTRHacker.Functions;
+using QTRHacker.NewDimension.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,7 +15,76 @@ namespace QTRHacker.NewDimension.PagePanels
 {
 	public class PagePanel_Sches : PagePanel
 	{
+		[StructLayout(LayoutKind.Sequential)]
+		private struct CTile
+		{
+			public ushort Type;
+			public byte Wall;
+			public byte Liquid;
+			public byte BTileHeader;
+			public byte BTileHeader2;
+			public byte BTileHeader3;
+			public short FrameX;
+			public short FrameY;
+			public short STileHeader;
+		}
 		private MListBox FilesBox;
+
+		private CTile[,] LoadTilesFromFile(string file)
+		{
+			var fs = File.Open(file, FileMode.Open);
+			BinaryReader br = new BinaryReader(fs);
+			int maxX = br.ReadInt32();
+			int maxY = br.ReadInt32();
+			var tiles = new CTile[maxX, maxY];
+
+			for (int x = 0; x < tiles.GetLength(0); x++)
+			{
+				for (int y = 0; y < tiles.GetLength(1); y++)
+				{
+					tiles[x, y] = new CTile()
+					{
+						Type = br.ReadUInt16(),
+						Wall = br.ReadByte(),
+						Liquid = br.ReadByte(),
+						BTileHeader = br.ReadByte(),
+						BTileHeader2 = br.ReadByte(),
+						BTileHeader3 = br.ReadByte(),
+						FrameX = br.ReadInt16(),
+						FrameY = br.ReadInt16(),
+						STileHeader = br.ReadInt16()
+					};
+				}
+			}
+			fs.Close();
+			return tiles;
+		}
+
+		private byte[] SerializeTiles(CTile[,] tiles)
+		{
+			int unitSize = Marshal.SizeOf(typeof(CTile));
+			int memorySize = 4 + 4 + tiles.GetLength(0) * tiles.GetLength(1) * unitSize;
+			byte[] bs = new byte[memorySize];
+			byte[] tmpS = new byte[unitSize];
+			MemoryStream ms = new MemoryStream(bs);
+			BinaryWriter bw = new BinaryWriter(ms);
+			bw.Write(tiles.GetLength(0));
+			bw.Write(tiles.GetLength(1));
+			for (int x = 0; x < tiles.GetLength(0); x++)
+			{
+				for (int y = 0; y < tiles.GetLength(1); y++)
+				{
+					IntPtr ptr = Marshal.AllocHGlobal(unitSize);
+					Marshal.StructureToPtr(tiles[x, y], ptr, false);
+					Marshal.Copy(ptr, tmpS, 0, unitSize);
+					Marshal.FreeHGlobal(ptr);
+					bw.Write(tmpS);
+				}
+			}
+			ms.Close();
+			return bs;
+		}
+
 		public PagePanel_Sches(int Width, int Height) : base(Width, Height)
 		{
 			FilesBox = new MListBox()
@@ -39,7 +111,15 @@ namespace QTRHacker.NewDimension.PagePanels
 					return;
 				}
 				string h = $"./Sches/{(string)FilesBox.SelectedItem}.sche";
-				string t = File.ReadAllText(($"./Sches/{(string)FilesBox.SelectedItem}.sche"));
+
+				var bs = SerializeTiles(LoadTilesFromFile(h));
+				int maddr = NativeFunctions.VirtualAllocEx(ctx.HContext.Handle, 0, bs.Length, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+				NativeFunctions.WriteProcessMemory(ctx.HContext.Handle, maddr, bs, bs.Length, 0);
+				CLRFunctionCaller.Call(ctx, "TRInjections.dll", "TRInjections.ScheMaker.ScheMaker", "LoadTiles",
+					ctx.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), maddr);
+				NativeFunctions.VirtualFreeEx(ctx.HContext.Handle, maddr, 0);
+
+
 			};
 			Controls.Add(ExecuteButton);
 

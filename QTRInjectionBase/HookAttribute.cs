@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace QTRInjectionBase
 {
+	public enum HookType
+	{
+		BEFORE, AFTER
+	}
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 	public class HookAttribute : Attribute
 	{
@@ -26,11 +30,16 @@ namespace QTRInjectionBase
 			get;
 			set;
 		}
-		public HookAttribute(string AssemblyName, string TargetType, string TargetMethodName)
+		public HookType HookType
+		{
+			get;
+		}
+		public HookAttribute(string AssemblyName, string TargetType, string TargetMethodName, HookType hookType = HookType.BEFORE)
 		{
 			this.AssemblyName = AssemblyName;
 			this.TargetType = TargetType;
 			this.TargetMethodName = TargetMethodName;
+			HookType = hookType;
 		}
 	}
 }

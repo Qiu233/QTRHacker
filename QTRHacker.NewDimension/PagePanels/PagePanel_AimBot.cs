@@ -85,16 +85,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				NativeFunctions.WriteProcessMemory(HackContext.GameContext.HContext.Handle, enAddr, ref enabled, 1, 0);
 			};
 			Controls.Add(UnLockPlayerButton);
-
-			UpdatePlayerTimer = new Timer();
-			UpdatePlayerTimer.Interval = 100;//每隔500ms进行一次玩家列表的检查和更新
-			UpdatePlayerTimer.Tick += (s, e) =>
-			{
-				if (!Visible || Locked) return;
-
-				UpdatePlayerList();
-			};
-			UpdatePlayerTimer.Start();//开启更新线程
+			
 		}
 
 

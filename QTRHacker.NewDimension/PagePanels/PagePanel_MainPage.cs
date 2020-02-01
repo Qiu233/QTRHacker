@@ -51,11 +51,6 @@ namespace QTRHacker.NewDimension.PagePanels
 		public static extern IntPtr WindowFromPoint(int xPoint, int yPoint);
 		[DllImport("User32.dll")]
 		public static extern int GetWindowThreadProcessId(IntPtr hwnd, out int ID);
-		[DllImport("kernel32.dll")]
-		private static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-		[DllImport("kernel32.dll")]
-		private static extern int CloseHandle(int dwDesiredAccess);
-		public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
 		private bool Dragging = false;
 		private readonly Font TextFont;
 		private readonly Image CrossImage;

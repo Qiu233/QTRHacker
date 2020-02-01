@@ -609,32 +609,33 @@ namespace QTRHacker.Functions
 		}
 
 		/// <summary>
-		/// 如果你不知道这是干什么的
-		/// 请不要调用
+		/// If you don't know what it's for,please don't call it
 		/// </summary>
 		/// <param name="pid"></param>
 		private void LoadAllInjections(int pid)
 		{
 			if (AssembliesLoaded)
 				return;
-			using (Context tmpC = Context.Create(pid))
+			int handle = NativeFunctions.OpenProcess(NativeFunctions.PROCESS_ALL_ACCESS, false, pid);
+			byte[] aob = AobscanHelper.GetHexCodeFromString("4A3FEC5EBFD74012996FC092246ACA90F9A2498FBBD74C6E8BD66FC52FE8A0E3");//flag
+			int r = AobscanHelper.Aobscan(handle, aob);
+			if (r > 0)
 			{
-				byte b = 0;
-				NativeFunctions.ReadProcessMemory(tmpC.Handle, tmpC.MainAddressHelper["Terraria.Main", "Update"], ref b, 1, 0);
-				if (b == 0xE9)//already loaded
-				{
-					AssembliesLoaded = true;
-					return;
-				}
+				NativeFunctions.CloseHandle(handle);
+				return;
 			}
 
-			Context.LoadAssembly(pid, Path.GetFullPath("QTRInjectionBase.dll"), "QTRInjectionBase.QTRInjectionBase");
-			Context.LoadAssembly(pid, Path.GetFullPath("TRInjections.dll"), "TRInjections.TRInjections");
+			int addr = NativeFunctions.VirtualAllocEx(handle, 0, aob.Length, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+			NativeFunctions.WriteProcessMemory(handle, addr, aob, aob.Length, 0);
+
+
+			Context.LoadAssembly(handle, Path.GetFullPath("QTRInjectionBase.dll"), "QTRInjectionBase.QTRInjectionBase");
+			Context.LoadAssembly(handle, Path.GetFullPath("TRInjections.dll"), "TRInjections.TRInjections");
+			NativeFunctions.CloseHandle(handle);
 		}
 
 		/// <summary>
-		/// 如果你不知道这是干什么的
-		/// 请不要调用
+		/// If you don't know what it's for,please don't call it
 		/// </summary>
 		private void ProcessAllInjections()
 		{
