@@ -26,6 +26,7 @@ namespace QTRHacker.Functions.Test
 			{
 				//Console.WriteLine(gc.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate").ToString("X8"));
 				//GameContext.NewText(gc, "123", 0);
+				//Console.WriteLine(gc.HContext.GetAddressHelper("TRInjections.dll").GetStaticFieldValue<bool>("TRInjections.ScheMaker.ScheMaker","Brushing"));
 				Console.Read();
 			}
 		}

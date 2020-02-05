@@ -13,11 +13,7 @@ namespace QTRHacker.Functions.GameObjects
 		public static int OFFSET_Item = 0x4;
 		public ItemSlots Item
 		{
-			get
-			{
-				ReadFromOffset(OFFSET_Item, out int v);
-				return new ItemSlots(Context, v);
-			}
+			get => new ItemSlots(Context, ReadFromOffset<int>(OFFSET_Item));
 		}
 		public Chest(GameContext context, int bAddr) : base(context, bAddr)
 		{

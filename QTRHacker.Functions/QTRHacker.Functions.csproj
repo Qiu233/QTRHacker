@@ -78,7 +78,6 @@
     <Compile Include="GameObjects\GameObjectArray2D.cs" />
     <Compile Include="GameObjects\Item.cs" />
     <Compile Include="GameObjects\ItemSlots.cs" />
-    <Compile Include="InjectHook\InjectHookHelper.cs" />
     <Compile Include="GameObjects\NetMessage.cs" />
     <Compile Include="GameObjects\NPC.cs" />
     <Compile Include="GameObjects\NPCArray.cs" />
@@ -120,10 +119,6 @@
     <ProjectReference Include="..\QHackLib\QHackLib.csproj">
       <Project>{cc1b3a7e-33aa-487d-ae8e-2b5b2ce3fef1}</Project>
       <Name>QHackLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\QTRInjectionBase\QTRInjectionBase.csproj">
-      <Project>{8a518167-06f5-46fa-b0ab-f7aa93858127}</Project>
-      <Name>QTRInjectionBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

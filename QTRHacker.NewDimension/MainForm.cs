@@ -40,7 +40,8 @@ namespace QTRHacker.NewDimension
 		public static Languages.Processor CurrentLanguage;
 		public static PageGroup Group1, Group2;
 		public static PageGroup ExpandedGroup;
-		public static int ButtonsPanelWidth = 132;
+		public static int ButtonsPanelWidth = 100;
+		private int GroupsIndex = 0;
 		protected override void OnShown(EventArgs e)
 		{
 			base.OnShown(e);
@@ -145,12 +146,12 @@ namespace QTRHacker.NewDimension
 			ChatSenderPanel = new PagePanel_ChatSender(pageWidth, MainPanel.Height);
 
 
-			SchesPagePanel = new PagePanel_Sches(pageWidth, MainPanel.Height);
+			//SchesPagePanel = new PagePanel_Sches(pageWidth, MainPanel.Height);
 			//AimBotPagePanel = new PagePanel_AimBot(pageWidth, MainPanel.Height);
 
 
-			ExpandedGroup = Group1 = AddGroup(32, true);
-			Group2 = AddGroup(0);
+			ExpandedGroup = Group1 = AddGroup();
+			Group2 = AddGroup();
 
 
 			AddButton(Group1, CurrentLanguage["Basic"], img_Basic, BasicPagePanel).Enabled = false;
@@ -162,7 +163,7 @@ namespace QTRHacker.NewDimension
 			AddButton(Group1, CurrentLanguage["About"], img_About, AboutPagePanel).Enabled = true;
 			AddButton(Group1, CurrentLanguage["MainPage"], img_MainPage, MainPagePanel).Selected = true;
 
-			AddButton(Group2, CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;
+			//AddButton(Group2, CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;
 			//AddButton(Group2, CurrentLanguage["AimBot"], img_AimBot, AimBotPagePanel).Enabled = false;
 
 
@@ -224,13 +225,22 @@ namespace QTRHacker.NewDimension
 			}
 		}
 
-		private PageGroup AddGroup(int leftMargin, bool expand = false)
+		private PageGroup AddGroup()
 		{
 			PageGroup group = new PageGroup();
-			group.Location = new Point(leftMargin, 0);
-			group.Expanded = expand;
+			if (GroupsIndex == 0)
+			{
+				group.Location = new Point(ButtonsPanel.Width - 100, 0);
+				group.Expanded = true;
+			}
+			else
+			{
+				group.Location = new Point(ButtonsPanel.Width - 100 - 32 * GroupsIndex);
+				group.Expanded = false;
+			}
 			group.Height = ButtonsPanel.Height;
 			ButtonsPanel.Controls.Add(group);
+			GroupsIndex++;
 			return group;
 		}
 

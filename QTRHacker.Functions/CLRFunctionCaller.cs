@@ -11,6 +11,12 @@ namespace QTRHacker.Functions
 {
 	public class CLRFunctionCaller
 	{
+		public static void CallByDoUpdate(GameContext Context, string moduleName, string typeName, string functionName, params object[] args)
+		{
+			Call(Context, moduleName, typeName, functionName, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), args);
+		}
+
+
 		public static void Call(GameContext Context, string moduleName, string typeName, string functionName, int hookAddress, params object[] args)
 		{
 			AddressHelper addrHelper = Context.HContext.GetAddressHelper(moduleName);

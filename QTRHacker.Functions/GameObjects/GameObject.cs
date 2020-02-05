@@ -3,6 +3,7 @@ using QHackLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -107,7 +108,17 @@ namespace QTRHacker.Functions.GameObjects
 			v = (sbyte)bs[0];
 		}
 
-
+		public T ReadFromOffset<T>(int offset) where T : struct
+		{
+			int len = Marshal.SizeOf(typeof(T));
+			byte[] bs = new byte[len];
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, len, 0);
+			IntPtr ptr = Marshal.AllocHGlobal(len);
+			Marshal.Copy(bs, 0, ptr, len);
+			T result = Marshal.PtrToStructure<T>(ptr);
+			Marshal.FreeHGlobal(ptr);
+			return result;
+		}
 
 		public void WriteFromOffset(int offset, bool v)
 		{
@@ -165,5 +176,15 @@ namespace QTRHacker.Functions.GameObjects
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, 1, 0);
 		}
 
+		public void WriteFromOffset<T>(int offset, T v) where T : struct
+		{
+			int len = Marshal.SizeOf(typeof(T));
+			byte[] bs = new byte[len];
+			IntPtr ptr = Marshal.AllocHGlobal(len);
+			Marshal.StructureToPtr(v, ptr, false);
+			Marshal.Copy(ptr, bs, 0, len);
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress + offset, bs, len, 0);
+			Marshal.FreeHGlobal(ptr);
+		}
 	}
 }

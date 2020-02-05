@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,5 +35,54 @@ namespace QHackLib
 		public ILToNativeMap GetFunctionInstruction(string TypeName, string FunctionName, int ILOffset) => GetClrType(TypeName).Methods.First(t => t.Name == FunctionName).ILOffsetMap.First(t => t.ILOffset == ILOffset);
 		public int GetStaticFieldAddress(string TypeName, string FieldName) => (int)GetClrType(TypeName).GetStaticFieldByName(FieldName).GetAddress(Module.AppDomains[0]);
 		public int GetFieldOffset(string TypeName, string FieldName) => GetClrType(TypeName).Fields.First(t => t.Name == FieldName).Offset + 4;//to get true offset must +4
+
+		public T GetStaticFieldValue<T>(string TypeName, string FieldName)
+		{
+			var t = GetClrType(TypeName);
+			int len = Marshal.SizeOf(typeof(T));
+			byte[] bs = new byte[len];
+			NativeFunctions.ReadProcessMemory(Context.Handle, (int)t.GetStaticFieldByName(FieldName).GetAddress(Module.AppDomains[0]), bs, len, 0);
+			IntPtr ptr = Marshal.AllocHGlobal(len);
+			Marshal.Copy(bs, 0, ptr, len);
+			T result = Marshal.PtrToStructure<T>(ptr);
+			Marshal.FreeHGlobal(ptr);
+			return result;
+		}
+		public void SetStaticFieldValue<T>(string TypeName, string FieldName, T v) where T : struct
+		{
+			var t = GetClrType(TypeName);
+			int len = Marshal.SizeOf(typeof(T));
+			byte[] bs = new byte[len];
+			IntPtr ptr = Marshal.AllocHGlobal(len);
+			Marshal.StructureToPtr(v, ptr, false);
+			Marshal.Copy(ptr, bs, 0, len);
+			NativeFunctions.WriteProcessMemory(Context.Handle, (int)t.GetStaticFieldByName(FieldName).GetAddress(Module.AppDomains[0]), bs, len, 0);
+			Marshal.FreeHGlobal(ptr);
+		}
+
+		public T GetInstanceFieldValue<T>(string TypeName, string FieldName, int obj)
+		{
+			var t = GetClrType(TypeName);
+			int len = Marshal.SizeOf(typeof(T));
+			byte[] bs = new byte[len];
+			NativeFunctions.ReadProcessMemory(Context.Handle, obj + t.GetFieldByName(FieldName).Offset + 4, bs, len, 0);
+			IntPtr ptr = Marshal.AllocHGlobal(len);
+			Marshal.Copy(bs, 0, ptr, len);
+			T result = Marshal.PtrToStructure<T>(ptr);
+			Marshal.FreeHGlobal(ptr);
+			return result;
+		}
+
+		public void SetInstanceFieldValue<T>(string TypeName, string FieldName, int obj, T v) where T : struct
+		{
+			var t = GetClrType(TypeName);
+			int len = Marshal.SizeOf(typeof(T));
+			byte[] bs = new byte[len];
+			IntPtr ptr = Marshal.AllocHGlobal(len);
+			Marshal.StructureToPtr(v, ptr, false);
+			Marshal.Copy(ptr, bs, 0, len);
+			NativeFunctions.WriteProcessMemory(Context.Handle, obj + t.GetFieldByName(FieldName).Offset + 4, bs, len, 0);
+			Marshal.FreeHGlobal(ptr);
+		}
 	}
 }

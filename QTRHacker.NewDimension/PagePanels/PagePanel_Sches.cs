@@ -117,6 +117,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				NativeFunctions.WriteProcessMemory(ctx.HContext.Handle, maddr, bs, bs.Length, 0);
 				CLRFunctionCaller.Call(ctx, "TRInjections.dll", "TRInjections.ScheMaker.ScheMaker", "LoadTiles",
 					ctx.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), maddr);
+				ctx.HContext.GetAddressHelper("TRInjections.dll").SetStaticFieldValue("TRInjections.ScheMaker.ScheMaker", "BrushActive", true);
 				NativeFunctions.VirtualFreeEx(ctx.HContext.Handle, maddr, 0);
 
 

@@ -13,7 +13,6 @@ using QHackLib.Utilities;
 using QTRHacker.Functions.GameObjects;
 using QTRHacker.Functions.GameObjects.IO;
 using QTRHacker.Functions.GameObjects.Map;
-using QTRHacker.Functions.InjectHook;
 
 namespace QTRHacker.Functions
 {
@@ -607,43 +606,7 @@ namespace QTRHacker.Functions
 				"Terraria.Main.NewText(System.String, Byte, Byte, Byte, Boolean)");
 			CLRFunctionCaller.Call(Context, addr, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), $"@{Text}", R, G, B, force);
 		}
-
-		/// <summary>
-		/// If you don't know what it's for,please don't call it
-		/// </summary>
-		/// <param name="pid"></param>
-		private void LoadAllInjections(int pid)
-		{
-			if (AssembliesLoaded)
-				return;
-			int handle = NativeFunctions.OpenProcess(NativeFunctions.PROCESS_ALL_ACCESS, false, pid);
-			byte[] aob = AobscanHelper.GetHexCodeFromString("4A3FEC5EBFD74012996FC092246ACA90F9A2498FBBD74C6E8BD66FC52FE8A0E3");//flag
-			int r = AobscanHelper.Aobscan(handle, aob);
-			if (r > 0)
-			{
-				NativeFunctions.CloseHandle(handle);
-				return;
-			}
-
-			int addr = NativeFunctions.VirtualAllocEx(handle, 0, aob.Length, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
-			NativeFunctions.WriteProcessMemory(handle, addr, aob, aob.Length, 0);
-
-
-			Context.LoadAssembly(handle, Path.GetFullPath("QTRInjectionBase.dll"), "QTRInjectionBase.QTRInjectionBase");
-			Context.LoadAssembly(handle, Path.GetFullPath("TRInjections.dll"), "TRInjections.TRInjections");
-			NativeFunctions.CloseHandle(handle);
-		}
-
-		/// <summary>
-		/// If you don't know what it's for,please don't call it
-		/// </summary>
-		private void ProcessAllInjections()
-		{
-			if (AssembliesLoaded)
-				return;
-			InjectHookHelper.Process(this, "QTRInjectionBase.dll");
-			InjectHookHelper.Process(this, "TRInjections.dll");
-		}
+		
 
 		/// <summary>
 		/// 凡是没有标明Pointer的，获取的均为基址，而非指向该地址的指针
@@ -652,9 +615,7 @@ namespace QTRHacker.Functions
 		/// <param name="pid">游戏的进程ID</param>
 		private GameContext(int pid)
 		{
-			LoadAllInjections(pid);
 			HContext = Context.Create(pid);
-			ProcessAllInjections();
 
 
 			ArrayHeadLength = HContext.ArrayHeadLength;
