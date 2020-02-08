@@ -460,9 +460,8 @@ push 0") + 2 * 5;
 				   "88 96 33 05 00 00 88 96 A9 05 00 00") - 6;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
-
-		[Obsolete("Not so safe to call this")]
-		public static void RevealMap_Obsoleted(GameContext Context)
+		
+		public static void RevealMap(GameContext Context)
 		{
 			AssemblySnippet asm = AssemblySnippet.FromEmpty();
 			asm.Content.Add(Instruction.Create("push ecx"));
@@ -482,15 +481,7 @@ push 0") + 2 * 5;
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), true);
 			Context.RefreshMap = true;
 		}
-
-		public static void RevealMap(GameContext Context)
-		{
-			AssemblySnippet asm = AssemblySnippet.FromClrCall(
-				Context.HContext.GetAddressHelper("TRInjections.dll").GetFunctionAddress("TRInjections.Utils", "RevealMap"), null, true);
-
-			InlineHook.InjectAndWait(Context.HContext, asm,
-				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), true);
-		}
+		
 
 
 		public static void DropLavaOntoPlayers(GameContext Context)
@@ -511,9 +502,8 @@ push 0") + 2 * 5;
 				}
 			}
 		}
-
-		[Obsolete("Not so safe to call this")]
-		public static void RightClickToTP_Obsolete(GameContext Context)
+		
+		public static void RightClickToTP(GameContext Context)
 		{
 			byte s = 0;
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle,
@@ -572,19 +562,6 @@ push 0") + 2 * 5;
 						Instruction.Create("popad")
 					});
 			InlineHook.Inject(Context.HContext, ass,
-				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate") + 5, false);
-		}
-		public static void RightClickToTP(GameContext Context)
-		{
-			byte s = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle,
-				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate") + 5, ref s, 1, 0);
-			if (s == 0xE9)//已经被修改，不能再hook
-				return;
-
-			AssemblySnippet asm = AssemblySnippet.FromClrCall(
-				Context.HContext.GetAddressHelper("TRInjections.dll").GetFunctionAddress("TRInjections.Utils", "RightClickTPCheck"), null, true);
-			InlineHook.Inject(Context.HContext, asm,
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate") + 5, false);
 		}
 
