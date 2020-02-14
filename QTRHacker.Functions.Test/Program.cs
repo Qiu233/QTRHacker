@@ -24,9 +24,14 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				//Console.WriteLine(gc.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate").ToString("X8"));
-				//GameContext.NewText(gc, "123", 0);
-				//Console.WriteLine(gc.HContext.GetAddressHelper("TRInjections.dll").GetStaticFieldValue<bool>("TRInjections.ScheMaker.ScheMaker","Brushing"));
+				for (int i = 0; i < Player.MAX_PLAYER; i++)
+				{
+					var player = gc.Players[i];
+					if (player.Active)
+					{
+						Console.WriteLine(player.Name);
+					}
+				}
 				Console.Read();
 			}
 		}

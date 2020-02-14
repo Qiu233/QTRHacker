@@ -225,6 +225,7 @@ Send	Send
 
 AddToInvMax	Add to Inventory(Max Stack)
 AddToInvOne	Add to Inventory(One)
+ShowRecipeTree	Show recipe tree
 
 Pick	Pick
 Axe	Axe

@@ -351,7 +351,7 @@ namespace QTRHacker.Functions.GameObjects
 				int type = br.ReadInt32();
 				int stack = br.ReadInt32();
 				byte prefix = br.ReadByte();
-				if (type <= 0 && item.Type <= 0) continue;
+				if (type < 0) continue;
 				item.SetDefaultsAndPrefix(type, prefix);
 				item.Stack = stack;
 			}
@@ -361,7 +361,7 @@ namespace QTRHacker.Functions.GameObjects
 				int type = br.ReadInt32();
 				int stack = br.ReadInt32();
 				byte prefix = br.ReadByte();
-				if (type <= 0 && item.Type <= 0) continue;
+				if (type < 0) continue;
 				item.SetDefaultsAndPrefix(type, prefix);
 				item.Stack = stack;
 			}
@@ -371,7 +371,7 @@ namespace QTRHacker.Functions.GameObjects
 				int type = br.ReadInt32();
 				int stack = br.ReadInt32();
 				byte prefix = br.ReadByte();
-				if (type <= 0 && item.Type <= 0) continue;
+				if (type < 0) continue;
 				item.SetDefaultsAndPrefix(type, prefix);
 				item.Stack = stack;
 			}
@@ -381,7 +381,7 @@ namespace QTRHacker.Functions.GameObjects
 				int type = br.ReadInt32();
 				int stack = br.ReadInt32();
 				byte prefix = br.ReadByte();
-				if (type <= 0 && item.Type <= 0) continue;
+				if (type < 0) continue;
 				item.SetDefaultsAndPrefix(type, prefix);
 				item.Stack = stack;
 			}
@@ -391,7 +391,7 @@ namespace QTRHacker.Functions.GameObjects
 				int type = br.ReadInt32();
 				int stack = br.ReadInt32();
 				byte prefix = br.ReadByte();
-				if (type <= 0 && item.Type <= 0) continue;
+				if (type < 0) continue;
 				item.SetDefaultsAndPrefix(type, prefix);
 				item.Stack = stack;
 			}

@@ -259,7 +259,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Res\ResBinFileReader.cs" />
     <Compile Include="Res\GameResLoader.cs" />
+    <Compile Include="Wiki\AccInfoSubPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Wiki\ItemInfoSubPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Wiki\ItemsTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Wiki\RecipeTreeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Wiki\SearcherSubPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Wiki\WikiForm.cs">
@@ -267,6 +279,11 @@
     </Compile>
     <Compile Include="Wiki\WikiForm.Designer.cs">
       <DependentUpon>WikiForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="XNAControls\ItemTreeNode.cs" />
+    <Compile Include="XNAControls\TreeNode.cs" />
+    <Compile Include="XNAControls\TreeView.cs">
+      <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="Controls\FunctionButton.resx">
       <DependentUpon>FunctionButton.cs</DependentUpon>
@@ -336,6 +353,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <EmbeddedResource Include="Res\Image\Numbers.png" />
     <EmbeddedResource Include="Res\Text\About.txt" />
     <EmbeddedResource Include="Res\Game\Prefix_en.txt" />
     <EmbeddedResource Include="Res\Game\Mount_en.txt" />

@@ -18,6 +18,7 @@ using QTRHacker.NewDimension.Configs;
 using QTRHacker.NewDimension.Controls;
 using QTRHacker.NewDimension.PagePanels;
 using QTRHacker.NewDimension.Res;
+using QTRHacker.NewDimension.Wiki;
 
 namespace QTRHacker.NewDimension
 {
@@ -48,12 +49,15 @@ namespace QTRHacker.NewDimension
 		}
 		public MainForm()
 		{
+			CheckForIllegalCrossThreadCalls = false;
+
 			if (System.Diagnostics.Process.GetProcessesByName("QTRHacker").Length > 1)
 			{
+				MessageBox.Show("请先关闭已打开的修改器\n如果已关闭且出现此提示，请在任务管理器检查是否有进程QTRHacker.exe滞留");
 				Environment.Exit(0);
 			}
 
-			CreateDirectories();
+			CreateDirectoriesAndFiles();
 			LoadConfigs();
 #if ENG
 			CurrentLanguage = Languages.Processor.GetLanguage("en");
@@ -166,10 +170,33 @@ namespace QTRHacker.NewDimension
 			//AddButton(Group2, CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;
 			//AddButton(Group2, CurrentLanguage["AimBot"], img_AimBot, AimBotPagePanel).Enabled = false;
 
-
-
 			Icon = ConvertToIcon(img_Basic, true);
 
+
+
+			Form f = new Form();
+			f.Size = new Size(800, 600);
+			var tv = new XNAControls.TreeView();
+			tv.Size = new Size(800, 600);
+			var n1 = new XNAControls.ItemTreeNode(tv, img_AimBot, 2, 2);
+			var n2 = new XNAControls.ItemTreeNode(tv, img_ChatSender, 2, 2);
+			var node = new XNAControls.ItemTreeNode(tv, img_ChatSender, 2, 2);
+			n1.AddSubNode(node);
+			n2.AddSubNode(node);
+			var node1 = new XNAControls.ItemTreeNode(tv, img_ChatSender, 2, 2);
+			node1.SubNodes.Add(new XNAControls.ItemTreeNode(tv, img_ChatSender, 2, 2));
+			node1.SubNodes.Add(new XNAControls.ItemTreeNode(tv, img_ChatSender, 2, 2));
+			node.SubNodes.Add(node1);
+			node.SubNodes.Add(new XNAControls.ItemTreeNode(tv, img_ChatSender, 2, 2));
+			node.SubNodes.Add(new XNAControls.ItemTreeNode(tv, img_ChatSender, 2, 2));
+
+			tv.Roots.Add(n1);
+			tv.Roots.Add(n2);
+			tv.ArrangeTree();
+			//n1.MoveTo(300, 300);
+			f.Controls.Add(tv);
+
+			f.Show();
 		}
 
 		public void OnInitialized()
@@ -298,7 +325,7 @@ namespace QTRHacker.NewDimension
 			}
 		}
 
-		private void CreateDirectories()
+		private void CreateDirectoriesAndFiles()
 		{
 			if (!Directory.Exists(".\\Projs"))
 				Directory.CreateDirectory(".\\Projs");

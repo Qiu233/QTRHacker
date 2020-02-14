@@ -225,6 +225,7 @@ Send	发送
 
 AddToInvMax	添加到背包(一组)
 AddToInvOne	添加到背包(一个)
+ShowRecipeTree	显示合成树
 
 Pick	挖掘
 Axe	砍伐

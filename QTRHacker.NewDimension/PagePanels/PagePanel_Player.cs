@@ -286,7 +286,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 
 			UpdatePlayerTimer = new System.Timers.Timer();
-			UpdatePlayerTimer.Interval = 100;//每隔500ms进行一次玩家列表的检查和更新
+			UpdatePlayerTimer.Interval = 500;//每隔500ms进行一次玩家列表的检查和更新
 			UpdatePlayerTimer.Elapsed += (s, e) =>
 			{
 				if (!Visible)
