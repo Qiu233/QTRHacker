@@ -241,3 +241,5 @@ About	关于
 Lock	锁定
 Unlock	解锁
 CoronaVirus	新型冠状病毒(单机)
+
+ClickToItem	单击物品跳转

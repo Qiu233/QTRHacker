@@ -11,16 +11,6 @@ namespace QTRHacker.NewDimension.XNAControls
 {
 	public abstract class TreeNode : IDisposable
 	{
-		public enum TreeNodeAnchor
-		{
-			Down, Up, Left, Right
-		}
-
-		public TreeNodeAnchor Anchor
-		{
-			get;
-			set;
-		}
 
 		/// <summary>
 		/// null for no parent
@@ -36,12 +26,7 @@ namespace QTRHacker.NewDimension.XNAControls
 		{
 			get;
 		}
-
-
-		public virtual List<TreeNode> SubNodes
-		{
-			get;
-		}
+		
 		public abstract Vector2 Size
 		{
 			get;
@@ -77,56 +62,12 @@ namespace QTRHacker.NewDimension.XNAControls
 				return new Vector2(pos.X * TreeView.Zoom + TreeView.OriginToWorld.X, pos.Y * TreeView.Zoom + TreeView.OriginToWorld.Y);
 			}
 		}
-
-		public int Depth
-		{
-			get
-			{
-				int d = 1;
-				foreach (var n in SubNodes)
-					if (n != null)
-						d = Math.Max(d, n.Depth + 1);
-				return d;
-			}
-		}
-
-		public bool HasSubNodes
-		{
-			get => SubNodes.Count != 0;
-		}
-
+		
+		
 		public event Action<object, EventArgs> MouseHover = (s, e) => { };
+		
 
-
-		public void MoveTo(int x, int y)
-		{
-			MoveTo(new Vector2(x, y));
-		}
-
-		public void MoveTo(Vector2 v)
-		{
-			Move(v - Location);
-		}
-
-		public void Move(int dX, int dY)
-		{
-			Move(new Vector2(dX, dY));
-		}
-
-		public void Move(Vector2 dV)
-		{
-			foreach (var n in SubNodes)
-				n.Move(dV);
-			Location += dV;
-		}
-
-		public virtual void AddSubNode(TreeNode node)
-		{
-			SubNodes.Add(node);
-			node.Parent = this;
-		}
-
-		private bool IsHovering
+		public bool IsHovering
 		{
 			get
 			{
@@ -141,23 +82,18 @@ namespace QTRHacker.NewDimension.XNAControls
 		/// <param name="batch"></param>
 		public virtual void Draw(SpriteBatch batch)
 		{
-			foreach (var item in SubNodes)
-				item.Draw(batch);
 		}
 		/// <summary>
 		/// Init subnodes
 		/// </summary>
 		public virtual void Initialize()
 		{
-			foreach (var item in SubNodes)
-				item.Initialize();
 		}
 
 		public abstract void Dispose();
 
 		public TreeNode(TreeView view)
 		{
-			SubNodes = new List<TreeNode>();
 			TreeView = view;
 		}
 	}

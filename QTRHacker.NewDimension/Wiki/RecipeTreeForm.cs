@@ -22,19 +22,20 @@ namespace QTRHacker.NewDimension.Wiki
 		{
 			MaximizeBox = false;
 			MinimizeBox = false;
+			Text = MainForm.CurrentLanguage["ClickToItem"];
 			FormBorderStyle = FormBorderStyle.FixedSingle;
+			ClientSize = new System.Drawing.Size(600, 400);
 
 			RecipeTreeView = new TreeView();
+			RecipeTreeView.TAnchor = TreeView.TreeAnchor.Right;
+			RecipeTreeView.Dock = DockStyle.Fill;
+			Controls.Add(RecipeTreeView);
 		}
 
 		public static void ShowTree(int index)
 		{
 			RecipeTreeForm form = new RecipeTreeForm();
-			form.VisitedItem.Clear();
-			var node = form.ConstructTree(index);
-			node.MoveTo(400, 100);
-			form.RecipeTreeView.Roots.Add(node);
-			form.RecipeTreeView.ArrangeTree();
+			form.ConstructTree(index);
 			form.Show();
 		}
 
@@ -46,34 +47,70 @@ namespace QTRHacker.NewDimension.Wiki
 			RecipeTos[index] = result;
 			return result;
 		}
-
-		private List<ItemTreeNode> VisitedItem = new List<ItemTreeNode>();
-
-		/// <summary>
-		/// Currently not support more than 1 recipes
-		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
-		private ItemTreeNode ConstructTree(int index, int recipeFrom = 1)
+		private static List<JToken> GetRecipeFrom(int index)
 		{
-			var recipes = GetRecipeTo(index);
+			if (RecipeFroms.ContainsKey(index))
+				return RecipeFroms[index];
+			var result = ItemsTabPage.Recipes.Where(
+				t => (t["rItems"] as JArray).Where(
+					y => index != 0 && y["type"].ToObject<int>() == index).Count() > 0).ToList();
+			RecipeFroms[index] = result;
+			return result;
+		}
+
+
+		private void ConstructTree(int index)
+		{
 			var img = GameResLoader.ItemImages.Images[index.ToString()];
-			if (recipes.Count == 0)
+			RecipeTreeView.Root = new ItemTreeNode(RecipeTreeView, img, 1, index);
+			RecipeTreeView.Root.Location = new Microsoft.Xna.Framework.Vector2(100, 50);
+			Random rand = new Random();
+			var rTo = GetRecipeTo(index);
+			var rFrom = GetRecipeFrom(index);
+			foreach (var t in rTo)
 			{
-				return new ItemTreeNode(RecipeTreeView, img, 1, recipeFrom);//1 for not showing
+				var color = new Microsoft.Xna.Framework.Color(rand.Next() % 160 + 40, rand.Next() % 160 + 40, rand.Next() % 160 + 40);
+				foreach (var ritem in t["rItems"])
+				{
+					int type = ritem["type"].ToObject<int>();
+					if (type <= 0)
+						continue;
+					var node = new ItemTreeNode(RecipeTreeView,
+						GameResLoader.ItemImages.Images[type.ToString()],
+						ritem["stack"].ToObject<int>(),
+						type,
+						color);
+					node.OnClick += Node_OnClick;
+					//node.Initialize();
+					RecipeTreeView.NodesFrom.Add(node);
+				}
 			}
-			var recipe = recipes[0];
-			int id = recipe["item"]["type"].ToObject<int>();
-			int stack = recipe["item"]["stack"].ToObject<int>();
-			ItemTreeNode itn = new ItemTreeNode(RecipeTreeView, img, stack, recipeFrom);
-			var rItems = recipe["rItems"] as JArray;
-			foreach (var item in rItems)
+			foreach (var t in rFrom)
 			{
-				if (item["type"].ToObject<int>() == 0)
-					continue;
-				itn.SubNodes.Add(ConstructTree(item["type"].ToObject<int>(), item["stack"].ToObject<int>()));
+				var item = t["item"];
+				int type = item["type"].ToObject<int>();
+				var color = new Microsoft.Xna.Framework.Color(rand.Next() % 160 + 40, rand.Next() % 160 + 40, rand.Next() % 160 + 40);
+				var node = new ItemTreeNode(RecipeTreeView,
+						GameResLoader.ItemImages.Images[type.ToString()],
+						item["stack"].ToObject<int>(),
+						type,
+						color);
+				node.OnClick += Node_OnClick;
+				//node.Initialize();
+				RecipeTreeView.NodesTo.Add(node);
 			}
-			return itn;
+
+			RecipeTreeView.ArrangeTree();
+		}
+
+		private void Node_OnClick(object s, EventArgs e)
+		{
+			RecipeTreeView.NodesFrom.ForEach(t => t.Dispose());
+			RecipeTreeView.NodesFrom.Clear();
+			RecipeTreeView.NodesTo.ForEach(t => t.Dispose());
+			RecipeTreeView.NodesTo.Clear(); ;
+			ConstructTree((s as ItemTreeNode).Type);
+			RecipeTreeView.OriginToWorld = new Microsoft.Xna.Framework.Point(0, 0);
 		}
 	}
 }

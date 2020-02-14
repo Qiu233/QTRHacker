@@ -241,3 +241,5 @@ About	About
 Lock	Lock
 Unlock	Unlock
 CoronaVirus	New Coronavirus(Single Player)
+
+ClickToItem	Click jump to items

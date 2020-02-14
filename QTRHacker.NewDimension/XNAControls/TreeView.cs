@@ -15,7 +15,17 @@ namespace QTRHacker.NewDimension.XNAControls
 {
 	public sealed class TreeView : GraphicsDeviceControl
 	{
-		public const int WorldLength = 1000;
+		public enum TreeAnchor
+		{
+			Up, Down, Right, Left
+		}
+
+		public TreeAnchor TAnchor
+		{
+			get;
+			set;
+		}
+		public int WorldLength = 2000;
 		public static readonly Color LineColor = new Color(160f / 255, 160f / 255, 160f / 255);
 		public Point OriginToWorld
 		{
@@ -42,12 +52,23 @@ namespace QTRHacker.NewDimension.XNAControls
 			get;
 			private set;
 		}
+		public bool Initialized { get; private set; }
 		public SpriteBatch Batch
 		{
 			get;
 			set;
 		}
-		public List<TreeNode> Roots
+		public List<ItemTreeNode> NodesFrom
+		{
+			get;
+			set;
+		}
+		public List<ItemTreeNode> NodesTo
+		{
+			get;
+			set;
+		}
+		public TreeNode Root
 		{
 			get;
 			set;
@@ -70,7 +91,8 @@ namespace QTRHacker.NewDimension.XNAControls
 
 		public TreeView()
 		{
-			Roots = new List<TreeNode>();
+			NodesFrom = new List<ItemTreeNode>();
+			NodesTo = new List<ItemTreeNode>();
 			OriginToWorld = new Point(0, 0);
 			Zoom = 1f;
 		}
@@ -82,8 +104,11 @@ namespace QTRHacker.NewDimension.XNAControls
 			GraphicsDevice.Clear(new Color(100f / 255, 100f / 255, 100f / 255));
 			Batch.Begin();
 			DrawLines();
-			foreach (var root in Roots)
-				root.Draw(Batch);
+			foreach (var n in NodesFrom)
+				n.Draw(Batch);
+			foreach (var n in NodesTo)
+				n.Draw(Batch);
+			Root.Draw(Batch);
 			Batch.End();
 
 
@@ -163,6 +188,7 @@ namespace QTRHacker.NewDimension.XNAControls
 
 		protected override void Initialize()
 		{
+			Initialized = true;
 			Batch = new SpriteBatch(GraphicsDevice);
 			Pixel1x1 = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
 			Pixel1x1.SetData(new Color[] { Color.White });
@@ -193,129 +219,211 @@ namespace QTRHacker.NewDimension.XNAControls
 					color[i] = color[31 * 32 + i] = color[32 * i] = color[32 * i + 31] = Color.Purple;
 				for (int i = 1; i < 31; i++)
 					for (int j = 1; j < 31; j++)
-						color[i * 32 + j] = new Color(132f / 255, 101f / 255, 219f / 255, 1f);//132,101,219
+						color[i * 32 + j] = new Color(1f, 1f, 1f, 1f);//132,101,219
 				SlotBackgroudFramework.SetData(color);
 			}
-			foreach (var root in Roots)
+			Root.Initialize();
+			foreach (var root in NodesFrom)
+				root.Initialize();
+			foreach (var root in NodesTo)
 				root.Initialize();
 			Application.Idle += Application_Idle;
 		}
 
-		private void DisposeNodes(TreeNode root)
-		{
-			if (root == null) return;
-			foreach (var n in root.SubNodes)
-				n?.Dispose();
-			root.Dispose();
-		}
 
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
-			foreach (var r in Roots)
-				DisposeNodes(r);
+			foreach (var r in NodesFrom)
+				r.Dispose();
 			Application.Idle -= Application_Idle;
 		}
 
 		public void DrawLines()
 		{
-			foreach (var r in Roots)
-				DrawNodeLines(r);
+			DrawNodeLines();
 		}
 
-		public void DrawNodeLines(TreeNode node)
+		public void DrawNodeLines()
 		{
-			foreach (var n in node.SubNodes)
-			{
-				switch (n.Anchor)
+			{//From
+				foreach (var n in NodesFrom)
 				{
-					case TreeNode.TreeNodeAnchor.Down:
-						{
-							Vector2 start = n.Location + new Vector2(n.Width / 2, 0);
-							Vector2 end = start - new Vector2(0, 13);
-							DrawLine(start, end, LineColor, 2);
-						}
-						break;
-					case TreeNode.TreeNodeAnchor.Up:
-						{
-							Vector2 start = n.Location + new Vector2(n.Width / 2, n.Height);
-							Vector2 end = start + new Vector2(0, 13);
-							DrawLine(start, end, LineColor, 2);
-						}
-						break;
-					case TreeNode.TreeNodeAnchor.Left:
-						{
-							Vector2 start = n.Location + new Vector2(n.Width, n.Height / 2);
-							Vector2 end = start + new Vector2(13, 0);
-							DrawLine(start, end, LineColor, 2);
-						}
-						break;
-					case TreeNode.TreeNodeAnchor.Right:
-						{
-							Vector2 start = n.Location + new Vector2(0, n.Height / 2);
-							Vector2 end = start - new Vector2(13, 0);
-							DrawLine(start, end, LineColor, 2);
-						}
-						break;
-					default:
-						break;
+					switch (TAnchor)
+					{
+						case TreeAnchor.Up:
+							{
+								Vector2 start = n.Location + new Vector2(n.Width / 2, 0);
+								Vector2 end = start - new Vector2(0, 13);
+								DrawLine(start, end, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Down:
+							{
+								Vector2 start = n.Location + new Vector2(n.Width / 2 + 2, n.Height);
+								Vector2 end = start + new Vector2(0, 13);
+								DrawLine(start, end, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Right:
+							{
+								Vector2 start = n.Location + new Vector2(n.Width, n.Height / 2 - 2);
+								Vector2 end = start + new Vector2(13, 0);
+								DrawLine(start, end, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Left:
+							{
+								Vector2 start = n.Location + new Vector2(0, n.Height / 2);
+								Vector2 end = start - new Vector2(13, 0);
+								DrawLine(start, end, LineColor, 2);
+							}
+							break;
+						default:
+							break;
+					}
+				}
+
+				if (NodesFrom.Count > 0)
+				{
+					var head = NodesFrom.First();
+					var tail = NodesFrom.Last();
+					switch (TAnchor)
+					{
+						case TreeAnchor.Up:
+							{
+								Vector2 b = head.Location + new Vector2(head.Width / 2, -15);
+								Vector2 e = tail.Location + new Vector2(tail.Width / 2, -15);
+								DrawLine(b, e, LineColor, 2);
+								Vector2 center = (b + e) / 2;
+								Vector2 centerEnd = center - new Vector2(0, 11);
+								DrawLine(center, centerEnd, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Down:
+							{
+								Vector2 b = head.Location + new Vector2(head.Width / 2, head.Height + 15);
+								Vector2 e = tail.Location + new Vector2(tail.Width / 2, head.Height + 15);
+								DrawLine(b, e, LineColor, 2);
+								Vector2 center = (b + e) / 2 + new Vector2(2, 0);
+								Vector2 centerEnd = center + new Vector2(0, 11);
+								DrawLine(center, centerEnd, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Right:
+							{
+								Vector2 b = head.Location + new Vector2(head.Width + 15, head.Height / 2 - 2);
+								Vector2 e = tail.Location + new Vector2(tail.Width + 15, head.Height / 2 - 2);
+								DrawLine(b, e, LineColor, 2);
+								Vector2 center = (b + e) / 2;
+								Vector2 centerEnd = center + new Vector2(11, 0);
+								DrawLine(center, centerEnd, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Left:
+							{
+								Vector2 b = head.Location + new Vector2(-15, head.Height / 2 - 2);
+								Vector2 e = tail.Location + new Vector2(-15, head.Height / 2 - 2);
+								DrawLine(b, e, LineColor, 2);
+								Vector2 center = (b + e) / 2 + new Vector2(0, 2);
+								Vector2 centerEnd = center - new Vector2(11, 0);
+								DrawLine(center, centerEnd, LineColor, 2);
+							}
+							break;
+						default:
+							break;
+					}
 				}
 			}
-			if (!node.HasSubNodes)
-				return;
-			foreach (var n in node.SubNodes)
-			{
-				DrawNodeLines(n);
-			}
+			{//To
+				foreach (var n in NodesTo)
+				{
+					switch (TAnchor)
+					{
+						case TreeAnchor.Up:
+							{
+								Vector2 start = n.Location + new Vector2(n.Width / 2 + 2, n.Height);
+								Vector2 end = start + new Vector2(0, 13);
+								DrawLine(start, end, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Down:
+							{
+								Vector2 start = n.Location + new Vector2(n.Width / 2, 0);
+								Vector2 end = start - new Vector2(0, 13);
+								DrawLine(start, end, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Right:
+							{
+								Vector2 start = n.Location + new Vector2(0, n.Height / 2);
+								Vector2 end = start - new Vector2(13, 0);
+								DrawLine(start, end, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Left:
+							{
+								Vector2 start = n.Location + new Vector2(n.Width, n.Height / 2 - 2);
+								Vector2 end = start + new Vector2(13, 0);
+								DrawLine(start, end, LineColor, 2);
+							}
+							break;
+						default:
+							break;
+					}
+				}
 
-			var head = node.SubNodes.First();
-			var tail = node.SubNodes.Last();
-			switch (head.Anchor)
-			{
-				case TreeNode.TreeNodeAnchor.Down:
+				if (NodesTo.Count > 0)
+				{
+					var head = NodesTo.First();
+					var tail = NodesTo.Last();
+					switch (TAnchor)
 					{
-						Vector2 b = head.Location + new Vector2(head.Width / 2, -15);
-						Vector2 e = tail.Location + new Vector2(tail.Width / 2, -15);
-						DrawLine(b, e, LineColor, 2);
-						Vector2 center = (b + e) / 2;
-						Vector2 centerEnd = center - new Vector2(0, 11);
-						DrawLine(center, centerEnd, LineColor, 2);
+						case TreeAnchor.Up:
+							{
+								Vector2 b = head.Location + new Vector2(head.Width / 2, head.Height + 15);
+								Vector2 e = tail.Location + new Vector2(tail.Width / 2, head.Height + 15);
+								DrawLine(b, e, LineColor, 2);
+								Vector2 center = (b + e) / 2 + new Vector2(2, 0);
+								Vector2 centerEnd = center + new Vector2(0, 11);
+								DrawLine(center, centerEnd, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Down:
+							{
+								Vector2 b = head.Location + new Vector2(head.Width / 2, -15);
+								Vector2 e = tail.Location + new Vector2(tail.Width / 2, -15);
+								DrawLine(b, e, LineColor, 2);
+								Vector2 center = (b + e) / 2;
+								Vector2 centerEnd = center - new Vector2(0, 11);
+								DrawLine(center, centerEnd, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Right:
+							{
+								Vector2 b = head.Location + new Vector2(-15, head.Height / 2 - 2);
+								Vector2 e = tail.Location + new Vector2(-15, head.Height / 2 - 2);
+								DrawLine(b, e, LineColor, 2);
+								Vector2 center = (b + e) / 2 + new Vector2(0, 2);
+								Vector2 centerEnd = center - new Vector2(11, 0);
+								DrawLine(center, centerEnd, LineColor, 2);
+							}
+							break;
+						case TreeAnchor.Left:
+							{
+								Vector2 b = head.Location + new Vector2(head.Width + 15, head.Height / 2 - 2);
+								Vector2 e = tail.Location + new Vector2(tail.Width + 15, head.Height / 2 - 2);
+								DrawLine(b, e, LineColor, 2);
+								Vector2 center = (b + e) / 2;
+								Vector2 centerEnd = center + new Vector2(11, 0);
+								DrawLine(center, centerEnd, LineColor, 2);
+							}
+							break;
+						default:
+							break;
 					}
-					break;
-				case TreeNode.TreeNodeAnchor.Up:
-					{
-						Vector2 b = head.Location + new Vector2(head.Width / 2 - 2, head.Height + 15);
-						Vector2 e = tail.Location + new Vector2(tail.Width / 2 - 2, head.Height + 15);
-						DrawLine(b, e, LineColor, 2);
-						Vector2 center = (b + e) / 2 + new Vector2(2, 0);
-						Vector2 centerEnd = center + new Vector2(0, 11);
-						DrawLine(center, centerEnd, LineColor, 2);
-					}
-					break;
-				case TreeNode.TreeNodeAnchor.Left:
-					{
-						Vector2 b = head.Location + new Vector2(head.Width + 15, head.Height / 2);
-						Vector2 e = tail.Location + new Vector2(tail.Width + 15, head.Height / 2);
-						DrawLine(b, e, LineColor, 2);
-						Vector2 center = (b + e) / 2;
-						Vector2 centerEnd = center + new Vector2(11, 0);
-						DrawLine(center, centerEnd, LineColor, 2);
-					}
-					break;
-				case TreeNode.TreeNodeAnchor.Right:
-					{
-						Vector2 b = head.Location + new Vector2(-15, head.Height / 2 - 2);
-						Vector2 e = tail.Location + new Vector2(-15, head.Height / 2 - 2);
-						DrawLine(b, e, LineColor, 2);
-						Vector2 center = (b + e) / 2 + new Vector2(0, 2);
-						Vector2 centerEnd = center - new Vector2(11, 0);
-						DrawLine(center, centerEnd, LineColor, 2);
-					}
-					break;
-				default:
-					break;
+				}
 			}
-
 		}
 
 		/// <summary>
@@ -337,98 +445,171 @@ namespace QTRHacker.NewDimension.XNAControls
 
 		public void ArrangeTree()
 		{
-			List<List<TreeNode>> nodes = new List<List<TreeNode>>();
-
-			int depth = Roots.Max(n => n.Depth);
-			nodes.Add(new List<TreeNode>());
-			nodes[0].AddRange(Roots);
-
-			for (int i = 1; i < depth; i++)
+			if (NodesFrom.Count > 0)
 			{
-				var list = new List<TreeNode>();
-				nodes.Add(list);
-				foreach (var n in nodes[i - 1])
-					list.AddRange(n.SubNodes);
+				switch (TAnchor)
+				{
+					case TreeAnchor.Up:
+						NodesFrom[0].Location = Root.Location +
+							new Vector2(Root.Width / 2, Root.Height / 2) -
+							new Vector2((NodesFrom.Count * NodesFrom[0].Width + 20 * (NodesFrom.Count - 1)) / 2, -44);
+						break;
+					case TreeAnchor.Down:
+						NodesFrom[0].Location = Root.Location +
+							new Vector2(Root.Width / 2, Root.Height / 2) -
+							new Vector2((NodesFrom.Count * NodesFrom[0].Width + 20 * (NodesFrom.Count - 1)) / 2, 76);
+						break;
+					case TreeAnchor.Right:
+						NodesFrom[0].Location = Root.Location +
+							new Vector2(Root.Width / 2, Root.Height / 2) -
+							new Vector2(76, (NodesFrom.Count * NodesFrom[0].Height + 20 * (NodesFrom.Count - 1)) / 2);
+						break;
+					case TreeAnchor.Left:
+						NodesFrom[0].Location = Root.Location +
+							new Vector2(Root.Width / 2, Root.Height / 2) -
+							new Vector2(-44, (NodesFrom.Count * NodesFrom[0].Height + 20 * (NodesFrom.Count - 1)) / 2);
+						break;
+					default:
+						break;
+				}
+			}
+			if (NodesTo.Count > 0)
+			{
+				switch (TAnchor)
+				{
+					case TreeAnchor.Up:
+						NodesTo[0].Location = Root.Location +
+							new Vector2(Root.Width / 2, Root.Height / 2) -
+							new Vector2((NodesTo.Count * NodesTo[0].Width + 20 * (NodesTo.Count - 1)) / 2, 76);
+						break;
+					case TreeAnchor.Down:
+						NodesTo[0].Location = Root.Location +
+							new Vector2(Root.Width / 2, Root.Height / 2) -
+							new Vector2((NodesTo.Count * NodesTo[0].Width + 20 * (NodesTo.Count - 1)) / 2, -44);
+						break;
+					case TreeAnchor.Right:
+						NodesTo[0].Location = Root.Location + new Vector2(Root.Width / 2, Root.Height / 2) -
+							new Vector2(-44, (NodesTo.Count * NodesTo[0].Height + 20 * (NodesTo.Count - 1)) / 2);
+						break;
+					case TreeAnchor.Left:
+						NodesTo[0].Location = Root.Location +
+							new Vector2(Root.Width / 2, Root.Height / 2) -
+							new Vector2(76, (NodesTo.Count * NodesTo[0].Height + 20 * (NodesTo.Count - 1)) / 2);
+						break;
+					default:
+						break;
+				}
+			}
+			for (int i = 1; i < NodesFrom.Count; i++)
+			{
+				var n = NodesFrom[i];
+				var prev = NodesFrom[i - 1];
+				switch (TAnchor)
+				{
+					case TreeAnchor.Up:
+					case TreeAnchor.Down:
+						n.Location = prev.Location + new Vector2(prev.Width + 20, 0);
+						break;
+					case TreeAnchor.Right:
+					case TreeAnchor.Left:
+						n.Location = prev.Location + new Vector2(0, prev.Height + 20);
+						break;
+					default:
+						break;
+				}
+			}
+			for (int i = 1; i < NodesTo.Count; i++)
+			{
+				var n = NodesTo[i];
+				var prev = NodesTo[i - 1];
+				switch (TAnchor)
+				{
+					case TreeAnchor.Up:
+					case TreeAnchor.Down:
+						n.Location = prev.Location + new Vector2(prev.Width + 20, 0);
+						break;
+					case TreeAnchor.Right:
+					case TreeAnchor.Left:
+						n.Location = prev.Location + new Vector2(0, prev.Height + 20);
+						break;
+					default:
+						break;
+				}
 			}
 
-			for (int i = depth - 1; i >= 0; i--)
-			{
-				var layer = nodes[i];
-				//
-				for (int j = 0; j < layer.Count; j++)
+			{//to strech
+				int l1 = 0, l2 = 0;
+				switch (TAnchor)
 				{
-					var n = layer[j];
-					if (n.HasSubNodes)
-					{
-						var head = n.SubNodes.First();
-						var tail = n.SubNodes.Last();
-						switch (head.Anchor)
+					case TreeAnchor.Up:
+					case TreeAnchor.Down:
 						{
-							case TreeNode.TreeNodeAnchor.Down:
-								n.Location = new Vector2((head.X + tail.X + tail.Width) / 2 - n.Width / 2, (head.Y + tail.Y + tail.Height) / 2 - n.Height / 2 - 60);
-								break;
-							case TreeNode.TreeNodeAnchor.Up:
-								n.Location = new Vector2((head.X + tail.X + tail.Width) / 2 - n.Width / 2, (head.Y + tail.Y + tail.Height) / 2 - n.Height / 2 + 60);
-								break;
-							case TreeNode.TreeNodeAnchor.Left:
-								n.Location = new Vector2((head.X + tail.X + tail.Width) / 2 - n.Width / 2 + 60, (head.Y + tail.Y + tail.Height) / 2 - n.Height / 2);
-								break;
-							case TreeNode.TreeNodeAnchor.Right:
-								n.Location = new Vector2((head.X + tail.X + tail.Width) / 2 - n.Width / 2 - 60, (head.Y + tail.Y + tail.Height) / 2 - n.Height / 2);
-								break;
-							default:
-								break;
+							l2 = 400;
+							int t = Math.Max(NodesFrom.Count, NodesTo.Count);
+							l1 = t * 32 + (t - 1) * 20 + 100;
 						}
-					}
-					else if (j > 0)
-					{
-						var pre = layer[j - 1];
-						switch (n.Anchor)
+						break;
+					case TreeAnchor.Right:
+					case TreeAnchor.Left:
 						{
-							case TreeNode.TreeNodeAnchor.Down:
-							case TreeNode.TreeNodeAnchor.Up:
-								n.Location = pre.Location + new Vector2(pre.Width + 20, 0);
-								break;
-							case TreeNode.TreeNodeAnchor.Left:
-							case TreeNode.TreeNodeAnchor.Right:
-								n.Location = pre.Location + new Vector2(0, pre.Height + 20);
-								break;
-							default:
-								break;
+							l1 = 600;
+							int t = Math.Max(NodesFrom.Count, NodesTo.Count);
+							l2 = t * 32 + (t - 1) * 20 + 100;
 						}
-					}
+						break;
+					default:
+						break;
 				}
+				WorldLength = Math.Min(Math.Max(l1, l2), 2048);
 
-				//
-				for (int j = 1; j < layer.Count; j++)
 				{
-					var last = layer[j - 1];
-					var cur = layer[j];
-					switch (cur.Anchor)
-					{
-						case TreeNode.TreeNodeAnchor.Up:
-						case TreeNode.TreeNodeAnchor.Down:
-							{
-								var d = 20 - (cur.X - (last.X + last.Width));
-								if (d > 0)
-									cur.Move((int)d, 0);
-							}
-							break;
-						case TreeNode.TreeNodeAnchor.Left:
-						case TreeNode.TreeNodeAnchor.Right:
-							{
-								var d = 20 - (cur.Y - (last.Y + last.Height));
-								if (d > 0)
-									cur.Move(0, (int)d);
-							}
-							break;
-						default:
-							break;
-					}
+					float jX1 = NodesFrom.Count > 0 ? NodesFrom.Min(u => u.Location.X) : float.MaxValue;
+					float jY1 = NodesFrom.Count > 0 ? NodesFrom.Min(u => u.Location.Y) : float.MaxValue;
+					float jX2 = NodesTo.Count > 0 ? NodesTo.Min(u => u.Location.X) : float.MaxValue;
+					float jY2 = NodesTo.Count > 0 ? NodesTo.Min(u => u.Location.Y) : float.MaxValue;
+
+					float jX = Math.Min(Math.Min(jX1, jX2), Root.X);
+					float jY = Math.Min(Math.Min(jY1, jY2), Root.Y);
+
+					var d = new Vector2(200, 50) - new Vector2(jX, jY);
+					MoveTree(d);
+
+
 				}
 			}
 		}
 
+		private void MoveTree(Vector2 dV)
+		{
+			Root.Location += dV;
+			foreach (var n in NodesFrom)
+				n.Location += dV;
+			foreach (var n in NodesTo)
+				n.Location += dV;
+		}
+
+
+		protected override void OnClick(EventArgs e)
+		{
+			base.OnClick(e);
+			for (int i = 0; i < NodesFrom.Count; i++)
+			{
+				var n = NodesFrom[i];
+				if (n?.IsHovering == true)
+				{
+					n?.DispatchOnClick(n, e);
+				}
+			}
+			for (int i = 0; i < NodesTo.Count; i++)
+			{
+				var n = NodesTo[i];
+				if (n?.IsHovering == true)
+				{
+					n?.DispatchOnClick(n, e);
+				}
+			}
+
+		}
 
 
 		private void Application_Idle(object sender, EventArgs e)

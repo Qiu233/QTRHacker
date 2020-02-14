@@ -147,7 +147,7 @@ namespace QTRHacker.NewDimension.Wiki
 			(ItemRecipeToInfoView.View as ListBox).Items.Clear();
 			pRe = ItemsTabPage.Recipes.Where(
 				t => (t["rItems"] as JArray).Where(
-					y => y["type"].ToObject<int>() == index && index != 0).Count() > 0);
+					y => index != 0 && y["type"].ToObject<int>() == index).Count() > 0);
 			foreach (var p in pRe)
 			{
 				var itm = p["item"];
