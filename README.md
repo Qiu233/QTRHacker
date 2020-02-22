@@ -1,6 +1,7 @@
 # QTRHacker
-## QTRHacker is in place of the old hack: 
-**https://github.com/ZQiu233/TR_Hacker**
+
+**Maybe you have something about this hack to tell,please join this discord server:**  
+https://discord.gg/bzKc9vM  
 
 All releases: https://github.com/ZQiu233/QTRHackerUpdatesHistory/tree/master/Updates
 
