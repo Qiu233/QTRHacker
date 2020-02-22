@@ -2,6 +2,7 @@
 using QTRHacker.Functions;
 using QTRHacker.Functions.GameObjects;
 using QTRHacker.Functions.ProjectileImage;
+using QTRHacker.NewDimension.Configs;
 using QTRHacker.NewDimension.Controls;
 using System;
 using System.Collections.Generic;
@@ -145,7 +146,8 @@ namespace QTRHacker.NewDimension.PagePanels
 					if (ofd.ShowDialog(this) == DialogResult.OK)
 					{
 						var ctx = HackContext.GameContext;
-						ProjImage img = ProjImage.FromImage(ofd.FileName, MainForm.Config_ProjDrawer.ProjType, MainForm.Config_ProjDrawer.Resolution);
+						var config = (MainForm.Configs["CFG_ProjDrawer"] as CFG_ProjDrawer);
+						ProjImage img = ProjImage.FromImage(ofd.FileName, config.ProjType, config.Resolution);
 						this.Enabled = false;
 						img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
 						this.Enabled = true;
@@ -197,6 +199,20 @@ namespace QTRHacker.NewDimension.PagePanels
 				s => HackContext.GetSign((s as FunctionButton).Identity) > 0, Closable);
 			b.OnEnable += (s, e) =>
 			{
+#if DEBUG || ENG
+#else
+				if (!(MainForm.Configs["CFG_QTRHacker"] as CFG_QTRHacker).OnlineMode && HackContext.GameContext.NetMode != 0)
+				{
+					MessageBox.Show("你无法在多人游戏中使用修改器的'基础功能'\n" +
+						"因为在线模式已被关闭\n" +
+	  "除非在配置文件./configs/CFG_QTRHacker.json中将OnlineMode项由false修改为true来开启在线模式\n" +
+   "而在线模式一旦开启，则代表你将为你使用本修改器做出的任何行为负全责\n" +
+   "这并不代表在线模式处于关闭的情况下有除你之外的其他人需要为你使用修改器所做出的行为负责\n" +
+   "最后，请记住，在多人游戏中使用修改器在大多数时候是不被允许的");
+					e.Enabled = false;
+					return;
+				}
+#endif
 				var btn = (s as FunctionButton);
 				OnEnabled?.Invoke(HackContext.GameContext);
 				HackContext.SetSign((s as FunctionButton).Identity, 1);

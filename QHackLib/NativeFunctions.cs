@@ -208,7 +208,7 @@ namespace QHackLib
 		[DllImport("kernel32.dll")]
 		public static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 		[DllImport("kernel32.dll")]
-		public static extern int CloseHandle(int dwDesiredAccess);
+		public static extern int CloseHandle(int dwHandle);
 		public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
 	}
 }

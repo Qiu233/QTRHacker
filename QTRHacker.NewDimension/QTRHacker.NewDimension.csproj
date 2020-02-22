@@ -80,8 +80,8 @@
     <Reference Include="IronPython.Wpf, Version=2.7.9.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <HintPath>..\packages\IronPython.2.7.9\lib\net45\IronPython.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Diagnostics.Runtime, Version=1.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Diagnostics.Runtime.1.0.5\lib\net45\Microsoft.Diagnostics.Runtime.dll</HintPath>
+    <Reference Include="Microsoft.Diagnostics.Runtime, Version=1.1.1.11812, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Runtime.1.1.61812\lib\net45\Microsoft.Diagnostics.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Dynamic, Version=1.2.2.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicLanguageRuntime.1.2.2\lib\net45\Microsoft.Dynamic.dll</HintPath>
@@ -128,6 +128,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configs\CFG_ProjDrawer.cs" />
+    <Compile Include="Configs\CFG_QTRHacker.cs" />
+    <Compile Include="Configs\Config.cs" />
     <Compile Include="Controls\ChatSnippetBox.cs">
       <SubType>UserControl</SubType>
     </Compile>

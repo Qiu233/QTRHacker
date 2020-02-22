@@ -24,14 +24,8 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				for (int i = 0; i < Player.MAX_PLAYER; i++)
-				{
-					var player = gc.Players[i];
-					if (player.Active)
-					{
-						Console.WriteLine(player.Name);
-					}
-				}
+				Console.WriteLine(gc.MyPlayer.X);
+				Console.WriteLine(gc.MyPlayer.Y);
 				Console.Read();
 			}
 		}

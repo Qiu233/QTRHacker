@@ -307,20 +307,12 @@ push 0") + 2 * 5;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle,
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
 				new byte[] { 0xC3 }, 1, 0);
-			int a = AobscanHelper.Aobscan(
-				Context.HContext.Handle,
-				"33 c9 89 4c 90 08 42 3b") + 0x13;
-			int max = 2000;
-			int v = 0, y = max;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref v, 4, 0);
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, v, ref y, 4, 0);
+			int y = 2000;
+			var addrHelper = Context.HContext.MainAddressHelper;
+			addrHelper.SetStaticFieldValue("Terraria.Main", "numAvailableRecipes", 2000);
 
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle,
-				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes") + 0x1c,
-				ref v, 4, 0);
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, v, ref y, 4, 0);
-
-			for (int i = 0; i < max; i++)
+			y = addrHelper.GetStaticFieldValue<int>("Terraria.Main", "availableRecipe");
+			for (int i = 0; i < 2000; i++)
 			{
 				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, y + 0x8 + i * 4, ref i, 4, 0);
 			}
@@ -460,7 +452,7 @@ push 0") + 2 * 5;
 				   "88 96 33 05 00 00 88 96 A9 05 00 00") - 6;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
-		
+
 		public static void RevealMap(GameContext Context)
 		{
 			AssemblySnippet asm = AssemblySnippet.FromEmpty();
@@ -481,7 +473,7 @@ push 0") + 2 * 5;
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), true);
 			Context.RefreshMap = true;
 		}
-		
+
 
 
 		public static void DropLavaOntoPlayers(GameContext Context)
@@ -502,7 +494,7 @@ push 0") + 2 * 5;
 				}
 			}
 		}
-		
+
 		public static void RightClickToTP(GameContext Context)
 		{
 			byte s = 0;

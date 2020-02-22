@@ -35,7 +35,7 @@ namespace QTRHacker.NewDimension
 			MiscPagePanel, ChatSenderPanel, AimBotPagePanel,
 			AboutPagePanel;
 		public static MainForm MainFormInstance { get; private set; }
-		public static CFG_ProjDrawer Config_ProjDrawer;
+		public static Dictionary<string, Config> Configs = new Dictionary<string, Config>();
 		public static ScriptRuntime QHScriptRuntime { get; private set; }
 		public static ScriptEngine QHScriptEngine { get; private set; }
 		public static Languages.Processor CurrentLanguage;
@@ -173,7 +173,7 @@ namespace QTRHacker.NewDimension
 			Icon = ConvertToIcon(img_Basic, true);
 
 
-			
+
 		}
 
 		public void OnInitialized()
@@ -317,18 +317,25 @@ namespace QTRHacker.NewDimension
 		{
 			if (!Directory.Exists(".\\configs"))
 				Directory.CreateDirectory(".\\configs");
-			LoadConfig("CFG_ProjDrawer", out Config_ProjDrawer);
+			var ts = Assembly.GetExecutingAssembly().DefinedTypes.Where(t => t.Namespace == "QTRHacker.NewDimension.Configs" && t.Name.StartsWith("CFG_"));
+			ts.ToList().ForEach(t =>
+			{
+				LoadConfig(t.Name, out Config c, t.AsType());
+				Configs[t.Name] = c;
+			});
 		}
-		private void LoadConfig<T>(string name, out T obj) where T : new()
+		private void LoadConfig(string name, out Config obj, Type t)
 		{
+			if (!t.IsSubclassOf(typeof(Config)))
+				throw new Exception("Unexpected config type");
 			string s = $".\\configs\\{name}.json";
 			if (File.Exists(s))
 			{
-				obj = JsonConvert.DeserializeObject<T>(File.ReadAllText(s));
+				obj = JsonConvert.DeserializeObject(File.ReadAllText(s), t) as Config;
 			}
 			else
 			{
-				obj = new T();
+				obj = t.GetConstructor(new Type[] { }).Invoke(null) as Config;
 				SaveConfig(name, obj);
 			}
 		}

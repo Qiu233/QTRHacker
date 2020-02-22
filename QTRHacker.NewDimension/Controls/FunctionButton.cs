@@ -14,6 +14,14 @@ namespace QTRHacker.NewDimension.Controls
 {
 	public partial class FunctionButton : UserControl
 	{
+		public class OnFunctionEnabledEventArgs : EventArgs
+		{
+			public bool Enabled = true;
+		}
+		public class OnFunctionDisabledEventArgs : EventArgs
+		{
+			public bool Disabled = true;
+		}
 		public new string Text { get; set; }
 		public bool FunctionEnabled
 		{
@@ -37,8 +45,8 @@ namespace QTRHacker.NewDimension.Controls
 		{
 			get;
 		}
-		public event Action<object, EventArgs> OnEnable = (s, e) => { };
-		public event Action<object, EventArgs> OnDisable = (s, e) => { };
+		public event Action<object, OnFunctionEnabledEventArgs> OnEnable = (s, e) => { };
+		public event Action<object, OnFunctionDisabledEventArgs> OnDisable = (s, e) => { };
 		private Func<object, bool> GetEnabled;
 		public FunctionButton(string Identity, Func<object, bool> GetEnabled, bool Closable = true)
 		{
@@ -64,11 +72,22 @@ namespace QTRHacker.NewDimension.Controls
 			base.OnMouseDown(e);
 			if (e.Button == MouseButtons.Left)
 			{
+				if (!Closable) return;
 				BackColor = MouseDownColor;
-				if (FunctionEnabled && !Closable) return;
-				if (!FunctionEnabled) OnEnable(this, new EventArgs());
-				else OnDisable(this, new EventArgs());
-				FunctionEnabled = !FunctionEnabled;
+				bool enabled = false;
+				if (!FunctionEnabled)
+				{
+					var args = new OnFunctionEnabledEventArgs();
+					OnEnable(this, args);
+					enabled = args.Enabled;
+				}
+				else
+				{
+					var args = new OnFunctionDisabledEventArgs();
+					OnDisable(this, args);
+					enabled = !args.Disabled;
+				}
+				FunctionEnabled = enabled;
 			}
 		}
 		protected override void OnMouseUp(MouseEventArgs e)

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.NewDimension.Configs
 {
-	public class CFG_ProjDrawer : Config
+	public class CFG_QTRHacker : Config
 	{
-		public int ProjType = 355;
-		public int Resolution = 16;
+		public bool OnlineMode = false;
 	}
 }

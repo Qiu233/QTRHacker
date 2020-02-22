@@ -36,7 +36,7 @@ namespace QHackLib
 		public int GetStaticFieldAddress(string TypeName, string FieldName) => (int)GetClrType(TypeName).GetStaticFieldByName(FieldName).GetAddress(Module.AppDomains[0]);
 		public int GetFieldOffset(string TypeName, string FieldName) => GetClrType(TypeName).Fields.First(t => t.Name == FieldName).Offset + 4;//to get true offset must +4
 
-		public T GetStaticFieldValue<T>(string TypeName, string FieldName)
+		public T GetStaticFieldValue<T>(string TypeName, string FieldName) where T : struct
 		{
 			var t = GetClrType(TypeName);
 			int len = Marshal.SizeOf(typeof(T));
@@ -60,7 +60,7 @@ namespace QHackLib
 			Marshal.FreeHGlobal(ptr);
 		}
 
-		public T GetInstanceFieldValue<T>(string TypeName, string FieldName, int obj)
+		public T GetInstanceFieldValue<T>(string TypeName, string FieldName, int obj) where T : struct
 		{
 			var t = GetClrType(TypeName);
 			int len = Marshal.SizeOf(typeof(T));
