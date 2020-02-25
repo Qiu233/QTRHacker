@@ -84,9 +84,13 @@
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\PlayerArray.cs" />
     <Compile Include="GameObjects\Projectile.cs" />
+    <Compile Include="GameObjects\ValueTypeArray.cs" />
+    <Compile Include="ProjectileImage\IEmmitable.cs" />
     <Compile Include="ProjectileImage\MPoint.cs" />
     <Compile Include="ProjectileImage\MPointF.cs" />
     <Compile Include="ProjectileImage\ProjImage.cs" />
+    <Compile Include="ProjectileImage\RainbowImage\CharactersLoader.cs" />
+    <Compile Include="ProjectileImage\RainbowImage\RainbowTextDrawer.cs" />
     <Compile Include="ProjectileMaker\Parse\AST\Expression.cs" />
     <Compile Include="ProjectileMaker\Parse\AST\Expr_Binary.cs" />
     <Compile Include="ProjectileMaker\Parse\AST\Expr_BTuple.cs" />
@@ -107,6 +111,7 @@
     <Compile Include="ProjectileMaker\Parse\Tokenizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Tile.cs" />
+    <Compile Include="ProjectileImage\RainbowImage\RainbowDrawer.cs" />
     <Compile Include="ScheMaker\RawTile.cs" />
     <Compile Include="ScheMaker\ScheMaker.cs" />
     <Compile Include="ScheMaker\Schematic.cs" />

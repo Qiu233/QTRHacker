@@ -39,7 +39,7 @@ namespace QHackLib
 		public T GetStaticFieldValue<T>(string TypeName, string FieldName) where T : struct
 		{
 			var t = GetClrType(TypeName);
-			int len = Marshal.SizeOf(typeof(T));
+			int len = ValueTypeMeasurer.Measure<T>();
 			byte[] bs = new byte[len];
 			NativeFunctions.ReadProcessMemory(Context.Handle, (int)t.GetStaticFieldByName(FieldName).GetAddress(Module.AppDomains[0]), bs, len, 0);
 			IntPtr ptr = Marshal.AllocHGlobal(len);
@@ -51,7 +51,7 @@ namespace QHackLib
 		public void SetStaticFieldValue<T>(string TypeName, string FieldName, T v) where T : struct
 		{
 			var t = GetClrType(TypeName);
-			int len = Marshal.SizeOf(typeof(T));
+			int len = ValueTypeMeasurer.Measure<T>();
 			byte[] bs = new byte[len];
 			IntPtr ptr = Marshal.AllocHGlobal(len);
 			Marshal.StructureToPtr(v, ptr, false);
@@ -63,7 +63,7 @@ namespace QHackLib
 		public T GetInstanceFieldValue<T>(string TypeName, string FieldName, int obj) where T : struct
 		{
 			var t = GetClrType(TypeName);
-			int len = Marshal.SizeOf(typeof(T));
+			int len = ValueTypeMeasurer.Measure<T>();
 			byte[] bs = new byte[len];
 			NativeFunctions.ReadProcessMemory(Context.Handle, obj + t.GetFieldByName(FieldName).Offset + 4, bs, len, 0);
 			IntPtr ptr = Marshal.AllocHGlobal(len);
@@ -76,7 +76,7 @@ namespace QHackLib
 		public void SetInstanceFieldValue<T>(string TypeName, string FieldName, int obj, T v) where T : struct
 		{
 			var t = GetClrType(TypeName);
-			int len = Marshal.SizeOf(typeof(T));
+			int len = ValueTypeMeasurer.Measure<T>();
 			byte[] bs = new byte[len];
 			IntPtr ptr = Marshal.AllocHGlobal(len);
 			Marshal.StructureToPtr(v, ptr, false);

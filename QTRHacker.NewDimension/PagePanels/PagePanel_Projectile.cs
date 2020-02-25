@@ -43,7 +43,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				try
 				{
 					var img = p.Parse();
-					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+					img.Emit(ctx, new Functions.ProjectileImage.MPointF(ctx.MyPlayer.X, ctx.MyPlayer.Y));
 				}
 				catch (ParseException ex)
 				{

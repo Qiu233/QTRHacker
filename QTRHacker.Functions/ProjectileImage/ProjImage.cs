@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.ProjectileImage
 {
-	public class Proj
+	public struct Proj
 	{
 		public int ProjType
 		{
@@ -29,11 +29,19 @@ namespace QTRHacker.Functions.ProjectileImage
 			get;
 			set;
 		}
+
+		public Proj(int projType, MPointF speed, MPointF location)
+		{
+			ProjType = projType;
+			Speed = speed;
+			Location = location;
+		}
+		
 	}
-	public class ProjImage
+	public class ProjImage : IEmmitable
 	{
 		public const uint FileVersion = 3;
-		public const ushort FileHead = 0xA8;
+		public const ushort FileHead = 0x05;
 		/// <summary>
 		/// 只在加载图片时这个东西才有效
 		/// </summary>
@@ -56,7 +64,17 @@ namespace QTRHacker.Functions.ProjectileImage
 			Projs = new List<Proj>();
 		}
 
-		public void Emit(GameContext context, float X, float Y)
+		public void DrawImage(ProjImage image, MPointF location)
+		{
+			foreach (var proj in image.Projs)
+			{
+				var newImg = proj;
+				newImg.Location += location;
+				Projs.Add(newImg);
+			}
+		}
+
+		public void Emit(GameContext context, MPointF Location)
 		{
 			int data = NativeFunctions.VirtualAllocEx(context.HContext.Handle, 0, (int)(32 * Projs.Count), NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
 			NativeFunctions.WriteProcessMemory(context.HContext.Handle, data, BitConverter.GetBytes(Projs.Count), 4, 0);
@@ -64,8 +82,8 @@ namespace QTRHacker.Functions.ProjectileImage
 			{
 				int t = data + 8 + i * 32;
 				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t, BitConverter.GetBytes(Projs[i].ProjType), 4, 0);
-				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 4, BitConverter.GetBytes(context.MyPlayer.X + Projs[i].Location.X), 4, 0);
-				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 8, BitConverter.GetBytes(context.MyPlayer.Y + Projs[i].Location.Y), 4, 0);
+				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 4, BitConverter.GetBytes(Location.X + Projs[i].Location.X), 4, 0);
+				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 8, BitConverter.GetBytes(Location.Y + Projs[i].Location.Y), 4, 0);
 				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 12, BitConverter.GetBytes(Projs[i].Speed.X), 4, 0);
 				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 16, BitConverter.GetBytes(Projs[i].Speed.Y), 4, 0);
 			}

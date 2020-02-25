@@ -42,10 +42,6 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
-		public int ArrayHeadLength
-		{
-			get;
-		}
 
 		public int Player_Array_Address
 		{
@@ -399,7 +395,7 @@ namespace QTRHacker.Functions
 			get
 			{
 				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, Player_Array_Address + HContext.ArrayHeadLength + 0x04 * MyPlayerIndex, ref v, 4, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, Player_Array_Address + 0x8 + 0x04 * MyPlayerIndex, ref v, 4, 0);
 				return new Player(this, v);
 			}
 		}
@@ -422,7 +418,7 @@ namespace QTRHacker.Functions
 				int v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "clientUUID");
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 				byte[] bs = new byte[(32 + 4) * 2];
-				NativeFunctions.ReadProcessMemory(HContext.Handle, v + HContext.ArrayHeadLength, bs, bs.Length, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, v + 8, bs, bs.Length, 0);
 				return Encoding.Unicode.GetString(bs);
 			}
 			set
@@ -430,7 +426,7 @@ namespace QTRHacker.Functions
 				int v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "clientUUID");
 				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 				byte[] bs = Encoding.Unicode.GetBytes(value);
-				NativeFunctions.WriteProcessMemory(HContext.Handle, v + HContext.ArrayHeadLength, bs, (32 + 4) * 2, 0);
+				NativeFunctions.WriteProcessMemory(HContext.Handle, v + 8, bs, (32 + 4) * 2, 0);
 			}
 		}
 
@@ -565,16 +561,16 @@ namespace QTRHacker.Functions
 			}
 		}
 
-		private void InitalizeOffsets()
+		private void InitializeOffsets()
 		{
 			if (OffsetsInitialized)
 				return;
-			foreach (var t in System.Reflection.Assembly.GetExecutingAssembly().DefinedTypes)
+			foreach (var t in Assembly.GetExecutingAssembly().DefinedTypes)
 			{
-				if (t.Namespace != "QTRHacker.Functions.GameObjects")
+				if (!t.Namespace.StartsWith("QTRHacker.Functions.GameObjects"))
 					continue;
 				var typeNameAttr = t.GetCustomAttributes(typeof(GameFieldOffsetTypeNameAttribute), false);
-				foreach (var f in t.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public))
+				foreach (var f in t.GetFields(BindingFlags.Static | BindingFlags.Public))
 				{
 					if (!f.IsStatic ||
 						!(f.FieldType == typeof(int) || f.FieldType == typeof(uint) ||
@@ -606,7 +602,7 @@ namespace QTRHacker.Functions
 				"Terraria.Main.NewText(System.String, Byte, Byte, Byte, Boolean)");
 			CLRFunctionCaller.Call(Context, addr, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), $"@{Text}", R, G, B, force);
 		}
-		
+
 
 		/// <summary>
 		/// 凡是没有标明Pointer的，获取的均为基址，而非指向该地址的指针
@@ -617,9 +613,8 @@ namespace QTRHacker.Functions
 		{
 			HContext = Context.Create(pid);
 
-
-			ArrayHeadLength = HContext.ArrayHeadLength;
-			InitalizeOffsets();
+			
+			InitializeOffsets();
 
 
 
@@ -711,10 +706,10 @@ namespace QTRHacker.Functions
 
 			//这里使用了自适应的数组头部长度，如果无效将会被修改
 			int bbbb = 0;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v + HContext.ArrayHeadLength - 4, ref bbbb, 4, 0);
+			NativeFunctions.ReadProcessMemory(HContext.Handle, v + 4, ref bbbb, 4, 0);
 			Debuff = new int[bbbb];
 			for (int i = 0; i < bbbb; i++)
-				NativeFunctions.ReadProcessMemory(HContext.Handle, Debuff_Address + HContext.ArrayHeadLength + i, ref Debuff[i], 1, 0);
+				NativeFunctions.ReadProcessMemory(HContext.Handle, Debuff_Address + 8 + i, ref Debuff[i], 1, 0);
 
 
 			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "ActiveWorldFileData");

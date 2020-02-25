@@ -8,12 +8,20 @@ namespace QTRHacker.Functions.GameObjects
 {
 	public abstract class GameObjectArray<T> : GameObject where T : GameObject
 	{
-		public virtual T this[int i]
+		public virtual T this[int index]
 		{
 			get
 			{
-				ReadFromOffset(Context.ArrayHeadLength + 0x04 * i, out int v);
+				ReadFromOffset(0x8 + 4 * index, out int v);
 				return (T)typeof(T).GetConstructor(new Type[] { typeof(GameContext), typeof(int) }).Invoke(new object[] { Context, v });
+			}
+		}
+		public virtual int Length
+		{
+			get
+			{
+				ReadFromOffset(0x4, out int v);
+				return v;
 			}
 		}
 		public GameObjectArray(GameContext Context, int bAddr) : base(Context, bAddr)

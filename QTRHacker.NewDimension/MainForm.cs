@@ -312,6 +312,8 @@ namespace QTRHacker.NewDimension
 				Directory.CreateDirectory(".\\Sches");
 			if (!Directory.Exists(".\\ChatTemplates"))
 				Directory.CreateDirectory(".\\ChatTemplates");
+			if (!Directory.Exists(".\\RainbowFonts"))
+				Directory.CreateDirectory(".\\RainbowFonts");
 		}
 		private void LoadConfigs()
 		{
@@ -343,6 +345,12 @@ namespace QTRHacker.NewDimension
 		{
 			string s = $".\\configs\\{name}.json";
 			File.WriteAllText(s, JsonConvert.SerializeObject(obj, Formatting.Indented));
+		}
+
+		protected override void OnClosing(CancelEventArgs e)
+		{
+			base.OnClosing(e);
+			Environment.Exit(0);//防止线程滞留
 		}
 	}
 }

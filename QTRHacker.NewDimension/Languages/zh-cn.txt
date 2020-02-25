@@ -243,3 +243,7 @@ Unlock	解锁
 CoronaVirus	新型冠状病毒(单机)
 
 ClickToItem	单击物品跳转
+
+RainbowTexting	使用彩虹绘制文字
+Text	文字
+ReloadFonts	重新加载Fonts

@@ -62,6 +62,17 @@ namespace QTRHacker.Functions.GameObjects
 		public static int OFFSET_PantsColor = 0x750;
 		[GameFieldOffsetFieldName("shoeColor")]
 		public static int OFFSET_ShoeColor = 0x754;
+		[GameFieldOffsetFieldName("skinVariant")]
+		public static int OFFSET_SkinVariant;
+		[GameFieldOffsetFieldName("hairDye")]
+		public static int OFFSET_HairDye;
+		[GameFieldOffsetFieldName("hideVisual")]
+		public static int OFFSET_HideVisual;
+		[GameFieldOffsetFieldName("hideMisc")]
+		public static int OFFSET_HideMisc;
+
+
+
 
 
 
@@ -159,6 +170,15 @@ namespace QTRHacker.Functions.GameObjects
 			}
 			set => WriteFromOffset(OFFSET_Hair, value);
 		}
+		public byte HairDye
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_HairDye, out byte v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_HairDye, value);
+		}
 		public int HairColor
 		{
 			get
@@ -222,6 +242,15 @@ namespace QTRHacker.Functions.GameObjects
 			}
 			set => WriteFromOffset(OFFSET_ShoeColor, value);
 		}
+		public int SkinVariant
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_SkinVariant, out int v);
+				return v;
+			}
+			set => WriteFromOffset(OFFSET_SkinVariant, value);
+		}
 
 		public ItemSlots Inventory
 		{
@@ -265,6 +294,24 @@ namespace QTRHacker.Functions.GameObjects
 			{
 				ReadFromOffset(OFFSET_MISCDYE, out int v);
 				return new ItemSlots(Context, v);
+			}
+		}
+
+		public byte HideMisc
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_HideMisc, out byte v);
+				return v;
+			}
+		}
+
+		public ValueTypeArray<bool> HideVisual
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_HideVisual, out int v);
+				return new ValueTypeArray<bool>(Context, v);
 			}
 		}
 

@@ -240,6 +240,10 @@ AimBot	AimBot
 About	About
 Lock	Lock
 Unlock	Unlock
-CoronaVirus	New Coronavirus(Single Player)
+CoronaVirus	Novel Coronavirus(Single Player)
 
 ClickToItem	Click jump to items
+
+RainbowTexting	Text with rainbow
+Text	Text
+ReloadFonts	Reload the fonts

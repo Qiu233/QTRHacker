@@ -16,14 +16,29 @@ namespace QTRHacker.Functions.ProjectileImage
 		{
 			get; set;
 		}
+		public float LengthSquared => X * X + Y * Y;
+		public float Length => (float)Math.Sqrt(LengthSquared);
 		public MPointF(float X, float Y)
 		{
 			this.X = X;
 			this.Y = Y;
 		}
+
 		public static MPointF operator +(MPointF a, MPointF b)
 		{
 			return new MPointF(a.X + b.X, a.Y + b.Y);
+		}
+		public static MPointF operator -(MPointF a, MPointF b)
+		{
+			return new MPointF(a.X - b.X, a.Y - b.Y);
+		}
+		public static MPointF operator *(MPointF a, float factor)
+		{
+			return new MPointF(a.X * factor, a.Y * factor);
+		}
+		public static MPointF operator /(MPointF a, float factor)
+		{
+			return new MPointF(a.X / factor, a.Y / factor);
 		}
 		public static explicit operator MPoint(MPointF f)
 		{

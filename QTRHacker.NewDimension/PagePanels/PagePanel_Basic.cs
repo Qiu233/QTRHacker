@@ -2,6 +2,7 @@
 using QTRHacker.Functions;
 using QTRHacker.Functions.GameObjects;
 using QTRHacker.Functions.ProjectileImage;
+using QTRHacker.Functions.ProjectileImage.RainbowImage;
 using QTRHacker.NewDimension.Configs;
 using QTRHacker.NewDimension.Controls;
 using System;
@@ -149,11 +150,76 @@ namespace QTRHacker.NewDimension.PagePanels
 						var config = (MainForm.Configs["CFG_ProjDrawer"] as CFG_ProjDrawer);
 						ProjImage img = ProjImage.FromImage(ofd.FileName, config.ProjType, config.Resolution);
 						this.Enabled = false;
-						img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+						img.Emit(ctx, new MPointF(ctx.MyPlayer.X, ctx.MyPlayer.Y));
 						this.Enabled = true;
 					}
 				}, null);
+			AddFunction(Page3, MainForm.CurrentLanguage["RainbowTexting"], "89494BDF0C804010910932F71E5EC75E", false,
+				g =>
+				{
+					MForm Form = new MForm
+					{
+						BackColor = Color.FromArgb(90, 90, 90),
+						Text = MainForm.CurrentLanguage["RainbowTexting"],
+						StartPosition = FormStartPosition.CenterParent,
+						ClientSize = new Size(245, 72)
+					};
 
+					CheckBox ReloadAllFonts = new CheckBox()
+					{
+						Text = MainForm.CurrentLanguage["ReloadFonts"],
+						Location = new Point(10, 0),
+						Size = new Size(200, 20),
+					};
+					Form.MainPanel.Controls.Add(ReloadAllFonts);
+
+					Label Tip = new Label()
+					{
+						Text = MainForm.CurrentLanguage["Text"] + "：",
+						Location = new Point(0, 20),
+						Size = new Size(80, 20),
+						TextAlign = ContentAlignment.MiddleCenter
+					};
+					Form.MainPanel.Controls.Add(Tip);
+
+					TextBox Box = new TextBox
+					{
+						BorderStyle = BorderStyle.FixedSingle,
+						BackColor = Color.FromArgb(120, 120, 120),
+						Text = "",
+						Location = new Point(85, 20),
+						Size = new Size(95, 20)
+					};
+					Form.MainPanel.Controls.Add(Box);
+
+					Button ConfirmButton = new Button();
+					ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+					ConfirmButton.FlatStyle = FlatStyle.Flat;
+					ConfirmButton.Size = new Size(65, 20);
+					ConfirmButton.Location = new Point(180, 20);
+					ConfirmButton.Click += (s1, e1) =>
+					{
+						if (HackContext.Characters == null)
+						{
+							HackContext.Characters = new Dictionary<char, ProjImage>();
+							HackContext.LoadRainbowFonts(HackContext.Characters);
+						}
+						if (ReloadAllFonts.Checked)
+							HackContext.LoadRainbowFonts(HackContext.Characters);
+						RainbowTextDrawer rtd = new RainbowTextDrawer(HackContext.Characters);
+						rtd.DrawString(Box.Text, center: new MPointF());
+						var ctx = HackContext.GameContext;
+						var player = ctx.MyPlayer;
+						rtd.Emit(ctx, new MPointF(player.X, player.Y));
+						Form.Dispose();
+					};
+					Form.MainPanel.Controls.Add(ConfirmButton);
+					Form.Activated += (s, e) =>
+					{
+						Box.Focus();
+					};
+					Form.ShowDialog(this);
+				}, null);
 			AddFunction(Page3, MainForm.CurrentLanguage["CoronaVirus"], "7FF4CE10ED9B4924BA63F92E2443C79A", false,
 				g =>
 				{

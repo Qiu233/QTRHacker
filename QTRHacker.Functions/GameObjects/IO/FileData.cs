@@ -11,7 +11,7 @@ namespace QTRHacker.Functions.GameObjects.IO
 	public class FileData : GameObject
 	{
 		[GameFieldOffsetFieldName("Name")]
-		public const int OFFSET_Name = 0xc;
+		public int OFFSET_Name = 0xc;
 		public string Name
 		{
 			get

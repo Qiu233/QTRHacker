@@ -121,15 +121,6 @@ namespace QHackLib
 		{
 			get;
 		}
-		public int ArrayHeadLength
-		{
-			get
-			{
-				return (bool)typeof(ClrRuntime).GetProperty("HasArrayComponentMethodTables",
-					System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).
-					GetValue(Runtime) ? 12 : 8;
-			}
-		}
 
 		public static void LoadAssembly(int handle, string fileFullPath, string typeToInstantiate)
 		{

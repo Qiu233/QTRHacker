@@ -72,8 +72,12 @@ namespace QTRHacker.NewDimension.Controls
 			base.OnMouseDown(e);
 			if (e.Button == MouseButtons.Left)
 			{
-				if (!Closable) return;
 				BackColor = MouseDownColor;
+				if (!Closable)
+				{
+					OnEnable(this, new OnFunctionEnabledEventArgs());
+					return;
+				}
 				bool enabled = false;
 				if (!FunctionEnabled)
 				{

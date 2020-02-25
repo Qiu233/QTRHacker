@@ -138,7 +138,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			ProjImage img = null;
 #if DEBUG
 			img = p.Parse();
-			img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+			img.Emit(ctx, new MPointF(ctx.MyPlayer.X, ctx.MyPlayer.Y));
 #else
 			try
 			{
@@ -152,7 +152,7 @@ namespace QTRHacker.NewDimension.PagePanels
 #endif
 				if (ctx != null)
 				{
-					img.Emit(ctx, ctx.MyPlayer.X, ctx.MyPlayer.Y);
+					img.Emit(ctx, new MPointF(ctx.MyPlayer.X, ctx.MyPlayer.Y));
 #if ENG
 					OutputLog($"Projectiles has been emited");
 #else
@@ -183,7 +183,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			}
 			OutputLog("\n\n");
 #endif
-				}
+		}
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
 		{

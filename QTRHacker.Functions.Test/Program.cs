@@ -5,6 +5,7 @@ using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using QTRHacker.Functions.GameObjects;
 using QTRHacker.Functions.ProjectileImage;
+using QTRHacker.Functions.ProjectileImage.RainbowImage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,8 +25,12 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				Console.WriteLine(gc.MyPlayer.X);
-				Console.WriteLine(gc.MyPlayer.Y);
+				var myPlayer = gc.MyPlayer;
+
+				var chars = CharactersLoader.LoadCharacters(File.ReadAllText("./RainbowFonts/ASCII/Numbers.rbfont"));
+				RainbowTextDrawer rtd = new RainbowTextDrawer(chars);
+				rtd.DrawString("453858025", new MPointF());
+				rtd.Emit(gc, new MPointF(myPlayer.X, myPlayer.Y));
 				Console.Read();
 			}
 		}

@@ -2,8 +2,11 @@
 using QHackLib;
 using QHackLib.Utilities;
 using QTRHacker.Functions;
+using QTRHacker.Functions.ProjectileImage;
+using QTRHacker.Functions.ProjectileImage.RainbowImage;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Text;
@@ -13,6 +16,10 @@ namespace QTRHacker.NewDimension
 {
 	public class HackContext
 	{
+		public static Dictionary<char, ProjImage> Characters
+		{
+			get; set;
+		}
 		public static readonly string SignHeadAob = "F3B354B2F6314D5AB44D946B4962AE82";
 		public const int SignSize = 1024 * 8;
 		public static GameContext GameContext
@@ -92,6 +99,19 @@ namespace QTRHacker.NewDimension
 			s.SetVariable("game_context", GameContext);
 			engine.Execute("import clr\nclr.AddReference('QHackLib')\nclr.AddReference('QTRHacker')\nclr.AddReference('QTRHacker.Functions')\nfrom QHackLib import *\nfrom QTRHacker import *\nfrom QTRHacker.Functions import *", s);
 			return s;
+		}
+
+		public static void LoadRainbowFonts(Dictionary<char, ProjImage> characters)
+		{
+			LoadRainbowFonts(".\\RainbowFonts", characters);
+		}
+		private static void LoadRainbowFonts(string dir, Dictionary<char, ProjImage> characters)
+		{
+			Directory.EnumerateFiles(dir, "*.rbfont").ToList().ForEach(t =>
+			{
+				CharactersLoader.LoadCharacters(characters, File.ReadAllText(t));
+			});
+			Directory.EnumerateDirectories(dir).ToList().ForEach(t => LoadRainbowFonts(t, characters));
 		}
 	}
 }

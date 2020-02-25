@@ -71,6 +71,7 @@
     <Compile Include="NativeFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AobscanHelper.cs" />
+    <Compile Include="ValueTypeMeasurer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Keystone.Net\Keystone.Net.csproj">
