@@ -205,7 +205,10 @@ namespace QTRHacker.NewDimension.PagePanels
 							HackContext.LoadRainbowFonts(HackContext.Characters);
 						}
 						if (ReloadAllFonts.Checked)
+						{
+							HackContext.Characters.Clear();
 							HackContext.LoadRainbowFonts(HackContext.Characters);
+						}
 						RainbowTextDrawer rtd = new RainbowTextDrawer(HackContext.Characters);
 						rtd.DrawString(Box.Text, center: new MPointF());
 						var ctx = HackContext.GameContext;
