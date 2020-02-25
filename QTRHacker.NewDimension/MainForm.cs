@@ -19,6 +19,7 @@ using QTRHacker.NewDimension.Controls;
 using QTRHacker.NewDimension.PagePanels;
 using QTRHacker.NewDimension.Res;
 using QTRHacker.NewDimension.Wiki;
+using QTRHacker.NewDimension.XNAControls;
 
 namespace QTRHacker.NewDimension
 {
@@ -172,8 +173,7 @@ namespace QTRHacker.NewDimension
 
 			Icon = ConvertToIcon(img_Basic, true);
 
-
-
+			
 		}
 
 		public void OnInitialized()

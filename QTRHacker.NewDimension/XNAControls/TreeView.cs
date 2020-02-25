@@ -25,7 +25,6 @@ namespace QTRHacker.NewDimension.XNAControls
 			get;
 			set;
 		}
-		public int WorldLength = 2000;
 		public static readonly Color LineColor = new Color(160f / 255, 160f / 255, 160f / 255);
 		public Point OriginToWorld
 		{
@@ -99,8 +98,6 @@ namespace QTRHacker.NewDimension.XNAControls
 
 		protected override void Draw()
 		{
-			RenderTarget2D rt = new RenderTarget2D(GraphicsDevice, WorldLength, WorldLength);
-			GraphicsDevice.SetRenderTarget(rt);
 			GraphicsDevice.Clear(new Color(100f / 255, 100f / 255, 100f / 255));
 			Batch.Begin();
 			DrawLines();
@@ -110,13 +107,6 @@ namespace QTRHacker.NewDimension.XNAControls
 				n.Draw(Batch);
 			Root.Draw(Batch);
 			Batch.End();
-
-
-			GraphicsDevice.SetRenderTarget(null);
-			Batch.Begin();
-			Batch.Draw(rt, new Rectangle(0, 0, Width, Height), new Rectangle(OriginToWorld.X, OriginToWorld.Y, GetDrawLength(Width), GetDrawLength(Height)), Color.White);
-			Batch.End();
-			rt.Dispose();
 		}
 
 		private int GetDrawLength(int raw)
@@ -127,13 +117,13 @@ namespace QTRHacker.NewDimension.XNAControls
 		protected override void OnMouseWheel(MouseEventArgs e)
 		{
 			base.OnMouseWheel(e);
-			if (IsDraging) return;
+			/*if (IsDraging) return;
 			int v = e.Delta;
 			if (v < 0 && Zoom < 1.2f)
 				Zoom += 0.05f;
 			else if (v > 0 && Zoom > 0.6f)
 				Zoom -= 0.05f;
-			Invalidate();
+			Invalidate();*/
 		}
 
 		private bool IsDraging = false;
@@ -165,14 +155,14 @@ namespace QTRHacker.NewDimension.XNAControls
 
 				var p = new Point(RawOriginToWorld.X - dX, RawOriginToWorld.Y - dY);
 
-				if (p.X < 0)
+				/*if (p.X < 0)
 					p.X = 0;
 				if (p.Y < 0)
 					p.Y = 0;
-				if (p.X + Width * Zoom > WorldLength)
-					p.X = WorldLength - (int)(Width * Zoom);
-				if (p.Y + Height * Zoom > WorldLength)
-					p.Y = WorldLength - (int)(Height * Zoom);
+				if (p.X + Width * Zoom > Width)
+					p.X = Width - (int)(Width * Zoom);
+				if (p.Y + Height * Zoom > Height)
+					p.Y = Height - (int)(Height * Zoom);*/
 
 				OriginToWorld = p;
 				Invalidate();
@@ -253,28 +243,28 @@ namespace QTRHacker.NewDimension.XNAControls
 					{
 						case TreeAnchor.Up:
 							{
-								Vector2 start = n.Location + new Vector2(n.Width / 2, 0);
+								Vector2 start = n.Location + new Vector2(n.Width / 2, 0) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								Vector2 end = start - new Vector2(0, 13);
 								DrawLine(start, end, LineColor, 2);
 							}
 							break;
 						case TreeAnchor.Down:
 							{
-								Vector2 start = n.Location + new Vector2(n.Width / 2 + 2, n.Height);
+								Vector2 start = n.Location + new Vector2(n.Width / 2 + 2, n.Height) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								Vector2 end = start + new Vector2(0, 13);
 								DrawLine(start, end, LineColor, 2);
 							}
 							break;
 						case TreeAnchor.Right:
 							{
-								Vector2 start = n.Location + new Vector2(n.Width, n.Height / 2 - 2);
+								Vector2 start = n.Location + new Vector2(n.Width, n.Height / 2 - 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								Vector2 end = start + new Vector2(13, 0);
 								DrawLine(start, end, LineColor, 2);
 							}
 							break;
 						case TreeAnchor.Left:
 							{
-								Vector2 start = n.Location + new Vector2(0, n.Height / 2);
+								Vector2 start = n.Location + new Vector2(0, n.Height / 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								Vector2 end = start - new Vector2(13, 0);
 								DrawLine(start, end, LineColor, 2);
 							}
@@ -292,8 +282,8 @@ namespace QTRHacker.NewDimension.XNAControls
 					{
 						case TreeAnchor.Up:
 							{
-								Vector2 b = head.Location + new Vector2(head.Width / 2, -15);
-								Vector2 e = tail.Location + new Vector2(tail.Width / 2, -15);
+								Vector2 b = head.Location + new Vector2(head.Width / 2, -15) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
+								Vector2 e = tail.Location + new Vector2(tail.Width / 2, -15) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								DrawLine(b, e, LineColor, 2);
 								Vector2 center = (b + e) / 2;
 								Vector2 centerEnd = center - new Vector2(0, 11);
@@ -302,8 +292,8 @@ namespace QTRHacker.NewDimension.XNAControls
 							break;
 						case TreeAnchor.Down:
 							{
-								Vector2 b = head.Location + new Vector2(head.Width / 2, head.Height + 15);
-								Vector2 e = tail.Location + new Vector2(tail.Width / 2, head.Height + 15);
+								Vector2 b = head.Location + new Vector2(head.Width / 2, head.Height + 15) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
+								Vector2 e = tail.Location + new Vector2(tail.Width / 2, head.Height + 15) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								DrawLine(b, e, LineColor, 2);
 								Vector2 center = (b + e) / 2 + new Vector2(2, 0);
 								Vector2 centerEnd = center + new Vector2(0, 11);
@@ -312,8 +302,8 @@ namespace QTRHacker.NewDimension.XNAControls
 							break;
 						case TreeAnchor.Right:
 							{
-								Vector2 b = head.Location + new Vector2(head.Width + 15, head.Height / 2 - 2);
-								Vector2 e = tail.Location + new Vector2(tail.Width + 15, head.Height / 2 - 2);
+								Vector2 b = head.Location + new Vector2(head.Width + 15, head.Height / 2 - 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
+								Vector2 e = tail.Location + new Vector2(tail.Width + 15, head.Height / 2 - 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								DrawLine(b, e, LineColor, 2);
 								Vector2 center = (b + e) / 2;
 								Vector2 centerEnd = center + new Vector2(11, 0);
@@ -322,8 +312,8 @@ namespace QTRHacker.NewDimension.XNAControls
 							break;
 						case TreeAnchor.Left:
 							{
-								Vector2 b = head.Location + new Vector2(-15, head.Height / 2 - 2);
-								Vector2 e = tail.Location + new Vector2(-15, head.Height / 2 - 2);
+								Vector2 b = head.Location + new Vector2(-15, head.Height / 2 - 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
+								Vector2 e = tail.Location + new Vector2(-15, head.Height / 2 - 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								DrawLine(b, e, LineColor, 2);
 								Vector2 center = (b + e) / 2 + new Vector2(0, 2);
 								Vector2 centerEnd = center - new Vector2(11, 0);
@@ -342,28 +332,28 @@ namespace QTRHacker.NewDimension.XNAControls
 					{
 						case TreeAnchor.Up:
 							{
-								Vector2 start = n.Location + new Vector2(n.Width / 2 + 2, n.Height);
+								Vector2 start = n.Location + new Vector2(n.Width / 2 + 2, n.Height) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								Vector2 end = start + new Vector2(0, 13);
 								DrawLine(start, end, LineColor, 2);
 							}
 							break;
 						case TreeAnchor.Down:
 							{
-								Vector2 start = n.Location + new Vector2(n.Width / 2, 0);
+								Vector2 start = n.Location + new Vector2(n.Width / 2, 0) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								Vector2 end = start - new Vector2(0, 13);
 								DrawLine(start, end, LineColor, 2);
 							}
 							break;
 						case TreeAnchor.Right:
 							{
-								Vector2 start = n.Location + new Vector2(0, n.Height / 2);
+								Vector2 start = n.Location + new Vector2(0, n.Height / 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								Vector2 end = start - new Vector2(13, 0);
 								DrawLine(start, end, LineColor, 2);
 							}
 							break;
 						case TreeAnchor.Left:
 							{
-								Vector2 start = n.Location + new Vector2(n.Width, n.Height / 2 - 2);
+								Vector2 start = n.Location + new Vector2(n.Width, n.Height / 2 - 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								Vector2 end = start + new Vector2(13, 0);
 								DrawLine(start, end, LineColor, 2);
 							}
@@ -381,8 +371,8 @@ namespace QTRHacker.NewDimension.XNAControls
 					{
 						case TreeAnchor.Up:
 							{
-								Vector2 b = head.Location + new Vector2(head.Width / 2, head.Height + 15);
-								Vector2 e = tail.Location + new Vector2(tail.Width / 2, head.Height + 15);
+								Vector2 b = head.Location + new Vector2(head.Width / 2, head.Height + 15) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
+								Vector2 e = tail.Location + new Vector2(tail.Width / 2, head.Height + 15) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								DrawLine(b, e, LineColor, 2);
 								Vector2 center = (b + e) / 2 + new Vector2(2, 0);
 								Vector2 centerEnd = center + new Vector2(0, 11);
@@ -391,8 +381,8 @@ namespace QTRHacker.NewDimension.XNAControls
 							break;
 						case TreeAnchor.Down:
 							{
-								Vector2 b = head.Location + new Vector2(head.Width / 2, -15);
-								Vector2 e = tail.Location + new Vector2(tail.Width / 2, -15);
+								Vector2 b = head.Location + new Vector2(head.Width / 2, -15) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
+								Vector2 e = tail.Location + new Vector2(tail.Width / 2, -15) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								DrawLine(b, e, LineColor, 2);
 								Vector2 center = (b + e) / 2;
 								Vector2 centerEnd = center - new Vector2(0, 11);
@@ -401,8 +391,8 @@ namespace QTRHacker.NewDimension.XNAControls
 							break;
 						case TreeAnchor.Right:
 							{
-								Vector2 b = head.Location + new Vector2(-15, head.Height / 2 - 2);
-								Vector2 e = tail.Location + new Vector2(-15, head.Height / 2 - 2);
+								Vector2 b = head.Location + new Vector2(-15, head.Height / 2 - 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
+								Vector2 e = tail.Location + new Vector2(-15, head.Height / 2 - 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								DrawLine(b, e, LineColor, 2);
 								Vector2 center = (b + e) / 2 + new Vector2(0, 2);
 								Vector2 centerEnd = center - new Vector2(11, 0);
@@ -411,8 +401,8 @@ namespace QTRHacker.NewDimension.XNAControls
 							break;
 						case TreeAnchor.Left:
 							{
-								Vector2 b = head.Location + new Vector2(head.Width + 15, head.Height / 2 - 2);
-								Vector2 e = tail.Location + new Vector2(tail.Width + 15, head.Height / 2 - 2);
+								Vector2 b = head.Location + new Vector2(head.Width + 15, head.Height / 2 - 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
+								Vector2 e = tail.Location + new Vector2(tail.Width + 15, head.Height / 2 - 2) - new Vector2(OriginToWorld.X, OriginToWorld.Y);
 								DrawLine(b, e, LineColor, 2);
 								Vector2 center = (b + e) / 2;
 								Vector2 centerEnd = center + new Vector2(11, 0);
@@ -560,7 +550,6 @@ namespace QTRHacker.NewDimension.XNAControls
 					default:
 						break;
 				}
-				WorldLength = Math.Min(Math.Max(l1, l2), 2048);
 
 				{
 					float jX1 = NodesFrom.Count > 0 ? NodesFrom.Min(u => u.Location.X) : float.MaxValue;

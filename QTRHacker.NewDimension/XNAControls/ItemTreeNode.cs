@@ -80,7 +80,7 @@ namespace QTRHacker.NewDimension.XNAControls
 					ms.Close();
 				}
 			}
-			var rect = new Rectangle((int)Location.X, (int)Location.Y, (int)Size.X, (int)Size.Y);
+			var rect = new Rectangle((int)Location.X - TreeView.OriginToWorld.X, (int)Location.Y - TreeView.OriginToWorld.Y, (int)Size.X, (int)Size.Y);
 			batch.Draw(TreeView.SlotBackgroudFramework, rect, BackColor);
 			rect.X += 4;
 			rect.Y += 4;
@@ -88,7 +88,7 @@ namespace QTRHacker.NewDimension.XNAControls
 			rect.Height -= 8;
 			batch.Draw(ContentPicture, rect, Color.White);
 			if (ItemCount > 1)
-				DrawNumber(batch, Location.X + Width / 2 - 15, Location.Y + Height - 12, ItemCount.ToString());
+				DrawNumber(batch, Location.X + Width / 2 - 15 - TreeView.OriginToWorld.X, Location.Y + Height - 12 - TreeView.OriginToWorld.Y, ItemCount.ToString());
 			base.Draw(batch);
 		}
 

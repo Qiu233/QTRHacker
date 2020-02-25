@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,13 +43,13 @@ namespace QTRHacker.Functions.ProjectileImage.RainbowImage
 						drawer.DrawLine(ParseMPointF(proj.Attributes["start"].InnerText), ParseMPointF(proj.Attributes["end"].InnerText));
 						break;
 					case "point":
-						drawer.DrawPoint(ParseMPointF(proj.Attributes["location"].InnerText), Convert.ToSingle(proj.Attributes["direction"].InnerText));
+						drawer.DrawPoint(ParseMPointF(proj.Attributes["location"].InnerText), Convert.ToSingle(proj.Attributes["direction"].InnerText, CultureInfo.InvariantCulture));
 						break;
 					case "arc":
 						drawer.DrawArc(ParseMPointF(proj.Attributes["center"].InnerText),
-							Convert.ToSingle(proj.Attributes["radius"].InnerText),
-							Convert.ToSingle(proj.Attributes["start_radian"].InnerText),
-							Convert.ToSingle(proj.Attributes["end_radian"].InnerText));
+							Convert.ToSingle(proj.Attributes["radius"].InnerText, CultureInfo.InvariantCulture),
+							Convert.ToSingle(proj.Attributes["start_radian"].InnerText, CultureInfo.InvariantCulture),
+							Convert.ToSingle(proj.Attributes["end_radian"].InnerText, CultureInfo.InvariantCulture));
 						break;
 					default:
 						break;
@@ -60,7 +61,7 @@ namespace QTRHacker.Functions.ProjectileImage.RainbowImage
 		private static MPointF ParseMPointF(string s)
 		{
 			string[] t = s.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-			return new MPointF(Convert.ToSingle(t[0]), Convert.ToSingle(t[1]));
+			return new MPointF(Convert.ToSingle(t[0], CultureInfo.InvariantCulture), Convert.ToSingle(t[1], CultureInfo.InvariantCulture));
 		}
 	}
 }
