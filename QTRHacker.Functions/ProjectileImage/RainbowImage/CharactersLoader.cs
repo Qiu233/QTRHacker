@@ -26,12 +26,16 @@ namespace QTRHacker.Functions.ProjectileImage.RainbowImage
 			Console.WriteLine(data.HasChildNodes);
 			foreach (var c in data.ChildNodes)
 			{
-				var ch = c as XmlElement;
-				result.Add(ch["type"].InnerText[0], ParseBody(ch["body"]));
+				var ch = ParseChar(c as XmlElement);
+				result.Add(ch.Item1, ch.Item2);
 			}
 			return result;
 		}
-		private static ProjImage ParseBody(XmlElement body)
+		public static Tuple<char, ProjImage> ParseChar(XmlElement ch)
+		{
+			return new Tuple<char, ProjImage>(ch["type"].InnerText[0], ParseBody(ch["body"]));
+		}
+		public static ProjImage ParseBody(XmlElement body)
 		{
 			RainbowDrawer drawer = new RainbowDrawer();
 			foreach (var c in body.ChildNodes)
@@ -50,6 +54,12 @@ namespace QTRHacker.Functions.ProjectileImage.RainbowImage
 							Convert.ToSingle(proj.Attributes["radius"].InnerText, CultureInfo.InvariantCulture),
 							Convert.ToSingle(proj.Attributes["start_radian"].InnerText, CultureInfo.InvariantCulture),
 							Convert.ToSingle(proj.Attributes["end_radian"].InnerText, CultureInfo.InvariantCulture));
+						break;
+					case "arcf":
+						drawer.DrawArc(ParseMPointF(proj.Attributes["center"].InnerText),
+							Convert.ToSingle(proj.Attributes["radius"].InnerText, CultureInfo.InvariantCulture),
+							(float)Math.PI * Convert.ToSingle(proj.Attributes["start_radian_factor"].InnerText, CultureInfo.InvariantCulture),
+							(float)Math.PI * Convert.ToSingle(proj.Attributes["end_radian_factor"].InnerText, CultureInfo.InvariantCulture));
 						break;
 					default:
 						break;

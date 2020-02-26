@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateTool", "UpdateTool\Up
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QTRHacker.NewDimension", "QTRHacker.NewDimension\QTRHacker.NewDimension.csproj", "{C3CC73C7-CE6A-444D-A99B-D9B04BF5E5D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainbowFontsMaker", "RainbowFontsMaker\RainbowFontsMaker.csproj", "{921274EE-8BCF-403E-9062-8E117980A7D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,8 +116,8 @@ Global
 		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Eng|Any CPU.Build.0 = Release|Any CPU
 		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Eng|x64.ActiveCfg = Release|Any CPU
 		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Eng|x64.Build.0 = Release|Any CPU
-		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Eng|x86.ActiveCfg = Release|Any CPU
-		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Eng|x86.Build.0 = Release|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Eng|x86.ActiveCfg = ENG|Any CPU
+		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Eng|x86.Build.0 = ENG|Any CPU
 		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}.Release|x64.ActiveCfg = Release|Any CPU
@@ -176,6 +178,24 @@ Global
 		{C3CC73C7-CE6A-444D-A99B-D9B04BF5E5D8}.Release|x64.Build.0 = Release|Any CPU
 		{C3CC73C7-CE6A-444D-A99B-D9B04BF5E5D8}.Release|x86.ActiveCfg = Release|Any CPU
 		{C3CC73C7-CE6A-444D-A99B-D9B04BF5E5D8}.Release|x86.Build.0 = Release|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Debug|x64.Build.0 = Debug|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Debug|x86.Build.0 = Debug|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Eng|Any CPU.ActiveCfg = Release|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Eng|Any CPU.Build.0 = Release|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Eng|x64.ActiveCfg = Release|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Eng|x64.Build.0 = Release|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Eng|x86.ActiveCfg = ENG|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Eng|x86.Build.0 = ENG|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Release|x64.ActiveCfg = Release|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Release|x64.Build.0 = Release|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Release|x86.ActiveCfg = Release|Any CPU
+		{921274EE-8BCF-403E-9062-8E117980A7D6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
