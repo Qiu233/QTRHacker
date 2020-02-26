@@ -3,9 +3,9 @@
 	<Color foreground="Blue" name="CData" exampleText="&lt;![CDATA[data]]&gt;" />
 	<Color foreground="Blue" name="DocType" exampleText="&lt;!DOCTYPE rootElement&gt;" />
 	<Color foreground="Blue" name="XmlDeclaration" exampleText='&lt;?xml version="1.0"?&gt;' />
-	<Color foreground="DarkMagenta" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
-	<Color foreground="Red" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
-	<Color foreground="Blue" name="AttributeValue" exampleText='&lt;tag attribute="value" /&gt;' />
+	<Color foreground="#92CAF4" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
+	<Color foreground="#4EC9B0" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
+	<Color foreground="#D69D85" name="AttributeValue" exampleText='&lt;tag attribute="value" /&gt;' />
 	<Color foreground="Teal" name="Entity" exampleText="index.aspx?a=1&amp;amp;b=2" />
 	<Color foreground="Olive" name="BrokenEntity" exampleText="index.aspx?a=1&amp;b=2" />
 	
