@@ -201,10 +201,11 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 					ItemID.Location = new Point(85, 0);
 					ItemID.Size = new Size(95, 20);
-					ItemID.Text = AltSelected.ID.ToString();
+					int iD = AltSelected.ID;
+					ItemID.Text = iD.ToString();
 					ItemID.KeyPress += delegate (object sender1, KeyPressEventArgs e1)
 					{
-						if (!Char.IsNumber(e1.KeyChar) && e1.KeyChar != 8)
+						if (!char.IsNumber(e1.KeyChar) && e1.KeyChar != 8)
 						{
 							e1.Handled = true;
 						}
@@ -222,10 +223,11 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 					ItemCount.Location = new Point(85, 20);
 					ItemCount.Size = new Size(95, 20);
-					ItemCount.Text = AltSelected.Stack.ToString();
+					int stack = AltSelected.Stack;
+					ItemCount.Text = stack.ToString();
 					ItemCount.KeyPress += delegate (object sender1, KeyPressEventArgs e1)
 					{
-						if (!Char.IsNumber(e1.KeyChar) && e1.KeyChar != 8)
+						if (!char.IsNumber(e1.KeyChar) && e1.KeyChar != 8)
 						{
 							e1.Handled = true;
 						}
@@ -264,7 +266,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 						AltSelected.Stack = Convert.ToInt32(ItemCount.Text);
 						AltSelected.Prefix = GetPrefixFromIndex(prefix.SelectedIndex);
 						f.Dispose();
-						var img = GameResLoader.ItemImages.Images[AltSelected.ID.ToString()];
+						int id = AltSelected.ID;
+						var img = GameResLoader.ItemImages.Images[id.ToString()];
 						if (img != null)
 							AltSelected.Image = img;
 						SaveAltItems();

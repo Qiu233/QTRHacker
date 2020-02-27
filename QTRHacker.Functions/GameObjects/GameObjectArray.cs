@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
-	public abstract class GameObjectArray<T> : GameObject where T : GameObject
+	public class GameObjectArray<T> : GameObject where T : GameObject
 	{
 		public virtual T this[int index]
 		{
