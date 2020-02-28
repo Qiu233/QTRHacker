@@ -188,7 +188,8 @@ namespace QTRHacker.NewDimension.PagePanels
 						BackColor = Color.FromArgb(120, 120, 120),
 						Text = "",
 						Location = new Point(85, 20),
-						Size = new Size(95, 20)
+						Size = new Size(95, 20),
+						ImeMode = ImeMode.On
 					};
 					Form.MainPanel.Controls.Add(Box);
 
