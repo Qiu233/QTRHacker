@@ -21,6 +21,11 @@ namespace QTRHacker.Functions
 	/// </summary>
 	public class GameContext : IDisposable
 	{
+		private Action<FieldNotFoundException> GameContextExceptionHandler
+		{
+			get;
+			set;
+		} = e => { throw e; };
 		public bool AssembliesLoaded
 		{
 			get;
@@ -589,8 +594,9 @@ namespace QTRHacker.Functions
 						clrType = HContext.MainAddressHelper.Module.GetTypeByName((typeNameAttr[0] as GameFieldOffsetTypeNameAttribute).TypeName);
 					var field = clrType.GetFieldByName(gfofna.FieldName);
 					if (field == null)
-						throw new Exception("Field named " + gfofna.FieldName + " not found.(" + f.DeclaringType.FullName + "." + f.Name + ")");
-					f.SetValue(null, field.Offset + 4);//需要+4，原因是Offset比真实的"偏移"要少了一个指针的位置
+						GameContextExceptionHandler(new FieldNotFoundException("Field named " + gfofna.FieldName + " not found.(" + f.DeclaringType.FullName + "." + f.Name + ")"));
+					else
+						f.SetValue(null, field.Offset + 4);//需要+4，原因是Offset比真实的"偏移"要少了一个指针的位置
 				}
 			}
 		}
@@ -604,16 +610,13 @@ namespace QTRHacker.Functions
 		}
 
 
-		/// <summary>
-		/// 凡是没有标明Pointer的，获取的均为基址，而非指向该地址的指针
-		/// 基础数据类型没有基址，获得的是地址，而非基址
-		/// </summary>
-		/// <param name="pid">游戏的进程ID</param>
-		private GameContext(int pid)
+		private GameContext(int pid, Action<Exception> exHandler = null)
 		{
+			if (exHandler != null)
+				GameContextExceptionHandler = exHandler;
 			HContext = Context.Create(pid);
 
-			
+
 			InitializeOffsets();
 
 
@@ -724,10 +727,17 @@ namespace QTRHacker.Functions
 		/// </summary>
 		/// <param name="pid">游戏的进程ID</param>
 		/// <returns></returns>
+		public static GameContext OpenGame(int pid, Action<Exception> exHandler)
+		{
+			return new GameContext(pid, exHandler);
+		}
+
 		public static GameContext OpenGame(int pid)
 		{
 			return new GameContext(pid);
 		}
+
+
 		public void Close()
 		{
 			HContext?.Close();

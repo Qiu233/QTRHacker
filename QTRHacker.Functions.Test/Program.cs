@@ -23,14 +23,14 @@ namespace QTRHacker.Functions.Test
 	{
 		static void Main(string[] args)
 		{
-			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
+			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id, e => { Console.WriteLine("You're probably not playing the version 1.3.5.3"); }))
 			{
 				var myPlayer = gc.MyPlayer;
 
-				var chars = CharactersLoader.LoadCharacters(File.ReadAllText("./RainbowFonts/ASCII/Numbers.rbfont"));
+				/*var chars = CharactersLoader.LoadCharacters(File.ReadAllText("./RainbowFonts/ASCII/Numbers.rbfont"));
 				RainbowTextDrawer rtd = new RainbowTextDrawer(chars);
 				rtd.DrawString("453858025", new MPointF());
-				rtd.Emit(gc, new MPointF(myPlayer.X, myPlayer.Y));
+				rtd.Emit(gc, new MPointF(myPlayer.X, myPlayer.Y));*/
 				Console.Read();
 			}
 		}

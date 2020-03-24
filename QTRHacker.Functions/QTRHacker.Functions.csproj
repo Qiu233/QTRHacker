@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CLRFunctionCaller.cs" />
+    <Compile Include="GameObjects\FieldNotFoundException.cs" />
     <Compile Include="GameObjects\GameFieldOffsetFieldNameAttribute.cs" />
     <Compile Include="GameObjects\GameFieldOffsetTypeNameAttribute.cs" />
     <Compile Include="GameObjects\Chest.cs" />

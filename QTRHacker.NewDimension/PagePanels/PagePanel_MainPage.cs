@@ -198,13 +198,20 @@ namespace QTRHacker.NewDimension.PagePanels
 			}
 		}
 
+		private void GameContextExceptionHandler(Exception e)
+		{
+			if (e is FieldNotFoundException fnfe)
+			{
+				MessageBox.Show($"{fnfe.Message}\n你使用的可能是旧版本的TR");
+			}
+		}
+
 		private void InitGame(int pid)
 		{
-			HackContext.GameContext = GameContext.OpenGame(pid);
+			HackContext.GameContext = GameContext.OpenGame(pid, GameContextExceptionHandler);
 			HackContext.InitSign();
 			//这个是获得最终信息的，必须最后执行
 			InitializeAddresses();
-
 		}
 
 		protected override void OnMouseUp(MouseEventArgs e)

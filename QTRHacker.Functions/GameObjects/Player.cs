@@ -70,6 +70,8 @@ namespace QTRHacker.Functions.GameObjects
 		public static int OFFSET_HideVisual;
 		[GameFieldOffsetFieldName("hideMisc")]
 		public static int OFFSET_HideMisc;
+		[GameFieldOffsetFieldName("name")]
+		public static int OFFSET_Name;
 
 
 
@@ -319,7 +321,7 @@ namespace QTRHacker.Functions.GameObjects
 		{
 			get
 			{
-				ReadFromOffset(0x70, out int a);
+				ReadFromOffset(OFFSET_Name, out int a);
 				int b = 0;
 				NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 0x4, ref b, 4, 0);
 				byte[] c = new byte[b * 2];
