@@ -246,6 +246,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			AddFunction(PageBuilder, MainForm.CurrentLanguage["SuperRange"], "2045F3ED1E8276545D86390FFFA9B02E", true, Utils.SuperRange_E, Utils.SuperRange_D);
 			AddFunction(PageBuilder, MainForm.CurrentLanguage["FastTileSpeed"], "B5892B95C1D1C38DA5E8E0499E34235D", true, Utils.FastTileSpeed_E, Utils.FastTileSpeed_D);
+			AddFunction(PageBuilder, MainForm.CurrentLanguage["FastWallSpeed"], "1E133CB6C393412B9E59531FCA7A311E", true, Utils.FastWallSpeed_E, Utils.FastWallSpeed_D);
 			AddFunction(PageBuilder, MainForm.CurrentLanguage["RulerEffect"], "6FFA25DEFAFB8DD7EE02BC7179509859", true, Utils.RulerEffect_E, Utils.RulerEffect_D);
 			AddFunction(PageBuilder, MainForm.CurrentLanguage["MechanicalRulerEffect"], "B84EB7D6788F944E81654735A22DB528", true, Utils.MachinicalRulerEffect_E, Utils.MachinicalRulerEffect_D);
 			AddFunction(PageBuilder, MainForm.CurrentLanguage["MechanicalGlassesEffect"], "62DC9F0484D233B9FB54A6BF15521354", true, Utils.ShowCircuit_E, Utils.ShowCircuit_D);

@@ -355,6 +355,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <EmbeddedResource Include="Res\Text\Donators.txt" />
     <EmbeddedResource Include="Res\Image\Numbers.png" />
     <EmbeddedResource Include="Res\Text\About.txt" />
     <EmbeddedResource Include="Res\Game\Prefix_en.txt" />

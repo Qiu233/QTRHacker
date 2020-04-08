@@ -206,6 +206,7 @@ TogglePumpkinMoon	Toggle PumpkinMoon
 
 SuperRange	Super Range
 FastTileSpeed	Fast TileSpeed
+FastWallSpeed	Fast WallSpeed
 RulerEffect	Ruler Effect
 MechanicalRulerEffect	MechanicalRuler Effect
 MechanicalGlassesEffect	MechanicalGlasses Effect

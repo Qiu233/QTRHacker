@@ -10,20 +10,31 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.PagePanels
 {
-	public class PagePanel_About : PagePanel
-	{
-		public PagePanel_About(int Width, int Height) : base(Width, Height)
-		{
-			Label content = new Label();
-			content.BackColor = Color.FromArgb(20, 255, 255, 255);
-			content.ForeColor = Color.White;
-			content.Size = new Size(Width, Height);
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Text.About.txt"))
-			{
-				var ss = new StreamReader(s);
-				content.Text = ss.ReadToEnd();
-			}
-			Controls.Add(content);
-		}
-	}
+    public class PagePanel_About : PagePanel
+    {
+        public PagePanel_About(int Width, int Height) : base(Width, Height)
+        {
+            this.AutoScroll = true;
+            TextBox content = new TextBox();
+            content.BackColor = Color.FromArgb(255, 50, 50, 50);
+            content.ForeColor = Color.White;
+            content.BorderStyle = BorderStyle.None;
+            content.Multiline = true;
+            content.ScrollBars = ScrollBars.Vertical;
+            content.ReadOnly = true;
+            content.Size = new Size(Width, Height);
+            using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Text.About.txt"))
+            {
+                var ss = new StreamReader(s);
+                content.Text = ss.ReadToEnd();
+            }
+            content.Text += "\r\n\r\n";
+            using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Text.Donators.txt"))
+            {
+                var ss = new StreamReader(s);
+                content.Text += ss.ReadToEnd();
+            }
+            Controls.Add(content);
+        }
+    }
 }

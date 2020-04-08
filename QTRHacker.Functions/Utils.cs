@@ -344,22 +344,24 @@ push 0") + 2 * 5;
 
 		public static void SuperRange_E(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
+			int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "ResetEffects", 0x08AE).StartAddress;
+			/*int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"89 44 8A 08 41 3B");
-			int b = a + 0x1a;
-			int c = a + 0x24;
+				"89 44 8A 08 41 3B");*/
+			int b = a + 6;
+			int c = a + 16;
 			int v = 999;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, ref v, 4, 0);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, c, ref v, 4, 0);
 		}
 		public static void SuperRange_D(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
+			int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "ResetEffects", 0x08AE).StartAddress;
+			/*int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"89 44 8A 08 41 3B");
-			int b = a + 0x1a;
-			int c = a + 0x24;
+				"89 44 8A 08 41 3B");*/
+			int b = a + 6;
+			int c = a + 16;
 			int v1 = 5;
 			int v2 = 4;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, ref v1, 4, 0);
@@ -368,19 +370,37 @@ push 0") + 2 * 5;
 
 		public static void FastTileSpeed_E(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
-				Context.HContext.Handle,
-				"d9 98 c8 03 00 00 8b 85 30 f0 ff ff d9");
+			int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "Update", 0x2CDD).EndAddress - 6;
+			int off = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 2, ref off, 4, 0);
+			/*int a = AobscanHelper.Aobscan(
+                Context.HContext.Handle,
+                "d9 98 c8 03 00 00 8b 85 30 f0 ff ff d9");*/
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [eax+0x3c8],0x3e800000"),
+				$"mov dword ptr [eax+{off}],0x3e800000"),
 				a, false, false);
 		}
 		public static void FastTileSpeed_D(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
-				   Context.HContext.Handle,
-				   "8b 85 30 f0 ff ff d9 80 c4 03 00 00") - 6;
+			/*int a = AobscanHelper.Aobscan(
+                   Context.HContext.Handle,
+                   "8b 85 30 f0 ff ff d9 80 c4 03 00 00") - 6;*/
+			int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "Update", 0x2CDD).EndAddress - 6;
+			InlineHook.FreeHook(Context.HContext, a);
+		}
 
+		public static void FastWallSpeed_E(GameContext Context)
+		{
+			int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "Update", 0x2D07).EndAddress - 6;
+			int off = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 2, ref off, 4, 0);
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				$"mov dword ptr [eax+{off}],0x3e800000"),
+				a, false, false);
+		}
+		public static void FastWallSpeed_D(GameContext Context)
+		{
+			int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "Update", 0x2D07).EndAddress - 6;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
 

@@ -31,7 +31,7 @@ namespace QTRHacker.Functions
 			get;
 			private set;
 		}
-		public static bool OffsetsInitialized
+		public bool OffsetsInitialized
 		{
 			get;
 		}

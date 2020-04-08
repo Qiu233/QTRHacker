@@ -109,7 +109,6 @@ namespace QHackLib.FunctionHelper
 
 			NativeFunctions.WriteProcessMemory(Context.Handle, targetAddr, head, headLen, 0);
 
-			NativeFunctions.VirtualFreeEx(Context.Handle, targetAddr, 0);
 			NativeFunctions.VirtualFreeEx(Context.Handle, t, 0);
 			NativeFunctions.VirtualFreeEx(Context.Handle, y, 0);
 			NativeFunctions.VirtualFreeEx(Context.Handle, k, 0);
