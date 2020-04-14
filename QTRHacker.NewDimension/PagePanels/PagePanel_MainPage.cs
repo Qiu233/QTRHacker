@@ -219,12 +219,17 @@ namespace QTRHacker.NewDimension.PagePanels
 			base.OnMouseUp(e);
 			if (Dragging)
 			{
+				Dragging = false;
 				POINT p = new POINT();
 				GetCursorPos(out p);
 				IntPtr wnd;
 				wnd = WindowFromPoint(p.X, p.Y);
 				GetWindowThreadProcessId(wnd, out var processID);
-				Dragging = false;
+				if (processID == Process.GetCurrentProcess().Id)
+				{
+					MessageBox.Show("拖动十字！！！\n拖动啊！！！！！！！！！");
+					return;
+				}
 				Refresh();
 				//获取游戏信息的操作最后执行，避免鼠标十字滞留
 				InitGame(processID);

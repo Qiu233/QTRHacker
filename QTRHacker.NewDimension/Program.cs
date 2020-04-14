@@ -25,7 +25,9 @@ namespace QTRHacker.NewDimension
 			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainForm());
+			MainForm form = new MainForm();
+			form.StartPosition = FormStartPosition.CenterScreen;
+			Application.Run(form);
 		}
 
 		/// <summary>

@@ -54,8 +54,6 @@ namespace QHackLib
 		private static extern bool AdjustTokenPrivileges(IntPtr TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, [MarshalAs(UnmanagedType.Struct)]ref TOKEN_PRIVILEGES NewState, uint BufferLength, IntPtr PreviousState, uint ReturnLength);
 
 
-		[DllImport("QInject.dll")]
-		public static extern int Inject(int handle, int assembly, int assemblySize, [MarshalAs(UnmanagedType.LPWStr)]string typeName);
 
 		private const uint TOKEN_QUERY = 0x0008;
 		private const uint TOKEN_ADJUST_PRIVILEGES = 0x0020;
@@ -122,14 +120,6 @@ namespace QHackLib
 			get;
 		}
 
-		public static void LoadAssembly(int handle, string fileFullPath, string typeToInstantiate)
-		{
-			byte[] bs = File.ReadAllBytes(fileFullPath);
-			int assembly = NativeFunctions.VirtualAllocEx(handle, 0, bs.Length, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
-			NativeFunctions.WriteProcessMemory(handle, assembly, bs, bs.Length, 0);
-			Inject(handle, assembly, bs.Length, typeToInstantiate);
-			NativeFunctions.VirtualFreeEx(handle, assembly, 0);
-		}
 
 		private void LoadAllAddressHelpers()
 		{
