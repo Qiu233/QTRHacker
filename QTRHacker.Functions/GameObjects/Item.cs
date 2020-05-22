@@ -1031,10 +1031,10 @@ namespace QTRHacker.Functions.GameObjects
 		public void SetDefaults(int type)
 		{
 			var snippet = AssemblySnippet.FromClrCall(
-				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item", "SetDefaults"),
+				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item", f=>f.GetFullSignature()== "Terraria.Item.SetDefaults(Int32)"),
 				null,
 				true,
-				BaseAddress, type, false);
+				BaseAddress, type);
 			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), true);
 		}
 
@@ -1051,9 +1051,9 @@ namespace QTRHacker.Functions.GameObjects
 					Instruction.Create("push ecx"),
 					Instruction.Create("push edx"),
 					AssemblySnippet.FromClrCall(
-						Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item","SetDefaults"),
+						Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item",f=>f.GetFullSignature()== "Terraria.Item.SetDefaults(Int32)"),
 						null, false,
-						BaseAddress, type, false),
+						BaseAddress, type),
 					AssemblySnippet.FromClrCall(
 						Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Item","Prefix"),
 						null,false,
