@@ -66,8 +66,6 @@ namespace QTRHacker.Functions.GameObjects
 		public static int OFFSET_SkinVariant;
 		[GameFieldOffsetFieldName("hairDye")]
 		public static int OFFSET_HairDye;
-		[GameFieldOffsetFieldName("hideVisual")]
-		public static int OFFSET_HideVisual;
 		[GameFieldOffsetFieldName("hideMisc")]
 		public static int OFFSET_HideMisc;
 		[GameFieldOffsetFieldName("name")]
@@ -308,14 +306,6 @@ namespace QTRHacker.Functions.GameObjects
 			}
 		}
 
-		public ValueTypeArray<bool> HideVisual
-		{
-			get
-			{
-				ReadFromOffset(OFFSET_HideVisual, out int v);
-				return new ValueTypeArray<bool>(Context, v);
-			}
-		}
 
 		public string Name
 		{

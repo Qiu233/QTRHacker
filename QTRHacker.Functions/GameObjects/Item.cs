@@ -150,8 +150,6 @@ namespace QTRHacker.Functions.GameObjects
 		public static int OFFSET_Dye = 0x124;
 		[GameFieldOffsetFieldName("questItem")]
 		public static int OFFSET_QuestItem = 0x11E;
-		[GameFieldOffsetFieldName("thrown")]
-		public static int OFFSET_Thrown = 0x14B;
 		[GameFieldOffsetFieldName("instanced")]
 		public static int OFFSET_Instanced = 0x128;
 		[GameFieldOffsetFieldName("expertOnly")]
@@ -168,8 +166,6 @@ namespace QTRHacker.Functions.GameObjects
 		public static int OFFSET_Channel = 0x12A;
 		[GameFieldOffsetFieldName("manaIncrease")]
 		public static int OFFSET_ManaIncrease = 0xEC;
-		[GameFieldOffsetFieldName("release")]
-		public static int OFFSET_Release = 0xF4;
 		[GameFieldOffsetFieldName("alpha")]
 		public static int OFFSET_Alpha = 0xB4;
 		[GameFieldOffsetFieldName("potion")]
@@ -853,15 +849,6 @@ namespace QTRHacker.Functions.GameObjects
 			set => WriteFromOffset(OFFSET_QuestItem, value);
 		}
 
-		public bool Thrown
-		{
-			get
-			{
-				ReadFromOffset(OFFSET_Thrown, out bool v);
-				return v;
-			}
-			set => WriteFromOffset(OFFSET_Thrown, value);
-		}
 
 		public bool Instanced
 		{
@@ -1024,15 +1011,6 @@ namespace QTRHacker.Functions.GameObjects
 			set => WriteFromOffset(OFFSET_ManaIncrease, value);
 		}
 
-		public int Release
-		{
-			get
-			{
-				ReadFromOffset(OFFSET_Release, out int v);
-				return v;
-			}
-			set => WriteFromOffset(OFFSET_Release, value);
-		}
 
 		public int Alpha
 		{

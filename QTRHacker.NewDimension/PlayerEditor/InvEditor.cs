@@ -54,7 +54,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				if (GameResLoader.ItemImages.Images.ContainsKey(nowID.ToString()))
 				{
 					Image = (Image)GameResLoader.ItemImages.Images[nowID.ToString()].Clone();
-					Tip.SetToolTip(this, GameResLoader.IDToItem[nowID]);
+					//Tip.SetToolTip(this, GameResLoader.IDToItem[nowID]);
 				}
 				else
 				{

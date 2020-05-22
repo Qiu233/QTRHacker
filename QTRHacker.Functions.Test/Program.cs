@@ -23,11 +23,9 @@ namespace QTRHacker.Functions.Test
 	{
 		static void Main(string[] args)
 		{
-			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id, e => { Console.WriteLine("You're probably not playing the version 1.3.5.3"); }))
+			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				//Console.WriteLine("{0:X8}", BitConverter.ToInt32(BitConverter.GetBytes(4f), 0));
-				GetNear(gc, "Terraria.Player", "UpdateBuffs", 0x21B);
-				GetAddress(gc, "Terraria.Player", "UpdateBuffs", 0x21B);
+
 
 				Console.Read();
 			}
