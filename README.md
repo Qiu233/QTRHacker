@@ -51,7 +51,7 @@ On 2017/10/1, I published the hack for free.One day later, I founded an outter o
 In 2018/8, I decided to rewrite the hack.
 It took me more than 2 weeks, but my efforts paid off at last.TR_Hacker was written in a mixed way of C#/C++/C.The main goal of rewriting it is to unitize the programming language.Eventually I remove the part of C++ and C, leaving C#, which was in charge of both GUI and the Core.Yes, the Core and GUI was still separated while the Core is no longger written in C++ or C.
 The Core was named "QTRHacker.Functions".As planed,I first made a base library for it named "QHackLib".Then, based on QHackLib, I made QTRHacker.Functions to Terraria.
-After rewriting,the GUI was not changed at all, while the core has no common with the old one.Though, there was still one problem to solve,the CheatLibrary, which was made by myself to get CLR information from TR was still there.It was written in C++, and was still indispensable.I found no way to replace it.
+After rewriting,the GUI was not changed at all, while the core has no common with the old one.Though, there was still one problem to solve,the CheatLibrary, which was made by myself to get CLR information from TR was still there.It was written in C++, and was still essential.I found no way to replace it.
 
 Soon afterwards I found a library called clrmd.It was the one I'd been seeking for so long to replace CheatLibrary.
 It worked amazingly well, completely having taken over CheatLibrary's work.
