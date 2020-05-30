@@ -228,7 +228,7 @@ namespace QTRHacker.NewDimension.Wiki
 			b.Add(j["legSlot"].ToObject<int>() != -1);
 			b.Add(j["accessory"].ToObject<bool>());
 			b.Add(j["melee"].ToObject<bool>());
-			b.Add((j["ranged"].ToObject<bool>() || j["thrown"].ToObject<bool>()));
+			b.Add((j["ranged"].ToObject<bool>()));
 			b.Add(j["magic"].ToObject<bool>());
 			b.Add((j["summon"].ToObject<bool>() || j["sentry"].ToObject<bool>()));
 			b.Add(j["buffType"].ToObject<int>() != 0);
@@ -261,7 +261,7 @@ namespace QTRHacker.NewDimension.Wiki
 			if (j["legSlot"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Leg"];
 			if (j["accessory"].ToObject<bool>()) return MainForm.CurrentLanguage["Accessory"];
 			if (j["melee"].ToObject<bool>()) return MainForm.CurrentLanguage["Melee"];
-			if (j["ranged"].ToObject<bool>() || j["thrown"].ToObject<bool>()) return MainForm.CurrentLanguage["Ranged"];
+			if (j["ranged"].ToObject<bool>()) return MainForm.CurrentLanguage["Ranged"];
 			if (j["magic"].ToObject<bool>()) return MainForm.CurrentLanguage["Magic"];
 			if ((j["summon"].ToObject<bool>() || j["sentry"].ToObject<bool>())) return MainForm.CurrentLanguage["Summon"];
 			if (j["buffType"].ToObject<int>() != 0) return MainForm.CurrentLanguage["Buff"];

@@ -222,8 +222,8 @@ namespace QTRHacker.NewDimension.Wiki
 		{
 			Image img = GameResLoader.ItemImages.Images[index.ToString()];
 			(ItemIcon2InfoView.View as PictureBox).Image = img;
-			string desc = string.Concat(ItemsTabPage.Items[index]["ToolTip"]["_tooltipLines"].ToList().Select(t => t.ToString() + "\n"));
-			(ItemDescription2InfoView.View as TextBox).Text = desc;
+			//string desc = string.Concat(ItemsTabPage.Items[index]["ToolTip"]["_tooltipLines"].ToList().Select(t => t.ToString() + "\n"));
+			//(ItemDescription2InfoView.View as TextBox).Text = desc;
 
 
 
