@@ -328,13 +328,13 @@ namespace QTRHacker.Functions.GameObjects
 		}
 
 
-		public void AddBuff(int type, int time, bool quiet = false)
+		public void AddBuff(int type, int time, bool quiet = true, bool foodHack = false)
 		{
 			AssemblySnippet snippet = AssemblySnippet.FromClrCall(
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Player", "AddBuff"),
 				null,
 				true,
-				BaseAddress, type, time, quiet);
+				BaseAddress, type, time, quiet, foodHack);
 			InlineHook.InjectAndWait(Context.HContext, snippet, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), true);
 		}
 
