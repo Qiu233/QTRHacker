@@ -90,33 +90,27 @@ namespace QTRHacker.Functions
 
 		public static void HighLight_E(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
+			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				@"mov [ebp-0x48],edx
-fld dword ptr [esi+0x8]
-fld dword ptr [ebp-0x3c]
-fcomip st(1)
-fstp st(0)") + 3;
+				@"C7 ** ** ******** D9 07 D9 45 F0 DF F1 DD D8 7A", true);
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext,
 				AssemblySnippet.FromASMCode(
-					@"mov dword ptr [esi+0x8],0x3f800000
-mov dword ptr [esi+0x10],0x3f800000
-mov dword ptr [esi+0x18],0x3f800000
-fld dword ptr [esi+0x8]
-fld dword ptr [ebp-0x3c]"
+					@"mov dword ptr[ebp-0x10],0x3F800000
+mov dword ptr[ebp-0x14],0x3F800000
+mov dword ptr[ebp-0x18],0x3F800000"
 ),
-					a, false
+					a + 7, false
 				);
 		}
 
 		public static void HighLight_D(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(Context.HContext.Handle, "df f1 dd d8 7a 0a 73 08 d9 46 08 d9 5d c4 eb 2c d9 45 c4 dd 05") - 6;
+			int a = AobscanHelper.Aobscan(Context.HContext.Handle, "C7 ** ** ******** E9 ** ** ** ** DF F1 DD D8 7A", true);
 			if (a <= 0)
 				return;
-			InlineHook.FreeHook(Context.HContext, a);
+			InlineHook.FreeHook(Context.HContext, a + 7);
 		}
 
 		public static void GhostMode_E(GameContext Context)
@@ -388,8 +382,8 @@ push 0") + 2 * 5;
 		public static void FastTileSpeed_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
-                   Context.HContext.Handle,
-                   "8b 85 30 f0 ff ff d9 80 c4 03 00 00") - 6;
+				   Context.HContext.Handle,
+				   "8b 85 30 f0 ff ff d9 80 c4 03 00 00") - 6;
 			//int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "Update", 0x2CDD).EndAddress - 6;
 			InlineHook.FreeHook(Context.HContext, a);
 		}

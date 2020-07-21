@@ -165,7 +165,10 @@ namespace QTRHacker.NewDimension
 			AddButton(Group1, CurrentLanguage["Scripts"], img_Scripts, ScriptsPagePanel).Enabled = false;
 			AddButton(Group1, CurrentLanguage["ChatSender"], img_ChatSender, ChatSenderPanel).Enabled = false;
 			AddButton(Group1, CurrentLanguage["Miscs"], img_Misc, MiscPagePanel).Enabled = false;
+#if ENG
+#else
 			AddButton(Group1, CurrentLanguage["About"], img_About, AboutPagePanel).Enabled = true;
+#endif
 			AddButton(Group1, CurrentLanguage["MainPage"], img_MainPage, MainPagePanel).Selected = true;
 
 			//AddButton(Group2, CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;

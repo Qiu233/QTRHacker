@@ -25,7 +25,21 @@ namespace QTRHacker.Functions.Test
 		{
 			using (GameContext gc = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0].Id))
 			{
-				gc.MyPlayer.Inventory[0].SetDefaults(3063);
+				/*int f = gc.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Lighting", y => y.GetFullSignature() == "Terraria.Lighting.AddLight(Int32, Int32, Single, Single, Single)");
+				int t = gc.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate");
+				int map = gc.HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "Map");
+				for (int i = 100; i < 200; i++)
+				{
+					for (int j = 100; j < 200; j++)
+					{
+						InlineHook.InjectAndWait(gc.HContext,
+						AssemblySnippet.FromClrCall(f, null, true, i, j, 0x3F800000, 0x3F800000, 0x3F800000)
+						, t, true);
+					}
+				}*/
+				/*GetNear(gc, "Terraria.Graphics.Light.TileLightScanner", "ApplyTileLight", 0x2eb6);
+				GetAddress(gc, "Terraria.Graphics.Light.TileLightScanner", "ApplyTileLight", 0x2eb6);*/
+				Console.WriteLine("Over");
 				Console.Read();
 			}
 

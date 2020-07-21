@@ -95,7 +95,11 @@ namespace QHackLib.Utilities
 			{
 				if (c == ' ') continue;
 				else if (c == '*' || i == '?')
+				{
+					if (!matching)
+						throw new Exception("Not maching mode");
 					match.Add(i++);
+				}
 				else
 					pattern[i++] = Convert.ToByte(c.ToString(), 16);
 			}
