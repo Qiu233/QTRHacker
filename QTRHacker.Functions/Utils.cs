@@ -13,7 +13,7 @@ namespace QTRHacker.Functions
 {
 	public class Utils
 	{
-		public static void AobReplace(GameContext Context, string src, string target, int offset = 0)
+		public static void AobReplaceASM(GameContext Context, string src, string target, int offset = 0)
 		{
 			int addr = 0;
 			while ((addr = AobscanHelper.AobscanASM(Context.HContext.Handle, src)) != -1)
@@ -22,70 +22,89 @@ namespace QTRHacker.Functions
 				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, addr + offset, code, code.Length, 0);
 			}
 		}
+		public static void AobReplace(GameContext Context, string srcHex, string targetHex, int offset = 0, bool matching = false)
+		{
+			int addr = 0;
+			while ((addr = AobscanHelper.Aobscan(Context.HContext.Handle, srcHex, matching)) != -1)
+			{
+				byte[] code = AobscanHelper.GetHexCodeFromString(targetHex);
+				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, addr + offset, code, code.Length, 0);
+			}
+		}
 
 		public static void InfiniteLife_E(GameContext Context)
 		{
-			AobReplace(Context, "sub [edx+0x398],eax\ncmp dword ptr [ebp+0x8],-1", "add [edx+0x398],eax");
+			AobReplaceASM(Context, "sub [edx+0x398],eax\ncmp dword ptr [ebp+0x8],-1", "add [edx+0x398],eax");
 		}
 		public static void InfiniteLife_D(GameContext Context)
 		{
-			AobReplace(Context, "add [edx+0x398],eax\ncmp dword ptr [ebp+0x8],-1", "sub [edx+0x398],eax");
+			AobReplaceASM(Context, "add [edx+0x398],eax\ncmp dword ptr [ebp+0x8],-1", "sub [edx+0x398],eax");
 		}
 
 		public static void InfiniteMana_E(GameContext Context)
 		{
-			AobReplace(Context, "sub [esi+0x39C],edi", "add [esi+0x39C],edi");
-			AobReplace(Context, "sub [edx+0x39C],eax", "add [edx+0x39C],eax");
+			AobReplaceASM(Context, "sub [esi+0x39C],edi", "add [esi+0x39C],edi");
+			AobReplaceASM(Context, "sub [esi+0x39C],eax", "add [esi+0x39C],eax");
 		}
 		public static void InfiniteMana_D(GameContext Context)
 		{
-			AobReplace(Context, "add [esi+0x39C],edi", "sub [esi+0x39C],edi");
-			AobReplace(Context, "add [edx+0x39C],eax", "sub [edx+0x39C],eax");
+			AobReplaceASM(Context, "add [esi+0x39C],edi", "sub [esi+0x39C],edi");
+			AobReplaceASM(Context, "add [esi+0x39C],eax", "sub [esi+0x39C],eax");
 		}
 
 		public static void InfiniteOxygen_E(GameContext Context)
 		{
-			AobReplace(Context, "dec dword ptr [eax+0x2FC]\ncmp dword ptr [eax+0x2FC],0", "inc dword ptr [eax+0x2FC]");
+			AobReplaceASM(Context, "dec dword ptr [eax+0x2FC]\ncmp dword ptr [eax+0x2FC],0", "inc dword ptr [eax+0x2FC]");
 		}
 		public static void InfiniteOxygen_D(GameContext Context)
 		{
-			AobReplace(Context, "inc dword ptr [eax+0x2FC]\ncmp dword ptr [eax+0x2FC],0", "dec dword ptr [eax+0x2FC]");
+			AobReplaceASM(Context, "inc dword ptr [eax+0x2FC]\ncmp dword ptr [eax+0x2FC],0", "dec dword ptr [eax+0x2FC]");
 		}
 
 		public static void InfiniteMinion_E(GameContext Context)
 		{
-			AobReplace(Context, "mov dword ptr [esi+0x260],1\nmov dword ptr [esi+0x490],1", "mov dword ptr [esi+0x260],9999");
+			AobReplaceASM(Context, "mov dword ptr [esi+0x260],1\nmov dword ptr [esi+0x490],1", "mov dword ptr [esi+0x260],9999\nmov dword ptr [esi+0x490],9999");
 		}
 		public static void InfiniteMinion_D(GameContext Context)
 		{
-			AobReplace(Context, "mov dword ptr [esi+0x260],9999\nmov dword ptr [esi+0x490],1", "mov dword ptr [esi+0x260],1");
+			AobReplaceASM(Context, "mov dword ptr [esi+0x260],9999\nmov dword ptr [esi+0x490],9999", "mov dword ptr [esi+0x260],1\nmov dword ptr [esi+0x490],1");
 		}
 
 		public static void InfiniteItem_E(GameContext Context)
 		{
-			AobReplace(Context, "dec dword ptr [eax+0x80]\nmov eax,[ebp+0x8]", "nop\nnop\nnop\nnop\nnop\nnop");
+			AobReplaceASM(Context, "dec dword ptr [eax+0x80]\nmov eax,[ebp+0x8]", "nop\nnop\nnop\nnop\nnop\nnop");
 		}
 		public static void InfiniteItem_D(GameContext Context)
 		{
-			AobReplace(Context, "nop\nnop\nnop\nnop\nnop\nnop\nmov eax,[ebp+0x8]", "dec dword ptr [eax+0x80]");
+			AobReplaceASM(Context, "nop\nnop\nnop\nnop\nnop\nnop\nmov eax,[ebp+0x8]", "dec dword ptr [eax+0x80]");
 		}
 
 		public static void InfiniteAmmo_E(GameContext Context)
 		{
-			AobReplace(Context, "dec dword ptr [ebx+0x80]\ncmp dword ptr [ebx+0x80],0", "nop\nnop\nnop\nnop\nnop\nnop");
+			AobReplaceASM(Context, "dec dword ptr [ebx+0x80]\ncmp dword ptr [ebx+0x80],0", "nop\nnop\nnop\nnop\nnop\nnop");
 		}
 		public static void InfiniteAmmo_D(GameContext Context)
 		{
-			AobReplace(Context, "nop\nnop\nnop\nnop\nnop\nnop\ncmp dword ptr [ebx+0x80],0", "dec dword ptr [ebx+0x80]");
+			AobReplaceASM(Context, "nop\nnop\nnop\nnop\nnop\nnop\ncmp dword ptr [ebx+0x80],0", "dec dword ptr [ebx+0x80]");
 		}
 
 		public static void InfiniteFly_E(GameContext Context)
 		{
-			AobReplace(Context, "fstp dword ptr [ecx+0x220]\npop ebp\nret", "nop\nnop\nnop\nnop\nnop\nnop");
+			int addr = AobscanHelper.Aobscan(Context.HContext.Handle, "89 86 7C020000 80 BF");
+			if (addr <= 0)
+				return;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromCode(
+				new AssemblyCode[]
+				{
+					(Instruction)"mov dword ptr [esi+0x27C],100000"
+				}), addr, false, false);
 		}
 		public static void InfiniteFly_D(GameContext Context)
 		{
-			AobReplace(Context, "nop\nnop\nnop\nnop\nnop\nnop\npop ebp\nret", "fstp dword ptr [ecx+0x220]");
+			int addr = AobscanHelper.Aobscan(Context.HContext.Handle, "E9 ******** 90 80 BF", true);
+			if (addr <= 0)
+				return;
+			InlineHook.FreeHook(Context.HContext, addr);
 		}
 
 		public static void HighLight_E(GameContext Context)
@@ -139,18 +158,21 @@ mov dword ptr[ebp-0x18],0x3F800000"
 
 		public static void FastSpeed_E(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
+			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"fstp dword ptr [esi+0x3bc]\nmov [esi+0x54b],dl");
+				"D9 E8 D9 9E 0C040000 88 96 15060000");
+			if (a <= 0)
+				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x3bc],0x464b2000\nmov dword ptr [esi+0x3e4],0x464b2000"),
+				"mov dword ptr [esi+0x40C],0x41A00000"),
 				a, false, false);
 		}
 		public static void FastSpeed_D(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
+			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"mov [esi+0x54b],dl\nmov [esi+0x54d],dl") - 6;
+				"E9 ******** 90 90 90 88 96 15060000", true);
+			if (a <= 0) return;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
 
@@ -323,7 +345,7 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"81 78 6c 21 06 00 00 0f 85") + 0x13;
+				"81 F9 21060000") + 18;
 			int v = 100;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref v, 4, 0);
 		}
@@ -331,7 +353,7 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"81 78 6c 21 06 00 00 0f 85") + 0x13;
+				"81 F9 21060000") + 18;
 			int v = 4;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref v, 4, 0);
 		}
@@ -341,10 +363,12 @@ push 0") + 2 * 5;
 			//int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "ResetEffects", 0x08AE).StartAddress;
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"89 44 8A 08 41 3B");
-			int b = a + 0x1a;
-			int c = a + 0x24;
-			int v = 999;
+				"C7 05 ******** 05000000 C7 05 ******** 04000000 A1", true);
+			if (a <= 0)
+				return;
+			int b = a + 6;
+			int c = a + 16;
+			int v = 0x1000;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, ref v, 4, 0);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, c, ref v, 4, 0);
 		}
@@ -353,88 +377,58 @@ push 0") + 2 * 5;
 			//int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "ResetEffects", 0x08AE).StartAddress;
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"89 44 8A 08 41 3B");
-			int b = a + 0x1a;
-			int c = a + 0x24;
+				"C7 05 ******** 00100000 C7 05 ******** 00100000 A1", true);
+			if (a <= 0)
+				return;
+			int b = a + 6;
+			int c = a + 16;
 			int v1 = 5;
 			int v2 = 4;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, ref v1, 4, 0);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, c, ref v2, 4, 0);
 		}
 
-		public static void FastTileSpeed_E(GameContext Context)
+		public static void FastTileAndWallSpeed_E(GameContext Context)
 		{
-			/*int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "Update", 0x2CDD).EndAddress - 6;
-			int off = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 2, ref off, 4, 0);
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				$"mov dword ptr [eax+{off}],0x3e800000"),
-				a, false, false);*/
 			int a = AobscanHelper.Aobscan(
 			Context.HContext.Handle,
-			"d9 98 c8 03 00 00 8b 85 30 f0 ff ff d9");
-			int off = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 2, ref off, 4, 0);
+			"D9 E8 D9 9E 14040000 D9 E8 D9 9E 18040000 88 96");
+			if (a <= 0) return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [eax+0x3c8],0x3e800000"),
+				"mov dword ptr [esi+0x414],0x41200000"),
 				a, false, false);
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov dword ptr [esi+0x418],0x41200000"),
+				a + 8, false, false);
 		}
-		public static void FastTileSpeed_D(GameContext Context)
+		public static void FastTileAndWallSpeed_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "8b 85 30 f0 ff ff d9 80 c4 03 00 00") - 6;
-			//int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "Update", 0x2CDD).EndAddress - 6;
+				   "E9 ******** 90 90 90 E9 ******** 90 90 90 88 96", true);
+			if (a <= 0) return;
 			InlineHook.FreeHook(Context.HContext, a);
-		}
-
-		public static void FastWallSpeed_E(GameContext Context)
-		{
-			int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "Update", 0x2D07).EndAddress - 6;
-			int off = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a + 2, ref off, 4, 0);
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				$"mov dword ptr [eax+{off}],0x3e800000"),
-				a, false, false);
-		}
-		public static void FastWallSpeed_D(GameContext Context)
-		{
-			int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "Update", 0x2D07).EndAddress - 6;
-			InlineHook.FreeHook(Context.HContext, a);
+			InlineHook.FreeHook(Context.HContext, a + 8);
 		}
 
 		public static void MachinicalRulerEffect_E(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"d9 9e c0 03 00 00 88 96 f0 05 00 00") + 12;
+				"88 96 FD060000 C6 86 FE060000 01");
+			if (a <= 0)
+				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte ptr [esi+0x5f6],0x1"),
+				"mov byte ptr [esi+0x6FD],0x1"),
 				a, false, false);
 		}
 		public static void MachinicalRulerEffect_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "d9 9e c0 03 00 00 88 96 f0 05 00 00") + 12;
-			InlineHook.FreeHook(Context.HContext, a);
-		}
-
-		public static void RulerEffect_E(GameContext Context)
-		{
-			int a = AobscanHelper.Aobscan(
-				Context.HContext.Handle,
-				"88 96 F8 05 00 00 88 96 F9 05 00 00") - 6;
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte ptr [esi+0x5f7],0x1"),
-				a, false, false);
-		}
-		public static void RulerEffect_D(GameContext Context)
-		{
-			int a = AobscanHelper.Aobscan(
-				   Context.HContext.Handle,
-				   "88 96 F8 05 00 00 88 96 F9 05 00 00") - 6;
-
+				   "E9 ******** 90 C6 86 FE060000 01", true);
+			if (a <= 0)
+				return;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
 
@@ -442,16 +436,20 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"88 96 1D 06 00 00 88 96 1E 06 00 00") - 6;
+				"88 96 36070000 88 96 27070000");
+			if (a <= 0)
+				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte ptr [esi+0x62a],0x1"),
+				"mov byte ptr [esi+0x736],0x1"),
 				a, false, false);
 		}
 		public static void ShowCircuit_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "88 96 F8 05 00 00 88 96 F9 05 00 00") - 6;
+				   "E9 ******** 90 88 96 27070000", true);
+			if (a <= 0)
+				return;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
 
@@ -459,16 +457,20 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"00 00 88 96 33 05 00 00 88 96 A9 05 00 00") - 4;
+				"88 96 F3050000");
+			if (a <= 0)
+				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte ptr [esi+0x532],0x1"),
+				"mov byte ptr [esi+0x5F3],1"),
 				a, false, false);
 		}
 		public static void ShadowDodge_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "88 96 33 05 00 00 88 96 A9 05 00 00") - 6;
+				   "E9 ******** 90 88 96 F4050000", true);
+			if (a <= 0)
+				return;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
 

@@ -223,10 +223,10 @@ namespace QTRHacker.Functions.GameObjects
 		{
 			get
 			{
-				ReadFromOffset(OFFSET_FishingPole, out int v);
+				ReadFromOffset(OFFSET_Bait, out int v);
 				return v;
 			}
-			set => WriteFromOffset(OFFSET_FishingPole, value);
+			set => WriteFromOffset(OFFSET_Bait, value);
 		}
 
 		public float KnockBack

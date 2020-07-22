@@ -205,8 +205,7 @@ ToggleSnowMoon	开/关 霜月
 TogglePumpkinMoon	开/关 南瓜月
 
 SuperRange	超远距离
-FastTileSpeed	极快的方块放置速度
-FastWallSpeed	极快的墙壁放置速度
+FastTilingAndWallingSpeed	极快的方块与墙壁放置速度
 RulerEffect	标尺：显示与玩家的相对坐标
 MechanicalRulerEffect	机械尺：在屏幕上显示方块单格
 MechanicalGlassesEffect	机械眼镜：在屏幕上显示电路
