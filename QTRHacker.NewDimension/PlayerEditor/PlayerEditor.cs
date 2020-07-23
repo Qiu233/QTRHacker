@@ -19,7 +19,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 	{
 		private GameContext Context;
 		private Form ParentForm;
-		private PlayerView PlayerView;
+		private PlayerView MainPlayerView;
 		private Panel PropertiesSelectPanel;
 		private ColorSelectControl HairColorControl, SkinColorControl, EyeColorControl, ShirtColorControl, UnderShirtColorControl, PantsColorControl, ShoesColorControl;
 		private NumericUpDown HairStyleControl;
@@ -32,9 +32,9 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.TargetPlayer = TargetPlayer;
 			Text = MainForm.CurrentLanguage["Character"];
 
-			PlayerView = new PlayerView();
-			PlayerView.Bounds = new Rectangle(5, 5, 200, 250);
-			PlayerView.MouseClick += (s, e) =>
+			MainPlayerView = new PlayerView();
+			MainPlayerView.Bounds = new Rectangle(5, 5, 200, 250);
+			MainPlayerView.MouseClick += (s, e) =>
 			{
 				if (e.Button == MouseButtons.Right)
 				{
@@ -43,14 +43,14 @@ namespace QTRHacker.NewDimension.PlayerEditor
 					if (sfd.ShowDialog(this) == DialogResult.OK)
 					{
 						var stream = File.Open(sfd.FileName, FileMode.OpenOrCreate);
-						var a = PlayerView.CreateDTexture(PlayerView.GraphicsDevice);
+						var a = MainPlayerView.CreateDTexture(MainPlayerView.GraphicsDevice);
 						a.SaveAsPng(stream, a.Width, a.Height);
 						stream.Close();
 					}
 				}
 			};
 
-			PlayerView.HairType = 0;
+			MainPlayerView.HairType = 0;
 			HairColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Hair"]) { Enabled = Editable };
 			SkinColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Skin"]) { Enabled = Editable };
 			EyeColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Eye"]) { Enabled = Editable };
@@ -58,34 +58,34 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			UnderShirtColorControl = new ColorSelectControl(MainForm.CurrentLanguage["UnderShirt"]) { Enabled = Editable };
 			PantsColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Pants"]) { Enabled = Editable };
 			ShoesColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Shoes"]) { Enabled = Editable };
-			HairColorControl.OnColorChanged += (c) => PlayerView.HairColor = c;
+			HairColorControl.OnColorChanged += (c) => MainPlayerView.HairColor = c;
 			HairColorControl.Location = new Point(0, 30);
 
-			SkinColorControl.OnColorChanged += (c) => PlayerView.SkinColor = c;
+			SkinColorControl.OnColorChanged += (c) => MainPlayerView.SkinColor = c;
 			SkinColorControl.Location = new Point(0, 60);
 
-			EyeColorControl.OnColorChanged += (c) => PlayerView.EyeBlackColor = c;
+			EyeColorControl.OnColorChanged += (c) => MainPlayerView.EyeBlackColor = c;
 			EyeColorControl.Location = new Point(0, 90);
 
-			ShirtColorControl.OnColorChanged += (c) => PlayerView.ShirtColor = c;
+			ShirtColorControl.OnColorChanged += (c) => MainPlayerView.ShirtColor = c;
 			ShirtColorControl.Location = new Point(0, 120);
 
-			UnderShirtColorControl.OnColorChanged += (c) => PlayerView.UnderShirtColor = c;
+			UnderShirtColorControl.OnColorChanged += (c) => MainPlayerView.UnderShirtColor = c;
 			UnderShirtColorControl.Location = new Point(0, 150);
 
-			PantsColorControl.OnColorChanged += (c) => PlayerView.PantsColor = c;
+			PantsColorControl.OnColorChanged += (c) => MainPlayerView.PantsColor = c;
 			PantsColorControl.Location = new Point(0, 180);
 
-			ShoesColorControl.OnColorChanged += (c) => PlayerView.ShoesColor = c;
+			ShoesColorControl.OnColorChanged += (c) => MainPlayerView.ShoesColor = c;
 			ShoesColorControl.Location = new Point(0, 210);
 
 			HairStyleControl = new NumericUpDown() { Enabled = Editable };
 			HairStyleControl.BackColor = Color.FromArgb(120, 120, 120);
 			HairStyleControl.TextAlign = HorizontalAlignment.Center;
 			HairStyleControl.Bounds = new Rectangle(5, 5, 145, 29);
-			HairStyleControl.Maximum = 133;
+			HairStyleControl.Maximum = PlayerView.MaxHair - 1;
 			HairStyleControl.Minimum = 0;
-			HairStyleControl.ValueChanged += (s, e) => PlayerView.HairType = (int)HairStyleControl.Value;
+			HairStyleControl.ValueChanged += (s, e) => MainPlayerView.HairType = (int)HairStyleControl.Value;
 
 			PropertiesSelectPanel = new Panel();
 			PropertiesSelectPanel.Bounds = new Rectangle(210, 15, 330, 250);
@@ -172,7 +172,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			};
 			PropertiesSelectPanel.Controls.Add(ConfirmButton);
 
-			Controls.Add(PlayerView);
+			Controls.Add(MainPlayerView);
 			Controls.Add(PropertiesSelectPanel);
 
 			InitData();
@@ -287,7 +287,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 	public class PlayerView : GraphicsDeviceControl
 	{
-		private const int MaxHair = 133, MaxBody = 14;
+		public const int MaxHair = 162, MaxBody = 14;
 		private Texture2D[] BodyTextures, HairTextures;
 		private SpriteBatch Batch;
 		private Microsoft.Xna.Framework.Color[] Colors;

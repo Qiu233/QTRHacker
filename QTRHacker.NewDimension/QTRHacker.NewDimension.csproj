@@ -364,7 +364,6 @@
     <EmbeddedResource Include="Languages\en.txt" />
     <EmbeddedResource Include="Languages\zh-cn.txt" />
     <EmbeddedResource Include="Res\Image\TMLIcon.png" />
-    <EmbeddedResource Include="Res\Game\ItemID.txt" />
     <EmbeddedResource Include="Res\Game\BuffType.txt" />
     <EmbeddedResource Include="Res\Game\Mount_cn.txt" />
     <EmbeddedResource Include="Res\Game\Pet_cn.txt" />
