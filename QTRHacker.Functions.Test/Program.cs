@@ -39,9 +39,9 @@ namespace QTRHacker.Functions.Test
 				}*/
 				/*GetNear(gc, "Terraria.Graphics.Light.TileLightScanner", "ApplyTileLight", 0x2eb6);
 				GetAddress(gc, "Terraria.Graphics.Light.TileLightScanner", "ApplyTileLight", 0x2eb6);*/
-				GetNear(gc, "Terraria.Player", "ResetEffects", 0xFF);
-				GetAddress(gc, "Terraria.Player", "ResetEffects", 0xFF);
-				Utils.FastSpeed_D(gc);
+				GetNear(gc, "Terraria.Player", "ResetEffects", 0x16);
+				GetAddress(gc, "Terraria.Player", "ResetEffects", 0x16);
+
 				Console.WriteLine("Over");
 				Console.Read();
 			}

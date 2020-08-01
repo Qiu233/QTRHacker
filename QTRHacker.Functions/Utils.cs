@@ -143,16 +143,22 @@ mov dword ptr[ebp-0x18],0x3F800000"
 
 		public static void LowGravity_E(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
+			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"mov [esi+0x414],edx\ncmp dword ptr [esi+0x370],0");
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode("mov dword ptr [esi+0x410],0x41200000"), a, false);
+				"88 96 69070000 88 96 6A070000");
+			if (a <= 0)
+				return;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov dword ptr [esi+0x769],1"),
+				a, false, false);
 		}
 		public static void LowGravity_D(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
+			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"fldz\nfstp dword ptr [esi+0x410]") + 8;
+				"E9 ******** 90 88 96 6A070000");
+			if (a <= 0)
+				return;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
 
@@ -193,65 +199,40 @@ mov dword ptr[ebp-0x18],0x3F800000"
 
 		public static void GrabItemFarAway_E(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
-				Context.HContext.Handle,
-				"mov [ebp-0x18],eax\ncmp byte ptr [ebx+0x62e],0") + 3;
-			int b = a + 0x7;
-			int c = a + 0xf;
-			int d = a + 0x14;
-			int e = a + 0x17;
-			int y = 0;
-			int t = 1000;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, e, ref y, 4, 0);
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, y, ref t, 4, 0);
-			byte[] bs = { 0x90, 0x90 };
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, bs, bs.Length, 0);
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, c, bs, bs.Length, 0);
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, d, bs, bs.Length, 0);
-
+			int a = Context.HContext.MainAddressHelper["Terraria.Player", "GetItemGrabRange"];
+			byte d = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref d, 1, 0);
+			if (d == 0xE9) return;
+			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+			"mov eax,1000\nret"),
+			a, false, false);
 		}
 		public static void GrabItemFarAway_D(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
-				Context.HContext.Handle,
-				"mov [ebp-0x18],eax\ncmp byte ptr [ebx+0x62e],0") + 3;
-			int b = a + 0x7;
-			int c = a + 0xf;
-			int d = a + 0x14;
-			byte[] bs = { 0x74, 0x15 };
-			byte[] cs = { 0x7C, 0x0D };
-			byte[] ds = { 0x7F, 0x08 };
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, bs, bs.Length, 0);
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, c, cs, cs.Length, 0);
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, d, ds, ds.Length, 0);
+			int a = Context.HContext.MainAddressHelper["Terraria.Player", "GetItemGrabRange"];
+			byte d = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref d, 1, 0);
+			if (d == 0xE9)
+				InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void BonusTwoSlots_E(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
-				Context.HContext.Handle,
-				"mov byte ptr [esi+0x5c0],0\nmov byte ptr [esi+0x514],0\nmov byte ptr [esi+0x5aa],0") - 6;
+			int a = Context.HContext.MainAddressHelper["Terraria.Player", "IsAValidEquipmentSlotForIteration"];
+			byte d = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref d, 1, 0);
+			if (d == 0xE9) return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x140],2"),
-				a, false, false);
-			byte[] bs = { 0x90, 0x90 };
-
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a - 0x10, bs, bs.Length, 0);
+			"mov eax,1\nret"),
+			a, false, false);
 		}
 		public static void BonusTwoSlots_D(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
-				Context.HContext.Handle,
-				"mov byte ptr [esi+0x5c0],0\nmov byte ptr [esi+0x514],0\nmov byte ptr [esi+0x5aa],0") - 6;
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x140],2"),
-				a, false, false);
-
-			InlineHook.FreeHook(Context.HContext, a);
-
-			byte[] bs = { 0x74, 0x0c };
-
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a - 0x10, bs, bs.Length, 0);
+			int a = Context.HContext.MainAddressHelper["Terraria.Player", "IsAValidEquipmentSlotForIteration"];
+			byte d = 0;
+			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref d, 1, 0);
+			if (d == 0xE9)
+				InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void GoldHoleDropsBag_E(GameContext Context)
