@@ -225,6 +225,8 @@ namespace QTRHacker.NewDimension.Wiki
 			//string desc = string.Concat(ItemsTabPage.Items[index]["ToolTip"]["_tooltipLines"].ToList().Select(t => t.ToString() + "\n"));
 			//(ItemDescription2InfoView.View as TextBox).Text = desc;
 
+			string desc = ItemsTabPage.ItemDescriptions[index].ToString();
+			(ItemDescription2InfoView.View as TextBox).Text = desc;
 
 
 			(ItemPickaxeInfoView.View as TextBox).Text = ItemsTabPage.Items[index]["pick"].ToString();

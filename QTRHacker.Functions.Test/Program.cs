@@ -39,9 +39,23 @@ namespace QTRHacker.Functions.Test
 				}*/
 				/*GetNear(gc, "Terraria.Graphics.Light.TileLightScanner", "ApplyTileLight", 0x2eb6);
 				GetAddress(gc, "Terraria.Graphics.Light.TileLightScanner", "ApplyTileLight", 0x2eb6);*/
-				GetNear(gc, "Terraria.Player", "ResetEffects", 0x16);
-				GetAddress(gc, "Terraria.Player", "ResetEffects", 0x16);
-
+				/*GetNear(gc, "Terraria.Projectile", "AI", 0x20F4E);
+				GetAddress(gc, "Terraria.Projectile", "AI", 0x20F4E);
+				*/
+				AssemblySnippet asm = AssemblySnippet.FromEmpty();
+				asm.Content.Add(Instruction.Create("push ecx"));
+				asm.Content.Add(Instruction.Create("push edx"));
+				asm.Content.Add(
+					AssemblySnippet.Loop(
+						AssemblySnippet.Loop(
+							AssemblySnippet.FromClrCall(
+								gc.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting"), null, false,
+								gc.Map.BaseAddress, "[esp+4]", "[esp]", 255),
+							gc.MaxTilesY, false),
+						gc.MaxTilesX, false));
+				asm.Content.Add(Instruction.Create("pop edx"));
+				asm.Content.Add(Instruction.Create("pop ecx"));
+				Console.WriteLine(asm.GetCode());
 				Console.WriteLine("Over");
 				Console.Read();
 			}

@@ -156,7 +156,7 @@ mov dword ptr[ebp-0x18],0x3F800000"
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"E9 ******** 90 88 96 6A070000");
+				"E9 ******** 90 88 96 6A070000", true);
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);

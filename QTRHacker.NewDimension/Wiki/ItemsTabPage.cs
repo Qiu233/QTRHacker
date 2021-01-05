@@ -26,6 +26,7 @@ namespace QTRHacker.NewDimension.Wiki
 		private SearcherSubPage SearcherPage;
 		public static JArray Items, Items_cn;
 		public static JArray Recipes;
+		public static JArray ItemDescriptions;
 		private string KeyWord = "";
 		public bool Updating
 		{
@@ -45,6 +46,8 @@ namespace QTRHacker.NewDimension.Wiki
 						Items_cn = JArray.Parse(u.ReadToEnd());
 					using (var u = new StreamReader(z.GetEntry("RecipeInfo.json").Open()))
 						Recipes = JArray.Parse(u.ReadToEnd());
+					using (var u = new StreamReader(z.GetEntry("ItemDescriptions.json").Open()))
+						ItemDescriptions = JArray.Parse(u.ReadToEnd());
 				}
 			}
 			this.BackColor = Color.LightGray;

@@ -35,7 +35,7 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
-		public const int MaxItemTypes = 3930;
+		public const int MaxItemTypes = 5088;
 		public int My_Player_Address
 		{
 			get;

@@ -115,6 +115,8 @@ namespace QTRHacker.NewDimension.Wiki
 			(ItemRareInfoView.View as TextBox).Text = ItemsTabPage.Items[index]["rare"].ToString();
 			//string desc = string.Concat(ItemsTabPage.Items[index]["ToolTip"]["_tooltipLines"].ToList().Select(t => t.ToString() + "\n"));
 			//(ItemDescriptionInfoView.View as TextBox).Text = desc;
+			string desc = ItemsTabPage.ItemDescriptions[index].ToString();
+			(ItemDescriptionInfoView.View as TextBox).Text = desc;
 			(ItemRecipeFromInfoView.View as TabControl).TabPages.Clear();
 			var pRe = ItemsTabPage.Recipes.Where(t => t["item"]["type"].ToObject<int>() == ItemsTabPage.Items[index]["type"].ToObject<int>());
 			if (pRe.Count() > 0)

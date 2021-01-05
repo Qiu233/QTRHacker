@@ -61,16 +61,16 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			AddFunction(Page2, MainForm.CurrentLanguage["SlowFall"], "84E55372621C1D6FD4389456C0D64C33", true, Utils.LowGravity_E, Utils.LowGravity_D);
 			AddFunction(Page2, MainForm.CurrentLanguage["FastSpeed"], "5B9B9517D95F6F86CCE0D6F0CF16EDAA", true, Utils.FastSpeed_E, Utils.FastSpeed_D);
-			AddFunction(Page2, MainForm.CurrentLanguage["ProjectileIgnoreTiles"], "9E594D35FA0657AFA83604C40FF88C76", true, Utils.ProjectileIgnoreTile_E, Utils.ProjectileIgnoreTile_D);
+			//AddFunction(Page2, MainForm.CurrentLanguage["ProjectileIgnoreTiles"], "9E594D35FA0657AFA83604C40FF88C76", true, Utils.ProjectileIgnoreTile_E, Utils.ProjectileIgnoreTile_D);
 			AddFunction(Page2, MainForm.CurrentLanguage["GrabFarAway"], "BDBFD8A007CA446B01FC3D5DA7BA8560", true, Utils.GrabItemFarAway_E, Utils.GrabItemFarAway_D);
 			AddFunction(Page2, MainForm.CurrentLanguage["BonusTwoSlots"], "265E7EE043E026964283772D666DD914", true, Utils.BonusTwoSlots_E, Utils.BonusTwoSlots_D);
 			AddFunction(Page2, MainForm.CurrentLanguage["GoldHoleDropBags"], "4FB4064F1FEB6E155313756DCBB82203", true, Utils.GoldHoleDropsBag_E, Utils.GoldHoleDropsBag_D);
-			AddFunction(Page2, MainForm.CurrentLanguage["SlimeGunBurnNPCS"], "23280EF2B335403BEF698C2F6AB9CB8A", true, Utils.SlimeGunBurn_E, Utils.SlimeGunBurn_D);
-			AddFunction(Page2, MainForm.CurrentLanguage["FishOnlyCrates"], "77D322DE31DDE8C328C44A8A7E63AD04", true, Utils.FishOnlyCrates_E, Utils.FishOnlyCrates_D);
+			//AddFunction(Page2, MainForm.CurrentLanguage["SlimeGunBurnNPCS"], "23280EF2B335403BEF698C2F6AB9CB8A", true, Utils.SlimeGunBurn_E, Utils.SlimeGunBurn_D);
+			//AddFunction(Page2, MainForm.CurrentLanguage["FishOnlyCrates"], "77D322DE31DDE8C328C44A8A7E63AD04", true, Utils.FishOnlyCrates_E, Utils.FishOnlyCrates_D);
 			AddFunction(Page2, MainForm.CurrentLanguage["EnableAllRecipes"], "DA840529BCE9704EF4F1BA5CB6C6ECD4", true, Utils.EnableAllRecipes_E, Utils.EnableAllRecipes_D);
 			AddFunction(Page2, MainForm.CurrentLanguage["StengthenedVampireKnives"], "418C48524EA50ECC6717C5D629AF7B32", true, Utils.StrengthenVampireKnives_E, Utils.StrengthenVampireKnives_D);
-			AddFunction(Page2, MainForm.CurrentLanguage["SwingIgnoringTiles"], "4B246B44592B441C9DC23E9EBC077A98", true, Utils.SwingIgnoringTils_E, Utils.SwingIgnoringTils_D);
-			AddFunction(Page2, MainForm.CurrentLanguage["SwingingAttacksAll"], "1D2F13AE9E084743898A11EE64D744D2", true, Utils.SwingingAttacksAll_E, Utils.SwingingAttacksAll_D);
+			//AddFunction(Page2, MainForm.CurrentLanguage["SwingIgnoringTiles"], "4B246B44592B441C9DC23E9EBC077A98", true, Utils.SwingIgnoringTils_E, Utils.SwingIgnoringTils_D);
+			//AddFunction(Page2, MainForm.CurrentLanguage["SwingingAttacksAll"], "1D2F13AE9E084743898A11EE64D744D2", true, Utils.SwingingAttacksAll_E, Utils.SwingingAttacksAll_D);
 
 			AddFunction(Page3, MainForm.CurrentLanguage["BurnAllNPCS"], "9A3F870D0DDB5B46F6E1B1266D6882AD", false,
 				g =>
