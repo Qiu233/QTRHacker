@@ -53,7 +53,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			AddFunction(Page1, MainForm.CurrentLanguage["InfOxygen"], "37EF93BAB687481F87D4D0F95941C781", true, Utils.InfiniteOxygen_E, Utils.InfiniteOxygen_D);
 			AddFunction(Page1, MainForm.CurrentLanguage["InfMinion"], "D1808E759CBC533C332968E2603376AD", true, Utils.InfiniteMinion_E, Utils.InfiniteMinion_D);
 			AddFunction(Page1, MainForm.CurrentLanguage["InfMana"], "E8A50F6CC601D8B3977E8E9D4677F6DD", true, Utils.InfiniteMana_E, Utils.InfiniteMana_D);
-			AddFunction(Page1, MainForm.CurrentLanguage["InfItemAmmo"], "830D900B05074CD0A8DADD1D2EB5F6BC", true, Utils.InfiniteAmmo_E, Utils.InfiniteAmmo_D);
+			AddFunction(Page1, MainForm.CurrentLanguage["InfItemAmmo"], "830D900B05074CD0A8DADD1D2EB5F6BC", true, Utils.InfiniteItemAmmo_E, Utils.InfiniteItemAmmo_D);
 			AddFunction(Page1, MainForm.CurrentLanguage["InfFly"], "8669ADD79BBDD647B240409BE2094DDB", true, Utils.InfiniteFly_E, Utils.InfiniteFly_D);
 			AddFunction(Page1, MainForm.CurrentLanguage["ImmuneDebuff"], "A339FE530BB6693DCA0ABC020138A880", true, Utils.ImmuneDebuffs_E, Utils.ImmuneDebuffs_D);
 			AddFunction(Page1, MainForm.CurrentLanguage["HighLight"], "800DE5238B9475F09B2D49BAD8CF56D6", true, Utils.HighLight_E, Utils.HighLight_D);

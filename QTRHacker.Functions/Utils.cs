@@ -34,69 +34,66 @@ namespace QTRHacker.Functions
 
 		public static void InfiniteLife_E(GameContext Context)
 		{
-			AobReplaceASM(Context, "sub [edx+0x398],eax\ncmp dword ptr [ebp+0x8],-1", "add [edx+0x398],eax");
+			AobReplaceASM(Context, "sub [edx+0x3B4],eax\ncmp dword ptr [ebp+0x8],-1", "add [edx+0x3B4],eax");
 		}
 		public static void InfiniteLife_D(GameContext Context)
 		{
-			AobReplaceASM(Context, "add [edx+0x398],eax\ncmp dword ptr [ebp+0x8],-1", "sub [edx+0x398],eax");
+			AobReplaceASM(Context, "add [edx+0x3B4],eax\ncmp dword ptr [ebp+0x8],-1", "sub [edx+0x3B4],eax");
 		}
 
 		public static void InfiniteMana_E(GameContext Context)
 		{
-			AobReplaceASM(Context, "sub [esi+0x39C],edi", "add [esi+0x39C],edi");
-			AobReplaceASM(Context, "sub [esi+0x39C],eax", "add [esi+0x39C],eax");
+			AobReplaceASM(Context, "sub [esi+0x3B8],edi", "add [esi+0x3B8],edi");
+			AobReplaceASM(Context, "sub [esi+0x3B8],eax", "add [esi+0x3B8],eax");
 		}
 		public static void InfiniteMana_D(GameContext Context)
 		{
-			AobReplaceASM(Context, "add [esi+0x39C],edi", "sub [esi+0x39C],edi");
-			AobReplaceASM(Context, "add [esi+0x39C],eax", "sub [esi+0x39C],eax");
+			AobReplaceASM(Context, "add [esi+0x3B8],edi", "sub [esi+0x3B8],edi");
+			AobReplaceASM(Context, "add [esi+0x3B8],eax", "sub [esi+0x3B8],eax");
 		}
 
 		public static void InfiniteOxygen_E(GameContext Context)
 		{
-			AobReplaceASM(Context, "dec dword ptr [eax+0x2FC]\ncmp dword ptr [eax+0x2FC],0", "inc dword ptr [eax+0x2FC]");
+			AobReplaceASM(Context, "dec dword ptr [eax+0x318]\ncmp dword ptr [eax+0x318],0", "inc dword ptr [eax+0x318]");
 		}
 		public static void InfiniteOxygen_D(GameContext Context)
 		{
-			AobReplaceASM(Context, "inc dword ptr [eax+0x2FC]\ncmp dword ptr [eax+0x2FC],0", "dec dword ptr [eax+0x2FC]");
+			AobReplaceASM(Context, "inc dword ptr [eax+0x318]\ncmp dword ptr [eax+0x318],0", "dec dword ptr [eax+0x318]");
 		}
 
 		public static void InfiniteMinion_E(GameContext Context)
 		{
-			AobReplaceASM(Context, "mov dword ptr [esi+0x260],1\nmov dword ptr [esi+0x490],1", "mov dword ptr [esi+0x260],9999\nmov dword ptr [esi+0x490],9999");
+			AobReplaceASM(Context, "mov dword ptr [esi+0x270],1\nmov dword ptr [esi+0x4B4],1", "mov dword ptr [esi+0x270],9999\nmov dword ptr [esi+0x4B4],9999");
 		}
 		public static void InfiniteMinion_D(GameContext Context)
 		{
-			AobReplaceASM(Context, "mov dword ptr [esi+0x260],9999\nmov dword ptr [esi+0x490],9999", "mov dword ptr [esi+0x260],1\nmov dword ptr [esi+0x490],1");
+			AobReplaceASM(Context, "mov dword ptr [esi+0x270],9999\nmov dword ptr [esi+0x4B4],9999", "mov dword ptr [esi+0x270],1\nmov dword ptr [esi+0x4B4],1");
 		}
 
-		public static void InfiniteItem_E(GameContext Context)
+		public static void InfiniteItemAmmo_E(GameContext Context)
 		{
-			AobReplaceASM(Context, "dec dword ptr [eax+0x80]\nmov eax,[ebp+0x8]", "nop\nnop\nnop\nnop\nnop\nnop");
+			//AobReplaceASM(Context, "dec dword ptr [eax+0xA8]\nmov eax,[ebp-0x20]", "nop\nnop\nnop\nnop\nnop\nnop");
+			//AobReplaceASM(Context, "dec dword ptr [ecx+0xA8]\nmov eax,[ebp+0xC]", "nop\nnop\nnop\nnop\nnop\nnop");
+			AobReplace(Context, "FF 88 A8 00 00 00 8B 45 E0 83 B8", "90 90 90 90 90 90");//dec dword ptr [eax+0xA8]\nmov eax,[ebp-0x20]\ncmp
+			AobReplace(Context, "FF 89 A8 00 00 00 8B 45 0C 8B 55 F4", "90 90 90 90 90 90");//dec dword ptr [ecx+0xA8]\nmov eax,[ebp+0xC]\nmov edx[ebp-0xC]
 		}
-		public static void InfiniteItem_D(GameContext Context)
+		public static void InfiniteItemAmmo_D(GameContext Context)
 		{
-			AobReplaceASM(Context, "nop\nnop\nnop\nnop\nnop\nnop\nmov eax,[ebp+0x8]", "dec dword ptr [eax+0x80]");
-		}
-
-		public static void InfiniteAmmo_E(GameContext Context)
-		{
-			AobReplaceASM(Context, "dec dword ptr [ebx+0x80]\ncmp dword ptr [ebx+0x80],0", "nop\nnop\nnop\nnop\nnop\nnop");
-		}
-		public static void InfiniteAmmo_D(GameContext Context)
-		{
-			AobReplaceASM(Context, "nop\nnop\nnop\nnop\nnop\nnop\ncmp dword ptr [ebx+0x80],0", "dec dword ptr [ebx+0x80]");
+			//AobReplaceASM(Context, "nop\nnop\nnop\nnop\nnop\nnop\nmov eax,[ebp-0x20]", "dec dword ptr [eax+0xA8]");
+			//AobReplaceASM(Context, "nop\nnop\nnop\nnop\nnop\nnop\nmov eax,[ebp+0xC]", "dec dword ptr [ecx+0xA8]");
+			AobReplace(Context, "90 90 90 90 90 90 8B 45 E0 83 B8", "FF 88 A8 00 00 00");
+			AobReplace(Context, "90 90 90 90 90 90 8B 45 0C 8B 55 F4", "FF 89 A8 00 00 00");
 		}
 
 		public static void InfiniteFly_E(GameContext Context)
 		{
-			int addr = AobscanHelper.Aobscan(Context.HContext.Handle, "89 86 7C020000 80 BF");
+			int addr = AobscanHelper.Aobscan(Context.HContext.Handle, "89 86 90020000 80 BF");
 			if (addr <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromCode(
 				new AssemblyCode[]
 				{
-					(Instruction)"mov dword ptr [esi+0x27C],100000"
+					(Instruction)"mov dword ptr [esi+0x290],100000"
 				}), addr, false, false);
 		}
 		public static void InfiniteFly_D(GameContext Context)

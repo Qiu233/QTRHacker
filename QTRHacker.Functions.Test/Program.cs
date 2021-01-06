@@ -3,6 +3,7 @@ using Microsoft.Diagnostics.Runtime;
 using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
+using QHackLib.Utilities;
 using QTRHacker.Functions.GameObjects;
 using QTRHacker.Functions.ProjectileImage;
 using QTRHacker.Functions.ProjectileImage.RainbowImage;
@@ -42,7 +43,7 @@ namespace QTRHacker.Functions.Test
 				/*GetNear(gc, "Terraria.Projectile", "AI", 0x20F4E);
 				GetAddress(gc, "Terraria.Projectile", "AI", 0x20F4E);
 				*/
-				AssemblySnippet asm = AssemblySnippet.FromEmpty();
+				/*AssemblySnippet asm = AssemblySnippet.FromEmpty();
 				asm.Content.Add(Instruction.Create("push ecx"));
 				asm.Content.Add(Instruction.Create("push edx"));
 				asm.Content.Add(
@@ -57,7 +58,11 @@ namespace QTRHacker.Functions.Test
 				asm.Content.Add(Instruction.Create("pop ecx"));
 				Console.WriteLine(asm.GetCode());
 				Console.WriteLine("Over");
-				Console.Read();
+				Console.Read();*/
+				Console.WriteLine((gc.MyPlayer.BaseAddress + gc.HContext.MainAddressHelper.GetFieldOffset("Terraria.Player", "wingTimeMax")).ToString("X8"));
+				Console.WriteLine(gc.HContext.MainAddressHelper.GetFieldOffset("Terraria.Item", "stack").ToString("X8"));
+				Console.WriteLine(AobscanHelper.AobscanASM(gc.HContext.Handle, "dec dword ptr [ecx+0xA8]\nmov eax,[ebp+0xC]").ToString("X8"));
+				Console.WriteLine(AobscanHelper.AobscanASM(gc.HContext.Handle, "dec dword ptr [eax+0xA8]\nmov eax,[ebp-0x20]").ToString("X8"));
 			}
 
 		}
