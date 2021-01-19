@@ -30,7 +30,7 @@ namespace QTRHacker.NewDimension.Languages
 				GetManifestResourceStream("QTRHacker.NewDimension.Languages." + tName.ToLower() + ".txt");
 			byte[] b = new byte[s.Length];
 			s.Read(b, 0, (int)s.Length);
-			string[] str = Encoding.UTF8.GetString(b).Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+			string[] str = Encoding.UTF8.GetString(b).Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
 			Processor n = new Processor();
 			foreach (var tt in str)
