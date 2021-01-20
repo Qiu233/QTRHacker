@@ -46,6 +46,10 @@ namespace QTRHacker.NewDimension.Res
 				}
 				ItemImages.ColorDepth = ColorDepth.Depth32Bit;
 				ItemImages.ImageSize = new Size(20, 20);
+				{
+					Image img = ItemImages.Images[0].Clone() as Image;
+					img.Dispose();
+				}
 			}
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(File_Prefix))
 			{

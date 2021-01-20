@@ -46,6 +46,8 @@ namespace QTRHacker.Functions.GameObjects
 		public static int OFFSET_Bank2 = 0xC8;
 		[GameFieldOffsetFieldName("bank3")]
 		public static int OFFSET_Bank3 = 0xCC;
+		[GameFieldOffsetFieldName("bank4")]
+		public static int OFFSET_Bank4;
 		[GameFieldOffsetFieldName("hair")]
 		public static int OFFSET_Hair = 0x3F4;
 		[GameFieldOffsetFieldName("hairColor")]
@@ -106,6 +108,14 @@ namespace QTRHacker.Functions.GameObjects
 			get
 			{
 				ReadFromOffset(OFFSET_Bank3, out int v);
+				return new Chest(Context, v);
+			}
+		}
+		public Chest Bank4
+		{
+			get
+			{
+				ReadFromOffset(OFFSET_Bank4, out int v);
 				return new Chest(Context, v);
 			}
 		}

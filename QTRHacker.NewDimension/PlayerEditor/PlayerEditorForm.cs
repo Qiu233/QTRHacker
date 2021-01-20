@@ -46,6 +46,10 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			Tabs.Controls.Add(new PlayerEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
 			Tabs.Controls.Add(new InvEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
 			Tabs.Controls.Add(new ArmorEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
+			Tabs.Controls.Add(new PiggyBankEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
+			Tabs.Controls.Add(new SafeEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
+			Tabs.Controls.Add(new VoidVaultEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
+			Tabs.Controls.Add(new ForgeEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
 			this.Controls.Add(Tabs);
 		}
 		protected override void OnMouseDown(MouseEventArgs e)

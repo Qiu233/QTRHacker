@@ -39,15 +39,18 @@ namespace QTRHacker.NewDimension.Wiki
 			{
 				using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.WikiRes.zip"))
 				{
-					ZipArchive z = new ZipArchive(s);
-					using (var u = new StreamReader(z.GetEntry("ItemInfo.json").Open()))
-						Items = JArray.Parse(u.ReadToEnd());
-					using (var u = new StreamReader(z.GetEntry("ItemName_cn.json").Open()))
-						Items_cn = JArray.Parse(u.ReadToEnd());
-					using (var u = new StreamReader(z.GetEntry("RecipeInfo.json").Open()))
-						Recipes = JArray.Parse(u.ReadToEnd());
-					using (var u = new StreamReader(z.GetEntry("ItemDescriptions.json").Open()))
-						ItemDescriptions = JArray.Parse(u.ReadToEnd());
+					using (ZipArchive z = new ZipArchive(s))
+					{
+						using (var u = new StreamReader(z.GetEntry("ItemInfo.json").Open()))
+							Items = JArray.Parse(u.ReadToEnd());
+						using (var u = new StreamReader(z.GetEntry("ItemName_cn.json").Open()))
+							Items_cn = JArray.Parse(u.ReadToEnd());
+						using (var u = new StreamReader(z.GetEntry("RecipeInfo.json").Open()))
+							Recipes = JArray.Parse(u.ReadToEnd());
+						using (var u = new StreamReader(z.GetEntry("ItemDescriptions.json").Open()))
+							ItemDescriptions = JArray.Parse(u.ReadToEnd());
+					}
+					GC.Collect();
 				}
 			}
 			this.BackColor = Color.LightGray;

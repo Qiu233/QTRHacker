@@ -242,10 +242,22 @@
     <Compile Include="PlayerEditor\ArmorEditor.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="PlayerEditor\Controls\ItemIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\ForgeEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PlayerEditor\InvEditor.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PlayerEditor\ItemPropertiesPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\ItemSlotsEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\PiggyBankEditor.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PlayerEditor\PlayerEditor.cs">
@@ -256,6 +268,15 @@
     </Compile>
     <Compile Include="PlayerEditor\PlayerEditorForm.designer.cs">
       <DependentUpon>PlayerEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlayerEditor\Controls\SlotsPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\SafeEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PlayerEditor\VoidVaultEditor.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

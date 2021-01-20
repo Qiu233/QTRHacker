@@ -39,6 +39,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 		public ItemPropertiesPanel()
 		{
+			this.Size = new Size(350, 360);
+
 			Hack = new Hashtable();
 			AddTextBox(MainForm.CurrentLanguage["Type"], "Type", null);
 			AddTextBox(MainForm.CurrentLanguage["Damage"], "Damage", null);

@@ -247,3 +247,8 @@ ClickToItem	单击物品跳转
 RainbowTexting	使用彩虹绘制文字
 Text	文字
 ReloadFonts	重新加载Fonts
+
+PiggyBank	猪猪
+Safe	保险柜
+VoidVault	虚空保险柜
+Forge	熔炉

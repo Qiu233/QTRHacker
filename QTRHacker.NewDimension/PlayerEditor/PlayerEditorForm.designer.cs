@@ -37,7 +37,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.ClientSize = new Size(1005, 340);
+			this.ClientSize = new Size(915, 340);
 			this.ControlBox = false;
 			this.FormBorderStyle = FormBorderStyle.None;
 		}

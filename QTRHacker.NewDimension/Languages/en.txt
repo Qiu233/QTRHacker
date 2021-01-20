@@ -247,3 +247,8 @@ ClickToItem	Click jump to items
 RainbowTexting	Text with rainbow
 Text	Text
 ReloadFonts	Reload the fonts
+
+PiggyBank	Piggy Bank
+Safe	Safe
+VoidVault	Void Vault
+Forge	Forge

@@ -1,5 +1,6 @@
 ﻿using QTRHacker.Functions;
 using QTRHacker.Functions.GameObjects;
+using QTRHacker.NewDimension.PlayerEditor.Controls;
 using QTRHacker.NewDimension.Res;
 using System;
 using System.Collections;
@@ -15,10 +16,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 {
 	public class ArmorEditor : TabPage
 	{
-		private Panel AltPanel;
 		private ItemPropertiesPanel ItemPropertiesPanel;
 		private ItemIcon[] ArmorSlots;
-		private AltItemIcon[] AltSlots;
 		private const int AltPanelWidth = 90, AltPanelHeight = 270, AltGap = 3, AltWidth = 30 - AltGap, HackPanelHeight = 360;
 		private const int SlotsWidth = 50;
 		private const int SlotsGap = 5;
@@ -42,7 +41,6 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			Text = MainForm.CurrentLanguage["Armor"];
 			ItemPropertiesPanel = new ItemPropertiesPanel() { Enabled = Editable };
 			ArmorSlots = new ItemIcon[Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT];
-			AltSlots = new AltItemIcon[AltPanelWidth * AltPanelHeight];
 
 			SlotsPanel = new Panel();
 
@@ -141,31 +139,9 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 
 
-			AltPanel = new Panel()
-			{
-				Location = new Point(560, 5),
-				Size = new Size(AltPanelWidth, AltPanelHeight)
-			};
-			Controls.Add(AltPanel);
-			for (int i = 0; i < AltPanelHeight / AltWidth; i++)
-			{
-				for (int j = 0; j < AltPanelWidth / AltWidth; j++)
-				{
-					int n = i * AltPanelWidth / AltWidth + j;
-					AltSlots[n] = new AltItemIcon()
-					{
-						Size = new Size(AltWidth - AltGap, AltWidth - AltGap),
-						Location = new Point(j * (AltWidth + AltGap), i * (AltWidth + AltGap) + 2),
-						SizeMode = PictureBoxSizeMode.CenterImage,
-						Enabled = false
-					};
-					AltSlots[n].BackColor = Color.FromArgb(90, 90, 90);
-					AltPanel.Controls.Add(AltSlots[n]);
-				}
-			}
+			
 
-			ItemPropertiesPanel.Location = new Point(10 * (SlotsWidth + SlotsGap) + 105, 5);
-			ItemPropertiesPanel.Size = new Size(350, HackPanelHeight);
+			ItemPropertiesPanel.Location = new Point(10 * (SlotsWidth + SlotsGap) + 15, 10);
 			this.Controls.Add(ItemPropertiesPanel);
 
 
