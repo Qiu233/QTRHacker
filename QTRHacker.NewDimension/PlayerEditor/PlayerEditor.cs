@@ -427,7 +427,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			BodyTextures = new Texture2D[MaxBody];
 			HairTextures = new Texture2D[MaxHair + 1];
 
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.PlayerModelsRaw.bin"))
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.ContentImage.PlayerModelsRaw.bin"))
 			{
 				var PlayerModels = ResBinFileReader.ReadFromStream(s);
 				for (int i = 0; i < BodyTextures.Length; i++)

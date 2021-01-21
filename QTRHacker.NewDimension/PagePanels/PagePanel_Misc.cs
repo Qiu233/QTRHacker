@@ -25,7 +25,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				img_Wiki = Image.FromStream(st);
 			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.player.png"))
 				img_Player = Image.FromStream(st);
-			AddButton(img_Wiki, MainForm.CurrentLanguage["ItemWiki"], () => { new WikiForm().Show(); });
+			AddButton(img_Wiki, "Wiki", () => { new WikiForm().Show(); });
 			AddButton(img_Player, MainForm.CurrentLanguage["SummonNPC"], () =>
 			{
 				MForm SummonNPCMForm = new MForm

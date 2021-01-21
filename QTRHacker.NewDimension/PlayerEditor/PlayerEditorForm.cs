@@ -40,16 +40,16 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.Controls.Add(CloseButton);
 
 			Tabs = new MTabControl();
-			Tabs.bColor = Color.FromArgb(70, 70, 70);
-			Tabs.tColor = Color.FromArgb(90, 90, 90);
+			Tabs.BColor = Color.FromArgb(70, 70, 70);
+			Tabs.TColor = Color.FromArgb(90, 90, 90);
 			Tabs.Bounds = new Rectangle(0, 31, 1005, 360);
-			Tabs.Controls.Add(new PlayerEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
-			Tabs.Controls.Add(new InvEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
-			Tabs.Controls.Add(new ArmorEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
-			Tabs.Controls.Add(new PiggyBankEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
-			Tabs.Controls.Add(new SafeEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
-			Tabs.Controls.Add(new VoidVaultEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
-			Tabs.Controls.Add(new ForgeEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.bColor });
+			Tabs.Controls.Add(new PlayerEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new InvEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new ArmorEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new PiggyBankEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new SafeEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new VoidVaultEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new ForgeEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
 			this.Controls.Add(Tabs);
 		}
 		protected override void OnMouseDown(MouseEventArgs e)

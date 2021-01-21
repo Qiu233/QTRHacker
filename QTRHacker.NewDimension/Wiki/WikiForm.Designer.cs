@@ -1,4 +1,8 @@
-﻿namespace QTRHacker.NewDimension.Wiki
+﻿using QTRHacker.NewDimension.Res;
+using System.Drawing;
+using System.IO;
+
+namespace QTRHacker.NewDimension.Wiki
 {
 	partial class WikiForm
 	{
@@ -34,6 +38,8 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.ClientSize = new System.Drawing.Size(740, 480);
 			this.Text = "Wiki";
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_3628"]))
+				this.Icon = MainForm.ConvertToIcon(Image.FromStream(st));
 		}
 
 		#endregion

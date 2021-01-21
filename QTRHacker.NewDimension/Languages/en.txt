@@ -252,3 +252,8 @@ PiggyBank	Piggy Bank
 Safe	Safe
 VoidVault	Void Vault
 Forge	Forge
+
+NPCInfo	NPC Info
+AIStyle	AI
+TownNPC	Town NPC
+Friendly	Friendly

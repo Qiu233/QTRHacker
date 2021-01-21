@@ -572,7 +572,7 @@ namespace QTRHacker.Functions
 				return;
 			foreach (var t in Assembly.GetExecutingAssembly().DefinedTypes)
 			{
-				if (!t.Namespace.StartsWith("QTRHacker.Functions.GameObjects"))
+				if (t.Namespace == null || !t.Namespace.StartsWith("QTRHacker.Functions.GameObjects"))
 					continue;
 				var typeNameAttr = t.GetCustomAttributes(typeof(GameFieldOffsetTypeNameAttribute), false);
 				foreach (var f in t.GetFields(BindingFlags.Static | BindingFlags.Public))

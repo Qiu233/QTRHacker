@@ -10,8 +10,14 @@ namespace QTRHacker.NewDimension.Controls
 {
 	public class MTabControl : TabControl
 	{
-		public Color bColor = Color.FromArgb(200, 200, 200);
-		public Color tColor = Color.FromArgb(160, 160, 200);
+		public Color BColor
+		{
+			get; set;
+		}
+		public Color TColor
+		{
+			get; set;
+		}
 		public override Color ForeColor
 		{
 			get => base.ForeColor;
@@ -19,6 +25,8 @@ namespace QTRHacker.NewDimension.Controls
 		}
 		public MTabControl()
 		{
+			BColor = Color.FromArgb(200, 200, 200);
+			TColor = Color.FromArgb(150, 150, 150);
 			SetStyle(ControlStyles.UserPaint |
 				ControlStyles.OptimizedDoubleBuffer |
 				ControlStyles.AllPaintingInWmPaint |
@@ -29,8 +37,8 @@ namespace QTRHacker.NewDimension.Controls
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			Brush bBrush = new SolidBrush(bColor);
-			Brush tBrush = new SolidBrush(tColor);
+			Brush bBrush = new SolidBrush(BColor);
+			Brush tBrush = new SolidBrush(TColor);
 			if (TabCount > 0)
 			{
 				e.Graphics.FillRectangle(bBrush, new RectangleF(0, 0, Width, Height));
@@ -46,7 +54,7 @@ namespace QTRHacker.NewDimension.Controls
 					using (Brush b = new SolidBrush(ForeColor))
 						e.Graphics.DrawString(TabPages[i].Text, Font, b, textPoint);
 				}
-				e.Graphics.DrawLine(new Pen(tColor, 3), new Point(0, 23), new Point(Width, 23));
+				e.Graphics.DrawLine(new Pen(TColor, 3), new Point(0, 23), new Point(Width, 23));
 			}
 			else
 			{

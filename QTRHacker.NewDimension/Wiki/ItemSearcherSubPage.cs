@@ -8,14 +8,14 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.Wiki
 {
-	public class SearcherSubPage : TabPage
+	public class ItemSearcherSubPage : TabPage
 	{
 		public CheckBox BlockCheckBox, WallCheckBox, HeadCheckBox, BodyCheckBox, LegCheckBox, AccessoryCheckBox, MeleeCheckBox, RangedCheckBox, MagicCheckBox, SummonCheckBox, BuffCheckBox, ConsumableCheckBox, OthersCheckBox;
 
 		public TextBox KeyWordTextBox;
 		public Button SearchButton,ResetButton;
 
-		public SearcherSubPage() : base(MainForm.CurrentLanguage["Search"])
+		public ItemSearcherSubPage() : base(MainForm.CurrentLanguage["Search"])
 		{
 			GroupBox filterGroupBox = new GroupBox();
 			filterGroupBox.Text = MainForm.CurrentLanguage["Filter"];

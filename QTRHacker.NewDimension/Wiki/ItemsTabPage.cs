@@ -18,12 +18,12 @@ namespace QTRHacker.NewDimension.Wiki
 	{
 		private static readonly object _lock = new object();
 		private const int VALUE_P = 1000000, VALUE_G = 10000, VALUE_S = 100, VALUE_C = 1;
-		private readonly Color ItemsColor = Color.FromArgb(160, 160, 200);
+		public readonly static Color ItemsColor = Color.FromArgb(160, 160, 200);
 		public ListView ItemListView;
-		private TabControl InfoTabs;
+		private MTabControl InfoTabs;
 		private ItemInfoSubPage ItemInfoPage;
 		private AccInfoSubPage AccInfoPage;
-		private SearcherSubPage SearcherPage;
+		private ItemSearcherSubPage SearcherPage;
 		public static JArray Items, Items_cn;
 		public static JArray Recipes;
 		public static JArray ItemDescriptions;
@@ -105,7 +105,7 @@ namespace QTRHacker.NewDimension.Wiki
 			AccInfoPage = new AccInfoSubPage();
 
 
-			SearcherPage = new SearcherSubPage();
+			SearcherPage = new ItemSearcherSubPage();
 			SearcherPage.BlockCheckBox.CheckedChanged += Filter_CheckedChanged;
 			SearcherPage.WallCheckBox.CheckedChanged += Filter_CheckedChanged;
 			SearcherPage.HeadCheckBox.CheckedChanged += Filter_CheckedChanged;
@@ -144,6 +144,7 @@ namespace QTRHacker.NewDimension.Wiki
 			};
 
 			InfoTabs = new MTabControl();
+			InfoTabs.TColor = Color.FromArgb(160, 160, 200);
 			InfoTabs.Bounds = new Rectangle(460, 5, 270, 440);
 			InfoTabs.Controls.Add(ItemInfoPage);
 			InfoTabs.Controls.Add(AccInfoPage);

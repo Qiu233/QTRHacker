@@ -33,7 +33,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DocumentationFile>
     </DocumentationFile>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ENG|AnyCPU'">
     <OutputPath>..\ENG\</OutputPath>
@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CLRFunctionCaller.cs" />
+    <Compile Include="GameConstant.cs" />
     <Compile Include="GameObjects\FieldNotFoundException.cs" />
     <Compile Include="GameObjects\GameFieldOffsetFieldNameAttribute.cs" />
     <Compile Include="GameObjects\GameFieldOffsetTypeNameAttribute.cs" />

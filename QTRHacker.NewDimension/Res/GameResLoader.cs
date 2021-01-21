@@ -22,6 +22,7 @@ namespace QTRHacker.NewDimension.Res
 		public const string File_Mount = "QTRHacker.NewDimension.Res.Game.Mount_cn.txt";
 #endif
 		public static ImageList ItemImages { get; }
+		public static ImageList NPCImages { get; }
 		public static string[] Prefixes { get; }
 		public static string[] Pets { get; }
 		public static string[] Mounts { get; }
@@ -30,9 +31,10 @@ namespace QTRHacker.NewDimension.Res
 		public static Dictionary<string, int> MountToID { get; }
 
 		public static Dictionary<string, byte[]> ItemImageData { get; }
+		public static Dictionary<string, byte[]> NPCImageData { get; }
 		static GameResLoader()
 		{
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.ItemImage.bin"))
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.ContentImage.ItemImage.bin"))
 			{
 				ItemImageData = ResBinFileReader.ReadFromStream(s);
 				ItemImages = new ImageList();
@@ -48,6 +50,22 @@ namespace QTRHacker.NewDimension.Res
 				ItemImages.ImageSize = new Size(20, 20);
 				{
 					Image img = ItemImages.Images[0].Clone() as Image;
+					img.Dispose();
+				}
+			}
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.ContentImage.NPCImage.bin"))
+			{
+				NPCImageData = ResBinFileReader.ReadFromStream(s);
+				NPCImages = new ImageList();
+				foreach (var data in NPCImageData)
+				{
+					using (var m = new MemoryStream(data.Value))
+					{
+						NPCImages.Images.Add(data.Key, Image.FromStream(m));
+					}
+				}
+				{
+					Image img = NPCImages.Images[0].Clone() as Image;
 					img.Dispose();
 				}
 			}

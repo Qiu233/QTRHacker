@@ -18,26 +18,30 @@ namespace QTRHacker.NewDimension.Wiki
 	{
 		private MTabControl MainTab;
 		private ItemsTabPage ItemsTabPage;
+		private NPCTabPage NPCTabPage;
 		public WikiForm()
 		{
 			InitializeComponent();
 			
 
 			MainTab = new MTabControl();
-			MainTab.bColor = Color.DarkGray;
-			MainTab.tColor = Color.Gray;
+			MainTab.BColor = Color.DarkGray;
+			MainTab.TColor = Color.Gray;
 
 			ItemsTabPage = new ItemsTabPage() { Text = "Items" };
+			NPCTabPage = new NPCTabPage() { Text = "NPCs" };
 
 
 			MainTab.TabPages.Add(ItemsTabPage);
+			MainTab.TabPages.Add(NPCTabPage);
 			MainTab.Size = ClientSize;
 			Controls.Add(MainTab);
 		}
 		protected override void OnShown(EventArgs e)
 		{
 			base.OnShown(e);
-			Task.Run((Action)ItemsTabPage.RefreshItems);
+			Task.Run(ItemsTabPage.RefreshItems);
+			Task.Run(NPCTabPage.RefreshNPCs);
 		}
 	}
 }

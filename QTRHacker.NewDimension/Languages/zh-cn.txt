@@ -252,3 +252,8 @@ PiggyBank	猪猪
 Safe	保险柜
 VoidVault	虚空保险柜
 Forge	熔炉
+
+NPCInfo	NPC信息
+AIStyle	AI
+TownNPC	NPC
+Friendly	友好

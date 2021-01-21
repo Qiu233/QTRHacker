@@ -47,7 +47,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
@@ -291,10 +291,22 @@
     <Compile Include="Wiki\ItemsTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Wiki\NPCInfoSubPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Wiki\NPCSearcherSubPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Wiki\NPCTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Wiki\NPCView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Wiki\RecipeTreeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Wiki\SearcherSubPage.cs">
+    <Compile Include="Wiki\ItemSearcherSubPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Wiki\WikiForm.cs">
@@ -331,7 +343,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
-    <EmbeddedResource Include="Res\Game\PlayerModelsRaw.bin" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -341,11 +352,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Res\Game\ItemImage.bin" />
     <EmbeddedResource Include="Res\Game\WikiRes.zip" />
     <EmbeddedResource Include="XSHD\Python.xshd">
       <SubType>UserControl</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Res\ContentImage\ItemImage.bin" />
+    <EmbeddedResource Include="Res\ContentImage\NPCImage.bin" />
+    <EmbeddedResource Include="Res\ContentImage\PlayerModelsRaw.bin" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -142,18 +142,18 @@ mov dword ptr[ebp-0x18],0x3F800000"
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"88 96 69070000 88 96 6A070000");
+				"88 96 C2070000 88 96 C3070000");
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x769],1"),
+				"mov dword ptr [esi+0x7C2],1"),
 				a, false, false);
 		}
 		public static void LowGravity_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"E9 ******** 90 88 96 6A070000", true);
+				"E9 ******** 90 88 96 C3070000", true);
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);
@@ -163,18 +163,18 @@ mov dword ptr[ebp-0x18],0x3F800000"
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"D9 E8 D9 9E 0C040000 88 96 15060000");
+				"D9 E8 D9 9E 28040000 88 96 5E060000");
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x40C],0x41A00000"),
+				"mov dword ptr [esi+0x428],0x41A00000"),
 				a, false, false);
 		}
 		public static void FastSpeed_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"E9 ******** 90 90 90 88 96 15060000", true);
+				"E9 ******** 90 90 90 88 96 5E060000", true);
 			if (a <= 0) return;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
@@ -301,12 +301,12 @@ push 0") + 2 * 5;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle,
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
 				new byte[] { 0xC3 }, 1, 0);
-			int y = 2000;
+			int y = 3000;
 			var addrHelper = Context.HContext.MainAddressHelper;
-			addrHelper.SetStaticFieldValue("Terraria.Main", "numAvailableRecipes", 2000);
+			addrHelper.SetStaticFieldValue("Terraria.Main", "numAvailableRecipes", 3000);
 
 			y = addrHelper.GetStaticFieldValue<int>("Terraria.Main", "availableRecipe");
-			for (int i = 0; i < 2000; i++)
+			for (int i = 0; i < 3000; i++)
 			{
 				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, y + 0x8 + i * 4, ref i, 4, 0);
 			}
@@ -370,13 +370,13 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 			Context.HContext.Handle,
-			"D9 E8 D9 9E 14040000 D9 E8 D9 9E 18040000 88 96");
+			"D9 E8 D9 9E 30040000 D9 E8 D9 9E 34040000 88 96");
 			if (a <= 0) return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x414],0x41200000"),
+				"mov dword ptr [esi+0x430],0x41200000"),
 				a, false, false);
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x418],0x41200000"),
+				"mov dword ptr [esi+0x434],0x41200000"),
 				a + 8, false, false);
 		}
 		public static void FastTileAndWallSpeed_D(GameContext Context)
@@ -393,18 +393,18 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"88 96 FD060000 C6 86 FE060000 01");
+				"88 96 52070000 C6 86 53070000 01");
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte ptr [esi+0x6FD],0x1"),
+				"mov byte ptr [esi+0x752],0x1"),
 				a, false, false);
 		}
 		public static void MachinicalRulerEffect_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "E9 ******** 90 C6 86 FE060000 01", true);
+				   "E9 ******** 90 C6 86 53070000 01", true);
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);
@@ -414,18 +414,18 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"88 96 36070000 88 96 27070000");
+				"88 96 8D070000 88 96 7E070000");
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte ptr [esi+0x736],0x1"),
+				"mov byte ptr [esi+0x78D],0x1"),
 				a, false, false);
 		}
 		public static void ShowCircuit_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "E9 ******** 90 88 96 27070000", true);
+				   "E9 ******** 90 88 96 7E070000", true);
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);
@@ -435,18 +435,18 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"88 96 F3050000");
+				"88 96 3B060000");
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte ptr [esi+0x5F3],1"),
+				"mov byte ptr [esi+0x63B],1"),
 				a, false, false);
 		}
 		public static void ShadowDodge_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "E9 ******** 90 88 96 F4050000", true);
+				   "E9 ******** 90 88 96 3C060000", true);
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);
