@@ -257,3 +257,15 @@ NPCInfo	NPC Info
 AIStyle	AI
 TownNPC	Town NPC
 Friendly	Friendly
+
+Width	Width
+Height	Height
+Size	Size
+
+LifeMax	MaxLife
+KnockbackResist	KnockbackResist
+
+Category	Category
+
+Yes	Yes
+No	No

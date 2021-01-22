@@ -18,7 +18,7 @@ namespace QTRHacker.NewDimension.Wiki
 	public class NPCTabPage : TabPage
 	{
 		private static readonly object _lock = new object();
-		public readonly static Color NPCColor = Color.FromArgb(200, 100, 100);
+		public readonly static Color NPCColor = Color.FromArgb(240, 120, 120);
 		public ListView NPCListView;
 		private MTabControl InfoTabs;
 		private NPCInfoSubPage NPCInfoPage;

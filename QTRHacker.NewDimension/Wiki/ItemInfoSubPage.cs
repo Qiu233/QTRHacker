@@ -16,7 +16,7 @@ namespace QTRHacker.NewDimension.Wiki
 		private readonly Color ItemsColor = Color.FromArgb(160, 160, 200);
 		public InfoView ItemIconInfoView, ItemNameInfoView, ItemTypeInfoView, ItemRareInfoView, ItemDescriptionInfoView, ItemRecipeFromInfoView, ItemRecipeToInfoView, ItemValueInfoView;
 		public ListBox RecipeToItems;
-		public TabControl RequireItems;
+		public MTabControl RequireItems;
 
 		public event Action<object, MouseEventArgs> OnRequireItemDoubleClick = (s, e) => { };
 		public event Action<object, MouseEventArgs> OnRecipeToItemDoubleClick = (s, e) => { };
@@ -58,6 +58,7 @@ namespace QTRHacker.NewDimension.Wiki
 			ItemDescriptionInfoView.Bounds = new Rectangle(5, 90, 255, 80);
 
 			RequireItems = new MTabControl();
+			RequireItems.TColor = ItemsColor;
 			ItemRecipeFromInfoView = new InfoView(RequireItems, InfoView.TipDock.Top);
 			ItemRecipeFromInfoView.Text = MainForm.CurrentLanguage["Recipe"] + "(From)";
 			ItemRecipeFromInfoView.Tip.BackColor = ItemsColor;

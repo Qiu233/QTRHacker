@@ -257,3 +257,15 @@ NPCInfo	NPC信息
 AIStyle	AI
 TownNPC	NPC
 Friendly	友好
+
+Width	宽度
+Height	高度
+Size	尺寸
+
+LifeMax	最大生命
+KnockbackResist	击退抗性
+
+Category	分类
+
+Yes	是
+No	否

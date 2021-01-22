@@ -15,6 +15,10 @@ namespace QTRHacker.NewDimension.Wiki
 	{
 		private NPCView NPCView;
 		private InfoView NPCViewInfoView, NPCNameInfoView, NPCTypeInfoView, NPCAIStyleInfoView;
+		private InfoView NPCWidthInfoView, NPCHeightInfoView;
+		private InfoView NPCDamageInfoView, NPCDefenseInfoView;
+		private InfoView NPCLifeMaxInfoView, NPCKnockbackResistInfoView;
+		private InfoView NPCTownNPCInfoView, NPCBossInfoView, NPCFriendlyInfoView;
 		public NPCInfoSubPage() : base(MainForm.CurrentLanguage["NPCInfo"])
 		{
 			NPCView = new NPCView();
@@ -25,37 +29,118 @@ namespace QTRHacker.NewDimension.Wiki
 			NPCViewInfoView.Text = MainForm.CurrentLanguage["Icon"];
 			this.Controls.Add(NPCViewInfoView);
 
-			NPCNameInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
+			NPCNameInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
 			NPCNameInfoView.Text = MainForm.CurrentLanguage["Name"];
 			NPCNameInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCNameInfoView.Bounds = new Rectangle(0, 0, 170, 20);
 
-			NPCTypeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
+			NPCTypeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
 			NPCTypeInfoView.Text = MainForm.CurrentLanguage["Type"];
 			NPCTypeInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCTypeInfoView.Bounds = new Rectangle(0, 20, 170, 20);
 
-			NPCAIStyleInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
+			NPCAIStyleInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
 			NPCAIStyleInfoView.Text = MainForm.CurrentLanguage["AIStyle"];
 			NPCAIStyleInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCAIStyleInfoView.Bounds = new Rectangle(0, 40, 170, 20);
 
-			InfoView ItemDetailInfoView = new InfoView(new Panel() { BorderStyle = BorderStyle.None }, InfoView.TipDock.Top);
-			Panel ItemDetailInfoViewContent = (ItemDetailInfoView.View as Panel);
+			InfoView NPCDetailInfoView = new InfoView(new Panel() { BorderStyle = BorderStyle.None }, InfoView.TipDock.Top);
+			Panel ItemDetailInfoViewContent = (NPCDetailInfoView.View as Panel);
 			ItemDetailInfoViewContent.Controls.Add(NPCNameInfoView);
 			ItemDetailInfoViewContent.Controls.Add(NPCTypeInfoView);
 			ItemDetailInfoViewContent.Controls.Add(NPCAIStyleInfoView);
-			ItemDetailInfoView.Text = MainForm.CurrentLanguage["Details"];
-			ItemDetailInfoView.Tip.BackColor = NPCTabPage.NPCColor;
-			ItemDetailInfoView.Bounds = new Rectangle(90, 5, 170, 80);
-			this.Controls.Add(ItemDetailInfoView);
+			NPCDetailInfoView.Text = MainForm.CurrentLanguage["Details"];
+			NPCDetailInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCDetailInfoView.Bounds = new Rectangle(90, 5, 170, 80);
+			this.Controls.Add(NPCDetailInfoView);
+
+
+
+			NPCWidthInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCWidthInfoView.Text = MainForm.CurrentLanguage["Width"];
+			NPCWidthInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCWidthInfoView.Bounds = new Rectangle(0, 0, 255, 20);
+
+			NPCHeightInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCHeightInfoView.Text = MainForm.CurrentLanguage["Height"];
+			NPCHeightInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCHeightInfoView.Bounds = new Rectangle(0, 20, 255, 20);
+
+			NPCDamageInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCDamageInfoView.Text = MainForm.CurrentLanguage["Damage"];
+			NPCDamageInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCDamageInfoView.Bounds = new Rectangle(0, 40, 255, 20);
+
+			NPCDefenseInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCDefenseInfoView.Text = MainForm.CurrentLanguage["Defense"];
+			NPCDefenseInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCDefenseInfoView.Bounds = new Rectangle(0, 60, 255, 20);
+
+			NPCLifeMaxInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCLifeMaxInfoView.Text = MainForm.CurrentLanguage["LifeMax"];
+			NPCLifeMaxInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCLifeMaxInfoView.Bounds = new Rectangle(0, 80, 255, 20);
+
+			NPCKnockbackResistInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCKnockbackResistInfoView.Text = MainForm.CurrentLanguage["KnockbackResist"];
+			NPCKnockbackResistInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCKnockbackResistInfoView.Bounds = new Rectangle(0, 100, 255, 20);
+
+			InfoView NPCPropInfoView = new InfoView(new Panel() { BorderStyle = BorderStyle.None }, InfoView.TipDock.Top);
+			Panel NPCDetailtInfoViewContent = (NPCPropInfoView.View as Panel);
+			NPCDetailtInfoViewContent.Controls.Add(NPCWidthInfoView);
+			NPCDetailtInfoViewContent.Controls.Add(NPCHeightInfoView);
+			NPCDetailtInfoViewContent.Controls.Add(NPCDamageInfoView);
+			NPCDetailtInfoViewContent.Controls.Add(NPCDefenseInfoView);
+			NPCDetailtInfoViewContent.Controls.Add(NPCLifeMaxInfoView);
+			NPCDetailtInfoViewContent.Controls.Add(NPCKnockbackResistInfoView);
+			NPCPropInfoView.Text = MainForm.CurrentLanguage["Properties"];
+			NPCPropInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCPropInfoView.Bounds = new Rectangle(5, 105, 255, 140);
+			this.Controls.Add(NPCPropInfoView);
+
+			NPCTownNPCInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCTownNPCInfoView.Text = MainForm.CurrentLanguage["TownNPC"];
+			NPCTownNPCInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCTownNPCInfoView.Bounds = new Rectangle(0, 0, 255, 20);
+
+			NPCBossInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCBossInfoView.Text = "Boss";
+			NPCBossInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCBossInfoView.Bounds = new Rectangle(0, 20, 255, 20);
+
+			NPCFriendlyInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCFriendlyInfoView.Text = MainForm.CurrentLanguage["Friendly"];
+			NPCFriendlyInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCFriendlyInfoView.Bounds = new Rectangle(0, 40, 255, 20);
+
+			InfoView NPCCategoryInfoView = new InfoView(new Panel() { BorderStyle = BorderStyle.None }, InfoView.TipDock.Top);
+			Panel NPCCategoryInfoViewContent = (NPCCategoryInfoView.View as Panel);
+			NPCCategoryInfoViewContent.Controls.Add(NPCTownNPCInfoView);
+			NPCCategoryInfoViewContent.Controls.Add(NPCBossInfoView);
+			NPCCategoryInfoViewContent.Controls.Add(NPCFriendlyInfoView);
+			NPCCategoryInfoView.Text = MainForm.CurrentLanguage["Category"];
+			NPCCategoryInfoView.Tip.BackColor = NPCTabPage.NPCColor;
+			NPCCategoryInfoView.Bounds = new Rectangle(5, 260, 255, 80);
+			this.Controls.Add(NPCCategoryInfoView);
 		}
 		public void SetData(int Type)
 		{
-			NPCView.NPCType = Type; 
+			NPCView.NPCType = Type;
 			(NPCNameInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Name"].ToString();
 			(NPCTypeInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Type"].ToString();
 			(NPCAIStyleInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["AiStyle"].ToString();
+			(NPCWidthInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Width"].ToString();
+			(NPCHeightInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Height"].ToString();
+			(NPCDamageInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["DefDamage"].ToString();
+			(NPCDefenseInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["DefDefense"].ToString();
+			(NPCLifeMaxInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["LifeMax"].ToString();
+			(NPCKnockbackResistInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["KnockBackResist"].ToString();
+
+			(NPCTownNPCInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["TownNPC"].ToObject<bool>() ? MainForm.CurrentLanguage["Yes"] : MainForm.CurrentLanguage["No"];
+			(NPCBossInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Boss"].ToObject<bool>() ? MainForm.CurrentLanguage["Yes"] : MainForm.CurrentLanguage["No"];
+			(NPCFriendlyInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Friendly"].ToObject<bool>() ? MainForm.CurrentLanguage["Yes"] : MainForm.CurrentLanguage["No"];
+
 		}
 	}
 }
