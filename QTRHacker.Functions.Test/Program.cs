@@ -63,7 +63,7 @@ namespace QTRHacker.Functions.Test
 				Console.WriteLine(gc.HContext.MainAddressHelper.GetFieldOffset("Terraria.Item", "stack").ToString("X8"));
 				Console.WriteLine(AobscanHelper.AobscanASM(gc.HContext.Handle, "dec dword ptr [ecx+0xA8]\nmov eax,[ebp+0xC]").ToString("X8"));
 				Console.WriteLine(AobscanHelper.AobscanASM(gc.HContext.Handle, "dec dword ptr [eax+0xA8]\nmov eax,[ebp-0x20]").ToString("X8"));*/
-				Console.WriteLine(gc.MyPlayer.Bank.Item.Length);
+				//Console.WriteLine(gc.MyPlayer.Bank.Item.Length);
 			}
 
 		}

@@ -283,7 +283,7 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"0f 8d 4F 01 00 00 8b 45");
+				"0F 84 C0 03 00 00 0F B6");
 			var bs = AobscanHelper.GetHexCodeFromString("90 90 90 90 90 90");
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, bs, bs.Length, 0);
 		}
@@ -291,8 +291,8 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"90 90 90 90 90 90 8B 45 A8 0B 45 A4");
-			var bs = AobscanHelper.GetHexCodeFromString("0f 8d 4F 01 00 00 8b 45");
+				"90 90 90 90 90 90 0F B6");
+			var bs = AobscanHelper.GetHexCodeFromString("0F 84 C0 03 00 00");
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, bs, bs.Length, 0);
 		}
 
@@ -671,7 +671,7 @@ push 0") + 2 * 5;
 			NativeFunctions.VirtualFreeEx(Context.HContext.Handle, strMem, 0);
 		}
 
-		public static void SwingIgnoringTils_E(GameContext Context)
+		public static void SwingIgnoringTiles_E(GameContext Context)
 		{
 			byte s = 0;
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle,
@@ -683,7 +683,7 @@ push 0") + 2 * 5;
 			});
 			InlineHook.Inject(Context.HContext, code, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Collision", "CanHit"), false, false);
 		}
-		public static void SwingIgnoringTils_D(GameContext Context)
+		public static void SwingIgnoringTiles_D(GameContext Context)
 		{
 			int a = Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Collision", "CanHit");
 			InlineHook.FreeHook(Context.HContext, a);
@@ -691,8 +691,8 @@ push 0") + 2 * 5;
 
 		public static void SwingingAttacksAll_E(GameContext Context)
 		{
-			int a = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF938].StartAddress;
-			int b = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF962].StartAddress;
+			int a = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck_MeleeHitNPCs", 0x115].StartAddress - 6;
+			int b = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck_MeleeHitNPCs", 0x12B].StartAddress;
 			byte s = 0;
 			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref s, 1, 0);
 			if (s == 0xE9)//已经被修改，不能再hook
@@ -706,11 +706,12 @@ push 0") + 2 * 5;
 		}
 		public static void SwingingAttacksAll_D(GameContext Context)
 		{
-			int a = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF938].StartAddress;
-			int b = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF962].StartAddress;
+			int a = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck_MeleeHitNPCs", 0x115].StartAddress - 6;
+			int b = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck_MeleeHitNPCs", 0x12B].StartAddress;
 			InlineHook.FreeHook(Context.HContext, a);
 			InlineHook.FreeHook(Context.HContext, b);
 		}
+
 
 		public static void DisableInvisibility_E(GameContext Context)
 		{

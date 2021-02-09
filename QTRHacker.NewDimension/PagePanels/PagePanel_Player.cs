@@ -263,9 +263,10 @@ namespace QTRHacker.NewDimension.PagePanels
 				{
 					EditPlayerInfoButton.Enabled = true;
 					TpToPlayerButton.Enabled = true;
-					AddBuffButton.Enabled = m.SelectedIndices[0] == HackContext.GameContext.MyPlayerIndex;
-					SetPetButton.Enabled = m.SelectedIndices[0] == HackContext.GameContext.MyPlayerIndex;
-					SetMountButton.Enabled = m.SelectedIndices[0] == HackContext.GameContext.MyPlayerIndex;
+					bool t = Convert.ToInt32(m.SelectedItems[0].SubItems[0].Text) == HackContext.GameContext.MyPlayerIndex;
+					AddBuffButton.Enabled = t;
+					SetPetButton.Enabled = t;
+					SetMountButton.Enabled = t;
 				}
 				else
 				{
