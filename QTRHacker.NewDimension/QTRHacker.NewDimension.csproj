@@ -282,31 +282,33 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Res\ResBinFileReader.cs" />
     <Compile Include="Res\GameResLoader.cs" />
-    <Compile Include="Wiki\AccInfoSubPage.cs">
+    <Compile Include="Wiki\Data\ItemData.cs" />
+    <Compile Include="Wiki\Data\RecipeData.cs" />
+    <Compile Include="Wiki\Item\AccInfoSubPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Wiki\ItemInfoSubPage.cs">
+    <Compile Include="Wiki\Item\ItemInfoSubPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Wiki\ItemsTabPage.cs">
+    <Compile Include="Wiki\Item\ItemsTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Wiki\NPCInfoSubPage.cs">
+    <Compile Include="Wiki\NPC\NPCInfoSubPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Wiki\NPCSearcherSubPage.cs">
+    <Compile Include="Wiki\NPC\NPCSearcherSubPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Wiki\NPCTabPage.cs">
+    <Compile Include="Wiki\NPC\NPCTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Wiki\NPCView.cs">
+    <Compile Include="Wiki\NPC\NPCView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Wiki\RecipeTreeForm.cs">
+    <Compile Include="Wiki\Item\RecipeTreeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Wiki\ItemSearcherSubPage.cs">
+    <Compile Include="Wiki\Item\ItemSearcherSubPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Wiki\WikiForm.cs">

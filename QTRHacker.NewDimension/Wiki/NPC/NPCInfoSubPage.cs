@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QTRHacker.NewDimension.Wiki
+namespace QTRHacker.NewDimension.Wiki.NPC
 {
 	public class NPCInfoSubPage : TabPage
 	{

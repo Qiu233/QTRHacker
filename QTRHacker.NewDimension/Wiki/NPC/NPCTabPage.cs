@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QTRHacker.NewDimension.Wiki
+namespace QTRHacker.NewDimension.Wiki.NPC
 {
 	public class NPCTabPage : TabPage
 	{
@@ -65,7 +65,7 @@ namespace QTRHacker.NewDimension.Wiki
 			{
 				int id = Convert.ToInt32(NPCListView.SelectedItems[0].Text.ToString());
 				var player = HackContext.GameContext.MyPlayer;
-				NPC.NewNPC(HackContext.GameContext, (int)player.X, (int)player.Y, id);
+				QTRHacker.Functions.GameObjects.NPC.NewNPC(HackContext.GameContext, (int)player.X, (int)player.Y, id);
 			};
 
 			NPCListView.SelectedIndexChanged += ItemListView_SelectedIndexChanged;

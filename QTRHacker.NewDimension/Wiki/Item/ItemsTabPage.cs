@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using QTRHacker.NewDimension.Controls;
 using QTRHacker.NewDimension.Res;
+using QTRHacker.NewDimension.Wiki.Data;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QTRHacker.NewDimension.Wiki
+namespace QTRHacker.NewDimension.Wiki.Item
 {
 	public class ItemsTabPage : TabPage
 	{
@@ -24,8 +25,7 @@ namespace QTRHacker.NewDimension.Wiki
 		private ItemInfoSubPage ItemInfoPage;
 		private AccInfoSubPage AccInfoPage;
 		private ItemSearcherSubPage SearcherPage;
-		public static JArray Items, Items_cn;
-		public static JArray Recipes;
+		public static JArray Items_cn;
 		public static JArray ItemDescriptions;
 		private string KeyWord = "";
 		public bool Updating
@@ -35,18 +35,24 @@ namespace QTRHacker.NewDimension.Wiki
 		}
 		public ItemsTabPage()
 		{
-			if (Items == null)
+			if (!ItemData.Initialized)
 			{
 				using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Game.WikiRes.zip"))
 				{
 					using (ZipArchive z = new ZipArchive(s))
 					{
 						using (var u = new StreamReader(z.GetEntry("ItemInfo.json").Open()))
-							Items = JArray.Parse(u.ReadToEnd());
+						{
+							var Items = JArray.Parse(u.ReadToEnd());
+							ItemData.InitializeFromJson(Items);
+						}
 						using (var u = new StreamReader(z.GetEntry("ItemName_cn.json").Open()))
 							Items_cn = JArray.Parse(u.ReadToEnd());
 						using (var u = new StreamReader(z.GetEntry("RecipeInfo.json").Open()))
-							Recipes = JArray.Parse(u.ReadToEnd());
+						{
+							var Recipes = JArray.Parse(u.ReadToEnd());
+							RecipeData.InitializeFromJson(Recipes);
+						}
 						using (var u = new StreamReader(z.GetEntry("ItemDescriptions.json").Open()))
 							ItemDescriptions = JArray.Parse(u.ReadToEnd());
 					}
@@ -72,7 +78,7 @@ namespace QTRHacker.NewDimension.Wiki
 			{
 				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
 				var player = HackContext.GameContext.MyPlayer;
-				int num = Functions.GameObjects.Item.NewItem(HackContext.GameContext, player.X, player.Y, 0, 0, id, Items[id]["maxStack"].ToObject<int>(), false, 0, true);
+				int num = Functions.GameObjects.Item.NewItem(HackContext.GameContext, player.X, player.Y, 0, 0, id, ItemData.Data[id].MaxStack, false, 0, true);
 				Functions.GameObjects.NetMessage.SendData(HackContext.GameContext, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
 
 			};
@@ -81,7 +87,7 @@ namespace QTRHacker.NewDimension.Wiki
 			{
 				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
 				var player = HackContext.GameContext.MyPlayer;
-				int num = Functions.GameObjects.Item.NewItem(HackContext.GameContext, player.X, player.Y, 0, 0, id, Items[id]["maxStack"].ToObject<int>(), false, 0, true);
+				int num = Functions.GameObjects.Item.NewItem(HackContext.GameContext, player.X, player.Y, 0, 0, id, ItemData.Data[id].MaxStack, false, 0, true);
 				Functions.GameObjects.NetMessage.SendData(HackContext.GameContext, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
 			};
 			strip.Items.Add(MainForm.CurrentLanguage["AddToInvOne"]).Click += (s, e) =>
@@ -225,21 +231,21 @@ namespace QTRHacker.NewDimension.Wiki
 			}
 		}
 
-		private bool Filter(JToken j)
+		private bool Filter(ItemData j)
 		{
 			List<bool> b = new List<bool>();
-			b.Add(j["createTile"].ToObject<int>() != -1);
-			b.Add(j["createWall"].ToObject<int>() != -1);
-			b.Add(j["headSlot"].ToObject<int>() != -1);
-			b.Add(j["bodySlot"].ToObject<int>() != -1);
-			b.Add(j["legSlot"].ToObject<int>() != -1);
-			b.Add(j["accessory"].ToObject<bool>());
-			b.Add(j["melee"].ToObject<bool>());
-			b.Add((j["ranged"].ToObject<bool>()));
-			b.Add(j["magic"].ToObject<bool>());
-			b.Add((j["summon"].ToObject<bool>() || j["sentry"].ToObject<bool>()));
-			b.Add(j["buffType"].ToObject<int>() != 0);
-			b.Add(j["consumable"].ToObject<bool>());
+			b.Add(j.CreateTile != -1);
+			b.Add(j.CreateWall != -1);
+			b.Add(j.HeadSlot != -1);
+			b.Add(j.BodySlot != -1);
+			b.Add(j.LegSlot != -1);
+			b.Add(j.Accessory);
+			b.Add(j.Melee);
+			b.Add(j.Ranged);
+			b.Add(j.Magic);
+			b.Add(j.Summon || j.Sentry);
+			b.Add(j.BuffType != 0);
+			b.Add(j.Consumable);
 			bool r = false;
 			r |= (SearcherPage.BlockCheckBox.Checked && b[0]);
 			r |= (SearcherPage.WallCheckBox.Checked && b[1]);
@@ -258,21 +264,21 @@ namespace QTRHacker.NewDimension.Wiki
 			return r;
 		}
 
-		private string GetItemType(JToken j)
+		private string GetItemType(ItemData j)
 		{
 			List<bool> b = new List<bool>();
-			if (j["createTile"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Blocks"];
-			if (j["createWall"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Walls"];
-			if (j["headSlot"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Head"];
-			if (j["bodySlot"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Body"];
-			if (j["legSlot"].ToObject<int>() != -1) return MainForm.CurrentLanguage["Leg"];
-			if (j["accessory"].ToObject<bool>()) return MainForm.CurrentLanguage["Accessory"];
-			if (j["melee"].ToObject<bool>()) return MainForm.CurrentLanguage["Melee"];
-			if (j["ranged"].ToObject<bool>()) return MainForm.CurrentLanguage["Ranged"];
-			if (j["magic"].ToObject<bool>()) return MainForm.CurrentLanguage["Magic"];
-			if ((j["summon"].ToObject<bool>() || j["sentry"].ToObject<bool>())) return MainForm.CurrentLanguage["Summon"];
-			if (j["buffType"].ToObject<int>() != 0) return MainForm.CurrentLanguage["Buff"];
-			if (j["consumable"].ToObject<bool>()) return MainForm.CurrentLanguage["Consumable"];
+			if (j.CreateTile != -1) return MainForm.CurrentLanguage["Blocks"];
+			if (j.CreateWall != -1) return MainForm.CurrentLanguage["Walls"];
+			if (j.HeadSlot != -1) return MainForm.CurrentLanguage["Head"];
+			if (j.BodySlot != -1) return MainForm.CurrentLanguage["Body"];
+			if (j.LegSlot != -1) return MainForm.CurrentLanguage["Leg"];
+			if (j.Accessory) return MainForm.CurrentLanguage["Accessory"];
+			if (j.Melee) return MainForm.CurrentLanguage["Melee"];
+			if (j.Ranged) return MainForm.CurrentLanguage["Ranged"];
+			if (j.Magic) return MainForm.CurrentLanguage["Magic"];
+			if ((j.Summon || j.Sentry)) return MainForm.CurrentLanguage["Summon"];
+			if (j.BuffType != 0) return MainForm.CurrentLanguage["Buff"];
+			if (j.Consumable) return MainForm.CurrentLanguage["Consumable"];
 			return "无";
 		}
 
@@ -283,23 +289,23 @@ namespace QTRHacker.NewDimension.Wiki
 				Updating = true;
 				ItemListView.BeginUpdate();
 				ItemListView.Items.Clear();
-				for (int i = 0; i < Items.Count; i++)
+				for (int i = 0; i < ItemData.Data.Count; i++)
 				{
-					var itm = Items[i];
-					if (itm["type"].ToString() == "0" || !Filter(itm)) continue;
+					var itm = ItemData.Data[i];
+					if (itm.Type.ToString() == "0" || !Filter(itm)) continue;
 					bool flag = false;
-					flag |= itm["type"].ToString().ToLower().Contains(KeyWord.ToLower());
+					flag |= itm.Type.ToString().ToLower().Contains(KeyWord.ToLower());
 					flag |= Items_cn[i].ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= itm["Name"].ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= itm["shoot"].ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= itm["createTile"].ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= itm["createWall"].ToString().ToLower().Contains(KeyWord.ToLower());
+					flag |= itm.Name.ToString().ToLower().Contains(KeyWord.ToLower());
+					flag |= itm.Shoot.ToString().ToLower().Contains(KeyWord.ToLower());
+					flag |= itm.CreateTile.ToString().ToLower().Contains(KeyWord.ToLower());
+					flag |= itm.CreateWall.ToString().ToLower().Contains(KeyWord.ToLower());
 					if (flag)
 					{
-						ListViewItem lvi = new ListViewItem(itm["type"].ToString());
-						lvi.Name = itm["type"].ToString();
-						lvi.SubItems.Add(itm["rare"].ToString());
-						lvi.SubItems.Add(itm["Name"].ToString());
+						ListViewItem lvi = new ListViewItem(itm.Type.ToString());
+						lvi.Name = itm.Type.ToString();
+						lvi.SubItems.Add(itm.Rare.ToString());
+						lvi.SubItems.Add(itm.Name.ToString());
 						lvi.SubItems.Add(Items_cn[i].ToString());
 						lvi.SubItems.Add(GetItemType(itm));
 						ItemListView.Items.Add(lvi);

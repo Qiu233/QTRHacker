@@ -179,6 +179,12 @@ namespace QTRHacker.NewDimension
 			
 		}
 
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+			GC.Collect();
+		}
+
 		public void OnInitialized()
 		{
 			foreach (var c in ButtonsPanel.Controls)

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using QTRHacker.NewDimension.Controls;
 using QTRHacker.NewDimension.Res;
+using QTRHacker.NewDimension.Wiki.Data;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QTRHacker.NewDimension.Wiki
+namespace QTRHacker.NewDimension.Wiki.Item
 {
 	public class ItemInfoSubPage : TabPage
 	{
@@ -111,22 +112,22 @@ namespace QTRHacker.NewDimension.Wiki
 		{
 			Image img = GameResLoader.ItemImages.Images[index.ToString()];
 			(ItemIconInfoView.View as PictureBox).Image = img;
-			(ItemNameInfoView.View as TextBox).Text = ItemsTabPage.Items[index]["Name"].ToString();
-			(ItemTypeInfoView.View as TextBox).Text = ItemsTabPage.Items[index]["type"].ToString();
-			(ItemRareInfoView.View as TextBox).Text = ItemsTabPage.Items[index]["rare"].ToString();
+			(ItemNameInfoView.View as TextBox).Text = ItemData.Data[index].Name.ToString();
+			(ItemTypeInfoView.View as TextBox).Text = ItemData.Data[index].Type.ToString();
+			(ItemRareInfoView.View as TextBox).Text = ItemData.Data[index].Rare.ToString();
 			//string desc = string.Concat(ItemsTabPage.Items[index]["ToolTip"]["_tooltipLines"].ToList().Select(t => t.ToString() + "\n"));
 			//(ItemDescriptionInfoView.View as TextBox).Text = desc;
 			string desc = ItemsTabPage.ItemDescriptions[index].ToString();
 			(ItemDescriptionInfoView.View as TextBox).Text = desc;
 			(ItemRecipeFromInfoView.View as TabControl).TabPages.Clear();
-			var pRe = ItemsTabPage.Recipes.Where(t => t["item"]["type"].ToObject<int>() == ItemsTabPage.Items[index]["type"].ToObject<int>());
+			var pRe = RecipeData.Data.Where(t => t.TargetItem.Type == ItemData.Data[index].Type);
 			if (pRe.Count() > 0)
 			{
 				int t = 0;
 				foreach (var recipe in pRe)
 				{
 					t++;
-					var ritems = (recipe["rItems"] as JArray);
+					var ritems = recipe.RequiredItems;
 					TabPage page = new TabPage(t.ToString());
 					RequireItems.TabPages.Add(page);
 					ListBox box = new ListBox()
@@ -141,23 +142,23 @@ namespace QTRHacker.NewDimension.Wiki
 					page.Controls.Add(box);
 					foreach (var itm in ritems)
 					{
-						var itemType = itm["type"].ToObject<int>();
+						var itemType = itm.Type;
 						if (itemType != 0)
-							box.Items.Add("[" + itemType + "] " + ItemsTabPage.Items[itemType]["Name"].ToString() + " [" + itm["stack"].ToObject<int>() + "]");
+							box.Items.Add("[" + itemType + "] " + ItemData.Data[itemType].Name + " [" + itm.Stack + "]");
 					}
 				}
 			}
 			(ItemRecipeToInfoView.View as ListBox).Items.Clear();
-			pRe = ItemsTabPage.Recipes.Where(
-				t => (t["rItems"] as JArray).Where(
-					y => index != 0 && y["type"].ToObject<int>() == index).Count() > 0);
+			pRe = RecipeData.Data.Where(
+				t => t.RequiredItems.Where(
+					y => index != 0 && y.Type == index).Count() > 0);
 			foreach (var p in pRe)
 			{
-				var itm = p["item"];
-				(ItemRecipeToInfoView.View as ListBox).Items.Add("[" + itm["type"] + "] " + ItemsTabPage.Items[Convert.ToInt32(itm["type"])]["Name"].ToString() + " [" + itm["stack"] + "]");
+				var itm = p.TargetItem;
+				(ItemRecipeToInfoView.View as ListBox).Items.Add("[" + itm.Type + "] " + ItemData.Data[Convert.ToInt32(itm.Type)].Name.ToString() + " [" + itm.Stack + "]");
 			}
 
-			(ItemValueInfoView.View as TextBox).Text = ItemsTabPage.GetValueString(Convert.ToInt32(ItemsTabPage.Items[index]["value"].ToString()));
+			(ItemValueInfoView.View as TextBox).Text = ItemsTabPage.GetValueString(Convert.ToInt32(ItemData.Data[index].Value.ToString()));
 
 		}
 	}

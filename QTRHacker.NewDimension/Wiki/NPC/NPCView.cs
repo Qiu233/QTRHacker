@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinFormsGraphicsDevice;
 
-namespace QTRHacker.NewDimension.Wiki
+namespace QTRHacker.NewDimension.Wiki.NPC
 {
 	public class NPCView : GraphicsDeviceControl
 	{

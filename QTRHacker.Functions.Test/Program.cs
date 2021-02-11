@@ -12,11 +12,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace QTRHacker.Functions.Test
 {
@@ -64,6 +65,26 @@ namespace QTRHacker.Functions.Test
 				Console.WriteLine(AobscanHelper.AobscanASM(gc.HContext.Handle, "dec dword ptr [ecx+0xA8]\nmov eax,[ebp+0xC]").ToString("X8"));
 				Console.WriteLine(AobscanHelper.AobscanASM(gc.HContext.Handle, "dec dword ptr [eax+0xA8]\nmov eax,[ebp-0x20]").ToString("X8"));*/
 				//Console.WriteLine(gc.MyPlayer.Bank.Item.Length);
+
+
+				//Assembly.LoadFile()
+				/*var mscorlib = gc.HContext.AddressHelpers.First(t => t.ModuleName.Contains("mscorlib"));
+				var loadFile = mscorlib.GetFunctionAddress("System.Reflection.Assembly", f => f.GetFullSignature() == "System.Reflection.Assembly.LoadFile(System.String)");
+				int strMem = NativeFunctions.VirtualAllocEx(gc.HContext.Handle, 0, 1024, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+				byte[] strBytes = Encoding.UTF8.GetBytes("G:/ClassLibrary1.dll");//ASCII
+				int strEnd = 0;
+				NativeFunctions.WriteProcessMemory(gc.HContext.Handle, strMem, strBytes, strBytes.Length, 0);
+				NativeFunctions.WriteProcessMemory(gc.HContext.Handle, strMem + strBytes.Length, ref strEnd, 4, 0);
+
+				var code = AssemblySnippet.FromCode(new AssemblyCode[] {
+					(Instruction)"pushad",
+					AssemblySnippet.ConstructString(gc.HContext,strMem,null),
+					(Instruction)"mov ecx,eax",
+					AssemblySnippet.FromClrCall(loadFile,null,false),
+					(Instruction)"popad"
+				});
+				InlineHook.InjectAndWait(gc.HContext, code, gc.HContext.MainAddressHelper["Terraria.Main", "Update"], true);
+				NativeFunctions.VirtualFreeEx(gc.HContext.Handle, strMem, 0);*/
 			}
 
 		}

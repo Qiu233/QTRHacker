@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using QTRHacker.NewDimension.Res;
+using QTRHacker.NewDimension.Wiki.Data;
 using QTRHacker.NewDimension.XNAControls;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TreeView = QTRHacker.NewDimension.XNAControls.TreeView;
 
-namespace QTRHacker.NewDimension.Wiki
+namespace QTRHacker.NewDimension.Wiki.Item
 {
 	public class RecipeTreeForm : Form
 	{
-		public static Dictionary<int, List<JToken>> RecipeTos = new Dictionary<int, List<JToken>>();
-		public static Dictionary<int, List<JToken>> RecipeFroms = new Dictionary<int, List<JToken>>();
+		public static Dictionary<int, List<RecipeData>> RecipeTos = new Dictionary<int, List<RecipeData>>();
+		public static Dictionary<int, List<RecipeData>> RecipeFroms = new Dictionary<int, List<RecipeData>>();
 
 		public TreeView RecipeTreeView;
 
@@ -39,21 +40,21 @@ namespace QTRHacker.NewDimension.Wiki
 			form.Show();
 		}
 
-		private static List<JToken> GetRecipeTo(int index)
+		private static List<RecipeData> GetRecipeTo(int index)
 		{
 			if (RecipeTos.ContainsKey(index))
 				return RecipeTos[index];
-			var result = ItemsTabPage.Recipes.Where(t => t["item"]["type"].ToObject<int>() == index).ToList();
+			var result = RecipeData.Data.Where(t => t.TargetItem.Type == index).ToList();
 			RecipeTos[index] = result;
 			return result;
 		}
-		private static List<JToken> GetRecipeFrom(int index)
+		private static List<RecipeData> GetRecipeFrom(int index)
 		{
 			if (RecipeFroms.ContainsKey(index))
 				return RecipeFroms[index];
-			var result = ItemsTabPage.Recipes.Where(
-				t => (t["rItems"] as JArray).Where(
-					y => index != 0 && y["type"].ToObject<int>() == index).Count() > 0).ToList();
+			var result = RecipeData.Data.Where(
+				t => t.RequiredItems.Where(
+					y => index != 0 && y.Type == index).Count() > 0).ToList();
 			RecipeFroms[index] = result;
 			return result;
 		}
@@ -70,14 +71,14 @@ namespace QTRHacker.NewDimension.Wiki
 			foreach (var t in rTo)
 			{
 				var color = new Microsoft.Xna.Framework.Color(rand.Next() % 160 + 40, rand.Next() % 160 + 40, rand.Next() % 160 + 40);
-				foreach (var ritem in t["rItems"])
+				foreach (var ritem in t.RequiredItems)
 				{
-					int type = ritem["type"].ToObject<int>();
+					int type = ritem.Type;
 					if (type <= 0)
 						continue;
 					var node = new ItemTreeNode(RecipeTreeView,
 						GameResLoader.ItemImages.Images[type.ToString()],
-						ritem["stack"].ToObject<int>(),
+						ritem.Stack,
 						type,
 						color);
 					node.OnClick += Node_OnClick;
@@ -87,12 +88,12 @@ namespace QTRHacker.NewDimension.Wiki
 			}
 			foreach (var t in rFrom)
 			{
-				var item = t["item"];
-				int type = item["type"].ToObject<int>();
+				var item = t.TargetItem;
+				int type = item.Type;
 				var color = new Microsoft.Xna.Framework.Color(rand.Next() % 160 + 40, rand.Next() % 160 + 40, rand.Next() % 160 + 40);
 				var node = new ItemTreeNode(RecipeTreeView,
 						GameResLoader.ItemImages.Images[type.ToString()],
-						item["stack"].ToObject<int>(),
+						item.Stack,
 						type,
 						color);
 				node.OnClick += Node_OnClick;

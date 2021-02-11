@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using QTRHacker.NewDimension.Controls;
+using QTRHacker.NewDimension.Wiki.Item;
+using QTRHacker.NewDimension.Wiki.NPC;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
