@@ -112,19 +112,20 @@ namespace QTRHacker.NewDimension.Wiki.Item
 
 
 			SearcherPage = new ItemSearcherSubPage();
-			SearcherPage.BlockCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.WallCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.HeadCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.BodyCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.LegCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.AccessoryCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.MeleeCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.RangedCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.MagicCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.SummonCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.BuffCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.ConsumableCheckBox.CheckedChanged += Filter_CheckedChanged;
-			SearcherPage.OthersCheckBox.CheckedChanged += Filter_CheckedChanged;
+			SearcherPage.BlockCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.WallCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.QuestItemCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.HeadCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.BodyCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.LegCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.AccessoryCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.MeleeCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.RangedCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.MagicCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.SummonCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.BuffCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.ConsumableCheckBox.Click += Filter_CheckedChanged;
+			SearcherPage.OthersCheckBox.Click += Filter_CheckedChanged;
 
 			SearcherPage.KeyWordTextBox.KeyDown += (s, e) =>
 			{
@@ -134,6 +135,12 @@ namespace QTRHacker.NewDimension.Wiki.Item
 					KeyWord = SearcherPage.KeyWordTextBox.Text;
 					RefreshItems();
 				}
+			};
+
+			SearcherPage.ReverseButton.Click += (s, e) =>
+			{
+				ReverseCheck();
+				RefreshItems();
 			};
 
 			SearcherPage.SearchButton.Click += (s, e) =>
@@ -246,6 +253,7 @@ namespace QTRHacker.NewDimension.Wiki.Item
 			b.Add(j.Summon || j.Sentry);
 			b.Add(j.BuffType != 0);
 			b.Add(j.Consumable);
+			b.Add(j.QuestItem);
 			bool r = false;
 			r |= (SearcherPage.BlockCheckBox.Checked && b[0]);
 			r |= (SearcherPage.WallCheckBox.Checked && b[1]);
@@ -259,6 +267,7 @@ namespace QTRHacker.NewDimension.Wiki.Item
 			r |= (SearcherPage.SummonCheckBox.Checked && b[9]);
 			r |= (SearcherPage.BuffCheckBox.Checked && b[10]);
 			r |= (SearcherPage.ConsumableCheckBox.Checked && b[11]);
+			r |= (SearcherPage.QuestItemCheckBox.Checked && b[12]);
 			if (b.TrueForAll(t => !t) && SearcherPage.OthersCheckBox.Checked)
 				return true;
 			return r;
@@ -269,6 +278,7 @@ namespace QTRHacker.NewDimension.Wiki.Item
 			List<bool> b = new List<bool>();
 			if (j.CreateTile != -1) return MainForm.CurrentLanguage["Blocks"];
 			if (j.CreateWall != -1) return MainForm.CurrentLanguage["Walls"];
+			if (j.QuestItem) return MainForm.CurrentLanguage["Quest"];
 			if (j.HeadSlot != -1) return MainForm.CurrentLanguage["Head"];
 			if (j.BodySlot != -1) return MainForm.CurrentLanguage["Body"];
 			if (j.LegSlot != -1) return MainForm.CurrentLanguage["Leg"];
@@ -280,6 +290,24 @@ namespace QTRHacker.NewDimension.Wiki.Item
 			if (j.BuffType != 0) return MainForm.CurrentLanguage["Buff"];
 			if (j.Consumable) return MainForm.CurrentLanguage["Consumable"];
 			return "无";
+		}
+
+		public void ReverseCheck()
+		{
+			SearcherPage.BlockCheckBox.Checked = !SearcherPage.BlockCheckBox.Checked;
+			SearcherPage.WallCheckBox.Checked = !SearcherPage.WallCheckBox.Checked;
+			SearcherPage.QuestItemCheckBox.Checked = !SearcherPage.QuestItemCheckBox.Checked;
+			SearcherPage.HeadCheckBox.Checked = !SearcherPage.HeadCheckBox.Checked;
+			SearcherPage.BodyCheckBox.Checked = !SearcherPage.BodyCheckBox.Checked;
+			SearcherPage.LegCheckBox.Checked = !SearcherPage.LegCheckBox.Checked;
+			SearcherPage.AccessoryCheckBox.Checked = !SearcherPage.AccessoryCheckBox.Checked;
+			SearcherPage.MeleeCheckBox.Checked = !SearcherPage.MeleeCheckBox.Checked;
+			SearcherPage.RangedCheckBox.Checked = !SearcherPage.RangedCheckBox.Checked;
+			SearcherPage.MagicCheckBox.Checked = !SearcherPage.MagicCheckBox.Checked;
+			SearcherPage.SummonCheckBox.Checked = !SearcherPage.SummonCheckBox.Checked;
+			SearcherPage.BuffCheckBox.Checked = !SearcherPage.BuffCheckBox.Checked;
+			SearcherPage.ConsumableCheckBox.Checked = !SearcherPage.ConsumableCheckBox.Checked;
+			SearcherPage.OthersCheckBox.Checked = !SearcherPage.OthersCheckBox.Checked;
 		}
 
 		public void RefreshItems()

@@ -344,6 +344,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Languages\Languages.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -397,8 +398,6 @@
     <EmbeddedResource Include="Res\Game\Prefix_en.txt" />
     <EmbeddedResource Include="Res\Game\Mount_en.txt" />
     <EmbeddedResource Include="Res\Game\Pet_en.txt" />
-    <EmbeddedResource Include="Languages\en.txt" />
-    <EmbeddedResource Include="Languages\zh-cn.txt" />
     <EmbeddedResource Include="Res\Image\TMLIcon.png" />
     <EmbeddedResource Include="Res\Game\BuffType.txt" />
     <EmbeddedResource Include="Res\Game\Mount_cn.txt" />

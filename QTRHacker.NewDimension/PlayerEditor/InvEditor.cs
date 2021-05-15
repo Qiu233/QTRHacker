@@ -22,35 +22,6 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			Text = MainForm.CurrentLanguage["Inventory"];
 
 
-
-			Button OK = new Button();
-			OK.Enabled = Editable;
-			OK.Click += (sender, e) =>
-			{
-				ApplyItemData(Selected);
-				InitItemData(Selected);
-				RefreshSelected();
-			};
-			OK.FlatStyle = FlatStyle.Flat;
-			OK.Text = MainForm.CurrentLanguage["Confirm"];
-			OK.Size = new Size(80, 30);
-			OK.Location = new Point(260, 0);
-			ItemPropertiesPanel.Controls.Add(OK);
-
-
-			Button Refresh = new Button();
-			Refresh.Click += (sender, e) =>
-			{
-				InitItemData(Selected);
-				SlotsPanel.Refresh();
-			};
-			Refresh.FlatStyle = FlatStyle.Flat;
-			Refresh.Text = MainForm.CurrentLanguage["Refresh"];
-			Refresh.Size = new Size(80, 30);
-			Refresh.Location = new Point(260, 30);
-			ItemPropertiesPanel.Controls.Add(Refresh);
-
-
 			Button SaveInv = new Button();
 			SaveInv.Click += (sender, e) =>
 			{
@@ -186,23 +157,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			LoadInvPItem.Location = new Point(260, 150);
 			ItemPropertiesPanel.Controls.Add(LoadInvPItem);
 
-			Button InitItem = new Button();
-			InitItem.Enabled = Editable;
-			InitItem.Click += (sender, e) =>
-			{
-				Item item = TargetPlayer.Inventory[Selected];
-				item.SetDefaults(Convert.ToInt32(((TextBox)ItemPropertiesPanel.Hack["Type"]).Text));
-				item.SetPrefix(GetPrefixFromIndex(ItemPropertiesPanel.SelectedPrefix));
-				int stack = Convert.ToInt32(((TextBox)ItemPropertiesPanel.Hack["Stack"]).Text);
-				item.Stack = stack == 0 ? 1 : stack;
-				RefreshSelected();
-				InitItemData(Selected);
-			};
-			InitItem.FlatStyle = FlatStyle.Flat;
-			InitItem.Text = MainForm.CurrentLanguage["Init"];
-			InitItem.Size = new Size(80, 30);
-			InitItem.Location = new Point(260, 180);
-			ItemPropertiesPanel.Controls.Add(InitItem);
+			
+			ButtonInitItem.Location = new Point(260, 180);
 
 			SlotsPanel.ItemSlots[0].Selected = true;
 			InitItemData(0);

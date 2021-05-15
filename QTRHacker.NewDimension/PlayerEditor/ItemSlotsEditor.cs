@@ -52,6 +52,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		protected int Clip_ItemType;
 		protected int Clip_ItemStack;
 		protected byte Clip_ItemPrefix;
+
+		protected Button ButtonConfirm, ButtonRefresh, ButtonInitItem;
 		public ItemSlotsEditor(GameContext Context, Form ParentForm, Player TargetPlayer, ItemSlots TargetItemSlots, bool Editable, int Count)
 		{
 			this.Context = Context;
@@ -60,10 +62,46 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.TargetItemSlots = TargetItemSlots;
 			this.Editable = Editable;
 
-
 			ItemPropertiesPanel = new ItemPropertiesPanel();
 			ItemPropertiesPanel.Location = new Point(10 * (SlotsPanel.SlotsWidth + SlotsPanel.SlotsGap) + 15, 10);
 			this.Controls.Add(ItemPropertiesPanel);
+
+			ButtonConfirm = new Button();
+			ButtonConfirm.Enabled = Editable;
+			ButtonConfirm.Click += (sender, e) =>
+			{
+				OnConfirm();
+			};
+			ButtonConfirm.FlatStyle = FlatStyle.Flat;
+			ButtonConfirm.Text = MainForm.CurrentLanguage["Confirm"];
+			ButtonConfirm.Size = new Size(80, 30);
+			ButtonConfirm.Location = new Point(260, 0);
+			ItemPropertiesPanel.Controls.Add(ButtonConfirm);
+
+
+			ButtonRefresh = new Button();
+			ButtonRefresh.Click += (sender, e) =>
+			{
+				OnRefresh();
+			};
+			ButtonRefresh.FlatStyle = FlatStyle.Flat;
+			ButtonRefresh.Text = MainForm.CurrentLanguage["Refresh"];
+			ButtonRefresh.Size = new Size(80, 30);
+			ButtonRefresh.Location = new Point(260, 30);
+			ItemPropertiesPanel.Controls.Add(ButtonRefresh);
+
+
+			ButtonInitItem = new Button();
+			ButtonInitItem.Enabled = Editable;
+			ButtonInitItem.Click += (sender, e) =>
+			{
+				OnInitItem();
+			};
+			ButtonInitItem.FlatStyle = FlatStyle.Flat;
+			ButtonInitItem.Text = MainForm.CurrentLanguage["Init"];
+			ButtonInitItem.Size = new Size(80, 30);
+			ButtonInitItem.Location = new Point(260, 60);
+			ItemPropertiesPanel.Controls.Add(ButtonInitItem);
 
 
 			ContextMenuStrip cms = new ContextMenuStrip();
@@ -193,6 +231,27 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		public virtual void RefreshSelected()
 		{
 			SlotsPanel.ItemSlots[Selected].Refresh();
+		}
+		public virtual void OnRefresh()
+		{
+			InitItemData(Selected);
+			SlotsPanel.Refresh();
+		}
+		public virtual void OnConfirm()
+		{
+			ApplyItemData(Selected);
+			InitItemData(Selected);
+			RefreshSelected();
+		}
+		public virtual void OnInitItem()
+		{
+			Item item = TargetItemSlots[Selected];
+			item.SetDefaults(Convert.ToInt32(((TextBox)ItemPropertiesPanel.Hack["Type"]).Text));
+			item.SetPrefix(GetPrefixFromIndex(ItemPropertiesPanel.SelectedPrefix));
+			int stack = Convert.ToInt32(((TextBox)ItemPropertiesPanel.Hack["Stack"]).Text);
+			item.Stack = stack == 0 ? 1 : stack;
+			RefreshSelected();
+			InitItemData(Selected);
 		}
 	}
 }

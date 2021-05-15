@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,18 +29,15 @@ namespace QTRHacker.NewDimension.Languages
 		public static Processor GetLanguage(string tName)
 		{
 			var s = System.Reflection.Assembly.GetExecutingAssembly().
-				GetManifestResourceStream("QTRHacker.NewDimension.Languages." + tName.ToLower() + ".txt");
+				GetManifestResourceStream("QTRHacker.NewDimension.Languages.Languages.json");
 			byte[] b = new byte[s.Length];
 			s.Read(b, 0, (int)s.Length);
-			string[] str = Encoding.UTF8.GetString(b).Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+			JObject src = JsonConvert.DeserializeObject<JObject>(Encoding.UTF8.GetString(b))[tName] as JObject;
 
 			Processor n = new Processor();
-			foreach (var tt in str)
-			{
-				string key = tt.Substring(0, tt.IndexOf('\t'));
-				string content = tt.Substring(tt.IndexOf('\t') + 1);
-				n.Words[key] = content;
-			}
+			foreach (var tt in src)
+				n.Words[tt.Key] = tt.Value.ToString();
+			s.Close();
 			return n;
 		}
 	}

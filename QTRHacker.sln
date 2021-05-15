@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QHackLib", "QHackLib\QHackLib.csproj", "{CC1B3A7E-33AA-487D-AE8E-2B5B2CE3FEF1}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QTRHacker.NewDimension", "QTRHacker.NewDimension\QTRHacker.NewDimension.csproj", "{C3CC73C7-CE6A-444D-A99B-D9B04BF5E5D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainbowFontsMaker", "RainbowFontsMaker\RainbowFontsMaker.csproj", "{921274EE-8BCF-403E-9062-8E117980A7D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguagesManager", "LanguagesManager\LanguagesManager.csproj", "{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -196,6 +198,24 @@ Global
 		{921274EE-8BCF-403E-9062-8E117980A7D6}.Release|x64.Build.0 = Release|Any CPU
 		{921274EE-8BCF-403E-9062-8E117980A7D6}.Release|x86.ActiveCfg = Release|Any CPU
 		{921274EE-8BCF-403E-9062-8E117980A7D6}.Release|x86.Build.0 = Release|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Debug|x64.Build.0 = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Debug|x86.Build.0 = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Eng|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Eng|Any CPU.Build.0 = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Eng|x64.ActiveCfg = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Eng|x64.Build.0 = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Eng|x86.ActiveCfg = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Eng|x86.Build.0 = Debug|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Release|x64.ActiveCfg = Release|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Release|x64.Build.0 = Release|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Release|x86.ActiveCfg = Release|Any CPU
+		{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

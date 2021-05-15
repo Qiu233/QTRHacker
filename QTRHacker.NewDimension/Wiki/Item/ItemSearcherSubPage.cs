@@ -10,10 +10,10 @@ namespace QTRHacker.NewDimension.Wiki.Item
 {
 	public class ItemSearcherSubPage : TabPage
 	{
-		public CheckBox BlockCheckBox, WallCheckBox, HeadCheckBox, BodyCheckBox, LegCheckBox, AccessoryCheckBox, MeleeCheckBox, RangedCheckBox, MagicCheckBox, SummonCheckBox, BuffCheckBox, ConsumableCheckBox, OthersCheckBox;
+		public CheckBox BlockCheckBox, WallCheckBox, QuestItemCheckBox, HeadCheckBox, BodyCheckBox, LegCheckBox, AccessoryCheckBox, MeleeCheckBox, RangedCheckBox, MagicCheckBox, SummonCheckBox, BuffCheckBox, ConsumableCheckBox, OthersCheckBox;
 
 		public TextBox KeyWordTextBox;
-		public Button SearchButton,ResetButton;
+		public Button ReverseButton, SearchButton, ResetButton;
 
 		public ItemSearcherSubPage() : base(MainForm.CurrentLanguage["Search"])
 		{
@@ -30,6 +30,11 @@ namespace QTRHacker.NewDimension.Wiki.Item
 			WallCheckBox.Text = MainForm.CurrentLanguage["Walls"];
 			WallCheckBox.Checked = true;
 			WallCheckBox.Bounds = new Rectangle(70, 20, 50, 20);
+
+			QuestItemCheckBox = new CheckBox();
+			QuestItemCheckBox.Text = MainForm.CurrentLanguage["Quest"];
+			QuestItemCheckBox.Checked = true;
+			QuestItemCheckBox.Bounds = new Rectangle(135, 20, 50, 20);
 
 			HeadCheckBox = new CheckBox();
 			HeadCheckBox.Text = MainForm.CurrentLanguage["Head"];
@@ -88,6 +93,7 @@ namespace QTRHacker.NewDimension.Wiki.Item
 
 			filterGroupBox.Controls.Add(BlockCheckBox);
 			filterGroupBox.Controls.Add(WallCheckBox);
+			filterGroupBox.Controls.Add(QuestItemCheckBox);
 			filterGroupBox.Controls.Add(HeadCheckBox);
 			filterGroupBox.Controls.Add(BodyCheckBox);
 			filterGroupBox.Controls.Add(LegCheckBox);
@@ -108,16 +114,21 @@ namespace QTRHacker.NewDimension.Wiki.Item
 			KeyWordTextBox.ImeMode = ImeMode.OnHalf;
 			KeyWordTextBox.Bounds = new Rectangle(65, 130, 175, 20);
 
+			ReverseButton = new Button();
+			ReverseButton.Text = MainForm.CurrentLanguage["ReverseCheck"];
+			ReverseButton.Bounds = new Rectangle(50, 160, 60, 20);
+
 			SearchButton = new Button();
 			SearchButton.Text = MainForm.CurrentLanguage["Search"];
-			SearchButton.Bounds = new Rectangle(70, 160, 60, 20);
+			SearchButton.Bounds = new Rectangle(110, 160, 60, 20);
 
 			ResetButton = new Button();
 			ResetButton.Text = MainForm.CurrentLanguage["Reset"];
-			ResetButton.Bounds = new Rectangle(130, 160, 60, 20);
+			ResetButton.Bounds = new Rectangle(170, 160, 60, 20);
 
 			Controls.Add(filterGroupBox);
 			Controls.Add(tipSearch);
+			Controls.Add(ReverseButton);
 			Controls.Add(KeyWordTextBox);
 			Controls.Add(SearchButton);
 			Controls.Add(ResetButton);

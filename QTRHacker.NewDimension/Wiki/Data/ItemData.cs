@@ -68,6 +68,8 @@ namespace QTRHacker.NewDimension.Wiki.Data
 				itm_data.BuffTime = item["buffTime"].Value<int>();
 				itm_data.Mana = item["mana"].Value<int>();
 				itm_data.Bait = item["bait"].Value<int>();
+
+				itm_data.QuestItem = item["questItem"].Value<bool>();
 			}
 			Initialized = true;
 		}
@@ -112,5 +114,6 @@ namespace QTRHacker.NewDimension.Wiki.Data
 		public int Mana;
 		public int Bait;
 
+		public bool QuestItem;
 	}
 }
