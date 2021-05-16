@@ -23,7 +23,7 @@ namespace QTRHacker.NewDimension.Wiki.Item
 		public ListView ItemListView;
 		private MTabControl InfoTabs;
 		private ItemInfoSubPage ItemInfoPage;
-		private AccInfoSubPage AccInfoPage;
+		private ItemDetailInfoSubPage AccInfoPage;
 		private ItemSearcherSubPage SearcherPage;
 		public static JArray Items_cn;
 		public static JArray ItemDescriptions;
@@ -108,7 +108,7 @@ namespace QTRHacker.NewDimension.Wiki.Item
 			ItemInfoPage.OnRequireItemDoubleClick += RequireItems_MouseDoubleClick;
 			ItemInfoPage.OnRecipeToItemDoubleClick += RecipeToItems_MouseDoubleClick;
 
-			AccInfoPage = new AccInfoSubPage();
+			AccInfoPage = new ItemDetailInfoSubPage();
 
 
 			SearcherPage = new ItemSearcherSubPage();

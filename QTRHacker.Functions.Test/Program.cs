@@ -85,6 +85,8 @@ namespace QTRHacker.Functions.Test
 				});
 				InlineHook.InjectAndWait(gc.HContext, code, gc.HContext.MainAddressHelper["Terraria.Main", "Update"], true);
 				NativeFunctions.VirtualFreeEx(gc.HContext.Handle, strMem, 0);*/
+				GetNear(gc, "Terraria.Player", "ResetEffects", 0x842);
+				GetAddress(gc, "Terraria.Player", "ResetEffects", 0x842);
 			}
 
 		}

@@ -36,7 +36,7 @@ namespace QTRHacker.Functions.ProjectileImage
 			Speed = speed;
 			Location = location;
 		}
-		
+
 	}
 	public class ProjImage : IEmmitable
 	{
@@ -99,7 +99,7 @@ namespace QTRHacker.Functions.ProjectileImage
 							(Instruction)$"shl eax,5",
 							(Instruction)$"lea eax,[ebx+8+eax]",
 							Projectile.GetSnippet_Call_NewProjectile(context,null,false,
-								"[eax+4]","[eax+8]","[eax+12]","[eax+16]","[eax]",0,0f,context.MyPlayerIndex,0f,0f),
+								0,"[eax+4]","[eax+8]","[eax+12]","[eax+16]","[eax]",0,0f,context.MyPlayerIndex,0f,0f),
 				}),
 				(int)Projs.Count, true));
 			snippet.Content.Add((Instruction)"popad");

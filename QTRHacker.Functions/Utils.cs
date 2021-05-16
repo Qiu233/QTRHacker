@@ -34,74 +34,60 @@ namespace QTRHacker.Functions
 
 		public static void InfiniteLife_E(GameContext Context)
 		{
-			AobReplaceASM(Context, "sub [edx+0x3B4],eax\ncmp dword ptr [ebp+0x8],-1", "add [edx+0x3B4],eax");
+			AobReplaceASM(Context, $"sub [edx+{Player.OFFSET_Life}],eax\ncmp dword ptr [ebp+0x8],-1", $"add [edx+{Player.OFFSET_Life}],eax");
 		}
 		public static void InfiniteLife_D(GameContext Context)
 		{
-			AobReplaceASM(Context, "add [edx+0x3B4],eax\ncmp dword ptr [ebp+0x8],-1", "sub [edx+0x3B4],eax");
+			AobReplaceASM(Context, $"add [edx+{Player.OFFSET_Life}],eax\ncmp dword ptr [ebp+0x8],-1", $"sub [edx+{Player.OFFSET_Life}],eax");
 		}
 
 		public static void InfiniteMana_E(GameContext Context)
 		{
-			AobReplaceASM(Context, "sub [esi+0x3B8],edi", "add [esi+0x3B8],edi");
-			AobReplaceASM(Context, "sub [esi+0x3B8],eax", "add [esi+0x3B8],eax");
+			AobReplaceASM(Context, $"sub [esi+{Player.OFFSET_Mana}],edi", $"add [esi+{Player.OFFSET_Mana}],edi");
+			AobReplaceASM(Context, $"sub [esi+{Player.OFFSET_Mana}],eax", $"add [esi+{Player.OFFSET_Mana}],eax");
 		}
 		public static void InfiniteMana_D(GameContext Context)
 		{
-			AobReplaceASM(Context, "add [esi+0x3B8],edi", "sub [esi+0x3B8],edi");
-			AobReplaceASM(Context, "add [esi+0x3B8],eax", "sub [esi+0x3B8],eax");
+			AobReplaceASM(Context, $"add [esi+{Player.OFFSET_Mana}],edi", $"sub [esi+{Player.OFFSET_Mana}],edi");
+			AobReplaceASM(Context, $"add [esi+{Player.OFFSET_Mana}],eax", $"sub [esi+{Player.OFFSET_Mana}],eax");
 		}
 
 		public static void InfiniteOxygen_E(GameContext Context)
 		{
-			AobReplaceASM(Context, "dec dword ptr [eax+0x318]\ncmp dword ptr [eax+0x318],0", "inc dword ptr [eax+0x318]");
+			AobReplaceASM(Context, $"dec dword ptr [eax+{Player.OFFSET_Breath}]\ncmp dword ptr [eax+{Player.OFFSET_Breath}],0", $"inc dword ptr [eax+{Player.OFFSET_Breath}]");
 		}
 		public static void InfiniteOxygen_D(GameContext Context)
 		{
-			AobReplaceASM(Context, "inc dword ptr [eax+0x318]\ncmp dword ptr [eax+0x318],0", "dec dword ptr [eax+0x318]");
+			AobReplaceASM(Context, $"inc dword ptr [eax+{Player.OFFSET_Breath}]\ncmp dword ptr [eax+{Player.OFFSET_Breath}],0", $"dec dword ptr [eax+{Player.OFFSET_Breath}]");
 		}
 
 		public static void InfiniteMinion_E(GameContext Context)
 		{
-			AobReplaceASM(Context, "mov dword ptr [esi+0x270],1\nmov dword ptr [esi+0x4B4],1", "mov dword ptr [esi+0x270],9999\nmov dword ptr [esi+0x4B4],9999");
+			AobReplaceASM(Context, $"mov dword ptr [esi+{Player.OFFSET_MaxMinions}],1\nmov dword ptr [esi+{Player.OFFSET_MaxTurrets}],1", $"mov dword ptr [esi+{Player.OFFSET_MaxMinions}],9999\nmov dword ptr [esi+{Player.OFFSET_MaxTurrets}],9999");
 		}
 		public static void InfiniteMinion_D(GameContext Context)
 		{
-			AobReplaceASM(Context, "mov dword ptr [esi+0x270],9999\nmov dword ptr [esi+0x4B4],9999", "mov dword ptr [esi+0x270],1\nmov dword ptr [esi+0x4B4],1");
+			AobReplaceASM(Context, $"mov dword ptr [esi+{Player.OFFSET_MaxMinions}],9999\nmov dword ptr [esi+{Player.OFFSET_MaxTurrets}],9999", $"mov dword ptr [esi+{Player.OFFSET_MaxMinions}],1\nmov dword ptr [esi+{Player.OFFSET_MaxTurrets}],1");
 		}
 
 		public static void InfiniteItemAmmo_E(GameContext Context)
 		{
-			//AobReplaceASM(Context, "dec dword ptr [eax+0xA8]\nmov eax,[ebp-0x20]", "nop\nnop\nnop\nnop\nnop\nnop");
-			//AobReplaceASM(Context, "dec dword ptr [ecx+0xA8]\nmov eax,[ebp+0xC]", "nop\nnop\nnop\nnop\nnop\nnop");
-			AobReplace(Context, "FF 88 A8 00 00 00 8B 45 E0 83 B8", "90 90 90 90 90 90");//dec dword ptr [eax+0xA8]\nmov eax,[ebp-0x20]\ncmp
-			AobReplace(Context, "FF 89 A8 00 00 00 8B 45 0C 8B 55 F4", "90 90 90 90 90 90");//dec dword ptr [ecx+0xA8]\nmov eax,[ebp+0xC]\nmov edx[ebp-0xC]
+			AobReplace(Context, "FF 88 B0 00 00 00 8B 45 E0 83 B8", "90 90 90 90 90 90");//dec dword ptr [eax+0xB0]\nmov eax,[ebp-0x20]\ncmp
+			AobReplace(Context, "FF 89 B0 00 00 00 8B 45 0C 8B 55 F4", "90 90 90 90 90 90");//dec dword ptr [ecx+0xB0]\nmov eax,[ebp+0xC]\nmov edx[ebp-0xC]
 		}
 		public static void InfiniteItemAmmo_D(GameContext Context)
 		{
-			//AobReplaceASM(Context, "nop\nnop\nnop\nnop\nnop\nnop\nmov eax,[ebp-0x20]", "dec dword ptr [eax+0xA8]");
-			//AobReplaceASM(Context, "nop\nnop\nnop\nnop\nnop\nnop\nmov eax,[ebp+0xC]", "dec dword ptr [ecx+0xA8]");
-			AobReplace(Context, "90 90 90 90 90 90 8B 45 E0 83 B8", "FF 88 A8 00 00 00");
-			AobReplace(Context, "90 90 90 90 90 90 8B 45 0C 8B 55 F4", "FF 89 A8 00 00 00");
+			AobReplace(Context, "90 90 90 90 90 90 8B 45 E0 83 B8", "FF 88 B0 00 00 00");
+			AobReplace(Context, "90 90 90 90 90 90 8B 45 0C 8B 55 F4", "FF 89 B0 00 00 00");
 		}
 
 		public static void InfiniteFly_E(GameContext Context)
 		{
-			int addr = AobscanHelper.Aobscan(Context.HContext.Handle, "89 86 90020000 80 BF");
-			if (addr <= 0)
-				return;
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromCode(
-				new AssemblyCode[]
-				{
-					(Instruction)"mov dword ptr [esi+0x290],100000"
-				}), addr, false, false);
+			AobReplace(Context, $"D9 99 {AobscanHelper.GetMByteCode(Player.OFFSET_WingTime)} 80 B9 F7060000 00", "90 90 90 90 90 90");
 		}
 		public static void InfiniteFly_D(GameContext Context)
 		{
-			int addr = AobscanHelper.Aobscan(Context.HContext.Handle, "E9 ******** 90 80 BF", true);
-			if (addr <= 0)
-				return;
-			InlineHook.FreeHook(Context.HContext, addr);
+			AobReplace(Context, "90 90 90 90 90 90 80 B9 F7060000 00", $"D9 99 {AobscanHelper.GetMByteCode(Player.OFFSET_WingTime)}");
 		}
 
 		public static void HighLight_E(GameContext Context)
@@ -142,18 +128,18 @@ mov dword ptr[ebp-0x18],0x3F800000"
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"88 96 C2070000 88 96 C3070000");
+				$"88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_SlowFall)} 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_FindTreasure)}");
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x7C2],1"),
+				$"mov dword ptr [esi+{Player.OFFSET_SlowFall}],1"),
 				a, false, false);
 		}
 		public static void LowGravity_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"E9 ******** 90 88 96 C3070000", true);
+				$"E9 ******** 90 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_FindTreasure)}", true);
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);
@@ -163,22 +149,23 @@ mov dword ptr[ebp-0x18],0x3F800000"
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"D9 E8 D9 9E 28040000 88 96 5E060000");
+				$"D9 E8 D9 9E {AobscanHelper.GetMByteCode(Player.OFFSET_MoveSpeed)} 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_BoneArmor)}");
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x428],0x41A00000"),
+				$"mov dword ptr [esi+{Player.OFFSET_MoveSpeed}],0x41A00000"),
 				a, false, false);
 		}
 		public static void FastSpeed_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"E9 ******** 90 90 90 88 96 5E060000", true);
+				$"E9 ******** 90 90 90 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_BoneArmor)}", true);
 			if (a <= 0) return;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
 
+		[Obsolete("for the game of old version")]
 		public static void ProjectileIgnoreTile_E(GameContext Context)
 		{
 			int a = AobscanHelper.AobscanASM(
@@ -186,6 +173,7 @@ mov dword ptr[ebp-0x18],0x3F800000"
 				"mov [ebp-0x20],eax\ncmp byte ptr [ebx+0xE7],0") + 11;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, new byte[] { 0x8d }, 1, 0);
 		}
+		[Obsolete("for the game of old version")]
 		public static void ProjectileIgnoreTile_D(GameContext Context)
 		{
 			int a = AobscanHelper.AobscanASM(
@@ -283,17 +271,17 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"0F 84 C0 03 00 00 0F B6");
-			var bs = AobscanHelper.GetHexCodeFromString("90 90 90 90 90 90");
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, bs, bs.Length, 0);
+				"8B 45 0C C6 00 00 8B 45 08 C6 00 00 B9") + 11;
+			byte b = 1;
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref b, 1, 0);
 		}
 		public static void FishOnlyCrates_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"90 90 90 90 90 90 0F B6");
-			var bs = AobscanHelper.GetHexCodeFromString("0F 84 C0 03 00 00");
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, bs, bs.Length, 0);
+				"8B 45 0C C6 00 00 8B 45 08 C6 00 01 B9") + 11;
+			byte b = 0;
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref b, 1, 0);
 		}
 
 		public static void EnableAllRecipes_E(GameContext Context)
@@ -370,13 +358,13 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 			Context.HContext.Handle,
-			"D9 E8 D9 9E 30040000 D9 E8 D9 9E 34040000 88 96");
+			$"D9 E8 D9 9E {AobscanHelper.GetMByteCode(Player.OFFSET_WallSpeed)} D9 E8 D9 9E {AobscanHelper.GetMByteCode(Player.OFFSET_TileSpeed)} 88 96");
 			if (a <= 0) return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x430],0x41200000"),
+				$"mov dword ptr [esi+{Player.OFFSET_WallSpeed})],0x41200000"),
 				a, false, false);
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov dword ptr [esi+0x434],0x41200000"),
+				$"mov dword ptr [esi+{Player.OFFSET_TileSpeed}],0x41200000"),
 				a + 8, false, false);
 		}
 		public static void FastTileAndWallSpeed_D(GameContext Context)
@@ -393,18 +381,18 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"88 96 52070000 C6 86 53070000 01");
+				$"88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_RulerGrid)} C6 86 {AobscanHelper.GetMByteCode(Player.OFFSET_RulerLine)} 01");
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte ptr [esi+0x752],0x1"),
+				$"mov byte ptr [esi+{Player.OFFSET_RulerGrid}],0x1"),
 				a, false, false);
 		}
 		public static void MachinicalRulerEffect_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "E9 ******** 90 C6 86 53070000 01", true);
+				   $"E9 ******** 90 C6 86 {AobscanHelper.GetMByteCode(Player.OFFSET_RulerLine)} 01", true);
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);
@@ -414,18 +402,18 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"88 96 8D070000 88 96 7E070000");
+				$"88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_InfoAccMechShowWires)} 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_AccJarOfSouls)}");
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte ptr [esi+0x78D],0x1"),
+				$"mov byte ptr [esi+{Player.OFFSET_InfoAccMechShowWires}],0x1"),
 				a, false, false);
 		}
 		public static void ShowCircuit_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "E9 ******** 90 88 96 7E070000", true);
+				   $"E9 ******** 90 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_AccJarOfSouls)}", true);
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);
@@ -435,18 +423,18 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"88 96 3B060000");
+				$"88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_ShadowDodge)} 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_PalladiumRegen)}");
 			if (a <= 0)
 				return;
 			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				"mov byte ptr [esi+0x63B],1"),
+				$"mov byte ptr [esi+{Player.OFFSET_ShadowDodge}],1"),
 				a, false, false);
 		}
 		public static void ShadowDodge_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "E9 ******** 90 88 96 3C060000", true);
+				   $"E9 ******** 90 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_PalladiumRegen)}", true);
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);
@@ -560,17 +548,21 @@ push 0") + 2 * 5;
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"75 37 8d 45 e8 83 ec 08 f3 0f 7e 00");
-			byte[] b = new byte[] { 0x90, 0x90 };
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, 2, 0);
+				$"75 0C C6 83 {AobscanHelper.GetMByteCode(Player.OFFSET_Invisible)} 01 E9") + 8;
+			if (a <= 0)
+				return;
+			byte b = 0;
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref b, 1, 0);
 		}
 		public static void ShowInvisiblePlayers_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"90 90 8d 45 e8 83 ec 08 f3 0f 7e 00");
-			byte[] b = new byte[] { 0x75, 0x37 };
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, b, 2, 0);
+				$"75 0C C6 83 {AobscanHelper.GetMByteCode(Player.OFFSET_Invisible)} 00 E9") + 8;
+			if (a <= 0)
+				return;
+			byte b = 1;
+			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref b, 1, 0);
 		}
 
 		public static void HarpToTP_E(GameContext Context)

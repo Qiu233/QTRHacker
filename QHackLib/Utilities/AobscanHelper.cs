@@ -10,7 +10,10 @@ namespace QHackLib.Utilities
 {
 	public class AobscanHelper
 	{
-
+		public static string GetMByteCode(int i)
+		{
+			return string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", i & 0xFF, (i >> 8) & 0xFF , (i >> 16) & 0xFF , (i >> 24) & 0xFF);
+		}
 		private static byte Ctoh(char hex)
 		{
 			if (hex >= '0' && hex <= '9')

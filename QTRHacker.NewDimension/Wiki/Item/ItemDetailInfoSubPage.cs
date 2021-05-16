@@ -12,14 +12,14 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.Wiki.Item
 {
-	public class AccInfoSubPage : TabPage
+	public class ItemDetailInfoSubPage : TabPage
 	{
 		private readonly Color ItemsColor = Color.FromArgb(160, 160, 200);
 		public InfoView ItemIcon2InfoView, ItemPickaxeInfoView, ItemAxeInfoView, ItemHammerInfoView, ItemDamageInfoView, ItemDefenseInfoView, ItemCritInfoView, ItemUseTimeInfoView, ItemKnockbackInfoView;
 		public InfoView ItemHealLifeInfoView, ItemHealManaInfoView, ItemManaConsumeInfoView, ItemBaitInfoView, ItemShootInfoView, ItemShootSpeedInfoView, ItemCreateTileInfoView, ItemBuffTypeInfoView, ItemBuffTimeInfoView, ItemUseAnimationInfoView, ItemPlaceStyleInfoView, ItemCreateWallInfoView, ItemTileBoostInfoView;
 		public InfoView ItemDescription2InfoView;
 
-		public AccInfoSubPage() : base(MainForm.CurrentLanguage["ArmorInfo"])
+		public ItemDetailInfoSubPage() : base(MainForm.CurrentLanguage["ItemDetailInfo"])
 		{
 			ItemIcon2InfoView = new InfoView(new PictureBox() { SizeMode = PictureBoxSizeMode.CenterImage }, InfoView.TipDock.Top);
 			ItemIcon2InfoView.Text = MainForm.CurrentLanguage["Icon"];

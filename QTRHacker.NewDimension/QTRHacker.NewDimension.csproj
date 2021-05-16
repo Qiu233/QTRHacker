@@ -284,7 +284,7 @@
     <Compile Include="Res\GameResLoader.cs" />
     <Compile Include="Wiki\Data\ItemData.cs" />
     <Compile Include="Wiki\Data\RecipeData.cs" />
-    <Compile Include="Wiki\Item\AccInfoSubPage.cs">
+    <Compile Include="Wiki\Item\ItemDetailInfoSubPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Wiki\Item\ItemInfoSubPage.cs">

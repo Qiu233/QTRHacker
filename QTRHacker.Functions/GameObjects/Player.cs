@@ -72,8 +72,42 @@ namespace QTRHacker.Functions.GameObjects
 		public static int OFFSET_HideMisc;
 		[GameFieldOffsetFieldName("name")]
 		public static int OFFSET_Name;
-
-
+		[GameFieldOffsetFieldName("breath")]
+		public static int OFFSET_Breath;
+		[GameFieldOffsetFieldName("maxMinions")]
+		public static int OFFSET_MaxMinions;
+		[GameFieldOffsetFieldName("maxTurrets")]
+		public static int OFFSET_MaxTurrets;
+		[GameFieldOffsetFieldName("wingTime")]
+		public static int OFFSET_WingTime;
+		[GameFieldOffsetFieldName("slowFall")]
+		public static int OFFSET_SlowFall;
+		[GameFieldOffsetFieldName("findTreasure")]
+		public static int OFFSET_FindTreasure;
+		[GameFieldOffsetFieldName("moveSpeed")]
+		public static int OFFSET_MoveSpeed;
+		[GameFieldOffsetFieldName("boneArmor")]
+		public static int OFFSET_BoneArmor;
+		[GameFieldOffsetFieldName("shadowDodge")]
+		public static int OFFSET_ShadowDodge;
+		[GameFieldOffsetFieldName("palladiumRegen")]
+		public static int OFFSET_PalladiumRegen;
+		[GameFieldOffsetFieldName("invis")]
+		public static int OFFSET_Invisible;
+		[GameFieldOffsetFieldName("tileSpeed")]
+		public static int OFFSET_TileSpeed;
+		[GameFieldOffsetFieldName("wallSpeed")]
+		public static int OFFSET_WallSpeed;
+		[GameFieldOffsetFieldName("nightVision")]
+		public static int OFFSET_NightVision;
+		[GameFieldOffsetFieldName("rulerGrid")]
+		public static int OFFSET_RulerGrid;
+		[GameFieldOffsetFieldName("rulerLine")]
+		public static int OFFSET_RulerLine;
+		[GameFieldOffsetFieldName("InfoAccMechShowWires")]
+		public static int OFFSET_InfoAccMechShowWires;
+		[GameFieldOffsetFieldName("accJarOfSouls")]
+		public static int OFFSET_AccJarOfSouls;
 
 
 
