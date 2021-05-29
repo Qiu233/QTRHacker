@@ -51,7 +51,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			AddSnippetButton = new Button();
 			AddSnippetButton.FlatStyle = FlatStyle.Flat;
-			AddSnippetButton.Text = MainForm.CurrentLanguage["Add"];
+			AddSnippetButton.Text = HackContext.CurrentLanguage["Add"];
 			AddSnippetButton.ForeColor = Color.White;
 			AddSnippetButton.Size = new Size(40, 20);
 			AddSnippetButton.Font = new Font(AddSnippetButton.Font.Name, 7);
@@ -65,7 +65,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button CreateButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Create"],
+				Text = HackContext.CurrentLanguage["Create"],
 				Bounds = new Rectangle(1, 2, 60, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -76,14 +76,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm CreateNewMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["Create"],
+					Text = HackContext.CurrentLanguage["Create"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label NameTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["Name"] + "：",
+					Text = HackContext.CurrentLanguage["Name"] + "：",
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -101,18 +101,18 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(NameTextBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
 				ConfirmButton.Click += (s1, e1) =>
 				{
-					string str = $"./ChatTemplates/{NameTextBox.Text}.chat";
+					string str = Path.Combine(HackContext.PATH_CHATTEMPLATES, $"{NameTextBox.Text}.chat");
 					if (!File.Exists(str))
 						File.Create(str).Close();
 					else
 					{
-						MessageBox.Show(MainForm.CurrentLanguage["NameRepeated"]);
+						MessageBox.Show(HackContext.CurrentLanguage["NameRepeated"]);
 						return;
 					}
 					using (var bw = new BinaryWriter(File.Open(str, FileMode.Open)))
@@ -127,7 +127,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			};
 			Button RenameButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Rename"],
+				Text = HackContext.CurrentLanguage["Rename"],
 				Bounds = new Rectangle(1, 32, 60, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -139,14 +139,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm CreateNewMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["Rename"],
+					Text = HackContext.CurrentLanguage["Rename"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label NewNameTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["NewName"] + "：",
+					Text = HackContext.CurrentLanguage["NewName"] + "：",
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -165,17 +165,17 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(NewNameTextBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
 				ConfirmButton.Click += (s1, e1) =>
 				{
-					string str = $"./ChatTemplates/{NewNameTextBox.Text}.chat";
+					string str = Path.Combine(HackContext.PATH_CHATTEMPLATES, $"{NewNameTextBox.Text}.chat");
 					if (!File.Exists(str))
-						File.Move($"./ChatTemplates/{(string)FilesBox.SelectedItem}.chat", str);
+						File.Move(Path.Combine(HackContext.PATH_CHATTEMPLATES, $"{(string)FilesBox.SelectedItem}.chat"), str);
 					else
-						MessageBox.Show(MainForm.CurrentLanguage["NameRepeated"]);
+						MessageBox.Show(HackContext.CurrentLanguage["NameRepeated"]);
 					UpdateList();
 					CreateNewMForm.Dispose();
 				};
@@ -185,7 +185,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button DeleteButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Delete"],
+				Text = HackContext.CurrentLanguage["Delete"],
 				Bounds = new Rectangle(1, 62, 60, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -194,14 +194,14 @@ namespace QTRHacker.NewDimension.PagePanels
 			DeleteButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
-				if (MessageBox.Show(MainForm.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
-				File.Delete(($"./ChatTemplates/{(string)FilesBox.SelectedItem}.chat"));
+				if (MessageBox.Show(HackContext.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+				File.Delete(Path.Combine(HackContext.PATH_CHATTEMPLATES, $"{(string)FilesBox.SelectedItem}.chat"));
 				UpdateList();
 			};
 
 			Button RefreshButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Refresh"],
+				Text = HackContext.CurrentLanguage["Refresh"],
 				Bounds = new Rectangle(1, 92, 60, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -215,7 +215,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button SaveButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Save"],
+				Text = HackContext.CurrentLanguage["Save"],
 				Bounds = new Rectangle(233, 2, 60, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -224,13 +224,13 @@ namespace QTRHacker.NewDimension.PagePanels
 			SaveButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count > 0)
-					SaveFile("./ChatTemplates/" + FilesBox.SelectedItem.ToString() + ".chat");
+					SaveFile(Path.Combine(HackContext.PATH_CHATTEMPLATES, $"{FilesBox.SelectedItem}.chat"));
 			};
 
 
 			Button SendButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Send"],
+				Text = HackContext.CurrentLanguage["Send"],
 				Bounds = new Rectangle(233, 32, 60, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -317,7 +317,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			ClearSnippet();
 			if (FilesBox.SelectedIndices.Count > 0)
 			{
-				var Snippets = ReadFromFile("./ChatTemplates/" + FilesBox.SelectedItem.ToString() + ".chat");
+				var Snippets = ReadFromFile(Path.Combine(HackContext.PATH_CHATTEMPLATES, $"{FilesBox.SelectedItem}.chat"));
 				foreach (var s in Snippets)
 				{
 					var box = AddNewSnippet();
@@ -361,7 +361,7 @@ namespace QTRHacker.NewDimension.PagePanels
 		public void UpdateList()
 		{
 			FilesBox.Items.Clear();
-			foreach (var f in Directory.EnumerateFiles("./ChatTemplates/", "*.chat"))
+			foreach (var f in Directory.EnumerateFiles(HackContext.PATH_CHATTEMPLATES, "*.chat"))
 			{
 				FilesBox.Items.Add(Path.GetFileNameWithoutExtension(f));
 			}

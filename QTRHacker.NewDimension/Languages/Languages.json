@@ -6,7 +6,7 @@
     "Scripts": "Scripts",
     "Miscs": "Miscs",
     "MainPage": "MainPage",
-    "ChatSender": "ChatSender",
+    "ChatSender": "AutoChat",
     "DragTip": "Drag the cross to Terraria",
     "PlayerArrayAddress": "Player Array Address",
     "MyPlayerAddress": "My Player Address",
@@ -221,9 +221,12 @@
     "Yes": "Yes",
     "No": "No",
     "Quest": "Quest",
-    "ReverseCheck": "ReverseCheck"
+    "ReverseCheck": "Reverse Check",
+    "AddToNPCOne": "Add one to game",
+    "AddToNPCSpecify": "Add NPCs to game",
+    "AddNPC": "Add NPC"
   },
-  "zh-cn": {
+  "zh-CN": {
     "Basic": "基础功能",
     "Players": "玩家",
     "Projectiles": "弹幕管理",
@@ -445,6 +448,9 @@
     "Yes": "是",
     "No": "否",
     "Quest": "任务",
-    "ReverseCheck": "反选"
+    "ReverseCheck": "反选",
+    "AddToNPCOne": "添加一个到游戏",
+    "AddToNPCSpecify": "添加多个到游戏",
+    "AddNPC": "添加NPC"
   }
 }

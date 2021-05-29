@@ -27,10 +27,10 @@ namespace QHackLib.FunctionHelper
 		{
 			Thread = 0;
 			Context = c;
-			FlagAddress = NativeFunctions.VirtualAllocEx(c.Handle, 0, 4, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+			FlagAddress = NativeFunctions.VirtualAllocEx(c.Handle, 0, 4, NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
 			int z = 0;
 			NativeFunctions.WriteProcessMemory(Context.Handle, FlagAddress, ref z, 4, 0);
-			Address = NativeFunctions.VirtualAllocEx(c.Handle, 0, 1024, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+			Address = NativeFunctions.VirtualAllocEx(c.Handle, 0, 1024, NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
 			List<byte> code = new List<byte>();
 			byte[] b = asm.GetByteCode(Address);
 			code.AddRange(b);

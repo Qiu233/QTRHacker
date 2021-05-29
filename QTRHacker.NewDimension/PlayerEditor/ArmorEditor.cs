@@ -38,7 +38,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.ParentForm = ParentForm;
 			this.TargetPlayer = TargetPlayer;
 			this.Editable = Editable;
-			Text = MainForm.CurrentLanguage["Armor"];
+			Text = HackContext.CurrentLanguage["Armor"];
 			ItemPropertiesPanel = new ItemPropertiesPanel() { Enabled = Editable };
 			ArmorSlots = new ItemIcon[Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT];
 
@@ -50,19 +50,19 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.Controls.Add(SlotsPanel);
 
 			SlotRightClickStrip = new ContextMenuStrip();
-			SlotRightClickStrip.Items.Add(MainForm.CurrentLanguage["Copy"]);
-			SlotRightClickStrip.Items.Add(MainForm.CurrentLanguage["Paste"]);
+			SlotRightClickStrip.Items.Add(HackContext.CurrentLanguage["Copy"]);
+			SlotRightClickStrip.Items.Add(HackContext.CurrentLanguage["Paste"]);
 			SlotRightClickStrip.ItemClicked += (sender, e) =>
 			{
 				var item = GetTargetItem(Selected);
-				if (e.ClickedItem.Text == MainForm.CurrentLanguage["Copy"])
+				if (e.ClickedItem.Text == HackContext.CurrentLanguage["Copy"])
 				{
 					Clip_ItemType = item.Type;
 					Clip_ItemStack = item.Stack;
 					Clip_ItemPrefix = item.Prefix;
 					RefreshSelected();
 				}
-				else if (e.ClickedItem.Text == MainForm.CurrentLanguage["Paste"])
+				else if (e.ClickedItem.Text == HackContext.CurrentLanguage["Paste"])
 				{
 					if (Clip_ItemType != 0)
 					{
@@ -155,7 +155,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				RefreshSelected();
 			};
 			OK.FlatStyle = FlatStyle.Flat;
-			OK.Text = MainForm.CurrentLanguage["Confirm"];
+			OK.Text = HackContext.CurrentLanguage["Confirm"];
 			OK.Size = new Size(80, 30);
 			OK.Location = new Point(260, 0);
 			ItemPropertiesPanel.Controls.Add(OK);
@@ -168,7 +168,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				SlotsPanel.Refresh();
 			};
 			Refresh.FlatStyle = FlatStyle.Flat;
-			Refresh.Text = MainForm.CurrentLanguage["Refresh"];
+			Refresh.Text = HackContext.CurrentLanguage["Refresh"];
 			Refresh.Size = new Size(80, 30);
 			Refresh.Location = new Point(260, 30);
 			ItemPropertiesPanel.Controls.Add(Refresh);
@@ -188,7 +188,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				InitData(Selected);
 			};
 			InitItem.FlatStyle = FlatStyle.Flat;
-			InitItem.Text = MainForm.CurrentLanguage["Init"];
+			InitItem.Text = HackContext.CurrentLanguage["Init"];
 			InitItem.Size = new Size(80, 30);
 			InitItem.Location = new Point(260, 60);
 			ItemPropertiesPanel.Controls.Add(InitItem);

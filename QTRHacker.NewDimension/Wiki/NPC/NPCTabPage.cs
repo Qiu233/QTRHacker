@@ -57,9 +57,9 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 			NPCListView.MultiSelect = false;
 			NPCListView.HideSelection = false;
 			NPCListView.View = View.Details;
-			NPCListView.Columns.Add(MainForm.CurrentLanguage["Index"], 50);
-			NPCListView.Columns.Add(MainForm.CurrentLanguage["EnglishName"], 180);
-			NPCListView.Columns.Add(MainForm.CurrentLanguage["ChineseName"], 180);
+			NPCListView.Columns.Add(HackContext.CurrentLanguage["Index"], 50);
+			NPCListView.Columns.Add(HackContext.CurrentLanguage["EnglishName"], 180);
+			NPCListView.Columns.Add(HackContext.CurrentLanguage["ChineseName"], 180);
 
 			NPCListView.MouseDoubleClick += (s, e) =>
 			{
@@ -68,12 +68,106 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 				QTRHacker.Functions.GameObjects.NPC.NewNPC(HackContext.GameContext, (int)player.X, (int)player.Y, id);
 			};
 
+			ContextMenuStrip strip = NPCListView.ContextMenuStrip = new ContextMenuStrip();
+			strip.Items.Add(HackContext.CurrentLanguage["AddToNPCOne"]).Click += (s, e) =>
+			{
+				int id = Convert.ToInt32(NPCListView.SelectedItems[0].Text.ToString());
+				var player = HackContext.GameContext.MyPlayer;
+				Functions.GameObjects.NPC.NewNPC(HackContext.GameContext, (int)player.X, (int)player.Y + 10, id);
+			};
+			strip.Items.Add(HackContext.CurrentLanguage["AddToNPCSpecify"]).Click += (s, e) =>
+			{
+				int id = Convert.ToInt32(NPCListView.SelectedItems[0].Text.ToString());
+				var player = HackContext.GameContext.MyPlayer;
+				MForm AddNPCMForm = new MForm
+				{
+					BackColor = Color.FromArgb(90, 90, 90),
+					Text = HackContext.CurrentLanguage["AddNPC"],
+					StartPosition = FormStartPosition.CenterParent,
+					ClientSize = new Size(245, 92)
+				};
+
+				Label NumberTip = new Label()
+				{
+					Text = $"{HackContext.CurrentLanguage["Number"]}:",
+					Location = new Point(0, 0),
+					Size = new Size(80, 20),
+					TextAlign = ContentAlignment.MiddleCenter,
+				};
+				AddNPCMForm.MainPanel.Controls.Add(NumberTip);
+
+				TextBox NumberBox = new TextBox
+				{
+					BorderStyle = BorderStyle.FixedSingle,
+					BackColor = Color.FromArgb(120, 120, 120),
+					Text = "1",
+					Location = new Point(85, 0),
+					Size = new Size(95, 20)
+				};
+				NumberBox.KeyPress += (s1, e1) => e1.Handled = e1.Handled || (!Char.IsNumber(e1.KeyChar) && e1.KeyChar != 8 && e1.KeyChar != '-');
+				AddNPCMForm.MainPanel.Controls.Add(NumberBox);
+
+
+				Label CoorXTip = new Label()
+				{
+					Text = "X:",
+					Location = new Point(0, 20),
+					Size = new Size(80, 20),
+					TextAlign = ContentAlignment.MiddleCenter
+				};
+				AddNPCMForm.MainPanel.Controls.Add(CoorXTip);
+
+				TextBox CoorXBox = new TextBox
+				{
+					BorderStyle = BorderStyle.FixedSingle,
+					BackColor = Color.FromArgb(120, 120, 120),
+					Text = ((int)player.X).ToString(),
+					Location = new Point(85, 20),
+					Size = new Size(95, 20)
+				};
+				CoorXBox.KeyPress += (s1, e1) => e1.Handled = e1.Handled || (!Char.IsNumber(e1.KeyChar) && e1.KeyChar != 8 && e1.KeyChar != '-');
+				AddNPCMForm.MainPanel.Controls.Add(CoorXBox);
+
+				Label CoorYTip = new Label()
+				{
+					Text = "Y:",
+					Location = new Point(0, 40),
+					Size = new Size(80, 20),
+					TextAlign = ContentAlignment.MiddleCenter
+				};
+				AddNPCMForm.MainPanel.Controls.Add(CoorYTip);
+
+				TextBox CoorYBox = new TextBox
+				{
+					BorderStyle = BorderStyle.FixedSingle,
+					BackColor = Color.FromArgb(120, 120, 120),
+					Text = ((int)player.Y).ToString(),
+					Location = new Point(85, 40),
+					Size = new Size(95, 20)
+				};
+				CoorYBox.KeyPress += (s1, e1) => e1.Handled = e1.Handled || (!Char.IsNumber(e1.KeyChar) && e1.KeyChar != 8 && e1.KeyChar != '-');
+				AddNPCMForm.MainPanel.Controls.Add(CoorYBox);
+
+				Button ConfirmButton = new Button();
+				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
+				ConfirmButton.FlatStyle = FlatStyle.Flat;
+				ConfirmButton.Size = new Size(65, 60);
+				ConfirmButton.Location = new Point(180, 0);
+				ConfirmButton.Click += (s1, e1) =>
+				{
+					int count = int.Parse(NumberBox.Text);
+					for (int i = 0; i < count; i++)
+						Functions.GameObjects.NPC.NewNPC(HackContext.GameContext, int.Parse(CoorXBox.Text), int.Parse(CoorYBox.Text), id);
+					AddNPCMForm.Dispose();
+				};
+				AddNPCMForm.MainPanel.Controls.Add(ConfirmButton);
+				AddNPCMForm.ShowDialog(this);
+			};
+
+
 			NPCListView.SelectedIndexChanged += ItemListView_SelectedIndexChanged;
 
 			NPCInfoPage = new NPCInfoSubPage();
-
-
-
 			SearcherPage = new NPCSearcherSubPage();
 			SearcherPage.TownNPCCheckBox.CheckedChanged += Filter_CheckedChanged;
 			SearcherPage.BossCheckBox.CheckedChanged += Filter_CheckedChanged;

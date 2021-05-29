@@ -25,21 +25,17 @@ namespace QTRHacker.NewDimension
 {
 	public partial class MainForm : Form
 	{
-		private Color FormBack = Color.FromArgb(45, 45, 48);
-		private Point Drag_MousePos;
-		private Panel MainPanel, ButtonsPanel, ContentPanel;
-		private PictureBox MinButton, CloseButton;
+		private readonly Color FormBack = Color.FromArgb(45, 45, 48);
 		public static readonly Color ButtonNormalColor = Color.Transparent;
 		public static readonly Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
-		private PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel,
+		private Point Drag_MousePos;
+		private readonly Panel MainPanel, ButtonsPanel, ContentPanel;
+		private readonly PictureBox MinButton, CloseButton;
+		private readonly PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel,
 			ProjectilePagePanel, ScriptsPagePanel, SchesPagePanel,
 			MiscPagePanel, ChatSenderPanel, AimBotPagePanel,
 			AboutPagePanel;
 		public static MainForm MainFormInstance { get; private set; }
-		public static Dictionary<string, Config> Configs = new Dictionary<string, Config>();
-		public static ScriptRuntime QHScriptRuntime { get; private set; }
-		public static ScriptEngine QHScriptEngine { get; private set; }
-		public static Languages.Processor CurrentLanguage;
 		public static PageGroup Group1, Group2;
 		public static PageGroup ExpandedGroup;
 		public static int ButtonsPanelWidth = 100;
@@ -47,35 +43,40 @@ namespace QTRHacker.NewDimension
 		protected override void OnShown(EventArgs e)
 		{
 			base.OnShown(e);
-		}
-		public MainForm()
-		{
-			CheckForIllegalCrossThreadCalls = false;
 
 			if (System.Diagnostics.Process.GetProcessesByName("QTRHacker").Length > 1)
 			{
-				MessageBox.Show("请先关闭已打开的修改器\n如果已关闭且出现此提示，请在任务管理器检查是否有进程QTRHacker.exe滞留");
+				MessageBox.Show("You have already started a hack.\nPlease close the current one before trying to start again.");
 				Environment.Exit(0);
 			}
+		}
+		public MainForm()
+		{
+			HackContext.Initialize();//before everything
 
-			CreateDirectoriesAndFiles();
-			LoadConfigs();
-#if ENG
-			CurrentLanguage = Languages.Processor.GetLanguage("en");
-#else
-			CurrentLanguage = Languages.Processor.GetLanguage("zh-cn");
-#endif
+			CFG_QTRHacker cfg = HackContext.Configs["CFG_QTRHacker"] as CFG_QTRHacker;
+			if (cfg.FirstRunning)
+			{
+				cfg.FirstRunning = false;
+				if (System.Threading.Thread.CurrentThread.CurrentCulture.Name == "zh-CN")
+				{
+					if (MessageBox.Show("检测到当前环境为中文\n是否选择语言为中文？\n你可以稍后在配置文件./Content/Config/CFG_QTRHacker.json中更改", "第一次运行", MessageBoxButtons.YesNo) == DialogResult.Yes)
+						cfg.IsCN = true;
+					else
+						cfg.IsCN = false;
+				}
+				HackContext.SaveConfigs();
+				HackContext.Initialize();//again
+			}
 
+			CheckForIllegalCrossThreadCalls = false;
 			MainFormInstance = this;
-
-			InitializeComponent();
+			AutoScaleMode = AutoScaleMode.Font;
+			ClientSize = new Size(300 + ButtonsPanelWidth, 400);
+			Text = $"QTRHacker-V{Assembly.GetExecutingAssembly().GetName().Version}";
+			FormBorderStyle = FormBorderStyle.None;
 			BackColor = FormBack;
 
-			QHScriptRuntime = Python.CreateRuntime();
-			QHScriptEngine = QHScriptRuntime.GetEngine("Python");
-			var paths = QHScriptEngine.GetSearchPaths();
-			paths.Add(Path.GetFullPath(".\\Scripts\\"));
-			QHScriptEngine.SetSearchPaths(paths);
 
 			MainPanel = new Panel();
 			MainPanel.BackColor = Color.FromArgb(30, 30, 30);
@@ -159,24 +160,23 @@ namespace QTRHacker.NewDimension
 			Group2 = AddGroup();
 
 
-			AddButton(Group1, CurrentLanguage["Basic"], img_Basic, BasicPagePanel).Enabled = false;
-			AddButton(Group1, CurrentLanguage["Players"], img_Player, PlayerPagePanel).Enabled = false;
-			AddButton(Group1, CurrentLanguage["Projectiles"], img_Projectile, ProjectilePagePanel).Enabled = false;
-			AddButton(Group1, CurrentLanguage["Scripts"], img_Scripts, ScriptsPagePanel).Enabled = false;
-			AddButton(Group1, CurrentLanguage["ChatSender"], img_ChatSender, ChatSenderPanel).Enabled = false;
-			AddButton(Group1, CurrentLanguage["Miscs"], img_Misc, MiscPagePanel).Enabled = false;
-#if ENG
-#else
-			AddButton(Group1, CurrentLanguage["About"], img_About, AboutPagePanel).Enabled = true;
-#endif
-			AddButton(Group1, CurrentLanguage["MainPage"], img_MainPage, MainPagePanel).Selected = true;
+			AddButton(Group1, HackContext.CurrentLanguage["Basic"], img_Basic, BasicPagePanel).Enabled = false;
+			AddButton(Group1, HackContext.CurrentLanguage["Players"], img_Player, PlayerPagePanel).Enabled = false;
+			AddButton(Group1, HackContext.CurrentLanguage["Projectiles"], img_Projectile, ProjectilePagePanel).Enabled = false;
+			AddButton(Group1, HackContext.CurrentLanguage["Scripts"], img_Scripts, ScriptsPagePanel).Enabled = false;
+			AddButton(Group1, HackContext.CurrentLanguage["ChatSender"], img_ChatSender, ChatSenderPanel).Enabled = false;
+			AddButton(Group1, HackContext.CurrentLanguage["Miscs"], img_Misc, MiscPagePanel).Enabled = false;
+
+			if (HackContext.CurrentLanguage.Name == "zh-CN")
+				AddButton(Group1, HackContext.CurrentLanguage["About"], img_About, AboutPagePanel).Enabled = true;
+			AddButton(Group1, HackContext.CurrentLanguage["MainPage"], img_MainPage, MainPagePanel).Selected = true;
 
 			//AddButton(Group2, CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;
 			//AddButton(Group2, CurrentLanguage["AimBot"], img_AimBot, AimBotPagePanel).Enabled = false;
 
 			Icon = ConvertToIcon(img_Basic, true);
 
-			
+
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -216,20 +216,19 @@ namespace QTRHacker.NewDimension
 				image.Save(msImg, ImageFormat.Png);
 				using (var bin = new BinaryWriter(msIco))
 				{
-					//写图标头部
-					bin.Write((short)0);           //0-1保留
-					bin.Write((short)1);           //2-3文件类型。1=图标, 2=光标
-					bin.Write((short)1);           //4-5图像数量（图标可以包含多个图像）
+					bin.Write((short)0);
+					bin.Write((short)1);
+					bin.Write((short)1);
 
-					bin.Write((byte)image.Width);  //6图标宽度
-					bin.Write((byte)image.Height); //7图标高度
-					bin.Write((byte)0);            //8颜色数（若像素位深>=8，填0。这是显然的，达到8bpp的颜色数最少是256，byte不够表示）
-					bin.Write((byte)0);            //9保留。必须为0
-					bin.Write((short)0);           //10-11调色板
-					bin.Write((short)32);          //12-13位深
-					bin.Write((int)msImg.Length);  //14-17位图数据大小
-					bin.Write(22);                 //18-21位图数据起始字节
-												   //写图像数据
+					bin.Write((byte)image.Width);
+					bin.Write((byte)image.Height);
+					bin.Write((byte)0);
+					bin.Write((byte)0);
+					bin.Write((short)0);
+					bin.Write((short)32);
+					bin.Write((int)msImg.Length);
+					bin.Write(22);
+
 					bin.Write(msImg.ToArray());
 					bin.Flush();
 					bin.Seek(0, SeekOrigin.Begin);
@@ -309,51 +308,6 @@ namespace QTRHacker.NewDimension
 				this.Top = MousePosition.Y - Drag_MousePos.Y;
 				this.Left = MousePosition.X - Drag_MousePos.X;
 			}
-		}
-
-		private void CreateDirectoriesAndFiles()
-		{
-			if (!Directory.Exists(".\\Projs"))
-				Directory.CreateDirectory(".\\Projs");
-			if (!Directory.Exists(".\\Scripts"))
-				Directory.CreateDirectory(".\\Scripts");
-			if (!Directory.Exists(".\\Sches"))
-				Directory.CreateDirectory(".\\Sches");
-			if (!Directory.Exists(".\\ChatTemplates"))
-				Directory.CreateDirectory(".\\ChatTemplates");
-			if (!Directory.Exists(".\\RainbowFonts"))
-				Directory.CreateDirectory(".\\RainbowFonts");
-		}
-		private void LoadConfigs()
-		{
-			if (!Directory.Exists(".\\configs"))
-				Directory.CreateDirectory(".\\configs");
-			var ts = Assembly.GetExecutingAssembly().DefinedTypes.Where(t => t.Namespace == "QTRHacker.NewDimension.Configs" && t.Name.StartsWith("CFG_"));
-			ts.ToList().ForEach(t =>
-			{
-				LoadConfig(t.Name, out Config c, t.AsType());
-				Configs[t.Name] = c;
-			});
-		}
-		private void LoadConfig(string name, out Config obj, Type t)
-		{
-			if (!t.IsSubclassOf(typeof(Config)))
-				throw new Exception("Unexpected config type");
-			string s = $".\\configs\\{name}.json";
-			if (File.Exists(s))
-			{
-				obj = JsonConvert.DeserializeObject(File.ReadAllText(s), t) as Config;
-			}
-			else
-			{
-				obj = t.GetConstructor(new Type[] { }).Invoke(null) as Config;
-				SaveConfig(name, obj);
-			}
-		}
-		private void SaveConfig(string name, object obj)
-		{
-			string s = $".\\configs\\{name}.json";
-			File.WriteAllText(s, JsonConvert.SerializeObject(obj, Formatting.Indented));
 		}
 
 		protected override void OnClosing(CancelEventArgs e)

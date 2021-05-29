@@ -15,7 +15,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		public VoidVaultEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
 			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank4.Item, Editable, TargetPlayer.Bank4.Item.Length)
 		{
-			Text = MainForm.CurrentLanguage["VoidVault"];
+			Text = HackContext.CurrentLanguage["VoidVault"];
 			SlotsPanel.Location = new Point(0, 30);
 		}
 	}

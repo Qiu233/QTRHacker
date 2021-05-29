@@ -144,12 +144,8 @@ namespace QTRHacker.NewDimension.PagePanels
 		public ScriptEditorForm(string file)
 		{
 			ClientSize = new Size(700, 650);
-			FileName = $".\\Scripts\\{file}.qhscript";
-#if ENG
+			FileName = Path.Combine(HackContext.PATH_SCRIPTS, $"{file}.qhscript");
 			Text = "ScriptEditor-Name：" + file;
-#else
-			Text = "脚本编辑器-名称：" + file;
-#endif
 			BackColor = sBlackColor;
 			MenuStrip = new MenuStrip()
 			{
@@ -157,15 +153,15 @@ namespace QTRHacker.NewDimension.PagePanels
 				ForeColor = Color.White,
 				Renderer = new MenuStripRender()
 			};
-			ToolStripMenuItem FileMenuItem = new ToolStripMenuItem(MainForm.CurrentLanguage["File"])
+			ToolStripMenuItem FileMenuItem = new ToolStripMenuItem(HackContext.CurrentLanguage["File"])
 			{
 				ForeColor = Color.White,
 			};
-			AddMenuItem(FileMenuItem, MainForm.CurrentLanguage["Save"], (s, e) => Save());
-			AddMenuItem(FileMenuItem, MainForm.CurrentLanguage["Reopen"], (s, e) => Open());
+			AddMenuItem(FileMenuItem, HackContext.CurrentLanguage["Save"], (s, e) => Save());
+			AddMenuItem(FileMenuItem, HackContext.CurrentLanguage["Reopen"], (s, e) => Open());
 			MenuStrip.Items.Add(FileMenuItem);
 
-			ToolStripMenuItem CompileMenuItem = new ToolStripMenuItem(MainForm.CurrentLanguage["Execute"])
+			ToolStripMenuItem CompileMenuItem = new ToolStripMenuItem(HackContext.CurrentLanguage["Execute"])
 			{
 				ForeColor = Color.White,
 			};
@@ -211,11 +207,11 @@ namespace QTRHacker.NewDimension.PagePanels
 			EventRaisingStreamWriter outputWr = new EventRaisingStreamWriter(ms);
 			outputWr.StringWritten += sWr_StringWritten;
 
-			var o = MainForm.QHScriptEngine.Runtime.IO.OutputStream;
-			MainForm.QHScriptEngine.Runtime.IO.SetOutput(ms, outputWr);
-			var scope = HackContext.CreateScriptScope(MainForm.QHScriptEngine);
-			MainForm.QHScriptEngine.Execute(CodeView.Text, scope);
-			MainForm.QHScriptEngine.Runtime.IO.SetOutput(o, Encoding.UTF8);
+			var o = HackContext.QHScriptEngine.Runtime.IO.OutputStream;
+			HackContext.QHScriptEngine.Runtime.IO.SetOutput(ms, outputWr);
+			var scope = HackContext.CreateScriptScope(HackContext.QHScriptEngine);
+			HackContext.QHScriptEngine.Execute(CodeView.Text, scope);
+			HackContext.QHScriptEngine.Runtime.IO.SetOutput(o, Encoding.UTF8);
 
 			void sWr_StringWritten(object sd, OnWrittenEventArgs<string> ev)
 			{

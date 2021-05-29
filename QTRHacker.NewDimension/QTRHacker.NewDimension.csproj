@@ -139,9 +139,6 @@
     <Compile Include="Controls\FunctionButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\FunctionButton.Designer.cs">
-      <DependentUpon>FunctionButton.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\MForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,9 +179,6 @@
     <Compile Include="Languages\Processor.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PagePanels\BracketHighlightRenderer.cs" />
     <Compile Include="Controls\PageGroup.cs">
@@ -322,9 +316,6 @@
     <Compile Include="XNAControls\TreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="Controls\FunctionButton.resx">
-      <DependentUpon>FunctionButton.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ImageButton.resx">
       <DependentUpon>ImageButton.cs</DependentUpon>
     </EmbeddedResource>

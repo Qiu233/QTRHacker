@@ -119,7 +119,7 @@ namespace QHackLib.Utilities
 					break;
 				if ((int)mbi.RegionSize <= 0)
 					break;
-				if (mbi.Protect != (UInt32)NativeFunctions.AllocationProtect.PAGE_EXECUTE_READWRITE || mbi.State != 0x00001000)
+				if (mbi.Protect != (UInt32)NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE || mbi.State != 0x00001000)
 				{
 					i = mbi.BaseAddress + mbi.RegionSize;
 					continue;
@@ -180,7 +180,7 @@ namespace QHackLib.Utilities
 					break;
 				if ((int)mbi.RegionSize <= 0)
 					break;
-				if (mbi.Protect != (UInt32)NativeFunctions.AllocationProtect.PAGE_EXECUTE_READWRITE || mbi.State != 0x00001000)
+				if (mbi.Protect != (UInt32)NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE || mbi.State != 0x00001000)
 				{
 					i = mbi.BaseAddress + mbi.RegionSize;
 					continue;

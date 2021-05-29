@@ -19,7 +19,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 	{
 		public InvEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable) : base(Context, ParentForm, TargetPlayer, TargetPlayer.Inventory, Editable, Player.ITEM_MAX_COUNT - 9)
 		{
-			Text = MainForm.CurrentLanguage["Inventory"];
+			Text = HackContext.CurrentLanguage["Inventory"];
 
 
 			Button SaveInv = new Button();
@@ -29,9 +29,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				{
 					Filter = "inv files (*.inv)|*.inv",
 				};
-				if (!Directory.Exists("./invs"))
-					Directory.CreateDirectory("./invs");
-				sfd.InitialDirectory = Path.GetFullPath("./invs");
+				sfd.InitialDirectory = Path.GetFullPath(HackContext.PATH_INVS);
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 					SaveInventory(sfd.FileName);
@@ -39,7 +37,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				}
 			};
 			SaveInv.FlatStyle = FlatStyle.Flat;
-			SaveInv.Text = MainForm.CurrentLanguage["Save"];
+			SaveInv.Text = HackContext.CurrentLanguage["Save"];
 			SaveInv.Size = new Size(80, 30);
 			SaveInv.Location = new Point(260, 60);
 			ItemPropertiesPanel.Controls.Add(SaveInv);
@@ -52,9 +50,9 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				{
 					Filter = "inv files (*.inv)|*.inv"
 				};
-				if (!Directory.Exists("./invs"))
-					Directory.CreateDirectory("./invs");
-				ofd.InitialDirectory = Path.GetFullPath("./invs");
+				if (!Directory.Exists(HackContext.PATH_INVS))
+					Directory.CreateDirectory(HackContext.PATH_INVS);
+				ofd.InitialDirectory = Path.GetFullPath(HackContext.PATH_INVS);
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
 					LoadInventory(ofd.FileName);
@@ -63,7 +61,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				}
 			};
 			LoadInv.FlatStyle = FlatStyle.Flat;
-			LoadInv.Text = MainForm.CurrentLanguage["Load"];
+			LoadInv.Text = HackContext.CurrentLanguage["Load"];
 			LoadInv.Size = new Size(80, 30);
 			LoadInv.Location = new Point(260, 90);
 			ItemPropertiesPanel.Controls.Add(LoadInv);
@@ -76,9 +74,9 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				{
 					Filter = "inv files (*.invp)|*.invp"
 				};
-				if (!Directory.Exists("./invs"))
-					Directory.CreateDirectory("./invs");
-				sfd.InitialDirectory = Path.GetFullPath("./invs");
+				if (!Directory.Exists(HackContext.PATH_INVS))
+					Directory.CreateDirectory(HackContext.PATH_INVS);
+				sfd.InitialDirectory = Path.GetFullPath(HackContext.PATH_INVS);
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 
@@ -89,7 +87,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				}
 			};
 			SaveInvPItem.FlatStyle = FlatStyle.Flat;
-			SaveInvPItem.Text = $"{MainForm.CurrentLanguage["Save"]}(P)";
+			SaveInvPItem.Text = $"{HackContext.CurrentLanguage["Save"]}(P)";
 			SaveInvPItem.Size = new Size(80, 30);
 			SaveInvPItem.Location = new Point(260, 120);
 			ItemPropertiesPanel.Controls.Add(SaveInvPItem);
@@ -102,9 +100,9 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				{
 					Filter = "inv files (*.invp)|*.invp"
 				};
-				if (!Directory.Exists("./invs"))
-					Directory.CreateDirectory("./invs");
-				ofd.InitialDirectory = Path.GetFullPath("./invs");
+				if (!Directory.Exists(HackContext.PATH_INVS))
+					Directory.CreateDirectory(HackContext.PATH_INVS);
+				ofd.InitialDirectory = Path.GetFullPath(HackContext.PATH_INVS);
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
 					int j = 0;
@@ -152,7 +150,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				}
 			};
 			LoadInvPItem.FlatStyle = FlatStyle.Flat;
-			LoadInvPItem.Text = $"{MainForm.CurrentLanguage["Load"]}(P)";
+			LoadInvPItem.Text = $"{HackContext.CurrentLanguage["Load"]}(P)";
 			LoadInvPItem.Size = new Size(80, 30);
 			LoadInvPItem.Location = new Point(260, 150);
 			ItemPropertiesPanel.Controls.Add(LoadInvPItem);

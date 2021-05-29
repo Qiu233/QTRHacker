@@ -13,7 +13,7 @@ namespace QTRHacker.NewDimension.Controls
 		{
 			UpdateStyles();
 			DrawMode = DrawMode.OwnerDrawFixed;
-			BackColor = Color.FromArgb(60, 60, 60);
+			BackColor = Color.FromArgb(40, 40, 40);
 			BorderStyle = BorderStyle.None;
 		}
 		protected override void OnDrawItem(DrawItemEventArgs e)

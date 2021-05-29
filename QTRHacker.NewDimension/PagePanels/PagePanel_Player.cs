@@ -29,7 +29,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			EditPlayerInfoButton = new Button();
 			EditPlayerInfoButton.Enabled = false;
 			EditPlayerInfoButton.FlatStyle = FlatStyle.Flat;
-			EditPlayerInfoButton.Text = MainForm.CurrentLanguage["EditPlayer"];
+			EditPlayerInfoButton.Text = HackContext.CurrentLanguage["EditPlayer"];
 			EditPlayerInfoButton.BackColor = Color.FromArgb(100, 150, 150, 150);
 			EditPlayerInfoButton.Bounds = new Rectangle(215, 3, 80, 30);
 			EditPlayerInfoButton.Click += (s, e) =>
@@ -43,7 +43,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			TpToPlayerButton = new Button();
 			TpToPlayerButton.Enabled = false;
 			TpToPlayerButton.FlatStyle = FlatStyle.Flat;
-			TpToPlayerButton.Text = MainForm.CurrentLanguage["TpTo"];
+			TpToPlayerButton.Text = HackContext.CurrentLanguage["TpTo"];
 			TpToPlayerButton.BackColor = Color.FromArgb(100, 150, 150, 150);
 			TpToPlayerButton.Bounds = new Rectangle(215, 33, 80, 30);
 			TpToPlayerButton.Click += (s, e) =>
@@ -58,7 +58,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			AddBuffButton = new Button();
 			AddBuffButton.Enabled = false;
 			AddBuffButton.FlatStyle = FlatStyle.Flat;
-			AddBuffButton.Text = MainForm.CurrentLanguage["AddBuff"];
+			AddBuffButton.Text = HackContext.CurrentLanguage["AddBuff"];
 			AddBuffButton.BackColor = Color.FromArgb(100, 150, 150, 150);
 			AddBuffButton.Bounds = new Rectangle(215, 63, 80, 30);
 			Controls.Add(AddBuffButton);
@@ -70,14 +70,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm AddBuffMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["AddBuff"],
+					Text = HackContext.CurrentLanguage["AddBuff"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 72)
 				};
 
 				Label BuffTypeTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["BuffType"],
+					Text = HackContext.CurrentLanguage["BuffType"],
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -98,7 +98,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 				Label BuffTimeTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["BuffTime"],
+					Text = HackContext.CurrentLanguage["BuffTime"],
 					Location = new Point(0, 20),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -117,7 +117,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				AddBuffMForm.MainPanel.Controls.Add(BuffTime);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 40);
 				ConfirmButton.Location = new Point(180, 0);
@@ -133,7 +133,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			SetPetButton = new Button();
 			SetPetButton.Enabled = false;
 			SetPetButton.FlatStyle = FlatStyle.Flat;
-			SetPetButton.Text = MainForm.CurrentLanguage["SetPet"];
+			SetPetButton.Text = HackContext.CurrentLanguage["SetPet"];
 			SetPetButton.BackColor = Color.FromArgb(100, 150, 150, 150);
 			SetPetButton.Bounds = new Rectangle(215, 93, 80, 30);
 			Controls.Add(SetPetButton);
@@ -145,14 +145,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm SetPetMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["SetPet"],
+					Text = HackContext.CurrentLanguage["SetPet"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label PetTypeTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["Pet"],
+					Text = HackContext.CurrentLanguage["Pet"],
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -172,7 +172,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				SetPetMForm.MainPanel.Controls.Add(PetComboBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
@@ -188,7 +188,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			SetMountButton = new Button();
 			SetMountButton.Enabled = false;
 			SetMountButton.FlatStyle = FlatStyle.Flat;
-			SetMountButton.Text = MainForm.CurrentLanguage["SetMount"];
+			SetMountButton.Text = HackContext.CurrentLanguage["SetMount"];
 			SetMountButton.BackColor = Color.FromArgb(100, 150, 150, 150);
 			SetMountButton.Bounds = new Rectangle(215, 123, 80, 30);
 			Controls.Add(SetMountButton);
@@ -200,14 +200,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm SetMountMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["SetMount"],
+					Text = HackContext.CurrentLanguage["SetMount"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label MountTypeTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["Mount"],
+					Text = HackContext.CurrentLanguage["Mount"],
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -227,7 +227,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				SetMountMForm.MainPanel.Controls.Add(MountComboBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
@@ -245,14 +245,14 @@ namespace QTRHacker.NewDimension.PagePanels
 			PlayerAttributePanel.BorderStyle = BorderStyle.FixedSingle;
 			Controls.Add(PlayerAttributePanel);
 
-			PlayerNameInfoView = AddPlayerAttribute(MainForm.CurrentLanguage["PlayerName"], 120);
-			PlayerLifeInfoView = AddPlayerAttribute(MainForm.CurrentLanguage["Life"], 120);
-			PlayerManaInfoView = AddPlayerAttribute(MainForm.CurrentLanguage["Mana"], 120);
-			PlayerMaxLifeInfoView = AddPlayerAttribute(MainForm.CurrentLanguage["MaxLife"], 120);
-			PlayerMaxManaInfoView = AddPlayerAttribute(MainForm.CurrentLanguage["MaxMana"], 120);
-			PlayerXInfoView = AddPlayerAttribute(MainForm.CurrentLanguage["X_Coor"], 120);
-			PlayerYInfoView = AddPlayerAttribute(MainForm.CurrentLanguage["Y_Coor"], 120);
-			PlayerInventoryBaseAddressInfoView = AddPlayerAttribute(MainForm.CurrentLanguage["PlayerInvAddress"], 120);
+			PlayerNameInfoView = AddPlayerAttribute(HackContext.CurrentLanguage["PlayerName"], 120);
+			PlayerLifeInfoView = AddPlayerAttribute(HackContext.CurrentLanguage["Life"], 120);
+			PlayerManaInfoView = AddPlayerAttribute(HackContext.CurrentLanguage["Mana"], 120);
+			PlayerMaxLifeInfoView = AddPlayerAttribute(HackContext.CurrentLanguage["MaxLife"], 120);
+			PlayerMaxManaInfoView = AddPlayerAttribute(HackContext.CurrentLanguage["MaxMana"], 120);
+			PlayerXInfoView = AddPlayerAttribute(HackContext.CurrentLanguage["X_Coor"], 120);
+			PlayerYInfoView = AddPlayerAttribute(HackContext.CurrentLanguage["Y_Coor"], 120);
+			PlayerInventoryBaseAddressInfoView = AddPlayerAttribute(HackContext.CurrentLanguage["PlayerInvAddress"], 120);
 
 
 			PlayerListView = new MListView();
@@ -279,10 +279,10 @@ namespace QTRHacker.NewDimension.PagePanels
 				}
 			};
 			PlayerListView.Bounds = new Rectangle(3, 3, 210, 200);
-			PlayerListView.Columns.Add(MainForm.CurrentLanguage["Index"], 40);
-			PlayerListView.Columns.Add(MainForm.CurrentLanguage["Name"], 70);
-			PlayerListView.Columns.Add(MainForm.CurrentLanguage["Life"], 50);
-			PlayerListView.Columns.Add(MainForm.CurrentLanguage["Mana"], 50);
+			PlayerListView.Columns.Add(HackContext.CurrentLanguage["Index"], 40);
+			PlayerListView.Columns.Add(HackContext.CurrentLanguage["Name"], 70);
+			PlayerListView.Columns.Add(HackContext.CurrentLanguage["Life"], 50);
+			PlayerListView.Columns.Add(HackContext.CurrentLanguage["Mana"], 50);
 			Controls.Add(PlayerListView);
 
 

@@ -43,7 +43,7 @@ namespace QHackLib
 
 		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern Boolean CloseHandle(IntPtr hObject);
+		private static extern bool CloseHandle(IntPtr hObject);
 
 		[DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -51,7 +51,7 @@ namespace QHackLib
 
 		[DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool AdjustTokenPrivileges(IntPtr TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, [MarshalAs(UnmanagedType.Struct)]ref TOKEN_PRIVILEGES NewState, uint BufferLength, IntPtr PreviousState, uint ReturnLength);
+		private static extern bool AdjustTokenPrivileges(IntPtr TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, [MarshalAs(UnmanagedType.Struct)] ref TOKEN_PRIVILEGES NewState, uint BufferLength, IntPtr PreviousState, uint ReturnLength);
 
 
 
@@ -166,8 +166,8 @@ namespace QHackLib
 
 		public static Context Create(int processID)
 		{
-			string name = Process.GetProcessById(processID).ProcessName;
-			return new Context(name, processID, OpenProcess(PROCESS_ALL_ACCESS, false, processID), name + ".exe");
+			Process process = Process.GetProcessById(processID);
+			return new Context(process.ProcessName, processID, OpenProcess(PROCESS_ALL_ACCESS, false, processID), process.ProcessName + ".exe");
 		}
 
 		public void Close()

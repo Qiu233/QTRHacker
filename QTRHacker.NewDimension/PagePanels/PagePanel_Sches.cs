@@ -96,7 +96,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button ExecuteButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Generate"],
+				Text = HackContext.CurrentLanguage["Generate"],
 				Bounds = new Rectangle(204, 3, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -107,13 +107,13 @@ namespace QTRHacker.NewDimension.PagePanels
 				var ctx = HackContext.GameContext;
 				if (ctx == null)
 				{
-					MessageBox.Show(MainForm.CurrentLanguage["PleaseLockGame"]);
+					MessageBox.Show(HackContext.CurrentLanguage["PleaseLockGame"]);
 					return;
 				}
-				string h = $"./Sches/{(string)FilesBox.SelectedItem}.sche";
+				string h = Path.Combine(HackContext.PATH_SCHES, $"{FilesBox.SelectedItem}.sche");
 
 				var bs = SerializeTiles(LoadTilesFromFile(h));
-				int maddr = NativeFunctions.VirtualAllocEx(ctx.HContext.Handle, 0, bs.Length, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+				int maddr = NativeFunctions.VirtualAllocEx(ctx.HContext.Handle, 0, bs.Length, NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
 				NativeFunctions.WriteProcessMemory(ctx.HContext.Handle, maddr, bs, bs.Length, 0);
 				CLRFunctionCaller.Call(ctx, "TRInjections.dll", "TRInjections.ScheMaker.ScheMaker", "LoadTiles",
 					ctx.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), maddr);
@@ -126,7 +126,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button CreateNewButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Create"],
+				Text = HackContext.CurrentLanguage["Create"],
 				Bounds = new Rectangle(204, 33, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -136,14 +136,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm CreateNewMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["Create"],
+					Text = HackContext.CurrentLanguage["Create"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label NameTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["Name"] + "：",
+					Text = HackContext.CurrentLanguage["Name"] + "：",
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -161,17 +161,17 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(NameTextBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
 				ConfirmButton.Click += (s1, e1) =>
 				{
-					string str = $"./Sches/{NameTextBox.Text}.sche";
+					string str = Path.Combine(HackContext.PATH_SCHES, $"{NameTextBox.Text}.sche");
 					if (!File.Exists(str))
 						File.Create(str).Close();
 					else
-						MessageBox.Show(MainForm.CurrentLanguage["NameRepeated"]);
+						MessageBox.Show(HackContext.CurrentLanguage["NameRepeated"]);
 					UpdateList();
 					CreateNewMForm.Dispose();
 				};
@@ -182,7 +182,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button EditButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Edit"],
+				Text = HackContext.CurrentLanguage["Edit"],
 				Bounds = new Rectangle(204, 63, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -197,7 +197,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button RenameButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Rename"],
+				Text = HackContext.CurrentLanguage["Rename"],
 				Bounds = new Rectangle(204, 93, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -208,14 +208,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm CreateNewMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["Rename"],
+					Text = HackContext.CurrentLanguage["Rename"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label NewNameTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["NewName"] + "：",
+					Text = HackContext.CurrentLanguage["NewName"] + "：",
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -234,17 +234,17 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(NewNameTextBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
 				ConfirmButton.Click += (s1, e1) =>
 				{
-					string str = $"./Sches/{NewNameTextBox.Text}.sche";
+					string str = Path.Combine(HackContext.PATH_SCHES, $"{NewNameTextBox.Text}.sche");
 					if (!File.Exists(str))
-						File.Move($"./Sches/{(string)FilesBox.SelectedItem}.sche", str);
+						File.Move(Path.Combine(HackContext.PATH_SCHES, $"{(string)FilesBox.SelectedItem}.sche"), str);
 					else
-						MessageBox.Show(MainForm.CurrentLanguage["NameRepeated"]);
+						MessageBox.Show(HackContext.CurrentLanguage["NameRepeated"]);
 					UpdateList();
 					CreateNewMForm.Dispose();
 				};
@@ -255,7 +255,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button DeleteButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Delete"],
+				Text = HackContext.CurrentLanguage["Delete"],
 				Bounds = new Rectangle(204, 123, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -263,8 +263,8 @@ namespace QTRHacker.NewDimension.PagePanels
 			DeleteButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
-				if (MessageBox.Show(MainForm.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
-				File.Delete(($"./Sches/{(string)FilesBox.SelectedItem}.sche"));
+				if (MessageBox.Show(HackContext.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+				File.Delete(Path.Combine(HackContext.PATH_SCHES, $"{(string)FilesBox.SelectedItem}.sche"));
 				UpdateList();
 			};
 			this.Controls.Add(DeleteButton);
@@ -272,7 +272,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button RefreshButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Refresh"],
+				Text = HackContext.CurrentLanguage["Refresh"],
 				Bounds = new Rectangle(204, 153, 90, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -287,7 +287,7 @@ namespace QTRHacker.NewDimension.PagePanels
 		public void UpdateList()
 		{
 			FilesBox.Items.Clear();
-			foreach (var f in Directory.EnumerateFiles("./Sches/", "*.sche"))
+			foreach (var f in Directory.EnumerateFiles(HackContext.PATH_SCHES, "*.sche"))
 			{
 				FilesBox.Items.Add(Path.GetFileNameWithoutExtension(f));
 			}

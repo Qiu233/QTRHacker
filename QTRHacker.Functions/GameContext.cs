@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -37,6 +38,10 @@ namespace QTRHacker.Functions
 		}
 		public const int MaxItemTypes = 5088;
 		public int My_Player_Address
+		{
+			get;
+		}
+		public RemoteSignsManager Signs
 		{
 			get;
 		}
@@ -720,6 +725,8 @@ namespace QTRHacker.Functions
 			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
 			ActiveWorldFileData_Address = v;
 
+
+			Signs = RemoteSignsManager.CreateFromProcess(this);
 		}
 
 		/// <summary>
@@ -747,7 +754,6 @@ namespace QTRHacker.Functions
 		{
 			Close();
 		}
-
 
 	}
 }

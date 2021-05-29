@@ -30,7 +30,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.Context = Context;
 			this.ParentForm = ParentForm;
 			this.TargetPlayer = TargetPlayer;
-			Text = MainForm.CurrentLanguage["Character"];
+			Text = HackContext.CurrentLanguage["Character"];
 
 			MainPlayerView = new PlayerView();
 			MainPlayerView.Bounds = new Rectangle(5, 5, 200, 250);
@@ -51,13 +51,13 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			};
 
 			MainPlayerView.HairType = 0;
-			HairColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Hair"]) { Enabled = Editable };
-			SkinColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Skin"]) { Enabled = Editable };
-			EyeColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Eye"]) { Enabled = Editable };
-			ShirtColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Shirt"]) { Enabled = Editable };
-			UnderShirtColorControl = new ColorSelectControl(MainForm.CurrentLanguage["UnderShirt"]) { Enabled = Editable };
-			PantsColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Pants"]) { Enabled = Editable };
-			ShoesColorControl = new ColorSelectControl(MainForm.CurrentLanguage["Shoes"]) { Enabled = Editable };
+			HairColorControl = new ColorSelectControl(HackContext.CurrentLanguage["Hair"]) { Enabled = Editable };
+			SkinColorControl = new ColorSelectControl(HackContext.CurrentLanguage["Skin"]) { Enabled = Editable };
+			EyeColorControl = new ColorSelectControl(HackContext.CurrentLanguage["Eye"]) { Enabled = Editable };
+			ShirtColorControl = new ColorSelectControl(HackContext.CurrentLanguage["Shirt"]) { Enabled = Editable };
+			UnderShirtColorControl = new ColorSelectControl(HackContext.CurrentLanguage["UnderShirt"]) { Enabled = Editable };
+			PantsColorControl = new ColorSelectControl(HackContext.CurrentLanguage["Pants"]) { Enabled = Editable };
+			ShoesColorControl = new ColorSelectControl(HackContext.CurrentLanguage["Shoes"]) { Enabled = Editable };
 			HairColorControl.OnColorChanged += (c) => MainPlayerView.HairColor = c;
 			HairColorControl.Location = new Point(0, 30);
 
@@ -101,7 +101,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 			Label HealthTipLabel = new Label()
 			{
-				Text = MainForm.CurrentLanguage["MaxLife"],
+				Text = HackContext.CurrentLanguage["MaxLife"],
 				Location = new Point(160, 8),
 				Size = new Size(60, 20),
 			};
@@ -125,7 +125,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 			Label ManaTipLabel = new Label()
 			{
-				Text = MainForm.CurrentLanguage["MaxMana"],
+				Text = HackContext.CurrentLanguage["MaxMana"],
 				Location = new Point(160, 33),
 				Size = new Size(60, 20),
 			};
@@ -153,7 +153,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 
 			Button RefreshButton = new Button();
-			RefreshButton.Text = MainForm.CurrentLanguage["Refresh"];
+			RefreshButton.Text = HackContext.CurrentLanguage["Refresh"];
 			RefreshButton.FlatStyle = FlatStyle.Flat;
 			RefreshButton.Bounds = new Rectangle(220, 60, 100, 30);
 			RefreshButton.Click += (s, e) =>
@@ -163,7 +163,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			PropertiesSelectPanel.Controls.Add(RefreshButton);
 
 			Button ConfirmButton = new Button() { Enabled = Editable };
-			ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+			ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
 			ConfirmButton.FlatStyle = FlatStyle.Flat;
 			ConfirmButton.Bounds = new Rectangle(220, 93, 100, 30);
 			ConfirmButton.Click += (s, e) =>

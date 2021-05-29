@@ -19,28 +19,28 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 		private InfoView NPCDamageInfoView, NPCDefenseInfoView;
 		private InfoView NPCLifeMaxInfoView, NPCKnockbackResistInfoView;
 		private InfoView NPCTownNPCInfoView, NPCBossInfoView, NPCFriendlyInfoView;
-		public NPCInfoSubPage() : base(MainForm.CurrentLanguage["NPCInfo"])
+		public NPCInfoSubPage() : base(HackContext.CurrentLanguage["NPCInfo"])
 		{
 			NPCView = new NPCView();
 
 			NPCViewInfoView = new InfoView(NPCView, InfoView.TipDock.Top);
 			NPCViewInfoView.Bounds = new Rectangle(5, 5, 80, 80);
 			NPCViewInfoView.Tip.BackColor = NPCTabPage.NPCColor;
-			NPCViewInfoView.Text = MainForm.CurrentLanguage["Icon"];
+			NPCViewInfoView.Text = HackContext.CurrentLanguage["Icon"];
 			this.Controls.Add(NPCViewInfoView);
 
 			NPCNameInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
-			NPCNameInfoView.Text = MainForm.CurrentLanguage["Name"];
+			NPCNameInfoView.Text = HackContext.CurrentLanguage["Name"];
 			NPCNameInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCNameInfoView.Bounds = new Rectangle(0, 0, 170, 20);
 
 			NPCTypeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
-			NPCTypeInfoView.Text = MainForm.CurrentLanguage["Type"];
+			NPCTypeInfoView.Text = HackContext.CurrentLanguage["Type"];
 			NPCTypeInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCTypeInfoView.Bounds = new Rectangle(0, 20, 170, 20);
 
 			NPCAIStyleInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
-			NPCAIStyleInfoView.Text = MainForm.CurrentLanguage["AIStyle"];
+			NPCAIStyleInfoView.Text = HackContext.CurrentLanguage["AIStyle"];
 			NPCAIStyleInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCAIStyleInfoView.Bounds = new Rectangle(0, 40, 170, 20);
 
@@ -49,7 +49,7 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 			ItemDetailInfoViewContent.Controls.Add(NPCNameInfoView);
 			ItemDetailInfoViewContent.Controls.Add(NPCTypeInfoView);
 			ItemDetailInfoViewContent.Controls.Add(NPCAIStyleInfoView);
-			NPCDetailInfoView.Text = MainForm.CurrentLanguage["Details"];
+			NPCDetailInfoView.Text = HackContext.CurrentLanguage["Details"];
 			NPCDetailInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCDetailInfoView.Bounds = new Rectangle(90, 5, 170, 80);
 			this.Controls.Add(NPCDetailInfoView);
@@ -57,32 +57,32 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 
 
 			NPCWidthInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
-			NPCWidthInfoView.Text = MainForm.CurrentLanguage["Width"];
+			NPCWidthInfoView.Text = HackContext.CurrentLanguage["Width"];
 			NPCWidthInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCWidthInfoView.Bounds = new Rectangle(0, 0, 255, 20);
 
 			NPCHeightInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
-			NPCHeightInfoView.Text = MainForm.CurrentLanguage["Height"];
+			NPCHeightInfoView.Text = HackContext.CurrentLanguage["Height"];
 			NPCHeightInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCHeightInfoView.Bounds = new Rectangle(0, 20, 255, 20);
 
 			NPCDamageInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
-			NPCDamageInfoView.Text = MainForm.CurrentLanguage["Damage"];
+			NPCDamageInfoView.Text = HackContext.CurrentLanguage["Damage"];
 			NPCDamageInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCDamageInfoView.Bounds = new Rectangle(0, 40, 255, 20);
 
 			NPCDefenseInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
-			NPCDefenseInfoView.Text = MainForm.CurrentLanguage["Defense"];
+			NPCDefenseInfoView.Text = HackContext.CurrentLanguage["Defense"];
 			NPCDefenseInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCDefenseInfoView.Bounds = new Rectangle(0, 60, 255, 20);
 
 			NPCLifeMaxInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
-			NPCLifeMaxInfoView.Text = MainForm.CurrentLanguage["LifeMax"];
+			NPCLifeMaxInfoView.Text = HackContext.CurrentLanguage["LifeMax"];
 			NPCLifeMaxInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCLifeMaxInfoView.Bounds = new Rectangle(0, 80, 255, 20);
 
 			NPCKnockbackResistInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
-			NPCKnockbackResistInfoView.Text = MainForm.CurrentLanguage["KnockbackResist"];
+			NPCKnockbackResistInfoView.Text = HackContext.CurrentLanguage["KnockbackResist"];
 			NPCKnockbackResistInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCKnockbackResistInfoView.Bounds = new Rectangle(0, 100, 255, 20);
 
@@ -94,13 +94,13 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 			NPCDetailtInfoViewContent.Controls.Add(NPCDefenseInfoView);
 			NPCDetailtInfoViewContent.Controls.Add(NPCLifeMaxInfoView);
 			NPCDetailtInfoViewContent.Controls.Add(NPCKnockbackResistInfoView);
-			NPCPropInfoView.Text = MainForm.CurrentLanguage["Properties"];
+			NPCPropInfoView.Text = HackContext.CurrentLanguage["Properties"];
 			NPCPropInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCPropInfoView.Bounds = new Rectangle(5, 105, 255, 140);
 			this.Controls.Add(NPCPropInfoView);
 
 			NPCTownNPCInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
-			NPCTownNPCInfoView.Text = MainForm.CurrentLanguage["TownNPC"];
+			NPCTownNPCInfoView.Text = HackContext.CurrentLanguage["TownNPC"];
 			NPCTownNPCInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCTownNPCInfoView.Bounds = new Rectangle(0, 0, 255, 20);
 
@@ -110,7 +110,7 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 			NPCBossInfoView.Bounds = new Rectangle(0, 20, 255, 20);
 
 			NPCFriendlyInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
-			NPCFriendlyInfoView.Text = MainForm.CurrentLanguage["Friendly"];
+			NPCFriendlyInfoView.Text = HackContext.CurrentLanguage["Friendly"];
 			NPCFriendlyInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCFriendlyInfoView.Bounds = new Rectangle(0, 40, 255, 20);
 
@@ -119,7 +119,7 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 			NPCCategoryInfoViewContent.Controls.Add(NPCTownNPCInfoView);
 			NPCCategoryInfoViewContent.Controls.Add(NPCBossInfoView);
 			NPCCategoryInfoViewContent.Controls.Add(NPCFriendlyInfoView);
-			NPCCategoryInfoView.Text = MainForm.CurrentLanguage["Category"];
+			NPCCategoryInfoView.Text = HackContext.CurrentLanguage["Category"];
 			NPCCategoryInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCCategoryInfoView.Bounds = new Rectangle(5, 260, 255, 80);
 			this.Controls.Add(NPCCategoryInfoView);
@@ -137,9 +137,9 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 			(NPCLifeMaxInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["LifeMax"].ToString();
 			(NPCKnockbackResistInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["KnockBackResist"].ToString();
 
-			(NPCTownNPCInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["TownNPC"].ToObject<bool>() ? MainForm.CurrentLanguage["Yes"] : MainForm.CurrentLanguage["No"];
-			(NPCBossInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Boss"].ToObject<bool>() ? MainForm.CurrentLanguage["Yes"] : MainForm.CurrentLanguage["No"];
-			(NPCFriendlyInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Friendly"].ToObject<bool>() ? MainForm.CurrentLanguage["Yes"] : MainForm.CurrentLanguage["No"];
+			(NPCTownNPCInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["TownNPC"].ToObject<bool>() ? HackContext.CurrentLanguage["Yes"] : HackContext.CurrentLanguage["No"];
+			(NPCBossInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Boss"].ToObject<bool>() ? HackContext.CurrentLanguage["Yes"] : HackContext.CurrentLanguage["No"];
+			(NPCFriendlyInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Friendly"].ToObject<bool>() ? HackContext.CurrentLanguage["Yes"] : HackContext.CurrentLanguage["No"];
 
 		}
 	}

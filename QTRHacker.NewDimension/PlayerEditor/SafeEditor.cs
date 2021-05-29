@@ -15,7 +15,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		public SafeEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
 			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank2.Item, Editable, TargetPlayer.Bank2.Item.Length)
 		{
-			Text = MainForm.CurrentLanguage["Safe"];
+			Text = HackContext.CurrentLanguage["Safe"];
 			SlotsPanel.Location = new Point(0, 30);
 		}
 	}

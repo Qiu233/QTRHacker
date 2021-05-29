@@ -153,8 +153,8 @@ namespace QHackLib.FunctionHelper
 		{
 			lock (thisLock)
 			{
-				int codeAddr = NativeFunctions.VirtualAllocEx(Context.Handle, 0, codeSize, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
-				int compAddr = NativeFunctions.VirtualAllocEx(Context.Handle, 0, codeSize, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+				int codeAddr = NativeFunctions.VirtualAllocEx(Context.Handle, 0, codeSize, NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
+				int compAddr = NativeFunctions.VirtualAllocEx(Context.Handle, 0, codeSize, NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
 				int flagAddr = 0;
 
 				AssemblySnippet a = AssemblySnippet.FromEmpty();
@@ -162,7 +162,7 @@ namespace QHackLib.FunctionHelper
 				a.Content.Add(Instruction.Create("mov dword ptr [" + compAddr + "],1"));
 				if (once)
 				{
-					flagAddr = NativeFunctions.VirtualAllocEx(Context.Handle, 0, codeSize, NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+					flagAddr = NativeFunctions.VirtualAllocEx(Context.Handle, 0, codeSize, NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
 					NativeFunctions.WriteProcessMemory(Context.Handle, flagAddr, ref once, 4, 0);
 					a.Content.Add(Instruction.Create("cmp dword ptr [" + flagAddr + "],0"));
 					a.Content.Add(Instruction.Create("jle jalkjflakjl"));

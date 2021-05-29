@@ -41,14 +41,14 @@ namespace QTRHacker.NewDimension.Controls
 		public static Color SelectedColor = Color.FromArgb(100, 0, 0, 255);
 		private bool _functionEnabled;
 		public bool Closable { get; set; }
-		public string Identity
+		public int Identity
 		{
 			get;
 		}
 		public event Action<object, OnFunctionEnabledEventArgs> OnEnable = (s, e) => { };
 		public event Action<object, OnFunctionDisabledEventArgs> OnDisable = (s, e) => { };
 		private Func<object, bool> GetEnabled;
-		public FunctionButton(string Identity, Func<object, bool> GetEnabled, bool Closable = true)
+		public FunctionButton(int Identity, Func<object, bool> GetEnabled, bool Closable = true)
 		{
 			SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
 			UpdateStyles();
@@ -56,7 +56,10 @@ namespace QTRHacker.NewDimension.Controls
 			this.Closable = Closable;
 			this.GetEnabled = GetEnabled;
 			BackColor = NormalColor;
-			InitializeComponent();
+			AutoScaleDimensions = new SizeF(6F, 12F);
+			AutoScaleMode = AutoScaleMode.Font;
+			Name = "FunctionButton";
+			Size = new Size(230, 20);
 		}
 		protected override void OnLoad(EventArgs e)
 		{

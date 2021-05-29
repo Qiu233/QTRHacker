@@ -42,37 +42,37 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			this.Size = new Size(350, 360);
 
 			Hack = new Hashtable();
-			AddTextBox(MainForm.CurrentLanguage["Type"], "Type", null);
-			AddTextBox(MainForm.CurrentLanguage["Damage"], "Damage", null);
-			AddTextBox(MainForm.CurrentLanguage["Stack"], "Stack", null);
-			AddTextBox(MainForm.CurrentLanguage["KnockBack"], "KnockBack", null, true);
-			AddTextBox(MainForm.CurrentLanguage["Crit"], "Crit", null);
-			AddTextBox(MainForm.CurrentLanguage["BuffType"], "BuffType", null);
-			AddTextBox(MainForm.CurrentLanguage["BuffTime"], "BuffTime", null);
-			AddTextBox(MainForm.CurrentLanguage["HealMana"], "HealMana", null);
-			AddTextBox(MainForm.CurrentLanguage["HealLife"], "HealLife", null);
-			AddTextBox(MainForm.CurrentLanguage["UseTime"], "UseTime", null);
-			AddTextBox(MainForm.CurrentLanguage["UseAnimation"], "UseAnimation", null);
-			AddTextBox(MainForm.CurrentLanguage["Scale"], "Scale", null, true);
-			AddTextBox(MainForm.CurrentLanguage["Defense"], "Defense", null);
-			AddTextBox(MainForm.CurrentLanguage["ShootSpeed"], "ShootSpeed", null, true);
-			AddTextBox(MainForm.CurrentLanguage["Shoot"], "Shoot", null);
-			AddTextBox(MainForm.CurrentLanguage["Pick"], "Pick", null);
-			AddTextBox(MainForm.CurrentLanguage["Axe"], "Axe", null);
-			AddTextBox(MainForm.CurrentLanguage["Hammer"], "Hammer", null);
-			AddTextBox(MainForm.CurrentLanguage["TileBoost"], "TileBoost", null);
-			AddTextBox(MainForm.CurrentLanguage["CreateTile"], "CreateTile", null);
-			AddTextBox(MainForm.CurrentLanguage["PlaceStyle"], "PlaceStyle", null);
-			AddTextBox(MainForm.CurrentLanguage["FishingPole"], "FishingPole", null);
-			AddTextBox(MainForm.CurrentLanguage["Bait"], "Bait", null);
+			AddTextBox(HackContext.CurrentLanguage["Type"], "Type", null);
+			AddTextBox(HackContext.CurrentLanguage["Damage"], "Damage", null);
+			AddTextBox(HackContext.CurrentLanguage["Stack"], "Stack", null);
+			AddTextBox(HackContext.CurrentLanguage["KnockBack"], "KnockBack", null, true);
+			AddTextBox(HackContext.CurrentLanguage["Crit"], "Crit", null);
+			AddTextBox(HackContext.CurrentLanguage["BuffType"], "BuffType", null);
+			AddTextBox(HackContext.CurrentLanguage["BuffTime"], "BuffTime", null);
+			AddTextBox(HackContext.CurrentLanguage["HealMana"], "HealMana", null);
+			AddTextBox(HackContext.CurrentLanguage["HealLife"], "HealLife", null);
+			AddTextBox(HackContext.CurrentLanguage["UseTime"], "UseTime", null);
+			AddTextBox(HackContext.CurrentLanguage["UseAnimation"], "UseAnimation", null);
+			AddTextBox(HackContext.CurrentLanguage["Scale"], "Scale", null, true);
+			AddTextBox(HackContext.CurrentLanguage["Defense"], "Defense", null);
+			AddTextBox(HackContext.CurrentLanguage["ShootSpeed"], "ShootSpeed", null, true);
+			AddTextBox(HackContext.CurrentLanguage["Shoot"], "Shoot", null);
+			AddTextBox(HackContext.CurrentLanguage["Pick"], "Pick", null);
+			AddTextBox(HackContext.CurrentLanguage["Axe"], "Axe", null);
+			AddTextBox(HackContext.CurrentLanguage["Hammer"], "Hammer", null);
+			AddTextBox(HackContext.CurrentLanguage["TileBoost"], "TileBoost", null);
+			AddTextBox(HackContext.CurrentLanguage["CreateTile"], "CreateTile", null);
+			AddTextBox(HackContext.CurrentLanguage["PlaceStyle"], "PlaceStyle", null);
+			AddTextBox(HackContext.CurrentLanguage["FishingPole"], "FishingPole", null);
+			AddTextBox(HackContext.CurrentLanguage["Bait"], "Bait", null);
 
 
-			PrefixComboBox = AddComboBox(MainForm.CurrentLanguage["Prefix"], GameResLoader.Prefixes);
+			PrefixComboBox = AddComboBox(HackContext.CurrentLanguage["Prefix"], GameResLoader.Prefixes);
 			PrefixComboBox.BackColor = Color.FromArgb(120, 120, 120);
 
 			AutoReuseCheckBox = new CheckBox()
 			{
-				Text = MainForm.CurrentLanguage["AutoReuse"],
+				Text = HackContext.CurrentLanguage["AutoReuse"],
 				Size = new Size(130, 20),
 				Location = new Point(0, 245)
 			};
@@ -80,7 +80,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 			EquippableCheckBox = new CheckBox()
 			{
-				Text = MainForm.CurrentLanguage["Accessory"],
+				Text = HackContext.CurrentLanguage["Accessory"],
 				Size = new Size(130, 20),
 				Location = new Point(135, 245)
 			};

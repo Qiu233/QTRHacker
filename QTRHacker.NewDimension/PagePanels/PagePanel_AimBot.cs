@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.PagePanels
-{
+{/*
 	public class PagePanel_AimBot : PagePanel
 	{
 		public MListView PlayerListView;
@@ -45,15 +45,15 @@ namespace QTRHacker.NewDimension.PagePanels
 		{
 			PlayerListView = new MListView();
 			PlayerListView.Bounds = new Rectangle(3, 3, 210, 362);
-			PlayerListView.Columns.Add(MainForm.CurrentLanguage["Index"], 40);
-			PlayerListView.Columns.Add(MainForm.CurrentLanguage["Name"], 70);
-			PlayerListView.Columns.Add(MainForm.CurrentLanguage["Life"], 50);
-			PlayerListView.Columns.Add(MainForm.CurrentLanguage["Mana"], 50);
+			PlayerListView.Columns.Add(HackContext.CurrentLanguage["Index"], 40);
+			PlayerListView.Columns.Add(HackContext.CurrentLanguage["Name"], 70);
+			PlayerListView.Columns.Add(HackContext.CurrentLanguage["Life"], 50);
+			PlayerListView.Columns.Add(HackContext.CurrentLanguage["Mana"], 50);
 			this.Controls.Add(PlayerListView);
 
 			LockPlayerButton = new Button();
 			LockPlayerButton.FlatStyle = FlatStyle.Flat;
-			LockPlayerButton.Text = MainForm.CurrentLanguage["Lock"];
+			LockPlayerButton.Text = HackContext.CurrentLanguage["Lock"];
 			LockPlayerButton.BackColor = Color.FromArgb(100, 150, 150, 150);
 			LockPlayerButton.Bounds = new Rectangle(215, 3, 80, 30);
 			LockPlayerButton.Click += (s, e) =>
@@ -73,7 +73,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			UnLockPlayerButton = new Button();
 			UnLockPlayerButton.Enabled = false;
 			UnLockPlayerButton.FlatStyle = FlatStyle.Flat;
-			UnLockPlayerButton.Text = MainForm.CurrentLanguage["Unlock"];
+			UnLockPlayerButton.Text = HackContext.CurrentLanguage["Unlock"];
 			UnLockPlayerButton.BackColor = Color.FromArgb(100, 150, 150, 150);
 			UnLockPlayerButton.Bounds = new Rectangle(215, 33, 80, 30);
 			UnLockPlayerButton.Click += (s, e) =>
@@ -130,5 +130,5 @@ namespace QTRHacker.NewDimension.PagePanels
 			NativeFunctions.ReadProcessMemory(HackContext.GameContext.HContext.Handle, enAddr, ref enabled, 1, 0);
 			Locked = enabled;
 		}
-	}
+	}*/
 }

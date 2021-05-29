@@ -61,8 +61,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			CurrentPlayerMiscDyeBaseAddressInfoView,
 			CurrentPlayerBuffTypeBaseAddressInfoView,
 			CurrentPlayerBuffTimeBaseAddressInfoView, CurrentPlayerFirstItemBaseAddressInfoView,
-			Terraria_Main_Update_BaseAddressInfoView,
-			SignHeadBaseAddressInfoView;
+			Terraria_Main_Update_BaseAddressInfoView;
 		public PagePanel_MainPage(int Width, int Height) : base(Width, Height)
 		{
 			TextFont = new Font("Arial", 10);
@@ -72,93 +71,84 @@ namespace QTRHacker.NewDimension.PagePanels
 			PlayerArrayBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 60, Width, 20),
-				Text = MainForm.CurrentLanguage["PlayerArrayAddress"]
+				Text = HackContext.CurrentLanguage["PlayerArrayAddress"]
 			};
 			Controls.Add(PlayerArrayBaseAddressInfoView);
 
 			CurrentPlayerBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 80, Width, 20),
-				Text = MainForm.CurrentLanguage["MyPlayerAddress"]
+				Text = HackContext.CurrentLanguage["MyPlayerAddress"]
 			};
 			Controls.Add(CurrentPlayerBaseAddressInfoView);
 
 			CurrentPlayerInventoryBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 100, Width, 20),
-				Text = MainForm.CurrentLanguage["MyPlayerInvAddress"]
+				Text = HackContext.CurrentLanguage["MyPlayerInvAddress"]
 			};
 			Controls.Add(CurrentPlayerInventoryBaseAddressInfoView);
 
 			CurrentPlayerArmorBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 120, Width, 20),
-				Text = MainForm.CurrentLanguage["MyPlayerArmorAddress"]
+				Text = HackContext.CurrentLanguage["MyPlayerArmorAddress"]
 			};
 			Controls.Add(CurrentPlayerArmorBaseAddressInfoView);
 
 			CurrentPlayerDyeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 140, Width, 20),
-				Text = MainForm.CurrentLanguage["MyPlayerDyeAddress"]
+				Text = HackContext.CurrentLanguage["MyPlayerDyeAddress"]
 			};
 			Controls.Add(CurrentPlayerDyeBaseAddressInfoView);
 
 			CurrentPlayerMiscBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 160, Width, 20),
-				Text = MainForm.CurrentLanguage["MyPlayerMiscAddress"]
+				Text = HackContext.CurrentLanguage["MyPlayerMiscAddress"]
 			};
 			Controls.Add(CurrentPlayerMiscBaseAddressInfoView);
 
 			CurrentPlayerMiscDyeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 180, Width, 20),
-				Text = MainForm.CurrentLanguage["MyPlayerMiscDyeAddress"]
+				Text = HackContext.CurrentLanguage["MyPlayerMiscDyeAddress"]
 			};
 			Controls.Add(CurrentPlayerMiscDyeBaseAddressInfoView);
 
 			CurrentPlayerBuffTypeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 200, Width, 20),
-				Text = MainForm.CurrentLanguage["MyPlayerBuffAddress"]
+				Text = HackContext.CurrentLanguage["MyPlayerBuffAddress"]
 			};
 			Controls.Add(CurrentPlayerBuffTypeBaseAddressInfoView);
 
 			CurrentPlayerBuffTimeBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 220, Width, 20),
-				Text = MainForm.CurrentLanguage["MyPlayerBuffTimeAddress"]
+				Text = HackContext.CurrentLanguage["MyPlayerBuffTimeAddress"]
 			};
 			Controls.Add(CurrentPlayerBuffTimeBaseAddressInfoView);
 
 			CurrentPlayerFirstItemBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 240, Width, 20),
-				Text = MainForm.CurrentLanguage["InvFirstItemAddress"]
+				Text = HackContext.CurrentLanguage["InvFirstItemAddress"]
 			};
 			Controls.Add(CurrentPlayerFirstItemBaseAddressInfoView);
 
 			Terraria_Main_Update_BaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 260, Width, 20),
-				Text = MainForm.CurrentLanguage["Terraria_Main_Update"]
+				Text = HackContext.CurrentLanguage["Terraria_Main_Update"]
 			};
 			Controls.Add(Terraria_Main_Update_BaseAddressInfoView);
-
-			SignHeadBaseAddressInfoView = new InfoViewEx(220)
-			{
-				Bounds = new Rectangle(0, 280, Width, 20),
-				Text = MainForm.CurrentLanguage["SignHead"]
-			};
-			Controls.Add(SignHeadBaseAddressInfoView);
-
-
 
 			RefreshButton = new Button();
 			RefreshButton.FlatStyle = FlatStyle.Flat;
 			RefreshButton.ForeColor = Color.White;
-			RefreshButton.Text = MainForm.CurrentLanguage["FetchAddressesAgain"];
+			RefreshButton.Text = HackContext.CurrentLanguage["FetchAddressesAgain"];
 			RefreshButton.Bounds = new Rectangle(Width - 130, Height - 40, 120, 30);
 			RefreshButton.Click += (s, e) =>
 			{
@@ -173,7 +163,7 @@ namespace QTRHacker.NewDimension.PagePanels
 			base.OnPaint(e);
 			if (!Dragging)
 				e.Graphics.DrawImage(CrossImage, Width - 50, 15, 25, 25);
-			e.Graphics.DrawString(MainForm.CurrentLanguage["DragTip"], TextFont, Brushes.White, Width - 280, 20);
+			e.Graphics.DrawString(HackContext.CurrentLanguage["DragTip"], TextFont, Brushes.White, Width - 280, 20);
 		}
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
@@ -208,8 +198,9 @@ namespace QTRHacker.NewDimension.PagePanels
 
 		private void InitGame(int pid)
 		{
-			HackContext.GameContext = GameContext.OpenGame(pid, GameContextExceptionHandler);
-			HackContext.InitSign();
+
+			HackContext.GameContext = GameContext.OpenGame(pid);
+
 			//这个是获得最终信息的，必须最后执行
 			InitializeAddresses();
 		}
@@ -253,7 +244,6 @@ namespace QTRHacker.NewDimension.PagePanels
 			CurrentPlayerBuffTimeBaseAddressInfoView.View.Text = buffTimeBaseAddress.ToString("X8");
 			CurrentPlayerFirstItemBaseAddressInfoView.View.Text = ctx.MyPlayer.Inventory[0].BaseAddress.ToString("X8");
 			Terraria_Main_Update_BaseAddressInfoView.View.Text = ctx.HContext.MainAddressHelper["Terraria.Main", "Update"].ToString("X8");
-			SignHeadBaseAddressInfoView.View.Text = HackContext.SignHead.ToString("X8");
 		}
 	}
 }

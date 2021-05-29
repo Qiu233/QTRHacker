@@ -25,7 +25,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button ExecuteButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Execute"],
+				Text = HackContext.CurrentLanguage["Execute"],
 				Bounds = new Rectangle(214, 3, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -36,19 +36,19 @@ namespace QTRHacker.NewDimension.PagePanels
 				var ctx = HackContext.GameContext;
 				if (ctx == null)
 				{
-					MessageBox.Show(MainForm.CurrentLanguage["PleaseLockGame"]);
+					MessageBox.Show(HackContext.CurrentLanguage["PleaseLockGame"]);
 					return;
 				}
-				string h = $"./Scripts/{(string)FilesBox.SelectedItem}.qhscript";
-				string t = File.ReadAllText(($"./Scripts/{(string)FilesBox.SelectedItem}.qhscript"));
-				var scope = HackContext.CreateScriptScope(MainForm.QHScriptEngine);
-				MainForm.QHScriptEngine.Execute(t, scope);
+				string h = Path.Combine(HackContext.PATH_SCRIPTS, $"{(string)FilesBox.SelectedItem}.qhscript");
+				string t = File.ReadAllText(Path.Combine(HackContext.PATH_SCRIPTS, $"{(string)FilesBox.SelectedItem}.qhscript"));
+				var scope = HackContext.CreateScriptScope(HackContext.QHScriptEngine);
+				HackContext.QHScriptEngine.Execute(t, scope);
 			};
 			Controls.Add(ExecuteButton);
 
 			Button CreateNewButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Create"],
+				Text = HackContext.CurrentLanguage["Create"],
 				Bounds = new Rectangle(214, 33, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -58,14 +58,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm CreateNewMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["Create"],
+					Text = HackContext.CurrentLanguage["Create"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label NameTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["Name"] + "：",
+					Text = HackContext.CurrentLanguage["Name"] + "：",
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -83,17 +83,17 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(NameTextBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
 				ConfirmButton.Click += (s1, e1) =>
 				{
-					string str = $"./Scripts/{NameTextBox.Text}.qhscript";
+					string str = Path.Combine(HackContext.PATH_SCRIPTS, $"{NameTextBox.Text}.qhscript");
 					if (!File.Exists(str))
 						File.Create(str).Close();
 					else
-						MessageBox.Show(MainForm.CurrentLanguage["NameRepeated"]);
+						MessageBox.Show(HackContext.CurrentLanguage["NameRepeated"]);
 					UpdateList();
 					CreateNewMForm.Dispose();
 				};
@@ -104,7 +104,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button EditButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Edit"],
+				Text = HackContext.CurrentLanguage["Edit"],
 				Bounds = new Rectangle(214, 63, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -119,7 +119,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button RenameButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Rename"],
+				Text = HackContext.CurrentLanguage["Rename"],
 				Bounds = new Rectangle(214, 93, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -130,14 +130,14 @@ namespace QTRHacker.NewDimension.PagePanels
 				MForm CreateNewMForm = new MForm
 				{
 					BackColor = Color.FromArgb(90, 90, 90),
-					Text = MainForm.CurrentLanguage["Rename"],
+					Text = HackContext.CurrentLanguage["Rename"],
 					StartPosition = FormStartPosition.CenterParent,
 					ClientSize = new Size(245, 52)
 				};
 
 				Label NewNameTip = new Label()
 				{
-					Text = MainForm.CurrentLanguage["NewName"] + "：",
+					Text = HackContext.CurrentLanguage["NewName"] + "：",
 					Location = new Point(0, 0),
 					Size = new Size(80, 20),
 					TextAlign = ContentAlignment.MiddleCenter
@@ -156,17 +156,17 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(NewNameTextBox);
 
 				Button ConfirmButton = new Button();
-				ConfirmButton.Text = MainForm.CurrentLanguage["Confirm"];
+				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
 				ConfirmButton.FlatStyle = FlatStyle.Flat;
 				ConfirmButton.Size = new Size(65, 20);
 				ConfirmButton.Location = new Point(180, 0);
 				ConfirmButton.Click += (s1, e1) =>
 				{
-					string str = $"./Scripts/{NewNameTextBox.Text}.qhscript";
+					string str = Path.Combine(HackContext.PATH_SCRIPTS, $"{NewNameTextBox.Text}.qhscript");
 					if (!File.Exists(str))
-						File.Move($"./Scripts/{(string)FilesBox.SelectedItem}.qhscript", str);
+						File.Move(Path.Combine(HackContext.PATH_SCRIPTS, $"{(string)FilesBox.SelectedItem}.qhscript"), str);
 					else
-						MessageBox.Show(MainForm.CurrentLanguage["NameRepeated"]);
+						MessageBox.Show(HackContext.CurrentLanguage["NameRepeated"]);
 					UpdateList();
 					CreateNewMForm.Dispose();
 				};
@@ -177,7 +177,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button DeleteButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Delete"],
+				Text = HackContext.CurrentLanguage["Delete"],
 				Bounds = new Rectangle(214, 123, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -185,8 +185,8 @@ namespace QTRHacker.NewDimension.PagePanels
 			DeleteButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
-				if (MessageBox.Show(MainForm.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
-				File.Delete(($"./Scripts/{(string)FilesBox.SelectedItem}.qhscript"));
+				if (MessageBox.Show(HackContext.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+				File.Delete(Path.Combine(HackContext.PATH_SCRIPTS, $"{(string)FilesBox.SelectedItem}.qhscript"));
 				UpdateList();
 			};
 			this.Controls.Add(DeleteButton);
@@ -194,7 +194,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			Button RefreshButton = new Button()
 			{
-				Text = MainForm.CurrentLanguage["Refresh"],
+				Text = HackContext.CurrentLanguage["Refresh"],
 				Bounds = new Rectangle(214, 153, 80, 30),
 				FlatStyle = FlatStyle.Flat,
 				BackColor = Color.FromArgb(100, 150, 150, 150)
@@ -209,7 +209,7 @@ namespace QTRHacker.NewDimension.PagePanels
 		public void UpdateList()
 		{
 			FilesBox.Items.Clear();
-			foreach (var f in Directory.EnumerateFiles("./Scripts/", "*.qhscript"))
+			foreach (var f in Directory.EnumerateFiles(HackContext.PATH_SCRIPTS, "*.qhscript"))
 			{
 				FilesBox.Items.Add(Path.GetFileNameWithoutExtension(f));
 			}

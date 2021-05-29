@@ -68,11 +68,11 @@ namespace QTRHacker.NewDimension.Wiki.Item
 			ItemListView.MultiSelect = false;
 			ItemListView.HideSelection = false;
 			ItemListView.View = View.Details;
-			ItemListView.Columns.Add(MainForm.CurrentLanguage["Index"], 50);
-			ItemListView.Columns.Add(MainForm.CurrentLanguage["Rare"], 50);
-			ItemListView.Columns.Add(MainForm.CurrentLanguage["EnglishName"], 125);
-			ItemListView.Columns.Add(MainForm.CurrentLanguage["ChineseName"], 125);
-			ItemListView.Columns.Add(MainForm.CurrentLanguage["Type"], 70);
+			ItemListView.Columns.Add(HackContext.CurrentLanguage["Index"], 50);
+			ItemListView.Columns.Add(HackContext.CurrentLanguage["Rare"], 50);
+			ItemListView.Columns.Add(HackContext.CurrentLanguage["EnglishName"], 125);
+			ItemListView.Columns.Add(HackContext.CurrentLanguage["ChineseName"], 125);
+			ItemListView.Columns.Add(HackContext.CurrentLanguage["Type"], 70);
 
 			ItemListView.MouseDoubleClick += (s, e) =>
 			{
@@ -83,21 +83,21 @@ namespace QTRHacker.NewDimension.Wiki.Item
 
 			};
 			ContextMenuStrip strip = ItemListView.ContextMenuStrip = new ContextMenuStrip();
-			strip.Items.Add(MainForm.CurrentLanguage["AddToInvMax"]).Click += (s, e) =>
+			strip.Items.Add(HackContext.CurrentLanguage["AddToInvMax"]).Click += (s, e) =>
 			{
 				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
 				var player = HackContext.GameContext.MyPlayer;
 				int num = Functions.GameObjects.Item.NewItem(HackContext.GameContext, player.X, player.Y, 0, 0, id, ItemData.Data[id].MaxStack, false, 0, true);
 				Functions.GameObjects.NetMessage.SendData(HackContext.GameContext, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
 			};
-			strip.Items.Add(MainForm.CurrentLanguage["AddToInvOne"]).Click += (s, e) =>
+			strip.Items.Add(HackContext.CurrentLanguage["AddToInvOne"]).Click += (s, e) =>
 			{
 				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
 				var player = HackContext.GameContext.MyPlayer;
 				int num = Functions.GameObjects.Item.NewItem(HackContext.GameContext, player.X, player.Y, 0, 0, id, 1, false, 0, true);
 				Functions.GameObjects.NetMessage.SendData(HackContext.GameContext, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
 			};
-			strip.Items.Add(MainForm.CurrentLanguage["ShowRecipeTree"]).Click += (s, e) =>
+			strip.Items.Add(HackContext.CurrentLanguage["ShowRecipeTree"]).Click += (s, e) =>
 			{
 				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
 				RecipeTreeForm.ShowTree(id);
@@ -216,10 +216,10 @@ namespace QTRHacker.NewDimension.Wiki.Item
 			a = a % VALUE_S;
 			int c = a / VALUE_C;
 			a = a % VALUE_C;
-			return p + MainForm.CurrentLanguage["Platinum"] + " " + g +
-				MainForm.CurrentLanguage["Gold"] + " " + s +
-				MainForm.CurrentLanguage["Silver"] + " " + c +
-				MainForm.CurrentLanguage["Copper"] + "";
+			return p + HackContext.CurrentLanguage["Platinum"] + " " + g +
+				HackContext.CurrentLanguage["Gold"] + " " + s +
+				HackContext.CurrentLanguage["Silver"] + " " + c +
+				HackContext.CurrentLanguage["Copper"] + "";
 		}
 
 		private void ItemListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -276,19 +276,19 @@ namespace QTRHacker.NewDimension.Wiki.Item
 		private string GetItemType(ItemData j)
 		{
 			List<bool> b = new List<bool>();
-			if (j.CreateTile != -1) return MainForm.CurrentLanguage["Blocks"];
-			if (j.CreateWall != -1) return MainForm.CurrentLanguage["Walls"];
-			if (j.QuestItem) return MainForm.CurrentLanguage["Quest"];
-			if (j.HeadSlot != -1) return MainForm.CurrentLanguage["Head"];
-			if (j.BodySlot != -1) return MainForm.CurrentLanguage["Body"];
-			if (j.LegSlot != -1) return MainForm.CurrentLanguage["Leg"];
-			if (j.Accessory) return MainForm.CurrentLanguage["Accessory"];
-			if (j.Melee) return MainForm.CurrentLanguage["Melee"];
-			if (j.Ranged) return MainForm.CurrentLanguage["Ranged"];
-			if (j.Magic) return MainForm.CurrentLanguage["Magic"];
-			if ((j.Summon || j.Sentry)) return MainForm.CurrentLanguage["Summon"];
-			if (j.BuffType != 0) return MainForm.CurrentLanguage["Buff"];
-			if (j.Consumable) return MainForm.CurrentLanguage["Consumable"];
+			if (j.CreateTile != -1) return HackContext.CurrentLanguage["Blocks"];
+			if (j.CreateWall != -1) return HackContext.CurrentLanguage["Walls"];
+			if (j.QuestItem) return HackContext.CurrentLanguage["Quest"];
+			if (j.HeadSlot != -1) return HackContext.CurrentLanguage["Head"];
+			if (j.BodySlot != -1) return HackContext.CurrentLanguage["Body"];
+			if (j.LegSlot != -1) return HackContext.CurrentLanguage["Leg"];
+			if (j.Accessory) return HackContext.CurrentLanguage["Accessory"];
+			if (j.Melee) return HackContext.CurrentLanguage["Melee"];
+			if (j.Ranged) return HackContext.CurrentLanguage["Ranged"];
+			if (j.Magic) return HackContext.CurrentLanguage["Magic"];
+			if ((j.Summon || j.Sentry)) return HackContext.CurrentLanguage["Summon"];
+			if (j.BuffType != 0) return HackContext.CurrentLanguage["Buff"];
+			if (j.Consumable) return HackContext.CurrentLanguage["Consumable"];
 			return "无";
 		}
 

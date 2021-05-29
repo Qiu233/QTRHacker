@@ -20,7 +20,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		public PiggyBankEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable) 
 			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank.Item, Editable, TargetPlayer.Bank.Item.Length)
 		{
-			Text = MainForm.CurrentLanguage["PiggyBank"];
+			Text = HackContext.CurrentLanguage["PiggyBank"];
 			SlotsPanel.Location = new Point(0, 30);
 		}
 	}

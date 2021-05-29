@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.NewDimension.Languages
 {
-	public class Processor
+	public class Language
 	{
+		public string Name
+		{
+			get;
+		}
 		public IDictionary<string, string> Words
 		{
 			get;
@@ -21,12 +25,13 @@ namespace QTRHacker.NewDimension.Languages
 				return Words[n];
 			}
 		}
-		private Processor()
+		private Language(string name)
 		{
+			Name = name;
 			Words = new Dictionary<string, string>();
 		}
 
-		public static Processor GetLanguage(string tName)
+		public static Language GetLanguage(string tName)
 		{
 			var s = System.Reflection.Assembly.GetExecutingAssembly().
 				GetManifestResourceStream("QTRHacker.NewDimension.Languages.Languages.json");
@@ -34,7 +39,7 @@ namespace QTRHacker.NewDimension.Languages
 			s.Read(b, 0, (int)s.Length);
 			JObject src = JsonConvert.DeserializeObject<JObject>(Encoding.UTF8.GetString(b))[tName] as JObject;
 
-			Processor n = new Processor();
+			Language n = new Language(tName);
 			foreach (var tt in src)
 				n.Words[tt.Key] = tt.Value.ToString();
 			s.Close();

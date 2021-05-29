@@ -12,15 +12,9 @@ namespace QTRHacker.NewDimension.Res
 {
 	public class GameResLoader
 	{
-#if ENG
 		public const string File_Prefix = "QTRHacker.NewDimension.Res.Game.Prefix_en.txt";
 		public const string File_Pet = "QTRHacker.NewDimension.Res.Game.Pet_en.txt";
 		public const string File_Mount = "QTRHacker.NewDimension.Res.Game.Mount_en.txt";
-#else
-		public const string File_Prefix = "QTRHacker.NewDimension.Res.Game.Prefix_cn.txt";
-		public const string File_Pet = "QTRHacker.NewDimension.Res.Game.Pet_cn.txt";
-		public const string File_Mount = "QTRHacker.NewDimension.Res.Game.Mount_cn.txt";
-#endif
 		public static ImageList ItemImages { get; }
 		public static ImageList NPCImages { get; }
 		public static string[] Prefixes { get; }

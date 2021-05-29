@@ -23,7 +23,7 @@ namespace QTRHacker.NewDimension.Wiki.Item
 		{
 			MaximizeBox = false;
 			MinimizeBox = false;
-			Text = MainForm.CurrentLanguage["ClickToItem"];
+			Text = HackContext.CurrentLanguage["ClickToItem"];
 			FormBorderStyle = FormBorderStyle.FixedSingle;
 			ClientSize = new System.Drawing.Size(600, 400);
 

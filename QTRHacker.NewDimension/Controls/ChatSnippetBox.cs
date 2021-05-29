@@ -50,7 +50,7 @@ namespace QTRHacker.NewDimension.Controls
 
 			ContentBox = new TextBox();
 			ContentBox.Location = new Point(43, 0);
-			ContentBox.Size = new Size(205, 20);
+			ContentBox.Size = new Size(195, 20);
 			ContentBox.BackColor = Color.FromArgb(120, 120, 120);
 			ContentBox.BorderStyle = BorderStyle.FixedSingle;
 			ContentBox.ForeColor = Color.White;
@@ -61,8 +61,8 @@ namespace QTRHacker.NewDimension.Controls
 			//deleteButton.BackColor = Color.Transparent;
 			deleteButton.FlatStyle = FlatStyle.Flat;
 			deleteButton.ForeColor = Color.White;
-			deleteButton.Text = MainForm.CurrentLanguage["Delete"];
-			deleteButton.Bounds = new Rectangle(250, 0, 40, 20);
+			deleteButton.Text = HackContext.CurrentLanguage["Delete"];
+			deleteButton.Bounds = new Rectangle(240, 0, 50, 20);
 			deleteButton.Font = new Font(deleteButton.Font.Name, 7);
 			deleteButton.Click += (s, e) =>
 			{

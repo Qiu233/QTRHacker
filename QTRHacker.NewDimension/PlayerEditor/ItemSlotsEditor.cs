@@ -73,7 +73,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				OnConfirm();
 			};
 			ButtonConfirm.FlatStyle = FlatStyle.Flat;
-			ButtonConfirm.Text = MainForm.CurrentLanguage["Confirm"];
+			ButtonConfirm.Text = HackContext.CurrentLanguage["Confirm"];
 			ButtonConfirm.Size = new Size(80, 30);
 			ButtonConfirm.Location = new Point(260, 0);
 			ItemPropertiesPanel.Controls.Add(ButtonConfirm);
@@ -85,7 +85,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				OnRefresh();
 			};
 			ButtonRefresh.FlatStyle = FlatStyle.Flat;
-			ButtonRefresh.Text = MainForm.CurrentLanguage["Refresh"];
+			ButtonRefresh.Text = HackContext.CurrentLanguage["Refresh"];
 			ButtonRefresh.Size = new Size(80, 30);
 			ButtonRefresh.Location = new Point(260, 30);
 			ItemPropertiesPanel.Controls.Add(ButtonRefresh);
@@ -98,26 +98,26 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				OnInitItem();
 			};
 			ButtonInitItem.FlatStyle = FlatStyle.Flat;
-			ButtonInitItem.Text = MainForm.CurrentLanguage["Init"];
+			ButtonInitItem.Text = HackContext.CurrentLanguage["Init"];
 			ButtonInitItem.Size = new Size(80, 30);
 			ButtonInitItem.Location = new Point(260, 60);
 			ItemPropertiesPanel.Controls.Add(ButtonInitItem);
 
 
 			ContextMenuStrip cms = new ContextMenuStrip();
-			cms.Items.Add(MainForm.CurrentLanguage["Copy"]);
-			cms.Items.Add(MainForm.CurrentLanguage["Paste"]);
+			cms.Items.Add(HackContext.CurrentLanguage["Copy"]);
+			cms.Items.Add(HackContext.CurrentLanguage["Paste"]);
 			cms.ItemClicked += (sender, e) =>
 			{
 				var item = TargetItemSlots[Selected];
-				if (e.ClickedItem.Text == MainForm.CurrentLanguage["Copy"])
+				if (e.ClickedItem.Text == HackContext.CurrentLanguage["Copy"])
 				{
 					Clip_ItemType = item.Type;
 					Clip_ItemStack = item.Stack;
 					Clip_ItemPrefix = item.Prefix;
 					RefreshSelected();
 				}
-				else if (e.ClickedItem.Text == MainForm.CurrentLanguage["Paste"])
+				else if (e.ClickedItem.Text == HackContext.CurrentLanguage["Paste"])
 				{
 					if (Clip_ItemType != 0)
 					{

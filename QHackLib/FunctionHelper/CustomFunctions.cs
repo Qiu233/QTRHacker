@@ -32,7 +32,7 @@ namespace QHackLib.FunctionHelper
 		private void CreateFunctions(List<MethodInfo> fs, byte[] hash)
 		{
 			int i = NativeFunctions.VirtualAllocEx(Context.Handle, 0, 1024,
-				NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+				NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
 			NativeFunctions.WriteProcessMemory(Context.Handle, i, hash, hash.Length, 0);
 			i += hash.Length;
 			int len = fs.Count;
@@ -42,7 +42,7 @@ namespace QHackLib.FunctionHelper
 			{
 				int addr = NativeFunctions.VirtualAllocEx(Context.Handle, 0,
 					(int)s.CustomAttributes.First(v => v.AttributeType == typeof(CustomFunctionAttribute)).ConstructorArguments[0].Value,
-					NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+					NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
 				AssemblyCode code = (AssemblyCode)s.Invoke(null, null);
 				var bCode = code.GetByteCode(addr);
 				NativeFunctions.WriteProcessMemory(Context.Handle, addr, bCode, bCode.Length, 0);

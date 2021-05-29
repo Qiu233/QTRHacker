@@ -1,13 +1,18 @@
-﻿using Microsoft.Scripting.Hosting;
+﻿using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+using Newtonsoft.Json;
 using QHackLib;
 using QHackLib.Utilities;
 using QTRHacker.Functions;
 using QTRHacker.Functions.ProjectileImage;
 using QTRHacker.Functions.ProjectileImage.RainbowImage;
+using QTRHacker.NewDimension.Configs;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,94 +21,135 @@ namespace QTRHacker.NewDimension
 {
 	public class HackContext
 	{
+		public const string PATH_CONTENT = ".\\Content";
+		public const string PATH_CONFIGS = ".\\Content\\Configs";
+		public const string PATH_INVS = ".\\Content\\Invs";
+		public const string PATH_PROJS = ".\\Content\\Projs";
+		public const string PATH_SCRIPTS = ".\\Content\\Scripts";
+		public const string PATH_SCHES = ".\\Content\\Sches";
+		public const string PATH_CHATTEMPLATES = ".\\Content\\ChatTemplates";
+		public const string PATH_RAINBOWFONTS = ".\\Content\\RainbowFonts";
+
+		public static readonly string[] PATHS = new string[] { PATH_CONTENT, PATH_INVS, PATH_CONFIGS, PATH_PROJS, PATH_SCRIPTS, PATH_SCHES, PATH_CHATTEMPLATES, PATH_RAINBOWFONTS };
+
+		public static Languages.Language CurrentLanguage
+		{
+			get;
+			private set;
+		}
 		public static Dictionary<char, ProjImage> Characters
 		{
-			get; set;
+			get;
+			private set;
 		}
-		public static readonly string SignHeadAob = "F3B354B2F6314D5AB44D946B4962AE82";
-		public const int SignSize = 1024 * 8;
+		public static Dictionary<string, Config> Configs
+		{
+			get;
+			set;
+		}
 		public static GameContext GameContext
 		{
-			get; set;
+			get;
+			set;
 		}
-		public static int SignHead
+		public static ScriptRuntime QHScriptRuntime
 		{
-			get; set;
+			get;
+			private set;
 		}
-		public static void InitSign()
+		public static ScriptEngine QHScriptEngine
 		{
-			int s = AobscanHelper.Aobscan(GameContext.HContext.Handle, SignHeadAob);
-			SignHead = s + 20;
-			if (s != -1)
-				return;
-			int t = NativeFunctions.VirtualAllocEx(
-				GameContext.HContext.Handle, 0, SignSize,
-				NativeFunctions.AllocationType.Commit,
-				NativeFunctions.MemoryProtection.ExecuteReadWrite);
-			NativeFunctions.WriteProcessMemory(GameContext.HContext.Handle, t, AobscanHelper.GetHexCodeFromString(SignHeadAob), 16, 0);
-			SignHead = t + 20;
+			get;
+			private set;
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns>未初始化返回-1</returns>
-		public static int GetSignNumber()
+		public static void LoadConfigs()
 		{
-			if (SignHead == 0)
-				return -1;
-			int number = 0;
-			NativeFunctions.ReadProcessMemory(GameContext.HContext.Handle, SignHead - 4, ref number, 4, 0);
-			return number;
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="ID"></param>
-		/// <returns>未初始化或数据未定义返回-1</returns>
-		public static int GetSign(string ID)
-		{
-			if (SignHead == 0)
-				return -1;
-			byte[] content = new byte[1024 * 8];
-			NativeFunctions.ReadProcessMemory(GameContext.HContext.Handle, SignHead, content, SignSize - 20, 0);//去掉头部的20个位置，这20个位置最后四个是数量(int)
-			byte[] h = AobscanHelper.GetHexCodeFromString(ID);
-			int j = AobscanHelper.Memmem(content, content.Length, h, h.Length);
-			if (j == -1) return -1;
-			return BitConverter.ToInt32(content, j + 16);
-		}
-		public static void SetSign(string ID, int v)
-		{
-			if (SignHead == 0)
-				return;
-			byte[] content = new byte[1024 * 8];
-			NativeFunctions.ReadProcessMemory(GameContext.HContext.Handle, SignHead, content, SignSize - 20, 0);//去掉头部的20个位置，这20个位置最后四个是数量(int)
-			byte[] h = AobscanHelper.GetHexCodeFromString(ID);
-			int j = AobscanHelper.Memmem(content, content.Length, h, h.Length);
-			if (j != -1)//-1说明没找到
+			if (Configs == null)
+				Configs = new Dictionary<string, Config>();
+			Configs.Clear();
+			var ts = Assembly.GetExecutingAssembly().
+				DefinedTypes.Where(
+				t => t.Namespace == "QTRHacker.NewDimension.Configs" &&//in configs
+				t.IsSubclassOf(typeof(Config)));//inheriting Config
+			ts.ToList().ForEach(t =>
 			{
-				NativeFunctions.WriteProcessMemory(GameContext.HContext.Handle, SignHead + j + 16, ref v, 4, 0);
-			}
-			else
+				Configs[t.Name] = LoadConfig(t.Name, t);
+			});
+		}
+		public static void SaveConfigs()
+		{
+			foreach (var name in Configs.Keys)
 			{
-				int u = GetSignNumber();
-				NativeFunctions.WriteProcessMemory(GameContext.HContext.Handle, SignHead + u * 20, h, 16, 0);//写入标记
-				NativeFunctions.WriteProcessMemory(GameContext.HContext.Handle, SignHead + u * 20 + 16, ref v, 4, 0);//写入数据
-				u++;
-				NativeFunctions.WriteProcessMemory(GameContext.HContext.Handle, SignHead - 4, ref u, 4, 0);//长度+1
+				string file = Path.Combine(PATH_CONFIGS, $"{name}.json");
+				File.WriteAllText(
+					file,
+					JsonConvert.SerializeObject(Configs[name], Formatting.Indented));
 			}
 		}
+		private static Config LoadConfig(string name, Type t)
+		{
+			string file = Path.Combine(PATH_CONFIGS, $"{name}.json");
+			Config value = null;
+			if (File.Exists(file))
+				value = JsonConvert.DeserializeObject(File.ReadAllText(file), t) as Config;
+			File.WriteAllText(
+				file,
+				JsonConvert.SerializeObject(value, Formatting.Indented));
+			return value;
+		}
+
 
 		public static ScriptScope CreateScriptScope(ScriptEngine engine)
 		{
 			ScriptScope s = engine.CreateScope();
 			s.SetVariable("game_context", GameContext);
-			engine.Execute("import clr\nclr.AddReference('QHackLib')\nclr.AddReference('QTRHacker')\nclr.AddReference('QTRHacker.Functions')\nfrom QHackLib import *\nfrom QTRHacker import *\nfrom QTRHacker.Functions import *", s);
+			engine.Execute("import clr\n" +
+				"clr.AddReference('QHackLib')\n" +
+				"clr.AddReference('QTRHacker')\n" +
+				"clr.AddReference('QTRHacker.Functions')\n" +
+				"from QHackLib import *\n" +
+				"from QTRHacker import *\n" +
+				"from QTRHacker.Functions import *", s);
 			return s;
 		}
-
-		public static void LoadRainbowFonts(Dictionary<char, ProjImage> characters)
+		public static void CreateDirectoriesAndFiles()
 		{
-			LoadRainbowFonts(".\\RainbowFonts", characters);
+			foreach (var d in PATHS)
+			{
+				if (!Directory.Exists(d))
+					Directory.CreateDirectory(d);
+			}
+		}
+		private static void InitScriptRuntime()
+		{
+			QHScriptRuntime = Python.CreateRuntime();
+			QHScriptEngine = QHScriptRuntime.GetEngine("Python");
+			var paths = QHScriptEngine.GetSearchPaths();
+			paths.Add(Path.GetFullPath(HackContext.PATH_SCRIPTS));
+			QHScriptEngine.SetSearchPaths(paths);
+		}
+		private static void InitLanguage()
+		{
+			if ((Configs["CFG_QTRHacker"] as CFG_QTRHacker).IsCN)
+				CurrentLanguage = Languages.Language.GetLanguage("zh-CN");
+			else
+				CurrentLanguage = Languages.Language.GetLanguage("en");
+		}
+		public static void Initialize()
+		{
+			CreateDirectoriesAndFiles();
+			LoadConfigs();
+			InitLanguage();
+			InitScriptRuntime();
+			LoadRainbowFonts();
+		}
+
+		public static void LoadRainbowFonts()
+		{
+			if (Characters == null)
+				Characters = new Dictionary<char, ProjImage>();
+			Characters.Clear();
+			LoadRainbowFonts(PATH_RAINBOWFONTS, Characters);
 		}
 		private static void LoadRainbowFonts(string dir, Dictionary<char, ProjImage> characters)
 		{

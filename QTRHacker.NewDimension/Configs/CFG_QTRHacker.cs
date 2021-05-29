@@ -9,5 +9,7 @@ namespace QTRHacker.NewDimension.Configs
 	public class CFG_QTRHacker : Config
 	{
 		public bool OnlineMode = false;
+		public bool IsCN = false;
+		public bool FirstRunning = true;
 	}
 }

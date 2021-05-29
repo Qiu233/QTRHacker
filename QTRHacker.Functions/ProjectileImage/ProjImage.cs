@@ -76,7 +76,7 @@ namespace QTRHacker.Functions.ProjectileImage
 
 		public void Emit(GameContext context, MPointF Location)
 		{
-			int data = NativeFunctions.VirtualAllocEx(context.HContext.Handle, 0, (int)(32 * Projs.Count), NativeFunctions.AllocationType.Commit, NativeFunctions.MemoryProtection.ExecuteReadWrite);
+			int data = NativeFunctions.VirtualAllocEx(context.HContext.Handle, 0, (int)(32 * Projs.Count), NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
 			NativeFunctions.WriteProcessMemory(context.HContext.Handle, data, BitConverter.GetBytes(Projs.Count), 4, 0);
 			for (int i = 0; i < Projs.Count; i++)
 			{

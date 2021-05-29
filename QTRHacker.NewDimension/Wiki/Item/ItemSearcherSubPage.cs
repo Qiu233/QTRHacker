@@ -15,81 +15,81 @@ namespace QTRHacker.NewDimension.Wiki.Item
 		public TextBox KeyWordTextBox;
 		public Button ReverseButton, SearchButton, ResetButton;
 
-		public ItemSearcherSubPage() : base(MainForm.CurrentLanguage["Search"])
+		public ItemSearcherSubPage() : base(HackContext.CurrentLanguage["Search"])
 		{
 			GroupBox filterGroupBox = new GroupBox();
-			filterGroupBox.Text = MainForm.CurrentLanguage["Filter"];
-			filterGroupBox.Bounds = new Rectangle(5, 10, 255, 105);
+			filterGroupBox.Text = HackContext.CurrentLanguage["Filter"];
+			filterGroupBox.Bounds = new Rectangle(5, 10, 255, 125);
 
 			BlockCheckBox = new CheckBox();
-			BlockCheckBox.Text = MainForm.CurrentLanguage["Blocks"];
+			BlockCheckBox.Text = HackContext.CurrentLanguage["Blocks"];
 			BlockCheckBox.Checked = true;
-			BlockCheckBox.Bounds = new Rectangle(5, 20, 50, 20);
+			BlockCheckBox.Bounds = new Rectangle(25, 20, 80, 20);
 
 			WallCheckBox = new CheckBox();
-			WallCheckBox.Text = MainForm.CurrentLanguage["Walls"];
+			WallCheckBox.Text = HackContext.CurrentLanguage["Walls"];
 			WallCheckBox.Checked = true;
-			WallCheckBox.Bounds = new Rectangle(70, 20, 50, 20);
+			WallCheckBox.Bounds = new Rectangle(105, 20, 80, 20);
 
 			QuestItemCheckBox = new CheckBox();
-			QuestItemCheckBox.Text = MainForm.CurrentLanguage["Quest"];
+			QuestItemCheckBox.Text = HackContext.CurrentLanguage["Quest"];
 			QuestItemCheckBox.Checked = true;
-			QuestItemCheckBox.Bounds = new Rectangle(135, 20, 50, 20);
+			QuestItemCheckBox.Bounds = new Rectangle(185, 20, 80, 20);
 
 			HeadCheckBox = new CheckBox();
-			HeadCheckBox.Text = MainForm.CurrentLanguage["Head"];
+			HeadCheckBox.Text = HackContext.CurrentLanguage["Head"];
 			HeadCheckBox.Checked = true;
-			HeadCheckBox.Bounds = new Rectangle(5, 40, 50, 20);
+			HeadCheckBox.Bounds = new Rectangle(25, 40, 80, 20);
 
 			BodyCheckBox = new CheckBox();
-			BodyCheckBox.Text = MainForm.CurrentLanguage["Body"];
+			BodyCheckBox.Text = HackContext.CurrentLanguage["Body"];
 			BodyCheckBox.Checked = true;
-			BodyCheckBox.Bounds = new Rectangle(70, 40, 50, 20);
+			BodyCheckBox.Bounds = new Rectangle(105, 40, 80, 20);
 
 			LegCheckBox = new CheckBox();
-			LegCheckBox.Text = MainForm.CurrentLanguage["Leg"];
+			LegCheckBox.Text = HackContext.CurrentLanguage["Leg"];
 			LegCheckBox.Checked = true;
-			LegCheckBox.Bounds = new Rectangle(135, 40, 50, 20);
-
-			AccessoryCheckBox = new CheckBox();
-			AccessoryCheckBox.Text = MainForm.CurrentLanguage["Accessory"];
-			AccessoryCheckBox.Checked = true;
-			AccessoryCheckBox.Bounds = new Rectangle(200, 40, 50, 20);
+			LegCheckBox.Bounds = new Rectangle(185, 40, 80, 20);
 
 			MeleeCheckBox = new CheckBox();
-			MeleeCheckBox.Text = MainForm.CurrentLanguage["Melee"];
+			MeleeCheckBox.Text = HackContext.CurrentLanguage["Melee"];
 			MeleeCheckBox.Checked = true;
-			MeleeCheckBox.Bounds = new Rectangle(5, 60, 50, 20);
+			MeleeCheckBox.Bounds = new Rectangle(25, 60, 80, 20);
 
 			RangedCheckBox = new CheckBox();
-			RangedCheckBox.Text = MainForm.CurrentLanguage["Ranged"];
+			RangedCheckBox.Text = HackContext.CurrentLanguage["Ranged"];
 			RangedCheckBox.Checked = true;
-			RangedCheckBox.Bounds = new Rectangle(70, 60, 50, 20);
+			RangedCheckBox.Bounds = new Rectangle(105, 60, 80, 20);
 
 			MagicCheckBox = new CheckBox();
-			MagicCheckBox.Text = MainForm.CurrentLanguage["Magic"];
+			MagicCheckBox.Text = HackContext.CurrentLanguage["Magic"];
 			MagicCheckBox.Checked = true;
-			MagicCheckBox.Bounds = new Rectangle(135, 60, 50, 20);
+			MagicCheckBox.Bounds = new Rectangle(185, 60, 80, 20);
 
 			SummonCheckBox = new CheckBox();
-			SummonCheckBox.Text = MainForm.CurrentLanguage["Summon"];
+			SummonCheckBox.Text = HackContext.CurrentLanguage["Summon"];
 			SummonCheckBox.Checked = true;
-			SummonCheckBox.Bounds = new Rectangle(200, 60, 50, 20);
+			SummonCheckBox.Bounds = new Rectangle(25, 80, 80, 20);
 
 			BuffCheckBox = new CheckBox();
-			BuffCheckBox.Text = MainForm.CurrentLanguage["Buff"];
+			BuffCheckBox.Text = HackContext.CurrentLanguage["Buff"];
 			BuffCheckBox.Checked = true;
-			BuffCheckBox.Bounds = new Rectangle(5, 80, 50, 20);
+			BuffCheckBox.Bounds = new Rectangle(105, 80, 80, 20);
 
 			ConsumableCheckBox = new CheckBox();
-			ConsumableCheckBox.Text = MainForm.CurrentLanguage["Consumable"];
+			ConsumableCheckBox.Text = HackContext.CurrentLanguage["Consumable"];
 			ConsumableCheckBox.Checked = true;
-			ConsumableCheckBox.Bounds = new Rectangle(70, 80, 50, 20);
+			ConsumableCheckBox.Bounds = new Rectangle(185, 80, 80, 20);
+
+			AccessoryCheckBox = new CheckBox();
+			AccessoryCheckBox.Text = HackContext.CurrentLanguage["Accessory"];
+			AccessoryCheckBox.Checked = true;
+			AccessoryCheckBox.Bounds = new Rectangle(25, 100, 80, 20);
 
 			OthersCheckBox = new CheckBox();
-			OthersCheckBox.Text = MainForm.CurrentLanguage["Others"];
+			OthersCheckBox.Text = HackContext.CurrentLanguage["Others"];
 			OthersCheckBox.Checked = true;
-			OthersCheckBox.Bounds = new Rectangle(135, 80, 50, 20);
+			OthersCheckBox.Bounds = new Rectangle(105, 100, 80, 20);
 
 			filterGroupBox.Controls.Add(BlockCheckBox);
 			filterGroupBox.Controls.Add(WallCheckBox);
@@ -107,24 +107,24 @@ namespace QTRHacker.NewDimension.Wiki.Item
 			filterGroupBox.Controls.Add(OthersCheckBox);
 
 			Label tipSearch = new Label();
-			tipSearch.Text = MainForm.CurrentLanguage["KeyWord"] + ":";
-			tipSearch.Bounds = new Rectangle(15, 133, 50, 20);
+			tipSearch.Text = HackContext.CurrentLanguage["KeyWord"] + ":";
+			tipSearch.Bounds = new Rectangle(15, 153, 50, 20);
 
 			KeyWordTextBox = new TextBox();
 			KeyWordTextBox.ImeMode = ImeMode.OnHalf;
-			KeyWordTextBox.Bounds = new Rectangle(65, 130, 175, 20);
+			KeyWordTextBox.Bounds = new Rectangle(65, 150, 175, 20);
 
 			ReverseButton = new Button();
-			ReverseButton.Text = MainForm.CurrentLanguage["ReverseCheck"];
-			ReverseButton.Bounds = new Rectangle(50, 160, 60, 20);
+			ReverseButton.Text = HackContext.CurrentLanguage["ReverseCheck"];
+			ReverseButton.Bounds = new Rectangle(50, 180, 60, 20);
 
 			SearchButton = new Button();
-			SearchButton.Text = MainForm.CurrentLanguage["Search"];
-			SearchButton.Bounds = new Rectangle(110, 160, 60, 20);
+			SearchButton.Text = HackContext.CurrentLanguage["Search"];
+			SearchButton.Bounds = new Rectangle(110, 180, 60, 20);
 
 			ResetButton = new Button();
-			ResetButton.Text = MainForm.CurrentLanguage["Reset"];
-			ResetButton.Bounds = new Rectangle(170, 160, 60, 20);
+			ResetButton.Text = HackContext.CurrentLanguage["Reset"];
+			ResetButton.Bounds = new Rectangle(170, 180, 60, 20);
 
 			Controls.Add(filterGroupBox);
 			Controls.Add(tipSearch);

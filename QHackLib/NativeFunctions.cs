@@ -20,7 +20,7 @@ namespace QHackLib
 			public int Protect;
 			public int Type;
 		}
-		public enum AllocationProtect : uint
+		public enum ProtectionType : uint
 		{
 			PAGE_EXECUTE = 0x00000010,
 			PAGE_EXECUTE_READ = 0x00000020,
@@ -34,33 +34,17 @@ namespace QHackLib
 			PAGE_NOCACHE = 0x00000200,
 			PAGE_WRITECOMBINE = 0x00000400
 		}
-
-		public enum AllocationType
+		public enum AllocationType : uint
 		{
-			Commit = 0x1000,
-			Reserve = 0x2000,
-			Decommit = 0x4000,
-			Release = 0x8000,
-			Reset = 0x80000,
-			Physical = 0x400000,
-			TopDown = 0x100000,
-			WriteWatch = 0x200000,
-			LargePages = 0x20000000
-		}
-
-		public enum MemoryProtection
-		{
-			Execute = 0x10,
-			ExecuteRead = 0x20,
-			ExecuteReadWrite = 0x40,
-			ExecuteWriteCopy = 0x80,
-			NoAccess = 0x01,
-			ReadOnly = 0x02,
-			ReadWrite = 0x04,
-			WriteCopy = 0x08,
-			GuardModifierflag = 0x100,
-			NoCacheModifierflag = 0x200,
-			WriteCombineModifierflag = 0x400
+			MEM_COMMIT = 0x00001000,
+			MEM_RESERVE = 0x00002000,
+			MEM_DECOMMIT = 0x00004000,
+			MEM_RELEASE = 0x00008000,
+			MEM_RESET = 0x00080000,
+			MEM_PHYSICAL = 0x00400000,
+			MEM_TOPDOWN = 0x00100000,
+			MEM_WRITEWATCH = 0x00200000,
+			MEM_LARGEPAGES = 0x20000000,
 		}
 		[DllImport("kernel32.dll")]
 		public static extern bool ReadProcessMemory
@@ -71,7 +55,7 @@ namespace QHackLib
 			int nSize,
 			int BytesRead
 		);
-		
+
 		[DllImport("kernel32.dll")]
 		public static extern bool WriteProcessMemory
 		(
@@ -164,10 +148,10 @@ namespace QHackLib
 		);
 
 		[DllImport("kernel32.dll")]
-		public static extern int VirtualAllocEx(int hProcess, int lpAddress, int dwSize, AllocationType flAllocationType, MemoryProtection flProtect);
+		public static extern int VirtualAllocEx(int hProcess, int lpAddress, int dwSize, AllocationType flAllocationType, ProtectionType flProtect);
 
 		[DllImport("kernel32.dll")]
-		public static extern int VirtualFreeEx(int hProcess, int lpAddress, int dwSize, int dwFreeType = 0x8000);
+		public static extern int VirtualFreeEx(int hProcess, int lpAddress, int dwSize, AllocationType dwFreeType = AllocationType.MEM_RELEASE);
 
 
 		public static byte[] ReadFromMultiOffsets(int hProcess, int addr, int len, params int[] offsets)
@@ -210,5 +194,17 @@ namespace QHackLib
 		[DllImport("kernel32.dll")]
 		public static extern int CloseHandle(int dwHandle);
 		public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
+
+		[DllImport("kernelbase.dll")]
+		public static extern int MapViewOfFile3(
+			int FileMappingHandle,
+			int ProcessHandle,
+			ulong Offset,
+			int BaseAddress,
+			int ViewSize,
+			AllocationType AllocationType,
+			ProtectionType PageProtection,
+			int ExtendedParameters,
+			int ParameterCount);
 	}
 }

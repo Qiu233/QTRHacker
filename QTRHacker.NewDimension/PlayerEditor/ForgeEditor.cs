@@ -15,7 +15,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		public ForgeEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
 			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank3.Item, Editable, TargetPlayer.Bank3.Item.Length)
 		{
-			Text = MainForm.CurrentLanguage["Forge"];
+			Text = HackContext.CurrentLanguage["Forge"];
 			SlotsPanel.Location = new Point(0, 30);
 		}
 	}

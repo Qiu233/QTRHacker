@@ -26,7 +26,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		public PlayerEditorForm(Player TargetPlayer, bool Editable)
 		{
 			InitializeComponent();
-			Text = TargetPlayer.Name + (Editable ? "" : $" ({MainForm.CurrentLanguage["NonEditable"]})");
+			Text = TargetPlayer.Name + (Editable ? "" : $" ({HackContext.CurrentLanguage["NonEditable"]})");
 			BackColor = Color.FromArgb(45, 45, 48);
 
 			var CloseButton = new PictureBox();
