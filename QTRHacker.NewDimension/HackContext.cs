@@ -92,6 +92,8 @@ namespace QTRHacker.NewDimension
 			Config value = null;
 			if (File.Exists(file))
 				value = JsonConvert.DeserializeObject(File.ReadAllText(file), t) as Config;
+			else
+				value = Activator.CreateInstance(t) as Config;
 			File.WriteAllText(
 				file,
 				JsonConvert.SerializeObject(value, Formatting.Indented));
