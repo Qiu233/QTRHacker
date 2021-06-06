@@ -75,7 +75,7 @@ namespace QTRHacker.NewDimension.PagePanels
 		public ProjMakerForm(string file)
 		{
 			ClientSize = new Size(800, 590);
-			FileName = Path.Combine(HackContext.PATH_SCRIPTS, $"{file}.projimg");
+			FileName = Path.Combine(HackContext.PATH_PROJS, $"{file}.projimg");
 			Text = "ProjMaker-Name：" + file;
 			BackColor = sBlackColor;
 			MenuStrip = new MenuStrip()
