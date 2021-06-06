@@ -19,7 +19,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 {
 	public partial class PlayerEditorForm : Form
 	{
-		private MTabControl Tabs;
+		private readonly MTabControl Tabs;
 		public static readonly Color ButtonNormalColor = Color.Transparent;
 		public static readonly Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
 		private Point Drag_MousePos;
@@ -37,12 +37,15 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.close.png"))
 				CloseButton.Image = Image.FromStream(st);
 
-			this.Controls.Add(CloseButton);
+			Controls.Add(CloseButton);
 
-			Tabs = new MTabControl();
-			Tabs.BColor = Color.FromArgb(70, 70, 70);
-			Tabs.TColor = Color.FromArgb(90, 90, 90);
-			Tabs.Bounds = new Rectangle(0, 31, 1005, 360);
+			Tabs = new MTabControl
+			{
+				BColor = Color.FromArgb(70, 70, 70),
+				TColor = Color.FromArgb(90, 90, 90),
+				Bounds = new Rectangle(0, 31, 1005, 360),
+				ForeColor = GlobalColors.TipForeColor
+			};
 			Tabs.Controls.Add(new PlayerEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
 			Tabs.Controls.Add(new InvEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
 			Tabs.Controls.Add(new ArmorEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
@@ -65,8 +68,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			base.OnMouseMove(e);
 			if (e.Button == MouseButtons.Left)
 			{
-				this.Top = MousePosition.Y - Drag_MousePos.Y;
-				this.Left = MousePosition.X - Drag_MousePos.X;
+				Top = MousePosition.Y - Drag_MousePos.Y;
+				Left = MousePosition.X - Drag_MousePos.X;
 			}
 		}
 		protected override void OnPaint(PaintEventArgs e)

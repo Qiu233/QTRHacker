@@ -1,5 +1,6 @@
 ﻿using QTRHacker.Functions;
 using QTRHacker.Functions.GameObjects;
+using QTRHacker.NewDimension.Controls;
 using QTRHacker.NewDimension.PlayerEditor.Controls;
 using QTRHacker.NewDimension.Res;
 using System;
@@ -13,7 +14,7 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.PlayerEditor
 {
-	public abstract class ItemSlotsEditor : TabPage
+	public abstract class ItemSlotsEditor<T> : TabPage where T : SlotsLayout
 	{
 		public GameContext Context
 		{
@@ -31,120 +32,74 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		{
 			get;
 		}
-		public ItemSlots TargetItemSlots
-		{
-			get;
-		}
 		public ItemPropertiesPanel ItemPropertiesPanel
 		{
 			get;
 		}
-		public SlotsPanel SlotsPanel
+		public SlotsPanel<T> SlotsPanel
 		{
 			get;
 		}
+		public Item SelectedItem => SlotsPanel.SelectedItem;
 		protected Timer Timer
 		{
 			get;
 		}
-		protected int Selected = 0, LastSelectedID = 0;
+		private int LastSelectedID
+		{
+			get;
+			set;
+		}
 
-		protected int Clip_ItemType;
-		protected int Clip_ItemStack;
-		protected byte Clip_ItemPrefix;
-
-		protected Button ButtonConfirm, ButtonRefresh, ButtonInitItem;
-		public ItemSlotsEditor(GameContext Context, Form ParentForm, Player TargetPlayer, ItemSlots TargetItemSlots, bool Editable, int Count)
+		protected readonly Button ButtonConfirm, ButtonRefresh, ButtonInitItem;
+		protected readonly MButtonStrip ButtonStrip;
+		public ItemSlotsEditor(GameContext Context, Form ParentForm, Player TargetPlayer, string Title, bool Editable, int Count)
 		{
 			this.Context = Context;
 			this.ParentForm = ParentForm;
 			this.TargetPlayer = TargetPlayer;
-			this.TargetItemSlots = TargetItemSlots;
 			this.Editable = Editable;
 
-			ItemPropertiesPanel = new ItemPropertiesPanel();
-			ItemPropertiesPanel.Location = new Point(10 * (SlotsPanel.SlotsWidth + SlotsPanel.SlotsGap) + 15, 10);
-			this.Controls.Add(ItemPropertiesPanel);
+			Text = Title;
 
-			ButtonConfirm = new Button();
+			LastSelectedID = -0xFF;
+
+			ItemPropertiesPanel = new ItemPropertiesPanel();
+			ItemPropertiesPanel.Location = new Point(565, 10);
+			Controls.Add(ItemPropertiesPanel);
+
+			ButtonStrip = new MButtonStrip(80, 30)
+			{
+				Bounds = new Rectangle(820, 10, 80, 300)
+			};
+			Controls.Add(ButtonStrip);
+
+			ButtonConfirm = ButtonStrip.AddButton(HackContext.CurrentLanguage["Confirm"]);
 			ButtonConfirm.Enabled = Editable;
 			ButtonConfirm.Click += (sender, e) =>
 			{
 				OnConfirm();
 			};
-			ButtonConfirm.FlatStyle = FlatStyle.Flat;
-			ButtonConfirm.Text = HackContext.CurrentLanguage["Confirm"];
-			ButtonConfirm.Size = new Size(80, 30);
-			ButtonConfirm.Location = new Point(260, 0);
-			ItemPropertiesPanel.Controls.Add(ButtonConfirm);
 
-
-			ButtonRefresh = new Button();
+			ButtonRefresh = ButtonStrip.AddButton(HackContext.CurrentLanguage["Refresh"]);
 			ButtonRefresh.Click += (sender, e) =>
 			{
 				OnRefresh();
 			};
-			ButtonRefresh.FlatStyle = FlatStyle.Flat;
-			ButtonRefresh.Text = HackContext.CurrentLanguage["Refresh"];
-			ButtonRefresh.Size = new Size(80, 30);
-			ButtonRefresh.Location = new Point(260, 30);
-			ItemPropertiesPanel.Controls.Add(ButtonRefresh);
 
-
-			ButtonInitItem = new Button();
+			ButtonInitItem = ButtonStrip.AddButton(HackContext.CurrentLanguage["Init"]);
 			ButtonInitItem.Enabled = Editable;
 			ButtonInitItem.Click += (sender, e) =>
 			{
 				OnInitItem();
 			};
-			ButtonInitItem.FlatStyle = FlatStyle.Flat;
-			ButtonInitItem.Text = HackContext.CurrentLanguage["Init"];
-			ButtonInitItem.Size = new Size(80, 30);
-			ButtonInitItem.Location = new Point(260, 60);
-			ItemPropertiesPanel.Controls.Add(ButtonInitItem);
 
-
-			ContextMenuStrip cms = new ContextMenuStrip();
-			cms.Items.Add(HackContext.CurrentLanguage["Copy"]);
-			cms.Items.Add(HackContext.CurrentLanguage["Paste"]);
-			cms.ItemClicked += (sender, e) =>
+			SlotsPanel = new SlotsPanel<T>(Count);
+			SlotsPanel.OnItemSlotSelected += (item) =>
 			{
-				var item = TargetItemSlots[Selected];
-				if (e.ClickedItem.Text == HackContext.CurrentLanguage["Copy"])
-				{
-					Clip_ItemType = item.Type;
-					Clip_ItemStack = item.Stack;
-					Clip_ItemPrefix = item.Prefix;
-					RefreshSelected();
-				}
-				else if (e.ClickedItem.Text == HackContext.CurrentLanguage["Paste"])
-				{
-					if (Clip_ItemType != 0)
-					{
-						item.SetDefaultsAndPrefix(Clip_ItemType, Clip_ItemPrefix);
-						item.Stack = Clip_ItemStack;
-					}
-					RefreshSelected();
-				}
+				FetchItemData(item);
 			};
-
-			SlotsPanel = new SlotsPanel(Context, TargetItemSlots, Count);
-			SlotsPanel.OnItemSlotClick += (sender, e) =>
-			{
-				foreach (var s in SlotsPanel.ItemSlots)
-					s.Selected = false;
-				sender.Selected = true;
-				SlotsPanel.Refresh();
-				Selected = sender.Number;
-				InitItemData(Selected);
-				if (e.Button == MouseButtons.Right && Editable)
-					cms.Show(sender, e.Location.X, e.Location.Y);
-			};
-			this.Controls.Add(SlotsPanel);
-
-
-			SlotsPanel.ItemSlots[0].Selected = true;
-			InitItemData(0);
+			Controls.Add(SlotsPanel);
 
 			Timer = new Timer()
 			{
@@ -155,10 +110,10 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				if (Enabled)
 				{
 					SlotsPanel.Refresh();
-					Item item = TargetItemSlots[Selected];
+					Item item = SelectedItem;
 					if (LastSelectedID != item.Type)
 					{
-						InitItemData(Selected);
+						FetchItemData(item);
 						LastSelectedID = item.Type;
 					}
 				}
@@ -179,32 +134,25 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			return GameResLoader.Prefixes.ToList().IndexOf(a.ElementAt(0).Key);
 		}
 
-		public virtual void InitItemData(int slot)
+		public virtual void FetchItemData(Item item)
 		{
-			Item item = TargetItemSlots[slot];
 			Type t = typeof(Item);
 			foreach (DictionaryEntry de in ItemPropertiesPanel.Hack)
 			{
-				object[] args = new object[1];
-				args[0] = slot;
 				var pi = t.GetProperty((string)de.Key);
 				if (pi == null)
 					return;
 				((TextBox)de.Value).Text = Convert.ToString(pi.GetValue(item));
-
 			}
 			ItemPropertiesPanel.SelectedPrefix = GetIndexFromPrefix(item.Prefix);
 			ItemPropertiesPanel.AutoReuse = item.AutoReuse ? CheckState.Checked : CheckState.Unchecked;
 			ItemPropertiesPanel.Equippable = item.Accessory ? CheckState.Checked : CheckState.Unchecked;
 		}
-		public virtual void ApplyItemData(int slot)
+		public virtual void ApplyItemData(Item item)
 		{
-			Item item = TargetItemSlots[slot];
 			Type t = typeof(Item);
 			foreach (DictionaryEntry de in ItemPropertiesPanel.Hack)
 			{
-				object[] args = new object[1];
-				args[0] = slot;
 				var pi = t.GetProperty((string)de.Key);
 				if (pi == null)
 					return;
@@ -228,30 +176,24 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			item.AutoReuse = ItemPropertiesPanel.AutoReuse == CheckState.Checked;
 			item.Accessory = ItemPropertiesPanel.Equippable == CheckState.Checked;
 		}
-		public virtual void RefreshSelected()
-		{
-			SlotsPanel.ItemSlots[Selected].Refresh();
-		}
 		public virtual void OnRefresh()
 		{
-			InitItemData(Selected);
-			SlotsPanel.Refresh();
+			FetchItemData(SelectedItem);
 		}
 		public virtual void OnConfirm()
 		{
-			ApplyItemData(Selected);
-			InitItemData(Selected);
-			RefreshSelected();
+			Item item = SelectedItem;
+			ApplyItemData(item);
+			FetchItemData(item);
 		}
 		public virtual void OnInitItem()
 		{
-			Item item = TargetItemSlots[Selected];
+			Item item = SelectedItem;
 			item.SetDefaults(Convert.ToInt32(((TextBox)ItemPropertiesPanel.Hack["Type"]).Text));
 			item.SetPrefix(GetPrefixFromIndex(ItemPropertiesPanel.SelectedPrefix));
 			int stack = Convert.ToInt32(((TextBox)ItemPropertiesPanel.Hack["Stack"]).Text);
 			item.Stack = stack == 0 ? 1 : stack;
-			RefreshSelected();
-			InitItemData(Selected);
+			FetchItemData(item);
 		}
 	}
 }

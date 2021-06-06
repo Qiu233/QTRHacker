@@ -13,42 +13,134 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.PlayerEditor.Controls
 {
-	public class SlotsPanel : Panel
+	public class SlotsPanel<T> : Panel where T : SlotsLayout
 	{
-		public ItemIcon[] ItemSlots
+		private class ItemIcon : PictureBox
+		{
+			public bool Selected
+			{
+				get;
+				set;
+			}
+			public int Index
+			{
+				get;
+			}
+			public int Type
+			{
+				get;
+				set;
+			}
+			public int Stack
+			{
+				get;
+				set;
+			}
+			private static readonly Image TMLIconImage;
+			private int lastType;
+			static ItemIcon()
+			{
+				using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.Image.TMLIcon.png"))
+					TMLIconImage = Image.FromStream(st);
+			}
+			public ItemIcon(int index)
+			{
+				Index = index;
+				SizeMode = PictureBoxSizeMode.CenterImage;
+			}
+			/// <summary>
+			/// 更新的代码写在Paint里面，原因是每500ms都会进行一次更新，就不分开写了
+			/// 需要注意的是这个更新是需要手动调用的，比如执行Refresh
+			/// </summary>
+			/// <param name="pe"></param>
+			protected override void OnPaint(PaintEventArgs pe)
+			{
+				if (lastType != Type)
+				{
+					Image = GameResLoader.ItemImages.Images.ContainsKey(Type.ToString())
+						? GameResLoader.ItemImages.Images[Type.ToString()]
+						: TMLIconImage;
+					lastType = Type;
+				}
+				base.OnPaint(pe);
+				pe.Graphics.DrawString(Stack.ToString(), new Font("Arial", 10), new SolidBrush(GlobalColors.TipForeColor), 5, 33);
+				if (Selected)
+					pe.Graphics.DrawRectangle(new Pen(Color.BlueViolet, 3), 1, 1, pe.ClipRectangle.Width - 3, pe.ClipRectangle.Height - 3);
+			}
+		}
+		public T SlotsLayout
+		{
+			get;
+		}
+		private List<ItemIcon> ItemSlots
 		{
 			get; set;
 		}
-		public event Action<ItemIcon, MouseEventArgs> OnItemSlotClick = (o, e) => { };
+		public event Action<Item> OnItemSlotSelected = (o) => { };
 		public const int SlotsWidth = 50;
 		public const int SlotsGap = 5;
-		public SlotsPanel(GameContext Context, ItemSlots Slots, int Count)
+		private int SelectedIconIndex
 		{
-			this.Size = new Size(10 * (SlotsWidth + SlotsGap), 300);
-			this.Location = new Point(5, 5);
-
-			ItemSlots = new ItemIcon[Count];
-
-			for (int i = 0; i < ItemSlots.Length; i++)
+			get;
+			set;
+		}
+		public Item SelectedItem => SlotsLayout[SelectedIconIndex];
+		public SlotsPanel(int number)
+		{
+			SlotsLayout = Activator.CreateInstance<T>();
+			Size = new Size(10 * (SlotsWidth + SlotsGap), 300);
+			Location = new Point(5, 5);
+			ItemSlots = new List<ItemIcon>(number);
+			for (int i = 0; i < number; i++)
 			{
-				int row = (int)Math.Floor((double)(i / 10));
-				int off = i % 10;
-				ItemSlots[i] = new ItemIcon(Context, Slots, i, i)
+				ItemIcon icon = new ItemIcon(i)
 				{
 					Size = new Size(SlotsWidth, SlotsWidth),
-					Location = new Point(off * (SlotsWidth + SlotsGap), row * (SlotsWidth + SlotsGap)),
-
-
+					Location = SlotsLayout.Position(i),
 					BackColor = Color.FromArgb(90, 90, 90),
 					SizeMode = PictureBoxSizeMode.CenterImage,
 					Selected = false
 				};
-				ItemSlots[i].Click += (s, e) =>
+				icon.Click += (s, e) =>
 				{
-					OnItemSlotClick(s as ItemIcon, e as MouseEventArgs);
+					SelectItem((s as ItemIcon).Index);
 				};
-				this.Controls.Add(ItemSlots[i]);
+				Controls.Add(icon);
+				ItemSlots.Add(icon);
 			}
+			if (number > 0)
+			{
+				SelectedIconIndex = 0;
+				ItemSlots[0].Selected = true;
+			}
+		}
+		private void UpdateSlots()
+		{
+			foreach (var slot in ItemSlots)
+			{
+				UpdateSlot(slot);
+			}
+		}
+		private void UpdateSlot(ItemIcon slot)
+		{
+			var item = SlotsLayout[slot.Index];
+			slot.Type = item.Type;
+			slot.Stack = item.Stack;
+		}
+		public override void Refresh()
+		{
+			base.Refresh();
+			UpdateSlots();
+		}
+		public void SelectItem(int index)
+		{
+			ItemIcon icon = ItemSlots[index];
+			foreach (var slot in ItemSlots)
+				slot.Selected = false;
+			icon.Selected = true;
+			SelectedIconIndex = index;
+			OnItemSlotSelected(SelectedItem);
+			Refresh();
 		}
 	}
 }

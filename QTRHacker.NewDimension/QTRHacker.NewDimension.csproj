@@ -130,6 +130,9 @@
     <Compile Include="Configs\CFG_ProjDrawer.cs" />
     <Compile Include="Configs\CFG_QTRHacker.cs" />
     <Compile Include="Configs\Config.cs" />
+    <Compile Include="Controls\MButtonStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ChatSnippetBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -138,6 +141,9 @@
     </Compile>
     <Compile Include="Controls\FunctionButton.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MButton.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\MForm.cs">
       <SubType>Form</SubType>
@@ -157,7 +163,7 @@
     <Compile Include="Controls\MTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PopupProgressBar.cs">
+    <Compile Include="Controls\ProgressPopupForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\TextButton.cs">
@@ -166,6 +172,7 @@
     <Compile Include="Controls\TextButton.Designer.cs">
       <DependentUpon>TextButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalColors.cs" />
     <Compile Include="HackContext.cs" />
     <Compile Include="Controls\ImageButton.cs">
       <SubType>UserControl</SubType>
@@ -236,7 +243,7 @@
     <Compile Include="PlayerEditor\ArmorEditor.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PlayerEditor\Controls\ItemIcon.cs">
+    <Compile Include="PlayerEditor\FlowItemSlotsEditor.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PlayerEditor\ForgeEditor.cs">
@@ -269,6 +276,7 @@
     <Compile Include="PlayerEditor\SafeEditor.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="PlayerEditor\SlotsLayout.cs" />
     <Compile Include="PlayerEditor\VoidVaultEditor.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -390,7 +398,6 @@
     <EmbeddedResource Include="Res\Game\Mount_en.txt" />
     <EmbeddedResource Include="Res\Game\Pet_en.txt" />
     <EmbeddedResource Include="Res\Image\TMLIcon.png" />
-    <EmbeddedResource Include="Res\Game\BuffType.txt" />
     <EmbeddedResource Include="Res\Game\Mount_cn.txt" />
     <EmbeddedResource Include="Res\Game\Pet_cn.txt" />
     <EmbeddedResource Include="Res\Game\Prefix_cn.txt" />

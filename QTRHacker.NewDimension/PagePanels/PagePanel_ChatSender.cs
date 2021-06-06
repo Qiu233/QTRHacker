@@ -31,9 +31,10 @@ namespace QTRHacker.NewDimension.PagePanels
 				Content = content;
 			}
 		}
-		private MListBox FilesBox;
-		private Panel ContentPanel;
-		private Button AddSnippetButton;
+		private readonly MListBox FilesBox;
+		private readonly Panel ContentPanel;
+		private readonly Button AddSnippetButton;
+		private readonly MButtonStrip ButtonStripR,ButtonStripL;
 		public PagePanel_ChatSender(int Width, int Height) : base(Width, Height)
 		{
 			FilesBox = new MListBox()
@@ -42,6 +43,18 @@ namespace QTRHacker.NewDimension.PagePanels
 			};
 			UpdateList();
 			Controls.Add(FilesBox);
+
+			ButtonStripR = new MButtonStrip(60, 30)
+			{
+				Bounds = new Rectangle(235, 2, 60, 120),
+			};
+			Controls.Add(ButtonStripR);
+
+			ButtonStripL = new MButtonStrip(60, 30)
+			{
+				Bounds = new Rectangle(2, 2, 60, 120),
+			};
+			Controls.Add(ButtonStripL);
 
 			ContentPanel = new Panel();
 			ContentPanel.Bounds = new Rectangle(3, 150, 290, 215);
@@ -63,15 +76,7 @@ namespace QTRHacker.NewDimension.PagePanels
 
 			FilesBox.SelectedIndexChanged += FilesBox_SelectedIndexChanged;
 
-			Button CreateButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Create"],
-				Bounds = new Rectangle(1, 2, 60, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			Controls.Add(CreateButton);
-			CreateButton.Click += (s, e) =>
+			ButtonStripL.AddButton(HackContext.CurrentLanguage["Create"]).Click += (s, e) =>
 			{
 				MForm CreateNewMForm = new MForm
 				{
@@ -125,15 +130,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(ConfirmButton);
 				CreateNewMForm.ShowDialog(this);
 			};
-			Button RenameButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Rename"],
-				Bounds = new Rectangle(1, 32, 60, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			Controls.Add(RenameButton);
-			RenameButton.Click += (s, e) =>
+			ButtonStripL.AddButton(HackContext.CurrentLanguage["Rename"]).Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
 				MForm CreateNewMForm = new MForm
@@ -183,15 +180,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.ShowDialog(this);
 			};
 
-			Button DeleteButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Delete"],
-				Bounds = new Rectangle(1, 62, 60, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			Controls.Add(DeleteButton);
-			DeleteButton.Click += (s, e) =>
+			ButtonStripL.AddButton(HackContext.CurrentLanguage["Delete"]).Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
 				if (MessageBox.Show(HackContext.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
@@ -199,44 +188,20 @@ namespace QTRHacker.NewDimension.PagePanels
 				UpdateList();
 			};
 
-			Button RefreshButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Refresh"],
-				Bounds = new Rectangle(1, 92, 60, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			Controls.Add(RefreshButton);
-			RefreshButton.Click += (s, e) =>
+			ButtonStripL.AddButton(HackContext.CurrentLanguage["Refresh"]).Click += (s, e) =>
 			{
 				UpdateList();
 			};
 
 
-			Button SaveButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Save"],
-				Bounds = new Rectangle(233, 2, 60, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			Controls.Add(SaveButton);
-			SaveButton.Click += (s, e) =>
+			ButtonStripR.AddButton(HackContext.CurrentLanguage["Save"]).Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count > 0)
 					SaveFile(Path.Combine(HackContext.PATH_CHATTEMPLATES, $"{FilesBox.SelectedItem}.chat"));
 			};
 
 
-			Button SendButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Send"],
-				Bounds = new Rectangle(233, 32, 60, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			Controls.Add(SendButton);
-			SendButton.Click += (s, e) =>
+			ButtonStripR.AddButton(HackContext.CurrentLanguage["Send"]).Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count > 0)
 					SendChat();

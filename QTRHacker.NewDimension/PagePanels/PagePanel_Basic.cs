@@ -76,58 +76,34 @@ namespace QTRHacker.NewDimension.PagePanels
 			AddFunctionButton(Page3, HackContext.CurrentLanguage["BurnAllNPCS"], false,
 				g =>
 				{
-					int i = 0;
-					PopupProgressBar p = new PopupProgressBar();
-					p.MainProgressBar.Maximum = NPC.MAXNUMBER;
-					System.Timers.Timer timer = new System.Timers.Timer(1);
-					timer.Elapsed += (sender, e) =>
+					ProgressPopupForm p = new ProgressPopupForm(MainForm.MainFormInstance.Width / 4 * 3, NPC.MAXNUMBER, "Waiting...");
+					p.Run(MainForm.MainFormInstance, (tick) =>
 					{
-						var b = p.MainProgressBar;
-						b.Value = i;
-						b.Invalidate();
-						b.Text = b.Value + "/" + b.Maximum;
-						if (i >= b.Maximum) p.Dispose();
-					};
-					timer.Start();
-					p.Show();
-					p.Location = new Point(MainForm.MainFormInstance.Location.X + MainForm.MainFormInstance.Width / 2 - p.ClientSize.Width / 2, MainForm.MainFormInstance.Location.Y + MainForm.MainFormInstance.Height / 2 - p.ClientSize.Height / 2);
-					new Thread(() =>
-					{
-						MainForm.MainFormInstance.Enabled = false;
+						int i = 0;
 						var npc = HackContext.GameContext.NPC;
 						for (; i < NPC.MAXNUMBER; i++)
+						{
 							if (npc[i].Active)
 								npc[i].AddBuff(153, 216000);
-						MainForm.MainFormInstance.Enabled = true;
-					}).Start();
+							tick(i);
+						}
+					});
 				}, null);
 			AddFunctionButton(Page3, HackContext.CurrentLanguage["BurnAllPlayers"], false,
 				g =>
 				{
-					int i = 0;
-					PopupProgressBar p = new PopupProgressBar();
-					p.MainProgressBar.Maximum = Player.MAXNUMBER;
-					System.Timers.Timer timer = new System.Timers.Timer(1);
-					timer.Elapsed += (sender, e) =>
+					ProgressPopupForm p = new ProgressPopupForm(MainForm.MainFormInstance.Width / 4 * 3, NPC.MAXNUMBER, "Waiting...");
+					p.Run(MainForm.MainFormInstance, (tick) =>
 					{
-						var b = p.MainProgressBar;
-						b.Value = i;
-						b.Invalidate();
-						b.Text = b.Value + "/" + b.Maximum;
-						if (i >= b.Maximum) p.Dispose();
-					};
-					timer.Start();
-					p.Show();
-					p.Location = new Point(MainForm.MainFormInstance.Location.X + MainForm.MainFormInstance.Width / 2 - p.ClientSize.Width / 2, MainForm.MainFormInstance.Location.Y + MainForm.MainFormInstance.Height / 2 - p.ClientSize.Height / 2);
-					new Thread(() =>
-					{
-						MainForm.MainFormInstance.Enabled = false;
+						int i = 0;
 						var player = HackContext.GameContext.Players;
 						for (; i < Player.MAX_PLAYER; i++)
+						{
 							if (player[i].Active)
 								player[i].AddBuff(44, 216000);
-						MainForm.MainFormInstance.Enabled = true;
-					}).Start();
+							tick(i);
+						}
+					});
 				}, null);
 			AddFunctionButton(Page3, HackContext.CurrentLanguage["PourLavaOntoPlayers"], false, Utils.DropLavaOntoPlayers, null);
 			FunctionButton _b = null;

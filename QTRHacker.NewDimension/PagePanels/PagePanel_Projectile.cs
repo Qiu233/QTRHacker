@@ -13,7 +13,8 @@ namespace QTRHacker.NewDimension.PagePanels
 {
 	public class PagePanel_Projectile : PagePanel
 	{
-		private MListBox FilesBox;
+		private readonly MListBox FilesBox;
+		private readonly MButtonStrip ButtonStrip;
 		public PagePanel_Projectile(int Width, int Height) : base(Width, Height)
 		{
 			FilesBox = new MListBox()
@@ -23,14 +24,13 @@ namespace QTRHacker.NewDimension.PagePanels
 			UpdateList();
 			Controls.Add(FilesBox);
 
-			Button CompileButton = new Button()
+			ButtonStrip = new MButtonStrip(80, 30)
 			{
-				Text = HackContext.CurrentLanguage["Compile"],
-				Bounds = new Rectangle(214, 3, 80, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
+				Bounds = new Rectangle(215, 2, 80, 210),
 			};
-			CompileButton.Click += (s, e) =>
+			Controls.Add(ButtonStrip);
+
+			ButtonStrip.AddButton(HackContext.CurrentLanguage["Compile"]).Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
 				var ctx = HackContext.GameContext;
@@ -54,16 +54,8 @@ namespace QTRHacker.NewDimension.PagePanels
 					MessageBox.Show(HackContext.CurrentLanguage["UnknownError"], HackContext.CurrentLanguage["UnknownError"]);
 				}
 			};
-			Controls.Add(CompileButton);
 
-			Button CreateNewButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Create"],
-				Bounds = new Rectangle(214, 33, 80, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			CreateNewButton.Click += (s, e) =>
+			ButtonStrip.AddButton(HackContext.CurrentLanguage["Create"]).Click += (s, e) =>
 			{
 				MForm CreateNewMForm = new MForm
 				{
@@ -110,31 +102,15 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(ConfirmButton);
 				CreateNewMForm.ShowDialog(this);
 			};
-			Controls.Add(CreateNewButton);
 
-			Button EditButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Edit"],
-				Bounds = new Rectangle(214, 63, 80, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			EditButton.Click += (s, e) =>
+			ButtonStrip.AddButton(HackContext.CurrentLanguage["Edit"]).Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
 				ProjMakerForm p = new ProjMakerForm((string)FilesBox.SelectedItem);
 				p.ShowDialog(this);
 			};
-			Controls.Add(EditButton);
 
-			Button RenameButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Rename"],
-				Bounds = new Rectangle(214, 93, 80, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			RenameButton.Click += (s, e) =>
+			ButtonStrip.AddButton(HackContext.CurrentLanguage["Rename"]).Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
 				MForm CreateNewMForm = new MForm
@@ -183,37 +159,20 @@ namespace QTRHacker.NewDimension.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(ConfirmButton);
 				CreateNewMForm.ShowDialog(this);
 			};
-			Controls.Add(RenameButton);
 
-			Button DeleteButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Delete"],
-				Bounds = new Rectangle(214, 123, 80, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			DeleteButton.Click += (s, e) =>
+			ButtonStrip.AddButton(HackContext.CurrentLanguage["Delete"]).Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
 				if (MessageBox.Show(HackContext.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
 				File.Delete(Path.Combine(HackContext.PATH_PROJS, $"{(string)FilesBox.SelectedItem}.projimg"));
 				UpdateList();
 			};
-			this.Controls.Add(DeleteButton);
 
 
-			Button RefreshButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Refresh"],
-				Bounds = new Rectangle(214, 153, 80, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			RefreshButton.Click += (s, e) =>
+			ButtonStrip.AddButton(HackContext.CurrentLanguage["Refresh"]).Click += (s, e) =>
 			{
 				UpdateList();
 			};
-			Controls.Add(RefreshButton);
 		}
 
 		public void UpdateList()

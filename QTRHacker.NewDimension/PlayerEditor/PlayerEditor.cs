@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using QTRHacker.Functions;
 using QTRHacker.Functions.GameObjects;
+using QTRHacker.NewDimension.Controls;
 using QTRHacker.NewDimension.Res;
 using System;
 using System.Collections.Generic;
@@ -152,9 +153,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			PropertiesSelectPanel.Controls.Add(ManaTextBox);
 
 
-			Button RefreshButton = new Button();
+			MButton RefreshButton = new MButton();
 			RefreshButton.Text = HackContext.CurrentLanguage["Refresh"];
-			RefreshButton.FlatStyle = FlatStyle.Flat;
 			RefreshButton.Bounds = new Rectangle(220, 60, 100, 30);
 			RefreshButton.Click += (s, e) =>
 			{
@@ -162,9 +162,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			};
 			PropertiesSelectPanel.Controls.Add(RefreshButton);
 
-			Button ConfirmButton = new Button() { Enabled = Editable };
+			MButton ConfirmButton = new MButton() { Enabled = Editable };
 			ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
-			ConfirmButton.FlatStyle = FlatStyle.Flat;
 			ConfirmButton.Bounds = new Rectangle(220, 93, 100, 30);
 			ConfirmButton.Click += (s, e) =>
 			{

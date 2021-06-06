@@ -17,8 +17,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			get;
 		}
 		private int ControlID = 0;
-		private ComboBox PrefixComboBox;
-		private CheckBox AutoReuseCheckBox, EquippableCheckBox;
+		private readonly ComboBox PrefixComboBox;
+		private readonly CheckBox AutoReuseCheckBox, EquippableCheckBox;
 		public int SelectedPrefix
 		{
 			get => PrefixComboBox.SelectedIndex;
@@ -39,7 +39,7 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 		public ItemPropertiesPanel()
 		{
-			this.Size = new Size(350, 360);
+			Size = new Size(250, 360);
 
 			Hack = new Hashtable();
 			AddTextBox(HackContext.CurrentLanguage["Type"], "Type", null);
@@ -68,13 +68,13 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 
 			PrefixComboBox = AddComboBox(HackContext.CurrentLanguage["Prefix"], GameResLoader.Prefixes);
-			PrefixComboBox.BackColor = Color.FromArgb(120, 120, 120);
 
 			AutoReuseCheckBox = new CheckBox()
 			{
 				Text = HackContext.CurrentLanguage["AutoReuse"],
 				Size = new Size(130, 20),
-				Location = new Point(0, 245)
+				Location = new Point(0, 245),
+				ForeColor = GlobalColors.TipForeColor
 			};
 			this.Controls.Add(AutoReuseCheckBox);
 
@@ -82,39 +82,41 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			{
 				Text = HackContext.CurrentLanguage["Accessory"],
 				Size = new Size(130, 20),
-				Location = new Point(135, 245)
+				Location = new Point(135, 245),
+				ForeColor = GlobalColors.TipForeColor
 			};
-			this.Controls.Add(EquippableCheckBox);
+			Controls.Add(EquippableCheckBox);
 		}
 		private TextBox AddTextBox(string tipstr, string hack, EventHandler handler, bool f = false)
 		{
 			int a = ControlID % 2, b = (int)Math.Floor((double)ControlID / 2);
-			Label tip = new Label();
-			TextBox val = new TextBox();
-			tip.Text = tipstr;
-			tip.Location = new Point(130 * a, 20 * b);
-			tip.Size = new Size(60, 20);
-			tip.Font = new Font("Arial", 9);
-			val.Size = new Size(60, 20);
-			val.BorderStyle = BorderStyle.FixedSingle;
-			val.BackColor = Color.FromArgb(120, 120, 120);
-			val.Location = new Point(60 + 130 * a, 20 * b);
-			val.Multiline = true;
-			val.MaxLength = 7;
-			val.Font = new Font("Arial", 8);
+			Label tip = new Label
+			{
+				Text = tipstr,
+				Location = new Point(130 * a, 20 * b),
+				ForeColor = GlobalColors.TipForeColor,
+				Size = new Size(60, 20),
+				Font = new Font("Arial", 9)
+			};
+			TextBox val = new TextBox
+			{
+				Size = new Size(60, 20),
+				BorderStyle = BorderStyle.FixedSingle,
+				BackColor = Color.FromArgb(120, 120, 120),
+				Location = new Point(60 + 130 * a, 20 * b),
+				Multiline = true,
+				MaxLength = 7,
+				Font = new Font("Arial", 8)
+			};
 			val.KeyDown += delegate (object sender, KeyEventArgs e)
 			{
 				if (e.KeyCode == Keys.Enter)
-				{
 					e.SuppressKeyPress = true;
-				}
 			};
 			val.KeyPress += delegate (object sender, KeyPressEventArgs e)
 			{
-				if (!Char.IsNumber(e.KeyChar) && e.KeyChar != 8 && e.KeyChar != '-')
-				{
+				if (!char.IsNumber(e.KeyChar) && e.KeyChar != 8 && e.KeyChar != '-')
 					e.Handled = true;
-				}
 				if (e.KeyChar == '.' && f)
 					e.Handled = false;
 			};
@@ -132,24 +134,29 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		private ComboBox AddComboBox(string tipstr, string[] src)
 		{
 			int a = ControlID % 2, b = (int)Math.Floor((double)ControlID / 2);
-			Label tip = new Label();
-			ComboBox box = new ComboBox();
-			tip.Text = tipstr;
-			tip.Location = new Point(130 * a, 20 * b);
-			tip.Size = new Size(60, 20);
-			tip.Font = new Font("Arial", 9);
-			box.Size = new Size(60, 20);
-			box.Location = new Point(60 + 130 * a, 20 * b);
-			box.DropDownStyle = ComboBoxStyle.DropDownList;
-			box.DropDownHeight = 150;
+			Label tip = new Label
+			{
+				Text = tipstr,
+				Location = new Point(130 * a, 20 * b),
+				Size = new Size(60, 20),
+				Font = new Font("Arial", 9),
+				ForeColor = GlobalColors.TipForeColor
+			};
+			ComboBox box = new ComboBox
+			{
+				Size = new Size(60, 20),
+				Location = new Point(60 + 130 * a, 20 * b),
+				DropDownStyle = ComboBoxStyle.DropDownList,
+				DropDownHeight = 150
+			};
 			foreach (var o in src)
 			{
 				string[] t = o.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
 				string v = t[0];
 				box.Items.Add(v);
 			}
-			this.Controls.Add(tip);
-			this.Controls.Add(box);
+			Controls.Add(tip);
+			Controls.Add(box);
 			ControlID++;
 			return box;
 		}

@@ -15,12 +15,11 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.PlayerEditor
 {
-	public class PiggyBankEditor : ItemSlotsEditor
+	public class PiggyBankEditor : FlowItemSlotsEditor
 	{
-		public PiggyBankEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable) 
-			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank.Item, Editable, TargetPlayer.Bank.Item.Length)
+		public PiggyBankEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
+			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank.Item, HackContext.CurrentLanguage["PiggyBank"], Editable, TargetPlayer.Bank.Item.Length)
 		{
-			Text = HackContext.CurrentLanguage["PiggyBank"];
 			SlotsPanel.Location = new Point(0, 30);
 		}
 	}

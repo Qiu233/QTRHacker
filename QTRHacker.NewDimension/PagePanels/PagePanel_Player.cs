@@ -17,7 +17,8 @@ namespace QTRHacker.NewDimension.PagePanels
 	{
 		private readonly MListView PlayerListView;
 		private readonly System.Timers.Timer UpdatePlayerTimer;
-		private readonly Button EditPlayerInfoButton, TpToPlayerButton,
+		private readonly MButtonStrip ButtonStrip;
+		private readonly MButton EditPlayerInfoButton, TpToPlayerButton,
 			AddBuffButton, SetPetButton, SetMountButton;
 		private readonly Panel PlayerAttributePanel;
 		private readonly InfoView PlayerNameInfoView, PlayerLifeInfoView, PlayerManaInfoView,
@@ -26,26 +27,20 @@ namespace QTRHacker.NewDimension.PagePanels
 		private int PlayerAttributeNumbers = 0;
 		public PagePanel_Player(int Width, int Height) : base(Width, Height)
 		{
-			EditPlayerInfoButton = new Button();
-			EditPlayerInfoButton.Enabled = false;
-			EditPlayerInfoButton.FlatStyle = FlatStyle.Flat;
-			EditPlayerInfoButton.Text = HackContext.CurrentLanguage["EditPlayer"];
-			EditPlayerInfoButton.BackColor = Color.FromArgb(100, 150, 150, 150);
-			EditPlayerInfoButton.Bounds = new Rectangle(215, 3, 80, 30);
+			ButtonStrip = new MButtonStrip(80, 30);
+			ButtonStrip.Bounds = new Rectangle(215, 2, 80, 210);
+			ButtonStrip.Enabled = false;
+			Controls.Add(ButtonStrip);
+
+			EditPlayerInfoButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["EditPlayer"]);
 			EditPlayerInfoButton.Click += (s, e) =>
 			{
 				int i = Convert.ToInt32(PlayerListView.SelectedItems[0].Text);
 				PlayerEditorForm f = new PlayerEditorForm(HackContext.GameContext.Players[i], i == HackContext.GameContext.MyPlayerIndex);
 				f.Show();
 			};
-			Controls.Add(EditPlayerInfoButton);
 
-			TpToPlayerButton = new Button();
-			TpToPlayerButton.Enabled = false;
-			TpToPlayerButton.FlatStyle = FlatStyle.Flat;
-			TpToPlayerButton.Text = HackContext.CurrentLanguage["TpTo"];
-			TpToPlayerButton.BackColor = Color.FromArgb(100, 150, 150, 150);
-			TpToPlayerButton.Bounds = new Rectangle(215, 33, 80, 30);
+			TpToPlayerButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["TpTo"]);
 			TpToPlayerButton.Click += (s, e) =>
 			{
 				var p = HackContext.GameContext.Players[Convert.ToInt32(PlayerListView.SelectedItems[0].Text)];
@@ -53,15 +48,8 @@ namespace QTRHacker.NewDimension.PagePanels
 				mp.X = p.X;
 				mp.Y = p.Y;
 			};
-			Controls.Add(TpToPlayerButton);
 
-			AddBuffButton = new Button();
-			AddBuffButton.Enabled = false;
-			AddBuffButton.FlatStyle = FlatStyle.Flat;
-			AddBuffButton.Text = HackContext.CurrentLanguage["AddBuff"];
-			AddBuffButton.BackColor = Color.FromArgb(100, 150, 150, 150);
-			AddBuffButton.Bounds = new Rectangle(215, 63, 80, 30);
-			Controls.Add(AddBuffButton);
+			AddBuffButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["AddBuff"]);
 			AddBuffButton.Click += (s, e) =>
 			{
 				var ps = PlayerListView.SelectedIndices;
@@ -130,13 +118,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				AddBuffMForm.ShowDialog(this);
 			};
 
-			SetPetButton = new Button();
-			SetPetButton.Enabled = false;
-			SetPetButton.FlatStyle = FlatStyle.Flat;
-			SetPetButton.Text = HackContext.CurrentLanguage["SetPet"];
-			SetPetButton.BackColor = Color.FromArgb(100, 150, 150, 150);
-			SetPetButton.Bounds = new Rectangle(215, 93, 80, 30);
-			Controls.Add(SetPetButton);
+			SetPetButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["SetPet"]);
 			SetPetButton.Click += (s, e) =>
 			{
 				var ps = PlayerListView.SelectedIndices;
@@ -185,13 +167,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				SetPetMForm.ShowDialog(this);
 			};
 
-			SetMountButton = new Button();
-			SetMountButton.Enabled = false;
-			SetMountButton.FlatStyle = FlatStyle.Flat;
-			SetMountButton.Text = HackContext.CurrentLanguage["SetMount"];
-			SetMountButton.BackColor = Color.FromArgb(100, 150, 150, 150);
-			SetMountButton.Bounds = new Rectangle(215, 123, 80, 30);
-			Controls.Add(SetMountButton);
+			SetMountButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["SetMount"]);
 			SetMountButton.Click += (s, e) =>
 			{
 				var ps = PlayerListView.SelectedIndices;
@@ -261,8 +237,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				var m = s as MListView;
 				if (m.SelectedIndices.Count > 0)
 				{
-					EditPlayerInfoButton.Enabled = true;
-					TpToPlayerButton.Enabled = true;
+					ButtonStrip.Enabled = true;
 					bool t = Convert.ToInt32(m.SelectedItems[0].SubItems[0].Text) == HackContext.GameContext.MyPlayerIndex;
 					AddBuffButton.Enabled = t;
 					SetPetButton.Enabled = t;
@@ -270,11 +245,7 @@ namespace QTRHacker.NewDimension.PagePanels
 				}
 				else
 				{
-					EditPlayerInfoButton.Enabled = false;
-					TpToPlayerButton.Enabled = false;
-					AddBuffButton.Enabled = false;
-					SetPetButton.Enabled = false;
-					SetMountButton.Enabled = false;
+					ButtonStrip.Enabled = false;
 					ClearPlayerAttribute();
 				}
 			};

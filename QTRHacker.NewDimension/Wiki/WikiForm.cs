@@ -39,11 +39,13 @@ namespace QTRHacker.NewDimension.Wiki
 			MainTab.Size = ClientSize;
 			Controls.Add(MainTab);
 		}
-		protected override void OnShown(EventArgs e)
+		protected override async void OnShown(EventArgs e)
 		{
 			base.OnShown(e);
-			Task.Run(ItemsTabPage.RefreshItems);
-			Task.Run(NPCTabPage.RefreshNPCs);
+			Enabled = false;
+			await Task.Run(ItemsTabPage.RefreshItems);
+			await Task.Run(NPCTabPage.RefreshNPCs);
+			Enabled = true;//only after everything is loaded
 		}
 	}
 }

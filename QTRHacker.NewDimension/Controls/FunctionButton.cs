@@ -35,6 +35,7 @@ namespace QTRHacker.NewDimension.Controls
 			}
 		}
 		public static Color NormalColor = Color.FromArgb(20, 255, 255, 255);
+		public static Color DefualtForeColor = Color.FromArgb(180, 180, 180);
 		public static Color HoverColor = Color.FromArgb(40, 255, 255, 255);
 		public static Color MouseDownColor = Color.FromArgb(90, 255, 255, 255);
 		public static Color SelectedColor_Closable = Color.FromArgb(100, 0, 255, 0);
@@ -55,6 +56,7 @@ namespace QTRHacker.NewDimension.Controls
 			this.Identity = Identity;
 			this.Closable = Closable;
 			this.GetEnabled = GetEnabled;
+			ForeColor = DefualtForeColor;
 			BackColor = NormalColor;
 			AutoScaleDimensions = new SizeF(6F, 12F);
 			AutoScaleMode = AutoScaleMode.Font;

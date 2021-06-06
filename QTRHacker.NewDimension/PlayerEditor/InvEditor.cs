@@ -1,5 +1,6 @@
 ﻿using QTRHacker.Functions;
 using QTRHacker.Functions.GameObjects;
+using QTRHacker.NewDimension.Controls;
 using QTRHacker.NewDimension.PlayerEditor.Controls;
 using QTRHacker.NewDimension.Res;
 using System;
@@ -15,14 +16,13 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.PlayerEditor
 {
-	public class InvEditor : ItemSlotsEditor
+	public class InvEditor : FlowItemSlotsEditor
 	{
-		public InvEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable) : base(Context, ParentForm, TargetPlayer, TargetPlayer.Inventory, Editable, Player.ITEM_MAX_COUNT - 9)
+		public InvEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable) :
+			base(Context, ParentForm, TargetPlayer, TargetPlayer.Inventory, HackContext.CurrentLanguage["Inventory"], Editable, Player.ITEM_MAX_COUNT - 9)
 		{
-			Text = HackContext.CurrentLanguage["Inventory"];
 
-
-			Button SaveInv = new Button();
+			Button SaveInv = ButtonStrip.AddButton(HackContext.CurrentLanguage["Save"]);
 			SaveInv.Click += (sender, e) =>
 			{
 				SaveFileDialog sfd = new SaveFileDialog()
@@ -36,13 +36,8 @@ namespace QTRHacker.NewDimension.PlayerEditor
 					SlotsPanel.Refresh();
 				}
 			};
-			SaveInv.FlatStyle = FlatStyle.Flat;
-			SaveInv.Text = HackContext.CurrentLanguage["Save"];
-			SaveInv.Size = new Size(80, 30);
-			SaveInv.Location = new Point(260, 60);
-			ItemPropertiesPanel.Controls.Add(SaveInv);
 
-			Button LoadInv = new Button();
+			Button LoadInv = ButtonStrip.AddButton(HackContext.CurrentLanguage["Load"]);
 			LoadInv.Enabled = Editable;
 			LoadInv.Click += (sender, e) =>
 			{
@@ -57,16 +52,11 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				{
 					LoadInventory(ofd.FileName);
 					SlotsPanel.Refresh();
-					InitItemData(Selected);
+					FetchItemData(SelectedItem);
 				}
 			};
-			LoadInv.FlatStyle = FlatStyle.Flat;
-			LoadInv.Text = HackContext.CurrentLanguage["Load"];
-			LoadInv.Size = new Size(80, 30);
-			LoadInv.Location = new Point(260, 90);
-			ItemPropertiesPanel.Controls.Add(LoadInv);
 
-			Button SaveInvPItem = new Button();
+			Button SaveInvPItem = ButtonStrip.AddButton($"{HackContext.CurrentLanguage["Save"]}(P)");
 			SaveInvPItem.Enabled = Editable;
 			SaveInvPItem.Click += (sender, e) =>
 			{
@@ -79,20 +69,12 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				sfd.InitialDirectory = Path.GetFullPath(HackContext.PATH_INVS);
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
-
-
 					File.WriteAllText(sfd.FileName, TargetPlayer.SerializeInventoryWithProperties());
 					SlotsPanel.Refresh();
-
 				}
 			};
-			SaveInvPItem.FlatStyle = FlatStyle.Flat;
-			SaveInvPItem.Text = $"{HackContext.CurrentLanguage["Save"]}(P)";
-			SaveInvPItem.Size = new Size(80, 30);
-			SaveInvPItem.Location = new Point(260, 120);
-			ItemPropertiesPanel.Controls.Add(SaveInvPItem);
 
-			Button LoadInvPItem = new Button();
+			Button LoadInvPItem = ButtonStrip.AddButton($"{HackContext.CurrentLanguage["Load"]}(P)");
 			LoadInvPItem.Enabled = Editable;
 			LoadInvPItem.Click += (sender, e) =>
 			{
@@ -105,63 +87,16 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				ofd.InitialDirectory = Path.GetFullPath(HackContext.PATH_INVS);
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
-					int j = 0;
-					Form p = new Form();
-					ProgressBar pb = new ProgressBar();
-					Label tip = new Label(), percent = new Label();
-					tip.Text = "Loading inventory...";
-					tip.Location = new Point(0, 0);
-					tip.Size = new Size(150, 30);
-					tip.TextAlign = ContentAlignment.MiddleCenter;
-					percent.Location = new Point(150, 0);
-					percent.Size = new Size(30, 30);
-					percent.TextAlign = ContentAlignment.MiddleCenter;
-					System.Timers.Timer timer = new System.Timers.Timer(1);
-					p.FormBorderStyle = FormBorderStyle.FixedSingle;
-					p.ClientSize = new Size(300, 60);
-					p.ControlBox = false;
-					pb.Location = new Point(0, 30);
-					pb.Size = new Size(300, 30);
-					pb.Maximum = 2;
-					pb.Minimum = 0;
-					pb.Value = 0;
-					p.Controls.Add(tip);
-					p.Controls.Add(percent);
-					p.Controls.Add(pb);
-					timer.Elapsed += (sender1, e1) =>
+					ProgressPopupForm ppf = new ProgressPopupForm(ParentForm.Width / 4 * 3, 1, "Loading Inventory");
+					ppf.Run(ParentForm, (t) =>
 					{
-						pb.Value = j;
-						percent.Text = pb.Value + "/" + pb.Maximum;
-						if (j >= pb.Maximum) p.Dispose();
-					};
-					timer.Start();
-					p.Show();
-					p.Location = new System.Drawing.Point(ParentForm.Location.X + ParentForm.Width / 2 - p.ClientSize.Width / 2, ParentForm.Location.Y + ParentForm.Height / 2 - p.ClientSize.Height / 2);
-					new System.Threading.Thread((s) =>
-					{
-						j++;
-
 						TargetPlayer.DeserializeInventoryWithProperties(File.ReadAllText(ofd.FileName));
-						InitItemData(Selected);
-						j++;
-
-					}
-					).Start();
+						FetchItemData(SelectedItem);
+					}, 20000);
 				}
 			};
-			LoadInvPItem.FlatStyle = FlatStyle.Flat;
-			LoadInvPItem.Text = $"{HackContext.CurrentLanguage["Load"]}(P)";
-			LoadInvPItem.Size = new Size(80, 30);
-			LoadInvPItem.Location = new Point(260, 150);
-			ItemPropertiesPanel.Controls.Add(LoadInvPItem);
-
-			
-			ButtonInitItem.Location = new Point(260, 180);
-
-			SlotsPanel.ItemSlots[0].Selected = true;
-			InitItemData(0);
 		}
-		
+
 
 		public void SaveInventory(string name)
 		{
@@ -207,100 +142,76 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		}
 		public void LoadInventory(string name)
 		{
-			int j = 0;
-			Form p = new Form();
-			ProgressBar pb = new ProgressBar();
-			Label tip = new Label(), percent = new Label();
-			tip.Text = "Loading inventory...";
-			tip.Location = new Point(0, 0);
-			tip.Size = new Size(150, 30);
-			tip.TextAlign = ContentAlignment.MiddleCenter;
-			percent.Location = new Point(150, 0);
-			percent.Size = new Size(30, 30);
-			percent.TextAlign = ContentAlignment.MiddleCenter;
-			System.Timers.Timer timer = new System.Timers.Timer(1);
-			p.FormBorderStyle = FormBorderStyle.FixedSingle;
-			p.ClientSize = new Size(300, 60);
-			p.ControlBox = false;
-			pb.Location = new Point(0, 30);
-			pb.Size = new Size(300, 30);
-			pb.Maximum = Player.ITEM_MAX_COUNT + Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT;
-			pb.Minimum = 0;
-			pb.Value = 0;
-			p.Controls.Add(tip);
-			p.Controls.Add(percent);
-			p.Controls.Add(pb);
-			timer.Elapsed += (sender, e) =>
-			{
-				pb.Value = j;
-				percent.Text = pb.Value + "/" + pb.Maximum;
-				if (j >= pb.Maximum) p.Dispose();
-			};
-			timer.Start();
-			p.Show();
-			p.Location = new System.Drawing.Point(ParentForm.Location.X + ParentForm.Width / 2 - p.ClientSize.Width / 2, ParentForm.Location.Y + ParentForm.Height / 2 - p.ClientSize.Height / 2);
-			new System.Threading.Thread((s) =>
-			{
-				var player = TargetPlayer;
-				BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open));
-				for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
+			new ProgressPopupForm(ParentForm.Width / 4 * 3,
+				Player.ITEM_MAX_COUNT + Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT, "Loading Inventory").
+				Run(ParentForm, (tick) =>
 				{
-					j++;
-					var item = player.Inventory[i];
-					int type = br.ReadInt32();
-					int stack = br.ReadInt32();
-					byte prefix = br.ReadByte();
-					if (type <= 0 && item.Type <= 0) continue;
-					item.SetDefaultsAndPrefix(type, prefix);
-					item.Stack = stack;
-				}
-				for (int i = 0; i < Player.ARMOR_MAX_COUNT; i++)
-				{
-					j++;
-					var item = player.Armor[i];
-					int type = br.ReadInt32();
-					int stack = br.ReadInt32();
-					byte prefix = br.ReadByte();
-					if (type <= 0 && item.Type <= 0) continue;
-					item.SetDefaultsAndPrefix(type, prefix);
-					item.Stack = stack;
-				}
-				for (int i = 0; i < Player.DYE_MAX_COUNT; i++)
-				{
-					j++;
-					var item = player.Dye[i];
-					int type = br.ReadInt32();
-					int stack = br.ReadInt32();
-					byte prefix = br.ReadByte();
-					if (type <= 0 && item.Type <= 0) continue;
-					item.SetDefaultsAndPrefix(type, prefix);
-					item.Stack = stack;
-				}
-				for (int i = 0; i < Player.MISC_MAX_COUNT; i++)
-				{
-					j++;
-					var item = player.Misc[i];
-					int type = br.ReadInt32();
-					int stack = br.ReadInt32();
-					byte prefix = br.ReadByte();
-					if (type <= 0 && item.Type <= 0) continue;
-					item.SetDefaultsAndPrefix(type, prefix);
-					item.Stack = stack;
-				}
-				for (int i = 0; i < Player.MISCDYE_MAX_COUNT; i++)
-				{
-					j++;
-					var item = player.MiscDye[i];
-					int type = br.ReadInt32();
-					int stack = br.ReadInt32();
-					byte prefix = br.ReadByte();
-					if (type <= 0 && item.Type <= 0) continue;
-					item.SetDefaultsAndPrefix(type, prefix);
-					item.Stack = stack;
-				}
-				br.Close();
-			}
-			).Start();
+					int j = 0;
+					var player = TargetPlayer;
+					using (BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open)))
+					{
+						for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
+						{
+							j++;
+							var item = player.Inventory[i];
+							int type = br.ReadInt32();
+							int stack = br.ReadInt32();
+							byte prefix = br.ReadByte();
+							if (type <= 0 && item.Type <= 0) continue;
+							item.SetDefaultsAndPrefix(type, prefix);
+							item.Stack = stack;
+							tick(j);
+						}
+						for (int i = 0; i < Player.ARMOR_MAX_COUNT; i++)
+						{
+							j++;
+							var item = player.Armor[i];
+							int type = br.ReadInt32();
+							int stack = br.ReadInt32();
+							byte prefix = br.ReadByte();
+							if (type <= 0 && item.Type <= 0) continue;
+							item.SetDefaultsAndPrefix(type, prefix);
+							item.Stack = stack;
+							tick(j);
+						}
+						for (int i = 0; i < Player.DYE_MAX_COUNT; i++)
+						{
+							j++;
+							var item = player.Dye[i];
+							int type = br.ReadInt32();
+							int stack = br.ReadInt32();
+							byte prefix = br.ReadByte();
+							if (type <= 0 && item.Type <= 0) continue;
+							item.SetDefaultsAndPrefix(type, prefix);
+							item.Stack = stack;
+							tick(j);
+						}
+						for (int i = 0; i < Player.MISC_MAX_COUNT; i++)
+						{
+							j++;
+							var item = player.Misc[i];
+							int type = br.ReadInt32();
+							int stack = br.ReadInt32();
+							byte prefix = br.ReadByte();
+							if (type <= 0 && item.Type <= 0) continue;
+							item.SetDefaultsAndPrefix(type, prefix);
+							item.Stack = stack;
+							tick(j);
+						}
+						for (int i = 0; i < Player.MISCDYE_MAX_COUNT; i++)
+						{
+							j++;
+							var item = player.MiscDye[i];
+							int type = br.ReadInt32();
+							int stack = br.ReadInt32();
+							byte prefix = br.ReadByte();
+							if (type <= 0 && item.Type <= 0) continue;
+							item.SetDefaultsAndPrefix(type, prefix);
+							item.Stack = stack;
+							tick(j);
+						}
+					}
+				});
 		}
 	}
 }

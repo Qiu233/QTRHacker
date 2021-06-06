@@ -10,12 +10,11 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.PlayerEditor
 {
-	public class VoidVaultEditor : ItemSlotsEditor
+	public class VoidVaultEditor : FlowItemSlotsEditor
 	{
 		public VoidVaultEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
-			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank4.Item, Editable, TargetPlayer.Bank4.Item.Length)
+			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank4.Item, HackContext.CurrentLanguage["VoidVault"], Editable, TargetPlayer.Bank4.Item.Length)
 		{
-			Text = HackContext.CurrentLanguage["VoidVault"];
 			SlotsPanel.Location = new Point(0, 30);
 		}
 	}

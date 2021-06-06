@@ -10,12 +10,11 @@ using System.Windows.Forms;
 
 namespace QTRHacker.NewDimension.PlayerEditor
 {
-	public class ForgeEditor : ItemSlotsEditor
+	public class ForgeEditor : FlowItemSlotsEditor
 	{
 		public ForgeEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
-			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank3.Item, Editable, TargetPlayer.Bank3.Item.Length)
+			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank3.Item, HackContext.CurrentLanguage["Forge"], Editable, TargetPlayer.Bank3.Item.Length)
 		{
-			Text = HackContext.CurrentLanguage["Forge"];
 			SlotsPanel.Location = new Point(0, 30);
 		}
 	}
