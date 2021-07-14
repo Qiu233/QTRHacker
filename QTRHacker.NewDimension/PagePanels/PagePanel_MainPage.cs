@@ -145,11 +145,12 @@ namespace QTRHacker.NewDimension.PagePanels
 			};
 			Controls.Add(Terraria_Main_Update_BaseAddressInfoView);
 
+
 			RefreshButton = new Button();
 			RefreshButton.FlatStyle = FlatStyle.Flat;
 			RefreshButton.ForeColor = Color.White;
 			RefreshButton.Text = HackContext.CurrentLanguage["FetchAddressesAgain"];
-			RefreshButton.Bounds = new Rectangle(Width - 130, Height - 40, 120, 30);
+			RefreshButton.Bounds = new Rectangle(Width - 125, Height - 35, 120, 30);
 			RefreshButton.Click += (s, e) =>
 			{
 				if (HackContext.GameContext == null)

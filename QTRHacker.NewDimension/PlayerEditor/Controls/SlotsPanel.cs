@@ -77,6 +77,7 @@ namespace QTRHacker.NewDimension.PlayerEditor.Controls
 			get; set;
 		}
 		public event Action<Item> OnItemSlotSelected = (o) => { };
+		public event Action<object, Item, MouseEventArgs> OnItemClick = (s, o, e) => { };
 		public const int SlotsWidth = 50;
 		public const int SlotsGap = 5;
 		private int SelectedIconIndex
@@ -101,9 +102,10 @@ namespace QTRHacker.NewDimension.PlayerEditor.Controls
 					SizeMode = PictureBoxSizeMode.CenterImage,
 					Selected = false
 				};
-				icon.Click += (s, e) =>
+				icon.MouseClick += (s, e) =>
 				{
 					SelectItem((s as ItemIcon).Index);
+					OnItemClick(s, SelectedItem, e);
 				};
 				Controls.Add(icon);
 				ItemSlots.Add(icon);

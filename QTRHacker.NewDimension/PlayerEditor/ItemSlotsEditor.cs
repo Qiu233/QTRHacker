@@ -16,6 +16,20 @@ namespace QTRHacker.NewDimension.PlayerEditor
 {
 	public abstract class ItemSlotsEditor<T> : TabPage where T : SlotsLayout
 	{
+		private struct ItemInfo
+		{
+			public int Type;
+			public int Stack;
+			public byte Prefix;
+
+			public ItemInfo(int type, int stack, byte prefix)
+			{
+				Type = type;
+				Stack = stack;
+				Prefix = prefix;
+			}
+		}
+		private ItemInfo _Clipboard;
 		public GameContext Context
 		{
 			get;
@@ -94,10 +108,32 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				OnInitItem();
 			};
 
+
 			SlotsPanel = new SlotsPanel<T>(Count);
 			SlotsPanel.OnItemSlotSelected += (item) =>
 			{
 				FetchItemData(item);
+			};
+			SlotsPanel.OnItemClick += (sender, item, e) =>
+			{
+				if (e.Button == MouseButtons.Right)
+				{
+					ContextMenuStrip cms = new ContextMenuStrip();
+					cms.Items.Add(HackContext.CurrentLanguage["Copy"]).Click += (s, e1) =>
+					{
+						_Clipboard.Type = item.Type;
+						_Clipboard.Stack = item.Stack;
+						_Clipboard.Prefix = item.Prefix;
+					};
+					cms.Items.Add(HackContext.CurrentLanguage["Paste"]).Click += (s, e1) =>
+					{
+						if (_Clipboard.Type == 0 || _Clipboard.Stack == 0)
+							return;
+						item.SetDefaultsAndPrefix(_Clipboard.Type, _Clipboard.Prefix);
+						item.Stack = _Clipboard.Stack;
+					};
+					cms.Show(sender as Control, e.Location);
+				}
 			};
 			Controls.Add(SlotsPanel);
 

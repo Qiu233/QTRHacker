@@ -224,7 +224,9 @@
     "ReverseCheck": "Reverse Check",
     "AddToNPCOne": "Add one to game",
     "AddToNPCSpecify": "Add NPCs to game",
-    "AddNPC": "Add NPC"
+    "AddNPC": "Add NPC",
+    "CheckUpdate": "Check Update",
+    "HomePage": "Home Page"
   },
   "zh-CN": {
     "Basic": "基础功能",
@@ -451,6 +453,8 @@
     "ReverseCheck": "反选",
     "AddToNPCOne": "添加一个到游戏",
     "AddToNPCSpecify": "添加多个到游戏",
-    "AddNPC": "添加NPC"
+    "AddNPC": "添加NPC",
+    "CheckUpdate": "检查更新",
+    "HomePage": "主页"
   }
 }
