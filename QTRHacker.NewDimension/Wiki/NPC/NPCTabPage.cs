@@ -238,6 +238,7 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 			{
 				NPCInfoPage.SetData(0);
 			}
+			NPCListView.Focus();
 		}
 
 

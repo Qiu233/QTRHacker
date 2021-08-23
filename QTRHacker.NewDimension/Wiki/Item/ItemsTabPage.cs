@@ -236,6 +236,7 @@ namespace QTRHacker.NewDimension.Wiki.Item
 				ItemInfoPage.ResetData();
 				AccInfoPage.ResetData();
 			}
+			ItemListView.Focus();
 		}
 
 		private bool Filter(ItemData j)
