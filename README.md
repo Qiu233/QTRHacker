@@ -4,12 +4,12 @@
 https://discord.gg/bzKc9vM  
 All releases: https://github.com/ZQiu233/QTRHackerUpdatesHistory/tree/master/Updates
 
-## Environment requirement
+## Environment requirements
 * Windows 7 or above(32/64).
 * .Net Framework 4.6.2 or above.
 * VC Runtime(VC Redist).
 
-## How to compile:
+## How to compile
 1. Install Visual Studio 2019
 2. Clone or download this repo.
 3. Extract all files if you choce to download.
