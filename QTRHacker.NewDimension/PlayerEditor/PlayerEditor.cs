@@ -283,10 +283,31 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			Controls.Add(ColorCode);
 		}
 	}
-
 	public class PlayerView : GraphicsDeviceControl
 	{
-		public const int MaxHair = 162, MaxBody = 14;
+		private struct PlayerModelPart
+		{
+			public Texture2D Source
+			{
+				get;
+			}
+			public int ColorIndex
+			{
+				get;
+			}
+			public Microsoft.Xna.Framework.Rectangle Bounds
+			{
+				get;
+			}
+
+			public PlayerModelPart(Texture2D source, int colorIndex, Microsoft.Xna.Framework.Rectangle bounds)
+			{
+				Source = source;
+				ColorIndex = colorIndex;
+				Bounds = bounds;
+			}
+		}
+		public const int MaxHair = 163, MaxBody = 14;
 		private Texture2D[] BodyTextures, HairTextures;
 		private SpriteBatch Batch;
 		private Microsoft.Xna.Framework.Color[] Colors;
@@ -359,6 +380,11 @@ namespace QTRHacker.NewDimension.PlayerEditor
 				Colors[12] = value;
 			}
 		}
+		private PlayerModelPart[] Models
+		{
+			get;
+			set;
+		}
 		protected override void Draw()
 		{
 			GraphicsDevice.Clear(new Microsoft.Xna.Framework.Color(70, 70, 70));
@@ -367,16 +393,10 @@ namespace QTRHacker.NewDimension.PlayerEditor
 
 			var tR = new Microsoft.Xna.Framework.Rectangle(0, 0, 200, 250);
 			var sR = new Microsoft.Xna.Framework.Rectangle(0, 5, 40, 50);
-			Batch.Draw(BodyTextures[0], tR, sR, Colors[0]);
-			Batch.Draw(BodyTextures[1], tR, sR, Colors[1]);
-			Batch.Draw(BodyTextures[2], tR, sR, Colors[2]);
-			Batch.Draw(BodyTextures[4], tR, sR, Colors[4]);
-			Batch.Draw(BodyTextures[5], tR, sR, Colors[5]);
-			Batch.Draw(BodyTextures[6], tR, sR, Colors[6]);
-			Batch.Draw(BodyTextures[10], tR, sR, Colors[10]);
-			Batch.Draw(BodyTextures[11], tR, sR, Colors[11]);
-			Batch.Draw(BodyTextures[12], tR, sR, Colors[12]);
-
+			foreach (var model in Models)
+			{
+				Batch.Draw(model.Source, tR, model.Bounds, Colors[model.ColorIndex]);
+			}
 			Batch.Draw(HairTextures[HairType + 1], tR, sR, HairColor);
 			Batch.End();
 		}
@@ -393,15 +413,10 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			spriteBatch.Begin();
 			var sR = new Microsoft.Xna.Framework.Rectangle(0, 5, 40, 50);
 			var tR = new Microsoft.Xna.Framework.Rectangle(0, 0, 40, 50);
-			spriteBatch.Draw(BodyTextures[0], tR, sR, Colors[0]);
-			spriteBatch.Draw(BodyTextures[1], tR, sR, Colors[1]);
-			spriteBatch.Draw(BodyTextures[2], tR, sR, Colors[2]);
-			spriteBatch.Draw(BodyTextures[4], tR, sR, Colors[4]);
-			spriteBatch.Draw(BodyTextures[5], tR, sR, Colors[5]);
-			spriteBatch.Draw(BodyTextures[6], tR, sR, Colors[6]);
-			spriteBatch.Draw(BodyTextures[10], tR, sR, Colors[10]);
-			spriteBatch.Draw(BodyTextures[11], tR, sR, Colors[11]);
-			spriteBatch.Draw(BodyTextures[12], tR, sR, Colors[12]);
+			foreach (var model in Models)
+			{
+				spriteBatch.Draw(model.Source, tR, model.Bounds, Colors[model.ColorIndex]);
+			}
 			spriteBatch.Draw(HairTextures[HairType + 1], tR, sR, HairColor);
 			spriteBatch.End();
 
@@ -442,6 +457,23 @@ namespace QTRHacker.NewDimension.PlayerEditor
 					res.Close();
 				}
 			}
+
+			Models = new PlayerModelPart[]
+			{
+				new PlayerModelPart(BodyTextures[0], 0, new Microsoft.Xna.Framework.Rectangle(0, 5, 40, 50)),
+				new PlayerModelPart(BodyTextures[1], 1, new Microsoft.Xna.Framework.Rectangle(0, 5, 40, 50)),
+				new PlayerModelPart(BodyTextures[2], 2, new Microsoft.Xna.Framework.Rectangle(0, 5, 40, 50)),
+
+				new PlayerModelPart(BodyTextures[6], 6, new Microsoft.Xna.Framework.Rectangle(0, 5, 40, 50)),
+
+				new PlayerModelPart(BodyTextures[10], 10, new Microsoft.Xna.Framework.Rectangle(0, 5, 40, 50)),
+				new PlayerModelPart(BodyTextures[11], 11, new Microsoft.Xna.Framework.Rectangle(0, 5, 40, 50)),
+				new PlayerModelPart(BodyTextures[12], 12, new Microsoft.Xna.Framework.Rectangle(0, 5, 40, 50)),
+
+				new PlayerModelPart(BodyTextures[4], 4, new Microsoft.Xna.Framework.Rectangle(80, 5, 40, 51)),
+				new PlayerModelPart(BodyTextures[5], 5, new Microsoft.Xna.Framework.Rectangle(80, 5, 40, 51)),
+				new PlayerModelPart(BodyTextures[5], 5, new Microsoft.Xna.Framework.Rectangle(80, 117, 40, 51)),
+			};
 
 
 			Application.Idle += OnIdle;
