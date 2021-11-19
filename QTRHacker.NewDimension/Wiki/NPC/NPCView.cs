@@ -50,6 +50,7 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 			get;
 			set;
 		}
+		private int __timer = 0;
 		public NPCView()
 		{
 			State = 0;
@@ -72,7 +73,11 @@ namespace QTRHacker.NewDimension.Wiki.NPC
 
 		private void OnIdle(object sender, EventArgs e)
 		{
-			Invalidate();
+			if (__timer >= 1000000)
+				__timer = 0;
+			if (__timer % 10 == 0)
+				Invalidate();
+			__timer++;
 		}
 		protected override void Dispose(bool disposing)
 		{

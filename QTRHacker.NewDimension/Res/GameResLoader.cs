@@ -17,6 +17,7 @@ namespace QTRHacker.NewDimension.Res
 		public const string File_Mount = "QTRHacker.NewDimension.Res.Game.Mount_en.txt";
 		public static ImageList ItemImages { get; }
 		public static ImageList NPCImages { get; }
+		public static ImageList BuffImage { get; }
 		public static string[] Prefixes { get; }
 		public static string[] Pets { get; }
 		public static string[] Mounts { get; }
@@ -26,6 +27,7 @@ namespace QTRHacker.NewDimension.Res
 
 		public static Dictionary<string, byte[]> ItemImageData { get; }
 		public static Dictionary<string, byte[]> NPCImageData { get; }
+		public static Dictionary<string, byte[]> BuffImageData { get; }
 		static GameResLoader()
 		{
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.ContentImage.ItemImage.bin"))
@@ -56,6 +58,22 @@ namespace QTRHacker.NewDimension.Res
 					using (var m = new MemoryStream(data.Value))
 					{
 						NPCImages.Images.Add(data.Key, Image.FromStream(m));
+					}
+				}
+				{
+					Image img = NPCImages.Images[0].Clone() as Image;
+					img.Dispose();
+				}
+			}
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.NewDimension.Res.ContentImage.BuffImage.bin"))
+			{
+				BuffImageData = ResBinFileReader.ReadFromStream(s);
+				BuffImage = new ImageList();
+				foreach (var data in BuffImageData)
+				{
+					using (var m = new MemoryStream(data.Value))
+					{
+						BuffImage.Images.Add(data.Key, Image.FromStream(m));
 					}
 				}
 				{

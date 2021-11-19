@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinFormsGraphicsDevice;
@@ -385,6 +386,9 @@ namespace QTRHacker.NewDimension.PlayerEditor
 			get;
 			set;
 		}
+
+		private int __timer = 0;
+
 		protected override void Draw()
 		{
 			GraphicsDevice.Clear(new Microsoft.Xna.Framework.Color(70, 70, 70));
@@ -480,7 +484,11 @@ namespace QTRHacker.NewDimension.PlayerEditor
 		}
 		private void OnIdle(object sender, EventArgs e)
 		{
-			Invalidate();
+			if (__timer >= 1000000)
+				__timer = 0;
+			if(__timer % 10 ==0)
+				Invalidate();
+			__timer++;
 		}
 		protected override void Dispose(bool disposing)
 		{

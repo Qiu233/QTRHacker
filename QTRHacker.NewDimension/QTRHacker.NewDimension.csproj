@@ -365,6 +365,7 @@
     <EmbeddedResource Include="Res\ContentImage\ItemImage.bin" />
     <EmbeddedResource Include="Res\ContentImage\NPCImage.bin" />
     <EmbeddedResource Include="Res\ContentImage\PlayerModelsRaw.bin" />
+    <EmbeddedResource Include="Res\ContentImage\BuffImage.bin" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

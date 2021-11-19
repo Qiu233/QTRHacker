@@ -42,10 +42,10 @@ namespace QTRHacker.NewDimension.Wiki
 		protected override async void OnShown(EventArgs e)
 		{
 			base.OnShown(e);
-			Enabled = false;
+			MainTab.Enabled = false;
 			await Task.Run(ItemsTabPage.RefreshItems);
 			await Task.Run(NPCTabPage.RefreshNPCs);
-			Enabled = true;//only after everything is loaded
+			MainTab.Enabled = true;//only after everything is loaded
 		}
 	}
 }
