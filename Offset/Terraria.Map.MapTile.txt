@@ -1,4 +1,0 @@
-3
-Type	->	0
-Light	->	2
-_extraData	->	3

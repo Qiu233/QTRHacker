@@ -1,4 +1,0 @@
-3
-_startStrength	->	c
-_steps	->	10
-_startVelocity	->	14

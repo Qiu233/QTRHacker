@@ -1,3 +1,0 @@
-2
-_texture	->	cc
-ImageScale	->	d0

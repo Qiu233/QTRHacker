@@ -1,3 +1,0 @@
-6
-BorderColor	->	cc
-BackgroundColor	->	d0

@@ -1,4 +1,0 @@
-3
-_texture	->	18
-_shader	->	1c
-TargetPosition	->	20

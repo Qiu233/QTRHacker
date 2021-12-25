@@ -1,4 +1,0 @@
-4
-type	->	0
-tileCount	->	4
-checkStart	->	8

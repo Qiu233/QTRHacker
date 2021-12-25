@@ -1,4 +1,0 @@
-3
-_shaderData	->	4
-_shaderLookupDictionary	->	8
-_shaderDataCount	->	c

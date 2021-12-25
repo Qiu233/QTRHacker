@@ -1,5 +1,0 @@
-4
-InvertResults	->	10
-_width	->	4
-_height	->	8
-_areaType	->	c

@@ -1,6 +1,0 @@
-5
-_sound	->	4
-IsGlobal	->	10
-Position	->	14
-Volume	->	c
-_style	->	8

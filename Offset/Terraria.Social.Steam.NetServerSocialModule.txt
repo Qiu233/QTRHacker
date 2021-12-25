@@ -1,5 +1,0 @@
-4
-_mode	->	24
-_p2pSessionRequest	->	1c
-_acceptingClients	->	25
-_connectionAcceptedCallback	->	20

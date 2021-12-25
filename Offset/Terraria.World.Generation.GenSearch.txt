@@ -1,3 +1,0 @@
-3
-_requireAll	->	8
-_conditions	->	4

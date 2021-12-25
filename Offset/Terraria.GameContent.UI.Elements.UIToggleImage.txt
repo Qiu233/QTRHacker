@@ -1,8 +1,0 @@
-7
-_onTexture	->	cc
-_offTexture	->	d0
-_drawWidth	->	d4
-_drawHeight	->	d8
-_onTextureOffset	->	e0
-_offTextureOffset	->	e8
-_isOn	->	dc

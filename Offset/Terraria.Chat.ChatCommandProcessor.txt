@@ -1,4 +1,0 @@
-3
-_localizedCommands	->	4
-_commands	->	8
-_defaultCommand	->	c

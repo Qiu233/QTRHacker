@@ -1,4 +1,0 @@
-3
-_cursor	->	ec
-_frameCount	->	f0
-_maxLength	->	f4

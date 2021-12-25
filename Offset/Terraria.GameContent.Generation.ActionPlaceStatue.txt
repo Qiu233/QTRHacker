@@ -1,2 +1,0 @@
-1
-_statueIndex	->	10

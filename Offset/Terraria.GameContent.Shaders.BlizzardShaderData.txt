@@ -1,3 +1,0 @@
-2
-_texturePosition	->	64
-windSpeed	->	60

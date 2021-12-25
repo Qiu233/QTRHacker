@@ -1,5 +1,0 @@
-7
-IsSteamValid	->	10
-_steamTickLock	->	4
-_steamCallbackLock	->	8
-_onOverlayActivated	->	c

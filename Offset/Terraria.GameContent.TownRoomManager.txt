@@ -1,3 +1,0 @@
-2
-_roomLocationPairs	->	4
-_hasRoom	->	8

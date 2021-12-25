@@ -1,3 +1,0 @@
-2
-_gamepadTextInputDismissed	->	4
-_gamepadTextInputActive	->	8

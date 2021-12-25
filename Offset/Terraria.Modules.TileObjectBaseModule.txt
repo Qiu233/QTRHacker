@@ -1,7 +1,0 @@
-6
-width	->	4
-height	->	8
-origin	->	18
-direction	->	c
-randomRange	->	10
-flattenAnchors	->	14

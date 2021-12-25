@@ -1,7 +1,0 @@
-6
-_uColor	->	24
-_uSecondaryColor	->	30
-_uSaturation	->	18
-_uOpacity	->	1c
-_uImage	->	14
-_shaderDisabled	->	20

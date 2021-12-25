@@ -1,3 +1,0 @@
-2
-Name	->	4
-ScaleType	->	8

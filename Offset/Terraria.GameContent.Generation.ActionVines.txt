@@ -1,4 +1,0 @@
-3
-_minLength	->	10
-_maxLength	->	14
-_vineId	->	18

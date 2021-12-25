@@ -1,4 +1,0 @@
-3
-Opacity	->	4
-_isLoaded	->	c
-_priority	->	8

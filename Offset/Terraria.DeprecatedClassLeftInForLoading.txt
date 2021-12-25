@@ -1,5 +1,0 @@
-6
-x	->	c
-y	->	e
-npc	->	4
-whoAmI	->	8

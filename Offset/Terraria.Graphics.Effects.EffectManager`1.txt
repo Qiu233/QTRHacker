@@ -1,3 +1,0 @@
-2
-_isLoaded	->	8
-_effects	->	4

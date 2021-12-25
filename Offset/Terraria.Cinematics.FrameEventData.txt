@@ -1,4 +1,0 @@
-3
-_absoluteFrame	->	0
-_start	->	4
-_duration	->	8

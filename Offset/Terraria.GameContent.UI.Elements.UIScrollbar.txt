@@ -1,9 +1,0 @@
-8
-_viewPosition	->	d4
-_viewSize	->	d8
-_maxViewSize	->	dc
-_isDragging	->	e4
-_isHoveringOverHandle	->	e5
-_dragYOffset	->	e0
-_texture	->	cc
-_innerTexture	->	d0

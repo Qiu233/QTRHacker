@@ -1,4 +1,0 @@
-10
-data	->	4
-order	->	8
-bufferLocation	->	c

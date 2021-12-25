@@ -1,6 +1,0 @@
-5
-_items	->	cc
-_scrollbar	->	d0
-_innerList	->	d4
-_innerListHeight	->	d8
-ListPadding	->	dc

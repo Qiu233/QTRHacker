@@ -1,5 +1,0 @@
-4
-Frame	->	4
-FrameCount	->	8
-TicksPerFrame	->	c
-FrameCounter	->	10

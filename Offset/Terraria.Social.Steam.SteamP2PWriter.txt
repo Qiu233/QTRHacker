@@ -1,6 +1,0 @@
-6
-_pendingSendData	->	4
-_pendingSendDataSwap	->	8
-_bufferPool	->	c
-_channel	->	14
-_lock	->	10

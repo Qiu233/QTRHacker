@@ -1,5 +1,0 @@
-4
-Activated	->	4
-Deactivated	->	8
-Disposed	->	c
-Exiting	->	10

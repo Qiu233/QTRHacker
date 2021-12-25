@@ -1,3 +1,0 @@
-2
-_color	->	d0
-_GetTextFunction	->	cc

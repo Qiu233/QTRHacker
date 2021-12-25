@@ -1,8 +1,0 @@
-8
-_active	->	d
-_leaving	->	e
-_opacity	->	1c
-_textures	->	10
-_balloons	->	14
-_random	->	18
-_balloonsDrawing	->	20

@@ -1,5 +1,0 @@
-4
-elements	->	c
-random	->	10
-needsRefresh	->	14
-_totalWeight	->	4

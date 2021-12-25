@@ -1,4 +1,0 @@
-3
-_progressBar	->	cc
-_progressMessage	->	d0
-_progress	->	d4

@@ -1,7 +1,0 @@
-7
-_playerList	->	cc
-_backPanel	->	d0
-_newPanel	->	d4
-_containerPanel	->	d8
-favoritesCache	->	dc
-skipDraw	->	e0

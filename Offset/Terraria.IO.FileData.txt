@@ -1,7 +1,0 @@
-6
-_path	->	4
-_isCloudSave	->	14
-Metadata	->	8
-Name	->	c
-Type	->	10
-_isFavorite	->	15

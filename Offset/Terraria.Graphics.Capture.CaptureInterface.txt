@@ -1,5 +1,0 @@
-17
-Active	->	c
-KeyToggleActiveHeld	->	d
-SelectedMode	->	4
-HoveredMode	->	8

@@ -1,5 +1,0 @@
-4
-tileValid	->	4
-tileInvalid	->	8
-tileAlternates	->	c
-wallValid	->	10

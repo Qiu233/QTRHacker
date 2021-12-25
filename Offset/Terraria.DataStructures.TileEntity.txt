@@ -1,4 +1,0 @@
-10
-ID	->	4
-Position	->	c
-type	->	8

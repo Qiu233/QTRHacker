@@ -1,2 +1,0 @@
-1
-_texturePosition	->	60

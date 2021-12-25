@@ -1,9 +1,0 @@
-12
-_temporary	->	1a
-_coordinates	->	1c
-_tileType	->	18
-_frame	->	8
-_frameMax	->	c
-_frameCounter	->	10
-_frameCounterMax	->	14
-_frameData	->	4

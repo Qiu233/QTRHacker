@@ -1,5 +1,0 @@
-6
-_tooltipLines	->	4
-_lastCulture	->	8
-_text	->	c
-_processedText	->	10

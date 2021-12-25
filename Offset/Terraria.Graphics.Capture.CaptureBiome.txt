@@ -1,5 +1,0 @@
-5
-WaterStyle	->	4
-BackgroundIndex	->	8
-BackgroundIndex2	->	c
-TileColor	->	10

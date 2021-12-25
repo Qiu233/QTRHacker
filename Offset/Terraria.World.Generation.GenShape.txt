@@ -1,3 +1,0 @@
-2
-_outputData	->	4
-_quitOnFail	->	8

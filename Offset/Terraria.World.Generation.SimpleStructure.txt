@@ -1,7 +1,0 @@
-6
-_data	->	4
-_width	->	c
-_height	->	10
-_actions	->	8
-_xMirror	->	14
-_yMirror	->	15

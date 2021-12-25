@@ -1,4 +1,0 @@
-3
-_texture	->	cc
-_visibilityActive	->	d0
-_visibilityInactive	->	d4

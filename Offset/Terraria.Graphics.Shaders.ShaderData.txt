@@ -1,5 +1,0 @@
-4
-_shader	->	4
-_passName	->	8
-_effectPass	->	c
-_lastEffect	->	10

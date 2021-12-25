@@ -1,3 +1,0 @@
-2
-_offset	->	10
-_endPoints	->	c

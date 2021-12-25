@@ -1,8 +1,0 @@
-7
-_color	->	e4
-_TextDisplayFunction	->	cc
-_GetStatusFunction	->	d0
-_SlideKeyboardAction	->	d4
-_SlideGamepadAction	->	d8
-_sliderIDInPage	->	e0
-_toggleTexture	->	dc

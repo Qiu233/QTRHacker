@@ -1,5 +1,0 @@
-4
-type	->	8
-entity	->	4
-pos	->	c
-size	->	14

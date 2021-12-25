@@ -1,5 +1,0 @@
-4
-_angle	->	c
-_startingSize	->	10
-_endingSize	->	14
-_distance	->	18

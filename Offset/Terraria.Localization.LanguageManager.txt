@@ -1,7 +1,0 @@
-7
-OnLanguageChanging	->	4
-OnLanguageChanged	->	8
-<ActiveCulture>k__BackingField	->	c
-_localizedTexts	->	10
-_categoryGroupedKeys	->	14
-_fallbackCulture	->	18

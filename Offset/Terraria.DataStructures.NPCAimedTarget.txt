@@ -1,7 +1,0 @@
-6
-Type	->	0
-Hitbox	->	4
-Width	->	14
-Height	->	18
-Position	->	1c
-Velocity	->	24

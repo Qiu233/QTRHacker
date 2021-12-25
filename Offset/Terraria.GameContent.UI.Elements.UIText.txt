@@ -1,6 +1,0 @@
-5
-_text	->	cc
-_textScale	->	d0
-_textSize	->	d8
-_isLarge	->	d4
-_color	->	e0

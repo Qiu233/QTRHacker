@@ -1,6 +1,0 @@
-5
-_message	->	4
-_value	->	8
-_totalProgress	->	c
-TotalWeight	->	10
-CurrentPassWeight	->	14

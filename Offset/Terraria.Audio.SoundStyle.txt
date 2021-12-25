@@ -1,4 +1,0 @@
-4
-_volume	->	4
-_pitchVariance	->	8
-_type	->	c

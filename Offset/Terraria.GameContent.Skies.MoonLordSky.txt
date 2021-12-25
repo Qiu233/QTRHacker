@@ -1,4 +1,0 @@
-3
-_random	->	10
-_isActive	->	d
-_moonLordIndex	->	14

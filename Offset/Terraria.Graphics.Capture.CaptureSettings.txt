@@ -1,8 +1,0 @@
-7
-Area	->	10
-UseScaling	->	c
-OutputName	->	4
-CaptureEntities	->	d
-Biome	->	8
-CaptureMech	->	e
-CaptureBackground	->	f

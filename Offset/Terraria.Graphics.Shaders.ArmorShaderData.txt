@@ -1,6 +1,0 @@
-5
-_uColor	->	20
-_uSecondaryColor	->	2c
-_uSaturation	->	18
-_uOpacity	->	1c
-_uImage	->	14

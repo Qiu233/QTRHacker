@@ -1,6 +1,0 @@
-5
-Data	->	4
-Writer	->	8
-Reader	->	c
-_memoryStream	->	10
-_isActive	->	14

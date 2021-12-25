@@ -1,9 +1,0 @@
-8
-SourcePlayerIndex	->	8
-SourceNPCIndex	->	c
-SourceProjectileIndex	->	10
-SourceOtherIndex	->	14
-SourceProjectileType	->	18
-SourceItemType	->	1c
-SourceItemPrefix	->	20
-SourceCustomReason	->	4

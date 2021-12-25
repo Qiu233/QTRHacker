@@ -1,3 +1,0 @@
-2
-point	->	0
-color	->	8

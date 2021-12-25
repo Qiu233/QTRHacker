@@ -1,7 +1,0 @@
-6
-Text	->	4
-TextOriginal	->	8
-Color	->	14
-Scale	->	c
-CheckForHover	->	10
-DeleteWhole	->	11
