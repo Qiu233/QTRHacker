@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
@@ -10,34 +11,20 @@ using System.Threading.Tasks;
 using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
-using QHackLib.Utilities;
+using QHackLib.Memory;
 using QTRHacker.Functions.GameObjects;
-using QTRHacker.Functions.GameObjects.IO;
-using QTRHacker.Functions.GameObjects.Map;
+using QTRHacker.Functions.GameObjects.Terraria;
+using QTRHacker.Functions.GameObjects.Terraria.IO;
+using QTRHacker.Functions.GameObjects.Terraria.Map;
 
 namespace QTRHacker.Functions
 {
 	/// <summary>
-	/// Terraria游戏上下文环境
+	/// The context of Terraria
 	/// </summary>
 	public class GameContext : IDisposable
 	{
-		private Action<FieldNotFoundException> GameContextExceptionHandler
-		{
-			get;
-			set;
-		} = e => { throw e; };
-		public bool AssembliesLoaded
-		{
-			get;
-			private set;
-		}
-		public bool OffsetsInitialized
-		{
-			get;
-		}
-		public const int MaxItemTypes = 5088;
-		public int My_Player_Address
+		public nuint My_Player_Address
 		{
 			get;
 		}
@@ -45,715 +32,295 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
-		/// <summary>
-		/// 相关的Context实例，不需要手动操作
-		/// </summary>
-		public Context HContext
+
+		public QHackContext HContext
 		{
 			get;
 		}
 
-		public int Player_Array_Address
+		public nuint Main_RefreshMap_Address
 		{
 			get;
 		}
-		public int Player_Array_Pointer
+		public nuint MapFullScreen_Address
 		{
 			get;
 		}
-		public int NPC_Array_Address
+		public nuint MouseRight_Address
 		{
 			get;
 		}
-		public int NPC_Array_Pointer
+		public nuint MouseRightRelease_Address
 		{
 			get;
 		}
-		public int Main_Map_Address
+		public nuint ScreenWidth_Address
 		{
 			get;
 		}
-		public int Main_Map_Pointer
+		public nuint ScreenHeight_Address
 		{
 			get;
 		}
-		public int Main_RefreshMap_Address
+		public nuint MapFullscreenPos_Address
 		{
 			get;
 		}
-		public int MapFullScreen_Address
-		{
-			get;
-		}
-		public int MouseRight_Address
-		{
-			get;
-		}
-		public int MouseRightRelease_Address
-		{
-			get;
-		}
-		public int ScreenWidth_Address
-		{
-			get;
-		}
-		public int ScreenHeight_Address
-		{
-			get;
-		}
-		public int MapFullscreenPos_Address
-		{
-			get;
-		}
-		public int MapFullscreenPos_Pointer
+		public nuint MapFullscreenPos_Pointer
 		{
 			get;
 		}
 
-		public int MouseX_Address
+		public nuint MouseX_Address
 		{
 			get;
 		}
-		public int MouseY_Address
+		public nuint MouseY_Address
 		{
 			get;
 		}
-		public int TileTargetX_Address
+		public nuint TileTargetX_Address
 		{
 			get;
 		}
-		public int TileTargetY_Address
+		public nuint TileTargetY_Address
 		{
 			get;
 		}
-		public int MapFullScreenScale_Address
+		public nuint MapFullScreenScale_Address
 		{
 			get;
 		}
-		public int Tile_Address
-		{
-			get;
-		}
-		public int Tile_Pointer
-		{
-			get;
-		}
-		public int NetMode_Address
-		{
-			get;
-		}
-		public int ActiveWorldFileData_Address
-		{
-			get;
-		}
-		public int ActiveWorldFileData_Pointer
+		public nuint NetMode_Address
 		{
 			get;
 		}
 
-		public int[] Debuff
+		public bool[] CachedDebuff
 		{
 			get;
 		}
 
-		public int Debuff_Address
-		{
-			get;
-		}
-		public int Debuff_Pointer
-		{
-			get;
-		}
+		public GameObjectArrayV<bool> Debuff
+			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "debuff"));
 
 		public int NetMode
 		{
-			get
-			{
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, NetMode_Address, ref v, 4, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, NetMode_Address, ref value, 4, 0);
-			}
+			get => HContext.DataAccess.Read<int>(NetMode_Address);
+			set => HContext.DataAccess.Write(NetMode_Address, value);
 		}
 
 		public float MapFullScreenScale
 		{
-			get
-			{
-				float v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, MapFullScreenScale_Address, ref v, 4, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, MapFullScreenScale_Address, ref value, 4, 0);
-			}
+			get => HContext.DataAccess.Read<float>(MapFullScreenScale_Address);
+			set => HContext.DataAccess.Write(MapFullScreenScale_Address, value);
 		}
-
 		public int MouseX
 		{
-			get
-			{
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseX_Address, ref v, 4, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseX_Address, ref value, 4, 0);
-			}
+			get => HContext.DataAccess.Read<int>(MouseX_Address);
+			set => HContext.DataAccess.Write(MouseX_Address, value);
 		}
 		public int MouseY
 		{
-			get
-			{
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseY_Address, ref v, 4, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseY_Address, ref value, 4, 0);
-			}
+			get => HContext.DataAccess.Read<int>(MouseY_Address);
+			set => HContext.DataAccess.Write(MouseY_Address, value);
 		}
 
 		public int TileTargetX
 		{
-			get
-			{
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, TileTargetX_Address, ref v, 4, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, TileTargetX_Address, ref value, 4, 0);
-			}
+			get => HContext.DataAccess.Read<int>(TileTargetX_Address);
+			set => HContext.DataAccess.Write(TileTargetX_Address, value);
 		}
 		public int TileTargetY
 		{
-			get
-			{
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, TileTargetY_Address, ref v, 4, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, TileTargetY_Address, ref value, 4, 0);
-			}
+			get => HContext.DataAccess.Read<int>(TileTargetY_Address);
+			set => HContext.DataAccess.Write(TileTargetY_Address, value);
 		}
 
-		public float MapFullscreenPos_X
+		public unsafe GameObjects.ValueTypeRedefs.Xna.Vector2 MapFullscreenPos
 		{
-			get
-			{
-				byte[] b = new byte[4];
-				NativeFunctions.ReadProcessMemory(HContext.Handle, MapFullscreenPos_Address + 4, b, 4, 0);
-				return BitConverter.ToSingle(b, 0);
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, MapFullscreenPos_Address + 4, BitConverter.GetBytes(value), 4, 0);
-			}
-		}
-		public float MapFullscreenPos_Y
-		{
-			get
-			{
-				byte[] b = new byte[4];
-				NativeFunctions.ReadProcessMemory(HContext.Handle, MapFullscreenPos_Address + 4 + 4, b, 4, 0);
-				return BitConverter.ToSingle(b, 0);
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, MapFullscreenPos_Address + 4 + 4, BitConverter.GetBytes(value), 4, 0);
-			}
+			get => HContext.DataAccess.Read<GameObjects.ValueTypeRedefs.Xna.Vector2>(MapFullscreenPos_Address + (uint)sizeof(nuint));
+			set => HContext.DataAccess.Write(MapFullscreenPos_Address + (uint)sizeof(nuint), value);
 		}
 
 		public int ScreenWidth
 		{
-			get
-			{
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, ScreenWidth_Address, ref v, 4, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, ScreenWidth_Address, ref value, 4, 0);
-			}
+			get => HContext.DataAccess.Read<int>(ScreenWidth_Address);
+			set => HContext.DataAccess.Write(ScreenWidth_Address, value);
 		}
 
 		public int ScreenHeight
 		{
-			get
-			{
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, ScreenHeight_Address, ref v, 4, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, ScreenHeight_Address, ref value, 4, 0);
-			}
+			get => HContext.DataAccess.Read<int>(ScreenHeight_Address);
+			set => HContext.DataAccess.Write(ScreenHeight_Address, value);
 		}
 
 		public bool MouseRightRelease
 		{
-			get
-			{
-				bool v = false;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseRightRelease_Address, ref v, 1, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseRightRelease_Address, ref value, 1, 0);
-			}
+			get => HContext.DataAccess.Read<bool>(MouseRightRelease_Address);
+			set => HContext.DataAccess.Write(MouseRightRelease_Address, value);
 		}
 
 		public bool MouseRight
 		{
-			get
-			{
-				bool v = false;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, MouseRight_Address, ref v, 1, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, MouseRight_Address, ref value, 1, 0);
-			}
+			get => HContext.DataAccess.Read<bool>(MouseRight_Address);
+			set => HContext.DataAccess.Write(MouseRight_Address, value);
 		}
 
 
 		public bool MapFullScreen
 		{
-			get
-			{
-				bool v = false;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, MapFullScreen_Address, ref v, 1, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, MapFullScreen_Address, ref value, 1, 0);
-			}
+			get => HContext.DataAccess.Read<bool>(MapFullScreen_Address);
+			set => HContext.DataAccess.Write(MapFullScreen_Address, value);
 		}
 
 
 		public bool RefreshMap
 		{
-			get
-			{
-				bool v = false;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, Main_RefreshMap_Address, ref v, 1, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, Main_RefreshMap_Address, ref value, 1, 0);
-			}
+			get => HContext.DataAccess.Read<bool>(Main_RefreshMap_Address);
+			set => HContext.DataAccess.Write(Main_RefreshMap_Address, value);
 		}
 
 
 		public int MyPlayerIndex
 		{
-			get
-			{
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, My_Player_Address, ref v, 4, 0);
-				return v;
-			}
-			set
-			{
-				NativeFunctions.WriteProcessMemory(HContext.Handle, My_Player_Address, ref value, 4, 0);
-			}
+			get => HContext.DataAccess.Read<int>(My_Player_Address);
+			set => HContext.DataAccess.Write(My_Player_Address, value);
 		}
 
 		public GameObjectArray2D<Tile> Tile
-		{
-			get
-			{
-				return new GameObjectArray2D<Tile>(this, Tile_Address);
-			}
-		}
+			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "tile"));
 
+		public GameObjectArray<Player> Players
+			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "player"));
 
-		public PlayerArray Players
-		{
-			get
-			{
-				return new PlayerArray(this, Player_Array_Address);
-			}
-		}
+		public Player MyPlayer => Players[MyPlayerIndex];
 
-		public NPCArray NPC
-		{
-			get
-			{
-				return new NPCArray(this, NPC_Array_Address);
-			}
-		}
+		public GameObjectArray<NPC> NPC
+			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "npc"));
 
-		public Player MyPlayer
-		{
-			get
-			{
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, Player_Array_Address + 0x8 + 0x04 * MyPlayerIndex, ref v, 4, 0);
-				return new Player(this, v);
-			}
-		}
 
 		public WorldMap Map
-		{
-			get
-			{
-				return new WorldMap(this, Main_Map_Address);
-			}
-		}
+			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "Map"));
 
-		/// <summary>
-		/// 这里的8被替换成了自适应的长度，如果在低版本.NET中无效将会被修改
-		/// </summary>
-		public string UUID
-		{
-			get
-			{
-				int v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "clientUUID");
-				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-				byte[] bs = new byte[(32 + 4) * 2];
-				NativeFunctions.ReadProcessMemory(HContext.Handle, v + 8, bs, bs.Length, 0);
-				return Encoding.Unicode.GetString(bs);
-			}
-			set
-			{
-				int v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "clientUUID");
-				NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-				byte[] bs = Encoding.Unicode.GetBytes(value);
-				NativeFunctions.WriteProcessMemory(HContext.Handle, v + 8, bs, (32 + 4) * 2, 0);
-			}
-		}
+		public GameString UUID => new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "clientUUID"));
 
-		public int MaxTilesX
-		{
-			get;
-		}
-
-		public int MaxTilesY
-		{
-			get;
-		}
+		public int MaxTilesX => GameModuleHelper.GetStaticFieldValue<int>("Terraria.Main", "maxTilesX");
+		public int MaxTilesY => GameModuleHelper.GetStaticFieldValue<int>("Terraria.Main", "maxTilesY");
 
 		public bool DayTime
 		{
-			get
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "dayTime");
-				bool v = false;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
-				return v;
-			}
-			set
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "dayTime");
-				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
-			}
+			get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "dayTime");
+			set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "dayTime", value);
 		}
 
 		public bool FastForwardTime
 		{
-			get
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "fastForwardTime");
-				bool v = false;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
-				return v;
-			}
-			set
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "fastForwardTime");
-				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
-			}
+			get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "fastForwardTime");
+			set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "fastForwardTime", value);
 		}
 
 		public bool PumpkinMoon
 		{
-			get
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "pumpkinMoon");
-				bool v = false;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
-				return v;
-			}
-			set
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "pumpkinMoon");
-				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
-			}
+			get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "pumpkinMoon");
+			set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "pumpkinMoon", value);
 		}
 
 		public bool BloodMoon
 		{
-			get
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "bloodMoon");
-				bool v = false;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
-				return v;
-			}
-			set
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "bloodMoon");
-				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
-			}
+			get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "bloodMoon");
+			set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "bloodMoon", value);
 		}
 		public bool SnowMoon
 		{
-			get
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "snowMoon");
-				bool v = false;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
-				return v;
-			}
-			set
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "snowMoon");
-				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
-			}
+			get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "snowMoon");
+			set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "snowMoon", value);
 		}
-
-
 		public bool Eclipse
 		{
-			get
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "eclipse");
-				bool v = false;
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, ref v, 1, 0);
-				return v;
-			}
-			set
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "eclipse");
-				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, ref value, 1, 0);
-			}
+			get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "eclipse");
+			set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "eclipse", value);
 		}
 
 		public double Time
 		{
-			get
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "time");
-				var bs = new byte[8];
-				NativeFunctions.ReadProcessMemory(HContext.Handle, vvv, bs, 8, 0);
-				return BitConverter.ToDouble(bs, 0);
-			}
-			set
-			{
-				int vvv = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "time");
-				var bs = BitConverter.GetBytes(value);
-				NativeFunctions.WriteProcessMemory(HContext.Handle, vvv, bs, 8, 0);
-			}
+			get => GameModuleHelper.GetStaticFieldValue<double>("Terraria.Main", "time");
+			set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "time", value);
 		}
 
 		public WorldFileData ActiveWorldFileData
+			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "ActiveWorldFileData"));
+
+		private GameContext(Process process)
 		{
-			get
-			{
-				return new WorldFileData(this, ActiveWorldFileData_Address);
-			}
-		}
+			GameProcess = process;
+			HContext = QHackContext.Create(process.Id);
 
-		private void InitializeOffsets()
-		{
-			if (OffsetsInitialized)
-				return;
-			foreach (var t in Assembly.GetExecutingAssembly().DefinedTypes)
-			{
-				if (t.Namespace == null || !t.Namespace.StartsWith("QTRHacker.Functions.GameObjects"))
-					continue;
-				var typeNameAttr = t.GetCustomAttributes(typeof(GameFieldOffsetTypeNameAttribute), false);
-				foreach (var f in t.GetFields(BindingFlags.Static | BindingFlags.Public))
-				{
-					if (!f.IsStatic ||
-						!(f.FieldType == typeof(int) || f.FieldType == typeof(uint) ||
-						f.FieldType == typeof(long) || f.FieldType == typeof(ulong)))
-						continue;
-					var fieldNameAttr = f.GetCustomAttributes(typeof(GameFieldOffsetFieldNameAttribute), false);
-					if (fieldNameAttr.Length == 0)
-						continue;
-					GameFieldOffsetFieldNameAttribute gfofna = fieldNameAttr[0] as GameFieldOffsetFieldNameAttribute;
-					if (gfofna.TypeName == null && typeNameAttr.Length == 0)//信息不足
-						continue;
-					Microsoft.Diagnostics.Runtime.ClrType clrType = null;
-					if (gfofna.TypeName != null)
-						clrType = HContext.MainAddressHelper.Module.GetTypeByName(gfofna.TypeName);
-					else
-						clrType = HContext.MainAddressHelper.Module.GetTypeByName((typeNameAttr[0] as GameFieldOffsetTypeNameAttribute).TypeName);
-					var field = clrType.GetFieldByName(gfofna.FieldName);
-					if (field == null)
-						GameContextExceptionHandler(new FieldNotFoundException("Field named " + gfofna.FieldName + " not found.(" + f.DeclaringType.FullName + "." + f.Name + ")"));
-					else
-						f.SetValue(null, field.Offset + 4);//需要+4，原因是Offset比真实的"偏移"要少了一个指针的位置
-				}
-			}
-		}
+			My_Player_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "myPlayer");
 
-		public static void NewText(GameContext Context, string Text, byte R = 255, byte G = 255, byte B = 255, bool force = false)
-		{
-			int addr = Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main",
-				t => t.GetFullSignature() ==
-				"Terraria.Main.NewText(System.String, Byte, Byte, Byte, Boolean)");
-			CLRFunctionCaller.Call(Context, addr, Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), $"@{Text}", R, G, B, force);
-		}
+			Main_RefreshMap_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "refreshMap");
+			MapFullScreen_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mapFullscreen");
+			MouseRight_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mouseRight");
+			MouseRightRelease_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mouseRightRelease");
+			ScreenWidth_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "screenWidth");
+			ScreenHeight_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "screenHeight");
+			MapFullscreenPos_Pointer = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mapFullscreenPos");
 
+			MouseX_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mouseX");
+			MouseY_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mouseY");
 
-		private GameContext(int pid, Action<Exception> exHandler = null)
-		{
-			if (exHandler != null)
-				GameContextExceptionHandler = exHandler;
-			HContext = Context.Create(pid);
+			MapFullScreenScale_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mapFullscreenScale");
 
+			NetMode_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "netMode");
 
-			InitializeOffsets();
+			TileTargetX_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Player", "tileTargetX");
+			TileTargetY_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Player", "tileTargetY");
 
-
-
-			int v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "player");
-			Player_Array_Pointer = v;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-			Player_Array_Address = v;
-
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "myPlayer");
-			My_Player_Address = v;
-
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "npc");
-			NPC_Array_Pointer = v;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-			NPC_Array_Address = v;
-
-			//下面两个取的是值，而非地址
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "maxTilesX");
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-			MaxTilesX = v;
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "maxTilesY");
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-			MaxTilesY = v;
-
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "Map");
-			Main_Map_Pointer = v;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-			Main_Map_Address = v;
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "refreshMap");
-			Main_RefreshMap_Address = v;
-
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "mapFullscreen");
-			MapFullScreen_Address = v;
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "mouseRight");
-			MouseRight_Address = v;
-
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "mouseRightRelease");
-			MouseRightRelease_Address = v;
-
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "screenWidth");
-			ScreenWidth_Address = v;
-
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "screenHeight");
-			ScreenHeight_Address = v;
-
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "mapFullscreenPos");
-			MapFullscreenPos_Pointer = v;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-			MapFullscreenPos_Address = v;
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "mouseX");
-			MouseX_Address = v;
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "mouseY");
-			MouseY_Address = v;
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "mapFullscreenScale");
-			MapFullScreenScale_Address = v;
-
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "tile");
-			Tile_Pointer = v;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-			Tile_Address = v;
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "netMode");
-			NetMode_Address = v;
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Player", "tileTargetX");
-			TileTargetX_Address = v;
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Player", "tileTargetY");
-			TileTargetY_Address = v;
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "debuff");
-			Debuff_Pointer = v;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-			Debuff_Address = v;
-
-			//这里使用了自适应的数组头部长度，如果无效将会被修改
-			int bbbb = 0;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v + 4, ref bbbb, 4, 0);
-			Debuff = new int[bbbb];
-			for (int i = 0; i < bbbb; i++)
-				NativeFunctions.ReadProcessMemory(HContext.Handle, Debuff_Address + 8 + i, ref Debuff[i], 1, 0);
-
-
-			v = HContext.MainAddressHelper.GetStaticFieldAddress("Terraria.Main", "ActiveWorldFileData");
-			ActiveWorldFileData_Pointer = v;
-			NativeFunctions.ReadProcessMemory(HContext.Handle, v, ref v, 4, 0);
-			ActiveWorldFileData_Address = v;
-
+			var debuff = Debuff;
+			CachedDebuff = new bool[debuff.Length];
+			for (int i = 0; i < CachedDebuff.Length; i++)
+				CachedDebuff[i] = debuff[i];
 
 			Signs = RemoteSignsManager.CreateFromProcess(this);
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="pid">游戏的进程ID</param>
-		/// <returns></returns>
-		public static GameContext OpenGame(int pid, Action<Exception> exHandler)
+		public RemoteThread RunOnManagedThread(AssemblyCode codeToRun, uint size = 0x1000)
 		{
-			return new GameContext(pid, exHandler);
+			using MemoryAllocation alloc = new(HContext, size);
+			byte[] bs = Encoding.Unicode.GetBytes("System.Action");
+			alloc.Write(bs, (uint)bs.Length, 0);
+			alloc.Write<short>(0, (uint)bs.Length);
+			RemoteThread re = RemoteThread.Create(HContext, codeToRun);
+			InlineHook.HookOnce(
+				HContext,
+				AssemblySnippet.StartManagedThread(
+					HContext,
+					re.CodeAddress,
+					alloc.AllocationBase),
+				GameModuleHelper.
+				GetFunctionAddress("Terraria.Main", "DoUpdate")).Wait();
+			return re;
 		}
 
-		public static GameContext OpenGame(int pid)
-		{
-			return new GameContext(pid);
-		}
 
+		public CLRHelper GameModuleHelper => HContext.CLRHelpers.First(t
+			=> string.Equals(Path.GetFullPath(t.Key.GetFileName()),
+				Path.GetFullPath(GameProcess.MainModule.FileName),
+				StringComparison.OrdinalIgnoreCase))
+				.Value;
 
-		public void Close()
+		public static GameContext OpenGame(Process process)
 		{
-			HContext?.Close();
+			return new GameContext(process);
 		}
 
 		public void Dispose()
 		{
-			Close();
+			GC.SuppressFinalize(this);
+			HContext?.Dispose();
 		}
 
+
+		public Process GameProcess { get; }
 	}
 }

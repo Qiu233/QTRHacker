@@ -1,5 +1,5 @@
 ﻿using QHackLib;
-using QHackLib.Utilities;
+using QHackLib.Memory;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,65 +12,48 @@ namespace QTRHacker.Functions
 {
 	public class RemoteSignsManager
 	{
-		private const int SIZE_SIGN = 1024 * 8;
-		private const int SIZE_SIGN_HEADER = 20;
-		private static readonly string SignHeadAob = "F3B354B2F6314D5AB44D946B4962AE82";
+		private const uint SIZE_SIGN = 1024 * 8;
+		private const uint SIZE_SIGN_HEADER = 16;
+		private const string SignHeadAob = "F3B354B2F6314D5AB44D946B4962AE82";
 
-		private int BaseAddress
+		private nuint BaseAddress
 		{
 			get;
 			set;
 		}
 
-		public GameContext Context
-		{
-			get;
-		}
+		public GameContext Context { get; }
 
 		/// <summary>
-		/// 4 bit
+		/// 4 bytes
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public int this[int index]
+		public nint this[uint index]
 		{
-			get
-			{
-				if (BaseAddress <= 0) return 0;
-				int addr = BaseAddress + SIZE_SIGN_HEADER + index * 4;
-				int v = 0;
-				NativeFunctions.ReadProcessMemory(Context.HContext.Handle, addr, ref v, 4, 0);
-				return v;
-			}
-			set
-			{
-				if (BaseAddress <= 0) return;
-				int addr = BaseAddress + SIZE_SIGN_HEADER + index * 4;
-				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, addr, ref value, 4, 0);
-			}
+			get => Context.HContext.DataAccess.Read<nint>(BaseAddress + SIZE_SIGN_HEADER + index * 4);
+			set => Context.HContext.DataAccess.Write(BaseAddress + SIZE_SIGN_HEADER + index * 4, value);
 		}
 
 
-		private RemoteSignsManager(GameContext ctx)
-		{
-			Context = ctx;
-		}
+		private RemoteSignsManager(GameContext ctx) => Context = ctx;
 
 		public static RemoteSignsManager CreateFromProcess(GameContext ctx)
 		{
-			RemoteSignsManager rsm = new RemoteSignsManager(ctx);
+			RemoteSignsManager rsm = new(ctx);
 			rsm.InitializeSign();
 			return rsm;
 		}
 
 		private void InitializeSign()
 		{
-			BaseAddress = AobscanHelper.Aobscan(Context.HContext.Handle, SignHeadAob);
-			if (BaseAddress == -1)
+			byte[] hex = AobscanHelper.GetHexCodeFromString(SignHeadAob);
+			BaseAddress = AobscanHelper.Aobscan(Context.HContext.Handle, hex)
+							  .FirstOrDefault(t => true);
+			if (BaseAddress == 0)
 			{
-				BaseAddress = NativeFunctions.VirtualAllocEx(Context.HContext.Handle, 0, SIZE_SIGN, NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
-				byte[] hex = AobscanHelper.GetHexCodeFromString(SignHeadAob);
-				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, BaseAddress, hex, hex.Length, 0);
+				BaseAddress = Context.HContext.DataAccess.AllocMemory(SIZE_SIGN);
+				Context.HContext.DataAccess.WriteBytes(BaseAddress, hex);
 			}
 		}
 	}

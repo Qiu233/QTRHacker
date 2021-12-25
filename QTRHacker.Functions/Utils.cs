@@ -1,7 +1,6 @@
 ﻿using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
-using QHackLib.Utilities;
 using QTRHacker.Functions.GameObjects;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace QTRHacker.Functions
 {
 	public class Utils
 	{
-		public static void AobReplaceASM(GameContext Context, string src, string target, int offset = 0)
+		/*public static void AobReplaceASM(GameContext Context, string src, string target, int offset = 0)
 		{
 			int addr = 0;
 			while ((addr = AobscanHelper.AobscanASM(Context.HContext.Handle, src)) != -1)
@@ -722,6 +721,6 @@ push 0") + 2 * 5;
 			InlineHook.FreeHook(Context.HContext, a);
 			InlineHook.FreeHook(Context.HContext, b);
 		}
-
+		*/
 	}
 }

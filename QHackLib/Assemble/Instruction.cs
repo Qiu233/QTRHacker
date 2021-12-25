@@ -8,29 +8,15 @@ namespace QHackLib.Assemble
 {
 	public class Instruction : AssemblyCode
 	{
-		public string Code
+		public string Content
 		{
 			get;
 		}
-		private Instruction(string code)
-		{
-			this.Code = code;
-		}
-		public static Instruction Create(string code)
-		{
-			return new Instruction(code);
-		}
-		public override string GetCode()
-		{
-			return Code;
-		}
-		public override byte[] GetByteCode(int ip)
-		{
-			return Assembler.Assemble(Code, ip);
-		}
-		public static explicit operator Instruction(string s)
-		{
-			return Instruction.Create(s);
-		}
+		private Instruction(string code) => Content = code;
+		public static Instruction Create(string code) => new(code);
+		public override string GetCode() => Content;
+		public override byte[] GetByteCode(nuint ip) => Assembler.Assemble(Content, ip);
+		public override AssemblyCode Copy() => new Instruction(Content);
+		public static explicit operator Instruction(string s) => Create(s);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QHackLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,39 +7,50 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.GameObjects
 {
-	public class GameObjectArray2D<T> : GameObject where T : GameObject
+	/// <summary>
+	/// For 2D arrays.<br/>
+	/// Use <see cref="GameObjectArrayMD{T}"/> when accessing arrays of higher rank.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	public class GameObjectArray2D<T> : GameObjectArrayMD<T> where T : GameObject
 	{
-		/// <summary>
-		/// 在低版本的.NET下运行的游戏可能无法使用，慎用
-		/// </summary>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <returns></returns>
-		public virtual T this[int x, int y]
+		public T this[int i, int j]
 		{
-			get
-			{
-				ReadFromOffset(0x18 + (x * D2 + y) * 4, out int vv);
-				return (T)typeof(T).GetConstructor(new Type[] { typeof(GameContext), typeof(int) }).Invoke(new object[] { Context, vv });
-			}
+			get => GetValue(i, j);
+			set => SetValue(value, i, j);
 		}
-		public int D1
+		public GameObjectArray2D(GameContext ctx, HackObject obj) : base(ctx, obj)
 		{
-			get
-			{
-				ReadFromOffset(0x8, out int v);
-				return v;
-			}
 		}
-		public int D2
+	}
+	/// <summary>
+	/// For 2D arrays.<br/>
+	/// Use <see cref="GameObjectArrayMDV{T}"/> when accessing arrays of higher rank.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	public class GameObjectArray2DV<T> : GameObjectArrayMDV<T> where T : unmanaged
+	{
+		public T this[int i, int j]
 		{
-			get
-			{
-				ReadFromOffset(0xc, out int v);
-				return v;
-			}
+			get => GetValue(i, j);
+			set => SetValue(value, i, j);
 		}
-		public GameObjectArray2D(GameContext context, int bAddr) : base(context, bAddr)
+		public GameObjectArray2DV(GameContext ctx, HackObject obj) : base(ctx, obj)
+		{
+		}
+	}
+	/// <summary>
+	/// For 2D arrays.<br/>
+	/// Use <see cref="GameObjectArrayMD"/> when accessing arrays of higher rank.
+	/// </summary>
+	public class GameObjectArray2D : GameObjectArrayMD
+	{
+		public dynamic this[int i, int j]
+		{
+			get => GetValue(i, j);
+			set => SetValue(value, i, j);
+		}
+		public GameObjectArray2D(GameContext ctx, HackObject obj) : base(ctx, obj)
 		{
 		}
 	}

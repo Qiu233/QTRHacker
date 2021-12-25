@@ -1,0 +1,944 @@
+﻿		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "eyeColor            "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "hairColor           "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "hairDyeColor        "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "pantsColor          "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "shirtColor          "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "shoeColor           "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "skinColor           "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "underShirtColor     "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "_inputMouseCoordsForward"); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "_inputMouseCoordsSmartSelect"); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "_mainMouseCoordsForward"); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "_mainMouseCoordsSmartSelect"); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "_tileTargetSmartSelect"); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Rectangle", "bodyFrame           "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Rectangle", "hairFrame           "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Rectangle", "headFrame           "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Rectangle", "legFrame            "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "_nextTorchLuckCheckCenter"); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "bodyPosition        "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "bodyVelocity        "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "fullRotationOrigin  "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "headPosition        "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "headVelocity        "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "instantMovementAccumulatedThisFrame"); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "itemLocation        "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "lastBoost           "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "lastDeathPostion    "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "legPosition         "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "legVelocity         "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "MinionRestTargetPoint"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "beetlePos           "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "beetleVel           "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "itemFlamePos        "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "shadowOrigin        "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "shadowPos           "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "solarShieldPos      "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "solarShieldVel      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "_batbatCanHeal      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "_forceForwardCursor "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "_forceSmartSelectCursor"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "_spawnTentacleSpikes"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "abigailMinion       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accCalendar         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accCritterGuide     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accDivingHelm       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accDreamCatcher     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accFishFinder       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accFishingLine      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accFlipper          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accJarOfSouls       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accLavaFishing      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accMerman           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accOreFinder        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accStopwatch        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accTackleBox        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accThirdEye         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "accWeatherRadio     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ActuationRodLock    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ActuationRodLockSetting"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "adjHoney            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "adjLava             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "adjWater            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "alchemyTable        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ammoBox             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ammoCost75          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ammoCost80          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ammoPotion          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "archery             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "arcticDivingGear    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "armorEffectDrawOutlines"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "armorEffectDrawOutlinesForbidden"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "armorEffectDrawShadow"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "armorEffectDrawShadowBasilisk"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "armorEffectDrawShadowEOCShield"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "armorEffectDrawShadowLokis"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "armorEffectDrawShadowSubtle"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "autoActuator        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "autoJump            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "autoPaint           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "autoReuseGlove      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "babyBird            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "babyFaceMonster     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ballistaPanic       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "batsOfLight         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "beetleBuff          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "beetleDefense       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "beetleOffense       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "behindBackWall      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "blackBelt           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "blackCat            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "blackout            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "bleed               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "blind               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "blueFairy           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "boneArmor           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "botherWithUnaimedMinecartTracks"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "brokenArmor         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "bunny               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "burned              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "cactusThorns        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "calmed              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canCarpet           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canFloatInWater     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canJumpAgain_Basilisk"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canJumpAgain_Blizzard"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canJumpAgain_Cloud  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canJumpAgain_Fart   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canJumpAgain_Sail   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canJumpAgain_Sandstorm"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canJumpAgain_Santank"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canJumpAgain_Unicorn"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canJumpAgain_WallOfFleshGoat"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "canRocket           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "CanSeeInvisibleBlocks"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "carpet              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "cartFlip            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "channel             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "chaosState          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "chilled             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "chloroAmmoCost80    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "coldDash            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "companionCube       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "confused            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlCreativeMenu "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlDown         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlHook         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlInv          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlJump         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlLeft         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlMap          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlMount        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlQuickHeal    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlQuickMana    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlRight        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlSmart        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlThrow        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlTorch        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlUp           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlUseItem      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "controlUseTile      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "coolWhipBuff        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "cordage             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "cratePotion         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "creativeGodMode     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "creativeInterface   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "crimsonHeart        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "crimsonRegen        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "crystalLeaf         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "cSapling            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "cursed              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "cursorItemIconEnabled"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "cursorItemIconReversed"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dangerSense         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dazed               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dd2Accessory        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dead                "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "DeadlySphereMinion  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "defendedByPaladin   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "delayUseItem        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "desertBoots         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "desertDash          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "detectCreature      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dino                "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "discount            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dontConsumeWand     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dontHurtCritters    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dontStarveShader    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "downedDD2EventAnyDifficulty"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dpsStarted          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "drawingFootball     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dripping            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "drippingSlime       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "drippingSparkleSlime"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dryadWard           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "dryCoralTorch       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "eater               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "editedChestName     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "electrified         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "empressBlade        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "empressBrooch       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "enemySpawns         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "equippedAnyTileRangeAcc"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "equippedAnyTileSpeedAcc"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "equippedAnyWallSpeedAcc"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "extraAccessory      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "eyebrellaCloud      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "eyeSpring           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "fairyBoots          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "findTreasure        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "fireWalk            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "flapSound           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "flinxMinion         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "flowerBoots         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "forceMerman         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "forceWerewolf       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "frogLegJumpBoost    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "frostArmor          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "frostBurn           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "frozen              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ghost               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ghostHeal           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ghostHurt           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "gills               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "GoingDownWithGrapple"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "goldRing            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "gravControl         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "gravControl2        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "greenFairy          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "grinch              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "gross               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "happyFunTorchTime   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasAngelHalo        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasCreditsSceneMusicBox"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasFloatingTube     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasFootball         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "HasGardenGnomeNearby"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasJumpOption_Basilisk"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasJumpOption_Blizzard"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasJumpOption_Cloud "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasJumpOption_Fart  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasJumpOption_Sail  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasJumpOption_Sandstorm"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasJumpOption_Santank"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasJumpOption_Unicorn"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasJumpOption_WallOfFleshGoat"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasLuckyCoin        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasLucyTheAxe       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasMagiluminescence "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasMoltenQuiver     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasPaladinShield    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasRainbowCursor    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasRaisableShield   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasTitaniumStormBuff"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hasUnicornHorn      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hbLocked            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "headcovered         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "heartyMeal          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hideMerman          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hideWolf            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "honey               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hornet              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hornetMinion        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hostile             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "hungry              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "huntressAmmoCost90  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "iceBarrier          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "iceSkate            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ichor               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "ignoreWater         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "immune              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "immuneNoBlink       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "impMinion           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "inferno             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "InfoAccMechShowWires"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "invis               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isControlledByFilm  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isDisplayDollOrInanimate"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isFirstFractalAfterImage"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isHatRackDoll       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPerformingJump_Basilisk"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPerformingJump_Blizzard"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPerformingJump_Cloud"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPerformingJump_Fart"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPerformingJump_Sail"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPerformingJump_Sandstorm"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPerformingJump_Santank"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPerformingJump_Unicorn"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPerformingJump_WallOfFleshGoat"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPerformingPogostickTricks"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isPettingAnimal     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "isTheAnimalBeingPetSmall"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "jumpBoost           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "JustDroppedAnItem   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "justJumped          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "kbBuff              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "kbGlove             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "killClothier        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "killGuide           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "lastMouseInterface  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "lastStoned          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "lavaImmune          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "lavaRose            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "leinforsHair        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "lifeForce           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "lifeMagnet          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "lightOrb            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "lizard              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "longInvince         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "loveStruck          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "luckNeedsSync       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "magicCuffs          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "magicLantern        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "magicQuiver         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "magmaStone          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "makeStrongBee       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "manaFlower          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "manaMagnet          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "manaRegenBuff       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "manaSick            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "mapAlphaDown        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "mapAlphaUp          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "mapFullScreen       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "mapStyle            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "mapZoomIn           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "mapZoomOut          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "meleeScaleGlove     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "merman              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "minecartLeft        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "miniMinotaur        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "moonLeech           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "moonLordLegs        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "mouseInterface      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "netLife             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "netMana             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "nightVision         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "noBuilding          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "noFallDmg           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "noItems             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "noKnockback         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "oldAdjHoney         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "oldAdjLava          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "oldAdjWater         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onFire              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onFire2             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onFire3             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onFrostBurn         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onFrostBurn2        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onHitDodge          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onHitPetal          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onHitRegen          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onHitTitaniumStorm  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onTrack             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "onWrongGround       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "outOfRange          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "palladiumRegen      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "panic               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "parrot              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "parryDamageBuff     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "penguin             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagBabyImp      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagBabyRedPanda "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagBabyShark    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagBabyWerewolf "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagBerniePet    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagBrainOfCthulhuPet"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagChesterPet   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagDD2BetsyPet  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagDD2Dragon    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagDD2Gato      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagDD2Ghost     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagDD2OgrePet   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagDeerclopsPet "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagDestroyerPet "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagDukeFishronPet"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagDynamiteKitten"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagEaterOfWorldsPet"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagEverscreamPet"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagEyeOfCthulhuPet"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagFairyQueenPet"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagFennecFox    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagGlitteryButterfly"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagGlommerPet   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagGolemPet     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagIceQueenPet  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagKingSlimePet "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagLilHarpy     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagLunaticCultistPet"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagMartianPet   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagMoonLordPet  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagPigPet       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagPlanteraPet  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagPlantero     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagPumpkingPet  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagQueenBeePet  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagQueenSlimePet"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagShadowMimic  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagSkeletronPet "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagSkeletronPrimePet"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagSugarGlider  "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagTwinsPet     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagUpbeatStar   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "petFlagVoltBunny    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "pirateMinion        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "poisoned            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "portalPhysicsFlag   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "poundRelease        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "powerrun            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "preventAllItemPickups"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "pStone              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "pulley              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "puppy               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "pvpDeath            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "pygmy               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "rabid               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "raven               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "redFairy            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseCreativeMenu "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseDown         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseHook         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseInventory    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseJump         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseLeft         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseMapFullscreen"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseMapStyle     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseMount        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseQuickHeal    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseQuickMana    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseRight        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseSmart        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseThrow        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseUp           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseUseItem      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "releaseUseTile      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "resistCold          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "rocketFrame         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "rocketRelease       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "rulerGrid           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "rulerLine           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "runningOnSand       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "sailDash            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "sandStorm           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "sapling             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "scope               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setApprenticeT2     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setApprenticeT3     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setForbidden        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setForbiddenCooldownLocked"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setHuntressT2       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setHuntressT3       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setMonkT2           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setMonkT3           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setNebula           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setSolar            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setSquireT2         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setSquireT3         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setStardust         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "setVortex           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "shadowDodge         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "sharknadoMinion     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "shieldRaised        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "shinyStone          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "showLastDeath       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "shroomiteStealth    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "silence             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "skeletron           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "skipAnimatingValuesInPlayerFrame"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "skyStoneEffects     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "sliding             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "slime               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "slippy              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "slippy2             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "sloping             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "slow                "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "slowFall            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "slowOgreSpit        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "smolstar            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "snowman             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "socialGhost         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "socialIgnoreLight   "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "socialShadowRocketBoots"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "solarDashConsumedFlare"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "solarDashing        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "sonarPotion         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "spaceGun            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "spawnMax            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "spider              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "spiderArmor         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "spiderMinion        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "sporeSac            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "squashling          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "stairFall           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "stardustDragon      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "stardustGuardian    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "stardustMinion      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "starving            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "sticky              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "stinky              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "stoned              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "stormTiger          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "strongBees          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "suffocating         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "sunflower           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "suspiciouslookingTentacle"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "tankPetReset        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "teleporting         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "tiki                "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "tileInteractAttempted"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "tileInteractionHappened"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "tipsy               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "tongued             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "trapDebuffSource    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "treasureMagnet      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "trident             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "truffle             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "tryKeepingHoveringDown"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "tryKeepingHoveringUp"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "turtle              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "turtleArmor         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "turtleThorns        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "twinsMinion         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "UFOMinion           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "unlockedBiomeTorches"); #>
+		<# PROPERTY_VIRTUAL("bool      ", "vampireFrog         "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "venom               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "volatileGelatin     "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "vortexDebuff        "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "vortexStealthActive "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "waterWalk           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "waterWalk2          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "wearsRobe           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "webbed              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "wellFed             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "wereWolf            "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "windPushed          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "wisp                "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "witheredArmor       "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "witheredWeapon      "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "wolfAcc             "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "yoraiz0rDarkness    "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "yoyoGlove           "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "yoyoString          "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "zephyrfish          "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "adjTile             "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "buffImmune          "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "hideInfo            "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "hideVisibleAccessory"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "inventoryChestStack "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "nearbyTorch         "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "npcTypeNoAggro      "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "oldAdjTile          "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "accCritterGuideCounter"); #>
+		<# PROPERTY_VIRTUAL("byte      ", "accCritterGuideNumber"); #>
+		<# PROPERTY_VIRTUAL("byte      ", "accThirdEyeCounter  "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "accThirdEyeNumber   "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "difficulty          "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "flameRingAlpha      "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "flameRingFrame      "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "hairDye             "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "iceBarrierFrame     "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "iceBarrierFrameCounter"); #>
+		<# PROPERTY_VIRTUAL("byte      ", "luckPotion          "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "meleeEnchant        "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "oldLuckPotion       "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "pulleyDir           "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "spelunkerTimer      "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "suffocateDelay      "); #>
+		<# PROPERTY_VIRTUAL("byte      ", "wetSlime            "); #>
+<# //PROPERTY_VIRTUAL("System.Collections.Generic.HashSet<QTRHack.Core.ValueTypeRedefs.Point>", "_blackListedTileCoordsForGrappling"); #>
+<# //PROPERTY_VIRTUAL("System.Collections.Generic.List<QTRHack.Core.ValueTypeRedefs.Point>", "TouchedTiles        "); #>
+<# //PROPERTY_VIRTUAL("System.Collections.Generic.List<System.Int32>", "_projectilesToInteractWith"); #>
+		<# PROPERTY_VIRTUAL("System.DateTime", "dpsEnd              "); #>
+		<# PROPERTY_VIRTUAL("System.DateTime", "dpsLastHit          "); #>
+		<# PROPERTY_VIRTUAL("System.DateTime", "dpsStart            "); #>
+		<# PROPERTY_VIRTUAL("System.DateTime", "lastDeathTime       "); #>
+		<# PROPERTY_VIRTUAL("double    ", "bodyFrameCounter    "); #>
+		<# PROPERTY_VIRTUAL("double    ", "headFrameCounter    "); #>
+		<# PROPERTY_VIRTUAL("double    ", "legFrameCounter     "); #>
+		<# PROPERTY_VIRTUAL("int       ", "_framesLeftEligibleForDeadmansChestDeathAchievement"); #>
+		<# PROPERTY_VIRTUAL("int       ", "_funkytownAchievementCheckCooldown"); #>
+		<# PROPERTY_VIRTUAL("int       ", "_immuneStrikes      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "_lastAddedAvancedShadow"); #>
+		<# PROPERTY_VIRTUAL("int       ", "_lastSmartCursorToolStrategy"); #>
+		<# PROPERTY_VIRTUAL("int       ", "_lockTileInteractionsTimer"); #>
+		<# PROPERTY_VIRTUAL("int       ", "_portalPhysicsTime  "); #>
+		<# PROPERTY_VIRTUAL("int       ", "_quickGrappleCooldown"); #>
+		<# PROPERTY_VIRTUAL("int       ", "_timeSinceLastImmuneGet"); #>
+<# //PROPERTY_VIRTUAL("int       ", "<talkNPC>k__BackingField"); #>
+		<# PROPERTY_VIRTUAL("int       ", "accCompass          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "accDepthMeter       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "accWatch            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "afkCounter          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "aggro               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "altFunctionUse      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "anglerQuestsFinished"); #>
+		<# PROPERTY_VIRTUAL("int       ", "armorPenetration    "); #>
+		<# PROPERTY_VIRTUAL("int       ", "attackCD            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "availableAdvancedShadowsCount"); #>
+		<# PROPERTY_VIRTUAL("int       ", "bartenderQuestLog   "); #>
+		<# PROPERTY_VIRTUAL("int       ", "beardGrowthTimer    "); #>
+		<# PROPERTY_VIRTUAL("int       ", "beetleCountdown     "); #>
+		<# PROPERTY_VIRTUAL("int       ", "beetleFrame         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "beetleFrameCounter  "); #>
+		<# PROPERTY_VIRTUAL("int       ", "beetleOrbs          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "blockRange          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "body                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "boneGloveTimer      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "brainOfConfusionDodgeAnimationCounter"); #>
+		<# PROPERTY_VIRTUAL("int       ", "breath              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "breathCD            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "breathMax           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cAngelHalo          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "carpetFrame         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "carpetTime          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cartRampTime        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cBack               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cBackpack           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cBalloon            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cBalloonFront       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cBeard              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cBody               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cCarpet             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cFace               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cFaceFlower         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cFaceHead           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cFloatingTube       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cFront              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cGrapple            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cHandOff            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cHandOn             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "changeItem          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cHead               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "chest               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "chestX              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "chestY              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cLegs               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cLeinShampoo        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cLight              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cMinecart           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cMinion             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cMount              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cNeck               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "counterWeight       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cPet                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cPortalbeStool      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cShield             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cShieldFallback     "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cShoe               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cTail               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cUnicornHorn        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cursorItemIconID    "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cWaist              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cWings              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "cYorai              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "dash                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "dashDelay           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "dashTime            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "dashType            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "dpsDamage           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "emoteTime           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "environmentBuffImmunityTimer"); #>
+		<# PROPERTY_VIRTUAL("int       ", "eocDash             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "eocHit              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "extraAccessorySlots "); #>
+		<# PROPERTY_VIRTUAL("int       ", "extraFall           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "fallStart           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "fallStart2          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "fishingSkill        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "gem                 "); #>
+		<# PROPERTY_VIRTUAL("int       ", "gemCount            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "ghostFrame          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "ghostFrameCounter   "); #>
+		<# PROPERTY_VIRTUAL("int       ", "golferScoreAccumulated"); #>
+		<# PROPERTY_VIRTUAL("int       ", "grapCount           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "graveImmediateTime  "); #>
+		<# PROPERTY_VIRTUAL("int       ", "hair                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "head                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "heldProj            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "highestAbigailCounterOriginalDamage"); #>
+		<# PROPERTY_VIRTUAL("int       ", "highestStormTigerGemOriginalDamage"); #>
+		<# PROPERTY_VIRTUAL("int       ", "HotbarOffset        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "immuneAlpha         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "immuneAlphaDirection"); #>
+		<# PROPERTY_VIRTUAL("int       ", "immuneTime          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "infernoCounter      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "insanityShadowCooldown"); #>
+		<# PROPERTY_VIRTUAL("int       ", "itemAnimation       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "itemAnimationMax    "); #>
+		<# PROPERTY_VIRTUAL("int       ", "itemFlameCount      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "itemHeight          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "itemTime            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "itemTimeMax         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "itemWidth           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "jump                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "ladyBugLuckTimeLeft "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lastChest           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lastCreatureHit     "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lastPortalColorIndex"); #>
+		<# PROPERTY_VIRTUAL("int       ", "lastTeleportPylonStyleUsed"); #>
+		<# PROPERTY_VIRTUAL("int       ", "lastTileRangeX      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lastTileRangeY      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lavaCD              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lavaMax             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lavaTime            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "leftTimer           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "legs                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lifeRegen           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lifeRegenCount      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lifeRegenTime       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "loadStatus          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lostCoins           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "luckyTorchCounter   "); #>
+		<# PROPERTY_VIRTUAL("int       ", "magicCrit           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "manaRegen           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "manaRegenBonus      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "manaRegenCount      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "manaRegenDelay      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "manaRegenDelayBonus "); #>
+		<# PROPERTY_VIRTUAL("int       ", "maxMinions          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "maxTurrets          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "maxTurretsOld       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "meleeCrit           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "MinionAttackTargetNPC"); #>
+		<# PROPERTY_VIRTUAL("int       ", "miscCounter         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "miscTimer           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "mushroomDelayTime   "); #>
+		<# PROPERTY_VIRTUAL("int       ", "nearbyTorches       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "nebulaCD            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "nebulaLevelDamage   "); #>
+		<# PROPERTY_VIRTUAL("int       ", "nebulaLevelLife     "); #>
+		<# PROPERTY_VIRTUAL("int       ", "nebulaLevelMana     "); #>
+		<# PROPERTY_VIRTUAL("int       ", "nebulaManaCounter   "); #>
+		<# PROPERTY_VIRTUAL("int       ", "netLifeTime         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "netManaTime         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "netSkip             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "nextCycledSpiderMinionType"); #>
+		<# PROPERTY_VIRTUAL("int       ", "nonTorch            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "noThrow             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "numberOfTorchAttacksMade"); #>
+		<# PROPERTY_VIRTUAL("int       ", "numMinions          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "oldSelectItem       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "petalTimer          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "phantasmTime        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "phantomPhoneixCounter"); #>
+		<# PROPERTY_VIRTUAL("int       ", "potionDelay         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "potionDelayTime     "); #>
+		<# PROPERTY_VIRTUAL("int       ", "pulleyFrame         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "rangedCrit          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "respawnTimer        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "restorationDelayTime"); #>
+		<# PROPERTY_VIRTUAL("int       ", "reuseDelay          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "rightTimer          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "rocketBoots         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "rocketDelay         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "rocketDelay2        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "rocketSoundDelay    "); #>
+		<# PROPERTY_VIRTUAL("int       ", "rocketTime          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "rocketTimeMax       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "ropeCount           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "runSoundDelay       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "selectedItem        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "shadowCount         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "shadowDodgeTimer    "); #>
+		<# PROPERTY_VIRTUAL("int       ", "shield_parry_cooldown"); #>
+		<# PROPERTY_VIRTUAL("int       ", "shieldParryTimeLeft "); #>
+		<# PROPERTY_VIRTUAL("int       ", "sign                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "skinDyePacked       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "skinVariant         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "slideDir            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "snowBallLauncherInteractionCooldown"); #>
+		<# PROPERTY_VIRTUAL("int       ", "solarCounter        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "solarShields        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "soulDrain           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "SpawnX              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "SpawnY              "); #>
+		<# PROPERTY_VIRTUAL("int       ", "spikedBoots         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "starCloakCooldown   "); #>
+		<# PROPERTY_VIRTUAL("int       ", "statDefense         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "statLife            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "statLifeMax         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "statLifeMax2        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "statMana            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "statManaMax         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "statManaMax2        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "stealthTimer        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "step                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "stickyBreak         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "stringColor         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "swimTime            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "tankPet             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "taxMoney            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "taxTimer            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "team                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "teleportStyle       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "timeSinceLastDashStarted"); #>
+		<# PROPERTY_VIRTUAL("int       ", "toolTime            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "torchFunTimer       "); #>
+		<# PROPERTY_VIRTUAL("int       ", "torchGodCooldown    "); #>
+		<# PROPERTY_VIRTUAL("int       ", "vanityRocketBoots   "); #>
+		<# PROPERTY_VIRTUAL("int       ", "volatileGelatinCounter"); #>
+		<# PROPERTY_VIRTUAL("int       ", "wingFrame           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "wingFrameCounter    "); #>
+		<# PROPERTY_VIRTUAL("int       ", "wings               "); #>
+		<# PROPERTY_VIRTUAL("int       ", "wingsLogic          "); #>
+		<# PROPERTY_VIRTUAL("int       ", "wingTimeMax         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "wireOperationsCooldown"); #>
+		<# PROPERTY_VIRTUAL("int       ", "yoraiz0rEye         "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "buffTime            "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "buffType            "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "builderAccStatus    "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "doubleTapCardinalTimer"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "grappling           "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "holdDownCardinalTimer"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "hurtCooldowns       "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "ownedProjectileCounts"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "shadowDirection     "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "spI                 "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "spX                 "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "spY                 "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "unlitTorchX         "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "unlitTorchY         "); #>
+		<# PROPERTY_VIRTUAL("long      ", "lastTimePlayerWasSaved"); #>
+		<# PROPERTY_VIRTUAL("System.Nullable<QTRHacker.Functions.GameObjects.ValueTypeRedefs.Xna.Vector2>", "PotionOfReturnHomePosition"); #>
+		<# PROPERTY_VIRTUAL("System.Nullable<QTRHacker.Functions.GameObjects.ValueTypeRedefs.Xna.Vector2>", "PotionOfReturnOriginalUsePosition"); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "back                "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "backpack            "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "balloon             "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "balloonFront        "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "beard               "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "face                "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "faceFlower          "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "faceHead            "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "front               "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "handoff             "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "handon              "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "neck                "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "shield              "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "shoe                "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "tail                "); #>
+		<# PROPERTY_VIRTUAL("sbyte     ", "waist               "); #>
+		<# PROPERTY_VIRTUAL("float     ", "_deerclopsBlizzardSmoothedEffect"); #>
+		<# PROPERTY_VIRTUAL("float     ", "_shaderObstructionInternalValue"); #>
+		<# PROPERTY_VIRTUAL("float     ", "_stormShaderObstruction"); #>
+		<# PROPERTY_VIRTUAL("float     ", "accRunSpeed         "); #>
+		<# PROPERTY_VIRTUAL("float     ", "arrowDamage         "); #>
+		<# PROPERTY_VIRTUAL("float     ", "basiliskCharge      "); #>
+		<# PROPERTY_VIRTUAL("float     ", "beetleCounter       "); #>
+		<# PROPERTY_VIRTUAL("float     ", "bodyRotation        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "bulletDamage        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "carpetFrameCounter  "); #>
+		<# PROPERTY_VIRTUAL("float     ", "drainBoost          "); #>
+		<# PROPERTY_VIRTUAL("float     ", "endurance           "); #>
+		<# PROPERTY_VIRTUAL("float     ", "firstFractalAfterImageOpacity"); #>
+		<# PROPERTY_VIRTUAL("float     ", "flameRingRot        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "flameRingScale      "); #>
+		<# PROPERTY_VIRTUAL("float     ", "fullRotation        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "gfxOffY             "); #>
+		<# PROPERTY_VIRTUAL("float     ", "ghostDir            "); #>
+		<# PROPERTY_VIRTUAL("float     ", "ghostDmg            "); #>
+		<# PROPERTY_VIRTUAL("float     ", "ghostFade           "); #>
+		<# PROPERTY_VIRTUAL("float     ", "gravDir             "); #>
+		<# PROPERTY_VIRTUAL("float     ", "gravity             "); #>
+		<# PROPERTY_VIRTUAL("float     ", "hairDyeVar          "); #>
+		<# PROPERTY_VIRTUAL("float     ", "headRotation        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "itemRotation        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "jumpSpeedBoost      "); #>
+		<# PROPERTY_VIRTUAL("float     ", "legRotation         "); #>
+		<# PROPERTY_VIRTUAL("float     ", "lifeSteal           "); #>
+		<# PROPERTY_VIRTUAL("float     ", "luck                "); #>
+		<# PROPERTY_VIRTUAL("float     ", "luckMaximumCap      "); #>
+		<# PROPERTY_VIRTUAL("float     ", "luckMinimumCap      "); #>
+		<# PROPERTY_VIRTUAL("float     ", "magicDamage         "); #>
+		<# PROPERTY_VIRTUAL("float     ", "manaCost            "); #>
+		<# PROPERTY_VIRTUAL("float     ", "manaSickReduction   "); #>
+		<# PROPERTY_VIRTUAL("float     ", "maxFallSpeed        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "maxRegenDelay       "); #>
+		<# PROPERTY_VIRTUAL("float     ", "maxRunSpeed         "); #>
+		<# PROPERTY_VIRTUAL("float     ", "meleeDamage         "); #>
+		<# PROPERTY_VIRTUAL("float     ", "meleeSpeed          "); #>
+		<# PROPERTY_VIRTUAL("float     ", "minionDamage        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "minionKB            "); #>
+		<# PROPERTY_VIRTUAL("float     ", "MountFishronSpecialCounter"); #>
+		<# PROPERTY_VIRTUAL("float     ", "moveSpeed           "); #>
+		<# PROPERTY_VIRTUAL("float     ", "nearbyActiveNPCs    "); #>
+		<# PROPERTY_VIRTUAL("float     ", "opacityForCreditsRoll"); #>
+		<# PROPERTY_VIRTUAL("float     ", "pickSpeed           "); #>
+		<# PROPERTY_VIRTUAL("float     ", "pulleyFrameCounter  "); #>
+		<# PROPERTY_VIRTUAL("float     ", "rangedDamage        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "rocketDamage        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "runAcceleration     "); #>
+		<# PROPERTY_VIRTUAL("float     ", "runSlowdown         "); #>
+		<# PROPERTY_VIRTUAL("float     ", "shadowDodgeCount    "); #>
+		<# PROPERTY_VIRTUAL("float     ", "slotsMinions        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "stealth             "); #>
+		<# PROPERTY_VIRTUAL("float     ", "stepSpeed           "); #>
+		<# PROPERTY_VIRTUAL("float     ", "teleportTime        "); #>
+		<# PROPERTY_VIRTUAL("float     ", "thorns              "); #>
+		<# PROPERTY_VIRTUAL("float     ", "tileSpeed           "); #>
+		<# PROPERTY_VIRTUAL("float     ", "torchLuck           "); #>
+		<# PROPERTY_VIRTUAL("float     ", "townNPCs            "); #>
+		<# PROPERTY_VIRTUAL("float     ", "trackBoost          "); #>
+		<# PROPERTY_VIRTUAL("float     ", "wallSpeed           "); #>
+		<# PROPERTY_VIRTUAL("float     ", "whipRangeMultiplier "); #>
+		<# PROPERTY_VIRTUAL("float     ", "whipUseTimeMultiplier"); #>
+		<# PROPERTY_VIRTUAL("float     ", "wingAccRunSpeed     "); #>
+		<# PROPERTY_VIRTUAL("float     ", "wingRunAccelerationMult"); #>
+		<# PROPERTY_VIRTUAL("float     ", "wingTime            "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("float   ", "shadowRotation      "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("float   ", "speedSlice          "); #>
+		<# PROPERTY_VIRTUAL("GameString    ", "cursorItemIconText  "); #>
+		<# PROPERTY_VIRTUAL("GameString    ", "displayedFishingInfo"); #>
+		<# PROPERTY_VIRTUAL("GameString    ", "lostCoinString      "); #>
+		<# PROPERTY_VIRTUAL("GameString    ", "name                "); #>
+		<# PROPERTY_VIRTUAL("GameString    ", "setBonus            "); #>
+		<# PROPERTY_ARRAY_VIRTUAL("GameString  ", "spN                 "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "hideMisc            "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "ownedLargeGems      "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "voidVaultInfo       "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "zone1               "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "zone2               "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "zone3               "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "zone4               "); #>
+		<# PROPERTY_VIRTUAL("Chest", "bank                "); #>
+		<# PROPERTY_VIRTUAL("Chest", "bank2               "); #>
+		<# PROPERTY_VIRTUAL("Chest", "bank3               "); #>
+		<# PROPERTY_VIRTUAL("Chest", "bank4               "); #>
+<#// PROPERTY_VIRTUAL("Terraria.DataStructures.EntityShadowInfo[]", "_advancedShadows    "); #>
+<#// PROPERTY_VIRTUAL("Terraria.DataStructures.PlayerInteractionAnchor", "tileEntityAnchor    "); #>
+<#// PROPERTY_VIRTUAL("Terraria.DataStructures.PlayerMovementAccsCache", "movementAbilitiesCache"); #>
+<#// PROPERTY_VIRTUAL("Terraria.DataStructures.PortableStoolUsage", "portableStoolInfo   "); #>
+<#// PROPERTY_VIRTUAL("Terraria.DataStructures.SoundPlaySet", "hermesStepSound     "); #>
+<#// PROPERTY_VIRTUAL("Terraria.DataStructures.TrackedProjectileReference", "piggyBankProjTracker"); #>
+<#// PROPERTY_VIRTUAL("Terraria.DataStructures.TrackedProjectileReference", "voidLensChest       "); #>
+<#// PROPERTY_VIRTUAL("Terraria.GameContent.Creative.CreativeUnlocksTracker", "creativeTracker     "); #>
+<#// PROPERTY_VIRTUAL("Terraria.GameContent.DoorOpeningHelper", "doorHelper          "); #>
+<#// PROPERTY_VIRTUAL("Terraria.GameContent.PlayerEyeHelper", "eyeHelper           "); #>
+<#// PROPERTY_VIRTUAL("Terraria.GameContent.PlayerSittingHelper", "sitting             "); #>
+<#// PROPERTY_VIRTUAL("Terraria.GameContent.PlayerSleepingHelper", "sleeping            "); #>
+<#// PROPERTY_VIRTUAL("Terraria.HitTile", "hitReplace          "); #>
+<#// PROPERTY_VIRTUAL("Terraria.HitTile", "hitTile             "); #>
+		<# PROPERTY_VIRTUAL("Item", "boneGloveItem       "); #>
+		<# PROPERTY_VIRTUAL("Item", "brainOfConfusionItem"); #>
+		<# PROPERTY_VIRTUAL("Item", "honeyCombItem       "); #>
+		<# PROPERTY_VIRTUAL("Item", "lastVisualizedSelectedItem"); #>
+		<# PROPERTY_VIRTUAL("Item", "starCloakItem       "); #>
+		<# PROPERTY_VIRTUAL("Item", "starCloakItem_beeCloakOverrideItem"); #>
+		<# PROPERTY_VIRTUAL("Item", "starCloakItem_manaCloakOverrideItem"); #>
+		<# PROPERTY_VIRTUAL("Item", "starCloakItem_starVeilOverrideItem"); #>
+		<# PROPERTY_VIRTUAL("Item", "trashItem           "); #>
+		<# PROPERTY_ARRAY_VIRTUAL("Item", "_temporaryItemSlots "); #>
+		<# PROPERTY_ARRAY_VIRTUAL("Item", "armor               "); #>
+		<# PROPERTY_ARRAY_VIRTUAL("Item", "dye                 "); #>
+		<# PROPERTY_ARRAY_VIRTUAL("Item", "inventory           "); #>
+		<# PROPERTY_ARRAY_VIRTUAL("Item", "miscDyes            "); #>
+		<# PROPERTY_ARRAY_VIRTUAL("Item", "miscEquips          "); #>
+		<# PROPERTY_VIRTUAL("Mount", "mount               "); #>
+<# //PROPERTY_VIRTUAL("Terraria.Player.CompositeArmData", "compositeBackArm    "); #>
+<# //PROPERTY_VIRTUAL("Terraria.Player.CompositeArmData", "compositeFrontArm   "); #>
+<# //PROPERTY_VIRTUAL("Terraria.Player.OverheadMessage", "chatOverhead        "); #>
+<# //PROPERTY_VIRTUAL("Terraria.Player.RabbitOrderFrameHelper", "rabbitOrderFrame    "); #>
+<# //PROPERTY_VIRTUAL("Terraria.Player.SavedPlayerDataWithAnnoyingRules", "savedPerPlayerFieldsThatArentInThePlayerClass"); #>
+<# //PROPERTY_VIRTUAL("Terraria.Player.SelectionRadial", "CircularRadial      "); #>
+<# //PROPERTY_VIRTUAL("Terraria.Player.SelectionRadial", "DpadRadial          "); #>
+<# //PROPERTY_VIRTUAL("Terraria.Player.SelectionRadial", "QuicksRadial        "); #>
+<# //PROPERTY_VIRTUAL("Terraria.ShoppingSettings", "currentShoppingSettings"); #>

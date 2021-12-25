@@ -1,134 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F7AFCB94-0361-411F-BB41-A84A0F2B6C51}</ProjectGuid>
+    <TargetFramework>net5.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QTRHacker.Functions</RootNamespace>
-    <AssemblyName>QTRHacker.Functions</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+	<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>..\Debug\</OutputPath>
+    <NoWarn>1701;1702;CA2211</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-    <DocumentationFile>
-    </DocumentationFile>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>..\Release\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ENG|AnyCPU'">
-    <OutputPath>..\ENG\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.Diagnostics.Runtime, Version=1.1.1.11812, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Diagnostics.Runtime.1.1.61812\lib\net45\Microsoft.Diagnostics.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="CLRFunctionCaller.cs" />
-    <Compile Include="GameConstant.cs" />
-    <Compile Include="GameObjects\FieldNotFoundException.cs" />
-    <Compile Include="GameObjects\GameFieldOffsetFieldNameAttribute.cs" />
-    <Compile Include="GameObjects\GameFieldOffsetTypeNameAttribute.cs" />
-    <Compile Include="GameObjects\Chest.cs" />
-    <Compile Include="GameContext.cs" />
-    <Compile Include="GameObjects\Entity.cs" />
-    <Compile Include="GameObjects\IO\FileData.cs" />
-    <Compile Include="GameObjects\GameObject.cs" />
-    <Compile Include="GameObjects\GameObjectArray.cs" />
-    <Compile Include="GameObjects\GameObjectArray2D.cs" />
-    <Compile Include="GameObjects\Item.cs" />
-    <Compile Include="GameObjects\ItemSlots.cs" />
-    <Compile Include="GameObjects\NetMessage.cs" />
-    <Compile Include="GameObjects\NPC.cs" />
-    <Compile Include="GameObjects\NPCArray.cs" />
-    <Compile Include="GameObjects\Player.cs" />
-    <Compile Include="GameObjects\PlayerArray.cs" />
-    <Compile Include="GameObjects\Projectile.cs" />
-    <Compile Include="GameObjects\ValueTypeArray.cs" />
-    <Compile Include="ProjectileImage\IEmmitable.cs" />
-    <Compile Include="ProjectileImage\MPoint.cs" />
-    <Compile Include="ProjectileImage\MPointF.cs" />
-    <Compile Include="ProjectileImage\ProjImage.cs" />
-    <Compile Include="ProjectileImage\RainbowImage\CharactersLoader.cs" />
-    <Compile Include="ProjectileImage\RainbowImage\RainbowTextDrawer.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Expression.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Expr_Binary.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Expr_BTuple.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Expr_MACRO.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Expr_Value.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Statement.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Stmt_DEF.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Stmt_FIXED.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Stmt_INSERT.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Stmt_MACRO.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Stmt_POINT.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Stmt_RECT.cs" />
-    <Compile Include="ProjectileMaker\Parse\AST\Stmt_RECT_FILLED.cs" />
-    <Compile Include="ProjectileMaker\Parse\FixedProperties.cs" />
-    <Compile Include="ProjectileMaker\Parse\Generator.cs" />
-    <Compile Include="ProjectileMaker\Parse\ParseException.cs" />
-    <Compile Include="ProjectileMaker\Parse\Parser.cs" />
-    <Compile Include="ProjectileMaker\Parse\Tokenizer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GameObjects\Tile.cs" />
-    <Compile Include="ProjectileImage\RainbowImage\RainbowDrawer.cs" />
-    <Compile Include="RemoteSignsManager.cs" />
-    <Compile Include="ScheMaker\RawTile.cs" />
-    <Compile Include="ScheMaker\ScheMaker.cs" />
-    <Compile Include="ScheMaker\Schematic.cs" />
-    <Compile Include="Utils.cs" />
-    <Compile Include="GameObjects\IO\WorldFileData.cs" />
-    <Compile Include="GameObjects\WorldGen.cs" />
-    <Compile Include="GameObjects\Map\WorldMap.cs" />
+    <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\QHackLib\QHackLib.csproj">
-      <Project>{cc1b3a7e-33aa-487d-ae8e-2b5b2ce3fef1}</Project>
-      <Name>QHackLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

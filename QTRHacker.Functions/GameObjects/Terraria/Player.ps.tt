@@ -1,0 +1,10 @@
+﻿<#@ include file="TTHeader" #>
+namespace QTRHacker.Functions.GameObjects.Terraria
+{
+	partial class Player
+	{
+#region Virtual Properties
+<#@ include file="PlayerProperties" #>
+#endregion
+	}
+}

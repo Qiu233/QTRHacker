@@ -1,6 +1,7 @@
 ﻿using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
+using QHackLib.Memory;
 using QTRHacker.Functions.GameObjects;
 using System;
 using System.Collections.Generic;
@@ -41,10 +42,8 @@ namespace QTRHacker.Functions.ProjectileImage
 	public class ProjImage : IEmmitable
 	{
 		public const uint FileVersion = 3;
-		public const ushort FileHead = 0x05;
-		/// <summary>
-		/// 只在加载图片时这个东西才有效
-		/// </summary>
+		public const ushort FileHead = 0x2A_2A;
+
 		public int Resolution
 		{
 			get;
@@ -76,41 +75,56 @@ namespace QTRHacker.Functions.ProjectileImage
 
 		public void Emit(GameContext context, MPointF Location)
 		{
-			int data = NativeFunctions.VirtualAllocEx(context.HContext.Handle, 0, (int)(32 * Projs.Count), NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
-			NativeFunctions.WriteProcessMemory(context.HContext.Handle, data, BitConverter.GetBytes(Projs.Count), 4, 0);
+			using MemoryAllocation alloc = new(context.HContext, 32 * (uint)Projs.Count + 64);
+			QHackLib.Memory.MemoryStream stream = new(context.HContext, alloc.AllocationBase, 0);
+			stream.Write<long>(Projs.Count);//8 bytes
+
+			byte[] bs = new byte[12];
 			for (int i = 0; i < Projs.Count; i++)
 			{
-				int t = data + 8 + i * 32;
-				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t, BitConverter.GetBytes(Projs[i].ProjType), 4, 0);
-				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 4, BitConverter.GetBytes(Location.X + Projs[i].Location.X), 4, 0);
-				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 8, BitConverter.GetBytes(Location.Y + Projs[i].Location.Y), 4, 0);
-				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 12, BitConverter.GetBytes(Projs[i].Speed.X), 4, 0);
-				NativeFunctions.WriteProcessMemory(context.HContext.Handle, t + 16, BitConverter.GetBytes(Projs[i].Speed.Y), 4, 0);
+				stream.Write(Projs[i].ProjType);
+				stream.Write(Location.X + Projs[i].Location.X);
+				stream.Write(Location.Y + Projs[i].Location.Y);
+				stream.Write(Projs[i].Speed.X);
+				stream.Write(Projs[i].Speed.Y);
+
+				stream.Write(bs, (uint)bs.Length);
 			}
 			AssemblySnippet snippet = AssemblySnippet.FromCode(
 				new AssemblyCode[] {
 					(Instruction)$"pushad",
-					(Instruction)$"mov ebx,{data}",
+					(Instruction)$"mov ebx,{alloc.AllocationBase}",
 			});
 			snippet.Content.Add(AssemblySnippet.Loop(
 					AssemblySnippet.FromCode(
 						new AssemblyCode[] {
-							(Instruction)$"mov eax,[esp]",//i
-							(Instruction)$"shl eax,5",
+							(Instruction)$"mov eax,[esp]",		//i
+							(Instruction)$"shl eax,5",			//*32
 							(Instruction)$"lea eax,[ebx+8+eax]",
-							Projectile.GetSnippet_Call_NewProjectile(context,null,false,
-								0,"[eax+4]","[eax+8]","[eax+12]","[eax+16]","[eax]",0,0f,context.MyPlayerIndex,0f,0f),
+
+							(Instruction)$"xor ecx,ecx",		//SpawnSource:IProjectileSource
+							(Instruction)$"mov edx,[eax+4]",	//X:float
+							(Instruction)$"push [eax+8]",		//Y:float
+							(Instruction)$"push [eax+12]",		//SpeedX:float
+							(Instruction)$"push [eax+16]",		//SpeedY:float
+							(Instruction)$"push [eax]",			//Type:int
+							(Instruction)$"push 0",				//Damage:int
+							(Instruction)$"push 0",				//KnockBack:float
+							(Instruction)$"push {context.MyPlayerIndex}",//Owner:int
+							(Instruction)$"push 0",				//ai0:float
+							(Instruction)$"push 0",				//ai1:float
+							(Instruction)$"call {context.GameModuleHelper.GetClrMethodBySignature("Terraria.Projectile","Terraria.Projectile.NewProjectile(Terraria.DataStructures.IProjectileSource, Single, Single, Single, Single, Int32, Int32, Single, Int32, Single, Single)").NativeCode}",
+
 				}),
-				(int)Projs.Count, true));
+				Projs.Count, true));
 			snippet.Content.Add((Instruction)"popad");
-			InlineHook.InjectAndWait(context.HContext, snippet,
-				context.HContext.MainAddressHelper["Terraria.Main", "DoUpdate"], true);
-			NativeFunctions.VirtualFreeEx(context.HContext.Handle, data, 0);
+			InlineHook.HookOnce(context.HContext, snippet,
+				context.GameModuleHelper["Terraria.Main", "DoUpdate"]).Wait();
 
 		}
 		public void ToStream(Stream stream)
 		{
-			BinaryWriter bw = new BinaryWriter(stream);
+			BinaryWriter bw = new(stream);
 			bw.Write(FileHead);
 			bw.Write(FileVersion);
 			bw.Write(Description);
@@ -126,18 +140,18 @@ namespace QTRHacker.Functions.ProjectileImage
 		}
 		public static ProjImage FromStream(Stream stream)
 		{
-			BinaryReader br = new BinaryReader(stream);
+			BinaryReader br = new(stream);
 			if (br.ReadUInt16() != FileHead)
 				throw new Exception("错误的文件格式");
 			if (br.ReadUInt32() != FileVersion)
 				throw new Exception("不支持的(老)文件版本");
 			string des = br.ReadString();
 			int count = br.ReadInt32();
-			ProjImage img = new ProjImage();
+			ProjImage img = new();
 			img.Description = des;
 			for (int i = 0; i < count; i++)
 			{
-				Proj p = new Proj();
+				Proj p = new();
 				p.ProjType = br.ReadInt32();
 				float a = br.ReadSingle();
 				float b = br.ReadSingle();
@@ -152,7 +166,7 @@ namespace QTRHacker.Functions.ProjectileImage
 		public static ProjImage FromImage(string file, int projType, int resolution)
 		{
 			Bitmap img = (Bitmap)Image.FromFile(file);
-			ProjImage proj = new ProjImage();
+			ProjImage proj = new();
 			proj.Resolution = resolution;
 			for (int i = 0; i < img.Width; i++)
 			{

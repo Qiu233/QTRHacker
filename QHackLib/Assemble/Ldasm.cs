@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace QHackLib.Assemble
 {
-	public class Ldasm
+	internal static class Ldasm
 	{
-		public struct ldasm_data
+		public ref struct DATA
 		{
 			public byte flags;
 			public byte rex;
@@ -45,7 +45,7 @@ namespace QHackLib.Assemble
 		public const int OP_PREFIX = 0x80;
 
 
-		public static byte[] flags_table = new byte[]
+		private readonly static byte[] flags_table = new byte[]
 		{
 			OP_MODRM,
 			OP_MODRM,
@@ -320,7 +320,7 @@ namespace QHackLib.Assemble
 			OP_MODRM
 		};
 
-		public static byte[] flags_table_ex = new byte[]
+		private readonly static byte[] flags_table_ex = new byte[]
 		{
 			OP_MODRM,
 			OP_MODRM,
@@ -595,21 +595,28 @@ namespace QHackLib.Assemble
 			OP_INVALID,
 		};
 
-		private Ldasm() { }
-
-		private static byte cflags(byte op)
+		private static byte Cflags(byte op)
 		{
 			return flags_table[op];
 		}
 
 
-		private static byte cflags_ex(byte op)
+		private static byte Cflags_ex(byte op)
 		{
 			return flags_table_ex[op];
 		}
 
-		public unsafe static UInt32 ldasm(byte* code, ref ldasm_data ld, bool is64)
+
+		public unsafe static uint GetInst(in ReadOnlySpan<byte> code, out DATA ld, bool is64)
 		{
+			fixed (byte* ptr = code)
+				return GetInst(ptr, out ld, is64);
+		}
+
+		public unsafe static uint GetInst(byte* code, out DATA ld, bool is64)
+		{
+			ld = new DATA();//init
+
 			byte* p = code;
 			byte s, op, f;
 			byte rexw, pr_66, pr_67;
@@ -617,7 +624,7 @@ namespace QHackLib.Assemble
 			s = rexw = pr_66 = pr_67 = 0;
 
 			/* phase 1: parse prefixies */
-			while ((cflags(p[j]) & OP_PREFIX) != 0)
+			while ((Cflags(p[j]) & OP_PREFIX) != 0)
 			{
 				if (p[j] == 0x66)
 					pr_66 = 1;
@@ -638,28 +645,29 @@ namespace QHackLib.Assemble
 				ld.rex = p[j];
 				rexw = (byte)((ld.rex >> 3) & 1);
 				ld.flags |= F_REX;
-				j++; s++;
+				j++; 
+				s++;
 			}
 
 			/* can be only one REX prefix */
 			if (is64 && p[j] >> 4 == 4)
 			{
 				ld.flags |= F_INVALID;
-				s++;
-				return s;
+				return ++s;
 			}
 
 			/* phase 2: parse opcode */
 			ld.opcd_offset = (byte)j;
 			ld.opcd_size = 1;
-			op = p[j++]; s++;
+			op = p[j++]; 
+			s++;
 
 			/* is 2 byte opcode? */
 			if (op == 0x0F)
 			{
 				op = p[j++]; s++;
 				ld.opcd_size++;
-				f = cflags_ex(op);
+				f = Cflags_ex(op);
 				if ((f & OP_INVALID) != 0)
 				{
 					ld.flags |= F_INVALID;
@@ -674,7 +682,7 @@ namespace QHackLib.Assemble
 			}
 			else
 			{
-				f = cflags(op);
+				f = Cflags(op);
 				/* pr_66 = pr_67 for opcodes A0-A3 */
 				if (op >= 0xA0 && op <= 0xA3)
 					pr_66 = pr_67;
@@ -778,19 +786,5 @@ namespace QHackLib.Assemble
 
 			return s;
 		}
-
-		public static int GetASMLength(byte[] b, int index, bool x64)
-		{
-			unsafe
-			{
-				IntPtr addr = Marshal.AllocHGlobal(b.Length);
-				Marshal.Copy(b, 0, addr, b.Length);
-				ldasm_data data = new ldasm_data();
-				uint i = ldasm((byte*)addr, ref data, x64);
-				Marshal.FreeHGlobal(addr);
-				return (int)i;
-			}
-		}
-
 	}
 }
