@@ -30,12 +30,12 @@ namespace QTRHacker.Functions
 			return $"{typeName}.{fieldName}";
 		}
 
-		public uint GetInstanceFieldOffset(string typeName, string fieldName)
+		public unsafe uint GetOffset(string typeName, string fieldName)
 		{
 			string name = GetComposedName(typeName, fieldName);
 			if (Cache.TryGetValue(name, out uint v))
 				return v;
-			return Cache[name] = Context.GameModuleHelper.GetInstanceFieldOffset(typeName, fieldName);
+			return Cache[name] = Context.GameModuleHelper.GetInstanceFieldOffset(typeName, fieldName) + (uint)sizeof(nuint);
 		}
 	}
 }

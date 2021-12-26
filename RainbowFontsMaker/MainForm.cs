@@ -62,9 +62,14 @@ namespace RainbowFontsMaker
 		{
 			if (!File.Exists("./LastRbLib"))
 				File.Create("./LastRbLib").Close();
-			if (!Directory.Exists("./RainbowFonts"))
-				Directory.CreateDirectory("./RainbowFonts");
+
+			if (!Directory.Exists("./Content"))
+				Directory.CreateDirectory("./Content");
+
+			if (!Directory.Exists("./Content/RainbowFonts"))
+				Directory.CreateDirectory("./Content/RainbowFonts");
 			LastRbLib = File.ReadAllText("./LastRbLib");
+
 			InitializeComponent();
 
 			BackColor = Color.FromArgb(120, 130, 130);
@@ -121,7 +126,7 @@ namespace RainbowFontsMaker
 				Label tip = new Label
 				{
 					Text = "请输入要保存到的字库\n" +
-				"如输入：A.B.C则是保存到/RainbowFonts/A/B/C.rbfont",
+				"如输入：A.B.C则是保存到/Content/RainbowFonts/A/B/C.rbfont",
 					Bounds = new Rectangle(2, 1, 400, 40)
 				};
 				form.Controls.Add(tip);
@@ -154,7 +159,7 @@ namespace RainbowFontsMaker
 				SaveButton.Click += (s1, e1) =>
 				{
 					string[] fs = NameBox.Text.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
-					string b = "./RainbowFonts/";
+					string b = "./Content/RainbowFonts/";
 					for (int i = 0; i < fs.Length - 1; i++)
 					{
 						b += fs[i] + "/";

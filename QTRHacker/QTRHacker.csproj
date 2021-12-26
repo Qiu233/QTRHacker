@@ -18,6 +18,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>..\Debug\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
+    <NoWarn>1701;1702;IDE0017</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

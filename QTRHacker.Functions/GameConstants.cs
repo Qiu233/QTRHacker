@@ -8,9 +8,6 @@ namespace QTRHacker.Functions
 {
 	public static class GameConstants
 	{
-		public const int MaxItemTypes = 5125;
-		public const int MaxNPCTypes = 670;
-
 		public static int[] NPCFrameCount = new int[670]
 		{
 			1, 2, 2, 3, 6, 2, 2, 1, 1, 1,

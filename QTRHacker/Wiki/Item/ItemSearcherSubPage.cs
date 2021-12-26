@@ -116,15 +116,15 @@ namespace QTRHacker.Wiki.Item
 
 			ReverseButton = new Button();
 			ReverseButton.Text = HackContext.CurrentLanguage["ReverseCheck"];
-			ReverseButton.Bounds = new Rectangle(50, 180, 60, 20);
+			ReverseButton.Bounds = new Rectangle(50, 180, 60, 30);
 
 			SearchButton = new Button();
 			SearchButton.Text = HackContext.CurrentLanguage["Search"];
-			SearchButton.Bounds = new Rectangle(110, 180, 60, 20);
+			SearchButton.Bounds = new Rectangle(110, 180, 60, 30);
 
 			ResetButton = new Button();
 			ResetButton.Text = HackContext.CurrentLanguage["Reset"];
-			ResetButton.Bounds = new Rectangle(170, 180, 60, 20);
+			ResetButton.Bounds = new Rectangle(170, 180, 60, 30);
 
 			Controls.Add(filterGroupBox);
 			Controls.Add(tipSearch);

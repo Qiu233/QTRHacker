@@ -231,8 +231,8 @@
   "zh-CN": {
     "Basic": "基础功能",
     "Players": "玩家",
-    "Projectiles": "弹幕管理",
-    "Scripts": "脚本管理",
+    "Projectiles": "弹幕",
+    "Scripts": "脚本",
     "Miscs": "杂项",
     "MainPage": "主页",
     "ChatSender": "聊天消息",

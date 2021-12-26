@@ -53,15 +53,15 @@ namespace QTRHacker.Wiki.NPC
 
 			KeyWordTextBox = new TextBox();
 			KeyWordTextBox.ImeMode = ImeMode.OnHalf;
-			KeyWordTextBox.Bounds = new Rectangle(65, 100, 175, 20);
+			KeyWordTextBox.Bounds = new Rectangle(65, 100, 175, 30);
 
 			SearchButton = new Button();
 			SearchButton.Text = HackContext.CurrentLanguage["Search"];
-			SearchButton.Bounds = new Rectangle(70, 130, 60, 20);
+			SearchButton.Bounds = new Rectangle(70, 130, 60, 30);
 
 			ResetButton = new Button();
 			ResetButton.Text = HackContext.CurrentLanguage["Reset"];
-			ResetButton.Bounds = new Rectangle(130, 130, 60, 20);
+			ResetButton.Bounds = new Rectangle(130, 130, 60, 30);
 
 			Controls.Add(filterGroupBox);
 			Controls.Add(tipSearch);

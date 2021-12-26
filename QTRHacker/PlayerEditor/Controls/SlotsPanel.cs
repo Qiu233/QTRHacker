@@ -49,11 +49,7 @@ namespace QTRHacker.PlayerEditor.Controls
 				Index = index;
 				SizeMode = PictureBoxSizeMode.CenterImage;
 			}
-			/// <summary>
-			/// 更新的代码写在Paint里面，原因是每500ms都会进行一次更新，就不分开写了
-			/// 需要注意的是这个更新是需要手动调用的，比如执行Refresh
-			/// </summary>
-			/// <param name="pe"></param>
+
 			protected override void OnPaint(PaintEventArgs pe)
 			{
 				if (lastType != Type)

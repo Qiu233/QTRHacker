@@ -26,9 +26,6 @@ namespace QHackLib
 			ClrType type = obj.InternalEntity.Type;
 			if (type.IsObjectReference)
 				throw new HackObject.HackObjectTypeException("Can't set value to ref types.", type.Name);
-			int len = Marshal.SizeOf<T>();
-			if (len != type.BaseSize - 8)
-				throw new HackObject.HackObjectSizeNotEqualException(type.BaseSize, (uint)len);
 			obj.Context.DataAccess.Write(obj.BaseAddress, value);
 		}
 	}
@@ -110,17 +107,10 @@ namespace QHackLib
 			}
 			else if (value is ClrValue val)
 			{
-				uint size = iobjType.ComponentSize;
-				if (val.Type.BaseSize - 8 != size)
-					throw new HackObjectSizeNotEqualException(size, val.Type.BaseSize);
-				byte[] data = Context.DataAccess.ReadBytes(val.Address, size);
-				Context.DataAccess.WriteBytes(iobj.GetArrayElementAddress(_indexes), data);
+				Context.DataAccess.WriteBytes(iobj.GetArrayElementAddress(_indexes), Context.DataAccess.ReadBytes(val.Address, iobjType.ComponentSize));
 			}
 			else if (valueType.IsValueType)
 			{
-				int size = Marshal.SizeOf(valueType);
-				if (size != iobjType.ComponentSize)
-					throw new HackObjectSizeNotEqualException(iobjType.ComponentSize, (uint)size);
 				Context.DataAccess.Write(iobj.GetArrayElementAddress(_indexes), value);
 			}
 			else
@@ -159,7 +149,7 @@ namespace QHackLib
 			return true;
 		}
 
-		public void InternalSetMember(string name, object value)
+		public unsafe void InternalSetMember(string name, object value)
 		{
 			Type valueType = value.GetType();
 			ClrInstanceField field = InternalEntity.Type.GetInstanceFieldByName(name);
@@ -173,17 +163,11 @@ namespace QHackLib
 			}
 			else if (value is ClrValue val)
 			{
-				uint size = val.Type.BaseSize - 8;
-				if (size != field.Type.BaseSize - 8)
-					throw new HackObjectSizeNotEqualException(field.Type.BaseSize, size);
-				byte[] data = Context.DataAccess.ReadBytes(val.Address, size);
-				Context.DataAccess.WriteBytes(field.GetAddress(InternalEntity), data);
+				Context.DataAccess.WriteBytes(field.GetAddress(InternalEntity), 
+					Context.DataAccess.ReadBytes(val.Address, field.Type.BaseSize - 2 * (uint)sizeof(nuint)));
 			}
-			else if (valueType.IsValueType)//except ClrObject/ClrValueType
+			else if (valueType.IsValueType)
 			{
-				int size = Marshal.SizeOf(valueType);
-				if (size != field.Type.BaseSize - 8)
-					throw new HackObjectSizeNotEqualException(field.Type.BaseSize, (uint)size);
 				Context.DataAccess.Write(field.GetAddress(InternalEntity), value);
 			}
 			else
@@ -244,10 +228,6 @@ namespace QHackLib
 		internal class HackObjectInvalidArgsException : HackObjectException
 		{
 			public HackObjectInvalidArgsException(string msg) : base(msg) { }
-		}
-		internal class HackObjectSizeNotEqualException : HackObjectException
-		{
-			public HackObjectSizeNotEqualException(uint expected, uint got) : base($"Size not equal. expected {expected}, however, got {got}.") { }
 		}
 	}
 }
