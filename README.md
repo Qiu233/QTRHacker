@@ -4,29 +4,15 @@
 https://discord.gg/bzKc9vM  
 All releases: https://github.com/ZQiu233/QTRHackerUpdatesHistory/tree/master/Updates
 
-## Environment requirements
-* Windows 7 or above(32/64).
-* .Net Framework 4.6.2 or above.
+## Requirements
+* Windows 10 x64
+* .NET 5
 * VC Runtime(VC Redist).
 
 ## How to compile
-1. Install Visual Studio 2019
-2. Clone or download this repo.
-3. Extract all files if you choce to download.
-4. Open the solution named "QTRHacker" by Visual Studio
-5. Ctrl + F5
-6. Then you can see the hack running.
-
-## Core Concepts
-QHackLib:A base library for basic hacking in managed and native level.
-
-QTRHacker.Functions:A library base on QHackLib to directly hack Terraria.  
-QTRHacker.Functions.GameContext:In charge of the most basic information fetching and operations.  
-QTRHacker.Functions.GameObjects:In charge of game objects such as item,projectile and so on.  
-QTRHacker.Functions.ProjectileImage:An interface to emmit projectile into game,including rainbow drawing and texting.  
-QTRHacker.Functions.ProjectileMaker:A compiler for a projectile programming languange.  
-
-QTRHacker.NewDimension:A completely new black-themed UI for this hack.
+1. Clone or download this repo.
+2. Open the solution named "QTRHacker" by Visual Studio
+3. Ctrl + F5
 
 ## Screenshots
 ![](./Screenshots/1.png)
