@@ -12,11 +12,11 @@ namespace QHackLib.FunctionHelper
 	public readonly struct HookParameters
 	{
 		public readonly nuint TargetAddress;
-		public readonly int Size;
+		public readonly uint Size;
 		public readonly bool IsOnce;
 		public readonly bool RawCode;
 
-		public HookParameters(nuint targetAddress, int size, bool isOnce, bool rawCode)
+		public HookParameters(nuint targetAddress, uint size, bool isOnce, bool rawCode)
 		{
 			TargetAddress = targetAddress;
 			Size = size;

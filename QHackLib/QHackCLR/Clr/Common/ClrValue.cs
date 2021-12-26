@@ -12,17 +12,14 @@ namespace QHackCLR.Clr
 	public unsafe sealed class ClrValue : AddressableTypedEntity
 	{
 		public override ClrType Type { get; }
+
 		public ClrValue(ClrType type, nuint address) : base(type.ClrObjectHelper, address)
 		{
 			Type = type;
 		}
 
-		public override AddressableTypedEntity GetFieldValue(string name)
-		{
-			ClrInstanceField field = Type.EnumerateInstanceFields().FirstOrDefault(t => t.Name == name) ??
-				throw new ArgumentException("No such field", nameof(name));
-			return field.GetValue(Address);
-		}
+
+		public override nuint OffsetBase => Address;
 
 		/// <summary>
 		/// You can get value from this entity as <typeparamref name="T"/> 

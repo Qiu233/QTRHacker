@@ -23,6 +23,11 @@ namespace QHackLib.Assemble
 			List<object> processedUserArgs = new();
 			foreach (var arg in userArgs)
 			{
+				if(arg is null)
+				{
+					processedUserArgs.Add(0);
+					continue;
+				}
 				Type type = arg.GetType();
 				if (!type.IsValueType)
 					throw new ClrArgsPassingException($"Can only pass game object and value. Type: {type.FullName}");
@@ -48,15 +53,15 @@ namespace QHackLib.Assemble
 			return processedUserArgs.ToArray();
 		}
 
-		private static string SetReg(string reg, nuint val)
-		{
-			if (val == 0)
-				return $"xor {reg},{reg}";
-			return $"mov {reg},{val}";
-		}
 
 		private static AssemblyCode GetArugumentsPassing(nuint? thisPtr, nuint? retBuf, object[] userArgs)
 		{
+			static string SetReg(string reg, nuint val)
+			{
+				if (val == 0)
+					return $"xor {reg},{reg}";
+				return $"mov {reg},{val}";
+			}
 			AssemblySnippet snippet = new();
 			int index = 0;
 			int reg = 0;
@@ -131,7 +136,7 @@ namespace QHackLib.Assemble
 			return snippet;
 		}
 
-		public static AssemblySnippet FromClrCall(nuint targetAddr, bool regProtection, nuint? thisPtr, nuint? retBuf, nuint? userEaxBuf, params object[] arguments)
+		public static AssemblySnippet FromClrCall(nuint targetAddr, bool regProtection, nuint? thisPtr, nuint? retBuf, nuint? userEaxBuf, object[] arguments)
 		{
 			AssemblySnippet s = new();
 			if (regProtection)
@@ -139,7 +144,8 @@ namespace QHackLib.Assemble
 				s.Content.Add(Instruction.Create("push ecx"));
 				s.Content.Add(Instruction.Create("push edx"));
 			}
-			s.Content.Add(GetArugumentsPassing(thisPtr, retBuf, arguments));
+			if (arguments is not null)
+				s.Content.Add(GetArugumentsPassing(thisPtr, retBuf, arguments));
 			s.Content.Add(Instruction.Create($"call {targetAddr}"));
 			if (userEaxBuf != null)
 				s.Content.Add(Instruction.Create($"mov dword ptr [{userEaxBuf}],eax"));
@@ -215,7 +221,7 @@ namespace QHackLib.Assemble
 		public static AssemblySnippet FromConstructString(QHackContext ctx, nuint strMemPtr)
 		{
 			nuint ctor = ctx.BCLHelper.GetFunctionAddress("System.String", "CtorCharPtr");
-			return FromClrCall(ctor, false, thisPtr: 0, retBuf: null, userEaxBuf: null, strMemPtr);
+			return FromClrCall(ctor, false, thisPtr: 0, retBuf: null, userEaxBuf: null, new object[] { strMemPtr });
 		}
 
 		/// <summary>
@@ -230,7 +236,7 @@ namespace QHackLib.Assemble
 		public static AssemblySnippet FromLoadAssembly(QHackContext ctx, nuint assemblyFileNamePtr)
 		{
 			nuint loadFrom = ctx.BCLHelper.GetFunctionAddress("System.Reflection.Assembly", "LoadFrom");
-			return FromClrCall(loadFrom, false, null, null, null, assemblyFileNamePtr);
+			return FromClrCall(loadFrom, false, null, null, null, new object[] { assemblyFileNamePtr });
 		}
 
 		private static readonly Random random = new();

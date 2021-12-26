@@ -13,22 +13,25 @@ namespace QHackCLR.Clr
 		{
 		}
 
-		/// <summary>
-		/// Gets field address from ref_base.<br/>
-		/// The formula is [nuint address = <paramref name="objRef"/> + <see cref="ClrField.Offset"/>
-		/// </summary>
-		/// <param name="objRef"></param>
-		/// <returns></returns>
-		public nuint GetAddress(nuint objRef) => objRef + Offset;
+		private unsafe nuint GetAddress(nuint offsetBase) => offsetBase + Offset;
+		public unsafe nuint GetAddress(AddressableTypedEntity entity) => entity.OffsetBase + Offset;
 
-		public T GetRawValue<T>(nuint objRef) where T : unmanaged => FieldHelper.DataAccess.Read<T>(GetAddress(objRef));
+		private T GetRawValue<T>(nuint offsetBase) where T : unmanaged => FieldHelper.DataAccess.Read<T>(GetAddress(offsetBase));
+		public T GetRawValue<T>(AddressableTypedEntity entity) where T : unmanaged => FieldHelper.DataAccess.Read<T>(GetAddress(entity));
 
-		public AddressableTypedEntity GetValue(nuint objRef)
+		private AddressableTypedEntity GetValue(nuint offsetBase)
 		{
 			if (Type.IsValueType)
-				return new ClrValue(Type, GetAddress(objRef));
-			return new ClrObject(Type.ClrObjectHelper, GetRawValue<nuint>(objRef));
+				return new ClrValue(Type, GetAddress(offsetBase));
+			return new ClrObject(Type.ClrObjectHelper, GetRawValue<nuint>(offsetBase));
 		}
-		public T GetValue<T>(nuint objRef) where T : AddressableTypedEntity => GetValue(objRef) as T;
+		public AddressableTypedEntity GetValue(AddressableTypedEntity entity)
+		{
+			if (Type.IsValueType)
+				return new ClrValue(Type, GetAddress(entity));
+			return new ClrObject(Type.ClrObjectHelper, GetRawValue<nuint>(entity));
+		}
+		private T GetValue<T>(nuint offsetBase) where T : AddressableTypedEntity => GetValue(offsetBase) as T;
+		public T GetValue<T>(AddressableTypedEntity entity) where T : AddressableTypedEntity => GetValue(entity) as T;
 	}
 }

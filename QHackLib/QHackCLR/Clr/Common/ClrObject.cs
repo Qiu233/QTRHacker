@@ -27,23 +27,17 @@ namespace QHackCLR.Clr
 		public bool IsBoxed => Type.IsValueType;
 		public ulong Size => Data.Size;
 
+		public override nuint OffsetBase => Address + (uint)sizeof(nuint);
+
 		public unsafe ClrValue BoxedValue
 		{
 			get
 			{
 				if (!IsBoxed)
 					throw new InvalidOperationException("Not an boxed value.");
-				return new ClrValue(Type, Address + (uint)sizeof(nuint));
+				return new ClrValue(Type, OffsetBase);
 			}
 		}
-
-		public unsafe override AddressableTypedEntity GetFieldValue(string name)
-		{
-			ClrInstanceField field = Type.EnumerateInstanceFields().FirstOrDefault(t => t.Name == name) ??
-				throw new ArgumentException("No such field", nameof(name));
-			return field.GetValue(Address + (uint)sizeof(nuint));
-		}
-
 		public int GetLength() => Read<int>((uint)sizeof(nuint));
 
 		public int GetLength(int dimension)

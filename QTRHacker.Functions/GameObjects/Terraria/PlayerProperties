@@ -886,11 +886,11 @@
 		<# PROPERTY_VIRTUAL("float     ", "wingTime            "); #>
 		<# PROPERTY_ARRAYV_VIRTUAL("float   ", "shadowRotation      "); #>
 		<# PROPERTY_ARRAYV_VIRTUAL("float   ", "speedSlice          "); #>
-		<# PROPERTY_VIRTUAL("GameString    ", "cursorItemIconText  "); #>
-		<# PROPERTY_VIRTUAL("GameString    ", "displayedFishingInfo"); #>
-		<# PROPERTY_VIRTUAL("GameString    ", "lostCoinString      "); #>
-		<# PROPERTY_VIRTUAL("GameString    ", "name                "); #>
-		<# PROPERTY_VIRTUAL("GameString    ", "setBonus            "); #>
+		<# PROPERTY_GO_VIRTUAL("GameString", "cursorItemIconText  "); #>
+		<# PROPERTY_GO_VIRTUAL("GameString", "displayedFishingInfo"); #>
+		<# PROPERTY_GO_VIRTUAL("GameString", "lostCoinString      "); #>
+		<# PROPERTY_GO_VIRTUAL("GameString", "name                "); #>
+		<# PROPERTY_GO_VIRTUAL("GameString", "setBonus            "); #>
 		<# PROPERTY_ARRAY_VIRTUAL("GameString  ", "spN                 "); #>
 		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "hideMisc            "); #>
 		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "ownedLargeGems      "); #>
@@ -899,10 +899,10 @@
 		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "zone2               "); #>
 		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "zone3               "); #>
 		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "zone4               "); #>
-		<# PROPERTY_VIRTUAL("Chest", "bank                "); #>
-		<# PROPERTY_VIRTUAL("Chest", "bank2               "); #>
-		<# PROPERTY_VIRTUAL("Chest", "bank3               "); #>
-		<# PROPERTY_VIRTUAL("Chest", "bank4               "); #>
+		<# PROPERTY_GO_VIRTUAL("Chest", "bank                "); #>
+		<# PROPERTY_GO_VIRTUAL("Chest", "bank2               "); #>
+		<# PROPERTY_GO_VIRTUAL("Chest", "bank3               "); #>
+		<# PROPERTY_GO_VIRTUAL("Chest", "bank4               "); #>
 <#// PROPERTY_VIRTUAL("Terraria.DataStructures.EntityShadowInfo[]", "_advancedShadows    "); #>
 <#// PROPERTY_VIRTUAL("Terraria.DataStructures.PlayerInteractionAnchor", "tileEntityAnchor    "); #>
 <#// PROPERTY_VIRTUAL("Terraria.DataStructures.PlayerMovementAccsCache", "movementAbilitiesCache"); #>

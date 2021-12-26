@@ -35,6 +35,18 @@ private void PROPERTY_VIRTUAL(string type, string name)
 	PROPERTY_VIRTUAL(type, newName, name);
 }
 
+private void PROPERTY_GO_VIRTUAL(string type, string newName, string name)
+{
+#>public virtual <#= type #> <#= newName #> { get => new(Context, InternalObject.<#= name #>); set => InternalObject.<#= name #> = value.InternalObject; }<#+
+}
+private void PROPERTY_GO_VIRTUAL(string type, string name)
+{
+	string newName = GetLegalName(name);
+	newName = newName[0].ToString().ToUpper() + newName.Substring(1);
+	name = name.Trim();
+	PROPERTY_GO_VIRTUAL(type, newName, name);
+}
+
 private void PROPERTY_ARRAY_VIRTUAL(string type, string newName, string name)
 {
 #>public virtual GameObjectArray<<#= type #>> <#= newName #> { get => new GameObjectArray<<#= type #>>(Context, InternalObject.<#= name #>); set => InternalObject.<#= name #> = value.InternalObject; }<#+

@@ -24,6 +24,7 @@ namespace QTRHacker.Functions
 	/// </summary>
 	public class GameContext : IDisposable
 	{
+		private readonly object LOCK_DOUPDATE = new();
 		public nuint My_Player_Address
 		{
 			get;
@@ -284,6 +285,12 @@ namespace QTRHacker.Functions
 			Signs = RemoteSignsManager.CreateFromProcess(this);
 		}
 
+		/// <summary>
+		/// This method would be blocked for a long time if there were any other code running by a hook on DoUpdate.
+		/// </summary>
+		/// <param name="codeToRun"></param>
+		/// <param name="size"></param>
+		/// <returns></returns>
 		public RemoteThread RunOnManagedThread(AssemblyCode codeToRun, uint size = 0x1000)
 		{
 			using MemoryAllocation alloc = new(HContext, size);
@@ -291,15 +298,26 @@ namespace QTRHacker.Functions
 			alloc.Write(bs, (uint)bs.Length, 0);
 			alloc.Write<short>(0, (uint)bs.Length);
 			RemoteThread re = RemoteThread.Create(HContext, codeToRun);
-			InlineHook.HookOnce(
-				HContext,
-				AssemblySnippet.StartManagedThread(
+
+			RunByHookOnDoUpdate(AssemblySnippet.StartManagedThread(
 					HContext,
 					re.CodeAddress,
-					alloc.AllocationBase),
-				GameModuleHelper.
-				GetFunctionAddress("Terraria.Main", "DoUpdate")).Wait();
+					alloc.AllocationBase)).Wait();
+
 			return re;
+		}
+
+		public Task<bool> RunByHookOnDoUpdate(AssemblyCode codeToRun, int timeout = 1000, uint size = 0x1000)
+		{
+			return Task.Run(() =>
+			{
+				System.Threading.Monitor.Enter(LOCK_DOUPDATE);
+				bool v = InlineHook.HookOnce(
+						HContext, codeToRun,
+						GameModuleHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), timeout, size).Result;
+				System.Threading.Monitor.Exit(LOCK_DOUPDATE);
+				return v;
+			});
 		}
 
 

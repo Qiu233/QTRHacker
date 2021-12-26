@@ -217,7 +217,7 @@ namespace QHackLib.FunctionHelper
 			return result;
 		}
 
-		public static async Task<bool> HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, int timeout = 1000, int size = 4096)
+		public static async Task<bool> HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, int timeout = 1000, uint size = 4096)
 		{
 			var hook = new InlineHook(Context, code, new HookParameters(targetAddr, size, true, true));
 			if (!hook.Attach())

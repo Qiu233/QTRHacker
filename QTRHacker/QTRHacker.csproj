@@ -1,0 +1,97 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <AssemblyVersion>9.0.0.0</AssemblyVersion>
+    <AssemblyName>QTRHacker</AssemblyName>
+    <RootNamespace>QTRHacker</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>..\Debug\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>..\Release\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Languages\Languages.json" />
+    <None Remove="Res\ContentImage\BuffImage.bin" />
+    <None Remove="Res\ContentImage\ItemImage.bin" />
+    <None Remove="Res\ContentImage\NPCImage.bin" />
+    <None Remove="Res\ContentImage\PlayerModelsRaw.bin" />
+    <None Remove="Res\Game\Mount_en.txt" />
+    <None Remove="Res\Game\Pet_en.txt" />
+    <None Remove="Res\Game\Prefix_en.txt" />
+    <None Remove="Res\Game\WikiRes.zip" />
+    <None Remove="Res\Image\close.png" />
+    <None Remove="Res\Image\cross.png" />
+    <None Remove="Res\Image\min.png" />
+    <None Remove="Res\Image\Numbers.png" />
+    <None Remove="Res\Image\player.png" />
+    <None Remove="Res\Image\TMLIcon.png" />
+    <None Remove="Res\Text\About.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Languages\Languages.json" />
+    <EmbeddedResource Include="Res\ContentImage\BuffImage.bin" />
+    <EmbeddedResource Include="Res\ContentImage\ItemImage.bin" />
+    <EmbeddedResource Include="Res\ContentImage\NPCImage.bin" />
+    <EmbeddedResource Include="Res\ContentImage\PlayerModelsRaw.bin" />
+    <EmbeddedResource Include="Res\Game\Mount_en.txt" />
+    <EmbeddedResource Include="Res\Game\Pet_en.txt" />
+    <EmbeddedResource Include="Res\Game\Prefix_en.txt" />
+    <EmbeddedResource Include="Res\Game\WikiRes.zip" />
+    <EmbeddedResource Include="Res\Image\close.png" />
+    <EmbeddedResource Include="Res\Image\cross.png" />
+    <EmbeddedResource Include="Res\Image\min.png" />
+    <EmbeddedResource Include="Res\Image\Numbers.png" />
+    <EmbeddedResource Include="Res\Image\player.png" />
+    <EmbeddedResource Include="Res\Image\TMLIcon.png" />
+    <EmbeddedResource Include="Res\Text\About.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
+    <PackageReference Include="IronPython" Version="2.7.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
+    <ProjectReference Include="..\QTRHacker.Functions\QTRHacker.Functions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework">
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game">
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics">
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="WinFormsGraphicsDevice">
+      <HintPath>..\refdlls\WinFormsGraphicsDevice.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

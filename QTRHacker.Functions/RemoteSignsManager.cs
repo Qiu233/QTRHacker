@@ -29,10 +29,10 @@ namespace QTRHacker.Functions
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public nint this[uint index]
+		public nint this[int index]
 		{
-			get => Context.HContext.DataAccess.Read<nint>(BaseAddress + SIZE_SIGN_HEADER + index * 4);
-			set => Context.HContext.DataAccess.Write(BaseAddress + SIZE_SIGN_HEADER + index * 4, value);
+			get => Context.HContext.DataAccess.Read<nint>(BaseAddress + SIZE_SIGN_HEADER + (uint)index * 4);
+			set => Context.HContext.DataAccess.Write(BaseAddress + SIZE_SIGN_HEADER + (uint)index * 4, value);
 		}
 
 

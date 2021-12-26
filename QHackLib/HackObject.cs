@@ -135,9 +135,22 @@ namespace QHackLib
 			return true;
 		}
 
+		private ClrInstanceField SearchFieldRecursively(ClrType type, string name)
+		{
+			var field = type.EnumerateInstanceFields().FirstOrDefault(t => t.Name == name);
+			if (field is not null)
+				return field;
+			if (type.BaseType is null)
+				return null;
+			return SearchFieldRecursively(type.BaseType, name);
+		}
+
 		public HackObject InternalGetMember(string name)
 		{
-			return new HackObject(Context, InternalEntity.GetFieldValue(name));
+			ClrInstanceField field = SearchFieldRecursively(InternalEntity.Type, name);
+			if (field is null)
+				throw new ArgumentException("No such field", nameof(name));
+			return new HackObject(Context, field.GetValue(InternalEntity));
 		}
 
 		public override bool TryGetMember(GetMemberBinder binder, out object result)
@@ -156,7 +169,7 @@ namespace QHackLib
 			{
 				if (obj.Type != field.Type)
 					throw new HackObjectTypeException($"Not the same ref type as {field.Type.Name}.", obj.Type.Name);
-				Context.DataAccess.Write(field.GetAddress(InternalEntity.Address), (int)obj.Address);
+				Context.DataAccess.Write(field.GetAddress(InternalEntity), obj.Address);
 			}
 			else if (value is ClrValue val)
 			{
@@ -164,14 +177,14 @@ namespace QHackLib
 				if (size != field.Type.BaseSize - 8)
 					throw new HackObjectSizeNotEqualException(field.Type.BaseSize, size);
 				byte[] data = Context.DataAccess.ReadBytes(val.Address, size);
-				Context.DataAccess.WriteBytes(field.GetAddress(InternalEntity.Address), data);
+				Context.DataAccess.WriteBytes(field.GetAddress(InternalEntity), data);
 			}
 			else if (valueType.IsValueType)//except ClrObject/ClrValueType
 			{
 				int size = Marshal.SizeOf(valueType);
 				if (size != field.Type.BaseSize - 8)
 					throw new HackObjectSizeNotEqualException(field.Type.BaseSize, (uint)size);
-				Context.DataAccess.Write(field.GetAddress(InternalEntity.Address), value);
+				Context.DataAccess.Write(field.GetAddress(InternalEntity), value);
 			}
 			else
 			{

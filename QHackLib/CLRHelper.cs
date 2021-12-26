@@ -47,14 +47,10 @@ namespace QHackLib
 
 		public nuint GetStaticFieldAddress(string typeName, string fieldName) => GetClrType(typeName).GetStaticFieldByName(fieldName).GetAddress();
 
-		public uint GetFieldOffset(string typeName, string fieldName) => GetClrType(typeName).GetInstanceFieldByName(fieldName).Offset + 4;//+4 to get true offset
+		public uint GetInstanceFieldOffset(string typeName, string fieldName) => GetClrType(typeName).GetInstanceFieldByName(fieldName).Offset;
 
 		public T GetStaticFieldValue<T>(string typeName, string fieldName) where T : unmanaged => Context.DataAccess.Read<T>(GetClrType(typeName).GetStaticFieldByName(fieldName).GetAddress());
 		public void SetStaticFieldValue<T>(string typeName, string fieldName, T value) where T : unmanaged => Context.DataAccess.Write(GetClrType(typeName).GetStaticFieldByName(fieldName).GetAddress(), value);
-
-		public T GetInstanceFieldValue<T>(string typeName, string fieldName, nuint obj) where T : unmanaged => Context.DataAccess.Read<T>(GetClrType(typeName).GetInstanceFieldByName(fieldName).GetAddress(obj));
-
-		public void SetInstanceFieldValue<T>(string typeName, string fieldName, nuint obj, T value) where T : unmanaged => Context.DataAccess.Write<T>(GetClrType(typeName).GetInstanceFieldByName(fieldName).GetAddress(obj), value);
 
 		public HackObject GetStaticHackObject(string typeName, string fieldName)
 			=> new(Context, GetClrType(typeName).GetStaticFieldByName(fieldName).GetValue());

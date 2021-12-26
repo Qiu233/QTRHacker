@@ -24,25 +24,12 @@ namespace QTRHacker.Functions.ProjectileImage
 			this.Y = Y;
 		}
 
-		public static MPointF operator +(MPointF a, MPointF b)
-		{
-			return new MPointF(a.X + b.X, a.Y + b.Y);
-		}
-		public static MPointF operator -(MPointF a, MPointF b)
-		{
-			return new MPointF(a.X - b.X, a.Y - b.Y);
-		}
-		public static MPointF operator *(MPointF a, float factor)
-		{
-			return new MPointF(a.X * factor, a.Y * factor);
-		}
-		public static MPointF operator /(MPointF a, float factor)
-		{
-			return new MPointF(a.X / factor, a.Y / factor);
-		}
-		public static explicit operator MPoint(MPointF f)
-		{
-			return new MPoint((int)f.X, (int)f.Y);
-		}
+		public static MPointF operator +(MPointF a, MPointF b) => new(a.X + b.X, a.Y + b.Y);
+		public static MPointF operator -(MPointF a, MPointF b) => new(a.X - b.X, a.Y - b.Y);
+		public static MPointF operator *(MPointF a, float factor) => new(a.X * factor, a.Y * factor);
+		public static MPointF operator /(MPointF a, float factor) => new(a.X / factor, a.Y / factor);
+		public static explicit operator MPoint(MPointF f) => new((int)f.X, (int)f.Y);
+		public static explicit operator GameObjects.ValueTypeRedefs.Xna.Vector2(MPointF f) => new(f.X, f.Y);
+		public static explicit operator MPointF(GameObjects.ValueTypeRedefs.Xna.Vector2 f) => new(f.X, f.Y);
 	}
 }

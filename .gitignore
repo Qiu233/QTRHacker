@@ -261,10 +261,8 @@ __pycache__/
 *.pyc
 
 # Custom
-/ENG
 /QTRHacker_History
 /QTRHacker.Functions.Test
-/QHackLibTest
 /Images
 /LanguagesManager
 /Offset

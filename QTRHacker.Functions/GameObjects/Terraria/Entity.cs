@@ -16,10 +16,26 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 		{
 		}
 
-		public virtual ValueTypeRedefs.Xna.Vector2 OldPosition { get => InternalObject.oldPosition; set => InternalObject.oldPosition = value; }
-		public virtual ValueTypeRedefs.Xna.Vector2 OldVelocity { get => InternalObject.oldVelocity; set => InternalObject.oldVelocity = value; }
-		public virtual ValueTypeRedefs.Xna.Vector2 Position { get => InternalObject.position; set => InternalObject.position = value; }
-		public virtual ValueTypeRedefs.Xna.Vector2 Velocity { get => InternalObject.velocity; set => InternalObject.velocity = value; }
+		public virtual ValueTypeRedefs.Xna.Vector2 OldPosition
+		{
+			get => InternalObject.oldPosition;
+			set => InternalObject.oldPosition = value;
+		}
+		public virtual ValueTypeRedefs.Xna.Vector2 OldVelocity
+		{
+			get => InternalObject.oldVelocity;
+			set => InternalObject.oldVelocity = value;
+		}
+		public virtual ValueTypeRedefs.Xna.Vector2 Position
+		{
+			get => InternalObject.position;
+			set => InternalObject.position = value;
+		}
+		public virtual ValueTypeRedefs.Xna.Vector2 Velocity
+		{
+			get => InternalObject.velocity;
+			set => InternalObject.velocity = value;
+		}
 		public virtual bool Active { get => InternalObject.active; set => InternalObject.active = value; }
 		public virtual bool HoneyWet { get => InternalObject.honeyWet; set => InternalObject.honeyWet = value; }
 		public virtual bool LavaWet { get => InternalObject.lavaWet; set => InternalObject.lavaWet = value; }

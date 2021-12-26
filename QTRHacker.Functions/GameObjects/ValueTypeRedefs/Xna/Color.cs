@@ -12,13 +12,13 @@ namespace QTRHacker.Functions.GameObjects.ValueTypeRedefs.Xna
 	public struct Color : IEquatable<Color>
 	{
 		[FieldOffset(0)]
-		public byte A;
-		[FieldOffset(1)]
-		public byte B;
-		[FieldOffset(2)]
-		public byte G;
-		[FieldOffset(3)]
 		public byte R;
+		[FieldOffset(1)]
+		public byte G;
+		[FieldOffset(2)]
+		public byte B;
+		[FieldOffset(3)]
+		public byte A;
 
 		[FieldOffset(0)]
 		public uint PackedValue;

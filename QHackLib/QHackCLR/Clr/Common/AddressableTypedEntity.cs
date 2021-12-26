@@ -11,6 +11,7 @@ namespace QHackCLR.Clr
 	public abstract class AddressableTypedEntity : IEquatable<AddressableTypedEntity>
 	{
 		public abstract ClrType Type { get; }
+		public abstract nuint OffsetBase { get; }
 		public nuint Address { get; }
 		public readonly IClrObjectHelper ObjectHelper;
 
@@ -25,7 +26,12 @@ namespace QHackCLR.Clr
 		public T Read<T>(uint offset) where T : unmanaged => DataAccess.Read<T>(Address + offset);
 		public void Write<T>(uint offset, T value) where T : unmanaged => DataAccess.Write(Address + offset, value);
 
-		public abstract AddressableTypedEntity GetFieldValue(string name);
+		public unsafe AddressableTypedEntity GetFieldValue(string name)
+		{
+			ClrInstanceField field = Type.EnumerateInstanceFields().FirstOrDefault(t => t.Name == name) ??
+				throw new ArgumentException("No such field", nameof(name));
+			return field.GetValue(this);
+		}
 		public T GetFieldValue<T>(string name) where T : AddressableTypedEntity => GetFieldValue(name) as T;
 
 		public bool Equals(AddressableTypedEntity other) => this == other;

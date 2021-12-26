@@ -1,5 +1,8 @@
 ﻿using QHackLib;
 using QHackLib.Assemble;
+using QHackLib.FunctionHelper;
+using QHackLib.Memory;
+using QTRHacker.Functions.RemoteExecution;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +20,51 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 		{
 		}
 
-		public void SetDefaults(int type) =>
-			new ActionOnManagedThread(Context, TypedInternalObject.GetMethodCall("Terraria.Item.SetDefaults(Int32)").Call(true, null, null, type))
-			.Execute()
-			.WaitToDispose()
-			.Wait();
+		public void SetDefaults(int type)
+		{
+			Context.RunByHookOnDoUpdate(TypedInternalObject.GetMethodCall("Terraria.Item.SetDefaults(Int32)")
+				.Call(true, null, null, new object[] { type })).Wait();
+		}
+
+		public void SetPrefix(int prefix)
+		{
+			Context.RunByHookOnDoUpdate(TypedInternalObject.GetMethodCall("Terraria.Item.Prefix(Int32)")
+				.Call(true, null, null, new object[] { prefix })).Wait();
+		}
+
+		/// <summary>
+		/// Calling this is much more effective than calling the two functions separately.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="prefix"></param>
+		public void SetDefaultsAndPrefix(int type, int prefix)
+		{
+			Context.RunByHookOnDoUpdate(AssemblySnippet.FromCode(
+				new AssemblyCode[] {
+					Instruction.Create("push ecx"),
+					Instruction.Create("push edx"),
+					TypedInternalObject.GetMethodCall("Terraria.Item.SetDefaults(Int32)").Call(false, null, null, new object[] { type }),
+					TypedInternalObject.GetMethodCall("Terraria.Item.Prefix(Int32)").Call(false, null, null, new object[] { prefix }),
+					Instruction.Create("pop edx"),
+					Instruction.Create("pop ecx")
+				})).Wait();
+		}
+
+
+		public static int NewItem(GameContext Context, int X, int Y, int Width, int Height, int Type, int Stack = 1,
+			bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
+		{
+			using MemoryAllocation ret = new(Context.HContext);
+
+			Context.RunByHookOnDoUpdate(
+				new HackMethod(Context.HContext,
+					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.Item", 
+					"Terraria.Item.NewItem(Int32, Int32, Int32, Int32, Int32, Int32, Boolean, Int32, Boolean, Boolean)"))
+				.Call(null)
+				.Call(true, null, ret.AllocationBase, new object[] { X, Y, Width, Height, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup }))
+				.Wait();
+
+			return Context.HContext.DataAccess.Read<int>(ret.AllocationBase);
+		}
 	}
 }

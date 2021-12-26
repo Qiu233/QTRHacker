@@ -907,11 +907,11 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 		public virtual float WingTime { get => InternalObject.wingTime; set => InternalObject.wingTime = value; }
 		public virtual GameObjectArrayV<float> ShadowRotation { get => new GameObjectArrayV<float>(Context, InternalObject.shadowRotation); set => InternalObject.shadowRotation = value.InternalObject; }
 		public virtual GameObjectArrayV<float> SpeedSlice { get => new GameObjectArrayV<float>(Context, InternalObject.speedSlice); set => InternalObject.speedSlice = value.InternalObject; }
-		public virtual GameString CursorItemIconText { get => InternalObject.cursorItemIconText; set => InternalObject.cursorItemIconText = value; }
-		public virtual GameString DisplayedFishingInfo { get => InternalObject.displayedFishingInfo; set => InternalObject.displayedFishingInfo = value; }
-		public virtual GameString LostCoinString { get => InternalObject.lostCoinString; set => InternalObject.lostCoinString = value; }
-		public virtual GameString Name { get => InternalObject.name; set => InternalObject.name = value; }
-		public virtual GameString SetBonus { get => InternalObject.setBonus; set => InternalObject.setBonus = value; }
+		public virtual GameString CursorItemIconText { get => new(Context, InternalObject.cursorItemIconText); set => InternalObject.cursorItemIconText = value.InternalObject; }
+		public virtual GameString DisplayedFishingInfo { get => new(Context, InternalObject.displayedFishingInfo); set => InternalObject.displayedFishingInfo = value.InternalObject; }
+		public virtual GameString LostCoinString { get => new(Context, InternalObject.lostCoinString); set => InternalObject.lostCoinString = value.InternalObject; }
+		public virtual GameString Name { get => new(Context, InternalObject.name); set => InternalObject.name = value.InternalObject; }
+		public virtual GameString SetBonus { get => new(Context, InternalObject.setBonus); set => InternalObject.setBonus = value.InternalObject; }
 		public virtual GameObjectArray<GameString> SpN { get => new GameObjectArray<GameString>(Context, InternalObject.spN); set => InternalObject.spN = value.InternalObject; }
 		public virtual ValueTypeRedefs.Terraria.BitsByte HideMisc { get => InternalObject.hideMisc; set => InternalObject.hideMisc = value; }
 		public virtual ValueTypeRedefs.Terraria.BitsByte OwnedLargeGems { get => InternalObject.ownedLargeGems; set => InternalObject.ownedLargeGems = value; }
@@ -920,10 +920,10 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 		public virtual ValueTypeRedefs.Terraria.BitsByte Zone2 { get => InternalObject.zone2; set => InternalObject.zone2 = value; }
 		public virtual ValueTypeRedefs.Terraria.BitsByte Zone3 { get => InternalObject.zone3; set => InternalObject.zone3 = value; }
 		public virtual ValueTypeRedefs.Terraria.BitsByte Zone4 { get => InternalObject.zone4; set => InternalObject.zone4 = value; }
-		public virtual Chest Bank { get => InternalObject.bank; set => InternalObject.bank = value; }
-		public virtual Chest Bank2 { get => InternalObject.bank2; set => InternalObject.bank2 = value; }
-		public virtual Chest Bank3 { get => InternalObject.bank3; set => InternalObject.bank3 = value; }
-		public virtual Chest Bank4 { get => InternalObject.bank4; set => InternalObject.bank4 = value; }
+		public virtual Chest Bank { get => new(Context, InternalObject.bank); set => InternalObject.bank = value.InternalObject; }
+		public virtual Chest Bank2 { get => new(Context, InternalObject.bank2); set => InternalObject.bank2 = value.InternalObject; }
+		public virtual Chest Bank3 { get => new(Context, InternalObject.bank3); set => InternalObject.bank3 = value.InternalObject; }
+		public virtual Chest Bank4 { get => new(Context, InternalObject.bank4); set => InternalObject.bank4 = value.InternalObject; }
 
 
 
