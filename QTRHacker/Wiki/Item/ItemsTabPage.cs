@@ -18,7 +18,6 @@ namespace QTRHacker.Wiki.Item
 {
 	public class ItemsTabPage : TabPage
 	{
-		private static readonly object _lock = new object();
 		private const int VALUE_P = 1000000, VALUE_G = 10000, VALUE_S = 100, VALUE_C = 1;
 		public readonly static Color ItemsColor = Color.FromArgb(160, 160, 200);
 
@@ -27,7 +26,6 @@ namespace QTRHacker.Wiki.Item
 		private readonly ItemInfoSubPage ItemInfoPage;
 		private readonly ItemDetailInfoSubPage AccInfoPage;
 		private readonly ItemSearcherSubPage SearcherPage;
-
 
 		private string KeyWord = "";
 
@@ -39,34 +37,31 @@ namespace QTRHacker.Wiki.Item
 
 		private static void Init()
 		{
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Game.WikiRes.zip"))
+			using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Game.WikiRes.zip");
+			using ZipArchive z = new(s);
+			using (var u = new StreamReader(z.GetEntry("ID/ItemID.json").Open()))
 			{
-				using ZipArchive z = new(s);
-				using (var u = new StreamReader(z.GetEntry("ID/ItemID.json").Open()))
+				ItemIDToI.Clear();
+				ItemIDToS.Clear();
+				JsonConvert.DeserializeObject<Dictionary<string, int>>(u.ReadToEnd()).ToList().ForEach(t =>
 				{
-					ItemIDToI.Clear();
-					ItemIDToS.Clear();
-					JsonConvert.DeserializeObject<Dictionary<string, int>>(u.ReadToEnd()).ToList().ForEach(t =>
-					{
-						ItemIDToI[t.Key] = t.Value;
-						ItemIDToS[t.Value] = t.Key;
-					});
-				}
-				ItemDatum.Clear();
-				RecipeDatum.Clear();
-				using (var u = new StreamReader(z.GetEntry("ItemInfo.json").Open()))
-					ItemDatum.AddRange(JsonConvert.DeserializeObject<List<ItemData>>(u.ReadToEnd()));
-				using (var u = new StreamReader(z.GetEntry("RecipeInfo.json").Open()))
-					RecipeDatum.AddRange(JsonConvert.DeserializeObject<List<RecipeData>>(u.ReadToEnd()));
-				GC.Collect();
+					ItemIDToI[t.Key] = t.Value;
+					ItemIDToS[t.Value] = t.Key;
+				});
 			}
-
+			ItemDatum.Clear();
+			RecipeDatum.Clear();
+			using (var u = new StreamReader(z.GetEntry("ItemInfo.json").Open()))
+				ItemDatum.AddRange(JsonConvert.DeserializeObject<List<ItemData>>(u.ReadToEnd()));
+			using (var u = new StreamReader(z.GetEntry("RecipeInfo.json").Open()))
+				RecipeDatum.AddRange(JsonConvert.DeserializeObject<List<RecipeData>>(u.ReadToEnd()));
 		}
 
 		public ItemsTabPage()
 		{
 			if (!ItemDatum.Any())
 				Init();
+			GC.Collect();
 			BackColor = Color.LightGray;
 			BorderStyle = BorderStyle.None;
 
@@ -320,34 +315,34 @@ namespace QTRHacker.Wiki.Item
 
 		public void RefreshItems()
 		{
-			lock (_lock)
+			ItemListView.BeginUpdate();
+			ItemListView.Items.Clear();
+			for (int i = 0; i < ItemDatum.Count; i++)
 			{
-				ItemListView.BeginUpdate();
-				ItemListView.Items.Clear();
-				for (int i = 0; i < ItemDatum.Count; i++)
+				var itm = ItemDatum[i];
+				if (itm.Type == 0 || !Filter(itm)) continue;
+				string name_en = HackContext.GameLocLoader_en.GetItemName(ItemIDToS[i]);
+				string name_cn = HackContext.GameLocLoader_cn.GetItemName(ItemIDToS[i]);
+
+				bool flag = false;
+				flag |= i.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+				flag |= name_en.Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+				flag |= name_cn.Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+				flag |= itm.Shoot.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+				flag |= itm.CreateTile.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+				flag |= itm.CreateWall.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+				if (flag)
 				{
-					var itm = ItemDatum[i];
-					if (itm.Type == 0 || !Filter(itm)) continue;
-					bool flag = false;
-					flag |= itm.Type.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
-					flag |= HackContext.GameLocLoader_en.GetItemName(ItemIDToS[i]).Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
-					flag |= HackContext.GameLocLoader_cn.GetItemName(ItemIDToS[i]).Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
-					flag |= itm.Shoot.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
-					flag |= itm.CreateTile.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
-					flag |= itm.CreateWall.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
-					if (flag)
-					{
-						ListViewItem lvi = new(itm.Type.ToString());
-						lvi.Name = itm.Type.ToString();
-						lvi.SubItems.Add(itm.Rare.ToString());
-						lvi.SubItems.Add(HackContext.GameLocLoader_en.GetItemName(ItemIDToS[i]));
-						lvi.SubItems.Add(HackContext.GameLocLoader_cn.GetItemName(ItemIDToS[i]));
-						lvi.SubItems.Add(GetItemType(itm));
-						ItemListView.Items.Add(lvi);
-					}
+					ListViewItem lvi = new(i.ToString());
+					lvi.Name = i.ToString();
+					lvi.SubItems.Add(itm.Rare.ToString());
+					lvi.SubItems.Add(name_en);
+					lvi.SubItems.Add(name_cn);
+					lvi.SubItems.Add(GetItemType(itm));
+					ItemListView.Items.Add(lvi);
 				}
-				ItemListView.EndUpdate();
 			}
+			ItemListView.EndUpdate();
 		}
 	}
 }

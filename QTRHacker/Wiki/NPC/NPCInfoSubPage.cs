@@ -122,24 +122,24 @@ namespace QTRHacker.Wiki.NPC
 			NPCCategoryInfoView.Text = HackContext.CurrentLanguage["Category"];
 			NPCCategoryInfoView.Tip.BackColor = NPCTabPage.NPCColor;
 			NPCCategoryInfoView.Bounds = new Rectangle(5, 260, 255, 80);
-			this.Controls.Add(NPCCategoryInfoView);
+			Controls.Add(NPCCategoryInfoView);
 		}
 		public void SetData(int Type)
 		{
 			NPCView.NPCType = Type;
-			(NPCNameInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Name"].ToString();
-			(NPCTypeInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Type"].ToString();
-			(NPCAIStyleInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["AiStyle"].ToString();
-			(NPCWidthInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Width"].ToString();
-			(NPCHeightInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Height"].ToString();
-			(NPCDamageInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["DefDamage"].ToString();
-			(NPCDefenseInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["DefDefense"].ToString();
-			(NPCLifeMaxInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["LifeMax"].ToString();
-			(NPCKnockbackResistInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["KnockBackResist"].ToString();
+			(NPCNameInfoView.View as TextBox).Text = HackContext.GameLocLoader_en.GetNPCName(NPCTabPage.NPCIDToS[Type]);
+			(NPCTypeInfoView.View as TextBox).Text = Type.ToString();
+			(NPCAIStyleInfoView.View as TextBox).Text = NPCTabPage.NPCDatum[Type].AiStyle.ToString();
+			(NPCWidthInfoView.View as TextBox).Text = NPCTabPage.NPCDatum[Type].Width.ToString();
+			(NPCHeightInfoView.View as TextBox).Text = NPCTabPage.NPCDatum[Type].Height.ToString();
+			(NPCDamageInfoView.View as TextBox).Text = NPCTabPage.NPCDatum[Type].DefDamage.ToString();
+			(NPCDefenseInfoView.View as TextBox).Text = NPCTabPage.NPCDatum[Type].DefDefense.ToString();
+			(NPCLifeMaxInfoView.View as TextBox).Text = NPCTabPage.NPCDatum[Type].LifeMax.ToString();
+			(NPCKnockbackResistInfoView.View as TextBox).Text = NPCTabPage.NPCDatum[Type].KnockBackResist.ToString();
 
-			(NPCTownNPCInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["TownNPC"].ToObject<bool>() ? HackContext.CurrentLanguage["Yes"] : HackContext.CurrentLanguage["No"];
-			(NPCBossInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Boss"].ToObject<bool>() ? HackContext.CurrentLanguage["Yes"] : HackContext.CurrentLanguage["No"];
-			(NPCFriendlyInfoView.View as TextBox).Text = NPCTabPage.NPCInfo[Type]["Friendly"].ToObject<bool>() ? HackContext.CurrentLanguage["Yes"] : HackContext.CurrentLanguage["No"];
+			(NPCTownNPCInfoView.View as TextBox).Text = NPCTabPage.NPCDatum[Type].TownNPC ? HackContext.CurrentLanguage["Yes"] : HackContext.CurrentLanguage["No"];
+			(NPCBossInfoView.View as TextBox).Text = NPCTabPage.NPCDatum[Type].Boss ? HackContext.CurrentLanguage["Yes"] : HackContext.CurrentLanguage["No"];
+			(NPCFriendlyInfoView.View as TextBox).Text = NPCTabPage.NPCDatum[Type].Friendly ? HackContext.CurrentLanguage["Yes"] : HackContext.CurrentLanguage["No"];
 
 		}
 	}

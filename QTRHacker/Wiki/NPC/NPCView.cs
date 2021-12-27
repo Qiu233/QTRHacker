@@ -89,7 +89,7 @@ namespace QTRHacker.Wiki.NPC
 		{
 			Batch = new SpriteBatch(GraphicsDevice);
 
-			/*for (int i = 0; i < NPC.NPCTabPage.NPCName_en.Count; i++)
+			for (int i = 0; i < NPCTabPage.NPCDatum.Count; i++)
 			{
 				using (var s = new MemoryStream(GameResLoader.NPCImageData[$"NPC_{i}"]))
 				{
@@ -104,7 +104,7 @@ namespace QTRHacker.Wiki.NPC
 				}
 			}
 
-			Application.Idle += OnIdle;*/
+			Application.Idle += OnIdle;
 			State = 0;
 			StateTimer.Start();
 		}
@@ -131,8 +131,8 @@ namespace QTRHacker.Wiki.NPC
 				dest.Width = (int)(src.Width * scale);
 				dest.X = Width / 2 - dest.Width / 2;
 			}
-			var color = NPCTabPage.NPCInfo[NPCType]["Color"];
-			var rcolor = new Microsoft.Xna.Framework.Color(color["R"].ToObject<int>(), color["G"].ToObject<int>(), color["B"].ToObject<int>(), color["A"].ToObject<int>());
+			var color = NPCTabPage.NPCDatum[NPCType].Color;
+			var rcolor = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
 			if (rcolor.A == 0)
 				Batch.Draw(Frames[NPCType], dest, FramesPlayList[NPCType][State], Microsoft.Xna.Framework.Color.White);
 			else

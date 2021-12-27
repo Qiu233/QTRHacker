@@ -12,38 +12,52 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using QTRHacker.Wiki.Data;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace QTRHacker.Wiki.NPC
 {
 	public class NPCTabPage : TabPage
 	{
-		private static readonly object _lock = new();
 		public readonly static Color NPCColor = Color.FromArgb(240, 120, 120);
-		public ListView NPCListView;
+		public readonly ListView NPCListView;
 		private readonly MTabControl InfoTabs;
 		private readonly NPCInfoSubPage NPCInfoPage;
 		private readonly NPCSearcherSubPage SearcherPage;
-		public static JArray /*NPCName_en, NPCName_cn, */NPCInfo;
+
 		private string KeyWord = "";
-		public bool Updating
+
+		public readonly static Dictionary<string, int> NPCIDToI = new();
+		public readonly static Dictionary<int, string> NPCIDToS = new();
+
+		public readonly static List<NPCData> NPCDatum = new();
+
+		private static void Init()
 		{
-			get;
-			private set;
+			using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Game.WikiRes.zip");
+			using ZipArchive z = new(s);
+			using (var u = new StreamReader(z.GetEntry("ID/NPCID.json").Open()))
+			{
+				NPCIDToI.Clear();
+				NPCIDToS.Clear();
+				JsonConvert.DeserializeObject<Dictionary<string, int>>(u.ReadToEnd()).ToList().ForEach(t =>
+				{
+					NPCIDToI[t.Key] = t.Value;
+					NPCIDToS[t.Value] = t.Key;
+				});
+			}
+			NPCDatum.Clear();
+			using (var u = new StreamReader(z.GetEntry("NPCInfo.json").Open()))
+				NPCDatum.AddRange(JsonConvert.DeserializeObject<List<NPCData>>(u.ReadToEnd()));
 		}
+
 		public NPCTabPage()
 		{
-			if (NPCInfo == null)
-			{
-				using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Game.WikiRes.zip");
-				using ZipArchive z = new(s);
-				/*using (var u = new StreamReader(z.GetEntry("NPCName_en.json").Open()))
-					NPCName_en = JArray.Parse(u.ReadToEnd());
-				using (var u = new StreamReader(z.GetEntry("NPCName_cn.json").Open()))
-					NPCName_cn = JArray.Parse(u.ReadToEnd());*/
-				using (var u = new StreamReader(z.GetEntry("NPCInfo.json").Open()))
-					NPCInfo = JArray.Parse(u.ReadToEnd());
-				GC.Collect();
-			}
+			if (!NPCDatum.Any())
+				Init();
+			GC.Collect();
+
 			BackColor = Color.LightGray;
 			BorderStyle = BorderStyle.None;
 
@@ -208,12 +222,14 @@ namespace QTRHacker.Wiki.NPC
 			RefreshNPCs();
 		}
 
-		private bool Filter(JToken j)
+		private bool Filter(NPCData npc)
 		{
-			List<bool> b = new List<bool>();
-			b.Add(j["TownNPC"].ToObject<bool>());
-			b.Add(j["Boss"].ToObject<bool>());
-			b.Add(j["Friendly"].ToObject<bool>());
+			List<bool> b = new()
+			{
+				npc.TownNPC,
+				npc.Boss,
+				npc.Friendly
+			};
 			bool r = false;
 			r |= (SearcherPage.TownNPCCheckBox.Checked && b[0]);
 			r |= (SearcherPage.BossCheckBox.Checked && b[1]);
@@ -240,31 +256,29 @@ namespace QTRHacker.Wiki.NPC
 
 		public void RefreshNPCs()
 		{
-			lock (_lock)
+			NPCListView.BeginUpdate();
+			NPCListView.Items.Clear();
+			for (int i = 0; i < NPCDatum.Count; i++)
 			{
-				Updating = true;
-				NPCListView.BeginUpdate();
-				NPCListView.Items.Clear();
-				/*for (int i = 0; i < NPCInfo.Count; i++)
+				var npc = NPCDatum[i];
+				if (npc.Type == 0 || !Filter(npc)) continue;
+				string name_en = HackContext.GameLocLoader_en.GetNPCName(NPCIDToS[i]);
+				string name_cn = HackContext.GameLocLoader_cn.GetNPCName(NPCIDToS[i]);
+
+				bool flag = false;
+				flag |= npc.Type.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+				flag |= name_en.Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+				flag |= name_cn.Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+				if (flag)
 				{
-					var npc = NPCName_en[i];
-					if (npc["Type"].ToString() == "0" || !Filter(NPCInfo[i])) continue;
-					bool flag = false;
-					flag |= npc["Type"].ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= NPCName_cn[i]["Name"].ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= npc["Name"].ToString().ToLower().Contains(KeyWord.ToLower());
-					if (flag)
-					{
-						ListViewItem lvi = new ListViewItem(npc["Type"].ToString());
-						lvi.Name = npc["Type"].ToString();
-						lvi.SubItems.Add(npc["Name"].ToString());
-						lvi.SubItems.Add(NPCName_cn[i]["Name"].ToString());
-						NPCListView.Items.Add(lvi);
-					}
-				}*/
-				NPCListView.EndUpdate();
-				Updating = false;
+					ListViewItem lvi = new(i.ToString());
+					lvi.Name = i.ToString();
+					lvi.SubItems.Add(name_en);
+					lvi.SubItems.Add(name_cn);
+					NPCListView.Items.Add(lvi);
+				}
 			}
+			NPCListView.EndUpdate();
 		}
 	}
 }

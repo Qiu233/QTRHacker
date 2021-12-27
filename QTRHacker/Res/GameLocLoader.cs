@@ -67,6 +67,7 @@ namespace QTRHacker.Res
 		}
 
 		public string GetItemName(string name) => GetValue($"ItemName.{name}");
+		public string GetNPCName(string name) => GetValue($"NPCName.{name}");
 		public string GetItemTooltip(string name)
 		{
 			string key = $"ItemTooltip.{name}";
