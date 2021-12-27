@@ -15,10 +15,11 @@ using System.Reflection;
 using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
+using QTRHacker.Res;
 
 namespace QTRHacker
 {
-	public class HackContext
+	public static class HackContext
 	{
 		public const string PATH_CONTENT = ".\\Content";
 		public const string PATH_CONFIGS = ".\\Content\\Configs";
@@ -36,6 +37,21 @@ namespace QTRHacker
 			get;
 			private set;
 		}
+		public static GameASMResLoader GameASMResLoader
+		{
+			get;
+			private set;
+		}
+		public static GameLocLoader GameLocLoader_en
+		{
+			get;
+			private set;
+		}
+		public static GameLocLoader GameLocLoader_cn
+		{
+			get;
+			private set;
+		}
 		public static Dictionary<char, ProjImage> Characters
 		{
 			get;
@@ -49,7 +65,7 @@ namespace QTRHacker
 		public static GameContext GameContext
 		{
 			get;
-			set;
+			private set;
 		}
 		public static ScriptRuntime QHScriptRuntime
 		{
@@ -61,6 +77,15 @@ namespace QTRHacker
 			get;
 			private set;
 		}
+
+		public static void SetContext(GameContext ctx)
+		{
+			GameContext = ctx;
+			GameASMResLoader = new GameASMResLoader(ctx.GameModuleHelper.Module.GetFileName());
+			GameLocLoader_en = new GameLocLoader(GameASMResLoader, "en-US");
+			GameLocLoader_cn = new GameLocLoader(GameASMResLoader, "zh-Hans");
+		}
+
 		public static void LoadConfigs()
 		{
 			if (Configs == null)

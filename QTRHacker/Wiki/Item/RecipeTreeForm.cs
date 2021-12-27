@@ -14,8 +14,8 @@ namespace QTRHacker.Wiki.Item
 {
 	public class RecipeTreeForm : Form
 	{
-		public static Dictionary<int, List<RecipeData>> RecipeTos = new Dictionary<int, List<RecipeData>>();
-		public static Dictionary<int, List<RecipeData>> RecipeFroms = new Dictionary<int, List<RecipeData>>();
+		public readonly static Dictionary<int, List<RecipeData>> RecipeTos = new Dictionary<int, List<RecipeData>>();
+		public readonly static Dictionary<int, List<RecipeData>> RecipeFroms = new Dictionary<int, List<RecipeData>>();
 
 		public TreeView RecipeTreeView;
 
@@ -42,21 +42,17 @@ namespace QTRHacker.Wiki.Item
 
 		private static List<RecipeData> GetRecipeTo(int index)
 		{
-			if (RecipeTos.ContainsKey(index))
-				return RecipeTos[index];
-			var result = RecipeData.Data.Where(t => t.TargetItem.Type == index).ToList();
-			RecipeTos[index] = result;
-			return result;
+			if (RecipeTos.TryGetValue(index, out var value))
+				return value;
+			return RecipeTos[index] = ItemsTabPage.RecipeDatum.Where(t => t.TargetItem.Type == index).ToList();
 		}
 		private static List<RecipeData> GetRecipeFrom(int index)
 		{
-			if (RecipeFroms.ContainsKey(index))
-				return RecipeFroms[index];
-			var result = RecipeData.Data.Where(
+			if (RecipeFroms.TryGetValue(index, out var value))
+				return value;
+			return RecipeFroms[index] = ItemsTabPage.RecipeDatum.Where(
 				t => t.RequiredItems.Where(
-					y => index != 0 && y.Type == index).Count() > 0).ToList();
-			RecipeFroms[index] = result;
-			return result;
+					y => index != 0 && y.Type == index).Any()).ToList();
 		}
 
 

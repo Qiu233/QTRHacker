@@ -108,57 +108,56 @@ namespace QTRHacker.Wiki.Item
 
 		}
 
-		public void SetData(int index)
+		public void SetData(int id)
 		{
-			Image img = GameResLoader.ItemImages.Images[index.ToString()];
+			Image img = GameResLoader.ItemImages.Images[id.ToString()];
 			(ItemIconInfoView.View as PictureBox).Image = img;
-			(ItemNameInfoView.View as TextBox).Text = ItemData.Data[index].Name.ToString();
-			(ItemTypeInfoView.View as TextBox).Text = ItemData.Data[index].Type.ToString();
-			(ItemRareInfoView.View as TextBox).Text = ItemData.Data[index].Rare.ToString();
-			//string desc = string.Concat(ItemsTabPage.Items[index]["ToolTip"]["_tooltipLines"].ToList().Select(t => t.ToString() + "\n"));
-			//(ItemDescriptionInfoView.View as TextBox).Text = desc;
-			string desc = ItemsTabPage.ItemDescriptions[index].ToString();
+			(ItemNameInfoView.View as TextBox).Text = HackContext.GameLocLoader_en.GetItemName(ItemsTabPage.ItemIDToS[id]);
+			(ItemTypeInfoView.View as TextBox).Text = id.ToString();
+			(ItemRareInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].Rare.ToString();
+			string desc = HackContext.GameLocLoader_en.GetItemTooltip(ItemsTabPage.ItemIDToS[id]).ToString();
 			(ItemDescriptionInfoView.View as TextBox).Text = desc;
 			(ItemRecipeFromInfoView.View as TabControl).TabPages.Clear();
-			var pRe = RecipeData.Data.Where(t => t.TargetItem.Type == ItemData.Data[index].Type);
-			if (pRe.Count() > 0)
+			var pRe = ItemsTabPage.RecipeDatum.Where(t => t.TargetItem.Type == id);
+			if (pRe.Any())
 			{
 				int t = 0;
 				foreach (var recipe in pRe)
 				{
 					t++;
 					var ritems = recipe.RequiredItems;
-					TabPage page = new TabPage(t.ToString());
+					TabPage page = new(t.ToString());
 					RequireItems.TabPages.Add(page);
-					ListBox box = new ListBox()
+					ListBox box = new()
 					{
 						BorderStyle = BorderStyle.None
 					};
+					box.Dock = DockStyle.Fill;
+					box.Height = 60;
 					box.MouseDoubleClick += (s, e) =>
 					{
 						OnRequireItemDoubleClick(s, e);
 					};
-					box.Dock = DockStyle.Fill;
 					page.Controls.Add(box);
 					foreach (var itm in ritems)
 					{
 						var itemType = itm.Type;
 						if (itemType != 0)
-							box.Items.Add("[" + itemType + "] " + ItemData.Data[itemType].Name + " [" + itm.Stack + "]");
+							box.Items.Add($"[{itemType}] {HackContext.GameLocLoader_en.GetItemName(ItemsTabPage.ItemIDToS[itemType])} * {itm.Stack}");
 					}
 				}
 			}
 			(ItemRecipeToInfoView.View as ListBox).Items.Clear();
-			pRe = RecipeData.Data.Where(
+			pRe = ItemsTabPage.RecipeDatum.Where(
 				t => t.RequiredItems.Where(
-					y => index != 0 && y.Type == index).Count() > 0);
+					y => id != 0 && y.Type == id).Any());
 			foreach (var p in pRe)
 			{
 				var itm = p.TargetItem;
-				(ItemRecipeToInfoView.View as ListBox).Items.Add("[" + itm.Type + "] " + ItemData.Data[Convert.ToInt32(itm.Type)].Name.ToString() + " [" + itm.Stack + "]");
+				(ItemRecipeToInfoView.View as ListBox).Items.Add($"[{itm.Type}] {HackContext.GameLocLoader_en.GetItemName(ItemsTabPage.ItemIDToS[itm.Type])} * {itm.Stack}");
 			}
 
-			(ItemValueInfoView.View as TextBox).Text = ItemsTabPage.GetValueString(Convert.ToInt32(ItemData.Data[index].Value.ToString()));
+			(ItemValueInfoView.View as TextBox).Text = ItemsTabPage.GetValueString(Convert.ToInt32(ItemsTabPage.ItemDatum[id].Value.ToString()));
 
 		}
 	}

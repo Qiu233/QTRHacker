@@ -219,38 +219,35 @@ namespace QTRHacker.Wiki.Item
 			(ItemBaitInfoView.View as TextBox).Text = "";
 		}
 
-		public void SetData(int index)
+		public void SetData(int id)
 		{
-			Image img = GameResLoader.ItemImages.Images[index.ToString()];
+			Image img = GameResLoader.ItemImages.Images[id.ToString()];
 			(ItemIcon2InfoView.View as PictureBox).Image = img;
-			//string desc = string.Concat(ItemsTabPage.Items[index]["ToolTip"]["_tooltipLines"].ToList().Select(t => t.ToString() + "\n"));
-			//(ItemDescription2InfoView.View as TextBox).Text = desc;
 
-			string desc = ItemsTabPage.ItemDescriptions[index].ToString();
+			string desc = HackContext.GameLocLoader_en.GetItemTooltip(ItemsTabPage.ItemIDToS[id]).ToString();
 			(ItemDescription2InfoView.View as TextBox).Text = desc;
 
-
-			(ItemPickaxeInfoView.View as TextBox).Text = ItemData.Data[index].Pick.ToString();
-			(ItemAxeInfoView.View as TextBox).Text = ItemData.Data[index].Axe.ToString();
-			(ItemHammerInfoView.View as TextBox).Text = ItemData.Data[index].Hammer.ToString();
-			(ItemDamageInfoView.View as TextBox).Text = ItemData.Data[index].Damage.ToString();
-			(ItemDefenseInfoView.View as TextBox).Text = ItemData.Data[index].Defense.ToString();
-			(ItemCritInfoView.View as TextBox).Text = ItemData.Data[index].Crit.ToString();
-			(ItemKnockbackInfoView.View as TextBox).Text = ItemData.Data[index].KnockBack.ToString();
-			(ItemShootInfoView.View as TextBox).Text = ItemData.Data[index].Shoot.ToString();
-			(ItemShootSpeedInfoView.View as TextBox).Text = ItemData.Data[index].ShootSpeed.ToString();
-			(ItemUseTimeInfoView.View as TextBox).Text = ItemData.Data[index].UseTime.ToString();
-			(ItemUseAnimationInfoView.View as TextBox).Text = ItemData.Data[index].UseAnimation.ToString();
-			(ItemHealLifeInfoView.View as TextBox).Text = ItemData.Data[index].HealLife.ToString();
-			(ItemHealManaInfoView.View as TextBox).Text = ItemData.Data[index].HealMana.ToString();
-			(ItemCreateTileInfoView.View as TextBox).Text = ItemData.Data[index].CreateTile.ToString();
-			(ItemPlaceStyleInfoView.View as TextBox).Text = ItemData.Data[index].PlaceStyle.ToString();
-			(ItemCreateWallInfoView.View as TextBox).Text = ItemData.Data[index].CreateWall.ToString();
-			(ItemTileBoostInfoView.View as TextBox).Text = ItemData.Data[index].TileBoost.ToString();
-			(ItemBuffTypeInfoView.View as TextBox).Text = ItemData.Data[index].BuffType.ToString();
-			(ItemBuffTimeInfoView.View as TextBox).Text = ItemData.Data[index].BuffTime.ToString();
-			(ItemManaConsumeInfoView.View as TextBox).Text = ItemData.Data[index].Mana.ToString();
-			(ItemBaitInfoView.View as TextBox).Text = ItemData.Data[index].Bait.ToString();
+			(ItemPickaxeInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].Pick.ToString();
+			(ItemAxeInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].Axe.ToString();
+			(ItemHammerInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].Hammer.ToString();
+			(ItemDamageInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].Damage.ToString();
+			(ItemDefenseInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].Defense.ToString();
+			(ItemCritInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].Crit.ToString();
+			(ItemKnockbackInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].KnockBack.ToString();
+			(ItemShootInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].Shoot.ToString();
+			(ItemShootSpeedInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].ShootSpeed.ToString();
+			(ItemUseTimeInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].UseTime.ToString();
+			(ItemUseAnimationInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].UseAnimation.ToString();
+			(ItemHealLifeInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].HealLife.ToString();
+			(ItemHealManaInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].HealMana.ToString();
+			(ItemCreateTileInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].CreateTile.ToString();
+			(ItemPlaceStyleInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].PlaceStyle.ToString();
+			(ItemCreateWallInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].CreateWall.ToString();
+			(ItemTileBoostInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].TileBoost.ToString();
+			(ItemBuffTypeInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].BuffType.ToString();
+			(ItemBuffTimeInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].BuffTime.ToString();
+			(ItemManaConsumeInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].Mana.ToString();
+			(ItemBaitInfoView.View as TextBox).Text = ItemsTabPage.ItemDatum[id].Bait.ToString();
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace QTRHacker.Wiki.NPC
 		private readonly MTabControl InfoTabs;
 		private readonly NPCInfoSubPage NPCInfoPage;
 		private readonly NPCSearcherSubPage SearcherPage;
-		public static JArray NPCName_en, NPCName_cn, NPCInfo;
+		public static JArray /*NPCName_en, NPCName_cn, */NPCInfo;
 		private string KeyWord = "";
 		public bool Updating
 		{
@@ -32,14 +32,14 @@ namespace QTRHacker.Wiki.NPC
 		}
 		public NPCTabPage()
 		{
-			if (NPCName_en == null)
+			if (NPCInfo == null)
 			{
 				using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Game.WikiRes.zip");
 				using ZipArchive z = new(s);
-				using (var u = new StreamReader(z.GetEntry("NPCName_en.json").Open()))
+				/*using (var u = new StreamReader(z.GetEntry("NPCName_en.json").Open()))
 					NPCName_en = JArray.Parse(u.ReadToEnd());
 				using (var u = new StreamReader(z.GetEntry("NPCName_cn.json").Open()))
-					NPCName_cn = JArray.Parse(u.ReadToEnd());
+					NPCName_cn = JArray.Parse(u.ReadToEnd());*/
 				using (var u = new StreamReader(z.GetEntry("NPCInfo.json").Open()))
 					NPCInfo = JArray.Parse(u.ReadToEnd());
 				GC.Collect();
@@ -245,7 +245,7 @@ namespace QTRHacker.Wiki.NPC
 				Updating = true;
 				NPCListView.BeginUpdate();
 				NPCListView.Items.Clear();
-				for (int i = 0; i < NPCName_en.Count; i++)
+				/*for (int i = 0; i < NPCInfo.Count; i++)
 				{
 					var npc = NPCName_en[i];
 					if (npc["Type"].ToString() == "0" || !Filter(NPCInfo[i])) continue;
@@ -261,7 +261,7 @@ namespace QTRHacker.Wiki.NPC
 						lvi.SubItems.Add(NPCName_cn[i]["Name"].ToString());
 						NPCListView.Items.Add(lvi);
 					}
-				}
+				}*/
 				NPCListView.EndUpdate();
 				Updating = false;
 			}

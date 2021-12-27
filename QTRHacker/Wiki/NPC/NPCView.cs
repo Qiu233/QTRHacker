@@ -89,13 +89,12 @@ namespace QTRHacker.Wiki.NPC
 		{
 			Batch = new SpriteBatch(GraphicsDevice);
 
-			for (int i = 0; i < NPC.NPCTabPage.NPCName_en.Count; i++)
+			/*for (int i = 0; i < NPC.NPCTabPage.NPCName_en.Count; i++)
 			{
 				using (var s = new MemoryStream(GameResLoader.NPCImageData[$"NPC_{i}"]))
 				{
 					Frames[i] = Texture2D.FromStream(GraphicsDevice, s);
 				}
-
 				FramesPlayList[i] = new List<Microsoft.Xna.Framework.Rectangle>();
 				int fs = GameConstants.NPCFrameCount[i];
 				int height = (Frames[i].Height) / fs;
@@ -105,7 +104,7 @@ namespace QTRHacker.Wiki.NPC
 				}
 			}
 
-			Application.Idle += OnIdle;
+			Application.Idle += OnIdle;*/
 			State = 0;
 			StateTimer.Start();
 		}

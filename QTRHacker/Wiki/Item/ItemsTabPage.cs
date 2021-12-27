@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using QTRHacker.Controls;
 using QTRHacker.Res;
 using QTRHacker.Wiki.Data;
@@ -20,47 +21,54 @@ namespace QTRHacker.Wiki.Item
 		private static readonly object _lock = new object();
 		private const int VALUE_P = 1000000, VALUE_G = 10000, VALUE_S = 100, VALUE_C = 1;
 		public readonly static Color ItemsColor = Color.FromArgb(160, 160, 200);
-		public ListView ItemListView;
-		private MTabControl InfoTabs;
-		private ItemInfoSubPage ItemInfoPage;
-		private ItemDetailInfoSubPage AccInfoPage;
-		private ItemSearcherSubPage SearcherPage;
-		public static JArray Items_cn;
-		public static JArray ItemDescriptions;
+
+		public readonly ListView ItemListView;
+		private readonly MTabControl InfoTabs;
+		private readonly ItemInfoSubPage ItemInfoPage;
+		private readonly ItemDetailInfoSubPage AccInfoPage;
+		private readonly ItemSearcherSubPage SearcherPage;
+
+
 		private string KeyWord = "";
-		public bool Updating
+
+		public readonly static Dictionary<string, int> ItemIDToI = new();
+		public readonly static Dictionary<int, string> ItemIDToS = new();
+
+		public readonly static List<ItemData> ItemDatum = new();
+		public readonly static List<RecipeData> RecipeDatum = new();
+
+		private static void Init()
 		{
-			get;
-			private set;
+			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Game.WikiRes.zip"))
+			{
+				using ZipArchive z = new(s);
+				using (var u = new StreamReader(z.GetEntry("ID/ItemID.json").Open()))
+				{
+					ItemIDToI.Clear();
+					ItemIDToS.Clear();
+					JsonConvert.DeserializeObject<Dictionary<string, int>>(u.ReadToEnd()).ToList().ForEach(t =>
+					{
+						ItemIDToI[t.Key] = t.Value;
+						ItemIDToS[t.Value] = t.Key;
+					});
+				}
+				ItemDatum.Clear();
+				RecipeDatum.Clear();
+				using (var u = new StreamReader(z.GetEntry("ItemInfo.json").Open()))
+					ItemDatum.AddRange(JsonConvert.DeserializeObject<List<ItemData>>(u.ReadToEnd()));
+				using (var u = new StreamReader(z.GetEntry("RecipeInfo.json").Open()))
+					RecipeDatum.AddRange(JsonConvert.DeserializeObject<List<RecipeData>>(u.ReadToEnd()));
+				GC.Collect();
+			}
+
 		}
+
 		public ItemsTabPage()
 		{
-			if (!ItemData.Initialized)
-			{
-				using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Game.WikiRes.zip"))
-				{
-					using (ZipArchive z = new ZipArchive(s))
-					{
-						using (var u = new StreamReader(z.GetEntry("ItemInfo.json").Open()))
-						{
-							var Items = JArray.Parse(u.ReadToEnd());
-							ItemData.InitializeFromJson(Items);
-						}
-						using (var u = new StreamReader(z.GetEntry("ItemName_cn.json").Open()))
-							Items_cn = JArray.Parse(u.ReadToEnd());
-						using (var u = new StreamReader(z.GetEntry("RecipeInfo.json").Open()))
-						{
-							var Recipes = JArray.Parse(u.ReadToEnd());
-							RecipeData.InitializeFromJson(Recipes);
-						}
-						using (var u = new StreamReader(z.GetEntry("ItemDescriptions.json").Open()))
-							ItemDescriptions = JArray.Parse(u.ReadToEnd());
-					}
-					GC.Collect();
-				}
-			}
-			this.BackColor = Color.LightGray;
-			this.BorderStyle = BorderStyle.None;
+			if (!ItemDatum.Any())
+				Init();
+			BackColor = Color.LightGray;
+			BorderStyle = BorderStyle.None;
 
 			ItemListView = new ListView();
 			ItemListView.Bounds = new Rectangle(5, 5, 450, 440);
@@ -78,7 +86,7 @@ namespace QTRHacker.Wiki.Item
 			{
 				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
 				var pos = HackContext.GameContext.MyPlayer.Position;
-				int num = Functions.GameObjects.Terraria.Item.NewItem(HackContext.GameContext, (int)pos.X, (int)pos.Y, 0, 0, id, ItemData.Data[id].MaxStack, false, 0, true);
+				int num = Functions.GameObjects.Terraria.Item.NewItem(HackContext.GameContext, (int)pos.X, (int)pos.Y, 0, 0, id, ItemDatum[id].MaxStack, false, 0, true);
 				Functions.GameObjects.Terraria.NetMessage.SendData(HackContext.GameContext, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
 
 			};
@@ -87,7 +95,7 @@ namespace QTRHacker.Wiki.Item
 			{
 				int id = Convert.ToInt32(ItemListView.SelectedItems[0].Text.ToString());
 				var pos = HackContext.GameContext.MyPlayer.Position;
-				int num = Functions.GameObjects.Terraria.Item.NewItem(HackContext.GameContext, (int)pos.X, (int)pos.Y, 0, 0, id, ItemData.Data[id].MaxStack, false, 0, true);
+				int num = Functions.GameObjects.Terraria.Item.NewItem(HackContext.GameContext, (int)pos.X, (int)pos.Y, 0, 0, id, ItemDatum[id].MaxStack, false, 0, true);
 				Functions.GameObjects.Terraria.NetMessage.SendData(HackContext.GameContext, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
 			};
 			strip.Items.Add(HackContext.CurrentLanguage["AddToInvOne"]).Click += (s, e) =>
@@ -274,9 +282,8 @@ namespace QTRHacker.Wiki.Item
 			return r;
 		}
 
-		private string GetItemType(ItemData j)
+		private static string GetItemType(ItemData j)
 		{
-			List<bool> b = new List<bool>();
 			if (j.CreateTile != -1) return HackContext.CurrentLanguage["Blocks"];
 			if (j.CreateWall != -1) return HackContext.CurrentLanguage["Walls"];
 			if (j.QuestItem) return HackContext.CurrentLanguage["Quest"];
@@ -315,33 +322,31 @@ namespace QTRHacker.Wiki.Item
 		{
 			lock (_lock)
 			{
-				Updating = true;
 				ItemListView.BeginUpdate();
 				ItemListView.Items.Clear();
-				for (int i = 0; i < ItemData.Data.Count; i++)
+				for (int i = 0; i < ItemDatum.Count; i++)
 				{
-					var itm = ItemData.Data[i];
-					if (itm.Type.ToString() == "0" || !Filter(itm)) continue;
+					var itm = ItemDatum[i];
+					if (itm.Type == 0 || !Filter(itm)) continue;
 					bool flag = false;
-					flag |= itm.Type.ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= Items_cn[i].ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= itm.Name.ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= itm.Shoot.ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= itm.CreateTile.ToString().ToLower().Contains(KeyWord.ToLower());
-					flag |= itm.CreateWall.ToString().ToLower().Contains(KeyWord.ToLower());
+					flag |= itm.Type.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+					flag |= HackContext.GameLocLoader_en.GetItemName(ItemIDToS[i]).Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+					flag |= HackContext.GameLocLoader_cn.GetItemName(ItemIDToS[i]).Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+					flag |= itm.Shoot.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+					flag |= itm.CreateTile.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
+					flag |= itm.CreateWall.ToString().Contains(KeyWord, StringComparison.OrdinalIgnoreCase);
 					if (flag)
 					{
-						ListViewItem lvi = new ListViewItem(itm.Type.ToString());
+						ListViewItem lvi = new(itm.Type.ToString());
 						lvi.Name = itm.Type.ToString();
 						lvi.SubItems.Add(itm.Rare.ToString());
-						lvi.SubItems.Add(itm.Name.ToString());
-						lvi.SubItems.Add(Items_cn[i].ToString());
+						lvi.SubItems.Add(HackContext.GameLocLoader_en.GetItemName(ItemIDToS[i]));
+						lvi.SubItems.Add(HackContext.GameLocLoader_cn.GetItemName(ItemIDToS[i]));
 						lvi.SubItems.Add(GetItemType(itm));
 						ItemListView.Items.Add(lvi);
 					}
 				}
 				ItemListView.EndUpdate();
-				Updating = false;
 			}
 		}
 	}

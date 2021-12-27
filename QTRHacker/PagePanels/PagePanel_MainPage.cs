@@ -184,9 +184,8 @@ namespace QTRHacker.PagePanels
 		*/
 		private void InitGame(Process process)
 		{
-			HackContext.GameContext = GameContext.OpenGame(process);
+			HackContext.SetContext(GameContext.OpenGame(process));
 
-			//这个是获得最终信息的，必须最后执行
 			InitializeAddresses();
 		}
 

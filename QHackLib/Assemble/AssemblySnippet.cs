@@ -56,7 +56,7 @@ namespace QHackLib.Assemble
 
 		private static AssemblyCode GetArugumentsPassing(nuint? thisPtr, nuint? retBuf, object[] userArgs)
 		{
-			static string SetReg(string reg, nuint val)
+			static string SetReg(string reg, nint val)
 			{
 				if (val == 0)
 					return $"xor {reg},{reg}";
@@ -68,9 +68,9 @@ namespace QHackLib.Assemble
 			int stack = 0;
 			object[] args = ProcessUserArgs(userArgs);
 			if (thisPtr != null)
-				snippet.Content.Add((Instruction)SetReg((reg++ == 0 ? "ecx" : "edx"), thisPtr.Value));
+				snippet.Content.Add((Instruction)SetReg((reg++ == 0 ? "ecx" : "edx"), (nint)thisPtr.Value));
 			if (retBuf != null)
-				snippet.Content.Add((Instruction)SetReg((reg++ == 0 ? "ecx" : "edx"), retBuf.Value));
+				snippet.Content.Add((Instruction)SetReg((reg++ == 0 ? "ecx" : "edx"), (nint)retBuf.Value));
 			foreach (var arg in args)
 			{
 				Type type = arg.GetType();
@@ -117,7 +117,7 @@ namespace QHackLib.Assemble
 					}
 					else
 					{
-						uint value = Convert.ToUInt32(arg);
+						int value = Convert.ToInt32(arg);
 						if (reg < 2)
 						{
 							snippet.Content.Add((Instruction)SetReg(reg++ == 0 ? "ecx" : "edx", value));
