@@ -6,7 +6,7 @@ All releases: https://github.com/ZQiu233/QTRHackerUpdatesHistory/tree/master/Upd
 
 ## Requirements
 * Windows 10 x64
-* .NET 5
+* .NET 5 x86
 * VC Runtime(VC Redist).
 
 ## How to compile
