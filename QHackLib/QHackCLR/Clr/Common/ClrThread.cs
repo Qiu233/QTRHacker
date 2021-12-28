@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace QHackCLR.Clr
 {
-	public abstract class ClrThread : ClrEntity
+	public class ClrThread : ClrEntity
 	{
-		protected ClrThread(ClrRuntime runtime, nuint handle) : base(handle)
+		public ClrThread(nuint handle) : base(handle)
 		{
 		}
 	}

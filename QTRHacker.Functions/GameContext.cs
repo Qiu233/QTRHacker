@@ -322,7 +322,7 @@ namespace QTRHacker.Functions
 
 
 		public CLRHelper GameModuleHelper => HContext.CLRHelpers.First(t
-			=> string.Equals(Path.GetFullPath(t.Key.GetFileName()),
+			=> string.Equals(Path.GetFullPath(t.Key.FileName),
 				Path.GetFullPath(GameProcess.MainModule.FileName),
 				StringComparison.OrdinalIgnoreCase))
 				.Value;

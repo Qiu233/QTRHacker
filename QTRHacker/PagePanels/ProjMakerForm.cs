@@ -144,8 +144,8 @@ namespace QTRHacker.PagePanels
 				OutputLog($"Compilation completed，{img.Projs.Count} projectiles generated");
 				if (ctx != null)
 				{
-					img.Emit(ctx, new MPointF(ctx.MyPlayer.X, ctx.MyPlayer.Y));
-					OutputLog($"Projectiles has been emited");
+					img.Emit(ctx, (MPointF)ctx.MyPlayer.Position);
+					OutputLog($"Projectiles have been emited");
 				}
 				else
 				{

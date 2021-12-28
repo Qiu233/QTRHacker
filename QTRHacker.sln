@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker.Functions.Test", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keystone.Net", "Keystone.Net\Keystone.Net.csproj", "{5E05A43D-2D9A-4F80-B594-D39BDCD20B9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainbowFontsMaker", "RainbowFontsMaker\RainbowFontsMaker.csproj", "{921274EE-8BCF-403E-9062-8E117980A7D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainbowFontsMaker", "RainbowFontsMaker\RainbowFontsMaker.csproj", "{921274EE-8BCF-403E-9062-8E117980A7D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguagesManager", "LanguagesManager\LanguagesManager.csproj", "{2FD391BA-DDDA-49FD-99B8-68CC8D9F0FEB}"
 EndProject

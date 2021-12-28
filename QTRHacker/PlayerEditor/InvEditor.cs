@@ -29,6 +29,7 @@ namespace QTRHacker.PlayerEditor
 				SaveFileDialog sfd = new SaveFileDialog()
 				{
 					Filter = "inv files (*.inv)|*.inv",
+					ShowHelp = true
 				};
 				sfd.InitialDirectory = Path.GetFullPath(HackContext.PATH_INVS);
 				if (sfd.ShowDialog() == DialogResult.OK)
@@ -42,9 +43,10 @@ namespace QTRHacker.PlayerEditor
 			LoadInv.Enabled = Editable;
 			LoadInv.Click += (sender, e) =>
 			{
-				OpenFileDialog ofd = new OpenFileDialog()
+				OpenFileDialog ofd = new()
 				{
-					Filter = "inv files (*.inv)|*.inv"
+					Filter = "inv files (*.inv)|*.inv",
+					ShowHelp = true
 				};
 				if (!Directory.Exists(HackContext.PATH_INVS))
 					Directory.CreateDirectory(HackContext.PATH_INVS);
@@ -54,46 +56,6 @@ namespace QTRHacker.PlayerEditor
 					LoadInventory(ofd.FileName);
 					SlotsPanel.Refresh();
 					FetchItemData(SelectedItem);
-				}
-			};
-
-			Button SaveInvPItem = ButtonStrip.AddButton($"{HackContext.CurrentLanguage["Save"]}(P)");
-			SaveInvPItem.Enabled = Editable;
-			SaveInvPItem.Click += (sender, e) =>
-			{
-				SaveFileDialog sfd = new SaveFileDialog()
-				{
-					Filter = "inv files (*.invp)|*.invp"
-				};
-				if (!Directory.Exists(HackContext.PATH_INVS))
-					Directory.CreateDirectory(HackContext.PATH_INVS);
-				sfd.InitialDirectory = Path.GetFullPath(HackContext.PATH_INVS);
-				if (sfd.ShowDialog() == DialogResult.OK)
-				{
-					File.WriteAllText(sfd.FileName, TargetPlayer.SerializeInventoryWithProperties());
-					SlotsPanel.Refresh();
-				}
-			};
-
-			Button LoadInvPItem = ButtonStrip.AddButton($"{HackContext.CurrentLanguage["Load"]}(P)");
-			LoadInvPItem.Enabled = Editable;
-			LoadInvPItem.Click += (sender, e) =>
-			{
-				OpenFileDialog ofd = new OpenFileDialog()
-				{
-					Filter = "inv files (*.invp)|*.invp"
-				};
-				if (!Directory.Exists(HackContext.PATH_INVS))
-					Directory.CreateDirectory(HackContext.PATH_INVS);
-				ofd.InitialDirectory = Path.GetFullPath(HackContext.PATH_INVS);
-				if (ofd.ShowDialog() == DialogResult.OK)
-				{
-					ProgressPopupForm ppf = new ProgressPopupForm(ParentForm.Width / 4 * 3, 1, "Loading Inventory");
-					ppf.Run(ParentForm, (t) =>
-					{
-						TargetPlayer.DeserializeInventoryWithProperties(File.ReadAllText(ofd.FileName));
-						FetchItemData(SelectedItem);
-					}, 20000);
 				}
 			};
 		}
@@ -149,68 +111,66 @@ namespace QTRHacker.PlayerEditor
 				{
 					int j = 0;
 					var player = TargetPlayer;
-					using (BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open)))
+					using BinaryReader br = new BinaryReader(new FileStream(name, FileMode.Open));
+					for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
 					{
-						for (int i = 0; i < Player.ITEM_MAX_COUNT; i++)
-						{
-							j++;
-							var item = player.Inventory[i];
-							int type = br.ReadInt32();
-							int stack = br.ReadInt32();
-							byte prefix = br.ReadByte();
-							if (type <= 0 && item.Type <= 0) continue;
-							item.SetDefaultsAndPrefix(type, prefix);
-							item.Stack = stack;
-							tick(j);
-						}
-						for (int i = 0; i < Player.ARMOR_MAX_COUNT; i++)
-						{
-							j++;
-							var item = player.Armor[i];
-							int type = br.ReadInt32();
-							int stack = br.ReadInt32();
-							byte prefix = br.ReadByte();
-							if (type <= 0 && item.Type <= 0) continue;
-							item.SetDefaultsAndPrefix(type, prefix);
-							item.Stack = stack;
-							tick(j);
-						}
-						for (int i = 0; i < Player.DYE_MAX_COUNT; i++)
-						{
-							j++;
-							var item = player.Dye[i];
-							int type = br.ReadInt32();
-							int stack = br.ReadInt32();
-							byte prefix = br.ReadByte();
-							if (type <= 0 && item.Type <= 0) continue;
-							item.SetDefaultsAndPrefix(type, prefix);
-							item.Stack = stack;
-							tick(j);
-						}
-						for (int i = 0; i < Player.MISC_MAX_COUNT; i++)
-						{
-							j++;
-							var item = player.MiscEquips[i];
-							int type = br.ReadInt32();
-							int stack = br.ReadInt32();
-							byte prefix = br.ReadByte();
-							if (type <= 0 && item.Type <= 0) continue;
-							item.SetDefaultsAndPrefix(type, prefix);
-							item.Stack = stack;
-							tick(j);
-						}
-						for (int i = 0; i < Player.MISCDYE_MAX_COUNT; i++)
-						{
-							j++;
-							var item = player.MiscDyes[i];
-							int type = br.ReadInt32();
-							int stack = br.ReadInt32();
-							byte prefix = br.ReadByte();
-							if (type <= 0 && item.Type <= 0) continue;
-							item.SetDefaultsAndPrefix(type, prefix);
-							item.Stack = stack;
-							tick(j);
-						}
+						j++;
+						var item = player.Inventory[i];
+						int type = br.ReadInt32();
+						int stack = br.ReadInt32();
+						byte prefix = br.ReadByte();
+						if (type <= 0 && item.Type <= 0) continue;
+						item.SetDefaultsAndPrefix(type, prefix);
+						item.Stack = stack;
+						tick(j);
+					}
+					for (int i = 0; i < Player.ARMOR_MAX_COUNT; i++)
+					{
+						j++;
+						var item = player.Armor[i];
+						int type = br.ReadInt32();
+						int stack = br.ReadInt32();
+						byte prefix = br.ReadByte();
+						if (type <= 0 && item.Type <= 0) continue;
+						item.SetDefaultsAndPrefix(type, prefix);
+						item.Stack = stack;
+						tick(j);
+					}
+					for (int i = 0; i < Player.DYE_MAX_COUNT; i++)
+					{
+						j++;
+						var item = player.Dye[i];
+						int type = br.ReadInt32();
+						int stack = br.ReadInt32();
+						byte prefix = br.ReadByte();
+						if (type <= 0 && item.Type <= 0) continue;
+						item.SetDefaultsAndPrefix(type, prefix);
+						item.Stack = stack;
+						tick(j);
+					}
+					for (int i = 0; i < Player.MISC_MAX_COUNT; i++)
+					{
+						j++;
+						var item = player.MiscEquips[i];
+						int type = br.ReadInt32();
+						int stack = br.ReadInt32();
+						byte prefix = br.ReadByte();
+						if (type <= 0 && item.Type <= 0) continue;
+						item.SetDefaultsAndPrefix(type, prefix);
+						item.Stack = stack;
+						tick(j);
+					}
+					for (int i = 0; i < Player.MISCDYE_MAX_COUNT; i++)
+					{
+						j++;
+						var item = player.MiscDyes[i];
+						int type = br.ReadInt32();
+						int stack = br.ReadInt32();
+						byte prefix = br.ReadByte();
+						if (type <= 0 && item.Type <= 0) continue;
+						item.SetDefaultsAndPrefix(type, prefix);
+						item.Stack = stack;
+						tick(j);
 					}
 				});
 		}

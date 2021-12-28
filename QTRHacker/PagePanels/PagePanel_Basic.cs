@@ -224,12 +224,12 @@ namespace QTRHacker.PagePanels
 			AddFunctionButton(PageMisc, HackContext.CurrentLanguage["ShadowDodge"], true, Utils.ShadowDodge_E, Utils.ShadowDodge_D);
 			AddFunctionButton(PageMisc, HackContext.CurrentLanguage["ShowInvisiblePlayers"], true, Utils.ShowInvisiblePlayers_E, Utils.ShowInvisiblePlayers_D);
 			*/
-			AddTab(HackContext.CurrentLanguage["Basic_1"], Page1).Selected = true;
-			AddTab(HackContext.CurrentLanguage["Basic_2"], Page2);
-			AddTab(HackContext.CurrentLanguage["Advanced"], Page3);
+			//AddTab(HackContext.CurrentLanguage["Basic_1"], Page1).Selected = true;
+			//AddTab(HackContext.CurrentLanguage["Basic_2"], Page2);
+			AddTab(HackContext.CurrentLanguage["Advanced"], Page3).Selected = true;
 			AddTab(HackContext.CurrentLanguage["Event"], PageEvent);
-			AddTab(HackContext.CurrentLanguage["Builder"], PageBuilder);
-			AddTab(HackContext.CurrentLanguage["Miscs"], PageMisc);
+			//AddTab(HackContext.CurrentLanguage["Builder"], PageBuilder);
+			//AddTab(HackContext.CurrentLanguage["Miscs"], PageMisc);
 		}
 		public FunctionButton AddFunctionButton(Panel p, string Text, bool Closable, Action<GameContext> OnEnabled, Action<GameContext> OnDisabled)
 		{

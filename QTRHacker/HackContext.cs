@@ -81,7 +81,7 @@ namespace QTRHacker
 		public static void SetContext(GameContext ctx)
 		{
 			GameContext = ctx;
-			GameASMResLoader = new GameASMResLoader(ctx.GameModuleHelper.Module.GetFileName());
+			GameASMResLoader = new GameASMResLoader(ctx.GameModuleHelper.Module.FileName);
 			GameLocLoader_en = new GameLocLoader(GameASMResLoader, "en-US");
 			GameLocLoader_cn = new GameLocLoader(GameASMResLoader, "zh-Hans");
 		}

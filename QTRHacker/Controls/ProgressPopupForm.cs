@@ -55,12 +55,7 @@ namespace QTRHacker.Controls
 				back.Location.Y + back.Height / 2 - ClientSize.Height / 2);
 			await Task.WhenAny(
 				Task.Run(() => task(SetValue)),
-				Task.Run(() =>//timeout
-				{
-					System.Threading.Thread.Sleep(timeout);
-					ProgressBar.Value = ProgressBar.Maximum;
-					System.Threading.Thread.Sleep(200);
-				}));
+				Task.Delay(timeout));
 
 			Dispose();
 			back.Enabled = true;

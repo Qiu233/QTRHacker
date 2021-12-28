@@ -15,9 +15,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>..\Release\</OutputPath>
   </PropertyGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;..\refdlls\keystone.dll&quot; &quot;$(OutDir)&quot; /D /F /K /R /Y" />
-  </Target>
+  
+  <ItemGroup>
+    <ContentWithTargetPath Include="$(SolutionDir)refdlls\keystone.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>keystone.dll</TargetPath>
+    </ContentWithTargetPath >
+  </ItemGroup>
 
 </Project>

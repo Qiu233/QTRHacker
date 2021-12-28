@@ -20,7 +20,7 @@ namespace QHackLib
 		public DataTarget DataTarget { get; }
 		public ClrRuntime Runtime { get; }
 
-		public Dictionary<ClrModule, CLRHelper> CLRHelpers { get; }
+		public Dictionary<ClrModule, CLRHelper> CLRHelpers { get; } = new();
 
 		public CLRHelper BCLHelper => CLRHelpers[Runtime.BaseClassLibrary];
 
@@ -42,7 +42,6 @@ namespace QHackLib
 			DataTarget = DataTarget.AttachToProcess(id);
 			Runtime = DataTarget.ClrVersions[0].CreateRuntime();
 
-			CLRHelpers = new Dictionary<ClrModule, CLRHelper>();
 			InitHelpers();
 		}
 

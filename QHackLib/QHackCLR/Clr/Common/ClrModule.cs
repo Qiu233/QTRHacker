@@ -18,25 +18,23 @@ namespace QHackCLR.Clr
 	{
 		public readonly DacpModuleData Data;
 		protected IModuleHelper ModuleHelper { get; }
-		internal IXCLRDataModule DataModule { get; }
 		public string Name { get; }
+		public string FileName { get; }
 		public IMetadataImport MetadataImport => ModuleHelper.GetMetadataImport(this);
 		public ClrModule(IModuleHelper helper, nuint handle) : base(handle)
 		{
 			ModuleHelper = helper;
 			helper.SOSDac.GetModule(new CLRDATA_ADDRESS(ClrHandle), out IXCLRDataModule dataModule);
-			DataModule = dataModule;
-			Name = GetName();
+
+			Name = HelperGlobals.GetString(
+				(uint count, char* buf, out uint needed) =>
+				dataModule.GetName(count, out needed, buf));
+			FileName = HelperGlobals.GetString(
+				(uint count, char* buf, out uint needed) =>
+				dataModule.GetFileName(count, out needed, buf), 1024);
+
 			helper.SOSDac.GetModuleData(new CLRDATA_ADDRESS(ClrHandle), out Data);
 		}
-
-		public unsafe string GetName() => HelperGlobals.GetString(
-				(uint count, char* buf, out uint needed) =>
-				DataModule.GetName(count, out needed, buf));
-
-		public unsafe string GetFileName() => HelperGlobals.GetString(
-				(uint count, char* buf, out uint needed) =>
-				DataModule.GetFileName(count, out needed, buf), 1024);
 
 		public ClrType GetTypeByName(string name) => DefinedTypes.FirstOrDefault(t => t.Name == name);
 

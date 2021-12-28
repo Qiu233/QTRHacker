@@ -42,8 +42,8 @@ namespace QTRHacker.PagePanels
 			public int Y;
 			public POINT(int x, int y)
 			{
-				this.X = x;
-				this.Y = y;
+				X = x;
+				Y = y;
 			}
 		}
 		[DllImport("User32.dll")]
@@ -165,23 +165,15 @@ namespace QTRHacker.PagePanels
 			base.OnMouseMove(e);
 			if (e.X >= Width - 50 && e.Y >= 15 && e.X <= Width - 50 + 25 && e.Y <= 15 + 25)
 			{
-				this.Cursor = Cursors.Cross;
+				Cursor = Cursors.Cross;
 			}
 			else
 			{
 				if (!Dragging)
-					this.Cursor = Cursors.Default;
+					Cursor = Cursors.Default;
 			}
 		}
-		/*
-		private void GameContextExceptionHandler(Exception e)
-		{
-			if (e is FieldNotFoundException fnfe)
-			{
-				MessageBox.Show($"{fnfe.Message}\n你使用的可能是旧版本的TR");
-			}
-		}
-		*/
+
 		private void InitGame(Process process)
 		{
 			HackContext.SetContext(GameContext.OpenGame(process));
