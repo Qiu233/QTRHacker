@@ -10,7 +10,7 @@ namespace QTRHacker
 {
 	static class Program
 	{
-		//[STAThread]
+		[STAThread]
 		static void Main()
 		{
 			Application.ApplicationExit += Application_ApplicationExit;

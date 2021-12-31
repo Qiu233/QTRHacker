@@ -46,6 +46,6 @@ namespace QHackCLR.Clr
 		/// Reads bytes with default size.
 		/// </summary>
 		/// <returns></returns>
-		public byte[] ReadBytes() => DataAccess.ReadBytes(Address, (uint)(Type.BaseSize - sizeof(nuint)));
+		public byte[] ReadBytes() => DataAccess.ReadBytes(Address, (uint)(Type.BaseSize - 2 * sizeof(nuint)));
 	}
 }
