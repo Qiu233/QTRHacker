@@ -1,5 +1,4 @@
-﻿using QHackCLR.Clr;
-using QHackLib.QHackCLR.Clr.Structs;
+﻿using QHackCLR.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;

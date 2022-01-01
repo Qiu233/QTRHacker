@@ -1,4 +1,4 @@
-﻿using QHackCLR.Clr;
+﻿using QHackCLR.Common;
 using QHackLib;
 using System;
 using System.Collections.Generic;
@@ -127,7 +127,7 @@ namespace QHackLib
 
 		private ClrInstanceField SearchFieldRecursively(ClrType type, string name)
 		{
-			var field = type.EnumerateInstanceFields().FirstOrDefault(t => t.Name == name);
+			var field = type.GetInstanceFieldByName(name);
 			if (field is not null)
 				return field;
 			if (type.BaseType is null)
@@ -163,7 +163,7 @@ namespace QHackLib
 			}
 			else if (value is ClrValue val)
 			{
-				Context.DataAccess.WriteBytes(field.GetAddress(InternalEntity), 
+				Context.DataAccess.WriteBytes(field.GetAddress(InternalEntity),
 					Context.DataAccess.ReadBytes(val.Address, field.Type.BaseSize - 2 * (uint)sizeof(nuint)));
 			}
 			else if (valueType.IsValueType)

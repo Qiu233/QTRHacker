@@ -1,5 +1,6 @@
 ﻿using QHackCLR.DataTargets;
 using QHackLib.Assemble;
+using QHackLib.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,18 +36,23 @@ namespace QHackLib.FunctionHelper
 		{
 			get;
 		}
+		public MemoryAllocation Allocation
+		{
+			get;
+		}
 		public int ThreadID
 		{
 			get;
 			private set;
 		}
-		private RemoteThread(QHackContext ctx, AssemblyCode asm)
+		private RemoteThread(QHackContext ctx, AssemblyCode asm, uint size = 0x1000)
 		{
 			Context = ctx;
-			Header = new RemoteThreadHeader(Context.DataAccess.AllocMemory());
+			Allocation = new MemoryAllocation(ctx, size);
+			Header = new RemoteThreadHeader(Allocation.AllocationBase);
 
 			Assembler assembler = new();
-			assembler.Emit(DataAccess.GetBytes(Header));
+			assembler.Emit(DataHelper.GetBytes(Header));
 			assembler.Emit((Instruction)$"mov dword ptr [{Header.Address_SafeFreeFlag}],1");
 			assembler.Emit(asm);
 			assembler.Emit((Instruction)$"mov dword ptr [{Header.Address_SafeFreeFlag}],0");
@@ -95,7 +101,7 @@ namespace QHackLib.FunctionHelper
 		/// Calling this method will forcefully release the code region, 
 		/// even when the code is being executed.
 		/// </summary>
-		public void Dispose() => Context.DataAccess.FreeMemory(Header.AllocationAddress);
+		public void Dispose() => Allocation.Dispose();
 
 		/// <summary>
 		/// Waits to dispose until <see cref="ReadyToRelease"/> returns true, 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.CSharp;
-using QHackCLR.Clr;
+using QHackCLR.Common;
 using QHackCLR.DataTargets;
 using System;
 using System.CodeDom;
@@ -117,7 +117,7 @@ namespace GameDataExporter
 		static void Main(string[] args)
 		{
 			var id = Process.GetProcessesByName("Terraria")[0].Id;
-			DataTarget dataTarget = DataTarget.AttachToProcess(id);
+			DataTarget dataTarget = new(id);
 			ClrRuntime runtime = dataTarget.ClrVersions[0].CreateRuntime();
 			ClrModule module = runtime.AppDomain.Modules.First(t => t.Name == "Terraria");
 			WriteTypes(module);

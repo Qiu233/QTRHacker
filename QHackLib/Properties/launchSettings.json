@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "QHackLib": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

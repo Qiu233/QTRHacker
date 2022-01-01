@@ -9,6 +9,34 @@ namespace QHackLib
 {
 	internal unsafe static class NativeFunctions
 	{
+		[Flags]
+		internal enum ProtectionType : uint
+		{
+			PAGE_EXECUTE = 0x00000010,
+			PAGE_EXECUTE_READ = 0x00000020,
+			PAGE_EXECUTE_READWRITE = 0x00000040,
+			PAGE_EXECUTE_WRITECOPY = 0x00000080,
+			PAGE_NOACCESS = 0x00000001,
+			PAGE_READONLY = 0x00000002,
+			PAGE_READWRITE = 0x00000004,
+			PAGE_WRITECOPY = 0x00000008,
+			PAGE_GUARD = 0x00000100,
+			PAGE_NOCACHE = 0x00000200,
+			PAGE_WRITECOMBINE = 0x00000400
+		}
+		[Flags]
+		internal enum AllocationType : uint
+		{
+			MEM_COMMIT = 0x00001000,
+			MEM_RESERVE = 0x00002000,
+			MEM_DECOMMIT = 0x00004000,
+			MEM_RELEASE = 0x00008000,
+			MEM_RESET = 0x00080000,
+			MEM_PHYSICAL = 0x00400000,
+			MEM_TOPDOWN = 0x00100000,
+			MEM_WRITEWATCH = 0x00200000,
+			MEM_LARGEPAGES = 0x20000000,
+		}
 		#region natives
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal struct LUID
@@ -80,6 +108,59 @@ namespace QHackLib
 
 		[DllImport("kernel32.dll")]
 		internal static extern nuint OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
+
+		[DllImport("kernel32.dll")]
+		internal static extern nuint VirtualAllocEx(
+			nuint hProcess,
+			nuint lpAddress,
+			nuint dwSize,
+			AllocationType flAllocationType,
+			ProtectionType flProtect);
+
+		[DllImport("kernel32.dll")]
+		internal static extern nuint VirtualFreeEx(
+			nuint hProcess,
+			nuint lpAddress,
+			nuint dwSize,
+			AllocationType dwFreeType = AllocationType.MEM_RELEASE);
+
+		[DllImport("kernel32.dll")]
+		internal unsafe static extern bool ReadProcessMemory
+		(
+			nuint lpProcess,
+			nuint lpBaseAddress,
+			void* lpBuffer,
+			nuint nSize,
+			nuint BytesRead
+		);
+		[DllImport("kernel32.dll")]
+		internal unsafe static extern bool ReadProcessMemory
+		(
+			nuint lpProcess,
+			nuint lpBaseAddress,
+			byte[] lpBuffer,
+			nuint nSize,
+			nuint BytesRead
+		);
+		[DllImport("kernel32.dll")]
+		internal unsafe static extern bool WriteProcessMemory
+		(
+			nuint lpProcess,
+			nuint lpBaseAddress,
+			void* lpBuffer,
+			nuint nSize,
+			nuint BytesWrite
+		);
+		[DllImport("kernel32.dll")]
+		internal unsafe static extern bool WriteProcessMemory
+		(
+			nuint lpProcess,
+			nuint lpBaseAddress,
+			byte[] lpBuffer,
+			nuint nSize,
+			nuint BytesWrite
+		);
+
 		#endregion
 	}
 }

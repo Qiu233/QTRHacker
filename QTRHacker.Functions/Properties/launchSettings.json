@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "QTRHacker.Functions": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

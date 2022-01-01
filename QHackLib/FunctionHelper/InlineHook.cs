@@ -76,7 +76,7 @@ namespace QHackLib.FunctionHelper
 			HookInfo info = new(allocAddr, headInstBytes);
 
 			Assembler assembler = new();
-			assembler.Emit(DataAccess.GetBytes(info));//emit the header before runnable code
+			assembler.Emit(DataHelper.GetBytes(info));//emit the header before runnable code
 			assembler.Emit((Instruction)$"mov dword ptr [{safeFreeFlagAddr}],1");
 			assembler.Emit(Parameters.IsOnce ? GetOnceCheckedCode(Code, onceFlagAddr) : Code);//once or not
 			if (Parameters.RawCode)
@@ -253,7 +253,7 @@ namespace QHackLib.FunctionHelper
 				bs[i] = hook.RawCodeBytes[i];
 			Context.DataAccess.WriteBytes(targetAddr, bs);
 			while (Context.DataAccess.Read<int>(hook.Address_SafeFreeFlag) != 0) { }
-			Context.DataAccess.FreeMemory(hook.AllocBase);
+			NativeFunctions.VirtualFreeEx(Context.Handle, hook.AllocBase, 0);
 			return true;
 		}
 	}

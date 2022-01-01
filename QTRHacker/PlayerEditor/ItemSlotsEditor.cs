@@ -182,8 +182,8 @@ namespace QTRHacker.PlayerEditor
 				((TextBox)de.Value).Text = Convert.ToString(pi.GetValue(item));
 			}
 			ItemPropertiesPanel.SelectedPrefix = GetIndexFromPrefix(item.Prefix);
-			ItemPropertiesPanel.AutoReuse = item.AutoReuse ? CheckState.Checked : CheckState.Unchecked;
-			ItemPropertiesPanel.Equippable = item.Accessory ? CheckState.Checked : CheckState.Unchecked;
+			ItemPropertiesPanel.AutoReuse = item.AutoReuse;
+			ItemPropertiesPanel.Equippable = item.Accessory;
 		}
 		public virtual void ApplyItemData(Item item)
 		{
@@ -210,8 +210,8 @@ namespace QTRHacker.PlayerEditor
 
 			}
 			item.Prefix = GetPrefixFromIndex(ItemPropertiesPanel.SelectedPrefix);
-			item.AutoReuse = ItemPropertiesPanel.AutoReuse == CheckState.Checked;
-			item.Accessory = ItemPropertiesPanel.Equippable == CheckState.Checked;
+			item.AutoReuse = ItemPropertiesPanel.AutoReuse;
+			item.Accessory = ItemPropertiesPanel.Equippable;
 		}
 		public virtual void OnRefresh()
 		{

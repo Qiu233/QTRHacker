@@ -25,16 +25,16 @@ namespace QTRHacker.PlayerEditor
 			set => PrefixComboBox.SelectedIndex = value;
 		}
 
-		public CheckState AutoReuse
+		public bool AutoReuse
 		{
-			get => AutoReuseCheckBox.CheckState;
-			set => AutoReuseCheckBox.CheckState = value;
+			get => AutoReuseCheckBox.CheckState == CheckState.Checked;
+			set => AutoReuseCheckBox.CheckState = value ? CheckState.Checked : CheckState.Unchecked;
 		}
 
-		public CheckState Equippable
+		public bool Equippable
 		{
-			get => EquippableCheckBox.CheckState;
-			set => EquippableCheckBox.CheckState = value;
+			get => EquippableCheckBox.CheckState == CheckState.Checked;
+			set => EquippableCheckBox.CheckState = value ? CheckState.Checked : CheckState.Unchecked;
 		}
 
 		public ItemPropertiesPanel()

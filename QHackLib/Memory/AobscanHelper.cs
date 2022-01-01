@@ -21,7 +21,7 @@ namespace QHackLib.Memory
 			public uint AllocationProtect;
 			public nuint RegionSize;
 			public uint State;
-			public DataAccess.ProtectionType Protect;
+			public NativeFunctions.ProtectionType Protect;
 			public uint Type;
 		}
 		[DllImport("kernel32.dll")]
@@ -89,14 +89,14 @@ namespace QHackLib.Memory
 				int size = VirtualQueryEx(handle, addr, out MEMORY_BASIC_INFORMATION mbi, SIZE_MBI);
 				if (size != SIZE_MBI || mbi.RegionSize <= 0)
 					break;
-				if (!mbi.Protect.HasFlag(DataAccess.ProtectionType.PAGE_EXECUTE_READWRITE)
-					|| !((DataAccess.AllocationType)mbi.State).HasFlag(DataAccess.AllocationType.MEM_COMMIT))
+				if (!mbi.Protect.HasFlag(NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE)
+					|| !((NativeFunctions.AllocationType)mbi.State).HasFlag(NativeFunctions.AllocationType.MEM_COMMIT))
 				{
 					addr = mbi.BaseAddress + mbi.RegionSize;
 					continue;
 				}
 				byte[] va = ArrayPool<byte>.Shared.Rent((int)mbi.RegionSize);
-				DataAccess.ReadProcessMemory(handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
+				NativeFunctions.ReadProcessMemory(handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
 				int pos = 0;
 				if (Search(va, aob, ref pos) >= 0)
 					result.Add(mbi.BaseAddress + (uint)pos);

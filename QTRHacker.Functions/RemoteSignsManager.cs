@@ -52,7 +52,7 @@ namespace QTRHacker.Functions
 							  .FirstOrDefault(t => true);
 			if (BaseAddress == 0)
 			{
-				BaseAddress = Context.HContext.DataAccess.AllocMemory(SIZE_SIGN);
+				BaseAddress = MemoryAllocation.Alloc(Context.HContext.Handle, SIZE_SIGN);
 				Context.HContext.DataAccess.WriteBytes(BaseAddress, hex);
 			}
 		}

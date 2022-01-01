@@ -19,7 +19,7 @@ namespace QHackLib.Memory
 		public MemoryAllocation(QHackContext ctx, uint size = 0x1000)
 		{
 			Context = ctx;
-			AllocationBase = ctx.DataAccess.AllocMemory(size);
+			AllocationBase = Alloc(ctx.Handle, size);
 			AllocationSize = size;
 		}
 
@@ -49,15 +49,15 @@ namespace QHackLib.Memory
 		public virtual void Dispose()
 		{
 			GC.SuppressFinalize(this);
-			Context.DataAccess.FreeMemory(AllocationBase);
+			Free(Context.Handle, AllocationBase);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public virtual bool Write(in ReadOnlySpan<byte> data, uint length, uint offset) =>
+		public virtual bool Write(byte[] data, uint length, uint offset) =>
 			Context.DataAccess.Write(AllocationBase + offset, data, length);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public virtual bool Read(in Span<byte> data, uint length, uint offset) =>
+		public virtual bool Read(byte[] data, uint length, uint offset) =>
 			Context.DataAccess.Read(AllocationBase + offset, data, length);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -71,5 +71,10 @@ namespace QHackLib.Memory
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public virtual T Read<T>(uint offset) where T : unmanaged =>
 			Context.DataAccess.Read<T>(AllocationBase + offset);
+
+
+		public static nuint Alloc(nuint handle, uint size) => NativeFunctions.VirtualAllocEx(handle, 0, size,
+				NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
+		public static nuint Free(nuint handle, nuint addr) => NativeFunctions.VirtualFreeEx(handle, addr, 0);
 	}
 }

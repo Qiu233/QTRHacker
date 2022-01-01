@@ -1,5 +1,4 @@
 ﻿using QHackLib.FunctionHelper;
-using QHackCLR.Clr;
 using QHackCLR.DataTargets;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using static QHackLib.NativeFunctions;
+using QHackCLR.Common;
 
 namespace QHackLib
 {
@@ -39,7 +39,7 @@ namespace QHackLib
 		{
 			GrantPrivilege();
 			ProcessID = id;
-			DataTarget = DataTarget.AttachToProcess(id);
+			DataTarget = new DataTarget(id);
 			Runtime = DataTarget.ClrVersions[0].CreateRuntime();
 
 			InitHelpers();

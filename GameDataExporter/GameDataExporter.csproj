@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -21,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
     <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
   </ItemGroup>
 

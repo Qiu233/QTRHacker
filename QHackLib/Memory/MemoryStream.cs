@@ -30,7 +30,7 @@ namespace QHackLib.Memory
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool Write(in ReadOnlySpan<byte> data, uint length)
+		public bool Write(byte[] data, uint length)
 		{
 			if (!Context.DataAccess.Write(IP, data, length))
 				return false;
@@ -39,7 +39,7 @@ namespace QHackLib.Memory
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool Read(in Span<byte> data, uint length)
+		public bool Read(byte[] data, uint length)
 		{
 			if (!Context.DataAccess.Read(IP, data, length))
 				return false;

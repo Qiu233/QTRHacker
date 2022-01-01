@@ -1,4 +1,4 @@
-﻿using QHackCLR.Clr;
+﻿using QHackCLR.Common;
 using QHackLib.Assemble;
 using System;
 using System.Collections.Generic;
