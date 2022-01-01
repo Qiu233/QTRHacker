@@ -29,7 +29,6 @@ namespace QTRHacker.PlayerEditor
 				SaveFileDialog sfd = new SaveFileDialog()
 				{
 					Filter = "inv files (*.inv)|*.inv",
-					ShowHelp = true
 				};
 				sfd.InitialDirectory = Path.GetFullPath(HackContext.PATH_INVS);
 				if (sfd.ShowDialog() == DialogResult.OK)
@@ -46,7 +45,6 @@ namespace QTRHacker.PlayerEditor
 				OpenFileDialog ofd = new()
 				{
 					Filter = "inv files (*.inv)|*.inv",
-					ShowHelp = true
 				};
 				if (!Directory.Exists(HackContext.PATH_INVS))
 					Directory.CreateDirectory(HackContext.PATH_INVS);
