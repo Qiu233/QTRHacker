@@ -17,10 +17,10 @@ namespace QTRHacker.Controls
 		}
 		public override string Text
 		{
-			get => Tip.Text;
-			set => Tip.Text = value;
+			get => TipLabel.Text;
+			set => TipLabel.Text = value;
 		}
-		public Label Tip
+		public Label TipLabel
 		{
 			get;
 		}
@@ -28,19 +28,21 @@ namespace QTRHacker.Controls
 		{
 			get;
 		}
-		private TipDock ViewDock;
-		private int TipWidth;
-		public InfoView(Control View, TipDock Dock, bool Border = true, int TipWidth = 40)
+		private readonly TipDock ViewDock;
+		private readonly int TipWidth;
+		public InfoView(Control view, TipDock dock, bool Border = true, int tipWidth = 40)
 		{
-			this.TipWidth = TipWidth;
-			this.View = View;
-			this.ViewDock = Dock;
-			this.Tip = new Label();
-			this.Tip.BorderStyle = BorderStyle.FixedSingle;
-			this.BorderStyle = Border ? BorderStyle.FixedSingle : BorderStyle.None;
-			this.Tip.TextAlign = ContentAlignment.MiddleCenter;
-			this.Controls.Add(Tip);
-			this.Controls.Add(View);
+			TipWidth = tipWidth;
+			View = view;
+			ViewDock = dock;
+			BorderStyle = Border ? BorderStyle.FixedSingle : BorderStyle.None;
+			TipLabel = new Label
+			{
+				BorderStyle = BorderStyle.FixedSingle,
+				TextAlign = ContentAlignment.MiddleCenter
+			};
+			Controls.Add(TipLabel);
+			Controls.Add(view);
 		}
 		protected override void OnSizeChanged(EventArgs e)
 		{
@@ -48,19 +50,19 @@ namespace QTRHacker.Controls
 			switch (ViewDock)
 			{
 				case TipDock.Top:
-					Tip.Bounds = new Rectangle(0, 0, Width, 20);
+					TipLabel.Bounds = new Rectangle(0, 0, Width, 20);
 					View.Bounds = new Rectangle(0, 20, Width, Height - 20);
 					break;
 				case TipDock.Left:
-					Tip.Bounds = new Rectangle(0, 0, TipWidth, Height);
+					TipLabel.Bounds = new Rectangle(0, 0, TipWidth, Height);
 					View.Bounds = new Rectangle(TipWidth, 0, Width - TipWidth, Height);
 					break;
 				case TipDock.Down:
-					Tip.Bounds = new Rectangle(0, Height - 20, Width, 20);
+					TipLabel.Bounds = new Rectangle(0, Height - 20, Width, 20);
 					View.Bounds = new Rectangle(0, 0, Width, Height - 20);
 					break;
 				case TipDock.Right:
-					Tip.Bounds = new Rectangle(Width - TipWidth, 0, TipWidth, Height);
+					TipLabel.Bounds = new Rectangle(Width - TipWidth, 0, TipWidth, Height);
 					View.Bounds = new Rectangle(0, 0, Width - TipWidth, Height);
 					break;
 			}

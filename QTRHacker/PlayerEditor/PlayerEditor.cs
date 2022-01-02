@@ -212,9 +212,9 @@ namespace QTRHacker.PlayerEditor
 
 	public class ColorSelectControl : UserControl
 	{
-		private Label Tip;
-		private Panel ColorPanel;
-		private TextBox ColorCode;
+		private readonly Label Tip;
+		private readonly Panel ColorPanel;
+		private readonly TextBox ColorCode;
 		public override string Text { get => ColorCode.Text; set => ColorCode.Text = value; }
 		public event Action<Microsoft.Xna.Framework.Color> OnColorChanged = (c) => { };
 		public Microsoft.Xna.Framework.Color Color
@@ -237,7 +237,7 @@ namespace QTRHacker.PlayerEditor
 		public ColorSelectControl(string text)
 		{
 			Font f = new Font("Arial", 10, FontStyle.Bold);
-			this.Size = new Size(150, 27);
+			Size = new Size(150, 27);
 			Tip = new Label();
 			Tip.Text = text;
 			Tip.Bounds = new Rectangle(0, 0, 50, 25);
@@ -258,9 +258,11 @@ namespace QTRHacker.PlayerEditor
 			};
 			ColorCode.LostFocus += (s, e) =>
 			{
-				Color = Color;
+#pragma warning disable CA2245
+				Color = Color; // a trick to refresh color
+#pragma warning restore CA2245
 			};
-			Color = Microsoft.Xna.Framework.Color.White;//此时的OnColorChanged事件是空的
+			Color = Microsoft.Xna.Framework.Color.White;
 
 			Controls.Add(Tip);
 			Controls.Add(ColorPanel);
@@ -294,7 +296,7 @@ namespace QTRHacker.PlayerEditor
 		public const int MaxHair = 163, MaxBody = 14;
 		private Texture2D[] BodyTextures, HairTextures;
 		private SpriteBatch Batch;
-		private Microsoft.Xna.Framework.Color[] Colors;
+		private readonly Microsoft.Xna.Framework.Color[] Colors;
 
 		public int HairType
 		{
@@ -415,7 +417,6 @@ namespace QTRHacker.PlayerEditor
 
 		public PlayerView()
 		{
-
 			Colors = new Microsoft.Xna.Framework.Color[MaxBody];
 			for (int i = 0; i < Colors.Length; i++)
 				Colors[i] = new Microsoft.Xna.Framework.Color(1f, 1f, 1f);

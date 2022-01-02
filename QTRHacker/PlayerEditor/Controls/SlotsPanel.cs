@@ -41,8 +41,8 @@ namespace QTRHacker.PlayerEditor.Controls
 			private int lastType;
 			static ItemIcon()
 			{
-				using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Image.TMLIcon.png"))
-					TMLIconImage = Image.FromStream(st);
+				using Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Image.TMLIcon.png");
+				TMLIconImage = Image.FromStream(st);
 			}
 			public ItemIcon(int index)
 			{

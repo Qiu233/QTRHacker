@@ -132,7 +132,7 @@ namespace QTRHacker
 		private static Config LoadConfig(string name, Type t)
 		{
 			string file = Path.Combine(PATH_CONFIGS, $"{name}.json");
-			Config value = null;
+			Config value;
 			if (File.Exists(file))
 				value = JsonConvert.DeserializeObject(File.ReadAllText(file), t) as Config;
 			else

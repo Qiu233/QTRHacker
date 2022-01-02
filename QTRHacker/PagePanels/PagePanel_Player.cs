@@ -257,8 +257,7 @@ namespace QTRHacker.PagePanels
 			Controls.Add(PlayerListView);
 
 
-			UpdatePlayerTimer = new System.Timers.Timer();
-			UpdatePlayerTimer.Interval = 500;//每隔500ms进行一次玩家列表的检查和更新
+			UpdatePlayerTimer = new System.Timers.Timer(500);
 			UpdatePlayerTimer.Elapsed += (s, e) =>
 			{
 				if (!Visible)
@@ -267,7 +266,7 @@ namespace QTRHacker.PagePanels
 					UpdatePlayerAttribute(HackContext.GameContext.Players[Convert.ToInt32(PlayerListView.SelectedItems[0].Text)]);
 				UpdatePlayerList();
 			};
-			UpdatePlayerTimer.Start();//开启更新线程
+			UpdatePlayerTimer.Start();
 		}
 		public void ClearPlayerAttribute()
 		{
@@ -337,11 +336,11 @@ namespace QTRHacker.PagePanels
 			}
 		}
 
-		private int GetMountFromIndex(int id)
+		private static int GetMountFromIndex(int id)
 		{
 			return Convert.ToInt32(GameResLoader.MountToID[GameResLoader.Mounts[id]]);
 		}
-		private int GetPetFromIndex(int id)
+		private static int GetPetFromIndex(int id)
 		{
 			return Convert.ToInt32(GameResLoader.PetToID[GameResLoader.Pets[id]]);
 		}

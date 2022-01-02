@@ -161,7 +161,7 @@ namespace QTRHacker.PlayerEditor
 		public int GetIndexFromPrefix(byte id)
 		{
 			var a = GameResLoader.PrefixToID.Where(t => t.Value == id);
-			if (a.Count() == 0)
+			if (!a.Any())
 				return 0;
 			return GameResLoader.Prefixes.ToList().IndexOf(a.ElementAt(0).Key);
 		}

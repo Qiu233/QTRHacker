@@ -14,7 +14,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-#pragma warning disable CS1690
 
 namespace QTRHacker.PlayerEditor
 {

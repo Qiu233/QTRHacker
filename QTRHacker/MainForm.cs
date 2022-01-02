@@ -32,13 +32,15 @@ namespace QTRHacker
 		private readonly Panel MainPanel, ButtonsPanel, ContentPanel;
 		private readonly PictureBox MinButton, CloseButton;
 		private readonly PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel,
+#pragma warning disable IDE0052, IDE0051
 			ProjectilePagePanel, ScriptsPagePanel, SchesPagePanel,
 			MiscPagePanel, ChatSenderPanel, AimBotPagePanel,
+#pragma warning restore IDE0052, IDE0051
 			AboutPagePanel;
 		public static MainForm MainFormInstance { get; private set; }
 		public readonly PageGroup Group1, Group2;
 		public PageGroup ExpandedGroup;
-		public static int ButtonsPanelWidth = 100;
+		public readonly static int ButtonsPanelWidth = 100;
 		private int GroupsIndex = 0;
 		protected override void OnShown(EventArgs e)
 		{
@@ -174,7 +176,7 @@ namespace QTRHacker
 			//AddButton(Group2, CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;
 			//AddButton(Group2, CurrentLanguage["AimBot"], img_AimBot, AimBotPagePanel).Enabled = false;
 
-			Icon = ConvertToIcon(img_Basic, true);
+			Icon = ConvertToIcon(img_Basic);
 
 		}
 
@@ -197,43 +199,36 @@ namespace QTRHacker
 		}
 
 		/// <summary>
-		/// 这个算法是从网上找到的，来源：http://www.cnblogs.com/ahdung/p/ConvertToIcon.html
-		/// 作者是AhDung
+		/// from: http://www.cnblogs.com/ahdung/p/ConvertToIcon.html
+		/// cridit to: AhDung
 		/// </summary>
 		/// <param name="image"></param>
 		/// <param name="nullTonull"></param>
 		/// <returns></returns>
-		public static Icon ConvertToIcon(Image image, bool nullTonull = false)
+		public static Icon ConvertToIcon(Image image)
 		{
 			if (image == null)
-			{
-				if (nullTonull) { return null; }
-				throw new ArgumentNullException("image");
-			}
-			using (MemoryStream msImg = new MemoryStream(), msIco = new MemoryStream())
-			{
-				image.Save(msImg, ImageFormat.Png);
-				using (var bin = new BinaryWriter(msIco))
-				{
-					bin.Write((short)0);
-					bin.Write((short)1);
-					bin.Write((short)1);
+				return null;
+			using MemoryStream msImg = new(), msIco = new();
+			image.Save(msImg, ImageFormat.Png);
+			using var bin = new BinaryWriter(msIco);
+			bin.Write((short)0);
+			bin.Write((short)1);
+			bin.Write((short)1);
 
-					bin.Write((byte)image.Width);
-					bin.Write((byte)image.Height);
-					bin.Write((byte)0);
-					bin.Write((byte)0);
-					bin.Write((short)0);
-					bin.Write((short)32);
-					bin.Write((int)msImg.Length);
-					bin.Write(22);
+			bin.Write((byte)image.Width);
+			bin.Write((byte)image.Height);
+			bin.Write((byte)0);
+			bin.Write((byte)0);
+			bin.Write((short)0);
+			bin.Write((short)32);
+			bin.Write((int)msImg.Length);
+			bin.Write(22);
 
-					bin.Write(msImg.ToArray());
-					bin.Flush();
-					bin.Seek(0, SeekOrigin.Begin);
-					return new Icon(msIco);
-				}
-			}
+			bin.Write(msImg.ToArray());
+			bin.Flush();
+			bin.Seek(0, SeekOrigin.Begin);
+			return new Icon(msIco);
 		}
 
 		private PageGroup AddGroup()
@@ -295,17 +290,15 @@ namespace QTRHacker
 		{
 			base.OnMouseDown(e);
 			if (e.Button == MouseButtons.Left)
-			{
 				Drag_MousePos = e.Location;
-			}
 		}
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
 			if (e.Button == MouseButtons.Left)
 			{
-				this.Top = MousePosition.Y - Drag_MousePos.Y;
-				this.Left = MousePosition.X - Drag_MousePos.X;
+				Top = MousePosition.Y - Drag_MousePos.Y;
+				Left = MousePosition.X - Drag_MousePos.X;
 			}
 		}
 

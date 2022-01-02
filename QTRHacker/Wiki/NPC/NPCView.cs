@@ -41,7 +41,7 @@ namespace QTRHacker.Wiki.NPC
 			get;
 			set;
 		}
-		public Timer StateTimer
+		public System.Timers.Timer StateTimer
 		{
 			get;
 		}
@@ -50,13 +50,12 @@ namespace QTRHacker.Wiki.NPC
 			get;
 			set;
 		}
-		private int __timer = 0;
+
 		public NPCView()
 		{
 			State = 0;
-			StateTimer = new Timer();
-			StateTimer.Interval = 80;
-			StateTimer.Tick += StateTimer_Tick;
+			StateTimer = new System.Timers.Timer(100);
+			StateTimer.Elapsed += StateTimer_Tick;
 
 			Frames = new Dictionary<int, Texture2D>();
 			FramesPlayList = new Dictionary<int, List<Microsoft.Xna.Framework.Rectangle>>();
@@ -71,19 +70,9 @@ namespace QTRHacker.Wiki.NPC
 				State = 0;
 		}
 
-		private void Render()
-		{
-			if (__timer >= 1000000)
-				__timer = 0;
-			if (__timer % 10 == 0)
-				Invalidate();
-			__timer++;
-		}
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
-			if (disposing)
-				HackContext.UnregisterGlobalUpdate(Render);
 		}
 
 		protected override void Initialize()
@@ -105,7 +94,6 @@ namespace QTRHacker.Wiki.NPC
 				}
 			}
 
-			HackContext.RegisterGlobalUpdate(Render);
 			State = 0;
 			StateTimer.Start();
 		}

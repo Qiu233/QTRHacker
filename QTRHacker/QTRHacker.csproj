@@ -18,13 +18,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>..\Debug\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
-    <NoWarn>1701;1702;IDE0017</NoWarn>
+    <NoWarn>1701;1702;IDE0017;IDE0090</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>..\Release\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
+    <NoWarn>1701;1702;IDE0017;IDE0090</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,7 +39,6 @@
     <None Remove="Res\Game\Prefix_en.txt" />
     <None Remove="Res\Game\WikiRes.zip" />
     <None Remove="Res\Image\close.png" />
-    <None Remove="Res\Image\cross.png" />
     <None Remove="Res\Image\min.png" />
     <None Remove="Res\Image\Numbers.png" />
     <None Remove="Res\Image\player.png" />
@@ -57,7 +57,6 @@
     <EmbeddedResource Include="Res\Game\Prefix_en.txt" />
     <EmbeddedResource Include="Res\Game\WikiRes.zip" />
     <EmbeddedResource Include="Res\Image\close.png" />
-    <EmbeddedResource Include="Res\Image\cross.png" />
     <EmbeddedResource Include="Res\Image\min.png" />
     <EmbeddedResource Include="Res\Image\Numbers.png" />
     <EmbeddedResource Include="Res\Image\player.png" />

@@ -27,21 +27,21 @@ namespace QTRHacker.Wiki.Item
 			ItemIconInfoView = new InfoView(new PictureBox() { SizeMode = PictureBoxSizeMode.CenterImage }, InfoView.TipDock.Top);
 			ItemIconInfoView.Text = HackContext.CurrentLanguage["Icon"];
 			ItemIconInfoView.Bounds = new Rectangle(5, 5, 80, 80);
-			ItemIconInfoView.Tip.BackColor = ItemsColor;
+			ItemIconInfoView.TipLabel.BackColor = ItemsColor;
 
 			ItemNameInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
 			ItemNameInfoView.Text = HackContext.CurrentLanguage["Name"];
-			ItemNameInfoView.Tip.BackColor = ItemsColor;
+			ItemNameInfoView.TipLabel.BackColor = ItemsColor;
 			ItemNameInfoView.Bounds = new Rectangle(0, 0, 170, 20);
 
 			ItemTypeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
 			ItemTypeInfoView.Text = HackContext.CurrentLanguage["Type"];
-			ItemTypeInfoView.Tip.BackColor = ItemsColor;
+			ItemTypeInfoView.TipLabel.BackColor = ItemsColor;
 			ItemTypeInfoView.Bounds = new Rectangle(0, 20, 170, 20);
 
 			ItemRareInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
 			ItemRareInfoView.Text = HackContext.CurrentLanguage["Rare"];
-			ItemRareInfoView.Tip.BackColor = ItemsColor;
+			ItemRareInfoView.TipLabel.BackColor = ItemsColor;
 			ItemRareInfoView.Bounds = new Rectangle(0, 40, 170, 20);
 
 			InfoView ItemDetailInfoView = new InfoView(new Panel() { BorderStyle = BorderStyle.None }, InfoView.TipDock.Top);
@@ -50,19 +50,19 @@ namespace QTRHacker.Wiki.Item
 			ItemDetailInfoViewContent.Controls.Add(ItemTypeInfoView);
 			ItemDetailInfoViewContent.Controls.Add(ItemRareInfoView);
 			ItemDetailInfoView.Text = HackContext.CurrentLanguage["Details"];
-			ItemDetailInfoView.Tip.BackColor = ItemsColor;
+			ItemDetailInfoView.TipLabel.BackColor = ItemsColor;
 			ItemDetailInfoView.Bounds = new Rectangle(90, 5, 170, 80);
 
 			ItemDescriptionInfoView = new InfoView(new TextBox() { Multiline = true }, InfoView.TipDock.Left);
 			ItemDescriptionInfoView.Text = HackContext.CurrentLanguage["Description"];
-			ItemDescriptionInfoView.Tip.BackColor = ItemsColor;
+			ItemDescriptionInfoView.TipLabel.BackColor = ItemsColor;
 			ItemDescriptionInfoView.Bounds = new Rectangle(5, 90, 255, 80);
 
 			RequireItems = new MTabControl();
 			RequireItems.TColor = ItemsColor;
 			ItemRecipeFromInfoView = new InfoView(RequireItems, InfoView.TipDock.Top);
 			ItemRecipeFromInfoView.Text = HackContext.CurrentLanguage["Recipe"] + "(From)";
-			ItemRecipeFromInfoView.Tip.BackColor = ItemsColor;
+			ItemRecipeFromInfoView.TipLabel.BackColor = ItemsColor;
 			ItemRecipeFromInfoView.Bounds = new Rectangle(5, 175, 255, 100);
 
 			RecipeToItems = new ListBox()
@@ -75,12 +75,12 @@ namespace QTRHacker.Wiki.Item
 			};
 			ItemRecipeToInfoView = new InfoView(RecipeToItems, InfoView.TipDock.Top);
 			ItemRecipeToInfoView.Text = HackContext.CurrentLanguage["Recipe"] + "(To)";
-			ItemRecipeToInfoView.Tip.BackColor = ItemsColor;
+			ItemRecipeToInfoView.TipLabel.BackColor = ItemsColor;
 			ItemRecipeToInfoView.Bounds = new Rectangle(5, 280, 255, 100);
 
 			ItemValueInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left);
 			ItemValueInfoView.Text = HackContext.CurrentLanguage["Rare"];
-			ItemValueInfoView.Tip.BackColor = ItemsColor;
+			ItemValueInfoView.TipLabel.BackColor = ItemsColor;
 			ItemValueInfoView.Bounds = new Rectangle(5, 385, 255, 20);
 
 

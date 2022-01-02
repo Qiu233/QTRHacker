@@ -29,32 +29,18 @@ namespace QTRHacker.PagePanels
 				Font = new Font("Consolas", 8)
 			}, TipDock.Left, false, TipWidth)
 		{
-			Tip.ForeColor = Color.White;
-			Tip.BackColor = EditBoxBackColor;
+			TipLabel.ForeColor = Color.White;
+			TipLabel.BackColor = EditBoxBackColor;
 		}
 	}
 	public class PagePanel_MainPage : PagePanel
 	{
-		[StructLayout(LayoutKind.Sequential)]
-		public struct POINT
-		{
-			public int X;
-			public int Y;
-			public POINT(int x, int y)
-			{
-				X = x;
-				Y = y;
-			}
-		}
 		[DllImport("User32.dll")]
-		public static extern bool GetCursorPos(out POINT lpPoint);
+		private static extern bool GetCursorPos(out Point lpPoint);
 		[DllImport("User32.dll")]
-		public static extern IntPtr WindowFromPoint(int xPoint, int yPoint);
+		private static extern IntPtr WindowFromPoint(int x, int y);
 		[DllImport("User32.dll")]
-		public static extern int GetWindowThreadProcessId(IntPtr hwnd, out int ID);
-		private bool Dragging = false;
-		private readonly Font TextFont;
-		private readonly Image CrossImage;
+		private static extern int GetWindowThreadProcessId(IntPtr hwnd, out int ID);
 		private readonly Button RefreshButton;
 		private readonly InfoView PlayerArrayBaseAddressInfoView, CurrentPlayerBaseAddressInfoView,
 			CurrentPlayerInventoryBaseAddressInfoView, CurrentPlayerArmorBaseAddressInfoView,
@@ -63,9 +49,6 @@ namespace QTRHacker.PagePanels
 			Terraria_Main_Update_BaseAddressInfoView;
 		public PagePanel_MainPage(int Width, int Height) : base(Width, Height)
 		{
-			TextFont = new Font("Arial", 10);
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Image.cross.png"))
-				CrossImage = Image.FromStream(s);
 
 			PlayerArrayBaseAddressInfoView = new InfoViewEx(220)
 			{
@@ -131,11 +114,13 @@ namespace QTRHacker.PagePanels
 			Controls.Add(Terraria_Main_Update_BaseAddressInfoView);
 
 
-			RefreshButton = new Button();
-			RefreshButton.FlatStyle = FlatStyle.Flat;
-			RefreshButton.ForeColor = Color.White;
-			RefreshButton.Text = HackContext.CurrentLanguage["FetchAddressesAgain"];
-			RefreshButton.Bounds = new Rectangle(Width - 125, Height - 35, 120, 30);
+			RefreshButton = new Button
+			{
+				FlatStyle = FlatStyle.Flat,
+				ForeColor = Color.White,
+				Text = HackContext.CurrentLanguage["FetchAddressesAgain"],
+				Bounds = new Rectangle(Width - 125, Height - 35, 120, 30)
+			};
 			RefreshButton.Click += (s, e) =>
 			{
 				if (HackContext.GameContext == null)
@@ -143,64 +128,36 @@ namespace QTRHacker.PagePanels
 				InitializeAddresses();
 			};
 			Controls.Add(RefreshButton);
-		}
-		protected override void OnPaint(PaintEventArgs e)
-		{
-			base.OnPaint(e);
-			if (!Dragging)
-				e.Graphics.DrawImage(CrossImage, Width - 50, 15, 25, 25);
-			e.Graphics.DrawString(HackContext.CurrentLanguage["DragTip"], TextFont, Brushes.White, Width - 280, 20);
-		}
-		protected override void OnMouseDown(MouseEventArgs e)
-		{
-			base.OnMouseDown(e);
-			if (e.X >= Width - 50 && e.Y >= 15 && e.X <= Width - 50 + 25 && e.Y <= 15 + 25)
-			{
-				Dragging = true;
-				Refresh();
-			}
-		}
-		protected override void OnMouseMove(MouseEventArgs e)
-		{
-			base.OnMouseMove(e);
-			if (e.X >= Width - 50 && e.Y >= 15 && e.X <= Width - 50 + 25 && e.Y <= 15 + 25)
-			{
-				Cursor = Cursors.Cross;
-			}
-			else
-			{
-				if (!Dragging)
-					Cursor = Cursors.Default;
-			}
-		}
 
-		private void InitGame(Process process)
-		{
-			HackContext.SetContext(GameContext.OpenGame(process));
-
-			InitializeAddresses();
-		}
-
-		protected override void OnMouseUp(MouseEventArgs e)
-		{
-			base.OnMouseUp(e);
-			if (Dragging)
+			DraggableCross cross = new DraggableCross(25);
+			cross.Location = new Point(Width - 50, 15);
+			cross.OnCrossRelease += (__) =>
 			{
-				Dragging = false;
-				GetCursorPos(out POINT p);
+				GetCursorPos(out Point p);
 				IntPtr wnd = WindowFromPoint(p.X, p.Y);
-				GetWindowThreadProcessId(wnd, out var processID);
+				_ = GetWindowThreadProcessId(wnd, out var processID);
 				if (processID == Environment.ProcessId)
 				{
 					MessageBox.Show("拖动十字！！！\n拖动啊！！！！！！！！！");
 					return;
 				}
-				Refresh();
-
 				InitGame(Process.GetProcessById(processID));
-
 				MainForm.MainFormInstance.OnInitialized();
-			}
+			};
+			Controls.Add(cross);
+		}
+
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			base.OnPaint(e);
+			using var f = new Font(SystemFonts.DefaultFont.Name, 10);
+			e.Graphics.DrawString(HackContext.CurrentLanguage["DragTip"], f, Brushes.White, Width - 280, 22);
+		}
+
+		private void InitGame(Process process)
+		{
+			HackContext.SetContext(GameContext.OpenGame(process));
+			InitializeAddresses();
 		}
 		public void InitializeAddresses()
 		{

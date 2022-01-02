@@ -24,22 +24,22 @@ namespace QTRHacker.Wiki.Item
 			ItemIcon2InfoView = new InfoView(new PictureBox() { SizeMode = PictureBoxSizeMode.CenterImage }, InfoView.TipDock.Top);
 			ItemIcon2InfoView.Text = HackContext.CurrentLanguage["Icon"];
 			ItemIcon2InfoView.Bounds = new Rectangle(5, 5, 80, 80);
-			ItemIcon2InfoView.Tip.BackColor = ItemsColor;
+			ItemIcon2InfoView.TipLabel.BackColor = ItemsColor;
 
 
 			ItemPickaxeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
 			ItemPickaxeInfoView.Text = HackContext.CurrentLanguage["Pick"];
-			ItemPickaxeInfoView.Tip.BackColor = ItemsColor;
+			ItemPickaxeInfoView.TipLabel.BackColor = ItemsColor;
 			ItemPickaxeInfoView.Bounds = new Rectangle(0, 0, 170, 20);
 
 			ItemAxeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
 			ItemAxeInfoView.Text = HackContext.CurrentLanguage["Axe"];
-			ItemAxeInfoView.Tip.BackColor = ItemsColor;
+			ItemAxeInfoView.TipLabel.BackColor = ItemsColor;
 			ItemAxeInfoView.Bounds = new Rectangle(0, 20, 170, 20);
 
 			ItemHammerInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
 			ItemHammerInfoView.Text = HackContext.CurrentLanguage["Hammer"];
-			ItemHammerInfoView.Tip.BackColor = ItemsColor;
+			ItemHammerInfoView.TipLabel.BackColor = ItemsColor;
 			ItemHammerInfoView.Bounds = new Rectangle(0, 40, 170, 20);
 
 			InfoView ItemDetailInfoView = new InfoView(new Panel() { BorderStyle = BorderStyle.None }, InfoView.TipDock.Top);
@@ -49,105 +49,105 @@ namespace QTRHacker.Wiki.Item
 			ItemDetailInfoViewContent.Controls.Add(ItemAxeInfoView);
 			ItemDetailInfoViewContent.Controls.Add(ItemHammerInfoView);
 			ItemDetailInfoView.Text = HackContext.CurrentLanguage["Details"];
-			ItemDetailInfoView.Tip.BackColor = ItemsColor;
+			ItemDetailInfoView.TipLabel.BackColor = ItemsColor;
 			ItemDetailInfoView.Bounds = new Rectangle(90, 5, 170, 80);
 
 			ItemDamageInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemDamageInfoView.Text = HackContext.CurrentLanguage["Damage"];
-			ItemDamageInfoView.Tip.BackColor = ItemsColor;
+			ItemDamageInfoView.TipLabel.BackColor = ItemsColor;
 			ItemDamageInfoView.Bounds = new Rectangle(0, 0, 127, 20);
 
 			ItemDefenseInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemDefenseInfoView.Text = HackContext.CurrentLanguage["Defense"];
-			ItemDefenseInfoView.Tip.BackColor = ItemsColor;
+			ItemDefenseInfoView.TipLabel.BackColor = ItemsColor;
 			ItemDefenseInfoView.Bounds = new Rectangle(128, 0, 127, 20);
 
 
 			ItemCritInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemCritInfoView.Text = HackContext.CurrentLanguage["Crit"];
-			ItemCritInfoView.Tip.BackColor = ItemsColor;
+			ItemCritInfoView.TipLabel.BackColor = ItemsColor;
 			ItemCritInfoView.Bounds = new Rectangle(0, 20, 127, 20);
 
 			ItemKnockbackInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemKnockbackInfoView.Text = HackContext.CurrentLanguage["KnockBack"];
-			ItemKnockbackInfoView.Tip.BackColor = ItemsColor;
+			ItemKnockbackInfoView.TipLabel.BackColor = ItemsColor;
 			ItemKnockbackInfoView.Bounds = new Rectangle(128, 20, 127, 20);
 
 
 			ItemShootInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemShootInfoView.Text = HackContext.CurrentLanguage["Shoot"];
-			ItemShootInfoView.Tip.BackColor = ItemsColor;
+			ItemShootInfoView.TipLabel.BackColor = ItemsColor;
 			ItemShootInfoView.Bounds = new Rectangle(0, 40, 127, 20);
 
 			ItemShootSpeedInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemShootSpeedInfoView.Text = HackContext.CurrentLanguage["ShootSpeed"];
-			ItemShootSpeedInfoView.Tip.BackColor = ItemsColor;
+			ItemShootSpeedInfoView.TipLabel.BackColor = ItemsColor;
 			ItemShootSpeedInfoView.Bounds = new Rectangle(128, 40, 127, 20);
 
 
 			ItemUseTimeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemUseTimeInfoView.Text = HackContext.CurrentLanguage["UseTime"];
-			ItemUseTimeInfoView.Tip.BackColor = ItemsColor;
+			ItemUseTimeInfoView.TipLabel.BackColor = ItemsColor;
 			ItemUseTimeInfoView.Bounds = new Rectangle(0, 60, 127, 20);
 
 			ItemUseAnimationInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemUseAnimationInfoView.Text = HackContext.CurrentLanguage["UseAnimation"];
-			ItemUseAnimationInfoView.Tip.BackColor = ItemsColor;
+			ItemUseAnimationInfoView.TipLabel.BackColor = ItemsColor;
 			ItemUseAnimationInfoView.Bounds = new Rectangle(128, 60, 127, 20);
 
 
 			ItemHealLifeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemHealLifeInfoView.Text = HackContext.CurrentLanguage["HealLife"];
-			ItemHealLifeInfoView.Tip.BackColor = ItemsColor;
+			ItemHealLifeInfoView.TipLabel.BackColor = ItemsColor;
 			ItemHealLifeInfoView.Bounds = new Rectangle(0, 80, 127, 20);
 
 			ItemHealManaInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemHealManaInfoView.Text = HackContext.CurrentLanguage["HealMana"];
-			ItemHealManaInfoView.Tip.BackColor = ItemsColor;
+			ItemHealManaInfoView.TipLabel.BackColor = ItemsColor;
 			ItemHealManaInfoView.Bounds = new Rectangle(128, 80, 127, 20);
 
 
 			ItemCreateTileInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemCreateTileInfoView.Text = HackContext.CurrentLanguage["CreateTile"];
-			ItemCreateTileInfoView.Tip.BackColor = ItemsColor;
+			ItemCreateTileInfoView.TipLabel.BackColor = ItemsColor;
 			ItemCreateTileInfoView.Bounds = new Rectangle(0, 100, 127, 20);
 
 			ItemPlaceStyleInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemPlaceStyleInfoView.Text = HackContext.CurrentLanguage["PlaceStyle"];
-			ItemPlaceStyleInfoView.Tip.BackColor = ItemsColor;
+			ItemPlaceStyleInfoView.TipLabel.BackColor = ItemsColor;
 			ItemPlaceStyleInfoView.Bounds = new Rectangle(128, 100, 127, 20);
 
 
 			ItemCreateWallInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemCreateWallInfoView.Text = HackContext.CurrentLanguage["CreateWall"];
-			ItemCreateWallInfoView.Tip.BackColor = ItemsColor;
+			ItemCreateWallInfoView.TipLabel.BackColor = ItemsColor;
 			ItemCreateWallInfoView.Bounds = new Rectangle(0, 120, 127, 20);
 
 			ItemTileBoostInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemTileBoostInfoView.Text = HackContext.CurrentLanguage["TileBoost"];
-			ItemTileBoostInfoView.Tip.BackColor = ItemsColor;
+			ItemTileBoostInfoView.TipLabel.BackColor = ItemsColor;
 			ItemTileBoostInfoView.Bounds = new Rectangle(128, 120, 127, 20);
 
 
 			ItemBuffTypeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemBuffTypeInfoView.Text = HackContext.CurrentLanguage["Buff"];
-			ItemBuffTypeInfoView.Tip.BackColor = ItemsColor;
+			ItemBuffTypeInfoView.TipLabel.BackColor = ItemsColor;
 			ItemBuffTypeInfoView.Bounds = new Rectangle(0, 140, 127, 20);
 
 			ItemBuffTimeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemBuffTimeInfoView.Text = HackContext.CurrentLanguage["BuffTime"];
-			ItemBuffTimeInfoView.Tip.BackColor = ItemsColor;
+			ItemBuffTimeInfoView.TipLabel.BackColor = ItemsColor;
 			ItemBuffTimeInfoView.Bounds = new Rectangle(128, 140, 127, 20);
 
 
 			ItemManaConsumeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemManaConsumeInfoView.Text = HackContext.CurrentLanguage["ManaConsume"];
-			ItemManaConsumeInfoView.Tip.BackColor = ItemsColor;
+			ItemManaConsumeInfoView.TipLabel.BackColor = ItemsColor;
 			ItemManaConsumeInfoView.Bounds = new Rectangle(0, 160, 127, 20);
 
 			ItemBaitInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 60);
 			ItemBaitInfoView.Text = HackContext.CurrentLanguage["Bait"];
-			ItemBaitInfoView.Tip.BackColor = ItemsColor;
+			ItemBaitInfoView.TipLabel.BackColor = ItemsColor;
 			ItemBaitInfoView.Bounds = new Rectangle(128, 160, 127, 20);
 
 
@@ -172,14 +172,14 @@ namespace QTRHacker.Wiki.Item
 			ItemPropertiesInfoViewContent.Controls.Add(ItemManaConsumeInfoView);
 			ItemPropertiesInfoViewContent.Controls.Add(ItemBaitInfoView);
 			ItemPropertiesInfoView.Text = HackContext.CurrentLanguage["Properties"];
-			ItemPropertiesInfoView.Tip.BackColor = ItemsColor;
+			ItemPropertiesInfoView.TipLabel.BackColor = ItemsColor;
 			ItemPropertiesInfoView.Bounds = new Rectangle(5, 105, 255, 10 * 20);
 
 
 
 			ItemDescription2InfoView = new InfoView(new TextBox() { Multiline = true }, InfoView.TipDock.Left);
 			ItemDescription2InfoView.Text = HackContext.CurrentLanguage["Description"];
-			ItemDescription2InfoView.Tip.BackColor = ItemsColor;
+			ItemDescription2InfoView.TipLabel.BackColor = ItemsColor;
 			ItemDescription2InfoView.Bounds = new Rectangle(5, 320, 255, 80);
 
 			Controls.Add(ItemIcon2InfoView);
