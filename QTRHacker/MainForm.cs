@@ -82,7 +82,7 @@ namespace QTRHacker
 
 			MainPanel = new Panel();
 			MainPanel.BackColor = Color.FromArgb(30, 30, 30);
-			MainPanel.Bounds = new Rectangle(2, 30, this.Width - 4, this.Height - 32);
+			MainPanel.Bounds = new Rectangle(2, 30, Width - 4, Height - 32);
 			Controls.Add(MainPanel);
 
 			MinButton = new PictureBox();

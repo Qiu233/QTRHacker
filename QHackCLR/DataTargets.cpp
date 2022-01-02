@@ -31,8 +31,8 @@ namespace QHackCLR {
 					versionBuilder->Add(gcnew ClrInfo(this, flavor, UIntPtr(module), dacPath));
 				}
 			}
-			delete nameBuilder;
-			delete buffer;
+			delete[] nameBuilder;
+			delete[] buffer;
 			ClrVersions = ImmutableArray::ToImmutableArray(versionBuilder);
 		}
 		DataTarget::~DataTarget() {

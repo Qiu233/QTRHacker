@@ -85,7 +85,8 @@ namespace QHackCLR {
 		DacLibrary::DacLibrary(DataTargets::DataTarget^ dataTarget, System::String^ dacPath, System::UInt64 runtimeBase) {
 			pin_ptr<const wchar_t> _dacPath = PtrToStringChars(dacPath);
 			HMODULE dac = LoadLibraryW(_dacPath);
-
+			if (dac == nullptr)
+				throw gcnew Exception("Failure loading DAC: LoadLibraryW failed when loading file: \"" + dacPath + "\"");
 			FARPROC addr = GetProcAddress(dac, "CLRDataCreateInstance");
 			if (addr == 0)
 				throw gcnew Exception("Failed to obtain Dac CLRDataCreateInstance");
@@ -153,7 +154,9 @@ namespace QHackCLR {
 			}
 
 			HANDLE thread = OpenThread(THREAD_ALL_ACCESS, true, threadID);
-			if (thread == (HANDLE)(-1) || thread == 0)
+			if (thread == 0)
+				return E_FAIL;
+			if (thread == (HANDLE)(-1))
 			{
 				CloseHandle(thread);
 				return E_FAIL;

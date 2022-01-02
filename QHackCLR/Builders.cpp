@@ -101,7 +101,7 @@ namespace QHackCLR {
 			wchar_t* buffer = new wchar_t[needed];
 			import->GetFieldProps(token, nullptr, buffer, needed, &needed, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
 			name = gcnew String(buffer);
-			delete buffer;
+			delete[] buffer;
 			return true;
 		}
 
