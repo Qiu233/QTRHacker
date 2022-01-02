@@ -29,7 +29,7 @@ namespace QTRHacker.PlayerEditor
 			public override Point Position(int index)
 				=> new Point(index % 10 * (SlotsWidth + SlotsGap), (int)Math.Floor((double)(index / 10)) * (SlotsWidth + SlotsGap));
 		}
-		public FlowItemSlotsEditor(GameContext ctx, Form parent, Player player, GameObjectArray<Item> slots, string title, bool editable, int count) : base(ctx, parent, player, title, editable, count)
+		public FlowItemSlotsEditor(GameContext ctx, Player player, GameObjectArray<Item> slots, string title, bool editable, int count) : base(ctx, player, title, editable, count)
 		{
 			SlotsPanel.SlotsLayout.SourceSlots = slots;
 		}

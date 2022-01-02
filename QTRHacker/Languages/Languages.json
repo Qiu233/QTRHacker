@@ -226,7 +226,8 @@
     "AddToNPCSpecify": "Add NPCs to game",
     "AddNPC": "Add NPC",
     "CheckUpdate": "Check Update",
-    "HomePage": "Home Page"
+    "HomePage": "Home Page",
+    "None":  "None"
   },
   "zh-CN": {
     "Basic": "基础功能",
@@ -455,6 +456,7 @@
     "AddToNPCSpecify": "添加多个到游戏",
     "AddNPC": "添加NPC",
     "CheckUpdate": "检查更新",
-    "HomePage": "主页"
+    "HomePage": "主页",
+    "None": "无"
   }
 }

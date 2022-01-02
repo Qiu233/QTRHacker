@@ -47,13 +47,13 @@ namespace QTRHacker.PlayerEditor
 				Bounds = new Rectangle(0, 31, 1005, 360),
 				ForeColor = GlobalColors.TipForeColor
 			};
-			Tabs.Controls.Add(new PlayerEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
-			Tabs.Controls.Add(new InvEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
-			Tabs.Controls.Add(new ArmorEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
-			Tabs.Controls.Add(new PiggyBankEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
-			Tabs.Controls.Add(new SafeEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
-			Tabs.Controls.Add(new VoidVaultEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
-			Tabs.Controls.Add(new ForgeEditor(HackContext.GameContext, this, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new PlayerEditor(TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new InvEditor(HackContext.GameContext, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new ArmorEditor(HackContext.GameContext, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new PiggyBankEditor(HackContext.GameContext, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new SafeEditor(HackContext.GameContext, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new VoidVaultEditor(HackContext.GameContext, TargetPlayer, Editable) { BackColor = Tabs.BColor });
+			Tabs.Controls.Add(new ForgeEditor(HackContext.GameContext, TargetPlayer, Editable) { BackColor = Tabs.BColor });
 			Controls.Add(Tabs);
 		}
 		protected override void OnMouseDown(MouseEventArgs e)

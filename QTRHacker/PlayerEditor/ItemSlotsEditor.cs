@@ -35,10 +35,6 @@ namespace QTRHacker.PlayerEditor
 		{
 			get;
 		}
-		public Form ParentForm
-		{
-			get;
-		}
 		public Player TargetPlayer
 		{
 			get;
@@ -68,10 +64,9 @@ namespace QTRHacker.PlayerEditor
 
 		protected readonly Button ButtonConfirm, ButtonRefresh, ButtonInitItem;
 		protected readonly MButtonStrip ButtonStrip;
-		public ItemSlotsEditor(GameContext Context, Form ParentForm, Player TargetPlayer, string Title, bool Editable, int Count)
+		public ItemSlotsEditor(GameContext Context, Player TargetPlayer, string Title, bool Editable, int Count)
 		{
 			this.Context = Context;
-			this.ParentForm = ParentForm;
 			this.TargetPlayer = TargetPlayer;
 			this.Editable = Editable;
 

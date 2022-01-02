@@ -17,6 +17,8 @@ namespace QTRHacker
 			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+
+			Application.Idle += (s, e) => { HackContext.DispatchGlobalUpdate(); };
 			Application.Run(new MainForm
 			{
 				StartPosition = FormStartPosition.CenterScreen

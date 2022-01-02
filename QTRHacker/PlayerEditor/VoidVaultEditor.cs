@@ -13,8 +13,8 @@ namespace QTRHacker.PlayerEditor
 {
 	public class VoidVaultEditor : FlowItemSlotsEditor
 	{
-		public VoidVaultEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
-			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank4.Item, HackContext.CurrentLanguage["VoidVault"], Editable, TargetPlayer.Bank4.Item.Length)
+		public VoidVaultEditor(GameContext Context, Player TargetPlayer, bool Editable)
+			: base(Context, TargetPlayer, TargetPlayer.Bank4.Item, HackContext.CurrentLanguage["VoidVault"], Editable, TargetPlayer.Bank4.Item.Length)
 		{
 			SlotsPanel.Location = new Point(0, 30);
 		}

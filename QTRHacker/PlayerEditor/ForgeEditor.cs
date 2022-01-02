@@ -13,8 +13,8 @@ namespace QTRHacker.PlayerEditor
 {
 	public class ForgeEditor : FlowItemSlotsEditor
 	{
-		public ForgeEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
-			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank3.Item, HackContext.CurrentLanguage["Forge"], Editable, TargetPlayer.Bank3.Item.Length)
+		public ForgeEditor(GameContext Context, Player TargetPlayer, bool Editable)
+			: base(Context, TargetPlayer, TargetPlayer.Bank3.Item, HackContext.CurrentLanguage["Forge"], Editable, TargetPlayer.Bank3.Item.Length)
 		{
 			SlotsPanel.Location = new Point(0, 30);
 		}

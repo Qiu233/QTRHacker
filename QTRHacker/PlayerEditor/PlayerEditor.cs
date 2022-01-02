@@ -20,18 +20,14 @@ namespace QTRHacker.PlayerEditor
 {
 	public class PlayerEditor : TabPage
 	{
-		private readonly GameContext Context;
-		private readonly Form ParentForm;
 		private readonly PlayerView MainPlayerView;
 		private readonly Panel PropertiesSelectPanel;
 		private readonly ColorSelectControl HairColorControl, SkinColorControl, EyeColorControl, ShirtColorControl, UnderShirtColorControl, PantsColorControl, ShoesColorControl;
 		private readonly NumericUpDown HairStyleControl;
 		private readonly TextBox ManaTextBox, HealthTextBox;
 		private readonly Player TargetPlayer;
-		public PlayerEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
+		public PlayerEditor(Player TargetPlayer, bool Editable)
 		{
-			this.Context = Context;
-			this.ParentForm = ParentForm;
 			this.TargetPlayer = TargetPlayer;
 			Text = HackContext.CurrentLanguage["Character"];
 
@@ -115,7 +111,7 @@ namespace QTRHacker.PlayerEditor
 				Size = new Size(100, 20),
 				BorderStyle = BorderStyle.FixedSingle,
 				BackColor = Color.FromArgb(120, 120, 120),
-				Text = Context.MyPlayer.StatLifeMax.ToString(),
+				Text = HackContext.GameContext.MyPlayer.StatLifeMax.ToString(),
 				Enabled = Editable
 			};
 			HealthTextBox.KeyPress += delegate (object sender, KeyPressEventArgs e)
@@ -139,7 +135,7 @@ namespace QTRHacker.PlayerEditor
 				Size = new Size(100, 20),
 				BorderStyle = BorderStyle.FixedSingle,
 				BackColor = Color.FromArgb(120, 120, 120),
-				Text = Context.MyPlayer.StatManaMax.ToString(),
+				Text = HackContext.GameContext.MyPlayer.StatManaMax.ToString(),
 				Enabled = Editable
 			};
 			ManaTextBox.KeyPress += delegate (object sender, KeyPressEventArgs e)
@@ -466,10 +462,9 @@ namespace QTRHacker.PlayerEditor
 				new PlayerModelPart(BodyTextures[5], 5, new Microsoft.Xna.Framework.Rectangle(80, 117, 40, 51)),
 			};
 
-
-			Application.Idle += OnIdle;
+			HackContext.RegisterGlobalUpdate(Render);
 		}
-		private void OnIdle(object sender, EventArgs e)
+		private void Render()
 		{
 			if (__timer >= 1000000)
 				__timer = 0;
@@ -480,7 +475,8 @@ namespace QTRHacker.PlayerEditor
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
-			Application.Idle -= OnIdle;
+			if (disposing)
+				HackContext.UnregisterGlobalUpdate(Render);
 		}
 
 

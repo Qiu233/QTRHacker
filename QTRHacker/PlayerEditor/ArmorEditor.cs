@@ -61,8 +61,8 @@ namespace QTRHacker.PlayerEditor
 				}
 			}
 		}
-		public ArmorEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable) :
-			base(Context, ParentForm, TargetPlayer, HackContext.CurrentLanguage["Armor"], Editable,
+		public ArmorEditor(GameContext Context, Player TargetPlayer, bool Editable) :
+			base(Context, TargetPlayer, HackContext.CurrentLanguage["Armor"], Editable,
 				Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT)
 		{
 			SlotsPanel.SlotsLayout.Player = TargetPlayer;

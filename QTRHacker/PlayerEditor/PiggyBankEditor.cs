@@ -18,8 +18,8 @@ namespace QTRHacker.PlayerEditor
 {
 	public class PiggyBankEditor : FlowItemSlotsEditor
 	{
-		public PiggyBankEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
-			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank.Item, HackContext.CurrentLanguage["PiggyBank"], Editable, TargetPlayer.Bank.Item.Length)
+		public PiggyBankEditor(GameContext Context, Player TargetPlayer, bool Editable)
+			: base(Context, TargetPlayer, TargetPlayer.Bank.Item, HackContext.CurrentLanguage["PiggyBank"], Editable, TargetPlayer.Bank.Item.Length)
 		{
 			SlotsPanel.Location = new Point(0, 30);
 		}

@@ -71,7 +71,7 @@ namespace QTRHacker.Wiki.NPC
 				State = 0;
 		}
 
-		private void OnIdle(object sender, EventArgs e)
+		private void Render()
 		{
 			if (__timer >= 1000000)
 				__timer = 0;
@@ -82,7 +82,8 @@ namespace QTRHacker.Wiki.NPC
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
-			Application.Idle -= OnIdle;
+			if (disposing)
+				HackContext.UnregisterGlobalUpdate(Render);
 		}
 
 		protected override void Initialize()
@@ -104,7 +105,7 @@ namespace QTRHacker.Wiki.NPC
 				}
 			}
 
-			Application.Idle += OnIdle;
+			HackContext.RegisterGlobalUpdate(Render);
 			State = 0;
 			StateTimer.Start();
 		}

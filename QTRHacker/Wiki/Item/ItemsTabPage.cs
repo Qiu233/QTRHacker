@@ -279,6 +279,23 @@ namespace QTRHacker.Wiki.Item
 
 		private static string GetItemType(ItemData j)
 		{
+			/*
+			 
+			List<string> keys = new();
+			if (j.CreateTile != -1) keys.Add(HackContext.CurrentLanguage["Blocks"]);
+			if (j.CreateWall != -1) keys.Add(HackContext.CurrentLanguage["Walls"]);
+			if (j.QuestItem) keys.Add(HackContext.CurrentLanguage["Quest"]);
+			if (j.HeadSlot != -1) keys.Add(HackContext.CurrentLanguage["Head"]);
+			if (j.BodySlot != -1) keys.Add(HackContext.CurrentLanguage["Body"]);
+			if (j.LegSlot != -1) keys.Add(HackContext.CurrentLanguage["Leg"]);
+			if (j.Accessory) keys.Add(HackContext.CurrentLanguage["Accessory"]);
+			if (j.Melee) keys.Add(HackContext.CurrentLanguage["Melee"]);
+			if (j.Ranged) keys.Add(HackContext.CurrentLanguage["Ranged"]);
+			if (j.Magic) keys.Add(HackContext.CurrentLanguage["Magic"]);
+			if ((j.Summon || j.Sentry)) keys.Add(HackContext.CurrentLanguage["Summon"]);
+			if (j.BuffType != 0) keys.Add(HackContext.CurrentLanguage["Buff"]);
+			if (j.Consumable) keys.Add(HackContext.CurrentLanguage["Consumable"]);
+*/
 			if (j.CreateTile != -1) return HackContext.CurrentLanguage["Blocks"];
 			if (j.CreateWall != -1) return HackContext.CurrentLanguage["Walls"];
 			if (j.QuestItem) return HackContext.CurrentLanguage["Quest"];
@@ -292,7 +309,7 @@ namespace QTRHacker.Wiki.Item
 			if ((j.Summon || j.Sentry)) return HackContext.CurrentLanguage["Summon"];
 			if (j.BuffType != 0) return HackContext.CurrentLanguage["Buff"];
 			if (j.Consumable) return HackContext.CurrentLanguage["Consumable"];
-			return "无";
+			return HackContext.CurrentLanguage["None"];
 		}
 
 		public void ReverseCheck()

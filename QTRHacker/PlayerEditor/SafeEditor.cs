@@ -13,8 +13,8 @@ namespace QTRHacker.PlayerEditor
 {
 	public class SafeEditor : FlowItemSlotsEditor
 	{
-		public SafeEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable)
-			: base(Context, ParentForm, TargetPlayer, TargetPlayer.Bank2.Item, HackContext.CurrentLanguage["Safe"], Editable, TargetPlayer.Bank2.Item.Length)
+		public SafeEditor(GameContext Context, Player TargetPlayer, bool Editable)
+			: base(Context, TargetPlayer, TargetPlayer.Bank2.Item, HackContext.CurrentLanguage["Safe"], Editable, TargetPlayer.Bank2.Item.Length)
 		{
 			SlotsPanel.Location = new Point(0, 30);
 		}

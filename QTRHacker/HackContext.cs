@@ -32,6 +32,25 @@ namespace QTRHacker
 
 		public static readonly string[] PATHS = new string[] { PATH_CONTENT, PATH_INVS, PATH_CONFIGS, PATH_PROJS, PATH_SCRIPTS, PATH_SCHES, PATH_CHATTEMPLATES, PATH_RAINBOWFONTS };
 
+		private static readonly object _lock_GUE = new object();
+		private static event Action GlobalUpdateEvent;
+
+		public static void DispatchGlobalUpdate() => GlobalUpdateEvent?.Invoke();
+		public static void RegisterGlobalUpdate(Action action)
+		{
+			lock (_lock_GUE)
+			{
+				GlobalUpdateEvent += action;
+			}
+		}
+		public static void UnregisterGlobalUpdate(Action action)
+		{
+			lock (_lock_GUE)
+			{
+				GlobalUpdateEvent -= action;
+			}
+		}
+
 		public static Languages.Language CurrentLanguage
 		{
 			get;

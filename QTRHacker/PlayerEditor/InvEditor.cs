@@ -19,10 +19,9 @@ namespace QTRHacker.PlayerEditor
 {
 	public class InvEditor : FlowItemSlotsEditor
 	{
-		public InvEditor(GameContext Context, Form ParentForm, Player TargetPlayer, bool Editable) :
-			base(Context, ParentForm, TargetPlayer, TargetPlayer.Inventory, HackContext.CurrentLanguage["Inventory"], Editable, Player.ITEM_MAX_COUNT - 9)
+		public InvEditor(GameContext Context, Player TargetPlayer, bool Editable) :
+			base(Context, TargetPlayer, TargetPlayer.Inventory, HackContext.CurrentLanguage["Inventory"], Editable, Player.ITEM_MAX_COUNT - 9)
 		{
-
 			Button SaveInv = ButtonStrip.AddButton(HackContext.CurrentLanguage["Save"]);
 			SaveInv.Click += (sender, e) =>
 			{
@@ -103,9 +102,10 @@ namespace QTRHacker.PlayerEditor
 		}
 		public void LoadInventory(string name)
 		{
-			new ProgressPopupForm(ParentForm.Width / 4 * 3,
+			var form = FindForm();
+			new ProgressPopupForm(form.Width / 4 * 3,
 				Player.ITEM_MAX_COUNT + Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT, "Loading Inventory").
-				Run(ParentForm, (tick) =>
+				Run(form, (tick) =>
 				{
 					int j = 0;
 					var player = TargetPlayer;
