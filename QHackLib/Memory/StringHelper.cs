@@ -12,7 +12,7 @@ namespace QHackLib.Memory
 		/// For unicode string
 		/// </summary>
 		/// <param name="str"></param>
-		public static void WriteWCHARArray(this MemoryStream stream, string str)
+		public static void WriteWCHARArray(this RemoteMemoryStream stream, string str)
 		{
 			byte[] data = Encoding.Unicode.GetBytes(str);
 			stream.Write(data, (uint)data.Length);
@@ -22,14 +22,14 @@ namespace QHackLib.Memory
 		/// For ASCII string
 		/// </summary>
 		/// <param name="str"></param>
-		public static void WriteCHARArray(this MemoryStream stream, string str)
+		public static void WriteCHARArray(this RemoteMemoryStream stream, string str)
 		{
 			byte[] data = Encoding.ASCII.GetBytes(str);
 			stream.Write(data, (uint)data.Length);
 			stream.Write<byte>(0);
 		}
 
-		public static void FakeManagedString(this MemoryStream stream, string str)
+		public static void FakeManagedString(this RemoteMemoryStream stream, string str)
 		{
 			stream.Write<nuint>(0);//sync block
 			stream.Write(stream.Context.Runtime.Heap.StringType.ClrHandle);//handle

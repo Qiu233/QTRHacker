@@ -76,7 +76,7 @@ namespace QTRHacker.Functions.ProjectileImage
 		public void Emit(GameContext context, MPointF Location)
 		{
 			using MemoryAllocation alloc = new(context.HContext, 32 * (uint)Projs.Count + 64);
-			QHackLib.Memory.MemoryStream stream = new(context.HContext, alloc.AllocationBase, 0);
+			QHackLib.Memory.RemoteMemoryStream stream = new(context.HContext, alloc.AllocationBase, 0);
 			stream.Write<long>(Projs.Count);//8 bytes
 
 			byte[] bs = new byte[12];

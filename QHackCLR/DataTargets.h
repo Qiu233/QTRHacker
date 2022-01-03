@@ -32,24 +32,6 @@ namespace QHackCLR {
 			}
 		};
 
-		public ref class ProcessDataReader {
-		private:
-			HANDLE m_Handle;
-		public:
-			ProcessDataReader(HANDLE handle) {
-				this->m_Handle = handle;
-			}
-			HRESULT ReadVirtual(void* addr, void* buffer, __int32 bytesRequested, SIZE_T* bytesRead) {
-				if (ReadProcessMemory(m_Handle, addr, buffer, bytesRequested, bytesRead))
-					return S_OK;
-				return E_FAIL;
-			}
-			HRESULT WriteVirtual(void* addr, void* buffer, __int32 bytesRequested, SIZE_T* bytesWritten) {
-				if (WriteProcessMemory(m_Handle, addr, buffer, bytesRequested, bytesWritten))
-					return S_OK;
-				return E_FAIL;
-			}
-		};
 
 
 		public ref class ClrInfo

@@ -29,6 +29,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="$(SolutionDir)Content\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Languages\Languages.json" />
     <None Remove="Res\ContentImage\BuffImage.bin" />
     <None Remove="Res\ContentImage\ItemImage.bin" />

@@ -36,13 +36,13 @@ namespace QHackLib.Memory
 			AllocationSize = size;
 		}
 
-		public MemorySpan this[Range r]
+		public RemoteMemorySpan this[Range r]
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get
 			{
 				(int off, int len) = r.GetOffsetAndLength((int)AllocationSize);
-				return new MemorySpan(Context, AllocationBase + (uint)off, len);
+				return new RemoteMemorySpan(Context, AllocationBase + (uint)off, len);
 			}
 		}
 

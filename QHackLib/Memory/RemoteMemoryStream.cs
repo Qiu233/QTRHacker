@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QHackLib.Memory
 {
-	public unsafe class MemoryStream
+	public unsafe class RemoteMemoryStream
 	{
 		public QHackContext Context { get; }
 		public nuint Base { get; }
@@ -22,7 +22,7 @@ namespace QHackLib.Memory
 			get => Base + _Position;
 		}
 
-		public MemoryStream(QHackContext ctx, nuint @base, uint pos)
+		public RemoteMemoryStream(QHackContext ctx, nuint @base, uint pos)
 		{
 			Context = ctx;
 			Base = @base;

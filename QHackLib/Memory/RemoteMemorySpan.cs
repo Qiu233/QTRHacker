@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QHackLib.Memory
 {
-	public unsafe readonly ref struct MemorySpan
+	public unsafe readonly ref struct RemoteMemorySpan
 	{
 		public QHackContext Context { get; }
 		public nuint Base { get; }
@@ -19,7 +19,7 @@ namespace QHackLib.Memory
 		/// <param name="ctx"></param>
 		/// <param name="base"></param>
 		/// <param name="size"></param>
-		public MemorySpan(QHackContext ctx, nuint @base, int size)
+		public RemoteMemorySpan(QHackContext ctx, nuint @base, int size)
 		{
 			Context = ctx;
 			Base = @base;
@@ -31,17 +31,17 @@ namespace QHackLib.Memory
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		public MemorySpan this[Range r]
+		public RemoteMemorySpan this[Range r]
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get
 			{
 				(int offset, int len) = r.GetOffsetAndLength(Size);
-				return new MemorySpan(Context, Base + (uint)offset, len);
+				return new RemoteMemorySpan(Context, Base + (uint)offset, len);
 			}
 		}
 
-		public MemoryStream GetStream(uint offset = 0) => new(Context, Base, offset);
+		public RemoteMemoryStream GetStream(uint offset = 0) => new(Context, Base, offset);
 
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

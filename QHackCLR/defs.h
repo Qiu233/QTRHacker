@@ -24,6 +24,7 @@ namespace QHackCLR {
 		ref class SOSHelpers;
 	}
 	namespace DataTargets {
+		interface class IDataReader;
 		ref class DataAccess;
 		enum class ClrFlavor;
 		ref class ClrInfo;
