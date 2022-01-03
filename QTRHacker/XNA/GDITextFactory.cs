@@ -69,7 +69,6 @@ namespace QTRHacker.XNA
 			var drawRect = new System.Drawing.Rectangle(ScanX, ScanY, fontWidth, fontHeight);
 			Graphics.DrawString(s, Font, System.Drawing.Brushes.White, drawRect, System.Drawing.StringFormat.GenericTypographic);
 			Graphics.Flush(System.Drawing.Drawing2D.FlushIntention.Sync);
-			BMP.Save("a.png");
 
 			using var bmp = BMP.Clone(drawRect, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 			var data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
