@@ -26,12 +26,12 @@ namespace QTRHacker.PlayerEditor
 
 			public override Item this[int index]
 				=> SourceSlots[index];
-			public override Point Position(int index)
-				=> new Point(index % 10 * (SlotsWidth + SlotsGap), (int)Math.Floor((double)(index / 10)) * (SlotsWidth + SlotsGap));
+			public override Point GetPosition(int index)
+				=> new Point(index % 10 * (SlotWidth + SlotGap), (int)Math.Floor((double)(index / 10)) * (SlotWidth + SlotGap));
 		}
 		public FlowItemSlotsEditor(GameContext ctx, Player player, GameObjectArray<Item> slots, string title, bool editable, int count) : base(ctx, player, title, editable, count)
 		{
-			SlotsPanel.SlotsLayout.SourceSlots = slots;
+			SlotsPanel.SLayout.SourceSlots = slots;
 		}
 	}
 }

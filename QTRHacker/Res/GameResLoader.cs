@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace QTRHacker.Res
 {
-	public class GameResLoader
+	public static class GameResLoader
 	{
 		public const string File_Prefix = "QTRHacker.Res.Game.Prefix_en.txt";
 		public const string File_Pet = "QTRHacker.Res.Game.Pet_en.txt";

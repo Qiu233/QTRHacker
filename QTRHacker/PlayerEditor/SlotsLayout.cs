@@ -12,9 +12,9 @@ namespace QTRHacker.PlayerEditor
 {
 	public abstract class SlotsLayout
 	{
-		public const int SlotsWidth = 50;
-		public const int SlotsGap = 5;
-		public abstract Point Position(int index);
+		public const int SlotWidth = 50;
+		public const int SlotGap = 5;
+		public abstract Point GetPosition(int index);
 		public abstract Item this[int index]
 		{
 			get;

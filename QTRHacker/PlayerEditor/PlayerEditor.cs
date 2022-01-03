@@ -476,8 +476,13 @@ namespace QTRHacker.PlayerEditor
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
-			if (disposing)
-				HackContext.UnregisterGlobalUpdate(Render);
+			if (!disposing)
+				return;
+			HackContext.UnregisterGlobalUpdate(Render);
+			foreach (var t in BodyTextures)
+				t?.Dispose();
+			foreach (var t in HairTextures)
+				t?.Dispose();
 		}
 
 

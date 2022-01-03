@@ -25,13 +25,13 @@ namespace QTRHacker.PlayerEditor
 				get;
 				set;
 			}
-			public override Point Position(int index)
+			public override Point GetPosition(int index)
 			{
 				if (index >= 0 && index < Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT)
-					return new Point(index % 10 * (SlotsWidth + SlotsGap), (int)Math.Floor((double)(index / 10)) * (SlotsWidth + SlotsGap));
+					return new Point(index % 10 * (SlotWidth + SlotGap), (int)Math.Floor((double)(index / 10)) * (SlotWidth + SlotGap));
 				else if (index >= Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT
 					&& index < Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT)
-					return new Point((index + 5) % 10 * (SlotsWidth + SlotsGap), (int)Math.Floor((double)((index + 5) / 10)) * (SlotsWidth + SlotsGap));
+					return new Point((index + 5) % 10 * (SlotWidth + SlotGap), (int)Math.Floor((double)((index + 5) / 10)) * (SlotWidth + SlotGap));
 				return new Point(0, 0);
 			}
 			public ArmorSlotsLayout() : base()
@@ -65,7 +65,7 @@ namespace QTRHacker.PlayerEditor
 			base(Context, TargetPlayer, HackContext.CurrentLanguage["Armor"], Editable,
 				Player.ARMOR_MAX_COUNT + Player.DYE_MAX_COUNT + Player.MISC_MAX_COUNT + Player.MISCDYE_MAX_COUNT)
 		{
-			SlotsPanel.SlotsLayout.Player = TargetPlayer;
+			SlotsPanel.SLayout.Player = TargetPlayer;
 		}
 	}
 }

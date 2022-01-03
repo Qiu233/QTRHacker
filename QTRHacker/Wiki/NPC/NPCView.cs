@@ -20,7 +20,7 @@ namespace QTRHacker.Wiki.NPC
 		public Dictionary<int, Texture2D> Frames
 		{
 			get;
-		}
+		} = new Dictionary<int, Texture2D>();
 		public Dictionary<int, List<Microsoft.Xna.Framework.Rectangle>> FramesPlayList
 		{
 			get;
@@ -57,7 +57,6 @@ namespace QTRHacker.Wiki.NPC
 			StateTimer = new System.Timers.Timer(100);
 			StateTimer.Elapsed += StateTimer_Tick;
 
-			Frames = new Dictionary<int, Texture2D>();
 			FramesPlayList = new Dictionary<int, List<Microsoft.Xna.Framework.Rectangle>>();
 		}
 
@@ -73,6 +72,10 @@ namespace QTRHacker.Wiki.NPC
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
+			if (!disposing)
+				return;
+			foreach (var texture in Frames.Values)
+				texture?.Dispose();
 		}
 
 		protected override void Initialize()
