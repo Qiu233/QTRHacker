@@ -23,7 +23,7 @@ namespace QTRHacker.Functions.GameObjects
 		internal GameObjectArrayEnumerator(IGameObjectArray<T> data) => Data = data;
 		public bool MoveNext() => ++Index < Data.Length;
 		public void Reset() => Index = -1;
-		public void Dispose() { }
+		public void Dispose() { GC.SuppressFinalize(this); }
 	}
 	/// <summary>
 	/// For array of ref types.
@@ -58,6 +58,23 @@ namespace QTRHacker.Functions.GameObjects
 		}
 		public GameObjectArrayV(GameContext ctx, HackObject obj) : base(ctx, obj)
 		{
+		}
+
+		public T[] GetElements(int index, int length)
+		{
+			var obj = TypedInternalObject.InternalEntity as QHackCLR.Common.ClrObject;
+			nuint addr = obj.GetArrayElementAddress(new int[] { index });
+			var array = new T[length];
+			Context.HContext.DataAccess.Read(addr, array, (uint)length);
+			return array;
+		}
+		public T[] GetAllElements()
+		{
+			var obj = TypedInternalObject.InternalEntity as QHackCLR.Common.ClrObject;
+			nuint addr = obj.GetElementsBase();
+			var array = new T[Length];
+			Context.HContext.DataAccess.Read(addr, array, (uint)array.Length);
+			return array;
 		}
 
 		public IEnumerator<T> GetEnumerator() => new GameObjectArrayEnumerator<T>(this);

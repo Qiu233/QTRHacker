@@ -22,7 +22,7 @@ namespace QTRHacker.Controls
 			set
 			{
 				_expanded = value;
-				this.Width = _expanded ? ExpandedWidth : NonExpandedWidth;
+				Width = _expanded ? ExpandedWidth : NonExpandedWidth;
 			}
 		}
 		public PageGroup()
@@ -30,13 +30,12 @@ namespace QTRHacker.Controls
 			BackColor = Color.FromArgb(255, 74, 74, 74);
 		}
 
-		public ImageButton AddButton(string Text, Image Icon, Control Content, Action<object, EventArgs> OnSelected)
+		public ImageButtonS AddButton(string Text, Image icon, Action<object, EventArgs> OnSelected)
 		{
-			ImageButton b = new ImageButton();
+			ImageButtonS b = new ImageButtonS(icon);
 			b.Location = new Point(0, 30 * (ButtonsNumber++));
-			b.Image = Icon;
 			b.Text = Text;
-			this.Controls.Add(b);
+			Controls.Add(b);
 			b.OnSelected += OnSelected;
 			return b;
 		}

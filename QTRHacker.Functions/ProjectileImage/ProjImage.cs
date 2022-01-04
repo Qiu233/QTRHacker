@@ -118,9 +118,7 @@ namespace QTRHacker.Functions.ProjectileImage
 				}),
 				Projs.Count, true));
 			snippet.Content.Add((Instruction)"popad");
-			InlineHook.HookOnce(context.HContext, snippet,
-				context.GameModuleHelper["Terraria.Main", "DoUpdate"]).Wait();
-
+			context.RunByHookOnUpdate(snippet);
 		}
 		public void ToStream(Stream stream)
 		{

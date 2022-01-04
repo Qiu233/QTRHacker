@@ -16,23 +16,21 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 			object text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f,
 			int number5 = 0, int number6 = 0, int number7 = 0)
 		{
-			Context.RunByHookOnDoUpdate(
+			Context.RunByHookOnUpdate(
 					new HackMethod(Context.HContext,
 					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.NetMessage",
 					"Terraria.NetMessage.SendData(Int32, Int32, Int32, Terraria.Localization.NetworkText, Int32, Single, Single, Single, Int32, Int32, Int32)"))
 				.Call(null)
-				.Call(true, null, null, new object[] { msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7 }))
-				.Wait();
+				.Call(true, null, null, new object[] { msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7 }));
 		}
 		public static void SendWater(GameContext Context, int x, int y)
 		{
-			Context.RunByHookOnDoUpdate(
+			Context.RunByHookOnUpdate(
 					new HackMethod(Context.HContext,
 					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.NetMessage",
 					"Terraria.NetMessage.sendWater(Int32, Int32)"))
 				.Call(null)
-				.Call(true, null, null, new object[] { x, y }))
-				.Wait();
+				.Call(true, null, null, new object[] { x, y }));
 		}
 	}
 }

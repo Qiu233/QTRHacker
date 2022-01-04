@@ -200,7 +200,6 @@ namespace QTRHacker.Functions
 		public GameObjectArray<NPC> NPC
 			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "npc"));
 
-
 		public WorldMap Map
 			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "Map"));
 
@@ -252,10 +251,17 @@ namespace QTRHacker.Functions
 		public WorldFileData ActiveWorldFileData
 			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "ActiveWorldFileData"));
 
+		public PatchesManager Patches
+		{
+			get;
+		}
+
 		private GameContext(Process process)
 		{
 			GameProcess = process;
 			HContext = QHackContext.Create(process.Id);
+
+			Patches = new PatchesManager(this);
 
 			My_Player_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "myPlayer");
 
@@ -299,27 +305,23 @@ namespace QTRHacker.Functions
 			alloc.Write<short>(0, (uint)bs.Length);
 			RemoteThread re = RemoteThread.Create(HContext, codeToRun);
 
-			RunByHookOnDoUpdate(AssemblySnippet.StartManagedThread(
+			RunByHookOnUpdate(AssemblySnippet.StartManagedThread(
 					HContext,
 					re.CodeAddress,
-					alloc.AllocationBase)).Wait();
+					alloc.AllocationBase));
 
 			return re;
 		}
 
-		public Task<bool> RunByHookOnDoUpdate(AssemblyCode codeToRun, int timeout = 1000, uint size = 0x1000)
+		public bool RunByHookOnUpdate(AssemblyCode codeToRun, uint size = 0x1000)
 		{
-			return Task.Run(() =>
-			{
-				System.Threading.Monitor.Enter(LOCK_DOUPDATE);
-				bool v = InlineHook.HookOnce(
-						HContext, codeToRun,
-						GameModuleHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), timeout, size).Result;
-				System.Threading.Monitor.Exit(LOCK_DOUPDATE);
-				return v;
-			});
+			System.Threading.Monitor.Enter(LOCK_DOUPDATE);
+			bool v = InlineHook.HookOnce(
+					HContext, codeToRun,
+					GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update"), 1000, size);
+			System.Threading.Monitor.Exit(LOCK_DOUPDATE);
+			return v;
 		}
-
 
 		public CLRHelper GameModuleHelper => HContext.CLRHelpers.First(t
 			=> string.Equals(Path.GetFullPath(t.Key.FileName),
@@ -338,7 +340,63 @@ namespace QTRHacker.Functions
 			HContext?.Dispose();
 		}
 
-
 		public Process GameProcess { get; }
+
+
+		public void Flush()
+		{
+			HContext.Flush();
+		}
+
+		public bool LoadAssembly(string assemblyFile, string typeName)
+		{
+			using MemoryAllocation alloc = new(HContext);
+			var stream = new RemoteMemorySpan(HContext, alloc.AllocationBase, (int)alloc.AllocationSize).GetStream();
+			nuint pLibAsmStr = stream.IP; stream.WriteWCHARArray(assemblyFile);
+			nuint pTypeStr = stream.IP; stream.WriteWCHARArray(typeName);
+			nuint loadFrom = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
+				"System.Reflection.Assembly.LoadFrom(System.String)").NativeCode;
+			nuint getType = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
+				"System.Reflection.Assembly.GetType(System.String)").NativeCode;
+			nuint createInstance = HContext.BCLHelper.GetClrMethodBySignature("System.Activator",
+				"System.Activator.CreateInstance(System.Type)").NativeCode;
+
+			var thCode = AssemblySnippet.FromCode(
+				new AssemblyCode[] {
+					AssemblySnippet.FromConstructString(HContext, pLibAsmStr),
+					(Instruction)$"mov ecx,eax",
+					(Instruction)$"call {loadFrom}",
+					(Instruction)$"push eax",
+					AssemblySnippet.FromConstructString(HContext, pTypeStr),
+					(Instruction)$"mov edx,eax",
+					(Instruction)$"pop ecx",
+					(Instruction)$"call {getType}",
+					(Instruction)$"mov ecx,eax",
+					(Instruction)$"call {createInstance}",
+			});
+			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(1000);
+			Flush();
+			return result;
+		}
+
+		public bool LoadAssembly(string assemblyFile)
+		{
+			using MemoryAllocation alloc = new(HContext);
+			var stream = new RemoteMemorySpan(HContext, alloc.AllocationBase, (int)alloc.AllocationSize).GetStream();
+			stream.WriteWCHARArray(assemblyFile);
+
+			nuint loadFrom = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
+				"System.Reflection.Assembly.LoadFrom(System.String)").NativeCode;
+
+			var thCode = AssemblySnippet.FromCode(
+				new AssemblyCode[] {
+					AssemblySnippet.FromConstructString(HContext, alloc.AllocationBase),
+					(Instruction)$"mov ecx,eax",
+					(Instruction)$"call {loadFrom}",
+			});
+			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(1000);
+			Flush();
+			return result;
+		}
 	}
 }

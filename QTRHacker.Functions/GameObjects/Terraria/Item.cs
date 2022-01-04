@@ -22,14 +22,14 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 
 		public void SetDefaults(int type)
 		{
-			Context.RunByHookOnDoUpdate(TypedInternalObject.GetMethodCall("Terraria.Item.SetDefaults(Int32)")
-				.Call(true, null, null, new object[] { type })).Wait();
+			Context.RunByHookOnUpdate(TypedInternalObject.GetMethodCall("Terraria.Item.SetDefaults(Int32)")
+				.Call(true, null, null, new object[] { type }));
 		}
 
 		public void SetPrefix(int prefix)
 		{
-			Context.RunByHookOnDoUpdate(TypedInternalObject.GetMethodCall("Terraria.Item.Prefix(Int32)")
-				.Call(true, null, null, new object[] { prefix })).Wait();
+			Context.RunByHookOnUpdate(TypedInternalObject.GetMethodCall("Terraria.Item.Prefix(Int32)")
+				.Call(true, null, null, new object[] { prefix }));
 		}
 
 		/// <summary>
@@ -39,7 +39,7 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 		/// <param name="prefix"></param>
 		public void SetDefaultsAndPrefix(int type, int prefix)
 		{
-			Context.RunByHookOnDoUpdate(AssemblySnippet.FromCode(
+			Context.RunByHookOnUpdate(AssemblySnippet.FromCode(
 				new AssemblyCode[] {
 					Instruction.Create("push ecx"),
 					Instruction.Create("push edx"),
@@ -47,7 +47,7 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 					TypedInternalObject.GetMethodCall("Terraria.Item.Prefix(Int32)").Call(false, null, null, new object[] { prefix }),
 					Instruction.Create("pop edx"),
 					Instruction.Create("pop ecx")
-				})).Wait();
+				}));
 		}
 
 
@@ -56,13 +56,12 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 		{
 			using MemoryAllocation ret = new(Context.HContext);
 
-			Context.RunByHookOnDoUpdate(
+			Context.RunByHookOnUpdate(
 				new HackMethod(Context.HContext,
 					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.Item", 
 					"Terraria.Item.NewItem(Int32, Int32, Int32, Int32, Int32, Int32, Boolean, Int32, Boolean, Boolean)"))
 				.Call(null)
-				.Call(true, null, ret.AllocationBase, new object[] { X, Y, Width, Height, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup }))
-				.Wait();
+				.Call(true, null, ret.AllocationBase, new object[] { X, Y, Width, Height, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup }));
 
 			return Context.HContext.DataAccess.Read<int>(ret.AllocationBase);
 		}

@@ -29,11 +29,11 @@ namespace QTRHacker.PagePanels
 		}
 		public virtual ImageButton AddButton(Image img, string txt, Action onclick)
 		{
-			ImageButton btn = new ImageButton();
+			ImageButton btn = new ImageButton(img);
 			btn.BorderStyle = BorderStyle.FixedSingle;
-			btn.Image = img;
 			btn.Text = txt;
 			btn.Click += (s, e) => onclick();
+			btn.Size = new Size(100, 30);
 
 			btn.Location = new Point(20 + ButtonsCount % 2 * 150, 10 + ButtonsCount / 2 * 30);
 			ButtonsCount++;

@@ -143,37 +143,21 @@ namespace QHackLib.FunctionHelper
 		/// Waits to detach until the code is executed at least once.<br/>
 		/// Only available for hooks whose <see cref="HookParameters.IsOnce"/> is true.
 		/// </summary>
-		/// <param name="timeout"></param>
-		/// <returns>true if detached successfully, false if timeout is exceeded or just failed to detach</returns>
-		public async Task<bool> WaitToDetach(int timeout)
+		/// <returns>true if detached successfully</returns>
+		public bool WaitToDetach()
 		{
 			if (!Parameters.IsOnce)
 				throw new InvalidOperationException("Not a once hook.");
 			HookInfo hook = GetHookInfo();
-			var wait = Task.Run(() =>
-			  {
-				  while (Context.DataAccess.Read<int>(hook.Address_OnceFlag) != 0) { }
-				  return Detach();
-			  });
-			if (await Task.WhenAny(wait, Task.Delay(timeout)) == wait)
-				return wait.Result;
-			return false;
+			while (Context.DataAccess.Read<int>(hook.Address_OnceFlag) != 0) { }
+			return Detach();
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="timeout"></param>
-		/// <returns>true if <see cref="Dispose"/> is called, false if timeout is exceeded</returns>
-		public async Task<bool> WaitToDispose(int timeout)
+		public void WaitToDispose(int timeout)
 		{
 			HookInfo hook = GetHookInfo();
-			var wait = Task.Run(() =>
-			{
-				while (Context.DataAccess.Read<int>(hook.Address_SafeFreeFlag) != 0) { }
-				Dispose();
-			});
-			return await Task.WhenAny(wait, Task.Delay(timeout)) == wait;
+			while (Context.DataAccess.Read<int>(hook.Address_SafeFreeFlag) != 0) { }
+			Dispose();
 		}
 
 		/// <summary>
@@ -217,14 +201,14 @@ namespace QHackLib.FunctionHelper
 			return result;
 		}
 
-		public static async Task<bool> HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, int timeout = 1000, uint size = 4096)
+		public static bool HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, int timeout = 1000, uint size = 4096)
 		{
 			var hook = new InlineHook(Context, code, new HookParameters(targetAddr, size, true, true));
 			if (!hook.Attach())
 				return false;
-			if (!await hook.WaitToDetach(timeout))
+			if (!Task.Run(() => hook.WaitToDetach()).Wait(timeout))
 				return false;
-			return await hook.WaitToDispose(timeout);
+			return Task.Run(() => hook.WaitToDispose(timeout)).Wait(timeout);
 		}
 
 		/// <summary>

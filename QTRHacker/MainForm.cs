@@ -195,7 +195,7 @@ namespace QTRHacker
 					(cc as Control).Enabled = true;
 				}
 			}
-			(Group1.Controls[0] as ImageButton).Selected = true;
+			(Group1.Controls[0] as ImageButtonS).Selected = true;
 		}
 
 		/// <summary>
@@ -250,18 +250,18 @@ namespace QTRHacker
 			return group;
 		}
 
-		private ImageButton AddButton(PageGroup group, string Text, Image Icon, Control Content)
+		private ImageButtonS AddButton(PageGroup group, string Text, Image Icon, Control content)
 		{
-			return group.AddButton(Text, Icon, Content, (s, e) =>
+			return group.AddButton(Text, Icon, (s, e) =>
 			 {
-				 ImageButton bs = (s as ImageButton);
+				 ImageButtonS bs = (s as ImageButtonS);
 				 if (!bs.Selected)
 					 return;
 				 PageGroup previousGroup = ExpandedGroup;
 				 PageGroup targetGroup = bs.Parent as PageGroup;
 
 				 foreach (var i in ExpandedGroup.Controls)
-					 if (i is ImageButton ii && i != bs)
+					 if (i is ImageButtonS ii && i != bs)
 						 ii.Selected = false;
 
 				 Point tmpP = previousGroup.Location;
@@ -274,10 +274,10 @@ namespace QTRHacker
 
 				 ExpandedGroup = targetGroup;
 
-				 if (Content == null)
+				 if (content == null)
 					 return;
 				 ContentPanel.Controls.Clear();
-				 ContentPanel.Controls.Add(Content);
+				 ContentPanel.Controls.Add(content);
 			 });
 		}
 

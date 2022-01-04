@@ -16,13 +16,12 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 
 		public void NewProjectile(nuint? SpawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = 255, float ai0 = 0f, float ai1 = 0f)
 		{
-			Context.RunByHookOnDoUpdate(
+			Context.RunByHookOnUpdate(
 					new HackMethod(Context.HContext,
 					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.Projectile", 
 					"Terraria.Projectile.NewProjectile(Terraria.DataStructures.IProjectileSource, Single, Single, Single, Single, Int32, Int32, Single, Int32, Single, Single)"))
 				.Call(null)
-				.Call(true, null, null, new object[] { SpawnSource, X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1 }))
-				.Wait();
+				.Call(true, null, null, new object[] { SpawnSource, X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1 }));
 		}
 	}
 }

@@ -9,6 +9,7 @@ namespace QTRHacker.Functions.GameObjects
 {
 	public interface IGameObjectArrayMD<T>
 	{
+		int Length { get; }
 		int Rank { get; }
 		int GetLength(int dimension);
 		T GetValue(params int[] indexes);
@@ -20,6 +21,8 @@ namespace QTRHacker.Functions.GameObjects
 	/// <typeparam name="T"></typeparam>
 	public class GameObjectArrayMD<T> : GameObject, IGameObjectArrayMD<T> where T : GameObject
 	{
+		public int Length => 
+			TypedInternalObject.GetArrayLength();
 		public int Rank =>
 			TypedInternalObject.GetArrayRank();
 		public int GetLength(int dimension) =>
@@ -39,6 +42,8 @@ namespace QTRHacker.Functions.GameObjects
 	/// <typeparam name="T"></typeparam>
 	public class GameObjectArrayMDV<T> : GameObject, IGameObjectArrayMD<T> where T : unmanaged
 	{
+		public int Length =>
+			TypedInternalObject.GetArrayLength();
 		public int Rank =>
 			TypedInternalObject.GetArrayRank();
 		public int GetLength(int dimension) =>
@@ -50,9 +55,27 @@ namespace QTRHacker.Functions.GameObjects
 		public GameObjectArrayMDV(GameContext ctx, HackObject obj) : base(ctx, obj)
 		{
 		}
+		public T[] GetElements(int[] indices, int length)
+		{
+			var obj = TypedInternalObject.InternalEntity as QHackCLR.Common.ClrObject;
+			nuint addr = obj.GetArrayElementAddress(indices);
+			var array = new T[length];
+			Context.HContext.DataAccess.Read(addr, array, (uint)length);
+			return array;
+		}
+		public T[] GetAllElements()
+		{
+			var obj = TypedInternalObject.InternalEntity as QHackCLR.Common.ClrObject;
+			nuint addr = obj.GetElementsBase();
+			var array = new T[Length];
+			Context.HContext.DataAccess.Read(addr, array, (uint)array.Length);
+			return array;
+		}
 	}
 	public class GameObjectArrayMD : GameObject
 	{
+		public int Length =>
+			TypedInternalObject.GetArrayLength();
 		public int Rank =>
 			TypedInternalObject.GetArrayRank();
 		public int GetLength(int dimension) =>

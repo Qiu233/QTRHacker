@@ -1,6 +1,6 @@
 ﻿namespace QTRHacker.Controls
 {
-	partial class ImageButton
+	partial class ImageButtonS
 	{
 		/// <summary> 
 		/// 必需的设计器变量。
@@ -33,7 +33,6 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Name = "CustomButton";
 			this.Size = new System.Drawing.Size(100, 30);
 
 		}

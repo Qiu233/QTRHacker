@@ -45,12 +45,7 @@ namespace QTRHacker.Wiki.NPC
 		{
 			get;
 		}
-		private SpriteBatch Batch
-		{
-			get;
-			set;
-		}
-
+		private SpriteBatch Batch;
 		public NPCView()
 		{
 			State = 0;
@@ -65,7 +60,7 @@ namespace QTRHacker.Wiki.NPC
 		{
 			Invalidate();
 			State++;
-			if (State >= FramesPlayList[NPCType].Count)
+			if (State >= GameConstants.NPCFrameCount[NPCType])
 				State = 0;
 		}
 
@@ -82,29 +77,32 @@ namespace QTRHacker.Wiki.NPC
 		{
 			Batch = new SpriteBatch(GraphicsDevice);
 
-			for (int i = 0; i < NPCTabPage.NPCDatum.Count; i++)
-			{
-				using (var s = new MemoryStream(GameResLoader.NPCImageData[$"NPC_{i}"]))
-				{
-					Frames[i] = Texture2D.FromStream(GraphicsDevice, s);
-				}
-				FramesPlayList[i] = new List<Microsoft.Xna.Framework.Rectangle>();
-				int fs = GameConstants.NPCFrameCount[i];
-				int height = (Frames[i].Height) / fs;
-				for (int j = 0; j < fs; j++)
-				{
-					FramesPlayList[i].Add(new Microsoft.Xna.Framework.Rectangle(0, j * height + 1, Frames[i].Width, height - 2));
-				}
-			}
-
 			State = 0;
 			StateTimer.Start();
+		}
+
+		private Texture2D GetNPCTexture(int npcType)
+		{
+			if (Frames.TryGetValue(npcType, out Texture2D t))
+				return t;
+			if (GameResLoader.NPCImageData.TryGetValue($"NPC_{npcType}", out byte[] value))
+			{
+				using var s = new MemoryStream(value);
+				Frames[npcType] = Texture2D.FromStream(GraphicsDevice, s);
+			}
+			FramesPlayList[npcType] = new List<Microsoft.Xna.Framework.Rectangle>();
+			int fs = GameConstants.NPCFrameCount[npcType];
+			int height = (Frames[npcType].Height) / fs;
+			for (int j = 0; j < fs; j++)
+				FramesPlayList[npcType].Add(new Microsoft.Xna.Framework.Rectangle(0, j * height + 1, Frames[npcType].Width, height - 2));
+			return Frames[npcType];
 		}
 
 		protected override void Draw()
 		{
 			GraphicsDevice.Clear(new Microsoft.Xna.Framework.Color(255, 255, 255));
 			Batch.Begin();
+			var texture = GetNPCTexture(NPCType);
 			var dest = new Microsoft.Xna.Framework.Rectangle();
 			var src = FramesPlayList[NPCType][State];
 			if (src.Width - Width >= src.Height - Height)
@@ -126,9 +124,9 @@ namespace QTRHacker.Wiki.NPC
 			var color = NPCTabPage.NPCDatum[NPCType].Color;
 			var rcolor = new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
 			if (rcolor.A == 0)
-				Batch.Draw(Frames[NPCType], dest, FramesPlayList[NPCType][State], Microsoft.Xna.Framework.Color.White);
+				Batch.Draw(texture, dest, FramesPlayList[NPCType][State], Microsoft.Xna.Framework.Color.White);
 			else
-				Batch.Draw(Frames[NPCType], dest, FramesPlayList[NPCType][State], rcolor);
+				Batch.Draw(texture, dest, FramesPlayList[NPCType][State], rcolor);
 			Batch.End();
 		}
 	}

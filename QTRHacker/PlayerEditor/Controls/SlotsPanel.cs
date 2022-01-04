@@ -36,35 +36,9 @@ namespace QTRHacker.PlayerEditor.Controls
 			SLayout = Activator.CreateInstance<T>();
 			Size = new Size(10 * (SlotsLayout.SlotWidth + SlotsLayout.SlotGap), 300);
 			Location = new Point(5, 5);
-			/*ItemSlots = new List<ItemIcon>(number);
-			for (int i = 0; i < number; i++)
-			{
-				ItemIcon icon = new ItemIcon(i)
-				{
-					Size = new Size(SlotsWidth, SlotsWidth),
-					Location = SlotsLayout.Position(i),
-					BackColor = Color.FromArgb(90, 90, 90),
-					SizeMode = PictureBoxSizeMode.CenterImage,
-					Selected = false
-				};
-				icon.MouseClick += (s, e) =>
-				{
-					SelectItem((s as ItemIcon).Index);
-					OnItemClick(s, SelectedItem, e);
-				};
-				Controls.Add(icon);
-				ItemSlots.Add(icon);
-			}*/
-			if (number > 0)
-			{
-				SelectedIndex = 0;
-			}
+			SelectedIndex = 0;
 		}
-		private SpriteBatch Batch
-		{
-			get;
-			set;
-		}
+		private SpriteBatch Batch;
 		private Dictionary<int, Texture2D> ItemTextureCache
 		{
 			get;

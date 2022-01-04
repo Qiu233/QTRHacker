@@ -104,21 +104,12 @@ namespace QHackLib.FunctionHelper
 		public void Dispose() => Allocation.Dispose();
 
 		/// <summary>
-		/// Waits to dispose until <see cref="ReadyToRelease"/> returns true, 
-		/// or the timeout is reached.
+		/// Waits to dispose until <see cref="ReadyToRelease"/> returns true
 		/// </summary>
-		/// <param name="timeout"></param>
-		/// <returns>true if disposed successfully, false otherwise.</returns>
-		public async Task<bool> WaitToDispose(int timeout = 1000)
+		public void WaitToDispose()
 		{
-			var wait = Task.Run(() =>
-			{
-				while (!ReadyToRelease()) ;
-				Dispose();
-			});
-			if (await Task.WhenAny(wait, Task.Delay(timeout)) == wait)
-				return true;
-			return false;
+			while (!ReadyToRelease()) ;
+			Dispose();
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
