@@ -49,7 +49,6 @@ namespace QTRHacker.PagePanels
 			Terraria_Main_Update_BaseAddressInfoView;
 		public PagePanel_MainPage(int Width, int Height) : base(Width, Height)
 		{
-
 			PlayerArrayBaseAddressInfoView = new InfoViewEx(220)
 			{
 				Bounds = new Rectangle(0, 60, Width, 20),
@@ -150,7 +149,7 @@ namespace QTRHacker.PagePanels
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
-			using var f = new Font(SystemFonts.DefaultFont.Name, 10);
+			using var f = new Font("Arial", 10);
 			e.Graphics.DrawString(HackContext.CurrentLanguage["DragTip"], f, Brushes.White, Width - 280, 22);
 		}
 

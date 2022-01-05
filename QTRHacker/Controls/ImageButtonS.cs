@@ -31,7 +31,7 @@ namespace QTRHacker.Controls
 		}
 		public ImageButtonS(Image img) : base(img)
 		{
-			InitializeComponent();
+			Size = new Size(100, 30);
 			Selected = false;
 		}
 		protected override void OnClick(EventArgs e)

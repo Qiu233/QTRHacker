@@ -9,11 +9,12 @@ namespace QTRHacker.Controls
 {
 	public class MListBox : ListBox
 	{
+		public Color SelectedColor { get; set; }= Color.FromArgb(120, 120, 120);
 		public MListBox()
 		{
 			UpdateStyles();
 			DrawMode = DrawMode.OwnerDrawFixed;
-			BackColor = Color.FromArgb(40, 40, 40);
+			BackColor = Color.FromArgb(60, 60, 60);
 			BorderStyle = BorderStyle.None;
 		}
 		protected override void OnDrawItem(DrawItemEventArgs e)
@@ -21,11 +22,17 @@ namespace QTRHacker.Controls
 			base.OnDrawItem(e);
 			if (e.Index != -1)
 			{
+				Color color = BackColor;
 				if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
-					e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(120, 120, 120)), e.Bounds);
-				else
-					e.Graphics.FillRectangle(new SolidBrush(BackColor), e.Bounds);
-				e.Graphics.DrawString((string)Items[e.Index], e.Font, new SolidBrush(Color.White), e.Bounds, new StringFormat() { Trimming = StringTrimming.EllipsisCharacter, FormatFlags = StringFormatFlags.NoWrap });
+					color = SelectedColor;
+				using SolidBrush brush = new SolidBrush(color);
+				e.Graphics.FillRectangle(brush, e.Bounds);
+
+				using SolidBrush fbrush = new SolidBrush(ForeColor);
+				var rect = e.Bounds;
+				rect.Y -= 3;
+				rect.Height += 3;
+				e.Graphics.DrawString((string)Items[e.Index], e.Font, fbrush, rect, new StringFormat() { Trimming = StringTrimming.EllipsisCharacter, FormatFlags = StringFormatFlags.NoWrap });
 			}
 		}
 	}

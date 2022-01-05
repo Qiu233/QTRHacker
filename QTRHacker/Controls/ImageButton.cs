@@ -51,7 +51,7 @@ namespace QTRHacker.Controls
 			base.OnPaint(e);
 			e.Graphics.DrawImage(Image, new Rectangle(4, 4, 22, 22));
 			using Brush b = new SolidBrush(ForeColor);
-			e.Graphics.DrawString(Text, TextFont, b, 30, 6);
+			e.Graphics.DrawString(Text, TextFont, b, 30, 8);
 		}
 		protected override void OnEnabledChanged(EventArgs e)
 		{

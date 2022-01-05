@@ -100,7 +100,7 @@ namespace QTRHacker.Wiki.NPC
 
 		protected override void Draw()
 		{
-			GraphicsDevice.Clear(new Microsoft.Xna.Framework.Color(255, 255, 255));
+			GraphicsDevice.Clear(new Microsoft.Xna.Framework.Color(BackColor.R, BackColor.G, BackColor.B));
 			Batch.Begin();
 			var texture = GetNPCTexture(NPCType);
 			var dest = new Microsoft.Xna.Framework.Rectangle();

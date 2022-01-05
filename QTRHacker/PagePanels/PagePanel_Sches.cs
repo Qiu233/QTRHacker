@@ -10,39 +10,27 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using STile = QTRHacker.Contrast.Structs.STile;
 
 namespace QTRHacker.PagePanels
 {
 	public class PagePanel_Sches : PagePanel
 	{
-		[StructLayout(LayoutKind.Sequential)]
-		private struct CTile
-		{
-			public ushort Type;
-			public byte Wall;
-			public byte Liquid;
-			public byte BTileHeader;
-			public byte BTileHeader2;
-			public byte BTileHeader3;
-			public short FrameX;
-			public short FrameY;
-			public short STileHeader;
-		}
-		private MListBox FilesBox;
-
-		private CTile[,] LoadTilesFromFile(string file)
+		private readonly MListBox FilesBox;
+		private readonly MButtonStrip ButtonStrip;
+		private static STile[,] LoadTilesFromFile(string file)
 		{
 			var fs = File.Open(file, FileMode.Open);
 			BinaryReader br = new BinaryReader(fs);
 			int maxX = br.ReadInt32();
 			int maxY = br.ReadInt32();
-			var tiles = new CTile[maxX, maxY];
+			var tiles = new STile[maxX, maxY];
 
 			for (int x = 0; x < tiles.GetLength(0); x++)
 			{
 				for (int y = 0; y < tiles.GetLength(1); y++)
 				{
-					tiles[x, y] = new CTile()
+					tiles[x, y] = new STile()
 					{
 						Type = br.ReadUInt16(),
 						Wall = br.ReadByte(),
@@ -60,9 +48,9 @@ namespace QTRHacker.PagePanels
 			return tiles;
 		}
 
-		private byte[] SerializeTiles(CTile[,] tiles)
+		private static byte[] SerializeTiles(STile[,] tiles)
 		{
-			int unitSize = Marshal.SizeOf(typeof(CTile));
+			int unitSize = Marshal.SizeOf(typeof(STile));
 			int memorySize = 4 + 4 + tiles.GetLength(0) * tiles.GetLength(1) * unitSize;
 			byte[] bs = new byte[memorySize];
 			byte[] tmpS = new byte[unitSize];
@@ -87,21 +75,21 @@ namespace QTRHacker.PagePanels
 
 		public PagePanel_Sches(int Width, int Height) : base(Width, Height)
 		{
+			ButtonStrip = new MButtonStrip(80, 30);
+			ButtonStrip.Bounds = new Rectangle(215, 2, 80, 210);
+			ButtonStrip.Enabled = false;
+			Controls.Add(ButtonStrip);
+
 			FilesBox = new MListBox()
 			{
-				Bounds = new Rectangle(3, 3, 200, 364)
+				Bounds = new Rectangle(3, 3, 210, 364)
 			};
 			UpdateList();
 			Controls.Add(FilesBox);
 
-			Button ExecuteButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Generate"],
-				Bounds = new Rectangle(204, 3, 90, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
-			ExecuteButton.Click += (s, e) =>
+
+			Button GenerateButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Generate"]);
+			GenerateButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
 				var ctx = HackContext.GameContext;
@@ -113,24 +101,11 @@ namespace QTRHacker.PagePanels
 				string h = Path.Combine(HackContext.PATH_SCHES, $"{FilesBox.SelectedItem}.sche");
 
 				var bs = SerializeTiles(LoadTilesFromFile(h));
-				/*int maddr = NativeFunctions.VirtualAllocEx(ctx.HContext.Handle, 0, bs.Length, NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
-				NativeFunctions.WriteProcessMemory(ctx.HContext.Handle, maddr, bs, bs.Length, 0);
-				CLRFunctionCaller.Call(ctx, "TRInjections.dll", "TRInjections.ScheMaker.ScheMaker", "LoadTiles",
-					ctx.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), maddr);
-				ctx.HContext.GetAddressHelper("TRInjections.dll").SetStaticFieldValue("TRInjections.ScheMaker.ScheMaker", "BrushActive", true);
-				NativeFunctions.VirtualFreeEx(ctx.HContext.Handle, maddr, 0);
-				*/
+
 
 			};
-			Controls.Add(ExecuteButton);
 
-			Button CreateNewButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Create"],
-				Bounds = new Rectangle(204, 33, 90, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
+			Button CreateNewButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Create"]);
 			CreateNewButton.Click += (s, e) =>
 			{
 				MForm CreateNewMForm = new MForm
@@ -178,30 +153,16 @@ namespace QTRHacker.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(ConfirmButton);
 				CreateNewMForm.ShowDialog(this);
 			};
-			Controls.Add(CreateNewButton);
 
-			Button EditButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Edit"],
-				Bounds = new Rectangle(204, 63, 90, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
+			Button EditButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Edit"]);
 			EditButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
 				ScriptEditorForm p = new ScriptEditorForm((string)FilesBox.SelectedItem);
 				p.Show();
 			};
-			Controls.Add(EditButton);
 
-			Button RenameButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Rename"],
-				Bounds = new Rectangle(204, 93, 90, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
+			Button RenameButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Rename"]);
 			RenameButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
@@ -251,15 +212,8 @@ namespace QTRHacker.PagePanels
 				CreateNewMForm.MainPanel.Controls.Add(ConfirmButton);
 				CreateNewMForm.ShowDialog(this);
 			};
-			Controls.Add(RenameButton);
 
-			Button DeleteButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Delete"],
-				Bounds = new Rectangle(204, 123, 90, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
+			Button DeleteButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Delete"]);
 			DeleteButton.Click += (s, e) =>
 			{
 				if (FilesBox.SelectedIndices.Count <= 0) return;
@@ -267,21 +221,13 @@ namespace QTRHacker.PagePanels
 				File.Delete(Path.Combine(HackContext.PATH_SCHES, $"{(string)FilesBox.SelectedItem}.sche"));
 				UpdateList();
 			};
-			this.Controls.Add(DeleteButton);
 
 
-			Button RefreshButton = new Button()
-			{
-				Text = HackContext.CurrentLanguage["Refresh"],
-				Bounds = new Rectangle(204, 153, 90, 30),
-				FlatStyle = FlatStyle.Flat,
-				BackColor = Color.FromArgb(100, 150, 150, 150)
-			};
+			Button RefreshButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Refresh"]);
 			RefreshButton.Click += (s, e) =>
 			{
 				UpdateList();
 			};
-			Controls.Add(RefreshButton);
 		}
 
 		public void UpdateList()

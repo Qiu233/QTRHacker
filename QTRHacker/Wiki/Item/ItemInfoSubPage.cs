@@ -14,9 +14,8 @@ namespace QTRHacker.Wiki.Item
 {
 	public class ItemInfoSubPage : TabPage
 	{
-		private readonly Color ItemsColor = Color.FromArgb(160, 160, 200);
 		public InfoView ItemIconInfoView, ItemNameInfoView, ItemTypeInfoView, ItemRareInfoView, ItemDescriptionInfoView, ItemRecipeFromInfoView, ItemRecipeToInfoView, ItemValueInfoView;
-		public ListBox RecipeToItems;
+		public MListBox RecipeToItems;
 		public MTabControl RequireItems;
 
 		public event Action<object, MouseEventArgs> OnRequireItemDoubleClick = (s, e) => { };
@@ -24,24 +23,25 @@ namespace QTRHacker.Wiki.Item
 
 		public ItemInfoSubPage() : base(HackContext.CurrentLanguage["ItemInfo"])
 		{
+			BackColor = ItemsTabPage.GlobalBack;
 			ItemIconInfoView = new InfoView(new PictureBox() { SizeMode = PictureBoxSizeMode.CenterImage }, InfoView.TipDock.Top);
 			ItemIconInfoView.Text = HackContext.CurrentLanguage["Icon"];
 			ItemIconInfoView.Bounds = new Rectangle(5, 5, 80, 80);
-			ItemIconInfoView.TipLabel.BackColor = ItemsColor;
+			ItemIconInfoView.TipLabel.BackColor = ItemsTabPage.ThemeColor;
 
-			ItemNameInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
+			ItemNameInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = ItemsTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
 			ItemNameInfoView.Text = HackContext.CurrentLanguage["Name"];
-			ItemNameInfoView.TipLabel.BackColor = ItemsColor;
+			ItemNameInfoView.TipLabel.BackColor = ItemsTabPage.ThemeColor;
 			ItemNameInfoView.Bounds = new Rectangle(0, 0, 170, 20);
 
-			ItemTypeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
+			ItemTypeInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = ItemsTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
 			ItemTypeInfoView.Text = HackContext.CurrentLanguage["Type"];
-			ItemTypeInfoView.TipLabel.BackColor = ItemsColor;
+			ItemTypeInfoView.TipLabel.BackColor = ItemsTabPage.ThemeColor;
 			ItemTypeInfoView.Bounds = new Rectangle(0, 20, 170, 20);
 
-			ItemRareInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
+			ItemRareInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = ItemsTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Right }, InfoView.TipDock.Left, false);
 			ItemRareInfoView.Text = HackContext.CurrentLanguage["Rare"];
-			ItemRareInfoView.TipLabel.BackColor = ItemsColor;
+			ItemRareInfoView.TipLabel.BackColor = ItemsTabPage.ThemeColor;
 			ItemRareInfoView.Bounds = new Rectangle(0, 40, 170, 20);
 
 			InfoView ItemDetailInfoView = new InfoView(new Panel() { BorderStyle = BorderStyle.None }, InfoView.TipDock.Top);
@@ -50,24 +50,25 @@ namespace QTRHacker.Wiki.Item
 			ItemDetailInfoViewContent.Controls.Add(ItemTypeInfoView);
 			ItemDetailInfoViewContent.Controls.Add(ItemRareInfoView);
 			ItemDetailInfoView.Text = HackContext.CurrentLanguage["Details"];
-			ItemDetailInfoView.TipLabel.BackColor = ItemsColor;
+			ItemDetailInfoView.TipLabel.BackColor = ItemsTabPage.ThemeColor;
 			ItemDetailInfoView.Bounds = new Rectangle(90, 5, 170, 80);
 
-			ItemDescriptionInfoView = new InfoView(new TextBox() { Multiline = true }, InfoView.TipDock.Left);
+			ItemDescriptionInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = ItemsTabPage.GlobalBack, ForeColor = Color.Black, Multiline = true }, InfoView.TipDock.Left);
 			ItemDescriptionInfoView.Text = HackContext.CurrentLanguage["Description"];
-			ItemDescriptionInfoView.TipLabel.BackColor = ItemsColor;
+			ItemDescriptionInfoView.TipLabel.BackColor = ItemsTabPage.ThemeColor;
 			ItemDescriptionInfoView.Bounds = new Rectangle(5, 90, 255, 80);
 
 			RequireItems = new MTabControl();
-			RequireItems.TColor = ItemsColor;
+			RequireItems.HeaderSelectedBackColor = ItemsTabPage.ThemeColor;
 			ItemRecipeFromInfoView = new InfoView(RequireItems, InfoView.TipDock.Top);
 			ItemRecipeFromInfoView.Text = HackContext.CurrentLanguage["Recipe"] + "(From)";
-			ItemRecipeFromInfoView.TipLabel.BackColor = ItemsColor;
+			ItemRecipeFromInfoView.TipLabel.BackColor = ItemsTabPage.ThemeColor;
 			ItemRecipeFromInfoView.Bounds = new Rectangle(5, 175, 255, 100);
 
-			RecipeToItems = new ListBox()
+			RecipeToItems = new MListBox()
 			{
-				BorderStyle = BorderStyle.None
+				BorderStyle = BorderStyle.None,
+				BackColor = ItemsTabPage.GlobalBack
 			};
 			RecipeToItems.MouseDoubleClick += (s, e) =>
 			{
@@ -75,12 +76,12 @@ namespace QTRHacker.Wiki.Item
 			};
 			ItemRecipeToInfoView = new InfoView(RecipeToItems, InfoView.TipDock.Top);
 			ItemRecipeToInfoView.Text = HackContext.CurrentLanguage["Recipe"] + "(To)";
-			ItemRecipeToInfoView.TipLabel.BackColor = ItemsColor;
+			ItemRecipeToInfoView.TipLabel.BackColor = ItemsTabPage.ThemeColor;
 			ItemRecipeToInfoView.Bounds = new Rectangle(5, 280, 255, 100);
 
-			ItemValueInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left);
+			ItemValueInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = ItemsTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left);
 			ItemValueInfoView.Text = HackContext.CurrentLanguage["Rare"];
-			ItemValueInfoView.TipLabel.BackColor = ItemsColor;
+			ItemValueInfoView.TipLabel.BackColor = ItemsTabPage.ThemeColor;
 			ItemValueInfoView.Bounds = new Rectangle(5, 385, 255, 20);
 
 
@@ -127,10 +128,11 @@ namespace QTRHacker.Wiki.Item
 					t++;
 					var ritems = recipe.RequiredItems;
 					TabPage page = new(t.ToString());
+					page.BackColor = ItemsTabPage.GlobalBack;
 					RequireItems.TabPages.Add(page);
-					ListBox box = new()
+					MListBox box = new()
 					{
-						BorderStyle = BorderStyle.None
+						BackColor = ItemsTabPage.GlobalBack
 					};
 					box.Dock = DockStyle.Fill;
 					box.Height = 60;

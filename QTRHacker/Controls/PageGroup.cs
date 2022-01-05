@@ -39,6 +39,9 @@ namespace QTRHacker.Controls
 			b.OnSelected += OnSelected;
 			return b;
 		}
-
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			base.OnPaint(e);
+		}
 	}
 }

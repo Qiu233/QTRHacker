@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using QTRHacker.Controls;
+using QTRHacker.Res;
 using QTRHacker.Wiki.Item;
 using QTRHacker.Wiki.NPC;
 using System;
@@ -16,28 +17,31 @@ using System.Windows.Forms;
 
 namespace QTRHacker.Wiki
 {
-	public partial class WikiForm : Form
+	public partial class WikiForm : MForm
 	{
-		private MTabControl MainTab;
-		private ItemsTabPage ItemsTabPage;
-		private NPCTabPage NPCTabPage;
+		private readonly MTabControl MainTab;
+		private readonly ItemsTabPage ItemsTabPage;
+		private readonly NPCTabPage NPCTabPage;
 		public WikiForm()
 		{
-			InitializeComponent();
-			
+			Size = new Size(740, 512);
+			Text = "Wiki";
+			using (Stream st = new MemoryStream(GameResLoader.ItemImageData["Item_3628"]))
+				Icon = MainForm.ConvertToIcon(Image.FromStream(st));
 
 			MainTab = new MTabControl();
-			MainTab.BColor = Color.DarkGray;
-			MainTab.TColor = Color.Gray;
+			MainTab.HeaderBackColor = Color.FromArgb(80, 80, 80);
+			MainTab.HeaderSelectedBackColor = Color.FromArgb(120, 120, 120);
+			MainTab.ForeColor = Color.White;
 
-			ItemsTabPage = new ItemsTabPage() { Text = "Items" };
-			NPCTabPage = new NPCTabPage() { Text = "NPCs" };
+			ItemsTabPage = new ItemsTabPage() { Text = "Items", BackColor = MainTab.HeaderBackColor };
+			NPCTabPage = new NPCTabPage() { Text = "NPCs", BackColor = MainTab.HeaderBackColor };
 
 
 			MainTab.TabPages.Add(ItemsTabPage);
 			MainTab.TabPages.Add(NPCTabPage);
 			MainTab.Size = ClientSize;
-			Controls.Add(MainTab);
+			MainPanel.Controls.Add(MainTab);
 		}
 		protected override async void OnShown(EventArgs e)
 		{

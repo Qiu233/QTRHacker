@@ -17,7 +17,7 @@ namespace QTRHacker.Wiki.Item
 		public readonly static Dictionary<int, List<RecipeData>> RecipeTos = new Dictionary<int, List<RecipeData>>();
 		public readonly static Dictionary<int, List<RecipeData>> RecipeFroms = new Dictionary<int, List<RecipeData>>();
 
-		public TreeView RecipeTreeView;
+		public readonly TreeView RecipeTreeView;
 
 		private RecipeTreeForm()
 		{

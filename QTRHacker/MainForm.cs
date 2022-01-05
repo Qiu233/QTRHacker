@@ -23,14 +23,9 @@ using QTRHacker.XNAControls;
 
 namespace QTRHacker
 {
-	public partial class MainForm : Form
+	public partial class MainForm : MForm
 	{
-		private readonly Color FormBack = Color.FromArgb(45, 45, 48);
-		public static readonly Color ButtonNormalColor = Color.Transparent;
-		public static readonly Color ButtonHoverColor = Color.FromArgb(70, 70, 80);
-		private Point Drag_MousePos;
-		private readonly Panel MainPanel, ButtonsPanel, ContentPanel;
-		private readonly PictureBox MinButton, CloseButton;
+		private readonly Panel ButtonsPanel, ContentPanel;
 		private readonly PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel,
 #pragma warning disable IDE0052, IDE0051
 			ProjectilePagePanel, ScriptsPagePanel, SchesPagePanel,
@@ -40,7 +35,7 @@ namespace QTRHacker
 		public static MainForm MainFormInstance { get; private set; }
 		public readonly PageGroup Group1, Group2;
 		public PageGroup ExpandedGroup;
-		public readonly static int ButtonsPanelWidth = 100;
+		public readonly static int ButtonsPanelWidth = 132;
 		private int GroupsIndex = 0;
 		protected override void OnShown(EventArgs e)
 		{
@@ -70,43 +65,16 @@ namespace QTRHacker
 				HackContext.SaveConfigs();
 				HackContext.Initialize();//again
 			}
-
-
+			MainPanel.BackColor = Color.FromArgb(30, 30, 30);
 			CheckForIllegalCrossThreadCalls = false;
 			MainFormInstance = this;
 			ClientSize = new Size(300 + ButtonsPanelWidth, 400);
 			Text = $"QTRHacker-V{Assembly.GetExecutingAssembly().GetName().Version}";
 			FormBorderStyle = FormBorderStyle.None;
-			BackColor = FormBack;
-
-
-			MainPanel = new Panel();
-			MainPanel.BackColor = Color.FromArgb(30, 30, 30);
-			MainPanel.Bounds = new Rectangle(2, 30, Width - 4, Height - 32);
-			Controls.Add(MainPanel);
-
-			MinButton = new PictureBox();
-			MinButton.Click += (s, e) => WindowState = FormWindowState.Minimized;
-			MinButton.MouseEnter += (s, e) => MinButton.BackColor = ButtonHoverColor;
-			MinButton.MouseLeave += (s, e) => MinButton.BackColor = ButtonNormalColor;
-			MinButton.Bounds = new Rectangle(Width - 64, -1, 32, 32);
-			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Image.min.png"))
-				MinButton.Image = Image.FromStream(st);
-
-			CloseButton = new PictureBox();
-			CloseButton.MouseEnter += (s, e) => CloseButton.BackColor = ButtonHoverColor;
-			CloseButton.MouseLeave += (s, e) => CloseButton.BackColor = ButtonNormalColor;
-			CloseButton.Click += (s, e) => Dispose();
-			CloseButton.Bounds = new Rectangle(Width - 32, -1, 32, 32);
-			using (Stream st = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.Image.close.png"))
-				CloseButton.Image = Image.FromStream(st);
-
-			Controls.Add(MinButton);
-			Controls.Add(CloseButton);
 
 			ButtonsPanel = new Panel();
 			ButtonsPanel.Bounds = new Rectangle(0, 0, ButtonsPanelWidth, MainPanel.Height);
-			ButtonsPanel.BackColor = Color.FromArgb(255, 90, 90, 90);
+			ButtonsPanel.BackColor = Color.FromArgb(90, 90, 90);
 			MainPanel.Controls.Add(ButtonsPanel);
 
 
@@ -154,7 +122,7 @@ namespace QTRHacker
 			ChatSenderPanel = new PagePanel_ChatSender(pageWidth, MainPanel.Height);
 
 
-			//SchesPagePanel = new PagePanel_Sches(pageWidth, MainPanel.Height);
+			SchesPagePanel = new PagePanel_Sches(pageWidth, MainPanel.Height);
 			//AimBotPagePanel = new PagePanel_AimBot(pageWidth, MainPanel.Height);
 
 
@@ -173,19 +141,11 @@ namespace QTRHacker
 				AddButton(Group1, HackContext.CurrentLanguage["About"], img_About, AboutPagePanel).Enabled = true;
 			AddButton(Group1, HackContext.CurrentLanguage["MainPage"], img_MainPage, MainPagePanel).Selected = true;
 
-			//AddButton(Group2, CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;
+			AddButton(Group2, HackContext.CurrentLanguage["Sches"], img_Sche, SchesPagePanel).Enabled = false;
 			//AddButton(Group2, CurrentLanguage["AimBot"], img_AimBot, AimBotPagePanel).Enabled = false;
 
 			Icon = ConvertToIcon(img_Basic);
-
 		}
-
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-			GC.Collect();
-		}
-
 		public void OnInitialized()
 		{
 			foreach (var c in ButtonsPanel.Controls)
@@ -234,16 +194,7 @@ namespace QTRHacker
 		private PageGroup AddGroup()
 		{
 			PageGroup group = new PageGroup();
-			if (GroupsIndex == 0)
-			{
-				group.Location = new Point(ButtonsPanel.Width - 100, 0);
-				group.Expanded = true;
-			}
-			else
-			{
-				group.Location = new Point(ButtonsPanel.Width - 100 - 32 * GroupsIndex);
-				group.Expanded = false;
-			}
+			group.Location = new Point(ButtonsPanel.Width - 100 - 32 * GroupsIndex, 0);
 			group.Height = ButtonsPanel.Height;
 			ButtonsPanel.Controls.Add(group);
 			GroupsIndex++;
@@ -252,54 +203,51 @@ namespace QTRHacker
 
 		private ImageButtonS AddButton(PageGroup group, string Text, Image Icon, Control content)
 		{
-			return group.AddButton(Text, Icon, (s, e) =>
-			 {
-				 ImageButtonS bs = (s as ImageButtonS);
-				 if (!bs.Selected)
-					 return;
-				 PageGroup previousGroup = ExpandedGroup;
-				 PageGroup targetGroup = bs.Parent as PageGroup;
+			var button = group.AddButton(Text, Icon, (s, e) =>
+			  {
+				  ImageButtonS bs = (s as ImageButtonS);
+				  if (!bs.Selected)
+					  return;
+				  PageGroup previousGroup = ExpandedGroup;
+				  PageGroup targetGroup = bs.Parent as PageGroup;
+				  targetGroup.BringToFront();
 
-				 foreach (var i in ExpandedGroup.Controls)
-					 if (i is ImageButtonS ii && i != bs)
-						 ii.Selected = false;
+				  foreach (var i in ExpandedGroup.Controls)
+					  if (i is ImageButtonS ii && i != bs)
+						  ii.Selected = false;
 
-				 Point tmpP = previousGroup.Location;
-				 previousGroup.Location = targetGroup.Location;
-				 targetGroup.Location = tmpP;
+				  Point tmpP = previousGroup.Location;
+				  previousGroup.Location = targetGroup.Location;
+				  targetGroup.Location = tmpP;
 
-				 Size tmpS = previousGroup.Size;
-				 previousGroup.Size = targetGroup.Size;
-				 targetGroup.Size = tmpS;
+				  Size tmpS = previousGroup.Size;
+				  previousGroup.Size = targetGroup.Size;
+				  targetGroup.Size = tmpS;
 
-				 ExpandedGroup = targetGroup;
+				  ExpandedGroup = targetGroup;
 
-				 if (content == null)
-					 return;
-				 ContentPanel.Controls.Clear();
-				 ContentPanel.Controls.Add(content);
-			 });
-		}
+				  previousGroup.Invalidate();
+				  targetGroup.Invalidate();
 
-		protected override void OnPaint(PaintEventArgs e)
-		{
-			base.OnPaint(e);
-			e.Graphics.DrawString(Text, new Font("Arial", 16f), Brushes.White, new Point(5, 3));
-		}
-		protected override void OnMouseDown(MouseEventArgs e)
-		{
-			base.OnMouseDown(e);
-			if (e.Button == MouseButtons.Left)
-				Drag_MousePos = e.Location;
-		}
-		protected override void OnMouseMove(MouseEventArgs e)
-		{
-			base.OnMouseMove(e);
-			if (e.Button == MouseButtons.Left)
+				  if (content == null)
+					  return;
+				  ContentPanel.Controls.Clear();
+				  ContentPanel.Controls.Add(content);
+			  });
+			button.Paint += (s, e) =>
 			{
-				Top = MousePosition.Y - Drag_MousePos.Y;
-				Left = MousePosition.X - Drag_MousePos.X;
-			}
+				var control = s as Control;
+				using Pen pen1 = new Pen(Color.FromArgb(100, Color.White));
+				using Pen pen2 = new Pen(Color.FromArgb(10, Color.White));
+				Point tl = new Point(0, 0);
+				Point tr = new Point(control.Width - 1, 0);
+				Point bl = new Point(0, control.Height - 1);
+				Point br = new Point(control.Width - 1, control.Height - 1);
+				e.Graphics.DrawLine(pen1, tl, bl);
+				e.Graphics.DrawLine(pen2, tl, tr);
+				e.Graphics.DrawLine(pen2, bl, br);
+			};
+			return button;
 		}
 
 		protected override void OnClosing(CancelEventArgs e)

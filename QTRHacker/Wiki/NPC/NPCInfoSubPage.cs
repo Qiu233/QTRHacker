@@ -13,35 +13,37 @@ namespace QTRHacker.Wiki.NPC
 {
 	public class NPCInfoSubPage : TabPage
 	{
-		private NPCView NPCView;
-		private InfoView NPCViewInfoView, NPCNameInfoView, NPCTypeInfoView, NPCAIStyleInfoView;
-		private InfoView NPCWidthInfoView, NPCHeightInfoView;
-		private InfoView NPCDamageInfoView, NPCDefenseInfoView;
-		private InfoView NPCLifeMaxInfoView, NPCKnockbackResistInfoView;
-		private InfoView NPCTownNPCInfoView, NPCBossInfoView, NPCFriendlyInfoView;
+		private readonly NPCView NPCView;
+		private readonly InfoView NPCViewInfoView, NPCNameInfoView, NPCTypeInfoView, NPCAIStyleInfoView;
+		private readonly InfoView NPCWidthInfoView, NPCHeightInfoView;
+		private readonly InfoView NPCDamageInfoView, NPCDefenseInfoView;
+		private readonly InfoView NPCLifeMaxInfoView, NPCKnockbackResistInfoView;
+		private readonly InfoView NPCTownNPCInfoView, NPCBossInfoView, NPCFriendlyInfoView;
 		public NPCInfoSubPage() : base(HackContext.CurrentLanguage["NPCInfo"])
 		{
-			NPCView = new NPCView();
+			BackColor = NPCTabPage.GlobalBack;
 
+			NPCView = new NPCView();
+			NPCView.BackColor = NPCTabPage.GlobalBack;
 			NPCViewInfoView = new InfoView(NPCView, InfoView.TipDock.Top);
 			NPCViewInfoView.Bounds = new Rectangle(5, 5, 80, 80);
-			NPCViewInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCViewInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCViewInfoView.Text = HackContext.CurrentLanguage["Icon"];
-			this.Controls.Add(NPCViewInfoView);
+			Controls.Add(NPCViewInfoView);
 
-			NPCNameInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
+			NPCNameInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
 			NPCNameInfoView.Text = HackContext.CurrentLanguage["Name"];
-			NPCNameInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCNameInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCNameInfoView.Bounds = new Rectangle(0, 0, 170, 20);
 
-			NPCTypeInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
+			NPCTypeInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
 			NPCTypeInfoView.Text = HackContext.CurrentLanguage["Type"];
-			NPCTypeInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCTypeInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCTypeInfoView.Bounds = new Rectangle(0, 20, 170, 20);
 
-			NPCAIStyleInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
+			NPCAIStyleInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false);
 			NPCAIStyleInfoView.Text = HackContext.CurrentLanguage["AIStyle"];
-			NPCAIStyleInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCAIStyleInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCAIStyleInfoView.Bounds = new Rectangle(0, 40, 170, 20);
 
 			InfoView NPCDetailInfoView = new InfoView(new Panel() { BorderStyle = BorderStyle.None }, InfoView.TipDock.Top);
@@ -50,40 +52,40 @@ namespace QTRHacker.Wiki.NPC
 			ItemDetailInfoViewContent.Controls.Add(NPCTypeInfoView);
 			ItemDetailInfoViewContent.Controls.Add(NPCAIStyleInfoView);
 			NPCDetailInfoView.Text = HackContext.CurrentLanguage["Details"];
-			NPCDetailInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCDetailInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCDetailInfoView.Bounds = new Rectangle(90, 5, 170, 80);
-			this.Controls.Add(NPCDetailInfoView);
+			Controls.Add(NPCDetailInfoView);
 
 
 
-			NPCWidthInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCWidthInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
 			NPCWidthInfoView.Text = HackContext.CurrentLanguage["Width"];
-			NPCWidthInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCWidthInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCWidthInfoView.Bounds = new Rectangle(0, 0, 255, 20);
 
-			NPCHeightInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCHeightInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
 			NPCHeightInfoView.Text = HackContext.CurrentLanguage["Height"];
-			NPCHeightInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCHeightInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCHeightInfoView.Bounds = new Rectangle(0, 20, 255, 20);
 
-			NPCDamageInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCDamageInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
 			NPCDamageInfoView.Text = HackContext.CurrentLanguage["Damage"];
-			NPCDamageInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCDamageInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCDamageInfoView.Bounds = new Rectangle(0, 40, 255, 20);
 
-			NPCDefenseInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCDefenseInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
 			NPCDefenseInfoView.Text = HackContext.CurrentLanguage["Defense"];
-			NPCDefenseInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCDefenseInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCDefenseInfoView.Bounds = new Rectangle(0, 60, 255, 20);
 
-			NPCLifeMaxInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCLifeMaxInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
 			NPCLifeMaxInfoView.Text = HackContext.CurrentLanguage["LifeMax"];
-			NPCLifeMaxInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCLifeMaxInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCLifeMaxInfoView.Bounds = new Rectangle(0, 80, 255, 20);
 
-			NPCKnockbackResistInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCKnockbackResistInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
 			NPCKnockbackResistInfoView.Text = HackContext.CurrentLanguage["KnockbackResist"];
-			NPCKnockbackResistInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCKnockbackResistInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCKnockbackResistInfoView.Bounds = new Rectangle(0, 100, 255, 20);
 
 			InfoView NPCPropInfoView = new InfoView(new Panel() { BorderStyle = BorderStyle.None }, InfoView.TipDock.Top);
@@ -95,23 +97,23 @@ namespace QTRHacker.Wiki.NPC
 			NPCDetailtInfoViewContent.Controls.Add(NPCLifeMaxInfoView);
 			NPCDetailtInfoViewContent.Controls.Add(NPCKnockbackResistInfoView);
 			NPCPropInfoView.Text = HackContext.CurrentLanguage["Properties"];
-			NPCPropInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCPropInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCPropInfoView.Bounds = new Rectangle(5, 105, 255, 140);
-			this.Controls.Add(NPCPropInfoView);
+			Controls.Add(NPCPropInfoView);
 
-			NPCTownNPCInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCTownNPCInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
 			NPCTownNPCInfoView.Text = HackContext.CurrentLanguage["TownNPC"];
-			NPCTownNPCInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCTownNPCInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCTownNPCInfoView.Bounds = new Rectangle(0, 0, 255, 20);
 
-			NPCBossInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCBossInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
 			NPCBossInfoView.Text = "Boss";
-			NPCBossInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCBossInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCBossInfoView.Bounds = new Rectangle(0, 20, 255, 20);
 
-			NPCFriendlyInfoView = new InfoView(new TextBox() { TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
+			NPCFriendlyInfoView = new InfoView(new TextBox() { BorderStyle = BorderStyle.FixedSingle, BackColor = NPCTabPage.GlobalBack, ForeColor = Color.Black, TextAlign = HorizontalAlignment.Center }, InfoView.TipDock.Left, false, 100);
 			NPCFriendlyInfoView.Text = HackContext.CurrentLanguage["Friendly"];
-			NPCFriendlyInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCFriendlyInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCFriendlyInfoView.Bounds = new Rectangle(0, 40, 255, 20);
 
 			InfoView NPCCategoryInfoView = new InfoView(new Panel() { BorderStyle = BorderStyle.None }, InfoView.TipDock.Top);
@@ -120,7 +122,7 @@ namespace QTRHacker.Wiki.NPC
 			NPCCategoryInfoViewContent.Controls.Add(NPCBossInfoView);
 			NPCCategoryInfoViewContent.Controls.Add(NPCFriendlyInfoView);
 			NPCCategoryInfoView.Text = HackContext.CurrentLanguage["Category"];
-			NPCCategoryInfoView.TipLabel.BackColor = NPCTabPage.NPCColor;
+			NPCCategoryInfoView.TipLabel.BackColor = NPCTabPage.ThemeColor;
 			NPCCategoryInfoView.Bounds = new Rectangle(5, 260, 255, 80);
 			Controls.Add(NPCCategoryInfoView);
 		}

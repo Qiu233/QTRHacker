@@ -20,8 +20,10 @@ namespace QTRHacker.Wiki.NPC
 {
 	public class NPCTabPage : TabPage
 	{
-		public readonly static Color NPCColor = Color.FromArgb(240, 120, 120);
-		public readonly ListView NPCListView;
+		public readonly static Color ThemeColor = Color.FromArgb(140, 140, 140);
+		public readonly static Color GlobalBack = Color.FromArgb(200, 200, 200);
+
+		public readonly MListView NPCListView;
 		private readonly MTabControl InfoTabs;
 		private readonly NPCInfoSubPage NPCInfoPage;
 		private readonly NPCSearcherSubPage SearcherPage;
@@ -61,15 +63,31 @@ namespace QTRHacker.Wiki.NPC
 			BackColor = Color.LightGray;
 			BorderStyle = BorderStyle.None;
 
-			NPCListView = new ListView();
+			NPCListView = new MListView();
+			NPCListView.BackColor = Color.FromArgb(100, 100, 100);
+			NPCListView.ColumnBackColor = Color.FromArgb(100, 100, 100);
 			NPCListView.Bounds = new Rectangle(5, 5, 450, 440);
 			NPCListView.FullRowSelect = true;
 			NPCListView.MultiSelect = false;
 			NPCListView.HideSelection = false;
 			NPCListView.View = View.Details;
 			NPCListView.Columns.Add(HackContext.CurrentLanguage["Index"], 50);
-			NPCListView.Columns.Add(HackContext.CurrentLanguage["EnglishName"], 180);
-			NPCListView.Columns.Add(HackContext.CurrentLanguage["ChineseName"], 180);
+			NPCListView.Columns.Add(HackContext.CurrentLanguage["EnglishName"], 190);
+			NPCListView.Columns.Add(HackContext.CurrentLanguage["ChineseName"], 190);
+
+			NPCListView.Layout += (s, e) =>
+			{
+				if (NPCListView.Width - NPCListView.ClientSize.Width > 10)
+				{
+					NPCListView.Columns[1].Width = 190;
+					NPCListView.Columns[2].Width = 190;
+				}
+				else
+				{
+					NPCListView.Columns[1].Width = 200;
+					NPCListView.Columns[2].Width = 200;
+				}
+			};
 
 			NPCListView.MouseDoubleClick += (s, e) =>
 			{
@@ -208,7 +226,8 @@ namespace QTRHacker.Wiki.NPC
 			};
 
 			InfoTabs = new MTabControl();
-			InfoTabs.TColor = NPCColor;
+			InfoTabs.HeaderBackColor = Color.FromArgb(100, 100, 100);
+			InfoTabs.HeaderSelectedBackColor = ThemeColor;
 			InfoTabs.Bounds = new Rectangle(460, 5, 270, 440);
 			InfoTabs.Controls.Add(NPCInfoPage);
 			InfoTabs.Controls.Add(SearcherPage);
@@ -279,6 +298,7 @@ namespace QTRHacker.Wiki.NPC
 				}
 			}
 			NPCListView.EndUpdate();
+			NPCListView.PerformLayout();
 		}
 	}
 }

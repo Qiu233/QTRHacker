@@ -19,9 +19,10 @@ namespace QTRHacker.Wiki.Item
 	public class ItemsTabPage : TabPage
 	{
 		private const int VALUE_P = 1000000, VALUE_G = 10000, VALUE_S = 100, VALUE_C = 1;
-		public readonly static Color ItemsColor = Color.FromArgb(160, 160, 200);
+		public readonly static Color ThemeColor = Color.FromArgb(140, 140, 140);
+		public readonly static Color GlobalBack = Color.FromArgb(200, 200, 200);
 
-		public readonly ListView ItemListView;
+		public readonly MListView ItemListView;
 		private readonly MTabControl InfoTabs;
 		private readonly ItemInfoSubPage ItemInfoPage;
 		private readonly ItemDetailInfoSubPage AccInfoPage;
@@ -65,7 +66,9 @@ namespace QTRHacker.Wiki.Item
 			BackColor = Color.LightGray;
 			BorderStyle = BorderStyle.None;
 
-			ItemListView = new ListView();
+			ItemListView = new MListView();
+			ItemListView.BackColor = Color.FromArgb(100, 100, 100);
+			ItemListView.ColumnBackColor = Color.FromArgb(100, 100, 100);
 			ItemListView.Bounds = new Rectangle(5, 5, 450, 440);
 			ItemListView.FullRowSelect = true;
 			ItemListView.MultiSelect = false;
@@ -75,7 +78,15 @@ namespace QTRHacker.Wiki.Item
 			ItemListView.Columns.Add(HackContext.CurrentLanguage["Rare"], 50);
 			ItemListView.Columns.Add(HackContext.CurrentLanguage["EnglishName"], 125);
 			ItemListView.Columns.Add(HackContext.CurrentLanguage["ChineseName"], 125);
-			ItemListView.Columns.Add(HackContext.CurrentLanguage["Type"], 70);
+			ItemListView.Columns.Add(HackContext.CurrentLanguage["Type"], 100);
+
+			ItemListView.Layout += (s, e) =>
+			{
+				if (ItemListView.Width - ItemListView.ClientSize.Width > 10)
+					ItemListView.Columns[4].Width = 80;
+				else
+					ItemListView.Columns[4].Width = 100;
+			};
 
 			ItemListView.MouseDoubleClick += (s, e) =>
 			{
@@ -160,7 +171,8 @@ namespace QTRHacker.Wiki.Item
 			};
 
 			InfoTabs = new MTabControl();
-			InfoTabs.TColor = Color.FromArgb(160, 160, 200);
+			InfoTabs.HeaderBackColor = Color.FromArgb(100, 100, 100);
+			InfoTabs.HeaderSelectedBackColor = ThemeColor;
 			InfoTabs.Bounds = new Rectangle(460, 5, 270, 440);
 			InfoTabs.Controls.Add(ItemInfoPage);
 			InfoTabs.Controls.Add(AccInfoPage);
@@ -214,11 +226,10 @@ namespace QTRHacker.Wiki.Item
 			int p = value / VALUE_P;
 			int a = value % VALUE_P;
 			int g = a / VALUE_G;
-			a = a % VALUE_G;
+			a %= VALUE_G;
 			int s = a / VALUE_S;
-			a = a % VALUE_S;
+			a %= VALUE_S;
 			int c = a / VALUE_C;
-			a = a % VALUE_C;
 			return p + HackContext.CurrentLanguage["Platinum"] + " " + g +
 				HackContext.CurrentLanguage["Gold"] + " " + s +
 				HackContext.CurrentLanguage["Silver"] + " " + c +
@@ -244,20 +255,22 @@ namespace QTRHacker.Wiki.Item
 
 		private bool Filter(ItemData j)
 		{
-			List<bool> b = new List<bool>();
-			b.Add(j.CreateTile != -1);
-			b.Add(j.CreateWall != -1);
-			b.Add(j.HeadSlot != -1);
-			b.Add(j.BodySlot != -1);
-			b.Add(j.LegSlot != -1);
-			b.Add(j.Accessory);
-			b.Add(j.Melee);
-			b.Add(j.Ranged);
-			b.Add(j.Magic);
-			b.Add(j.Summon || j.Sentry);
-			b.Add(j.BuffType != 0);
-			b.Add(j.Consumable);
-			b.Add(j.QuestItem);
+			List<bool> b = new List<bool>
+			{
+				j.CreateTile != -1,
+				j.CreateWall != -1,
+				j.HeadSlot != -1,
+				j.BodySlot != -1,
+				j.LegSlot != -1,
+				j.Accessory,
+				j.Melee,
+				j.Ranged,
+				j.Magic,
+				j.Summon || j.Sentry,
+				j.BuffType != 0,
+				j.Consumable,
+				j.QuestItem
+			};
 			bool r = false;
 			r |= (SearcherPage.BlockCheckBox.Checked && b[0]);
 			r |= (SearcherPage.WallCheckBox.Checked && b[1]);
@@ -279,23 +292,6 @@ namespace QTRHacker.Wiki.Item
 
 		private static string GetItemType(ItemData j)
 		{
-			/*
-			 
-			List<string> keys = new();
-			if (j.CreateTile != -1) keys.Add(HackContext.CurrentLanguage["Blocks"]);
-			if (j.CreateWall != -1) keys.Add(HackContext.CurrentLanguage["Walls"]);
-			if (j.QuestItem) keys.Add(HackContext.CurrentLanguage["Quest"]);
-			if (j.HeadSlot != -1) keys.Add(HackContext.CurrentLanguage["Head"]);
-			if (j.BodySlot != -1) keys.Add(HackContext.CurrentLanguage["Body"]);
-			if (j.LegSlot != -1) keys.Add(HackContext.CurrentLanguage["Leg"]);
-			if (j.Accessory) keys.Add(HackContext.CurrentLanguage["Accessory"]);
-			if (j.Melee) keys.Add(HackContext.CurrentLanguage["Melee"]);
-			if (j.Ranged) keys.Add(HackContext.CurrentLanguage["Ranged"]);
-			if (j.Magic) keys.Add(HackContext.CurrentLanguage["Magic"]);
-			if ((j.Summon || j.Sentry)) keys.Add(HackContext.CurrentLanguage["Summon"]);
-			if (j.BuffType != 0) keys.Add(HackContext.CurrentLanguage["Buff"]);
-			if (j.Consumable) keys.Add(HackContext.CurrentLanguage["Consumable"]);
-*/
 			if (j.CreateTile != -1) return HackContext.CurrentLanguage["Blocks"];
 			if (j.CreateWall != -1) return HackContext.CurrentLanguage["Walls"];
 			if (j.QuestItem) return HackContext.CurrentLanguage["Quest"];
@@ -360,6 +356,7 @@ namespace QTRHacker.Wiki.Item
 				}
 			}
 			ItemListView.EndUpdate();
+			ItemListView.PerformLayout();
 		}
 	}
 }
