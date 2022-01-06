@@ -86,7 +86,7 @@ namespace QTRHacker.PagePanels
 			Button arrowButton = new MButton();
 			arrowButton.Enabled = false;
 			arrowButton.Text = HackContext.CurrentLanguage["Arrow"];
-			arrowButton.Bounds = new Rectangle(0, 30, 50, 30);
+			arrowButton.Bounds = new Rectangle(0, 30, 80, 30);
 			arrowButton.Click += (s, e) =>
 			{
 				HackContext.GameContext.Patches.WorldPainter_BrushActive = false;
@@ -97,7 +97,7 @@ namespace QTRHacker.PagePanels
 			Button dropperButton = new MButton();
 			dropperButton.Enabled = false;
 			dropperButton.Text = HackContext.CurrentLanguage["Dropper"];
-			dropperButton.Bounds = new Rectangle(50, 30, 50, 30);
+			dropperButton.Bounds = new Rectangle(80, 30, 80, 30);
 			dropperButton.Click += (s, e) =>
 			{
 				HackContext.GameContext.Patches.WorldPainter_BrushActive = false;
@@ -108,7 +108,7 @@ namespace QTRHacker.PagePanels
 			Button brushButton = new MButton();
 			brushButton.Enabled = false;
 			brushButton.Text = HackContext.CurrentLanguage["Brush"];
-			brushButton.Bounds = new Rectangle(100, 30, 50, 30);
+			brushButton.Bounds = new Rectangle(160, 30, 80, 30);
 			brushButton.Click += (s, e) =>
 			{
 				// because enabling the brush would perform heavy actions,
@@ -145,9 +145,10 @@ namespace QTRHacker.PagePanels
 
 			Button activateButton = new MButton();
 			activateButton.Text = HackContext.CurrentLanguage["Activate"];
-			activateButton.Bounds = new Rectangle(0, 0, 50, 30);
+			activateButton.Bounds = new Rectangle(0, 0, 80, 30);
 			activateButton.Click += (s, e) =>
 			{
+				activateButton.Enabled = false;
 				arrowButton.Enabled = true;
 				dropperButton.Enabled = true;
 				brushButton.Enabled = true;

@@ -55,5 +55,12 @@
       <DependentUpon>Player.ps.tt</DependentUpon>
     </Compile>
   </ItemGroup>
+  
+  <ItemGroup>
+    <ContentWithTargetPath Include="$(OutDir)QTRHacker.Patches.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>QTRHacker.Patches.dll</TargetPath>
+    </ContentWithTargetPath >
+  </ItemGroup>
 
 </Project>
