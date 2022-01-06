@@ -58,7 +58,7 @@ namespace QTRHacker.Wiki.Item
 
 		private void ConstructTree(int index)
 		{
-			var img = GameResLoader.ItemImages.Images[index.ToString()];
+			var img = GameResLoader.ItemImages.Images[$"Item_{index}"];
 			RecipeTreeView.Root = new ItemTreeNode(RecipeTreeView, img, 1, index);
 			RecipeTreeView.Root.Location = new Microsoft.Xna.Framework.Vector2(100, 50);
 			Random rand = new Random();
@@ -73,7 +73,7 @@ namespace QTRHacker.Wiki.Item
 					if (type <= 0)
 						continue;
 					var node = new ItemTreeNode(RecipeTreeView,
-						GameResLoader.ItemImages.Images[type.ToString()],
+						GameResLoader.ItemImages.Images[$"Item_{type}"],
 						ritem.Stack,
 						type,
 						color);
@@ -88,7 +88,7 @@ namespace QTRHacker.Wiki.Item
 				int type = item.Type;
 				var color = new Microsoft.Xna.Framework.Color(rand.Next() % 160 + 40, rand.Next() % 160 + 40, rand.Next() % 160 + 40);
 				var node = new ItemTreeNode(RecipeTreeView,
-						GameResLoader.ItemImages.Images[type.ToString()],
+						GameResLoader.ItemImages.Images[$"Item_{type}"],
 						item.Stack,
 						type,
 						color);

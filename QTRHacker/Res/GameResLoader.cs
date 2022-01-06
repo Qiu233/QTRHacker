@@ -17,7 +17,14 @@ namespace QTRHacker.Res
 		public const string File_Mount = "QTRHacker.Res.Game.Mount_en.txt";
 		public static ImageList ItemImages { get; }
 		public static ImageList NPCImages { get; }
-		public static ImageList BuffImage { get; }
+		public static ImageList BuffImages { get; }
+		public static ImageList TileImages { get; }
+		public static ImageList WallImages { get; }
+		public static Dictionary<string, byte[]> ItemImageData { get; }
+		public static Dictionary<string, byte[]> NPCImageData { get; }
+		public static Dictionary<string, byte[]> BuffImageData { get; }
+		public static Dictionary<string, byte[]> TileImageData { get; }
+		public static Dictionary<string, byte[]> WallImageData { get; }
 		public static string[] Prefixes { get; }
 		public static string[] Pets { get; }
 		public static string[] Mounts { get; }
@@ -25,62 +32,29 @@ namespace QTRHacker.Res
 		public static Dictionary<string, int> PetToID { get; }
 		public static Dictionary<string, int> MountToID { get; }
 
-		public static Dictionary<string, byte[]> ItemImageData { get; }
-		public static Dictionary<string, byte[]> NPCImageData { get; }
-		public static Dictionary<string, byte[]> BuffImageData { get; }
+
+		private static (Dictionary<string, byte[]>, ImageList) LoadPackedImages(string res)
+		{
+			using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(res);
+			var imgs = ResBinFileReader.ReadFromStream(s);
+			var result = new ImageList();
+			foreach (var data in imgs)
+			{
+				using var m = new MemoryStream(data.Value);
+				result.Images.Add(data.Key, Image.FromStream(m));
+			}
+			return (imgs, result);
+		}
 		static GameResLoader()
 		{
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.ContentImage.ItemImage.bin"))
-			{
-				ItemImageData = ResBinFileReader.ReadFromStream(s);
-				ItemImages = new ImageList();
-				foreach (var data in ItemImageData)
-				{
-					int i = Convert.ToInt32(data.Key.Substring(data.Key.LastIndexOf('_') + 1));
-					using (var m = new MemoryStream(data.Value))
-					{
-						ItemImages.Images.Add(i.ToString(), Image.FromStream(m));
-					}
-				}
-				ItemImages.ColorDepth = ColorDepth.Depth32Bit;
-				ItemImages.ImageSize = new Size(20, 20);
-				{
-					Image img = ItemImages.Images[0].Clone() as Image;
-					img.Dispose();
-				}
-			}
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.ContentImage.NPCImage.bin"))
-			{
-				NPCImageData = ResBinFileReader.ReadFromStream(s);
-				NPCImages = new ImageList();
-				foreach (var data in NPCImageData)
-				{
-					using (var m = new MemoryStream(data.Value))
-					{
-						NPCImages.Images.Add(data.Key, Image.FromStream(m));
-					}
-				}
-				{
-					Image img = NPCImages.Images[0].Clone() as Image;
-					img.Dispose();
-				}
-			}
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.Res.ContentImage.BuffImage.bin"))
-			{
-				BuffImageData = ResBinFileReader.ReadFromStream(s);
-				BuffImage = new ImageList();
-				foreach (var data in BuffImageData)
-				{
-					using (var m = new MemoryStream(data.Value))
-					{
-						BuffImage.Images.Add(data.Key, Image.FromStream(m));
-					}
-				}
-				{
-					Image img = NPCImages.Images[0].Clone() as Image;
-					img.Dispose();
-				}
-			}
+			(ItemImageData, ItemImages) = LoadPackedImages("QTRHacker.Res.ContentImage.ItemImages.bin");
+			ItemImages.ColorDepth = ColorDepth.Depth32Bit;
+			ItemImages.ImageSize = new Size(20, 20);
+			(NPCImageData, NPCImages) = LoadPackedImages("QTRHacker.Res.ContentImage.NPCImages.bin");
+			(BuffImageData, BuffImages) = LoadPackedImages("QTRHacker.Res.ContentImage.BuffImages.bin");
+			(TileImageData, TileImages) = LoadPackedImages("QTRHacker.Res.ContentImage.TileImages.bin");
+			(WallImageData, WallImages) = LoadPackedImages("QTRHacker.Res.ContentImage.WallImages.bin");
+
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(File_Prefix))
 			{
 				string[] t = new StreamReader(s).ReadToEnd().Split('\n');

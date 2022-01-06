@@ -374,10 +374,41 @@ namespace QTRHacker.Functions
 					(Instruction)$"mov ecx,eax",
 					(Instruction)$"call {createInstance}",
 			});
-			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(1000);
+			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(3000);
 			Flush();
 			return result;
 		}
+		/*public unsafe bool LoadAssemblyAsBytes(string assemblyFile, string typeName)
+		{
+			byte[] data = File.ReadAllBytes(assemblyFile);
+			using MemoryAllocation alloc = new(HContext, (uint)data.Length + 64);
+			var stream = new RemoteMemorySpan(HContext, alloc.AllocationBase, (int)alloc.AllocationSize).GetStream();
+			nuint pArray = stream.FakeManagedByteArray(data);
+			nuint pTypeStr = stream.IP; stream.WriteWCHARArray(typeName);
+
+			nuint load = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
+				"System.Reflection.Assembly.Load(Byte[])").NativeCode;
+			nuint getType = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
+				"System.Reflection.Assembly.GetType(System.String)").NativeCode;
+			nuint createInstance = HContext.BCLHelper.GetClrMethodBySignature("System.Activator",
+				"System.Activator.CreateInstance(System.Type)").NativeCode;
+
+			var thCode = AssemblySnippet.FromCode(
+				new AssemblyCode[] {
+					(Instruction)$"mov ecx,{pArray}",
+					(Instruction)$"call {load}",
+					(Instruction)$"push eax",
+					AssemblySnippet.FromConstructString(HContext, pTypeStr),
+					(Instruction)$"mov edx,eax",
+					(Instruction)$"pop ecx",
+					(Instruction)$"call {getType}",
+					(Instruction)$"mov ecx,eax",
+					(Instruction)$"call {createInstance}",
+			});
+			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(3000);
+			Flush();
+			return result;
+		}*/
 
 		public bool LoadAssembly(string assemblyFile)
 		{
@@ -394,9 +425,28 @@ namespace QTRHacker.Functions
 					(Instruction)$"mov ecx,eax",
 					(Instruction)$"call {loadFrom}",
 			});
-			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(1000);
+			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(3000);
 			Flush();
 			return result;
 		}
+		/*
+		public unsafe bool LoadAssemblyAsBytes(string assemblyFile)
+		{
+			byte[] data = File.ReadAllBytes(assemblyFile);
+			using MemoryAllocation alloc = new(HContext, (uint)data.Length + 64);
+			var stream = new RemoteMemorySpan(HContext, alloc.AllocationBase, (int)alloc.AllocationSize).GetStream();
+			nuint pArray = stream.FakeManagedByteArray(data);
+			nuint load = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
+				"System.Reflection.Assembly.Load(Byte[])").NativeCode;
+
+			var thCode = AssemblySnippet.FromCode(
+				new AssemblyCode[] {
+					(Instruction)$"mov ecx,{pArray}",
+					(Instruction)$"call {load}",
+			});
+			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(3000);
+			Flush();
+			return result;
+		}*/
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,20 +19,27 @@ namespace QTRHacker.Patches
 		{
 			if (Initialized)
 				return;
-			Initialized = true;
-			LoadAll();
-
-			HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("QTRHacker.Patches");
-			harmony.PatchAll();
-
-			List<GameInterfaceLayer> layers =
-				typeof(Main).GetField("_gameInterfaceLayers", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(Main.instance) as List<GameInterfaceLayer>;
-			int index = layers.FindIndex(t => t.Name == "Vanilla: Mouse Text");
-			layers.Insert(index, new LegacyGameInterfaceLayer("QTRHacker: Game", delegate
+			try
 			{
-				OnGameDraw?.Invoke(Main.spriteBatch);
-				return true;
-			}, InterfaceScaleType.Game));
+				Initialized = true;
+				LoadAll();
+
+				HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("QTRHacker.Patches");
+				harmony.PatchAll();
+
+				List<GameInterfaceLayer> layers =
+					typeof(Main).GetField("_gameInterfaceLayers", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(Main.instance) as List<GameInterfaceLayer>;
+				int index = layers.FindIndex(t => t.Name == "Vanilla: Mouse Text");
+				layers.Insert(index, new LegacyGameInterfaceLayer("QTRHacker: Game", delegate
+				{
+					OnGameDraw?.Invoke(Main.spriteBatch);
+					return true;
+				}, InterfaceScaleType.Game));
+			}
+			catch (Exception e)
+			{
+				File.WriteAllText("./QTRHacker.Patches.boot.log",e.Message + "\n" + e.StackTrace);
+			}
 		}
 		static void LoadAll()
 		{

@@ -7,7 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QHackLib", "QHackLib\QHackL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker.Functions", "QTRHacker.Functions\QTRHacker.Functions.csproj", "{F7AFCB94-0361-411F-BB41-A84A0F2B6C51}"
 	ProjectSection(ProjectDependencies) = postProject
-		{7DA0C835-19DC-44AE-867D-63C9DC2D807B} = {7DA0C835-19DC-44AE-867D-63C9DC2D807B}
 		{8986BC80-1E5B-4FED-8819-EBFA5BFCBDF8} = {8986BC80-1E5B-4FED-8819-EBFA5BFCBDF8}
 	EndProjectSection
 EndProject
@@ -26,8 +25,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QHackCLR", "QHackCLR\QHackCLR.vcxproj", "{4944FB86-95C2-4F45-BD72-29917A65E997}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QTRHacker.Patches", "QTRHacker.Patches\QTRHacker.Patches.csproj", "{8986BC80-1E5B-4FED-8819-EBFA5BFCBDF8}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker.Contrast", "QTRHacker.Contrast\QTRHacker.Contrast.csproj", "{7DA0C835-19DC-44AE-867D-63C9DC2D807B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,14 +114,6 @@ Global
 		{8986BC80-1E5B-4FED-8819-EBFA5BFCBDF8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8986BC80-1E5B-4FED-8819-EBFA5BFCBDF8}.Release|x86.ActiveCfg = Release|Any CPU
 		{8986BC80-1E5B-4FED-8819-EBFA5BFCBDF8}.Release|x86.Build.0 = Release|Any CPU
-		{7DA0C835-19DC-44AE-867D-63C9DC2D807B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DA0C835-19DC-44AE-867D-63C9DC2D807B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DA0C835-19DC-44AE-867D-63C9DC2D807B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7DA0C835-19DC-44AE-867D-63C9DC2D807B}.Debug|x86.Build.0 = Debug|Any CPU
-		{7DA0C835-19DC-44AE-867D-63C9DC2D807B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DA0C835-19DC-44AE-867D-63C9DC2D807B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DA0C835-19DC-44AE-867D-63C9DC2D807B}.Release|x86.ActiveCfg = Release|Any CPU
-		{7DA0C835-19DC-44AE-867D-63C9DC2D807B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

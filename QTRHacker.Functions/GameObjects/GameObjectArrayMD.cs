@@ -66,6 +66,8 @@ namespace QTRHacker.Functions.GameObjects
 		public T[] GetAllElements()
 		{
 			var obj = TypedInternalObject.InternalEntity as QHackCLR.Common.ClrObject;
+			if (obj.GetLength() == 0)
+				return Array.Empty<T>();
 			nuint addr = obj.GetElementsBase();
 			var array = new T[Length];
 			Context.HContext.DataAccess.Read(addr, array, (uint)array.Length);

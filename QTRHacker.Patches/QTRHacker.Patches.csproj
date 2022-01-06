@@ -80,11 +80,5 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\QTRHacker.Contrast\QTRHacker.Contrast.csproj">
-      <Project>{7da0c835-19dc-44ae-867d-63c9dc2d807b}</Project>
-      <Name>QTRHacker.Contrast</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

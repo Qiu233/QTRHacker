@@ -111,7 +111,7 @@ namespace QTRHacker.Wiki.Item
 
 		public void SetData(int id)
 		{
-			Image img = GameResLoader.ItemImages.Images[id.ToString()];
+			Image img = GameResLoader.ItemImages.Images[$"Item_{id}"];
 			(ItemIconInfoView.View as PictureBox).Image = img;
 			(ItemNameInfoView.View as TextBox).Text = HackContext.GameLocLoader_en.GetItemName(ItemsTabPage.ItemIDToS[id]);
 			(ItemTypeInfoView.View as TextBox).Text = id.ToString();

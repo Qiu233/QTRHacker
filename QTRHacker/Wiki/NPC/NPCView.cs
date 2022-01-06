@@ -17,11 +17,8 @@ namespace QTRHacker.Wiki.NPC
 {
 	public class NPCView : GraphicsDeviceControl
 	{
-		public Dictionary<int, Texture2D> Frames
-		{
-			get;
-		} = new Dictionary<int, Texture2D>();
-		public Dictionary<int, List<Microsoft.Xna.Framework.Rectangle>> FramesPlayList
+		private readonly Dictionary<int, Texture2D> Frames = new Dictionary<int, Texture2D>();
+		private Dictionary<int, List<Microsoft.Xna.Framework.Rectangle>> FramesPlayList
 		{
 			get;
 			set;

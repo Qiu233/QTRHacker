@@ -39,10 +39,7 @@ namespace QTRHacker.PlayerEditor.Controls
 			SelectedIndex = 0;
 		}
 		private SpriteBatch Batch;
-		private Dictionary<int, Texture2D> ItemTextureCache
-		{
-			get;
-		} = new Dictionary<int, Texture2D>();
+		private Dictionary<int, Texture2D> ItemTextureCache = new Dictionary<int, Texture2D>();
 		private Texture2D BorderTexture;
 		private Texture2D BackTexture;
 		private GDITextFactory GDITextFactory;
@@ -85,6 +82,10 @@ namespace QTRHacker.PlayerEditor.Controls
 			GDITextFactory?.Dispose();
 			BackTexture?.Dispose();
 			BorderTexture?.Dispose();
+			foreach (var t in ItemTextureCache.Values)
+			{
+				t?.Dispose();
+			}
 		}
 
 		private Texture2D GetItemTexture(int itemType)
@@ -151,12 +152,6 @@ namespace QTRHacker.PlayerEditor.Controls
 			}
 			DrawSlotBorder(SelectedIndex);
 			Batch.End();
-		}
-
-		protected override void OnPaint(PaintEventArgs e)
-		{
-			base.OnPaint(e);
-			Draw();
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)

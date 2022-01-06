@@ -227,7 +227,11 @@
     "AddNPC": "Add NPC",
     "CheckUpdate": "Check Update",
     "HomePage": "Home Page",
-    "None":  "None"
+    "None": "None",
+    "Arrow": "Arror",
+    "Dropper": "Dropper",
+    "Brush": "Brush",
+    "Activate": "Activate"
   },
   "zh-CN": {
     "Basic": "基础功能",
@@ -457,6 +461,10 @@
     "AddNPC": "添加NPC",
     "CheckUpdate": "检查更新",
     "HomePage": "主页",
-    "None": "无"
+    "None": "无",
+    "Arrow": "鼠标",
+    "Dropper": "滴管",
+    "Brush": "刷子",
+    "Activate": "激活"
   }
 }

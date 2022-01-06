@@ -624,8 +624,8 @@ namespace QHackCLR {
 				if (!Type->IsArray)
 					throw gcnew InvalidOperationException("Not an array");
 				if (Type->ElementType == CorElementType::ELEMENT_TYPE_SZARRAY)
-					return UIntPtr(sizeof(UIntPtr) * 2);
-				return UIntPtr((sizeof(UIntPtr) * 2 + (8 * Type->Rank)));
+					return UIntPtr(this->Address + sizeof(UIntPtr) * 2);
+				return UIntPtr(this->Address + (sizeof(UIntPtr) * 2 + (8 * Type->Rank)));
 			}
 
 			unsigned __int32 GetArrayElementOffset(array<int>^ indices)

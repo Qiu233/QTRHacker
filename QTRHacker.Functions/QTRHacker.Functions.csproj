@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
-    <ProjectReference Include="..\QTRHacker.Contrast\QTRHacker.Contrast.csproj" />
   </ItemGroup>
 
   <ItemGroup>

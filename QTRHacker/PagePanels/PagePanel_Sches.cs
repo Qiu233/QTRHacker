@@ -10,14 +10,17 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using STile = QTRHacker.Contrast.Structs.STile;
+using QTRHacker.Tile;
+using STile = QTRHacker.Functions.PatchesManager.STile;
 
 namespace QTRHacker.PagePanels
 {
 	public class PagePanel_Sches : PagePanel
 	{
-		private readonly MListBox FilesBox;
 		private readonly MButtonStrip ButtonStrip;
+		private readonly TileView TileView;
+		private bool Activated = false;
+
 		private static STile[,] LoadTilesFromFile(string file)
 		{
 			var fs = File.Open(file, FileMode.Open);
@@ -75,168 +78,113 @@ namespace QTRHacker.PagePanels
 
 		public PagePanel_Sches(int Width, int Height) : base(Width, Height)
 		{
-			ButtonStrip = new MButtonStrip(80, 30);
-			ButtonStrip.Bounds = new Rectangle(215, 2, 80, 210);
-			ButtonStrip.Enabled = false;
-			Controls.Add(ButtonStrip);
+			TileView = new TileView();
+			TileView.BackColor = Color.FromArgb(40, 40, 40);
+			TileView.Bounds = new Rectangle(0, 62, 300, 150);
+			Controls.Add(TileView);
 
-			FilesBox = new MListBox()
+			Button arrowButton = new MButton();
+			arrowButton.Enabled = false;
+			arrowButton.Text = HackContext.CurrentLanguage["Arrow"];
+			arrowButton.Bounds = new Rectangle(0, 30, 50, 30);
+			arrowButton.Click += (s, e) =>
 			{
-				Bounds = new Rectangle(3, 3, 210, 364)
+				HackContext.GameContext.Patches.WorldPainter_BrushActive = false;
+				HackContext.GameContext.Patches.WorldPainter_EyeDropperActive = false;
 			};
-			UpdateList();
-			Controls.Add(FilesBox);
+			Controls.Add(arrowButton);
 
-
-			Button GenerateButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Generate"]);
-			GenerateButton.Click += (s, e) =>
+			Button dropperButton = new MButton();
+			dropperButton.Enabled = false;
+			dropperButton.Text = HackContext.CurrentLanguage["Dropper"];
+			dropperButton.Bounds = new Rectangle(50, 30, 50, 30);
+			dropperButton.Click += (s, e) =>
 			{
-				if (FilesBox.SelectedIndices.Count <= 0) return;
-				var ctx = HackContext.GameContext;
-				if (ctx == null)
-				{
-					MessageBox.Show(HackContext.CurrentLanguage["PleaseLockGame"]);
+				HackContext.GameContext.Patches.WorldPainter_BrushActive = false;
+				HackContext.GameContext.Patches.WorldPainter_EyeDropperActive = true;
+			};
+			Controls.Add(dropperButton);
+
+			Button brushButton = new MButton();
+			brushButton.Enabled = false;
+			brushButton.Text = HackContext.CurrentLanguage["Brush"];
+			brushButton.Bounds = new Rectangle(100, 30, 50, 30);
+			brushButton.Click += (s, e) =>
+			{
+				// because enabling the brush would perform heavy actions,
+				// we check the state of brush at first.
+				if (HackContext.GameContext.Patches.WorldPainter_BrushActive)
 					return;
+				HackContext.GameContext.Patches.WorldPainter_EyeDropperActive = false;
+				HackContext.GameContext.Patches.WorldPainter_BrushActive = false;
+				// with both brush and dropper disabled
+				nuint addr = HackContext.GameContext.Patches.WorldPainter_BrushTiles;
+				if (addr != 0) // reclaim the memory allocated before
+				{
+					HackContext.GameContext.Patches.WorldPainter_BrushWidth = 0;
+					HackContext.GameContext.Patches.WorldPainter_BrushHeight = 0;
+					System.Threading.Thread.Sleep(10);
+					HackContext.GameContext.Patches.WorldPainter_BrushTiles = 0;
+					QHackLib.Memory.MemoryAllocation.Free(HackContext.GameContext.HContext.Handle, addr);
 				}
-				string h = Path.Combine(HackContext.PATH_SCHES, $"{FilesBox.SelectedItem}.sche");
-
-				var bs = SerializeTiles(LoadTilesFromFile(h));
-
-
+				System.Threading.Thread.Sleep(10);
+				(int width, int height, var data) = GetDataFromGame();
+				if (data.Length == 0) return;
+				unsafe
+				{
+					addr = QHackLib.Memory.MemoryAllocation.Alloc(HackContext.GameContext.HContext.Handle, (uint)(data.Length * sizeof(STile) + 64));
+				}
+				HackContext.GameContext.HContext.DataAccess.Write(addr, data, (uint)data.Length);
+				HackContext.GameContext.Patches.WorldPainter_BrushTiles = addr;
+				HackContext.GameContext.Patches.WorldPainter_BrushWidth = width;
+				HackContext.GameContext.Patches.WorldPainter_BrushHeight = height;
+				HackContext.GameContext.Patches.WorldPainter_BrushActive = true; // with everthing's done, enable the brush
 			};
+			Controls.Add(brushButton);
 
-			Button CreateNewButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Create"]);
-			CreateNewButton.Click += (s, e) =>
+
+			Button activateButton = new MButton();
+			activateButton.Text = HackContext.CurrentLanguage["Activate"];
+			activateButton.Bounds = new Rectangle(0, 0, 50, 30);
+			activateButton.Click += (s, e) =>
 			{
-				MForm CreateNewMForm = new MForm
-				{
-					BackColor = Color.FromArgb(90, 90, 90),
-					Text = HackContext.CurrentLanguage["Create"],
-					StartPosition = FormStartPosition.CenterParent,
-					ClientSize = new Size(245, 52)
-				};
-
-				Label NameTip = new Label()
-				{
-					Text = HackContext.CurrentLanguage["Name"] + "：",
-					Location = new Point(0, 0),
-					Size = new Size(80, 20),
-					TextAlign = ContentAlignment.MiddleCenter
-				};
-				CreateNewMForm.MainPanel.Controls.Add(NameTip);
-
-				TextBox NameTextBox = new TextBox
-				{
-					BorderStyle = BorderStyle.FixedSingle,
-					BackColor = Color.FromArgb(120, 120, 120),
-					Text = "",
-					Location = new Point(85, 0),
-					Size = new Size(95, 20)
-				};
-				CreateNewMForm.MainPanel.Controls.Add(NameTextBox);
-
-				Button ConfirmButton = new Button();
-				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
-				ConfirmButton.FlatStyle = FlatStyle.Flat;
-				ConfirmButton.Size = new Size(65, 20);
-				ConfirmButton.Location = new Point(180, 0);
-				ConfirmButton.Click += (s1, e1) =>
-				{
-					string str = Path.Combine(HackContext.PATH_SCHES, $"{NameTextBox.Text}.sche");
-					if (!File.Exists(str))
-						File.Create(str).Close();
-					else
-						MessageBox.Show(HackContext.CurrentLanguage["NameRepeated"]);
-					UpdateList();
-					CreateNewMForm.Dispose();
-				};
-				CreateNewMForm.MainPanel.Controls.Add(ConfirmButton);
-				CreateNewMForm.ShowDialog(this);
+				arrowButton.Enabled = true;
+				dropperButton.Enabled = true;
+				brushButton.Enabled = true;
+				HackContext.GameContext.Patches.Init();
+				Activated = true;
 			};
+			Controls.Add(activateButton);
 
-			Button EditButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Edit"]);
-			EditButton.Click += (s, e) =>
-			{
-				if (FilesBox.SelectedIndices.Count <= 0) return;
-				ScriptEditorForm p = new ScriptEditorForm((string)FilesBox.SelectedItem);
-				p.Show();
-			};
+			ButtonStrip = new MButtonStrip(80, 30);
+			ButtonStrip.Bounds = new Rectangle(215, 132, 80, 210);
+			ButtonStrip.Enabled = false;
+			//Controls.Add(ButtonStrip);
 
-			Button RenameButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Rename"]);
-			RenameButton.Click += (s, e) =>
-			{
-				if (FilesBox.SelectedIndices.Count <= 0) return;
-				MForm CreateNewMForm = new MForm
-				{
-					BackColor = Color.FromArgb(90, 90, 90),
-					Text = HackContext.CurrentLanguage["Rename"],
-					StartPosition = FormStartPosition.CenterParent,
-					ClientSize = new Size(245, 52)
-				};
-
-				Label NewNameTip = new Label()
-				{
-					Text = HackContext.CurrentLanguage["NewName"] + "：",
-					Location = new Point(0, 0),
-					Size = new Size(80, 20),
-					TextAlign = ContentAlignment.MiddleCenter
-				};
-				CreateNewMForm.MainPanel.Controls.Add(NewNameTip);
-
-				TextBox NewNameTextBox = new TextBox
-				{
-					BorderStyle = BorderStyle.FixedSingle,
-					BackColor = Color.FromArgb(120, 120, 120),
-					Text = "",
-					Location = new Point(85, 0),
-					Size = new Size(95, 20)
-				};
-				NewNameTextBox.Text = (string)FilesBox.SelectedItem;
-				CreateNewMForm.MainPanel.Controls.Add(NewNameTextBox);
-
-				Button ConfirmButton = new Button();
-				ConfirmButton.Text = HackContext.CurrentLanguage["Confirm"];
-				ConfirmButton.FlatStyle = FlatStyle.Flat;
-				ConfirmButton.Size = new Size(65, 20);
-				ConfirmButton.Location = new Point(180, 0);
-				ConfirmButton.Click += (s1, e1) =>
-				{
-					string str = Path.Combine(HackContext.PATH_SCHES, $"{NewNameTextBox.Text}.sche");
-					if (!File.Exists(str))
-						File.Move(Path.Combine(HackContext.PATH_SCHES, $"{(string)FilesBox.SelectedItem}.sche"), str);
-					else
-						MessageBox.Show(HackContext.CurrentLanguage["NameRepeated"]);
-					UpdateList();
-					CreateNewMForm.Dispose();
-				};
-				CreateNewMForm.MainPanel.Controls.Add(ConfirmButton);
-				CreateNewMForm.ShowDialog(this);
-			};
-
-			Button DeleteButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Delete"]);
-			DeleteButton.Click += (s, e) =>
-			{
-				if (FilesBox.SelectedIndices.Count <= 0) return;
-				if (MessageBox.Show(HackContext.CurrentLanguage["SureToDelete"], "Warning", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
-				File.Delete(Path.Combine(HackContext.PATH_SCHES, $"{(string)FilesBox.SelectedItem}.sche"));
-				UpdateList();
-			};
-
-
-			Button RefreshButton = ButtonStrip.AddButton(HackContext.CurrentLanguage["Refresh"]);
-			RefreshButton.Click += (s, e) =>
-			{
-				UpdateList();
-			};
+			System.Timers.Timer timer = new System.Timers.Timer(1000);
+			timer.Elapsed += Timer_Elapsed;
+			timer.Start();
 		}
 
-		public void UpdateList()
+		private static (int Width, int Height, STile[] Data) GetDataFromGame()
 		{
-			FilesBox.Items.Clear();
-			foreach (var f in Directory.EnumerateFiles(HackContext.PATH_SCHES, "*.sche"))
-			{
-				FilesBox.Items.Add(Path.GetFileNameWithoutExtension(f));
-			}
+			var tiles = HackContext.GameContext.Patches.WorldPainter_DropperTiles;
+			int width = tiles.GetLength(0);
+			int height = tiles.GetLength(1);
+			var data = tiles.GetAllElements();
+			return (width, height, data);
+		}
+
+		private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		{
+			if (HackContext.GameContext == null || Activated == false)
+				return;
+			(int width, int height, var data) = GetDataFromGame();
+			STile[,] targetData = new STile[width, height];
+			for (int i = 0; i < width; i++)
+				for (int j = 0; j < height; j++)
+					targetData[i, j] = data[i * height + j];
+			TileView.SetData(targetData);
 		}
 	}
 }
