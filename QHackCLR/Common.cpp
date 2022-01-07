@@ -125,7 +125,10 @@ namespace QHackCLR {
 			ano->Types = holder;
 			AddType_Del^ del = gcnew AddType_Del(ano, &Anonymous_1::Add);
 			MODULEMAPTRAVERSE func = static_cast<MODULEMAPTRAVERSE>(Marshal::GetFunctionPointerForDelegate(del).ToPointer());
-			this->ModuleHelper->SOSDac->TraverseModuleMap(type, NativeHandle, func, nullptr);
+			try {
+				this->ModuleHelper->SOSDac->TraverseModuleMap(type, NativeHandle, func, nullptr);
+			}
+			catch (Exception^) {}
 			Generic::List<ClrType^>^ types = gcnew Generic::List<ClrType^>();
 			for each (auto mt in holder)
 				types->Add(this->ModuleHelper->TypeFactory->GetClrType(UIntPtr(mt)));
@@ -153,13 +156,38 @@ namespace QHackCLR {
 			return nullptr;
 		}
 
+		int ClrType::GetLength(nuint objRef) {
+			return TypeHelper->DataAccess->Read<int>(objRef + sizeof(UIntPtr));
+		}
+
+		int ClrType::GetLength(nuint objRef, int dimension) {
+			int rank = Rank;
+			if (dimension >= rank)
+				throw gcnew ArgumentOutOfRangeException();
+			if (ElementType == CorElementType::ELEMENT_TYPE_SZARRAY)//SZArray
+				return GetLength(objRef);
+			return TypeHelper->DataAccess->Read<int>(objRef + (sizeof(UIntPtr) * 2 + 4 * dimension));
+		}
+
+		int ClrType::GetLowerBound(nuint objRef, int dimension) {
+			int rank = Rank;
+			if (dimension >= rank)
+				throw gcnew ArgumentOutOfRangeException();
+			if (rank == 1)
+				return 0;
+			return TypeHelper->DataAccess->Read<int>(objRef + (sizeof(UIntPtr) * 2 + 4 * (rank + dimension)));
+		}
+
 		ClrType::ClrType(ITypeHelper^ helper, nuint handle) : ClrEntity(handle) {
 			TypeHelper = helper;
 
 			m_Name = DacHelpers::SOSHelpers::GetMethodTableName(helper->SOSDac, NativeHandle);
 
 			Data = new DacpMethodTableData;
-			helper->SOSDac->GetMethodTableData(NativeHandle, Data);
+			try {
+				helper->SOSDac->GetMethodTableData(NativeHandle, Data);
+			}
+			catch (Exception^) {}
 		}
 		ClrType::~ClrType() {
 			delete Data;
@@ -269,7 +297,10 @@ namespace QHackCLR {
 			FieldHelper = helper;
 
 			Data = new DacpFieldDescData;
-			helper->SOSDac->GetFieldDescData(NativeHandle, Data);
+			try {
+				helper->SOSDac->GetFieldDescData(NativeHandle, Data);
+			}
+			catch (Exception^) {}
 
 			m_Type = helper->TypeFactory->GetClrType(UIntPtr(Data->MTOfType));
 
@@ -290,7 +321,7 @@ namespace QHackCLR {
 		AddressableTypedEntity^ ClrInstanceField::GetValue(nuint offsetBase) {
 			if (Type->IsValueType)
 				return gcnew ClrValue(Type, GetAddress(offsetBase));
-			return gcnew ClrObject(Type->ClrObjectHelper, GetRawValue<UIntPtr>(offsetBase));
+			return gcnew ClrObject(Type, GetRawValue<UIntPtr>(offsetBase));
 		}
 		UIntPtr ClrInstanceField::GetAddress(AddressableTypedEntity^ entity) {
 			return entity->OffsetBase + Offset;
@@ -302,7 +333,7 @@ namespace QHackCLR {
 		AddressableTypedEntity^ ClrInstanceField::GetValue(AddressableTypedEntity^ entity) {
 			if (Type->IsValueType)
 				return gcnew ClrValue(Type, GetAddress(entity));
-			return gcnew ClrObject(Type->ClrObjectHelper, GetRawValue<UIntPtr>(entity));
+			return gcnew ClrObject(Type, GetRawValue<UIntPtr>(entity));
 		}
 
 		UIntPtr ClrStaticField::GetAddress() {
@@ -316,14 +347,17 @@ namespace QHackCLR {
 		AddressableTypedEntity^ ClrStaticField::GetValue() {
 			if (Type->IsPrimitive)
 				return gcnew ClrValue(Type, GetAddress());
-			return gcnew ClrObject(Type->ClrObjectHelper, GetRawValue<UIntPtr>());
+			return gcnew ClrObject(Type, GetRawValue<UIntPtr>());
 		}
 
 
 		ClrMethod::ClrMethod(IMethodHelper^ helper, nuint handle) : ClrEntity(handle) {
 			MethodHelper = helper;
 			Data = new DacpMethodDescData;
-			helper->SOSDac->GetMethodDescData(NativeHandle, 0, Data, 0, nullptr, nullptr);
+			try {
+				helper->SOSDac->GetMethodDescData(NativeHandle, 0, Data, 0, nullptr, nullptr);
+			}
+			catch (Exception^) {}
 
 			m_Signature = DacHelpers::SOSHelpers::GetMethodDescName(helper->SOSDac, NativeHandle);
 		}
@@ -352,10 +386,14 @@ namespace QHackCLR {
 		}
 
 
-		ClrObject::ClrObject(IClrObjectHelper^ helper, nuint address) : AddressableTypedEntity(helper, address) {
+		ClrObject::ClrObject(ClrType^ type, nuint address) : AddressableTypedEntity(type->ClrObjectHelper, address) {
+			m_Type = type;
 			Data = new DacpObjectData;
-			helper->SOSDac->GetObjectData(address.ToUInt64(), Data);
-			m_Type = helper->TypeFactory->GetClrType(UIntPtr(Data->MethodTable));
+			try {
+				type->ClrObjectHelper->SOSDac->GetObjectData(address.ToUInt64(), Data);
+			}
+			catch(Exception^) {
+			}
 		}
 
 		bool ClrObject::IsArray::get() {
@@ -373,7 +411,7 @@ namespace QHackCLR {
 			ClrType^ componentType = Type->ComponentType;
 			if (componentType->IsValueType)
 				return gcnew ClrValue(componentType, Address + offset);
-			return gcnew ClrObject(ObjectHelper, Read<UIntPtr>(offset));
+			return gcnew ClrObject(componentType, Read<UIntPtr>(offset));
 		}
 
 		ClrValue::ClrValue(ClrType^ type, nuint address) : AddressableTypedEntity(type->ClrObjectHelper, address) {

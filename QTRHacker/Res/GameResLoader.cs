@@ -18,8 +18,6 @@ namespace QTRHacker.Res
 		public static ImageList ItemImages { get; }
 		public static ImageList NPCImages { get; }
 		public static ImageList BuffImages { get; }
-		public static ImageList TileImages { get; }
-		public static ImageList WallImages { get; }
 		public static Dictionary<string, byte[]> ItemImageData { get; }
 		public static Dictionary<string, byte[]> NPCImageData { get; }
 		public static Dictionary<string, byte[]> BuffImageData { get; }
@@ -32,11 +30,15 @@ namespace QTRHacker.Res
 		public static Dictionary<string, int> PetToID { get; }
 		public static Dictionary<string, int> MountToID { get; }
 
+		private static Dictionary<string, byte[]> LoadPackedImagesData(string res)
+		{
+			using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(res);
+			return ResBinFileReader.ReadFromStream(s);
+		}
 
 		private static (Dictionary<string, byte[]>, ImageList) LoadPackedImages(string res)
 		{
-			using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(res);
-			var imgs = ResBinFileReader.ReadFromStream(s);
+			var imgs = LoadPackedImagesData(res);
 			var result = new ImageList();
 			foreach (var data in imgs)
 			{
@@ -50,10 +52,11 @@ namespace QTRHacker.Res
 			(ItemImageData, ItemImages) = LoadPackedImages("QTRHacker.Res.ContentImage.ItemImages.bin");
 			ItemImages.ColorDepth = ColorDepth.Depth32Bit;
 			ItemImages.ImageSize = new Size(20, 20);
-			(NPCImageData, NPCImages) = LoadPackedImages("QTRHacker.Res.ContentImage.NPCImages.bin");
 			(BuffImageData, BuffImages) = LoadPackedImages("QTRHacker.Res.ContentImage.BuffImages.bin");
-			(TileImageData, TileImages) = LoadPackedImages("QTRHacker.Res.ContentImage.TileImages.bin");
-			(WallImageData, WallImages) = LoadPackedImages("QTRHacker.Res.ContentImage.WallImages.bin");
+
+			NPCImageData = LoadPackedImagesData("QTRHacker.Res.ContentImage.NPCImages.bin");
+			TileImageData = LoadPackedImagesData("QTRHacker.Res.ContentImage.TileImages.bin");
+			WallImageData = LoadPackedImagesData("QTRHacker.Res.ContentImage.WallImages.bin");
 
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(File_Prefix))
 			{

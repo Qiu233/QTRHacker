@@ -380,6 +380,42 @@ namespace QHackCLR {
 			CLR_TYPE_PROP(IsHasSecurity, HasSecurity);
 #undef CLR_TYPE_PROP
 
+
+			int GetLength(nuint objRef);
+			int GetLength(nuint objRef, int dimension);
+			int GetLowerBound(nuint objRef, int dimension);
+
+			UIntPtr GetElementsBase(nuint objRef)
+			{
+				if (!IsArray)
+					throw gcnew InvalidOperationException("Not an array");
+				if (ElementType == CorElementType::ELEMENT_TYPE_SZARRAY)
+					return UIntPtr(objRef + sizeof(UIntPtr) * 2);
+				return UIntPtr(objRef + (sizeof(UIntPtr) * 2 + (8 * Rank)));
+			}
+
+			unsigned __int32 GetArrayElementOffset(nuint objRef, array<int>^ indices)
+			{
+				int rank = Rank;
+				if (indices->Length != rank)
+					throw gcnew ArgumentException("Rank does not match");
+				if (ElementType == CorElementType::ELEMENT_TYPE_SZARRAY)
+					return sizeof(UIntPtr) * 2 + (indices[0] * ComponentSize);
+				int offset = 0;
+				for (int i = 0; i < rank; i++)
+				{
+					int currentValueOffset = indices[i] - GetLowerBound(objRef, i);
+					if (currentValueOffset >= GetLength(objRef, i))
+						throw gcnew ArgumentOutOfRangeException();
+					offset *= GetLength(objRef, i);
+					offset += currentValueOffset;
+				}
+				return sizeof(UIntPtr) * 2 + (8 * rank) + (offset * ComponentSize);
+			}
+
+			UIntPtr GetArrayElementAddress(nuint objRef, array<int>^ indices) {
+				return objRef + GetArrayElementOffset(objRef, indices);
+			}
 		};
 		public ref class ClrMethod : public ClrEntity, IHasMetaData {
 		private:
@@ -483,13 +519,13 @@ namespace QHackCLR {
 
 		public ref class ClrInstanceField : public ClrField {
 		private:
+			AddressableTypedEntity^ GetValue(nuint offsetBase);
+		public:
 			UIntPtr GetAddress(nuint offsetBase) {
 				return offsetBase + Offset;
 			}
 			generic<typename T> where T : value class
 				T GetRawValue(nuint offsetBase);
-			AddressableTypedEntity^ GetValue(nuint offsetBase);
-		public:
 			ClrInstanceField(ClrType^ declType, IFieldHelper^ helper, nuint handle) : ClrField(declType, helper, handle) {
 			}
 			UIntPtr GetAddress(AddressableTypedEntity^ entity);
@@ -574,7 +610,7 @@ namespace QHackCLR {
 					return m_Type;
 				}
 			}
-			ClrObject(IClrObjectHelper^ helper, nuint address);
+			ClrObject(ClrType^ type, nuint address);
 			~ClrObject() {
 				delete Data;
 			}
@@ -584,6 +620,12 @@ namespace QHackCLR {
 			}
 			property bool IsBoxed {
 				bool get();
+			}
+
+			property bool IsNullPtr {
+				bool get() {
+					return this->Address == UIntPtr::Zero;
+				}
 			}
 
 			[NativeInteger]
@@ -599,56 +641,27 @@ namespace QHackCLR {
 			}
 
 			int GetLength() {
-				return Read<int>(sizeof(UIntPtr));
+				return Type->GetLength(this->Address);
 			}
 
 			int GetLength(int dimension) {
-				int rank = Type->Rank;
-				if (dimension >= rank)
-					throw gcnew ArgumentOutOfRangeException();
-				if (Type->ElementType == CorElementType::ELEMENT_TYPE_SZARRAY)//SZArray
-					return GetLength();
-				return Read<int>((sizeof(UIntPtr) * 2 + 4 * dimension));
+				return Type->GetLength(this->Address, dimension);
 			}
 
 			int GetLowerBound(int dimension) {
-				int rank = Type->Rank;
-				if (dimension >= rank)
-					throw gcnew ArgumentOutOfRangeException();
-				if (rank == 1)
-					return 0;
-				return Read<int>((sizeof(UIntPtr) * 2 + 4 * (rank + dimension)));
-			}
-			UIntPtr GetElementsBase()
-			{
-				if (!Type->IsArray)
-					throw gcnew InvalidOperationException("Not an array");
-				if (Type->ElementType == CorElementType::ELEMENT_TYPE_SZARRAY)
-					return UIntPtr(this->Address + sizeof(UIntPtr) * 2);
-				return UIntPtr(this->Address + (sizeof(UIntPtr) * 2 + (8 * Type->Rank)));
+				return Type->GetLowerBound(this->Address, dimension);
 			}
 
-			unsigned __int32 GetArrayElementOffset(array<int>^ indices)
-			{
-				int rank = Type->Rank;
-				if (indices->Length != rank)
-					throw gcnew ArgumentException("Rank does not match");
-				if (Type->ElementType == CorElementType::ELEMENT_TYPE_SZARRAY)
-					return sizeof(UIntPtr) * 2 + (indices[0] * Type->ComponentSize);
-				int offset = 0;
-				for (int i = 0; i < rank; i++)
-				{
-					int currentValueOffset = indices[i] - GetLowerBound(i);
-					if (currentValueOffset >= GetLength(i))
-						throw gcnew ArgumentOutOfRangeException();
-					offset *= GetLength(i);
-					offset += currentValueOffset;
-				}
-				return sizeof(UIntPtr) * 2 + (8 * rank) + (offset * Type->ComponentSize);
+			UIntPtr GetElementsBase() {
+				return Type->GetElementsBase(this->Address);
+			}
+
+			unsigned __int32 GetArrayElementOffset(array<int>^ indices) {
+				return Type->GetArrayElementOffset(this->Address, indices);
 			}
 
 			UIntPtr GetArrayElementAddress(array<int>^ indices) {
-				return Address + GetArrayElementOffset(indices);
+				return Type->GetArrayElementAddress(this->Address, indices);
 			}
 
 			AddressableTypedEntity^ GetArrayElement(array<int>^ indices);

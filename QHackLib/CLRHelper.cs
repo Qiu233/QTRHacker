@@ -52,24 +52,11 @@ namespace QHackLib
 		public void SetStaticFieldValue<T>(string typeName, string fieldName, T value) where T : unmanaged => Context.DataAccess.Write(GetClrType(typeName).GetStaticFieldByName(fieldName).GetAddress(), value);
 
 		public HackObject GetStaticHackObject(string typeName, string fieldName)
-			=> new(Context, GetClrType(typeName).GetStaticFieldByName(fieldName).GetValue());
-
-		public T GetStaticHackObjectValue<T>(string typeName, string fieldName) where T : unmanaged
-			=> GetClrType(typeName).GetStaticFieldByName(fieldName).GetRawValue<T>();
-
-		public void SetStaticHackObject<T>(string typeName, string fieldName, T value) where T : HackObject
 		{
-			ClrStaticField field = GetClrType(typeName).GetStaticFieldByName(fieldName);
-			nuint addr = field.GetAddress();
+			var field = GetClrType(typeName).GetStaticFieldByName(fieldName);
 			if (field.Type.IsPrimitive)
-				Context.DataAccess.WriteBytes(addr, Context.DataAccess.ReadBytes(value.BaseAddress, (uint)(value.ClrType.BaseSize - sizeof(nuint) * 2)));
-			else
-				Context.DataAccess.Write(addr, value.BaseAddress);
+				throw new ArgumentException("Primitive static field cannot be cast to HackObject.", nameof(fieldName));
+			return new HackObject(Context, field.Type, field.GetRawValue<nuint>());
 		}
-
-		public void SetStaticHackObjectValue<T>(string typeName, string fieldName, T value) where T : unmanaged
-			=> Context.DataAccess.Write(GetClrType(typeName).GetStaticFieldByName(fieldName).GetAddress(), value);
-
-
 	}
 }

@@ -268,6 +268,15 @@ namespace QTRHacker.PagePanels
 			};
 			UpdatePlayerTimer.Start();
 		}
+		protected override void Dispose(bool disposing)
+		{
+			base.Dispose(disposing);
+			if (disposing)
+			{
+				UpdatePlayerTimer.Stop();
+				UpdatePlayerTimer.Dispose();
+			}
+		}
 		public void ClearPlayerAttribute()
 		{
 			(PlayerNameInfoView.View as TextBox).Text = "";

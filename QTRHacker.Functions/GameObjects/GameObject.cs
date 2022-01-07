@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using QHackCLR.Common;
 using QHackLib;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace QTRHacker.Functions.GameObjects
 		[JsonIgnore]
 		public nuint BaseAddress => InternalObject.BaseAddress;
 
+
 		public GameObject(GameContext context, HackObject obj)
 		{
 			Context = context;
@@ -35,6 +37,8 @@ namespace QTRHacker.Functions.GameObjects
 
 		public T MakeGameObject<T>(HackObject obj) where T : GameObject
 		{
+			if (obj is null)
+				return null;
 			return typeof(T).GetConstructor(new Type[] { typeof(GameContext), typeof(HackObject) })
 				   .Invoke(new object[] { Context, obj }) as T;
 		}
