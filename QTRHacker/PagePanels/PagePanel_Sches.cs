@@ -148,11 +148,19 @@ namespace QTRHacker.PagePanels
 			activateButton.Bounds = new Rectangle(0, 0, 80, 30);
 			activateButton.Click += (s, e) =>
 			{
+				try
+				{
+					HackContext.GameContext.Patches.Init();
+				}
+				catch (InvalidOperationException)
+				{
+					MessageBox.Show(HackContext.CurrentLanguage["MSGPleaseEnterWorld"]);
+					return;
+				}
 				activateButton.Enabled = false;
 				arrowButton.Enabled = true;
 				dropperButton.Enabled = true;
 				brushButton.Enabled = true;
-				HackContext.GameContext.Patches.Init();
 				Activated = true;
 			};
 			Controls.Add(activateButton);

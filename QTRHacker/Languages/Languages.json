@@ -231,7 +231,8 @@
     "Arrow": "Arror",
     "Dropper": "Dropper",
     "Brush": "Brush",
-    "Activate": "Activate"
+    "Activate": "Activate",
+    "MSGPleaseEnterWorld": "Activation failed.\nPlease enter a world before activating this."
   },
   "zh-CN": {
     "Basic": "基础功能",
@@ -465,6 +466,7 @@
     "Arrow": "鼠标",
     "Dropper": "滴管",
     "Brush": "刷子",
-    "Activate": "激活"
+    "Activate": "激活",
+    "MSGPleaseEnterWorld": "激活失败，请先进入世界"
   }
 }
