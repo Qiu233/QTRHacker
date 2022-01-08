@@ -1,61 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net46</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-	<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>..\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\Debug\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>..\Release\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\Release\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <None Remove="Res\Example.txt" />
-    <None Remove="Res\Projectile_251.png" />
-    <None Remove="XSHD\XML-Mode.xshd" />
+    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+    <PackageReference Include="Lib.Harmony" Version="2.2.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Res\Example.txt" />
-    <EmbeddedResource Include="Res\Projectile_251.png" />
-    <EmbeddedResource Include="XSHD\XML-Mode.xshd" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\QTRHacker.Functions\QTRHacker.Functions.csproj" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework">
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
-      <Private>true</Private>
+      <CopyLocal>False</CopyLocal>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Game">
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath>
-      <Private>true</Private>
+      <CopyLocal>False</CopyLocal>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Graphics">
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath>
-      <Private>true</Private>
+      <CopyLocal>False</CopyLocal>
     </Reference>
-    <Reference Include="WinFormsGraphicsDevice">
-      <HintPath>..\refdlls\WinFormsGraphicsDevice.dll</HintPath>
+    <Reference Include="ReLogic">
+      <HintPath>$(SolutionDir)GameRefs\ReLogic.dll</HintPath>
+      <CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="Terraria">
+      <HintPath>$(SolutionDir)GameRefs\Terraria.exe</HintPath>
+      <CopyLocal>False</CopyLocal>
     </Reference>
   </ItemGroup>
-  
 </Project>

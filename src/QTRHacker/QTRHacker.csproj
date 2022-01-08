@@ -17,14 +17,14 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>..\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\Debug\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
     <NoWarn>1701;1702;IDE0017;IDE0090</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>..\Release\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\Release\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
     <NoWarn>1701;1702;IDE0017;IDE0090</NoWarn>
   </PropertyGroup>
