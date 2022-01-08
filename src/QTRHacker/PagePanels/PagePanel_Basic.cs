@@ -50,18 +50,18 @@ namespace QTRHacker.PagePanels
 			PageMisc = new Panel();
 			PageMisc.Bounds = new Rectangle(3, 0, Width - 60, Height);
 
-			/*AddFunctionButton(Page1, HackContext.CurrentLanguage["InfLife"], true, Utils.InfiniteLife_E, Utils.InfiniteLife_D);
+			AddFunctionButton(Page1, HackContext.CurrentLanguage["InfLife"], true, Utils.InfiniteLife_E, Utils.InfiniteLife_D);
 			AddFunctionButton(Page1, HackContext.CurrentLanguage["InfOxygen"], true, Utils.InfiniteOxygen_E, Utils.InfiniteOxygen_D);
 			AddFunctionButton(Page1, HackContext.CurrentLanguage["InfMinion"], true, Utils.InfiniteMinion_E, Utils.InfiniteMinion_D);
 			AddFunctionButton(Page1, HackContext.CurrentLanguage["InfMana"], true, Utils.InfiniteMana_E, Utils.InfiniteMana_D);
 			AddFunctionButton(Page1, HackContext.CurrentLanguage["InfItemAmmo"], true, Utils.InfiniteItemAmmo_E, Utils.InfiniteItemAmmo_D);
 			AddFunctionButton(Page1, HackContext.CurrentLanguage["InfFly"], true, Utils.InfiniteFly_E, Utils.InfiniteFly_D);
-			AddFunctionButton(Page1, HackContext.CurrentLanguage["ImmuneDebuff"], true, Utils.ImmuneDebuffs_E, Utils.ImmuneDebuffs_D);
-			AddFunctionButton(Page1, HackContext.CurrentLanguage["HighLight"], true, Utils.HighLight_E, Utils.HighLight_D);
+			/*AddFunctionButton(Page1, HackContext.CurrentLanguage["ImmuneDebuff"], true, Utils.ImmuneDebuffs_E, Utils.ImmuneDebuffs_D);
+			AddFunctionButton(Page1, HackContext.CurrentLanguage["HighLight"], true, Utils.HighLight_E, Utils.HighLight_D);*/
 			AddFunctionButton(Page1, HackContext.CurrentLanguage["GhostMode"], true, Utils.GhostMode_E, Utils.GhostMode_D);
 
-			AddFunctionButton(Page2, HackContext.CurrentLanguage["SlowFall"], true, Utils.LowGravity_E, Utils.LowGravity_D);
-			AddFunctionButton(Page2, HackContext.CurrentLanguage["FastSpeed"], true, Utils.FastSpeed_E, Utils.FastSpeed_D);
+			/*AddFunctionButton(Page2, HackContext.CurrentLanguage["SlowFall"], true, Utils.LowGravity_E, Utils.LowGravity_D);
+			AddFunctionButton(Page2, HackContext.CurrentLanguage["FastSpeed"], true, Utils.FastSpeed_E, Utils.FastSpeed_D);*/
 			//AddFunction(Page2, HackContext.CurrentLanguage["ProjectileIgnoreTiles"], true, Utils.ProjectileIgnoreTile_E, Utils.ProjectileIgnoreTile_D);
 			AddFunctionButton(Page2, HackContext.CurrentLanguage["GrabFarAway"], true, Utils.GrabItemFarAway_E, Utils.GrabItemFarAway_D);
 			AddFunctionButton(Page2, HackContext.CurrentLanguage["BonusTwoSlots"], true, Utils.BonusTwoSlots_E, Utils.BonusTwoSlots_D);
@@ -71,17 +71,17 @@ namespace QTRHacker.PagePanels
 			AddFunctionButton(Page2, HackContext.CurrentLanguage["EnableAllRecipes"], true, Utils.EnableAllRecipes_E, Utils.EnableAllRecipes_D);
 			AddFunctionButton(Page2, HackContext.CurrentLanguage["StengthenedVampireKnives"], true, Utils.StrengthenVampireKnives_E, Utils.StrengthenVampireKnives_D);
 			//AddFunction(Page2, HackContext.CurrentLanguage["SwingIgnoringTiles"], true, Utils.SwingIgnoringTils_E, Utils.SwingIgnoringTils_D);
-			AddFunctionButton(Page2, HackContext.CurrentLanguage["SwingingAttacksAll"], true, Utils.SwingingAttacksAll_E, Utils.SwingingAttacksAll_D);
-			*/
-			/*AddFunctionButton(Page3, HackContext.CurrentLanguage["BurnAllNPCS"], false,
+			//AddFunctionButton(Page2, HackContext.CurrentLanguage["SwingingAttacksAll"], true, Utils.SwingingAttacksAll_E, Utils.SwingingAttacksAll_D);
+			
+			AddFunctionButton(Page3, HackContext.CurrentLanguage["BurnAllNPCS"], false,
 				g =>
 				{
-					ProgressPopupForm p = new ProgressPopupForm(MainForm.MainFormInstance.Width / 4 * 3, NPC.MAXNUMBER, "Waiting...");
+					var npc = HackContext.GameContext.NPC;
+					ProgressPopupForm p = new ProgressPopupForm(MainForm.MainFormInstance.Width / 4 * 3, npc.Length, "Waiting...");
 					p.Run(MainForm.MainFormInstance, (tick) =>
 					{
 						int i = 0;
-						var npc = HackContext.GameContext.NPC;
-						for (; i < NPC.MAXNUMBER; i++)
+						for (; i < npc.Length; i++)
 						{
 							if (npc[i].Active)
 								npc[i].AddBuff(153, 216000);
@@ -92,19 +92,19 @@ namespace QTRHacker.PagePanels
 			AddFunctionButton(Page3, HackContext.CurrentLanguage["BurnAllPlayers"], false,
 				g =>
 				{
-					ProgressPopupForm p = new ProgressPopupForm(MainForm.MainFormInstance.Width / 4 * 3, NPC.MAXNUMBER, "Waiting...");
+					var player = HackContext.GameContext.Players;
+					ProgressPopupForm p = new ProgressPopupForm(MainForm.MainFormInstance.Width / 4 * 3, player.Length, "Waiting...");
 					p.Run(MainForm.MainFormInstance, (tick) =>
 					{
 						int i = 0;
-						var player = HackContext.GameContext.Players;
-						for (; i < Player.MAX_PLAYER; i++)
+						for (; i < player.Length; i++)
 						{
 							if (player[i].Active)
 								player[i].AddBuff(44, 216000);
 							tick(i);
 						}
 					});
-				}, null);*/
+				}, null);
 			/*AddFunctionButton(Page3, HackContext.CurrentLanguage["PourLavaOntoPlayers"], false, Utils.DropLavaOntoPlayers, null);
 			FunctionButton _b = null;
 			_b = AddFunctionButton(Page3, HackContext.CurrentLanguage["RandomUUID"], false,
@@ -113,8 +113,8 @@ namespace QTRHacker.PagePanels
 					HackContext.GameContext.UUID = Guid.NewGuid().ToString();
 					_b.Text = HackContext.GameContext.UUID;
 				}, null);*/
-			/*AddFunctionButton(Page3, HackContext.CurrentLanguage["ExploreWholeWorld"], false, Utils.RevealMap, null);
-			AddFunctionButton(Page3, HackContext.CurrentLanguage["RightClickToTP"], false, Utils.RightClickToTP, null);*/
+			AddFunctionButton(Page3, HackContext.CurrentLanguage["ExploreWholeWorld"], false, Utils.RevealMap, null);
+			/*AddFunctionButton(Page3, HackContext.CurrentLanguage["RightClickToTP"], false, Utils.RightClickToTP, null);*/
 			AddFunctionButton(Page3, HackContext.CurrentLanguage["ProjectilePuzzle"], false,
 				g =>
 				{
@@ -196,17 +196,17 @@ namespace QTRHacker.PagePanels
 					};
 					Form.ShowDialog(this);
 				}, null);
-			/*AddFunctionButton(Page3, HackContext.CurrentLanguage["CoronaVirus"], false,
+			AddFunctionButton(Page3, HackContext.CurrentLanguage["CoronaVirus"], false,
 				g =>
 				{
 					var player = g.MyPlayer;
 					for (int i = 0; i < 3; i++)
-						NPC.NewNPC(g, Convert.ToInt32(player.X), Convert.ToInt32(player.Y) - 2, 51);
+						NPC.NewNPC(g, Convert.ToInt32(player.Position.X), Convert.ToInt32(player.Position.Y) - 2, 51);
 					player.AddBuff(44, 600, true);
 					player.AddBuff(153, 600, true);
 					player.AddBuff(67, 600, true);
 					player.AddBuff(24, 600, true);
-				}, null);*/
+				}, null);
 			//AddFunction(Page3, HackContext.CurrentLanguage["HarpLeftClickTP"], "800DE5238B9475F09B2D49BAD8CF56D6", true, Utils.HarpToTP_E, Utils.HarpToTP_D);
 
 			AddFunctionButton(PageEvent, HackContext.CurrentLanguage["ToggleDayNight"], false, g => g.DayTime = !g.DayTime, null);
@@ -224,9 +224,9 @@ namespace QTRHacker.PagePanels
 			AddFunctionButton(PageMisc, HackContext.CurrentLanguage["ShadowDodge"], true, Utils.ShadowDodge_E, Utils.ShadowDodge_D);
 			AddFunctionButton(PageMisc, HackContext.CurrentLanguage["ShowInvisiblePlayers"], true, Utils.ShowInvisiblePlayers_E, Utils.ShowInvisiblePlayers_D);
 			*/
-			//AddTab(HackContext.CurrentLanguage["Basic_1"], Page1).Selected = true;
-			//AddTab(HackContext.CurrentLanguage["Basic_2"], Page2);
-			AddTab(HackContext.CurrentLanguage["Advanced"], Page3).Selected = true;
+			AddTab(HackContext.CurrentLanguage["Basic_1"], Page1).Selected = true;
+			AddTab(HackContext.CurrentLanguage["Basic_2"], Page2);
+			AddTab(HackContext.CurrentLanguage["Advanced"], Page3);
 			AddTab(HackContext.CurrentLanguage["Event"], PageEvent);
 			//AddTab(HackContext.CurrentLanguage["Builder"], PageBuilder);
 			//AddTab(HackContext.CurrentLanguage["Miscs"], PageMisc);

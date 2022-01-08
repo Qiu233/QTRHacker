@@ -19,7 +19,8 @@ namespace QTRHacker.PagePanels
 		{
 			FilesBox = new MListBox()
 			{
-				Bounds = new Rectangle(3, 3, 210, 364)
+				Bounds = new Rectangle(3, 3, 210, 364),
+				ForeColor = Color.White,
 			};
 			UpdateList();
 			Controls.Add(FilesBox);

@@ -10,7 +10,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <AssemblyVersion>9.5.0.0</AssemblyVersion>
+    <AssemblyVersion>9.6.0.0</AssemblyVersion>
     <AssemblyName>QTRHacker</AssemblyName>
     <RootNamespace>QTRHacker</RootNamespace>
   </PropertyGroup>
@@ -51,6 +51,7 @@
     <None Remove="Res\Image\player.png" />
     <None Remove="Res\Image\TMLIcon.png" />
     <None Remove="Res\Text\About.txt" />
+    <None Remove="XSHD\Python.xshd" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,6 +72,7 @@
     <EmbeddedResource Include="Res\Image\player.png" />
     <EmbeddedResource Include="Res\Image\TMLIcon.png" />
     <EmbeddedResource Include="Res\Text\About.txt" />
+    <EmbeddedResource Include="XSHD\Python.xshd" />
   </ItemGroup>
 
   <ItemGroup>

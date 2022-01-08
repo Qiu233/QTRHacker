@@ -34,6 +34,13 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Item.ps.cs</LastGenOutput>
     </None>
+    <None Update="GameObjects\Terraria\NPC.ps.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NPC.ps.cs</LastGenOutput>
+    </None>
+    <None Update="GameObjects\Terraria\NPCProperties">
+      <Generator></Generator>
+    </None>
     <None Update="GameObjects\Terraria\Player.ps.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Player.ps.cs</LastGenOutput>
@@ -50,6 +57,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Item.ps.tt</DependentUpon>
     </Compile>
+    <Compile Update="GameObjects\Terraria\NPC.ps.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NPC.ps.tt</DependentUpon>
+    </Compile>
     <Compile Update="GameObjects\Terraria\Player.ps.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -61,7 +73,15 @@
     <ContentWithTargetPath Include="$(OutDir)QTRHacker.Patches.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>QTRHacker.Patches.dll</TargetPath>
-    </ContentWithTargetPath >
+    </ContentWithTargetPath>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="GameObjects\Terraria\NPC.ps.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NPC.ps.tt</DependentUpon>
+    </None>
   </ItemGroup>
 
 </Project>

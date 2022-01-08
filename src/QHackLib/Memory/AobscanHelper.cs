@@ -80,6 +80,10 @@ namespace QHackLib.Memory
 			return -1;
 		}
 
+		public static IReadOnlyList<nuint> Aobscan(nuint handle, string hexStr) => Aobscan(handle, GetHexCodeFromString(hexStr));
+
+		public static IReadOnlyList<nuint> AobscanASM(nuint handle, string asm) => Aobscan(handle, Assembler.Assemble(asm, 0));
+
 		public static IReadOnlyList<nuint> Aobscan(nuint handle, in ReadOnlySpan<byte> aob)
 		{
 			List<nuint> result = new();

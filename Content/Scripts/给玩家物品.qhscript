@@ -1,0 +1,130 @@
+import clr
+clr.AddReference("System")
+clr.AddReference("System.Windows.Forms")
+clr.AddReference("System.Drawing")
+clr.AddReference("QHackLib")
+clr.AddReference("QTRHacker")
+clr.AddReference("QTRHacker.Functions")
+from System import *
+from System.Drawing import *
+from System.IO import *
+from System.Windows.Forms import *
+from QTRHacker import *
+from QTRHacker.Functions import *
+from QTRHacker.Functions.GameObjects import *
+from QHackLib import *
+
+
+
+
+pIndexLabel = Label()
+pIndexLabel.Width = 60
+pIndexLabel.Height = 20
+loc = pIndexLabel.Location
+loc.X = 5
+loc.Y = 5
+pIndexLabel.Location = loc
+pIndexLabel.Text = "玩家索引:"
+
+pIndexTextBox = TextBox()
+pIndexTextBox.Text = "0"
+pIndexTextBox.Width = 100
+pIndexTextBox.Height = 20
+loc.X = 70
+loc.Y = 1
+pIndexTextBox.Location = loc
+
+
+
+itemTypeLabel = Label()
+itemTypeLabel.Width = 60
+itemTypeLabel.Height = 20
+loc.X = 5
+loc.Y = 25
+itemTypeLabel.Location = loc
+itemTypeLabel.Text = "物品类型:"
+
+itemTypeBox = TextBox()
+itemTypeBox.Text = game_context.MyPlayer.Inventory[0].Type.ToString()
+itemTypeBox.Width = 50
+itemTypeBox.Height = 20
+loc.X = 70
+loc.Y = 21
+itemTypeBox.Location = loc
+
+
+itemStackLabel = Label()
+itemStackLabel.Width = 50
+itemStackLabel.Height = 20
+loc.X = 125
+loc.Y = 25
+itemStackLabel.Location = loc
+itemStackLabel.Text = "数量："
+
+itemStackBox = TextBox()
+itemStackBox.Text = game_context.MyPlayer.Inventory[0].Stack.ToString()
+itemStackBox.Width = 50
+itemStackBox.Height = 20
+loc.X = 175
+loc.Y = 21
+itemStackBox.Location = loc
+
+
+
+def OnOKClick(s, e):
+	player = game_context.Players[int(pIndexTextBox.Text)]
+	num = Item.NewItem(game_context, player.X, player.Y, 0, 0, int(itemTypeBox.Text), int(itemStackBox.Text), False, 0, False, False)
+	NetMessage.SendData(game_context, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
+	form.Dispose()
+
+OKButton = Button()
+OKButton.Text = "确定"
+OKButton.Width = 50
+OKButton.Height = 20
+loc.X = 175
+loc.Y = 1
+OKButton.Location = loc
+OKButton.Click += OnOKClick
+
+
+def OnPlayerSelected(s, e):
+	pIndexTextBox.Text = box.SelectedItem.ToString().split(":")[0]
+
+box = ListBox()
+box.SelectionMode = SelectionMode.One
+box.Width = 220
+box.Height = 90
+loc = box.Location
+loc.X = 5
+loc.Y = 55
+box.Location = loc
+
+game_context = game_context
+players = game_context.Players
+for i in range(256):
+	player = players[i]
+	if player.Active:
+		box.Items.Add(str(i) + " : " + player.Name)
+box.MouseClick += OnPlayerSelected
+box.SetSelected(0, True)
+
+
+form = Form()
+form.FormBorderStyle = FormBorderStyle.FixedSingle
+form.Text = "给玩家物品"
+form.MaximizeBox = False
+form.MinimizeBox = False
+form.Width = 250
+form.Height = 65 + 100 + 25
+
+
+form.Controls.Add(pIndexLabel)
+form.Controls.Add(pIndexTextBox)
+form.Controls.Add(OKButton)
+form.Controls.Add(box)
+form.Controls.Add(itemTypeLabel)
+form.Controls.Add(itemTypeBox)
+form.Controls.Add(itemStackLabel)
+form.Controls.Add(itemStackBox)
+form.Show()
+

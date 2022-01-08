@@ -1,0 +1,1 @@
+﻿[assembly: System.Windows.Media.DisableDpiAwareness]

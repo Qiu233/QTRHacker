@@ -1,0 +1,11 @@
+def HitNPC(npc, damage, knockBack, hitDirection, crit, noEffect, fromNet):
+	CLRFunctionCaller.CallByDoUpdate(game_context, "Terraria.exe", "Terraria.NPC", "StrikeNPC", npc, damage, knockBack, hitDirection, crit, noEffect, fromNet)
+	if game_context.NetMode == 1:
+		NetMessage.Send(28, -1, -1, None, npc.WhoAmI, damage, knockBack, float(hitDirection), (1 if crit else 0), 0, 0)
+	
+for i in range(game_context.NPC.Length):
+	npc = game_context.NPC[i]
+	if npc.Active and not npc.Friendly:
+		HitNPC(npc.BaseAddress, 500, 1, 0, 0, False, False)
+		
+	

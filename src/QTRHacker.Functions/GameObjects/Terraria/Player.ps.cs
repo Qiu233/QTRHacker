@@ -1,10 +1,4 @@
-﻿
-
-
-
-
-
-#pragma warning disable
+﻿#pragma warning disable
 using QHackLib;
 using QTRHacker.Functions.GameObjects.ValueTypeRedefs;
 using System;

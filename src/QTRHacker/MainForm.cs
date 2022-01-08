@@ -132,8 +132,8 @@ namespace QTRHacker
 
 			AddButton(Group1, HackContext.CurrentLanguage["Basic"], img_Basic, BasicPagePanel).Enabled = false;
 			AddButton(Group1, HackContext.CurrentLanguage["Players"], img_Player, PlayerPagePanel).Enabled = false;
-			/*AddButton(Group1, HackContext.CurrentLanguage["Projectiles"], img_Projectile, ProjectilePagePanel).Enabled = false;
-			AddButton(Group1, HackContext.CurrentLanguage["Scripts"], img_Scripts, ScriptsPagePanel).Enabled = false;*/
+			/*AddButton(Group1, HackContext.CurrentLanguage["Projectiles"], img_Projectile, ProjectilePagePanel).Enabled = false;*/
+			AddButton(Group1, HackContext.CurrentLanguage["Scripts"], img_Scripts, ScriptsPagePanel).Enabled = false;
 			//AddButton(Group1, HackContext.CurrentLanguage["ChatSender"], img_ChatSender, ChatSenderPanel).Enabled = false;
 			AddButton(Group1, HackContext.CurrentLanguage["Miscs"], img_Misc, MiscPagePanel).Enabled = false;
 

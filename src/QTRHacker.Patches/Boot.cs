@@ -17,10 +17,6 @@ namespace QTRHacker.Patches
 		public static event Action<SpriteBatch> OnGameDraw;
 		static Boot()
 		{
-			AppDomain.CurrentDomain.FirstChanceException += (s, e) =>
-			{
-				File.AppendAllText("./QTRHacker.Patches.Exceptions_2.log", $"{e.Exception.GetType()}:{e.Exception.Message}\n{e.Exception.StackTrace}\n");
-			};
 			if (Initialized)
 				return;
 			try

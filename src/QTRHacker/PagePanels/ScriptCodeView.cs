@@ -29,8 +29,9 @@ namespace QTRHacker.PagePanels
 		public override string Text { get => CodeBox.Text; set => CodeBox.Text = value; }
 		public ScriptCodeView()
 		{
-			InitializeComponent();
-
+			AutoScaleMode = AutoScaleMode.Font;
+			BackColor = Color.FromArgb(62, 62, 64);
+			Size = new Size(690, 415);
 
 			CodeBox = new TextEditor()
 			{
@@ -48,14 +49,9 @@ namespace QTRHacker.PagePanels
 			Controls.Add(new ElementHost() { Bounds = new Rectangle(5, 5, 680, 405), Child = CodeBox });
 
 
-			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.XSHD.Python.xshd"))
-			{
-				XmlTextReader xshd_reader = new XmlTextReader(s);
-				CodeBox.SyntaxHighlighting = HighlightingLoader.Load(xshd_reader, HighlightingManager.Instance);
-				xshd_reader.Close();
-			}
-
-			
+			using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("QTRHacker.XSHD.Python.xshd");
+			using XmlTextReader xshd_reader = new XmlTextReader(s);
+			CodeBox.SyntaxHighlighting = HighlightingLoader.Load(xshd_reader, HighlightingManager.Instance);
 		}
 
 		private void TextArea_TextEntered(object sender, System.Windows.Input.TextCompositionEventArgs e)

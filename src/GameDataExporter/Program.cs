@@ -68,7 +68,7 @@ namespace GameDataExporter
 				string typeName;
 				using (var provider = new CSharpCodeProvider())
 					typeName = provider.GetTypeOutput(new CodeTypeReference(t.Type.Name));
-				sw.WriteLine(string.Format("\t\t<# PROPERTY_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>", typeName, t.Name));
+				sw.Write(string.Format("\t\t<# PROPERTY_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", typeName, t.Name));
 			});
 			sw.Close();
 			File.WriteAllText(file, sb.ToString());

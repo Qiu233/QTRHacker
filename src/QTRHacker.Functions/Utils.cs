@@ -1,6 +1,7 @@
 ﻿using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
+using QHackLib.Memory;
 using QTRHacker.Functions.GameObjects;
 using System;
 using System.Collections.Generic;
@@ -10,63 +11,77 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Functions
 {
-	public class Utils
+	public static class Utils
 	{
-		/*public static void AobReplaceASM(GameContext Context, string src, string target, int offset = 0)
+		public static int GetOffset(GameContext context, string module, string type, string field)
 		{
-			int addr = 0;
-			while ((addr = AobscanHelper.AobscanASM(Context.HContext.Handle, src)) != -1)
-			{
-				byte[] code = Assembler.Assemble(target, 0);
-				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, addr + offset, code, code.Length, 0);
-			}
+			return (int)context.HContext.GetCLRHelper(module).GetInstanceFieldOffset(type, field);
 		}
-		public static void AobReplace(GameContext Context, string srcHex, string targetHex, int offset = 0, bool matching = false)
+		public static int GetOffset(GameContext context, string type, string field)
 		{
-			int addr = 0;
-			while ((addr = AobscanHelper.Aobscan(Context.HContext.Handle, srcHex, matching)) != -1)
-			{
-				byte[] code = AobscanHelper.GetHexCodeFromString(targetHex);
-				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, addr + offset, code, code.Length, 0);
-			}
+			return (int)context.GameModuleHelper.GetInstanceFieldOffset(type, field);
+		}
+		public static void AobReplaceASM(GameContext Context, string src, string target)
+		{
+			var addrs = AobscanHelper.Aobscan(Context.HContext.Handle, AobscanHelper.GetHexCodeFromString(src));
+			byte[] code = Assembler.Assemble(target, 0);
+			foreach (var addr in addrs)
+				Context.HContext.DataAccess.WriteBytes(addr, code);
+		}
+		public static void AobReplace(GameContext Context, string srcHex, string targetHex)
+		{
+			var addrs = AobscanHelper.Aobscan(Context.HContext.Handle, AobscanHelper.GetHexCodeFromString(srcHex));
+			byte[] code = AobscanHelper.GetHexCodeFromString(targetHex);
+			foreach (var addr in addrs)
+				Context.HContext.DataAccess.WriteBytes(addr, code);
 		}
 
 		public static void InfiniteLife_E(GameContext Context)
 		{
-			AobReplaceASM(Context, $"sub [edx+{Player.OFFSET_Life}],eax\ncmp dword ptr [ebp+0x8],-1", $"add [edx+{Player.OFFSET_Life}],eax");
+			int off = GetOffset(Context, "Terraria.Player", "statLife");
+			AobReplaceASM(Context, $"sub [edx+{off}],eax\ncmp dword ptr [ebp+0x8],-1", $"add [edx+{off}],eax");
 		}
 		public static void InfiniteLife_D(GameContext Context)
 		{
-			AobReplaceASM(Context, $"add [edx+{Player.OFFSET_Life}],eax\ncmp dword ptr [ebp+0x8],-1", $"sub [edx+{Player.OFFSET_Life}],eax");
+			int off = GetOffset(Context, "Terraria.Player", "statLife");
+			AobReplaceASM(Context, $"add [edx+{off}],eax\ncmp dword ptr [ebp+0x8],-1", $"sub [edx+{off}],eax");
 		}
 
 		public static void InfiniteMana_E(GameContext Context)
 		{
-			AobReplaceASM(Context, $"sub [esi+{Player.OFFSET_Mana}],edi", $"add [esi+{Player.OFFSET_Mana}],edi");
-			AobReplaceASM(Context, $"sub [esi+{Player.OFFSET_Mana}],eax", $"add [esi+{Player.OFFSET_Mana}],eax");
+			int off = GetOffset(Context, "Terraria.Player", "statMana");
+			AobReplaceASM(Context, $"sub [esi+{off}],edi", $"add [esi+{off}],edi");
+			AobReplaceASM(Context, $"sub [esi+{off}],eax", $"add [esi+{off}],eax");
 		}
 		public static void InfiniteMana_D(GameContext Context)
 		{
-			AobReplaceASM(Context, $"add [esi+{Player.OFFSET_Mana}],edi", $"sub [esi+{Player.OFFSET_Mana}],edi");
-			AobReplaceASM(Context, $"add [esi+{Player.OFFSET_Mana}],eax", $"sub [esi+{Player.OFFSET_Mana}],eax");
+			int off = GetOffset(Context, "Terraria.Player", "statMana");
+			AobReplaceASM(Context, $"add [esi+{off}],edi", $"sub [esi+{off}],edi");
+			AobReplaceASM(Context, $"add [esi+{off}],eax", $"sub [esi+{off}],eax");
 		}
 
 		public static void InfiniteOxygen_E(GameContext Context)
 		{
-			AobReplaceASM(Context, $"dec dword ptr [eax+{Player.OFFSET_Breath}]\ncmp dword ptr [eax+{Player.OFFSET_Breath}],0", $"inc dword ptr [eax+{Player.OFFSET_Breath}]");
+			int off = GetOffset(Context, "Terraria.Player", "breath");
+			AobReplaceASM(Context, $"dec dword ptr [eax+{off}]\ncmp dword ptr [eax+{off}],0", $"inc dword ptr [eax+{off}]");
 		}
 		public static void InfiniteOxygen_D(GameContext Context)
 		{
-			AobReplaceASM(Context, $"inc dword ptr [eax+{Player.OFFSET_Breath}]\ncmp dword ptr [eax+{Player.OFFSET_Breath}],0", $"dec dword ptr [eax+{Player.OFFSET_Breath}]");
+			int off = GetOffset(Context, "Terraria.Player", "breath");
+			AobReplaceASM(Context, $"inc dword ptr [eax+{off}]\ncmp dword ptr [eax+{off}],0", $"dec dword ptr [eax+{off}]");
 		}
 
 		public static void InfiniteMinion_E(GameContext Context)
 		{
-			AobReplaceASM(Context, $"mov dword ptr [esi+{Player.OFFSET_MaxMinions}],1\nmov dword ptr [esi+{Player.OFFSET_MaxTurrets}],1", $"mov dword ptr [esi+{Player.OFFSET_MaxMinions}],9999\nmov dword ptr [esi+{Player.OFFSET_MaxTurrets}],9999");
+			int offA = GetOffset(Context, "Terraria.Player", "maxMinions");
+			int offB = GetOffset(Context, "Terraria.Player", "maxTurrets");
+			AobReplaceASM(Context, $"mov dword ptr [esi+{offA}],1\nmov dword ptr [esi+{offB}],1", $"mov dword ptr [esi+{offA}],9999\nmov dword ptr [esi+{offB}],9999");
 		}
 		public static void InfiniteMinion_D(GameContext Context)
 		{
-			AobReplaceASM(Context, $"mov dword ptr [esi+{Player.OFFSET_MaxMinions}],9999\nmov dword ptr [esi+{Player.OFFSET_MaxTurrets}],9999", $"mov dword ptr [esi+{Player.OFFSET_MaxMinions}],1\nmov dword ptr [esi+{Player.OFFSET_MaxTurrets}],1");
+			int offA = GetOffset(Context, "Terraria.Player", "maxMinions");
+			int offB = GetOffset(Context, "Terraria.Player", "maxTurrets");
+			AobReplaceASM(Context, $"mov dword ptr [esi+{offA}],9999\nmov dword ptr [esi+{offB}],9999", $"mov dword ptr [esi+{offA}],1\nmov dword ptr [esi+{offB}],1");
 		}
 
 		public static void InfiniteItemAmmo_E(GameContext Context)
@@ -82,14 +97,16 @@ namespace QTRHacker.Functions
 
 		public static void InfiniteFly_E(GameContext Context)
 		{
-			AobReplace(Context, $"D9 99 {AobscanHelper.GetMByteCode(Player.OFFSET_WingTime)} 80 B9 F7060000 00", "90 90 90 90 90 90");
+			int off = GetOffset(Context, "Terraria.Player", "wingTime");
+			AobReplace(Context, $"D9 99 {AobscanHelper.GetMByteCode(off)} 80 B9 F7060000 00", "90 90 90 90 90 90");
 		}
 		public static void InfiniteFly_D(GameContext Context)
 		{
-			AobReplace(Context, "90 90 90 90 90 90 80 B9 F7060000 00", $"D9 99 {AobscanHelper.GetMByteCode(Player.OFFSET_WingTime)}");
+			int off = GetOffset(Context, "Terraria.Player", "wingTime");
+			AobReplace(Context, "90 90 90 90 90 90 80 B9 F7060000 00", $"D9 99 {AobscanHelper.GetMByteCode(off)}");
 		}
 
-		public static void HighLight_E(GameContext Context)
+		/*public static void HighLight_E(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
@@ -112,7 +129,7 @@ mov dword ptr[ebp-0x18],0x3F800000"
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a + 7);
-		}
+		}*/
 
 		public static void GhostMode_E(GameContext Context)
 		{
@@ -122,29 +139,31 @@ mov dword ptr[ebp-0x18],0x3F800000"
 		{
 			Context.MyPlayer.Ghost = false;
 		}
-
+		/*
 		public static void LowGravity_E(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
+			int offA = GetOffset(Context, "Terraria.Player", "slowFall");
+			int offB = GetOffset(Context, "Terraria.Player", "findTreasure");
+			nuint a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				$"88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_SlowFall)} 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_FindTreasure)}");
-			if (a <= 0)
+				$"88 96 {AobscanHelper.GetMByteCode(offA)} 88 96 {AobscanHelper.GetMByteCode(offB)}").FirstOrDefault();
+			if (a == 0)
 				return;
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				$"mov dword ptr [esi+{Player.OFFSET_SlowFall}],1"),
-				a, false, false);
+			_ = new InlineHook(Context.HContext, AssemblySnippet.FromASMCode(
+				$"mov dword ptr [esi+{offA}],1"),
+				new HookParameters(a, 4096, false, false));
 		}
 		public static void LowGravity_D(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				$"E9 ******** 90 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_FindTreasure)}", true);
+				$"E9 ******** 90 88 96 {AobscanHelper.GetMByteCode(GetOffset(Context, "Terraria.Player", "findTreasure"))}", true);
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);
-		}
+		}*/
 
-		public static void FastSpeed_E(GameContext Context)
+		/*public static void FastSpeed_E(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
@@ -162,9 +181,9 @@ mov dword ptr[ebp-0x18],0x3F800000"
 				$"E9 ******** 90 90 90 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_BoneArmor)}", true);
 			if (a <= 0) return;
 			InlineHook.FreeHook(Context.HContext, a);
-		}
+		}*/
 
-		[Obsolete("for the game of old version")]
+		/*[Obsolete("for the game of old version")]
 		public static void ProjectileIgnoreTile_E(GameContext Context)
 		{
 			int a = AobscanHelper.AobscanASM(
@@ -179,49 +198,42 @@ mov dword ptr[ebp-0x18],0x3F800000"
 				Context.HContext.Handle,
 				"mov [ebp-0x20],eax\ncmp byte ptr [ebx+0xE7],0") + 11;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, new byte[] { 0x84 }, 1, 0);
-		}
+		}*/
 
 		public static void GrabItemFarAway_E(GameContext Context)
 		{
-			int a = Context.HContext.MainAddressHelper["Terraria.Player", "GetItemGrabRange"];
-			byte d = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref d, 1, 0);
-			if (d == 0xE9) return;
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-			"mov eax,1000\nret"),
-			a, false, false);
+			nuint a = Context.GameModuleHelper["Terraria.Player", "GetItemGrabRange"];
+			if (Context.HContext.DataAccess.Read<byte>(a) == 0xE9)
+				return;
+			InlineHook.Hook(Context.HContext, AssemblySnippet.FromASMCode(
+				"mov eax,1000\nret"),
+				new HookParameters(a, 4096, false, false));
 		}
 		public static void GrabItemFarAway_D(GameContext Context)
 		{
-			int a = Context.HContext.MainAddressHelper["Terraria.Player", "GetItemGrabRange"];
-			byte d = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref d, 1, 0);
-			if (d == 0xE9)
-				InlineHook.FreeHook(Context.HContext, a);
+			nuint a = Context.GameModuleHelper["Terraria.Player", "GetItemGrabRange"];
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void BonusTwoSlots_E(GameContext Context)
 		{
-			int a = Context.HContext.MainAddressHelper["Terraria.Player", "IsAValidEquipmentSlotForIteration"];
-			byte d = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref d, 1, 0);
-			if (d == 0xE9) return;
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-			"mov eax,1\nret"),
-			a, false, false);
+			nuint a = Context.GameModuleHelper["Terraria.Player", "IsAValidEquipmentSlotForIteration"];
+			if (Context.HContext.DataAccess.Read<byte>(a) == 0xE9)
+				return;
+			InlineHook.Hook(Context.HContext,
+				AssemblySnippet.FromASMCode(
+				"mov eax,1\nret"),
+				new HookParameters(a, 4096, false, false));
 		}
 		public static void BonusTwoSlots_D(GameContext Context)
 		{
-			int a = Context.HContext.MainAddressHelper["Terraria.Player", "IsAValidEquipmentSlotForIteration"];
-			byte d = 0;
-			NativeFunctions.ReadProcessMemory(Context.HContext.Handle, a, ref d, 1, 0);
-			if (d == 0xE9)
-				InlineHook.FreeHook(Context.HContext, a);
+			nuint a = Context.GameModuleHelper["Terraria.Player", "IsAValidEquipmentSlotForIteration"];
+			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void GoldHoleDropsBag_E(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
+			nuint a = AobscanHelper.AobscanASM(
 				Context.HContext.Handle,
 				@"push 0
 push 0
@@ -230,99 +242,115 @@ push 1
 push 0
 push 0
 push 0
-push 0") + 2 * 5;
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+push 0").FirstOrDefault();
+			if (a == 0)
+				return;
+			a += 2 * 5;
+			InlineHook.Hook(Context.HContext,
+				AssemblySnippet.FromASMCode(
 				"mov dword ptr [esp+8],3332"),
-				a, false);
+				new HookParameters(a, 4096, false, false));
 		}
 		public static void GoldHoleDropsBag_D(GameContext Context)
 		{
-			int a = AobscanHelper.AobscanASM(
+			nuint a = AobscanHelper.AobscanASM(
 				   Context.HContext.Handle,
 				   @"push 0
 push 0
 push 0x49
 push 1
-push 0") + 2 * 5;
-
+push 0").FirstOrDefault();
+			if (a == 0)
+				return;
+			a += 2 * 5;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void SlimeGunBurn_E(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
+			nuint a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"8b 85 b8 f3 ff ff 89 45 cc 8b 45 cc 40") - 0x1a;
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
+				"8b 85 b8 f3 ff ff 89 45 cc 8b 45 cc 40").FirstOrDefault();
+			if (a == 0)
+				return;
+			a -= 0x1a;
+			InlineHook.Hook(Context.HContext,
+				AssemblySnippet.FromASMCode(
 				"mov dword ptr [esp+8],216000\nmov edx,0x99"),
-				a, false, false);
+				new HookParameters(a, 4096, false, false));
 		}
 		public static void SlimeGunBurn_D(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
+			nuint a = AobscanHelper.Aobscan(
 				   Context.HContext.Handle,
-				   "8b 85 b8 f3 ff ff 89 45 cc 8b 45 cc 40") - 0x1a;
-
+				   "8b 85 b8 f3 ff ff 89 45 cc 8b 45 cc 40").FirstOrDefault();
+			if (a == 0)
+				return;
+			a -= 0x1a;
 			InlineHook.FreeHook(Context.HContext, a);
 		}
 
 		public static void FishOnlyCrates_E(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
+			nuint a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"8B 45 0C C6 00 00 8B 45 08 C6 00 00 B9") + 11;
-			byte b = 1;
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref b, 1, 0);
+				"8B 45 0C C6 00 00 8B 45 08 C6 00 00 B9").FirstOrDefault();
+			if (a == 0)
+				return;
+			a += 11;
+			Context.HContext.DataAccess.Write<byte>(a, 1);
 		}
 		public static void FishOnlyCrates_D(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
+			nuint a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"8B 45 0C C6 00 00 8B 45 08 C6 00 01 B9") + 11;
-			byte b = 0;
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref b, 1, 0);
+				"8B 45 0C C6 00 00 8B 45 08 C6 00 01 B9").FirstOrDefault();
+			if (a == 0)
+				return;
+			a += 11;
+			Context.HContext.DataAccess.Write<byte>(a, 0);
 		}
 
 		public static void EnableAllRecipes_E(GameContext Context)
 		{
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle,
-				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
-				new byte[] { 0xC3 }, 1, 0);
-			int y = 3000;
-			var addrHelper = Context.HContext.MainAddressHelper;
-			addrHelper.SetStaticFieldValue("Terraria.Main", "numAvailableRecipes", 3000);
-
-			y = addrHelper.GetStaticFieldValue<int>("Terraria.Main", "availableRecipe");
-			for (int i = 0; i < 3000; i++)
-			{
-				NativeFunctions.WriteProcessMemory(Context.HContext.Handle, y + 0x8 + i * 4, ref i, 4, 0);
-			}
-
+			var helper = Context.GameModuleHelper;
+			Context.HContext.DataAccess.Write<byte>(
+				helper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
+				0xC3);
+			helper.SetStaticFieldValue("Terraria.Main", "numAvailableRecipes", 3000);
+			var array = new GameObjectArrayV<int>(Context, helper.GetStaticHackObject("Terraria.Main", "availableRecipe"));
+			int len = array.Length;
+			for (int i = 0; i < len; i++)
+				array[i] = i;
 		}
 		public static void EnableAllRecipes_D(GameContext Context)
 		{
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle,
-				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
-				new byte[] { 0x55 }, 1, 0);
+			Context.HContext.DataAccess.Write<byte>(
+				Context.GameModuleHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
+				0x55);
 		}
 
 		public static void StrengthenVampireKnives_E(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
+			nuint a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"81 F9 21060000") + 18;
-			int v = 100;
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref v, 4, 0);
+				"81 F9 21060000").FirstOrDefault();
+			if (a == 0)
+				return;
+			a += 18;
+			Context.HContext.DataAccess.Write<int>(a, 100);
 		}
 		public static void StrengthenVampireKnives_D(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
+			nuint a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
-				"81 F9 21060000") + 18;
-			int v = 4;
-			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, a, ref v, 4, 0);
+				"81 F9 21060000").FirstOrDefault();
+			if (a == 0)
+				return;
+			a += 18;
+			Context.HContext.DataAccess.Write<int>(a, 4);
 		}
-
+		/*
 		public static void SuperRange_E(GameContext Context)
 		{
 			//int a = (int)Context.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "ResetEffects", 0x08AE).StartAddress;
@@ -352,19 +380,25 @@ push 0") + 2 * 5;
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, b, ref v1, 4, 0);
 			NativeFunctions.WriteProcessMemory(Context.HContext.Handle, c, ref v2, 4, 0);
 		}
-
-		public static void FastTileAndWallSpeed_E(GameContext Context)
+		*/
+		/*public static void FastTileAndWallSpeed_E(GameContext Context)
 		{
-			int a = AobscanHelper.Aobscan(
+			int offA = GetOffset(Context, "Terraria.Player", "wallSpeed");
+			int offB = GetOffset(Context, "Terraria.Player", "tileSpeed");
+			nuint a = AobscanHelper.Aobscan(
 			Context.HContext.Handle,
-			$"D9 E8 D9 9E {AobscanHelper.GetMByteCode(Player.OFFSET_WallSpeed)} D9 E8 D9 9E {AobscanHelper.GetMByteCode(Player.OFFSET_TileSpeed)} 88 96");
-			if (a <= 0) return;
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				$"mov dword ptr [esi+{Player.OFFSET_WallSpeed})],0x41200000"),
-				a, false, false);
-			InlineHook.Inject(Context.HContext, AssemblySnippet.FromASMCode(
-				$"mov dword ptr [esi+{Player.OFFSET_TileSpeed}],0x41200000"),
-				a + 8, false, false);
+			$"D9 E8 D9 9E {AobscanHelper.GetMByteCode(offA)} D9 E8 D9 9E {AobscanHelper.GetMByteCode(offB)} 88 96").FirstOrDefault();
+			if (a == 0) return;
+
+			InlineHook.Hook(Context.HContext,
+				AssemblySnippet.FromASMCode(
+				$"mov dword ptr [esi+{offA})],0x41200000"),
+				new HookParameters(a, 4096, false, false));
+
+			InlineHook.Hook(Context.HContext,
+				AssemblySnippet.FromASMCode(
+				$"mov dword ptr [esi+{offB}],0x41200000"),
+				new HookParameters(a+8, 4096, false, false));
 		}
 		public static void FastTileAndWallSpeed_D(GameContext Context)
 		{
@@ -374,9 +408,9 @@ push 0") + 2 * 5;
 			if (a <= 0) return;
 			InlineHook.FreeHook(Context.HContext, a);
 			InlineHook.FreeHook(Context.HContext, a + 8);
-		}
+		}*/
 
-		public static void MachinicalRulerEffect_E(GameContext Context)
+		/*public static void MachinicalRulerEffect_E(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
@@ -437,7 +471,7 @@ push 0") + 2 * 5;
 			if (a <= 0)
 				return;
 			InlineHook.FreeHook(Context.HContext, a);
-		}
+		}*/
 
 		public static void RevealMap(GameContext Context)
 		{
@@ -447,30 +481,36 @@ push 0") + 2 * 5;
 			asm.Content.Add(
 				AssemblySnippet.Loop(
 					AssemblySnippet.Loop(
-						AssemblySnippet.FromClrCall(
-							Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting"), null, false,
-							Context.Map.BaseAddress, "[esp+4]", "[esp]", 255),
+						AssemblySnippet.FromCode(
+							new AssemblyCode[] {
+								(Instruction)"mov edx, [esp+4]",
+								(Instruction)"push [esp]",
+								(Instruction)"push 255",
+								AssemblySnippet.FromClrCall(
+									Context.GameModuleHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting"), false, Context.Map.BaseAddress, null, null,
+									Array.Empty<object>())
+							}),
 						Context.MaxTilesY, false),
 					Context.MaxTilesX, false));
 			asm.Content.Add(Instruction.Create("pop edx"));
 			asm.Content.Add(Instruction.Create("pop ecx"));
 
-			InlineHook.InjectAndWait(Context.HContext, asm,
-				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate"), true);
+			Context.RunByHookOnUpdate(asm);
 			Context.RefreshMap = true;
 		}
 
 
-
+		/*
 		public static void DropLavaOntoPlayers(GameContext Context)
 		{
-			for (int i = 0; i < Player.MAX_PLAYER; i++)
+			var players = Context.Players;
+			for (int i = 0; i < players.Length; i++)
 			{
 				var p = Context.Players[i];
 				if (p.Active)
 				{
-					int x = (int)Math.Round(p.X / 16);
-					int y = (int)Math.Round(p.Y / 16);
+					int x = (int)Math.Round(p.Position.X / 16);
+					int y = (int)Math.Round(p.Position.Y / 16);
 					var tile = Context.Tile[x, y];
 					tile.LiquidType(1);
 					tile.Liquid = 255;
@@ -541,9 +581,9 @@ push 0") + 2 * 5;
 					});
 			InlineHook.Inject(Context.HContext, ass,
 				Context.HContext.MainAddressHelper.GetFunctionAddress("Terraria.Main", "DoUpdate") + 5, false);
-		}
+		}*/
 
-		public static void ShowInvisiblePlayers_E(GameContext Context)
+		/*public static void ShowInvisiblePlayers_E(GameContext Context)
 		{
 			int a = AobscanHelper.Aobscan(
 				Context.HContext.Handle,
@@ -720,7 +760,6 @@ push 0") + 2 * 5;
 			int b = (int)Context.HContext.MainAddressHelper["Terraria.Player", "ItemCheck", 0xF962].StartAddress;
 			InlineHook.FreeHook(Context.HContext, a);
 			InlineHook.FreeHook(Context.HContext, b);
-		}
-		*/
+		}*/
 	}
 }

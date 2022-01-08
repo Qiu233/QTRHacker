@@ -1,0 +1,96 @@
+import clr
+clr.AddReference("System")
+clr.AddReference("System.Windows.Forms")
+clr.AddReference("System.Drawing")
+clr.AddReference("QHackLib")
+clr.AddReference("QTRHacker")
+clr.AddReference("QTRHacker.Functions")
+from System import *
+from System.Drawing import *
+from System.IO import *
+from System.Windows.Forms import *
+from QTRHacker import *
+from QTRHacker.Functions import *
+from QTRHacker.Functions.GameObjects import *
+from QHackLib import *
+
+
+
+pIndexLabel = Label()
+pIndexLabel.Width = 60
+pIndexLabel.Height = 20
+loc = pIndexLabel.Location
+loc.X = 5
+loc.Y = 5
+pIndexLabel.Location = loc
+pIndexLabel.Text = "玩家索引:"
+
+pIndexTextBox = TextBox()
+pIndexTextBox.Text = "0"
+pIndexTextBox.Width = 100
+pIndexTextBox.Height = 20
+loc.X = 70
+loc.Y = 1
+pIndexTextBox.Location = loc
+
+
+
+def OnOKClick(s, e):
+	dlg = SaveFileDialog()
+	dlg.Filter = "inv files (*.inv)|*.inv"
+	if dlg.ShowDialog(form) == DialogResult.OK:
+		if File.Exists(dlg.FileName):
+			File.Delete(dlg.FileName)
+		file = File.Open(dlg.FileName, FileMode.OpenOrCreate)
+		game_context.Players[int(pIndexTextBox.Text)].SaveInventory(file)
+		file.Close();
+		MessageBox.Show("保存完毕")
+		form.Dispose()
+
+OKButton = Button()
+OKButton.Text = "确定"
+OKButton.Width = 50
+OKButton.Height = 20
+loc.X = 175
+loc.Y = 1
+OKButton.Location = loc
+OKButton.Click += OnOKClick
+
+
+def OnPlayerSelected(s, e):
+	pIndexTextBox.Text = box.SelectedItem.ToString().split(":")[0]
+
+box = ListBox()
+box.SelectionMode = SelectionMode.One
+box.Width = 220
+box.Height = 90
+loc = box.Location
+loc.X = 5
+loc.Y = 30
+box.Location = loc
+
+ctx = game_context
+players = ctx.Players
+for i in range(256):
+	player = players[i]
+	if player.Active:
+		box.Items.Add(str(i) + " : " + player.Name)
+box.MouseClick += OnPlayerSelected
+box.SetSelected(0, True)
+
+
+form = Form()
+form.Text = "保存玩家背包"
+form.FormBorderStyle = FormBorderStyle.FixedSingle
+form.MaximizeBox = False
+form.MinimizeBox = False
+form.Width = 250
+form.Height = 65 + 100
+
+
+form.Controls.Add(pIndexLabel)
+form.Controls.Add(pIndexTextBox)
+form.Controls.Add(OKButton)
+form.Controls.Add(box)
+form.Show()
+

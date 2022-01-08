@@ -9,6 +9,7 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 {
 	public partial class NPC : Entity
 	{
+		public const int MaxNPCTypes = 670;
 		public NPC(GameContext context, HackObject obj) : base(context, obj)
 		{
 		}

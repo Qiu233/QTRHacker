@@ -91,6 +91,8 @@ namespace QHackLib.FunctionHelper
 			Assembler.Assemble($"jmp {codeAddr}", Parameters.TargetAddress).CopyTo(JmpHeadBytes, 0);
 		}
 
+		public static InlineHook Hook(QHackContext ctx, AssemblyCode code, HookParameters parameters) => new(ctx, code, parameters);
+
 		public bool IsAttached()
 		{
 			byte h = Context.DataAccess.Read<byte>(Parameters.TargetAddress);
@@ -212,15 +214,13 @@ namespace QHackLib.FunctionHelper
 		}
 
 		/// <summary>
-		/// First unconditionally detaches then releases the hook safely.<br/>
+		/// Unconditionally detaches then releases the hook safely.<br/>
 		/// For when hook objects get lost.<br/>
-		/// Note, this method will block the thread if the hook never gets safe to be released.<br/>
-		/// So you might need to wrap it in async situations by using <see cref="Task.Run{bool}(Func{Task{bool}})"/>.
 		/// </summary>
 		/// <param name="Context"></param>
 		/// <param name="targetAddr"></param>
 		/// <returns>false if the target is not a valid hook</returns>
-		public unsafe static bool FreeHook(QHackContext Context, nuint targetAddr)
+		public unsafe static bool FreeHook(QHackContext Context, nuint targetAddr, int timeout = 1000)
 		{
 			byte h = Context.DataAccess.Read<byte>(targetAddr);
 			if (h != 0xE9)
@@ -236,7 +236,8 @@ namespace QHackLib.FunctionHelper
 			for (int i = 0; i < bs.Length; i++)
 				bs[i] = hook.RawCodeBytes[i];
 			Context.DataAccess.WriteBytes(targetAddr, bs);
-			while (Context.DataAccess.Read<int>(hook.Address_SafeFreeFlag) != 0) { }
+			nuint sa = hook.Address_SafeFreeFlag;
+			Task.Run(() => { while (Context.DataAccess.Read<int>(sa) != 0) { } }).Wait(timeout);
 			NativeFunctions.VirtualFreeEx(Context.Handle, hook.AllocBase, 0);
 			return true;
 		}

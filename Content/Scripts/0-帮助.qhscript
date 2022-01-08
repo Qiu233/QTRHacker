@@ -1,0 +1,14 @@
+#基础类：
+#Context		修改上下文环境
+#GameContext	游戏上下文环境
+#游戏对象类(常用)
+#GameObjects.GameObject		游戏对象基类，其他游戏对象类都继承于这个类
+#GameObjects.Entity			实体对象
+#GameObjects.Player			玩家对象
+#GameObjects.ItemSlots		物品栏对象，例如背包和装备
+#GameObjects.Item			物品对象
+#GameObjects.NPC			NPC对象
+#GameObjects.Projectile		弹幕对象
+#GameObjects.Chest			箱子对象
+
+help(GameObjects.Player)

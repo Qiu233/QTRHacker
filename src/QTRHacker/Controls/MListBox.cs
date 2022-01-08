@@ -25,14 +25,16 @@ namespace QTRHacker.Controls
 				Color color = BackColor;
 				if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
 					color = SelectedColor;
+				var rect = e.Bounds;
+				rect.Height += 3;
 				using SolidBrush brush = new SolidBrush(color);
-				e.Graphics.FillRectangle(brush, e.Bounds);
+				e.Graphics.FillRectangle(brush, rect);
 
 				using SolidBrush fbrush = new SolidBrush(ForeColor);
-				var rect = e.Bounds;
-				rect.Y -= 3;
+				rect = e.Bounds;
+				//rect.Y -= 3;
 				rect.Height += 3;
-				e.Graphics.DrawString((string)Items[e.Index], e.Font, fbrush, rect, new StringFormat() { Trimming = StringTrimming.EllipsisCharacter, FormatFlags = StringFormatFlags.NoWrap });
+				e.Graphics.DrawString((string)Items[e.Index], Font, fbrush, rect, new StringFormat() { Trimming = StringTrimming.EllipsisCharacter, FormatFlags = StringFormatFlags.NoWrap });
 			}
 		}
 	}

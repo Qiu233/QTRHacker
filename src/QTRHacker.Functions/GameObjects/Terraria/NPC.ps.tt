@@ -1,0 +1,10 @@
+﻿<#@ include file="TTHeader" #>
+namespace QTRHacker.Functions.GameObjects.Terraria
+{
+	partial class NPC
+	{
+#region Virtual Properties
+<#@ include file="NPCProperties" #>
+#endregion
+	}
+}

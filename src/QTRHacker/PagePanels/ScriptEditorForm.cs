@@ -21,14 +21,14 @@ namespace QTRHacker.PagePanels
 {
 	public class ScriptEditorForm : MForm
 	{
-		public static Color bColor = Color.FromArgb(37, 37, 38);
-		public static Color sColor = Color.FromArgb(62, 62, 64);
-		public static Color sBlackColor = Color.FromArgb(27, 27, 28);
+		private readonly static Color bColor = Color.FromArgb(37, 37, 38);
+		private readonly static Color sColor = Color.FromArgb(62, 62, 64);
+		private readonly static Color sBlackColor = Color.FromArgb(27, 27, 28);
 		private class MenuColorTable : ProfessionalColorTable
 		{
 			public MenuColorTable()
 			{
-				base.UseSystemColors = false;
+				UseSystemColors = false;
 			}
 			public override Color MenuItemSelected => sColor;
 			public override Color MenuBorder => sBlackColor;
@@ -124,11 +124,11 @@ namespace QTRHacker.PagePanels
 			{
 			}
 		}
-		private MenuStrip MenuStrip;
-		private ScriptCodeView CodeView;
-		private TextEditor LogBox;
-		private TextEditorWriter LogBoxWriter;
-		private string FileName;
+		private readonly MenuStrip MenuStrip;
+		private readonly ScriptCodeView CodeView;
+		private readonly TextEditor LogBox;
+		private readonly TextEditorWriter LogBoxWriter;
+		private readonly string FileName;
 
 
 		private static void AddMenuItem(ToolStripMenuItem menu, string text, Action<object, EventArgs> click)
@@ -145,8 +145,8 @@ namespace QTRHacker.PagePanels
 		{
 			ClientSize = new Size(700, 650);
 			FileName = Path.Combine(HackContext.PATH_SCRIPTS, $"{file}.qhscript");
-			Text = "ScriptEditor-Name：" + file;
-			BackColor = sBlackColor;
+			Text = "ScriptEditor: " + file;
+			//BackColor = sBlackColor;
 			MenuStrip = new MenuStrip()
 			{
 				BackColor = Color.FromArgb(37, 37, 38),
@@ -210,7 +210,14 @@ namespace QTRHacker.PagePanels
 			var o = HackContext.QHScriptEngine.Runtime.IO.OutputStream;
 			HackContext.QHScriptEngine.Runtime.IO.SetOutput(ms, outputWr);
 			var scope = HackContext.CreateScriptScope(HackContext.QHScriptEngine);
-			HackContext.QHScriptEngine.Execute(CodeView.Text, scope);
+			try
+			{
+				HackContext.QHScriptEngine.Execute(CodeView.Text, scope);
+			}
+			catch (Exception ex)
+			{
+				LogBox.AppendText(ex.Message);
+			}
 			HackContext.QHScriptEngine.Runtime.IO.SetOutput(o, Encoding.UTF8);
 
 			void sWr_StringWritten(object sd, OnWrittenEventArgs<string> ev)
