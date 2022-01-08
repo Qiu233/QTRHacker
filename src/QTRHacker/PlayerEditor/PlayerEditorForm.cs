@@ -23,7 +23,7 @@ namespace QTRHacker.PlayerEditor
 		public PlayerEditorForm(Player TargetPlayer, bool Editable)
 		{
 			InitializeComponent();
-			Text = TargetPlayer.Name.GetString() + (Editable ? "" : $" ({HackContext.CurrentLanguage["Uneditable"]})");
+			Text = TargetPlayer.Name.GetString() + (Editable ? "" : $" (Uneditable)");
 			BackColor = Color.FromArgb(45, 45, 48);
 
 			Tabs = new MTabControl
