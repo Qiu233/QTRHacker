@@ -42,16 +42,14 @@ namespace QTRHacker.Functions
 		public PatchesManager(GameContext context)
 		{
 			Context = context;
-			if (Context.HContext.GetCLRHelper("QTRHacker.Patches") == null)
-			{
-				context.LoadAssembly(Path.GetFullPath("./QTRHacker.Patches.dll"));
-			}
 		}
 
 		public void Init()
 		{
-			if (!Context.LoadAssembly(Path.GetFullPath("./QTRHacker.Patches.dll"), "QTRHacker.Patches.Boot"))
-				throw new InvalidOperationException("Cannot load patches");
+			if (PatchHelper != null)
+				return;
+			if (!Context.LoadAssemblyAsBytes(Path.GetFullPath("./QTRHacker.Patches.dll"), "QTRHacker.Patches.Boot"))
+				throw new InvalidOperationException("Couldn't load patches");
 		}
 
 		public GameObjectArray2DV<STile> WorldPainter_DropperTiles

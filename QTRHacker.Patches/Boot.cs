@@ -17,12 +17,16 @@ namespace QTRHacker.Patches
 		public static event Action<SpriteBatch> OnGameDraw;
 		static Boot()
 		{
+			AppDomain.CurrentDomain.FirstChanceException += (s, e) =>
+			{
+				File.AppendAllText("./QTRHacker.Patches.Exceptions_2.log", $"{e.Exception.GetType()}:{e.Exception.Message}\n{e.Exception.StackTrace}\n");
+			};
 			if (Initialized)
 				return;
 			try
 			{
-				Initialized = true;
 				LoadAll();
+				Initialized = true;
 
 				HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("QTRHacker.Patches");
 				harmony.PatchAll();
@@ -32,21 +36,27 @@ namespace QTRHacker.Patches
 				int index = layers.FindIndex(t => t.Name == "Vanilla: Mouse Text");
 				layers.Insert(index, new LegacyGameInterfaceLayer("QTRHacker: Game", delegate
 				{
-					OnGameDraw?.Invoke(Main.spriteBatch);
+					try
+					{
+						OnGameDraw?.Invoke(Main.spriteBatch);
+					}
+					catch (Exception e)
+					{
+						File.AppendAllText("./QTRHacker.Patches.Exceptions.log", $"{e.GetType()}:{e.Message}\n{e.StackTrace}\n");
+					}
 					return true;
 				}, InterfaceScaleType.Game));
 			}
 			catch (Exception e)
 			{
-				File.WriteAllText("./QTRHacker.Patches.boot.log",e.Message + "\n" + e.StackTrace);
+				File.WriteAllText("./QTRHacker.Patches.boot.log", $"{e.GetType()}:{e.Message}\n{e.StackTrace}\n");
 			}
 		}
 		static void LoadAll()
 		{
 			var asm = System.Reflection.Assembly.GetExecutingAssembly();
 			foreach (var type in asm.DefinedTypes)
-				foreach (var method in type.DeclaredMethods)
-					System.Runtime.CompilerServices.RuntimeHelpers.PrepareMethod(method.MethodHandle);
+				System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 		}
 	}
 }

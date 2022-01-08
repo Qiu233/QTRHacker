@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
@@ -9,7 +10,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <AssemblyVersion>9.4.0.0</AssemblyVersion>
+    <AssemblyVersion>9.5.0.0</AssemblyVersion>
     <AssemblyName>QTRHacker</AssemblyName>
     <RootNamespace>QTRHacker</RootNamespace>
   </PropertyGroup>
@@ -100,7 +101,7 @@
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Xact\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Xact.dll</HintPath>
     </Reference>
     <Reference Include="WinFormsGraphicsDevice">
-      <HintPath>..\refdlls\WinFormsGraphicsDevice.dll</HintPath>
+      <HintPath>$(SolutionDir)refdlls\WinFormsGraphicsDevice.dll</HintPath>
       <Private>true</Private>
     </Reference>
   </ItemGroup>

@@ -378,7 +378,7 @@ namespace QTRHacker.Functions
 			Flush();
 			return result;
 		}
-		/*public unsafe bool LoadAssemblyAsBytes(string assemblyFile, string typeName)
+		public unsafe bool LoadAssemblyAsBytes(string assemblyFile, string typeName)
 		{
 			byte[] data = File.ReadAllBytes(assemblyFile);
 			using MemoryAllocation alloc = new(HContext, (uint)data.Length + 64);
@@ -408,7 +408,7 @@ namespace QTRHacker.Functions
 			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(3000);
 			Flush();
 			return result;
-		}*/
+		}
 
 		public bool LoadAssembly(string assemblyFile)
 		{
@@ -429,7 +429,7 @@ namespace QTRHacker.Functions
 			Flush();
 			return result;
 		}
-		/*
+		
 		public unsafe bool LoadAssemblyAsBytes(string assemblyFile)
 		{
 			byte[] data = File.ReadAllBytes(assemblyFile);
@@ -447,6 +447,6 @@ namespace QTRHacker.Functions
 			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(3000);
 			Flush();
 			return result;
-		}*/
+		}
 	}
 }
