@@ -9,6 +9,17 @@ namespace QHackLib
 {
 	internal unsafe static class NativeFunctions
 	{
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct MEMORY_BASIC_INFORMATION
+		{
+			public nuint BaseAddress;
+			public nuint AllocationBase;
+			public uint AllocationProtect;
+			public nuint RegionSize;
+			public AllocationType State;
+			public ProtectionType Protect;
+			public uint Type;
+		}
 		[Flags]
 		internal enum ProtectionType : uint
 		{
@@ -37,7 +48,6 @@ namespace QHackLib
 			MEM_WRITEWATCH = 0x00200000,
 			MEM_LARGEPAGES = 0x20000000,
 		}
-		#region natives
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal struct LUID
 		{
@@ -161,6 +171,13 @@ namespace QHackLib
 			nuint BytesWrite
 		);
 
-		#endregion
+		[DllImport("kernel32.dll")]
+		internal static extern int VirtualQueryEx
+		(
+			nuint hProcess,
+			nuint lpAddress,
+			out MEMORY_BASIC_INFORMATION lpBuffer,
+			int dwLength
+		);
 	}
 }

@@ -13,27 +13,7 @@ namespace QHackLib.Memory
 {
 	public unsafe static class AobscanHelper
 	{
-		[StructLayout(LayoutKind.Sequential)]
-		private struct MEMORY_BASIC_INFORMATION
-		{
-			public nuint BaseAddress;
-			public nuint AllocationBase;
-			public uint AllocationProtect;
-			public nuint RegionSize;
-			public uint State;
-			public NativeFunctions.ProtectionType Protect;
-			public uint Type;
-		}
-		[DllImport("kernel32.dll")]
-		private static extern int VirtualQueryEx
-		(
-			nuint hProcess,
-			nuint lpAddress,
-			out MEMORY_BASIC_INFORMATION lpBuffer,
-			int dwLength
-		);
-
-		internal static readonly int SIZE_MBI = sizeof(MEMORY_BASIC_INFORMATION);
+		internal static readonly int SIZE_MBI = sizeof(NativeFunctions.MEMORY_BASIC_INFORMATION);
 
 		public static string GetMByteCode(int i) => $"{i & 0xFF:X2}{(i >> 8) & 0xFF:X2}{(i >> 16) & 0xFF:X2}{(i >> 24) & 0xFF:X2}";
 
@@ -54,7 +34,15 @@ namespace QHackLib.Memory
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool Match(in ReadOnlySpan<byte> src, in ReadOnlySpan<byte> sub)
+		public static bool Match(ReadOnlySpan<byte> src, ReadOnlySpan<byte> sub)
+		{
+			for (int i = 0; i < src.Length; i++)
+				if (src[i] != sub[i])
+					return false;
+			return true;
+		}
+
+		public static bool Match(ReadOnlySpan<byte> src, string sub)
 		{
 			for (int i = 0; i < src.Length; i++)
 				if (src[i] != sub[i])
@@ -70,44 +58,53 @@ namespace QHackLib.Memory
 		/// <param name="pos"></param>
 		/// <returns>-1 if nothing was found</returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static int Search(in ReadOnlySpan<byte> src, in ReadOnlySpan<byte> sub, ref int pos)
+		public static bool Search(ReadOnlySpan<byte> src, ReadOnlySpan<byte> sub, ref int pos)
 		{
 			int bLen = sub.Length;
 			int len = src.Length - sub.Length;
 			for (; pos < len; pos++)
 				if (Match(src.Slice(pos, bLen), sub))
-					return pos;
-			return -1;
+					return true;
+			return false;
 		}
 
-		public static IReadOnlyList<nuint> Aobscan(nuint handle, string hexStr) => Aobscan(handle, GetHexCodeFromString(hexStr));
+		public static IEnumerable<nuint> Aobscan(nuint handle, string hexStr) => Aobscan(handle, GetHexCodeFromString(hexStr));
 
-		public static IReadOnlyList<nuint> AobscanASM(nuint handle, string asm) => Aobscan(handle, Assembler.Assemble(asm, 0));
+		public static IEnumerable<nuint> AobscanASM(nuint handle, string asm) => Aobscan(handle, Assembler.Assemble(asm, 0));
 
-		public static IReadOnlyList<nuint> Aobscan(nuint handle, in ReadOnlySpan<byte> aob)
+		public static IEnumerable<nuint> Aobscan(nuint handle, byte[] aob)
 		{
 			List<nuint> result = new();
-			nuint addr = 0;
-			while (true)
+			Traverse(handle, mbi =>
 			{
-				int size = VirtualQueryEx(handle, addr, out MEMORY_BASIC_INFORMATION mbi, SIZE_MBI);
-				if (size != SIZE_MBI || mbi.RegionSize <= 0)
-					break;
 				if (!mbi.Protect.HasFlag(NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE)
-					|| !((NativeFunctions.AllocationType)mbi.State).HasFlag(NativeFunctions.AllocationType.MEM_COMMIT))
+				|| !mbi.State.HasFlag(NativeFunctions.AllocationType.MEM_COMMIT))
 				{
-					addr = mbi.BaseAddress + mbi.RegionSize;
-					continue;
+					return;
 				}
 				byte[] va = ArrayPool<byte>.Shared.Rent((int)mbi.RegionSize);
 				NativeFunctions.ReadProcessMemory(handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
 				int pos = 0;
-				if (Search(va, aob, ref pos) >= 0)
-					result.Add(mbi.BaseAddress + (uint)pos);
+				while (Search(va, aob, ref pos))
+					result.Add(mbi.BaseAddress + (uint)(pos++));
 				ArrayPool<byte>.Shared.Return(va);
-				addr = mbi.BaseAddress + mbi.RegionSize;
-			}
+			});
 			return result;
 		}
+
+		private static void Traverse(nuint handle, MemoryTraverse traverse)
+		{
+			nuint addr = 0;
+			while (true)
+			{
+				if (NativeFunctions.VirtualQueryEx(handle, addr, out NativeFunctions.MEMORY_BASIC_INFORMATION mbi, SIZE_MBI) != SIZE_MBI
+					|| mbi.RegionSize == 0)
+					break;
+				traverse(mbi);
+				addr = mbi.BaseAddress + mbi.RegionSize;
+			}
+		}
+
+		private delegate void MemoryTraverse(NativeFunctions.MEMORY_BASIC_INFORMATION mbi);
 	}
 }

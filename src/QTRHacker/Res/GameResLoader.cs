@@ -34,18 +34,6 @@ namespace QTRHacker.Res
 			using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(res);
 			return ResBinFileReader.ReadFromStream(s);
 		}
-
-		private static (Dictionary<string, byte[]>, ImageList) LoadPackedImages(string res)
-		{
-			var imgs = LoadPackedImagesData(res);
-			var result = new ImageList();
-			foreach (var data in imgs)
-			{
-				using var m = new MemoryStream(data.Value);
-				result.Images.Add(data.Key, Image.FromStream(m));
-			}
-			return (imgs, result);
-		}
 		public static Image GetItemImage(int id)
 		{
 			string key = $"Item_{id}";
