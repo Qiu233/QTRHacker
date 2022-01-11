@@ -15,8 +15,7 @@ namespace QTRHacker.Res
 		public const string File_Prefix = "QTRHacker.Res.Game.Prefix_en.txt";
 		public const string File_Pet = "QTRHacker.Res.Game.Pet_en.txt";
 		public const string File_Mount = "QTRHacker.Res.Game.Mount_en.txt";
-		public static ImageList ItemImages { get; }
-		public static ImageList NPCImages { get; }
+		private static ImageList ItemImages { get; }
 		public static ImageList BuffImages { get; }
 		public static Dictionary<string, byte[]> ItemImageData { get; }
 		public static Dictionary<string, byte[]> NPCImageData { get; }
@@ -47,12 +46,26 @@ namespace QTRHacker.Res
 			}
 			return (imgs, result);
 		}
+		public static Image GetItemImage(int id)
+		{
+			string key = $"Item_{id}";
+			if (ItemImages.Images.ContainsKey(key))
+				return ItemImages.Images[key];
+			else if (ItemImageData.TryGetValue(key, out byte[] value))
+			{
+				using var m = new MemoryStream(value);
+				ItemImages.Images.Add(key, Image.FromStream(m));
+				return ItemImages.Images[key];
+			}
+			return null;
+		}
 		static GameResLoader()
 		{
-			(ItemImageData, ItemImages) = LoadPackedImages("QTRHacker.Res.ContentImage.ItemImages.bin");
+			ItemImageData = LoadPackedImagesData("QTRHacker.Res.ContentImage.ItemImages.bin");
+			ItemImages = new ImageList();
 			ItemImages.ColorDepth = ColorDepth.Depth32Bit;
 			ItemImages.ImageSize = new Size(20, 20);
-			(BuffImageData, BuffImages) = LoadPackedImages("QTRHacker.Res.ContentImage.BuffImages.bin");
+			//(BuffImageData, BuffImages) = LoadPackedImages("QTRHacker.Res.ContentImage.BuffImages.bin");
 
 			NPCImageData = LoadPackedImagesData("QTRHacker.Res.ContentImage.NPCImages.bin");
 			TileImageData = LoadPackedImagesData("QTRHacker.Res.ContentImage.TileImages.bin");

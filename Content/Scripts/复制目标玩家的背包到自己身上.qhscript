@@ -1,5 +1,6 @@
 import clr
 clr.AddReference("System")
+clr.AddReference("System.IO.FileSystem")
 clr.AddReference("System.Windows.Forms")
 clr.AddReference("System.Drawing")
 clr.AddReference("QHackLib")
@@ -12,6 +13,7 @@ from System.Windows.Forms import *
 from QTRHacker import *
 from QTRHacker.Functions import *
 from QTRHacker.Functions.GameObjects import *
+from QTRHacker.Functions.GameObjects.Terraria import *
 from QHackLib import *
 
 
@@ -72,7 +74,7 @@ players = ctx.Players
 for i in range(256):
 	player = players[i]
 	if player.Active:
-		box.Items.Add(str(i) + " : " + player.Name)
+		box.Items.Add(str(i) + " : " + player.Name.GetString())
 box.MouseClick += OnPlayerSelected
 box.SetSelected(0, True)
 

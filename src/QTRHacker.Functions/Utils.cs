@@ -13,17 +13,17 @@ namespace QTRHacker.Functions
 {
 	public static class Utils
 	{
-		public static int GetOffset(GameContext context, string module, string type, string field)
+		public unsafe static int GetOffset(GameContext context, string module, string type, string field)
 		{
-			return (int)context.HContext.GetCLRHelper(module).GetInstanceFieldOffset(type, field);
+			return (int)context.HContext.GetCLRHelper(module).GetInstanceFieldOffset(type, field) + sizeof(nuint);
 		}
-		public static int GetOffset(GameContext context, string type, string field)
+		public unsafe static int GetOffset(GameContext context, string type, string field)
 		{
-			return (int)context.GameModuleHelper.GetInstanceFieldOffset(type, field);
+			return (int)context.GameModuleHelper.GetInstanceFieldOffset(type, field) + sizeof(nuint);
 		}
 		public static void AobReplaceASM(GameContext Context, string src, string target)
 		{
-			var addrs = AobscanHelper.Aobscan(Context.HContext.Handle, AobscanHelper.GetHexCodeFromString(src));
+			var addrs = AobscanHelper.Aobscan(Context.HContext.Handle, Assembler.Assemble(src, 0));
 			byte[] code = Assembler.Assemble(target, 0);
 			foreach (var addr in addrs)
 				Context.HContext.DataAccess.WriteBytes(addr, code);

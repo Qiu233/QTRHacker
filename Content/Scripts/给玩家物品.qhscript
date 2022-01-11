@@ -1,5 +1,6 @@
 import clr
 clr.AddReference("System")
+clr.AddReference("System.IO.FileSystem")
 clr.AddReference("System.Windows.Forms")
 clr.AddReference("System.Drawing")
 clr.AddReference("QHackLib")
@@ -12,6 +13,7 @@ from System.Windows.Forms import *
 from QTRHacker import *
 from QTRHacker.Functions import *
 from QTRHacker.Functions.GameObjects import *
+from QTRHacker.Functions.GameObjects.Terraria import *
 from QHackLib import *
 
 
@@ -73,7 +75,7 @@ itemStackBox.Location = loc
 
 def OnOKClick(s, e):
 	player = game_context.Players[int(pIndexTextBox.Text)]
-	num = Item.NewItem(game_context, player.X, player.Y, 0, 0, int(itemTypeBox.Text), int(itemStackBox.Text), False, 0, False, False)
+	num = Item.NewItem(game_context, player.Position.X, player.Position.Y, 0, 0, int(itemTypeBox.Text), int(itemStackBox.Text), False, 0, False, False)
 	NetMessage.SendData(game_context, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
 	form.Dispose()
 
@@ -104,7 +106,7 @@ players = game_context.Players
 for i in range(256):
 	player = players[i]
 	if player.Active:
-		box.Items.Add(str(i) + " : " + player.Name)
+		box.Items.Add(str(i) + " : " + player.Name.GetString())
 box.MouseClick += OnPlayerSelected
 box.SetSelected(0, True)
 
