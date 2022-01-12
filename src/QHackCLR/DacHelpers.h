@@ -19,6 +19,8 @@ namespace QHackCLR {
 static String^ name(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS addrName) {\
 	unsigned int needed = 0;\
 	SOSDac->func(addrName, 0, nullptr, &needed);\
+	if (needed <= 1)\
+		return nullptr;\
 	array<Char>^ buffer = gcnew array<Char>(needed);\
 	pin_ptr<Char> ptr = &buffer[0];\
 	SOSDac->func(addrName, needed, static_cast<wchar_t*>(ptr), &needed);\

@@ -111,34 +111,8 @@ namespace QTRHacker.PagePanels
 			brushButton.Bounds = new Rectangle(160, 30, 80, 30);
 			brushButton.Click += (s, e) =>
 			{
-				// because enabling the brush would perform heavy actions,
-				// we check the state of brush at first.
-				if (HackContext.GameContext.Patches.WorldPainter_BrushActive)
-					return;
 				HackContext.GameContext.Patches.WorldPainter_EyeDropperActive = false;
-				HackContext.GameContext.Patches.WorldPainter_BrushActive = false;
-				// with both brush and dropper disabled
-				nuint addr = HackContext.GameContext.Patches.WorldPainter_BrushTiles;
-				if (addr != 0) // reclaim the memory allocated before
-				{
-					HackContext.GameContext.Patches.WorldPainter_BrushWidth = 0;
-					HackContext.GameContext.Patches.WorldPainter_BrushHeight = 0;
-					System.Threading.Thread.Sleep(10);
-					HackContext.GameContext.Patches.WorldPainter_BrushTiles = 0;
-					QHackLib.Memory.MemoryAllocation.Free(HackContext.GameContext.HContext.Handle, addr);
-				}
-				System.Threading.Thread.Sleep(10);
-				(int width, int height, var data) = GetDataFromGame();
-				if (data.Length == 0) return;
-				unsafe
-				{
-					addr = QHackLib.Memory.MemoryAllocation.Alloc(HackContext.GameContext.HContext.Handle, (uint)(data.Length * sizeof(STile) + 64));
-				}
-				HackContext.GameContext.HContext.DataAccess.Write(addr, data, (uint)data.Length);
-				HackContext.GameContext.Patches.WorldPainter_BrushTiles = addr;
-				HackContext.GameContext.Patches.WorldPainter_BrushWidth = width;
-				HackContext.GameContext.Patches.WorldPainter_BrushHeight = height;
-				HackContext.GameContext.Patches.WorldPainter_BrushActive = true; // with everthing's done, enable the brush
+				HackContext.GameContext.Patches.WorldPainter_BrushActive = true;
 			};
 			Controls.Add(brushButton);
 
@@ -177,7 +151,7 @@ namespace QTRHacker.PagePanels
 
 		private static (int Width, int Height, STile[] Data) GetDataFromGame()
 		{
-			var tiles = HackContext.GameContext.Patches.WorldPainter_DropperTiles;
+			var tiles = HackContext.GameContext.Patches.WorldPainter_ClipBoard;
 			int width = tiles.GetLength(0);
 			int height = tiles.GetLength(1);
 			var data = tiles.GetAllElements();

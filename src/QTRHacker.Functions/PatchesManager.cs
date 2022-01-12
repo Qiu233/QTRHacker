@@ -52,8 +52,8 @@ namespace QTRHacker.Functions
 				throw new InvalidOperationException("Couldn't load patches");
 		}
 
-		public GameObjectArray2DV<STile> WorldPainter_DropperTiles
-			=> new(Context, PatchHelper.GetStaticHackObject("QTRHacker.Patches.WorldPainter", "DropperTiles"));
+		public GameObjectArray2DV<STile> WorldPainter_ClipBoard
+			=> new(Context, PatchHelper.GetStaticHackObject("QTRHacker.Patches.WorldPainter", "ClipBoard"));
 
 		public bool WorldPainter_EyeDropperActive
 		{
@@ -64,21 +64,6 @@ namespace QTRHacker.Functions
 		{
 			get => PatchHelper.GetStaticFieldValue<bool>("QTRHacker.Patches.WorldPainter", "BrushActive");
 			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.WorldPainter", "BrushActive", value);
-		}
-		public nuint WorldPainter_BrushTiles
-		{
-			get => PatchHelper.GetStaticFieldValue<nuint>("QTRHacker.Patches.WorldPainter", "BrushTiles");
-			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.WorldPainter", "BrushTiles", value);
-		}
-		public int WorldPainter_BrushWidth
-		{
-			get => PatchHelper.GetStaticFieldValue<int>("QTRHacker.Patches.WorldPainter", "BrushWidth");
-			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.WorldPainter", "BrushWidth", value);
-		}
-		public int WorldPainter_BrushHeight
-		{
-			get => PatchHelper.GetStaticFieldValue<int>("QTRHacker.Patches.WorldPainter", "BrushHeight");
-			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.WorldPainter", "BrushHeight", value);
 		}
 	}
 }

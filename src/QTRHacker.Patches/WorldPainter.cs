@@ -46,10 +46,7 @@ namespace QTRHacker.Patches
 		private static bool Brushing, Dropping;
 		private static Vector2 BeginPos, EndPos;
 		private static Vector2 BrushBeginPos;
-		private static STile[,] DropperTiles;
-		public static IntPtr BrushTiles = IntPtr.Zero;
-		public static int BrushWidth = 0;
-		public static int BrushHeight = 0;
+		private static STile[,] ClipBoard;
 
 		static WorldPainter()
 		{
@@ -68,8 +65,8 @@ namespace QTRHacker.Patches
 
 		public static void DrawPreview(SpriteBatch sb, Vector2 position)
 		{
-			int width = BrushWidth;
-			int height = BrushHeight;
+			int width = ClipBoard.GetLength(0);
+			int height = ClipBoard.GetLength(1);
 			for (int x = 0; x < width; x++)
 			{
 				for (int y = 0; y < height; y++)
@@ -125,10 +122,12 @@ namespace QTRHacker.Patches
 			}
 			else if (BrushActive && InsideScreen())
 			{
-				Vector2 Size = new Vector2(BrushWidth, BrushHeight);
-				Point point = (Main.MouseWorld + new Vector2((BrushWidth + 1) % 2, (BrushHeight + 1) % 2) * 8).ToTileCoordinates();
-				point.X -= BrushWidth / 2;
-				point.Y -= BrushHeight / 2;
+				int brushWidth = ClipBoard.GetLength(0);
+				int brushHeight = ClipBoard.GetLength(1);
+				Vector2 Size = new Vector2(brushWidth, brushHeight);
+				Point point = (Main.MouseWorld + new Vector2((brushWidth + 1) % 2, (brushHeight + 1) % 2) * 8).ToTileCoordinates();
+				point.X -= brushWidth / 2;
+				point.Y -= brushHeight / 2;
 				Vector2 dPos = point.ToWorldCoordinates(0, 0) - Main.screenPosition;
 
 				if (!(Mouse.GetState().LeftButton == ButtonState.Pressed)) DrawPreview(batch, dPos);
@@ -156,15 +155,13 @@ namespace QTRHacker.Patches
 			return Main.mouseX > 0 && Main.mouseY > 0 && Main.mouseX < Main.screenWidth && Main.mouseY < Main.screenHeight;
 		}
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private unsafe static STile GetClipboard(int x, int y) => ((STile*)BrushTiles)[(x * BrushHeight) + y];
+		private unsafe static STile GetClipboard(int x, int y) => ClipBoard[x, y];
 		private static void DoUpdateHook_Pre()
 		{
 			if (Main.gameMenu || Main.playerInventory)
 			{
 				Brushing = false;
 				BrushActive = false;
-				BrushWidth = 0;
-				BrushHeight = 0;
 				return;
 			}
 			Player player = Main.LocalPlayer;
@@ -178,8 +175,6 @@ namespace QTRHacker.Patches
 				Brushing = false;
 				EyeDropperActive = false;
 				BrushActive = false;
-				BrushWidth = 0;
-				BrushHeight = 0;
 			}
 			if (EyeDropperActive)
 			{
@@ -203,7 +198,7 @@ namespace QTRHacker.Patches
 					{
 						Dropping = true;
 						EndPos = BeginPos = new Vector2(Player.tileTargetX, Player.tileTargetY);
-						DropperTiles = null;
+						ClipBoard = null;
 					}
 					else if (Dropping)
 					{
@@ -215,7 +210,7 @@ namespace QTRHacker.Patches
 						int maxX = (int)lowerRight.X + 1;
 						int minY = (int)upperLeft.Y;
 						int maxY = (int)lowerRight.Y + 1;
-						DropperTiles = new STile[maxX - minX, maxY - minY];
+						ClipBoard = new STile[maxX - minX, maxY - minY];
 						for (int x = minX; x < maxX; x++)
 						{
 							for (int y = minY; y < maxY; y++)
@@ -223,7 +218,7 @@ namespace QTRHacker.Patches
 								if (!WorldGen.InWorld(x, y))
 									continue;
 								Tile from = Framing.GetTileSafely(x, y);
-								DropperTiles[x - minX, y - minY] = new STile
+								ClipBoard[x - minX, y - minY] = new STile
 								{
 									Type = from.type,
 									Wall = from.wall,
@@ -239,15 +234,15 @@ namespace QTRHacker.Patches
 						}
 						Main.NewTextMultiline($"Area selected:\n" +
 							$"    From [C/FF9933:({minX}, {minY})] to [C/FF9933:({maxX}, {maxY})]\n" +
-							$"    Totally [C/FF9933:{DropperTiles.Length}] blocks ([C/FF9933:{DropperTiles.GetLength(0)}] X [C/FF9933:{DropperTiles.GetLength(1)}])"
+							$"    Totally [C/FF9933:{ClipBoard.Length}] blocks ([C/FF9933:{ClipBoard.GetLength(0)}] X [C/FF9933:{ClipBoard.GetLength(1)}])"
 							, false, Color.White);
 					}
 				}
 			}
-			else if (BrushActive && BrushTiles != IntPtr.Zero)
+			else if (BrushActive && ClipBoard != null)
 			{
-				int bWidth = BrushWidth;
-				int bHeight = BrushHeight;
+				int bWidth = ClipBoard.GetLength(0);
+				int bHeight = ClipBoard.GetLength(1);
 				Point Point = (Main.MouseWorld + new Vector2((bWidth + 1) % 2, (bHeight + 1) % 2) * 8).ToTileCoordinates();
 				Point.X -= bWidth / 2;
 				Point.Y -= bHeight / 2;
