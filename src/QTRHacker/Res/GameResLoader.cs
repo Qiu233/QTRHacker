@@ -20,8 +20,6 @@ namespace QTRHacker.Res
 		public static Dictionary<string, byte[]> ItemImageData { get; }
 		public static Dictionary<string, byte[]> NPCImageData { get; }
 		public static Dictionary<string, byte[]> BuffImageData { get; }
-		public static Dictionary<string, byte[]> TileImageData { get; }
-		public static Dictionary<string, byte[]> WallImageData { get; }
 		public static string[] Prefixes { get; }
 		public static string[] Pets { get; }
 		public static string[] Mounts { get; }
@@ -54,10 +52,7 @@ namespace QTRHacker.Res
 			ItemImages.ColorDepth = ColorDepth.Depth32Bit;
 			ItemImages.ImageSize = new Size(20, 20);
 			//(BuffImageData, BuffImages) = LoadPackedImages("QTRHacker.Res.ContentImage.BuffImages.bin");
-
 			NPCImageData = LoadPackedImagesData("QTRHacker.Res.ContentImage.NPCImages.bin");
-			TileImageData = LoadPackedImagesData("QTRHacker.Res.ContentImage.TileImages.bin");
-			WallImageData = LoadPackedImagesData("QTRHacker.Res.ContentImage.WallImages.bin");
 
 			using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(File_Prefix))
 			{

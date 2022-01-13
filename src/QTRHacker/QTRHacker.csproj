@@ -10,7 +10,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <AssemblyVersion>9.7.0.0</AssemblyVersion>
+    <AssemblyVersion>9.7.1.0</AssemblyVersion>
     <AssemblyName>QTRHacker</AssemblyName>
     <RootNamespace>QTRHacker</RootNamespace>
   </PropertyGroup>
@@ -39,8 +39,6 @@
     <None Remove="Res\ContentImage\ItemImages.bin" />
     <None Remove="Res\ContentImage\NPCImages.bin" />
     <None Remove="Res\ContentImage\PlayerModelsRaw.bin" />
-    <None Remove="Res\ContentImage\TileImages.bin" />
-    <None Remove="Res\ContentImage\WallImages.bin" />
     <None Remove="Res\Game\Mount_en.txt" />
     <None Remove="Res\Game\Pet_en.txt" />
     <None Remove="Res\Game\Prefix_en.txt" />
@@ -60,8 +58,6 @@
     <EmbeddedResource Include="Res\ContentImage\ItemImages.bin" />
     <EmbeddedResource Include="Res\ContentImage\NPCImages.bin" />
     <EmbeddedResource Include="Res\ContentImage\PlayerModelsRaw.bin" />
-    <EmbeddedResource Include="Res\ContentImage\TileImages.bin" />
-    <EmbeddedResource Include="Res\ContentImage\WallImages.bin" />
     <EmbeddedResource Include="Res\Game\Mount_en.txt" />
     <EmbeddedResource Include="Res\Game\Pet_en.txt" />
     <EmbeddedResource Include="Res\Game\Prefix_en.txt" />

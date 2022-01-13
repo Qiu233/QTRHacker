@@ -19,9 +19,9 @@ namespace QTRHacker.Tile
 		private Texture2D Pixel;
 		private SpriteBatch Batch;
 		private STile[,] TilesData;
+		private Microsoft.Xna.Framework.Content.ContentManager Content;
 		public TileView()
 		{
-
 		}
 
 		public void SetData(STile[,] data)
@@ -37,25 +37,13 @@ namespace QTRHacker.Tile
 		{
 			if (TileTextures.TryGetValue(tile, out Texture2D t))
 				return t;
-			Texture2D texture = null;
-			if (GameResLoader.TileImageData.TryGetValue($"Tiles_{tile}", out byte[] value))
-			{
-				using var s = new MemoryStream(value);
-				texture = Texture2D.FromStream(GraphicsDevice, s);
-			}
-			return TileTextures[tile] = texture;
+			return TileTextures[tile] = Content.Load<Texture2D>($"Images/Tiles_{tile}");
 		}
 		private Texture2D GetWallTexture(int wall)
 		{
 			if (WallTextures.TryGetValue(wall, out Texture2D t))
 				return t;
-			Texture2D texture = null;
-			if (GameResLoader.WallImageData.TryGetValue($"Wall_{wall}", out byte[] value))
-			{
-				using var s = new MemoryStream(value);
-				texture = Texture2D.FromStream(GraphicsDevice, s);
-			}
-			return WallTextures[wall] = texture;
+			return WallTextures[wall] = Content.Load<Texture2D>($"Images/Wall_{wall}");
 		}
 
 		private void DrawTiles()
@@ -136,6 +124,7 @@ namespace QTRHacker.Tile
 
 		protected override void Initialize()
 		{
+			Content = new Microsoft.Xna.Framework.Content.ContentManager(Services, HackContext.GameContext.GameContentDir);
 			Batch = new SpriteBatch(GraphicsDevice);
 			Pixel = new Texture2D(GraphicsDevice, 1, 1);
 			Pixel.SetData(new Color[] { new Color(255, 255, 255) });

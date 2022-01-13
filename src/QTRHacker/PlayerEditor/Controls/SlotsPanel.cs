@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using QTRHacker.Functions;
 using QTRHacker.Functions.GameObjects;
 using QTRHacker.Functions.GameObjects.Terraria;
@@ -39,7 +40,7 @@ namespace QTRHacker.PlayerEditor.Controls
 			SelectedIndex = 0;
 		}
 		private SpriteBatch Batch;
-		private Dictionary<int, Texture2D> ItemTextureCache = new Dictionary<int, Texture2D>();
+		private readonly Dictionary<int, Texture2D> ItemTextureCache = new Dictionary<int, Texture2D>();
 		private Texture2D BorderTexture;
 		private Texture2D BackTexture;
 		private GDITextFactory GDITextFactory;

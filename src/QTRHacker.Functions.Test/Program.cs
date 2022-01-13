@@ -17,21 +17,10 @@ namespace QTRHacker.Functions.Test
 		unsafe static void Main()
 		{
 			using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0]);
-			ctx.Patches.Init();
-			//ctx.Patches.WorldPainter_EyeDropperActive = true;
-			/*using QHackContext ctx = QHackContext.Create(Process.GetProcessesByName("Terraria")[0].Id);
-			foreach (var m in ctx.CLRHelpers)
-			{
-				Console.WriteLine(m.Key.FileName);
-			}
-			var helper = ctx.CLRHelpers.Last(t => t.Key.Name == "QTRHacker.Patches").Key;
-			foreach (var t in helper.DefinedTypes)
-			{
-				Console.WriteLine(t.Name);
-			}*/
-			/*var helper = ctx.GetCLRHelper("Terraria");
-			var h = helper.GetStaticFieldAddress("Terraria.GameContent.TextureAssets", "MagicPixel");
-			Console.WriteLine(h.ToString("X8"));*/
+			var helper = ctx.GameModuleHelper;
+			var h = helper.GetStaticHackObject("Terraria.Main", "versionNumber2");
+			Console.WriteLine(new GameObjects.GameString(ctx, h).GetString());
+			Console.WriteLine(Path.GetDirectoryName(helper.Module.FileName));
 		}
 	}
 }

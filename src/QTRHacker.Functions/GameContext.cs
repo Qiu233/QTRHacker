@@ -248,6 +248,9 @@ namespace QTRHacker.Functions
 			set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "time", value);
 		}
 
+		public string GameDir => Path.GetDirectoryName(GameModuleHelper.Module.FileName);
+		public string GameContentDir => Path.Combine(Path.GetDirectoryName(GameModuleHelper.Module.FileName), "Content");
+
 		public WorldFileData ActiveWorldFileData
 			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "ActiveWorldFileData"));
 
@@ -429,7 +432,7 @@ namespace QTRHacker.Functions
 			Flush();
 			return result;
 		}
-		
+
 		public unsafe bool LoadAssemblyAsBytes(string assemblyFile)
 		{
 			byte[] data = File.ReadAllBytes(assemblyFile);
