@@ -17,10 +17,8 @@ namespace QTRHacker.Functions.Test
 		unsafe static void Main()
 		{
 			using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0]);
-			var helper = ctx.GameModuleHelper;
-			var h = helper.GetStaticHackObject("Terraria.Main", "versionNumber2");
-			Console.WriteLine(new GameObjects.GameString(ctx, h).GetString());
-			Console.WriteLine(Path.GetDirectoryName(helper.Module.FileName));
+			ctx.Patches.WorldPainter_EyeDropperActive = true;
+			Console.WriteLine(ctx.Patches.WorldPainter_EyeDropperActive);
 		}
 	}
 }

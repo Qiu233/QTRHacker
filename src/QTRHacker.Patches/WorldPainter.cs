@@ -47,11 +47,15 @@ namespace QTRHacker.Patches
 		private static Vector2 BeginPos, EndPos;
 		private static Vector2 BrushBeginPos;
 		private static STile[,] ClipBoard;
+		private static readonly Texture2D magicPixel;
 
 		static WorldPainter()
 		{
 			HooksDef.DoUpdateHook.Pre += DoUpdateHook_Pre;
 			Boot.OnGameDraw += Boot_OnGameDraw;
+
+			magicPixel = new Texture2D(Main.instance.GraphicsDevice, 1, 1);
+			magicPixel.SetData(new Color[] { new Color(255, 255, 255) });
 		}
 
 		private static Color ProcessColor(Color newColor, float R, float G, float B, float A)
@@ -106,18 +110,18 @@ namespace QTRHacker.Patches
 				float scale = 0.6f;
 				Color color = ProcessColor(Color.White, r, g, b, a);
 
-				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.MagicPixel.Value, upperLeftScreen, value, color * scale, 0f, Vector2.Zero, 16f * brushSize, SpriteEffects.None, 0f);
+				batch.Draw(magicPixel, upperLeftScreen, value, color * scale, 0f, Vector2.Zero, 16f * brushSize, SpriteEffects.None, 0f);
 				b = 0.3f;
 				g = 0.95f;
 				scale = (a = 1f);
 				color = ProcessColor(Color.White, r, g, b, a);
-				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.MagicPixel.Value,
+				batch.Draw(magicPixel,
 					upperLeftScreen + Vector2.UnitX * -2f, value, color * scale, 0f, Vector2.Zero, new Vector2(2f, 16f * brushSize.Y), SpriteEffects.None, 0f);
-				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.MagicPixel.Value,
+				batch.Draw(magicPixel,
 					upperLeftScreen + Vector2.UnitX * 16f * brushSize.X, value, color * scale, 0f, Vector2.Zero, new Vector2(2f, 16f * brushSize.Y), SpriteEffects.None, 0f);
-				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.MagicPixel.Value,
+				batch.Draw(magicPixel,
 					upperLeftScreen + Vector2.UnitY * -2f, value, color * scale, 0f, Vector2.Zero, new Vector2(16f * brushSize.X, 2f), SpriteEffects.None, 0f);
-				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.MagicPixel.Value,
+				batch.Draw(magicPixel,
 					upperLeftScreen + Vector2.UnitY * 16f * brushSize.Y, value, color * scale, 0f, Vector2.Zero, new Vector2(16f * brushSize.X, 2f), SpriteEffects.None, 0f);
 			}
 			else if (BrushActive && InsideScreen())
@@ -139,15 +143,15 @@ namespace QTRHacker.Patches
 				float a = 1f;
 				float scale = 0.6f;
 				Color color = ProcessColor(Color.White, r, g, b, a);
-				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.MagicPixel.Value, dPos, value, color * scale, 0f, Vector2.Zero, 16f * Size, SpriteEffects.None, 0f);
+				batch.Draw(magicPixel, dPos, value, color * scale, 0f, Vector2.Zero, 16f * Size, SpriteEffects.None, 0f);
 				b = 0.3f;
 				g = 0.95f;
 				scale = (a = 1f);
 				color = ProcessColor(Color.White, r, g, b, a);
-				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.MagicPixel.Value, dPos + Vector2.UnitX * -2f, value, color * scale, 0f, Vector2.Zero, new Vector2(2f, 16f * Size.Y), SpriteEffects.None, 0f);
-				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.MagicPixel.Value, dPos + Vector2.UnitX * 16f * Size.X, value, color * scale, 0f, Vector2.Zero, new Vector2(2f, 16f * Size.Y), SpriteEffects.None, 0f);
-				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.MagicPixel.Value, dPos + Vector2.UnitY * -2f, value, color * scale, 0f, Vector2.Zero, new Vector2(16f * Size.X, 2f), SpriteEffects.None, 0f);
-				Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.MagicPixel.Value, dPos + Vector2.UnitY * 16f * Size.Y, value, color * scale, 0f, Vector2.Zero, new Vector2(16f * Size.X, 2f), SpriteEffects.None, 0f);
+				batch.Draw(magicPixel, dPos + Vector2.UnitX * -2f, value, color * scale, 0f, Vector2.Zero, new Vector2(2f, 16f * Size.Y), SpriteEffects.None, 0f);
+				batch.Draw(magicPixel, dPos + Vector2.UnitX * 16f * Size.X, value, color * scale, 0f, Vector2.Zero, new Vector2(2f, 16f * Size.Y), SpriteEffects.None, 0f);
+				batch.Draw(magicPixel, dPos + Vector2.UnitY * -2f, value, color * scale, 0f, Vector2.Zero, new Vector2(16f * Size.X, 2f), SpriteEffects.None, 0f);
+				batch.Draw(magicPixel, dPos + Vector2.UnitY * 16f * Size.Y, value, color * scale, 0f, Vector2.Zero, new Vector2(16f * Size.X, 2f), SpriteEffects.None, 0f);
 			}
 		}
 		private static bool InsideScreen()
