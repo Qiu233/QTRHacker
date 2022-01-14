@@ -10,7 +10,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <AssemblyVersion>9.8.0.0</AssemblyVersion>
+    <AssemblyVersion>9.8.1.0</AssemblyVersion>
     <AssemblyName>QTRHacker</AssemblyName>
     <RootNamespace>QTRHacker</RootNamespace>
   </PropertyGroup>
