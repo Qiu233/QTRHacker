@@ -141,6 +141,7 @@ namespace QTRHacker.PagePanels
 					return;
 				}
 				InitGame(Process.GetProcessById(processID));
+				(MainForm.MainFormInstance.BasicPagePanel as PagePanel_Basic).UpdateFunctionButtonsEnabled();
 				MainForm.MainFormInstance.OnInitialized();
 			};
 			Controls.Add(cross);

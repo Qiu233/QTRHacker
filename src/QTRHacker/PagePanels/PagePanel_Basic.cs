@@ -21,11 +21,11 @@ namespace QTRHacker.PagePanels
 		private readonly Panel ButtonsPanel, ContentPanel;
 		private readonly Dictionary<Control, int> FunctionsNumber;
 		private readonly Panel Page1, Page2, Page3, PageEvent, PageBuilder, PageMisc;
+		private readonly List<Panel> Panels = new();
 		private int FunctionsIdentity = 0;
 		private int TabsNumber = 0;
 		public PagePanel_Basic(int Width, int Height) : base(Width, Height)
 		{
-
 			FunctionsNumber = new Dictionary<Control, int>();
 			ButtonsPanel = new Panel();
 			ButtonsPanel.Bounds = new Rectangle(0, 0, 60, Height);
@@ -37,18 +37,15 @@ namespace QTRHacker.PagePanels
 			ContentPanel.BackColor = TextButton.SelectedColor;
 			Controls.Add(ContentPanel);
 
-			Page1 = new Panel();
-			Page1.Bounds = new Rectangle(3, 0, Width - 60, Height);
-			Page2 = new Panel();
-			Page2.Bounds = new Rectangle(3, 0, Width - 60, Height);
-			Page3 = new Panel();
-			Page3.Bounds = new Rectangle(3, 0, Width - 60, Height);
-			PageEvent = new Panel();
-			PageEvent.Bounds = new Rectangle(3, 0, Width - 60, Height);
-			PageBuilder = new Panel();
-			PageBuilder.Bounds = new Rectangle(3, 0, Width - 60, Height);
-			PageMisc = new Panel();
-			PageMisc.Bounds = new Rectangle(3, 0, Width - 60, Height);
+			for (int i = 0; i < 6; i++)
+				Panels.Add(new Panel() { Bounds= new Rectangle(3, 0, Width - 60, Height) });
+
+			Page1 = Panels[0];
+			Page2 = Panels[1];
+			Page3 = Panels[2];
+			PageEvent = Panels[3];
+			PageBuilder = Panels[4];
+			PageMisc = Panels[5];
 
 			AddFunctionButton(Page1, HackContext.CurrentLanguage["InfLife"], true, Utils.InfiniteLife_E, Utils.InfiniteLife_D);
 			AddFunctionButton(Page1, HackContext.CurrentLanguage["InfOxygen"], true, Utils.InfiniteOxygen_E, Utils.InfiniteOxygen_D);
@@ -230,6 +227,17 @@ namespace QTRHacker.PagePanels
 			AddTab(HackContext.CurrentLanguage["Event"], PageEvent);
 			//AddTab(HackContext.CurrentLanguage["Builder"], PageBuilder);
 			//AddTab(HackContext.CurrentLanguage["Miscs"], PageMisc);
+		}
+		public void UpdateFunctionButtonsEnabled()
+		{
+			foreach (var panel in Panels)
+			{
+				foreach (var c in panel.Controls)
+				{
+					if (c is FunctionButton btn)
+						btn.UpdateFunctionEnabled();
+				}
+			}
 		}
 		public FunctionButton AddFunctionButton(Panel p, string Text, bool Closable, Action<GameContext> OnEnabled, Action<GameContext> OnDisabled)
 		{

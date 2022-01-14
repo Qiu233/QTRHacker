@@ -26,12 +26,8 @@ namespace QTRHacker
 	public partial class MainForm : MForm
 	{
 		private readonly Panel ButtonsPanel, ContentPanel;
-		private readonly PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel,
-#pragma warning disable IDE0052, IDE0051
-			ProjectilePagePanel, ScriptsPagePanel, SchesPagePanel,
-			MiscPagePanel, ChatSenderPanel, AimBotPagePanel,
-#pragma warning restore IDE0052, IDE0051
-			AboutPagePanel;
+		public readonly PagePanel MainPagePanel, BasicPagePanel, PlayerPagePanel, ProjectilePagePanel, ScriptsPagePanel, SchesPagePanel,
+			MiscPagePanel, ChatSenderPanel, AimBotPagePanel, AboutPagePanel;
 		public static MainForm MainFormInstance { get; private set; }
 		public readonly PageGroup Group1, Group2;
 		public PageGroup ExpandedGroup;
@@ -253,7 +249,7 @@ namespace QTRHacker
 		protected override void OnClosing(CancelEventArgs e)
 		{
 			base.OnClosing(e);
-			Environment.Exit(0);//防止线程滞留
+			Environment.Exit(0);
 		}
 	}
 }

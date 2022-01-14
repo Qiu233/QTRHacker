@@ -48,7 +48,7 @@ namespace QTRHacker.Controls
 		}
 		public event Action<object, OnFunctionEnabledEventArgs> OnEnable = (s, e) => { };
 		public event Action<object, OnFunctionDisabledEventArgs> OnDisable = (s, e) => { };
-		private Func<object, bool> GetEnabled;
+		private readonly Func<object, bool> GetEnabled;
 		public FunctionButton(int Identity, Func<object, bool> GetEnabled, bool Closable = true)
 		{
 			SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
@@ -66,6 +66,10 @@ namespace QTRHacker.Controls
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
+			UpdateFunctionEnabled();
+		}
+		public void UpdateFunctionEnabled()
+		{
 			FunctionEnabled = GetEnabled(this);
 		}
 		protected override void OnClick(EventArgs e)

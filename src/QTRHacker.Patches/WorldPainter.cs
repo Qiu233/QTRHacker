@@ -160,6 +160,10 @@ namespace QTRHacker.Patches
 		}
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private unsafe static STile GetClipboard(int x, int y) => ClipBoard[x, y];
+
+		private static bool LastLeftPressed = false;
+		private static bool LastRightPressed = false;
+		private static bool LastFocus = false;
 		private static void DoUpdateHook_Pre()
 		{
 			if (Main.gameMenu || Main.playerInventory)
@@ -170,9 +174,12 @@ namespace QTRHacker.Patches
 			}
 			Player player = Main.LocalPlayer;
 			bool inside = InsideScreen();
-			bool leftDown = Mouse.GetState().LeftButton == ButtonState.Pressed && Main.mouseLeftRelease && inside;
-			bool leftUp = Mouse.GetState().LeftButton != ButtonState.Pressed && !Main.mouseLeftRelease && inside;
-			bool rightUp = Mouse.GetState().RightButton != ButtonState.Pressed && !Main.mouseRightRelease && inside;
+			bool leftDown = Mouse.GetState().LeftButton == ButtonState.Pressed && !LastLeftPressed && LastFocus && inside;
+			bool leftUp = Mouse.GetState().LeftButton != ButtonState.Pressed && LastLeftPressed && LastFocus && inside;
+			bool rightUp = Mouse.GetState().RightButton != ButtonState.Pressed && LastRightPressed && LastFocus && inside;
+			LastLeftPressed = Mouse.GetState().LeftButton == ButtonState.Pressed;
+			LastRightPressed = Mouse.GetState().RightButton == ButtonState.Pressed;
+			LastFocus = Main.hasFocus;
 			if (rightUp)
 			{
 				Dropping = false;
