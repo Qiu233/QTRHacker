@@ -91,7 +91,12 @@ namespace QHackLib.FunctionHelper
 			Assembler.Assemble($"jmp {codeAddr}", Parameters.TargetAddress).CopyTo(JmpHeadBytes, 0);
 		}
 
-		public static InlineHook Hook(QHackContext ctx, AssemblyCode code, HookParameters parameters) => new(ctx, code, parameters);
+		public static InlineHook Hook(QHackContext ctx, AssemblyCode code, HookParameters parameters)
+		{
+			var hook = new InlineHook(ctx, code, parameters);
+			hook.Attach();
+			return hook;
+		}
 
 		public bool IsAttached()
 		{

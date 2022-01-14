@@ -24,7 +24,7 @@ namespace QTRHacker.Functions
 	/// </summary>
 	public class GameContext : IDisposable
 	{
-		private readonly object LOCK_DOUPDATE = new();
+		private readonly object LOCK_UPDATE = new();
 		public nuint My_Player_Address
 		{
 			get;
@@ -318,11 +318,11 @@ namespace QTRHacker.Functions
 
 		public bool RunByHookOnUpdate(AssemblyCode codeToRun, uint size = 0x1000)
 		{
-			System.Threading.Monitor.Enter(LOCK_DOUPDATE);
+			System.Threading.Monitor.Enter(LOCK_UPDATE);
 			bool v = InlineHook.HookOnce(
 					HContext, codeToRun,
 					GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update"), 1000, size);
-			System.Threading.Monitor.Exit(LOCK_DOUPDATE);
+			System.Threading.Monitor.Exit(LOCK_UPDATE);
 			return v;
 		}
 
