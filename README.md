@@ -15,10 +15,10 @@ All releases: https://github.com/ZQiu233/QTRHackerUpdatesHistory/tree/master/Upd
 3. Ctrl + F5
 
 ## Screenshots
-![](./Screenshots/1.png)
-![](./Screenshots/2.png)
-![](./Screenshots/3.png)
-![](./Screenshots/4.png)
-![](./Screenshots/5.png)
-![](./Screenshots/6.png)
-![](./Screenshots/7.png)
+![](./screenshots/1.png)
+![](./screenshots/2.png)
+![](./screenshots/3.png)
+![](./screenshots/4.png)
+![](./screenshots/5.png)
+![](./screenshots/6.png)
+![](./screenshots/7.png)

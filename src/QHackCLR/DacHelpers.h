@@ -35,7 +35,7 @@ static String^ name(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS addrName) {\
 			{
 				IXCLRDataModule* dataModule;
 				SOSDac->GetModule(module, &dataModule);
-				IMetaDataImport* result;
+				IMetaDataImport* result = nullptr;
 				dataModule->QueryInterface(IID_IMetaDataImport, (void**)&result);
 				return result;
 			}
@@ -46,6 +46,8 @@ static String^ name(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS addrName) {\
 				SOSDac->GetAppDomainStoreData(&adsData);
 
 				unsigned int needed = adsData.DomainCount;
+				if (needed == 0)
+					return Array::Empty<CLRDATA_ADDRESS>();
 				array<CLRDATA_ADDRESS>^ buffer = gcnew array<CLRDATA_ADDRESS>(needed);
 				pin_ptr<CLRDATA_ADDRESS> ptr = &buffer[0];
 				SOSDac->GetAppDomainList(needed, static_cast<CLRDATA_ADDRESS*>(ptr), &needed);
@@ -57,6 +59,8 @@ static String^ name(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS addrName) {\
 				SOSDac->GetAppDomainData(appDomain, &data);
 
 				int needed = data.AssemblyCount;
+				if (needed == 0)
+					return Array::Empty<CLRDATA_ADDRESS>();
 				array<CLRDATA_ADDRESS>^ buffer = gcnew array<CLRDATA_ADDRESS>(needed);
 				pin_ptr<CLRDATA_ADDRESS> ptr = &buffer[0];
 				SOSDac->GetAssemblyList(appDomain, needed, static_cast<CLRDATA_ADDRESS*>(ptr), &needed);
@@ -68,6 +72,8 @@ static String^ name(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS addrName) {\
 				SOSDac->GetAssemblyData(appDomain, assembly, &data);
 
 				unsigned int needed = data.ModuleCount;
+				if (needed == 0)
+					return Array::Empty<CLRDATA_ADDRESS>();
 				array<CLRDATA_ADDRESS>^ buffer = gcnew array<CLRDATA_ADDRESS>(needed);
 				pin_ptr<CLRDATA_ADDRESS> ptr = &buffer[0];
 				SOSDac->GetAssemblyModuleList(assembly, needed, static_cast<CLRDATA_ADDRESS*>(ptr), &needed);

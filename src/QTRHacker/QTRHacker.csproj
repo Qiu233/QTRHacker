@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)Content\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\" />
+    <None Include="$(SolutionDir)res\**" CopyToOutputDirectory="PreserveNewest" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>

@@ -37,11 +37,11 @@
       <CopyLocal>False</CopyLocal>
     </Reference>
     <Reference Include="ReLogic">
-      <HintPath>$(SolutionDir)GameRefs\ReLogic.dll</HintPath>
+      <HintPath>$(SolutionDir)gamerefs\ReLogic.dll</HintPath>
       <CopyLocal>False</CopyLocal>
     </Reference>
     <Reference Include="Terraria">
-      <HintPath>$(SolutionDir)GameRefs\Terraria.exe</HintPath>
+      <HintPath>$(SolutionDir)gamerefs\Terraria.exe</HintPath>
       <CopyLocal>False</CopyLocal>
     </Reference>
   </ItemGroup>
