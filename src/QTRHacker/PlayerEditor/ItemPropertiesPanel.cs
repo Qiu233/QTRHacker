@@ -76,7 +76,7 @@ namespace QTRHacker.PlayerEditor
 				Location = new Point(0, 245),
 				ForeColor = GlobalColors.TipForeColor
 			};
-			this.Controls.Add(AutoReuseCheckBox);
+			Controls.Add(AutoReuseCheckBox);
 
 			EquippableCheckBox = new CheckBox()
 			{
@@ -122,8 +122,8 @@ namespace QTRHacker.PlayerEditor
 			};
 			if (val != null)
 				val.TextChanged += handler;
-			this.Controls.Add(tip);
-			this.Controls.Add(val);
+			Controls.Add(tip);
+			Controls.Add(val);
 			if (hack != "")
 				Hack.Add(hack, val);
 			ControlID++;

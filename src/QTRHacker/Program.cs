@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,8 +19,8 @@ namespace QTRHacker
 			Application.ThreadException += Application_ThreadException;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-
 			Application.Idle += (s, e) => { HackContext.DispatchGlobalUpdate(); };
+
 			Application.Run(new MainForm
 			{
 				StartPosition = FormStartPosition.CenterScreen

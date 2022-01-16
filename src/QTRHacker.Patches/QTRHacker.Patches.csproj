@@ -4,45 +4,44 @@
     <OutputType>Library</OutputType>
     <TargetFramework>net46</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>$(SolutionDir)bin\Debug\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>$(SolutionDir)bin\Release\</OutputPath>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  
   <ItemGroup>
     <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
-    <PackageReference Include="Lib.Harmony" Version="2.2.0" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework">
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
       <CopyLocal>False</CopyLocal>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Game">
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath>
       <CopyLocal>False</CopyLocal>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Graphics">
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath>
       <CopyLocal>False</CopyLocal>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(SolutionDir)refdlls\0Harmony.dll</HintPath>
+      <CopyLocal>False</CopyLocal>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ReLogic">
       <HintPath>$(SolutionDir)gamerefs\ReLogic.dll</HintPath>
       <CopyLocal>False</CopyLocal>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Terraria">
       <HintPath>$(SolutionDir)gamerefs\Terraria.exe</HintPath>
       <CopyLocal>False</CopyLocal>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
 </Project>

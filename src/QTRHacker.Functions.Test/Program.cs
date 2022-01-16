@@ -17,7 +17,7 @@ namespace QTRHacker.Functions.Test
 		unsafe static void Main()
 		{
 			using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0]);
-			Console.WriteLine(ctx.Patches.WorldPainter_EyeDropperActive);
+			ctx.MyPlayer.Inventory[0].SetDefaults(3063);
 		}
 	}
 }

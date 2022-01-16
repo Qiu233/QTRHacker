@@ -5,19 +5,9 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputType>Library</OutputType>
 	  <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>$(SolutionDir)bin\Debug\</OutputPath>
-    <NoWarn>1701;1702;CA2211</NoWarn>
     <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>$(SolutionDir)bin\Release\</OutputPath>
-    <PlatformTarget>x86</PlatformTarget>
+    <NoWarn>1701;1702;CA2211;NU1702</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +17,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
+    <ProjectReference Include="..\QTRHacker.Patches\QTRHacker.Patches.csproj" >
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>Content</OutputItemType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -38,17 +33,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>NPC.ps.cs</LastGenOutput>
     </None>
-    <None Update="GameObjects\Terraria\NPCProperties">
-      <Generator></Generator>
-    </None>
     <None Update="GameObjects\Terraria\Player.ps.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Player.ps.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,20 +56,4 @@
       <DependentUpon>Player.ps.tt</DependentUpon>
     </Compile>
   </ItemGroup>
-  
-  <ItemGroup>
-    <ContentWithTargetPath Include="$(OutDir)QTRHacker.Patches.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>QTRHacker.Patches.dll</TargetPath>
-    </ContentWithTargetPath>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Include="GameObjects\Terraria\NPC.ps.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>NPC.ps.tt</DependentUpon>
-    </None>
-  </ItemGroup>
-
 </Project>
