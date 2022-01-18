@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainbowFontsMaker", "src\Ra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keystone.Net", "src\Keystone.Net\Keystone.Net.csproj", "{464CD179-FE10-48A4-B71A-D9AAD5D7EF43}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker.UI", "src\QTRHacker.UI\QTRHacker.UI.csproj", "{8302B86F-8BFB-49C0-A5B8-20FD1D160717}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -66,6 +68,10 @@ Global
 		{464CD179-FE10-48A4-B71A-D9AAD5D7EF43}.Debug|x86.Build.0 = Debug|Any CPU
 		{464CD179-FE10-48A4-B71A-D9AAD5D7EF43}.Release|x86.ActiveCfg = Release|Any CPU
 		{464CD179-FE10-48A4-B71A-D9AAD5D7EF43}.Release|x86.Build.0 = Release|Any CPU
+		{8302B86F-8BFB-49C0-A5B8-20FD1D160717}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8302B86F-8BFB-49C0-A5B8-20FD1D160717}.Debug|x86.Build.0 = Debug|Any CPU
+		{8302B86F-8BFB-49C0-A5B8-20FD1D160717}.Release|x86.ActiveCfg = Release|Any CPU
+		{8302B86F-8BFB-49C0-A5B8-20FD1D160717}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

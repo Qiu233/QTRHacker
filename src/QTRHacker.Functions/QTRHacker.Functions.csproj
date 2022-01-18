@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
-    <ProjectReference Include="..\QTRHacker.Patches\QTRHacker.Patches.csproj" >
+    <ProjectReference Include="..\QTRHacker.Patches\QTRHacker.Patches.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <OutputItemType>Content</OutputItemType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
