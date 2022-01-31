@@ -6,25 +6,20 @@
                   xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor"
                   xmlns:controls="clr-namespace:QTRHacker.Controls"
                   xmlns:l="clr-namespace:QTRHacker.Localization"
-                  mc:Ignorable="d" Height="340" Width="800" MinimizeBox="False">
+                  mc:Ignorable="d" Height="340" Width="800" MinimizeBox="False"
+                  Title="{Binding Player.Name}">
     <Grid>
         <TabControl>
             <TabItem Header="{l:Localization UI.Inventory}" x:Name="InvTabItem">
                 <local:ItemSlotsEditor x:Name="InvEditor"
-                                       OnItemDataFetching="OnItemDataFetching"
-                                       Updating="{Binding ElementName=InvTabItem, Path=IsSelected}">
-                    <local:ItemSlotsEditor.SlotsLayout>
-                        <local:InventoryLayout/>
-                    </local:ItemSlotsEditor.SlotsLayout>
+                                       Updating="{Binding ElementName=InvTabItem, Path=IsSelected}" 
+                                       DataContext="{Binding InventoryEditorViewModel}">
                 </local:ItemSlotsEditor>
             </TabItem>
             <TabItem Header="{l:Localization UI.Piggy}" x:Name="PiggyTabItem">
                 <local:ItemSlotsEditor x:Name="PiggyEditor"
-                                       OnItemDataFetching="OnItemDataFetching"
-                                       Updating="{Binding ElementName=PiggyTabItem, Path=IsSelected}">
-                    <local:ItemSlotsEditor.SlotsLayout>
-                        <local:BankLayout/>
-                    </local:ItemSlotsEditor.SlotsLayout>
+                                       Updating="{Binding ElementName=PiggyTabItem, Path=IsSelected}"
+                                       DataContext="{Binding PiggyBankViewModel}">
                 </local:ItemSlotsEditor>
             </TabItem>
         </TabControl>

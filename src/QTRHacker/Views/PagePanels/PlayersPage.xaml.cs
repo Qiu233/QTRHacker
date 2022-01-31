@@ -1,4 +1,5 @@
-﻿using QTRHacker.Views.PlayerEditor;
+﻿using QTRHacker.ViewModels.PlayerEditor;
+using QTRHacker.Views.PlayerEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,8 +70,8 @@ namespace QTRHacker.Views.PagePanels
 			var player = HackGlobal.GameContext.Players[playerInfo.ID];
 			if (!player.Active)
 				return;
-			PlayerEditorWindow window = new(player);
-			window.DataContext = player;
+			PlayerEditorWindow window = new();
+			window.DataContext = new PlayerEditorWindowViewModel(player);
 			window.Show();
 		}
 	}

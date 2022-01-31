@@ -14,6 +14,7 @@ namespace QTRHacker.Converters
 	[ValueConversion(sourceType: typeof(int), targetType: typeof(BitmapImage))]
 	internal class ItemTypeToImageConverter : IValueConverter
 	{
+		public static readonly ItemTypeToImageConverter Instance = new();
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))// design time

@@ -4,14 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor"
+             xmlns:l="clr-namespace:QTRHacker.Localization"
              mc:Ignorable="d" 
              d:DesignHeight="320" d:DesignWidth="300">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-    </Grid>
+    <UserControl.Resources>
+        <DataTemplate x:Key="TextBoxSlot">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{l:Localization Key=UI.ItemProperties.{Binding}}">
+                </TextBlock>
+                <TextBox>
+                    
+                </TextBox>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <UniformGrid Columns="2" Rows="12">
+        
+    </UniformGrid>
 </UserControl>

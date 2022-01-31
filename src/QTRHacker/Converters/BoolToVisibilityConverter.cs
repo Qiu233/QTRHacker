@@ -12,6 +12,7 @@ namespace QTRHacker.Converters
 	[ValueConversion(sourceType: typeof(bool), targetType: typeof(Visibility), ParameterType = typeof(bool))]
 	internal class BoolToVisibilityConverter : IValueConverter
 	{
+		public static readonly BoolToVisibilityConverter Instance = new();
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (value is bool v)

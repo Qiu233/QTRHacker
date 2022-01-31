@@ -22,6 +22,10 @@ namespace QTRHacker.Localization
 			Key = key;
 		}
 
+		public LocalizationExtension()
+		{
+		}
+
 		public override object ProvideValue(IServiceProvider serviceProvider)
 		{
 			Binding binding = new(nameof(LocalizationItem.Value));

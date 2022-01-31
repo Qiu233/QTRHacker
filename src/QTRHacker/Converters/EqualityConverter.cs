@@ -8,21 +8,12 @@ using System.Windows.Data;
 
 namespace QTRHacker.Converters
 {
-	[ValueConversion(sourceType: typeof(int), targetType: typeof(string))]
-	internal class ItemStackToHintConverter : IValueConverter
+	internal class EqualityConverter : IValueConverter
 	{
-		public static readonly ItemStackToHintConverter Instance = new();
+		public static readonly EqualityConverter Instance = new();
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is int v)
-			{
-				return v switch
-				{
-					0 or 1 => string.Empty,
-					_ => v.ToString()
-				};
-			}
-			return string.Empty;
+			return value.Equals(parameter);
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

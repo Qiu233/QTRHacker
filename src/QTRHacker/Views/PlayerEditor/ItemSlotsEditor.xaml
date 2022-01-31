@@ -13,8 +13,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <local:ItemSlotsPanel d:Width="550"  x:Name="ItemSlotsPanel" Grid.Column="0" 
-                              SlotsLayout="{Binding SlotsLayout, 
-            RelativeSource={RelativeSource AncestorType={x:Type local:ItemSlotsEditor}}}">
+                              SlotsLayout="{Binding SlotsLayout}" SelectedIndex="{Binding SelectedIndex}">
         </local:ItemSlotsPanel>
         <local:ItemPropertiesPanel Grid.Column="1">
             

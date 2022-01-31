@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Controls;
+using QTRHacker.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -77,10 +79,14 @@ namespace QTRHacker.Views.PlayerEditor
 				for (int i = 0; i < slots.Count; i++)
 				{
 					ItemSlot slot = new();
-					slot.Checked += (s, e) =>
-					{
-						panel.SelectedIndex = i;
-					};
+					BindingOperations.SetBinding(slot, ToggleButton.IsCheckedProperty,
+						new Binding(nameof(SelectedIndex))
+						{
+							Mode = BindingMode.OneWay,
+							Source = panel,
+							Converter = EqualityConverter.Instance,
+							ConverterParameter = i
+						});
 					panel.Slots.Add(slot);
 					panel.MainGrid.Children.Add(slot);
 
@@ -94,8 +100,6 @@ namespace QTRHacker.Views.PlayerEditor
 					Grid.SetColumn(slot, slots[i].Column);
 					Grid.SetRow(slot, slots[i].Row);
 				}
-				if (panel.Slots.Count > 0)
-					panel.Slots[0].IsChecked = true;
 			}
 		}
 

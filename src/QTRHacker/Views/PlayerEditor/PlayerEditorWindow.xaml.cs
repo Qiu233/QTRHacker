@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using QTRHacker.Functions.GameObjects.Terraria;
 using System.Windows.Threading;
 using QTRHacker.Controls;
+using QTRHacker.ViewModels.PlayerEditor;
 
 namespace QTRHacker.Views.PlayerEditor
 {
@@ -22,13 +23,11 @@ namespace QTRHacker.Views.PlayerEditor
 	/// </summary>
 	public partial class PlayerEditorWindow : MWindow
 	{
-		public Player Player { get; }
 		public DispatcherTimer ItemUpdateTimer { get; }
-		public PlayerEditorWindow(Player player)
+		private PlayerEditorWindowViewModel ViewModel => DataContext as PlayerEditorWindowViewModel;
+		public PlayerEditorWindow()
 		{
-			Player = player;
 			InitializeComponent();
-			Dispatcher.Invoke(() => Title = Player.Name);
 
 			ItemUpdateTimer = new();
 			ItemUpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.ItemUpdateInterval);
@@ -38,18 +37,6 @@ namespace QTRHacker.Views.PlayerEditor
 				PiggyEditor.UpdateAll();
 			};
 			ItemUpdateTimer.Start();
-		}
-
-		private void OnItemDataFetching(object sender, OnItemDataUpdatingEventArgs e)
-		{
-			if (sender == InvEditor)
-			{
-				e.Item = Player.Inventory[e.Index];
-			}
-			else if (sender == PiggyEditor)
-			{
-				e.Item = Player.Bank.Item[e.Index];
-			}
 		}
 	}
 }

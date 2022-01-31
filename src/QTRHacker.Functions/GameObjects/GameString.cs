@@ -15,10 +15,10 @@ namespace QTRHacker.Functions.GameObjects
 
 		public static implicit operator string(GameString s)
 		{
-			return s.GetString();
+			return s.ToString();
 		}
 
-		public unsafe string GetString() => Encoding.Unicode.GetString(
+		public unsafe override string ToString() => Encoding.Unicode.GetString(
 				Context.HContext.DataAccess.ReadBytes(
 					TypedInternalObject.BaseAddress + (uint)sizeof(nuint) * 2, (uint)Length * sizeof(char)));
 	}

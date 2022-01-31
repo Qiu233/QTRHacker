@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Functions.GameObjects.Terraria;
+using QTRHacker.ViewModels.PlayerEditor;
 using QTRHacker.Views.PlayerEditor;
 using System;
 using System.Collections.Generic;
@@ -17,28 +18,12 @@ using System.Windows.Shapes;
 
 namespace QTRHacker.Views.PlayerEditor
 {
-	public class OnItemDataUpdatingEventArgs : EventArgs
-	{
-		public int Index { get; }
-		public Item Item { get; set; }
-		public OnItemDataUpdatingEventArgs(int index)
-		{
-			Index = index;
-		}
-	}
 	/// <summary>
 	/// ItemSlotsEditor.xaml 的交互逻辑
 	/// </summary>
 	public partial class ItemSlotsEditor : UserControl
 	{
-		public ISlotsLayout SlotsLayout
-		{
-			get => (ISlotsLayout)GetValue(SlotsLayoutProperty);
-			set => SetValue(SlotsLayoutProperty, value);
-		}
-		public static readonly DependencyProperty SlotsLayoutProperty =
-			DependencyProperty.Register(nameof(SlotsLayout), typeof(ISlotsLayout), typeof(ItemSlotsEditor));
-
+		private ItemSlotsEditorViewModel ViewModel => DataContext as ItemSlotsEditorViewModel;
 		public bool Updating
 		{
 			get => (bool)GetValue(UpdatingProperty);
@@ -47,16 +32,12 @@ namespace QTRHacker.Views.PlayerEditor
 		public static readonly DependencyProperty UpdatingProperty =
 			DependencyProperty.Register(nameof(Updating), typeof(bool), typeof(ItemSlotsEditor));
 
-		public event EventHandler<OnItemDataUpdatingEventArgs> OnItemDataFetching;
-
 		public virtual void UpdateItemSlot(int index)
 		{
-			if (index < 0 || index >= SlotsLayout.Slots)
+			if (index < 0 || index >= ViewModel.SlotsLayout.Slots)
 				return;
-			OnItemDataUpdatingEventArgs args = new(index);
-			OnItemDataFetching?.Invoke(this, args);
 			var slot = ItemSlotsPanel.Slots[index];
-			Item item = args.Item;
+			Item item = ViewModel.ItemProvider(index);
 			if (item == null)
 				return;
 			slot.ItemType = item.Type;
@@ -65,7 +46,7 @@ namespace QTRHacker.Views.PlayerEditor
 
 		public void UpdateItemSlots()
 		{
-			int slots = SlotsLayout.Slots;
+			int slots = ViewModel.SlotsLayout.Slots;
 			for (int i = 0; i < slots; i++)
 			{
 				UpdateItemSlot(i);
