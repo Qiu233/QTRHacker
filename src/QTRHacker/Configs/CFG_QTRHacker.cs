@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Configs
 {
-	public class CFG_QTRHacker : Config
+	public sealed class CFG_QTRHacker
 	{
-		public bool OnlineMode = false;
-		public bool IsCN = false;
-		public bool FirstRunning = true;
+		public int ItemUpdateInterval = 200;//milliseconds
+		public int PlayersListUpdateInterval = 500;//milliseconds
+		public string Culture = "en-US";
 	}
 }

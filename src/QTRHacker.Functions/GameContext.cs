@@ -325,11 +325,11 @@ namespace QTRHacker.Functions
 			System.Threading.Monitor.Exit(LOCK_UPDATE);
 			return v;
 		}
-
-		public CLRHelper GameModuleHelper => HContext.CLRHelpers.First(t
-			=> string.Equals(Path.GetFullPath(t.Key.FileName),
-				Path.GetFullPath(GameProcess.MainModule.FileName),
-				StringComparison.OrdinalIgnoreCase))
+		private CLRHelper _GameModuleHelper;
+		public CLRHelper GameModuleHelper => _GameModuleHelper ??= HContext.CLRHelpers.First(t
+				=> string.Equals(Path.GetFullPath(t.Key.FileName),
+					Path.GetFullPath(GameProcess.MainModule.FileName),
+					StringComparison.OrdinalIgnoreCase))
 				.Value;
 
 		public static GameContext OpenGame(Process process)
@@ -345,10 +345,10 @@ namespace QTRHacker.Functions
 
 		public Process GameProcess { get; }
 
-
 		public void Flush()
 		{
 			HContext.Flush();
+			_GameModuleHelper = null;// Invalidate so it will be loaded again.
 		}
 
 		public bool LoadAssembly(string assemblyFile, string typeName)

@@ -1,0 +1,27 @@
+﻿<controls:MWindow 
+    x:Class="QTRHacker.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:QTRHacker"
+    xmlns:controls="clr-namespace:QTRHacker.Controls"
+    xmlns:pagepanels="clr-namespace:QTRHacker.Views.PagePanels"
+    xmlns:l="clr-namespace:QTRHacker.Localization"
+    mc:Ignorable="d"
+    Title="QTRHacker"
+    WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight"
+    >
+    <Grid>
+        <TabControl x:Name="MainTabControl" TabStripPlacement="Left">
+            <!--TabItem Header="Basic" IsEnabled="False">
+            </TabItem-->
+            <TabItem Header="{l:Localization UI.Player}" IsEnabled="False" FontSize="20">
+                <pagepanels:PlayersPage x:Name="PlayersPage"></pagepanels:PlayersPage>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.MainPage}" IsSelected="True" FontSize="20">
+                <pagepanels:MainPage></pagepanels:MainPage>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</controls:MWindow>

@@ -1,0 +1,110 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:controls="clr-namespace:QTRHacker.Controls"
+                    xmlns:converters="clr-namespace:QTRHacker.Converters"
+                    >
+
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <ControlTemplate x:Key="MWindowTemplate" TargetType="{x:Type controls:MWindow}">
+
+        <Grid Background="{TemplateBinding Background}"
+              LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}"
+              RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}"
+              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+              UseLayoutRounding="True">
+            <AdornerDecorator>
+                <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition x:Name="titleBar" Height="30"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="1"/>
+                    </Grid.RowDefinitions>
+
+                    <Rectangle
+                Grid.Row="1"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Fill="#202020"
+                Focusable="False"
+                StrokeThickness="0" />
+
+                    <TextBlock x:Name="PART_TitleText" Grid.Row="1" Grid.Column="1" Text="{TemplateBinding Title}"
+                       Foreground="White" FontSize="18" VerticalAlignment="Center" Padding="6,2,0,2"
+                       >
+                    </TextBlock>
+
+                    <StackPanel x:Name="PART_WindowButtonCommands" Orientation="Horizontal"
+                        Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" Panel.ZIndex="1" Background="Transparent">
+                        <Button x:Name="PART_MinimizeButton"
+                    Command="{x:Static SystemCommands.MinimizeWindowCommand}"
+                    Focusable="False"
+                    Width="30" Height="30" BorderThickness="0" Foreground="#9FFFFFFF">
+                            <Button.Visibility>
+                                <TemplateBinding Property="MinimizeBox" Converter="{StaticResource BoolToVisibilityConverter}">
+                                    <TemplateBindingExtension.ConverterParameter>
+                                        <sys:Boolean>False</sys:Boolean>
+                                    </TemplateBindingExtension.ConverterParameter>
+                                </TemplateBinding>
+                            </Button.Visibility>
+                            <Line SnapsToDevicePixels="True"
+                                    Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                    StrokeThickness="1"
+                                    X1="0" Y1="0"
+                                    X2="10" Y2="0" />
+                        </Button>
+
+                        <Button x:Name="PART_CloseButton"
+                    Command="{x:Static SystemCommands.CloseWindowCommand}"
+                    Focusable="False"
+                    Width="30" Height="30" BorderThickness="0" Foreground="#9FFFFFFF">
+                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Line SnapsToDevicePixels="True"
+                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                          StrokeThickness="1"
+                          X1="1"
+                          X2="9"
+                          Y1="1"
+                          Y2="9" />
+                                <Line SnapsToDevicePixels="True"
+                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                          StrokeThickness="1"
+                          X1="1"
+                          X2="9"
+                          Y1="9"
+                          Y2="1" />
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+
+                    <ContentControl x:Name="PART_Content" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Focusable="False">
+                        <ContentPresenter/>
+                    </ContentControl>
+
+                </Grid>
+            </AdornerDecorator>
+            <Border x:Name="PART_Border"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="{x:Null}"
+                    BorderBrush="#404040"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    UseLayoutRounding="True" />
+        </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type controls:MWindow}">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="ResizeMode" Value="NoResize"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="#404040"/>
+        <Setter Property="Template" Value="{StaticResource MWindowTemplate}"/>
+    </Style>
+</ResourceDictionary>

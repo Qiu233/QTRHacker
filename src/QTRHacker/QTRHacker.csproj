@@ -1,94 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <AssemblyVersion>9.8.1.0</AssemblyVersion>
-    <AssemblyName>QTRHacker</AssemblyName>
-    <RootNamespace>QTRHacker</RootNamespace>
-    <NoWarn>1701;1702;IDE0017;IDE0090</NoWarn>
+    <Nullable>disable</Nullable>
+    <UseWPF>true</UseWPF>
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>QTRHacker</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)res\**" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Remove="Assets\ItemImages.bin" />
+    <None Remove="Localization\Content\en-US.json" />
+    <None Remove="Localization\zh-Hans.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Languages\Languages.json" />
-    <None Remove="Res\ContentImage\BuffImages.bin" />
-    <None Remove="Res\ContentImage\ItemImages.bin" />
-    <None Remove="Res\ContentImage\NPCImages.bin" />
-    <None Remove="Res\ContentImage\PlayerModelsRaw.bin" />
-    <None Remove="Res\Game\Mount_en.txt" />
-    <None Remove="Res\Game\Pet_en.txt" />
-    <None Remove="Res\Game\Prefix_en.txt" />
-    <None Remove="Res\Game\WikiRes.zip" />
-    <None Remove="Res\Image\close.png" />
-    <None Remove="Res\Image\min.png" />
-    <None Remove="Res\Image\Numbers.png" />
-    <None Remove="Res\Image\player.png" />
-    <None Remove="Res\Image\TMLIcon.png" />
-    <None Remove="Res\Text\About.txt" />
-    <None Remove="XSHD\Python.xshd" />
+    <Resource Include="Assets\GameImages\Items.bin" />
+    <Resource Include="Localization\Content\en-US.json" />
+    <Resource Include="Localization\Content\zh-Hans.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Languages\Languages.json" />
-    <EmbeddedResource Include="Res\ContentImage\BuffImages.bin" />
-    <EmbeddedResource Include="Res\ContentImage\ItemImages.bin" />
-    <EmbeddedResource Include="Res\ContentImage\NPCImages.bin" />
-    <EmbeddedResource Include="Res\ContentImage\PlayerModelsRaw.bin" />
-    <EmbeddedResource Include="Res\Game\Mount_en.txt" />
-    <EmbeddedResource Include="Res\Game\Pet_en.txt" />
-    <EmbeddedResource Include="Res\Game\Prefix_en.txt" />
-    <EmbeddedResource Include="Res\Game\WikiRes.zip" />
-    <EmbeddedResource Include="Res\Image\close.png" />
-    <EmbeddedResource Include="Res\Image\min.png" />
-    <EmbeddedResource Include="Res\Image\Numbers.png" />
-    <EmbeddedResource Include="Res\Image\player.png" />
-    <EmbeddedResource Include="Res\Image\TMLIcon.png" />
-    <EmbeddedResource Include="Res\Text\About.txt" />
-    <EmbeddedResource Include="XSHD\Python.xshd" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
-    <PackageReference Include="IronPython" Version="2.7.11" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Keystone.Net\Keystone.Net.csproj" />
+    <ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
     <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
     <ProjectReference Include="..\QTRHacker.Functions\QTRHacker.Functions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.Xna.Framework">
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Game">
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Graphics">
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="WinFormsGraphicsDevice">
-      <HintPath>$(SolutionDir)refdlls\WinFormsGraphicsDevice.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
   </ItemGroup>
 
 </Project>

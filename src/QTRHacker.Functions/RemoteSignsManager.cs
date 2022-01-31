@@ -16,11 +16,7 @@ namespace QTRHacker.Functions
 		private const uint SIZE_SIGN_HEADER = 16;
 		private const string SignHeadAob = "F3B354B2F6314D5AB44D946B4962AE82";
 
-		private nuint BaseAddress
-		{
-			get;
-			set;
-		}
+		private nuint BaseAddress;
 
 		public GameContext Context { get; }
 
@@ -29,10 +25,10 @@ namespace QTRHacker.Functions
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public nint this[int index]
+		public unsafe nint this[int index]
 		{
-			get => Context.HContext.DataAccess.Read<nint>(BaseAddress + SIZE_SIGN_HEADER + (uint)index * 4);
-			set => Context.HContext.DataAccess.Write(BaseAddress + SIZE_SIGN_HEADER + (uint)index * 4, value);
+			get => Context.HContext.DataAccess.Read<nint>(BaseAddress + SIZE_SIGN_HEADER + (uint)(index * sizeof(nint)));
+			set => Context.HContext.DataAccess.Write(BaseAddress + SIZE_SIGN_HEADER + (uint)(index * sizeof(nint)), value);
 		}
 
 
@@ -55,6 +51,7 @@ namespace QTRHacker.Functions
 				BaseAddress = MemoryAllocation.Alloc(Context.HContext.Handle, SIZE_SIGN);
 				Context.HContext.DataAccess.WriteBytes(BaseAddress, hex);
 			}
+			BaseAddress += (uint)hex.Length;
 		}
 	}
 }

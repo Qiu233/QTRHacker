@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "QTRHacker": {
+    "QTRHacker.UI": {
       "commandName": "Project",
       "nativeDebugging": true
     }

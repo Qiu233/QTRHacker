@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="QTRHacker.Views.PlayerEditor.ItemSlotsEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor"
+             mc:Ignorable="d" 
+             d:DesignHeight="320" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <local:ItemSlotsPanel d:Width="550"  x:Name="ItemSlotsPanel" Grid.Column="0" 
+                              SlotsLayout="{Binding SlotsLayout, 
+            RelativeSource={RelativeSource AncestorType={x:Type local:ItemSlotsEditor}}}">
+        </local:ItemSlotsPanel>
+        <local:ItemPropertiesPanel Grid.Column="1">
+            
+        </local:ItemPropertiesPanel>
+    </Grid>
+</UserControl>

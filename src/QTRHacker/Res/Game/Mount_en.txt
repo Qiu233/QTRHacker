@@ -1,9 +1,0 @@
-﻿None=0
-Rudolph=90
-Bunny=128
-Pigron=129
-Slime=130
-Turtle=131
-Bee=132
-UFO=141
-Drill=142

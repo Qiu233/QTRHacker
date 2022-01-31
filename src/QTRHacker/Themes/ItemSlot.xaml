@@ -1,0 +1,43 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:controls="clr-namespace:QTRHacker.Controls"
+                    xmlns:converters="clr-namespace:QTRHacker.Converters"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d"
+                    >
+    <converters:ItemTypeToImageConverter x:Key="itemTypeToImageConverter"/>
+    <converters:ItemStackToHintConverter x:Key="itemStackToHintConverter"/>
+    <ControlTemplate x:Key="ItemSlotTemplate" TargetType="{x:Type controls:ItemSlot}">
+        <Border Padding="0" Background="#505050" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Margin="10" Grid.RowSpan="2">
+                    <Image x:Name="PART_ItemImage" Stretch="Uniform" 
+                       Source="{TemplateBinding ItemType, Converter={StaticResource itemTypeToImageConverter}}">
+                    </Image>
+                </Grid>
+                <TextBlock Margin="4,0,0,2" FontSize="12"
+                    Text="{TemplateBinding ItemStack, Converter={StaticResource itemStackToHintConverter}}" Grid.Row="1"/>
+                <Border x:Name="PART_Border" BorderThickness="0" BorderBrush="#FF8800" Grid.RowSpan="2"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="PART_Border" Property="BorderThickness" Value="2"></Setter>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter TargetName="PART_Border" Property="BorderThickness" Value="0"></Setter>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style TargetType="{x:Type controls:ItemSlot}">
+        <Setter Property="Template" Value="{StaticResource ItemSlotTemplate}"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    </Style>
+</ResourceDictionary>

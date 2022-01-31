@@ -1,0 +1,18 @@
+﻿{
+  "UI": {
+    "MainPage": "Main Page",
+    "Player": "Player",
+    "Name": "Name",
+    "Edit": "Edit",
+    "TPTo": "TP To",
+    "Inventory": "Inventory",
+    "Piggy": "Piggy",
+    "ItemProperties": {
+      "Type": "Type",
+      "Stack": "Stack"
+    }
+  },
+  "Tip": {
+    "DragCrossToGame": "Please drag the cross to game"
+  }
+}

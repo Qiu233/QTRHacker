@@ -1,0 +1,32 @@
+﻿<controls:MWindow x:Class="QTRHacker.Views.PlayerEditor.PlayerEditorWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor"
+                  xmlns:controls="clr-namespace:QTRHacker.Controls"
+                  xmlns:l="clr-namespace:QTRHacker.Localization"
+                  mc:Ignorable="d" Height="340" Width="800" MinimizeBox="False">
+    <Grid>
+        <TabControl>
+            <TabItem Header="{l:Localization UI.Inventory}" x:Name="InvTabItem">
+                <local:ItemSlotsEditor x:Name="InvEditor"
+                                       OnItemDataFetching="OnItemDataFetching"
+                                       Updating="{Binding ElementName=InvTabItem, Path=IsSelected}">
+                    <local:ItemSlotsEditor.SlotsLayout>
+                        <local:InventoryLayout/>
+                    </local:ItemSlotsEditor.SlotsLayout>
+                </local:ItemSlotsEditor>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.Piggy}" x:Name="PiggyTabItem">
+                <local:ItemSlotsEditor x:Name="PiggyEditor"
+                                       OnItemDataFetching="OnItemDataFetching"
+                                       Updating="{Binding ElementName=PiggyTabItem, Path=IsSelected}">
+                    <local:ItemSlotsEditor.SlotsLayout>
+                        <local:BankLayout/>
+                    </local:ItemSlotsEditor.SlotsLayout>
+                </local:ItemSlotsEditor>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</controls:MWindow>

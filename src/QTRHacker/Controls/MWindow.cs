@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+namespace QTRHacker.Controls
+{
+	public class MWindow : Window
+	{
+		public static readonly DependencyProperty MinimizeBoxProperty =
+			DependencyProperty.Register(nameof(MinimizeBox), typeof(bool), typeof(MWindow), new PropertyMetadata(true));
+
+		public bool MinimizeBox
+		{
+			get => (bool)GetValue(MinimizeBoxProperty);
+			set => SetValue(MinimizeBoxProperty, value);
+		}
+
+		static MWindow()
+		{
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(MWindow), new FrameworkPropertyMetadata(typeof(MWindow)));
+		}
+
+		public MWindow()
+		{
+			CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand,
+				(s, e) => SystemCommands.MinimizeWindow(this)));
+			CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand,
+				(s, e) => SystemCommands.CloseWindow(this)));
+		}
+
+		public override void OnApplyTemplate()
+		{
+			base.OnApplyTemplate();
+			TextBlock title = Template.FindName("PART_TitleText", this) as TextBlock;
+			title.MouseDown += TitleMouseDown;
+		}
+
+		private void TitleMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (e.LeftButton == MouseButtonState.Pressed)
+				DragMove();
+		}
+	}
+}
