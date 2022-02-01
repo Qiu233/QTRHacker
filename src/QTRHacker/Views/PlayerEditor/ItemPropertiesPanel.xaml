@@ -7,18 +7,43 @@
              xmlns:l="clr-namespace:QTRHacker.Localization"
              mc:Ignorable="d" 
              d:DesignHeight="320" d:DesignWidth="300">
-    <UserControl.Resources>
-        <DataTemplate x:Key="TextBoxSlot">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{l:Localization Key=UI.ItemProperties.{Binding}}">
-                </TextBlock>
-                <TextBox>
-                    
-                </TextBox>
-            </StackPanel>
-        </DataTemplate>
-    </UserControl.Resources>
-    <UniformGrid Columns="2" Rows="12">
-        
-    </UniformGrid>
+    <ItemsControl SnapsToDevicePixels="True" UseLayoutRounding="True" ItemsSource="{Binding ItemPropertyDatum}"
+                  ItemTemplateSelector="{x:Static local:ItemPropertyTemplateSelector.Instance}" VerticalAlignment="Center">
+        <ItemsControl.Resources>
+            <DataTemplate x:Key="DataTemplate_TextBox">
+                <DockPanel>
+                    <TextBox Width="60" DockPanel.Dock="Right" Margin="0,0.5,0,0.5" Padding="2,0,2,0"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                             BorderThickness="0" Background="#787878" Foreground="#D0D0D0">
+                        <TextBox.Text>
+                            <Binding Path="Value" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True"/>
+                        </TextBox.Text>
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property="Validation.HasError" Value="True">
+                                        <Setter Property="Background" Value="#CF5050"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                    <TextBlock Text="{Binding Tip}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    </TextBlock>
+                </DockPanel>
+            </DataTemplate>
+        </ItemsControl.Resources>
+        <ItemsControl.ItemContainerStyle>
+            <Style>
+                <Setter Property="Control.Margin" Value="4,0,4,0"></Setter>
+            </Style>
+        </ItemsControl.ItemContainerStyle>
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid Columns="{Binding Columns}" Rows="{Binding Rows}">
+
+                </UniformGrid>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+    </ItemsControl>
 </UserControl>

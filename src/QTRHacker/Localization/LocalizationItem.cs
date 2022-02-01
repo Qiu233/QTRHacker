@@ -15,7 +15,7 @@ namespace QTRHacker.Localization
 
 		public string Value => LocalizationManager.Instance.GetValue(Key);
 
-		private void OnCultureChange(object sender, EventArgs args)
+		private void OnCultureChanged(object sender, EventArgs args)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
 		}
@@ -24,7 +24,7 @@ namespace QTRHacker.Localization
 		{
 			Key = key;
 			WeakEventManager<LocalizationManager, EventArgs>.AddHandler(
-				LocalizationManager.Instance, nameof(LocalizationManager.CultureChanged), OnCultureChange);
+				LocalizationManager.Instance, nameof(LocalizationManager.CultureChanged), OnCultureChanged);
 		}
 	}
 }

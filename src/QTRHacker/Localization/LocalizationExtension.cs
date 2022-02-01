@@ -10,7 +10,6 @@ namespace QTRHacker.Localization
 {
 	public class LocalizationExtension : MarkupExtension
 	{
-		[ConstructorArgument("Key")]
 		public string Key
 		{
 			get;

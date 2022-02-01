@@ -9,7 +9,29 @@
     "Piggy": "Piggy",
     "ItemProperties": {
       "Type": "Type",
-      "Stack": "Stack"
+      "Damage": "Damage",
+      "Stack": "Stack",
+      "KnockBack": "KnockBack",
+      "Crit": "Crit",
+      "Scale": "Scale",
+      "BuffType": "Buff Type",
+      "BuffTime": "Buff Time",
+      "HealMana": "Heal Mana",
+      "HealLife": "Heal Life",
+      "UseTime": "UseTime",
+      "UseAnimation": "UseAnimation",
+      "Defense": "Defense",
+      "FishingPole": "FishingPole",
+      "Bait": "Bait",
+      "Shoot": "Shoot Type",
+      "ShootSpeed": "Shoot Speed",
+      "Pick": "Pick",
+      "Axe": "Axe",
+      "Hammer": "Hammer",
+      "CreateTile": "Tile Type",
+      "PlaceStyle": "TileStyle",
+      "CreateWall": "Wall Type",
+      "Accessory": "Accessory"
     }
   },
   "Tip": {

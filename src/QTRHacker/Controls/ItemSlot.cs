@@ -11,7 +11,6 @@ using System.Windows.Media;
 
 namespace QTRHacker.Controls
 {
-	[TemplatePart(Name = "PART_ItemImage", Type = typeof(Image))]
 	public class ItemSlot : RadioButton
 	{
 		public int ItemType

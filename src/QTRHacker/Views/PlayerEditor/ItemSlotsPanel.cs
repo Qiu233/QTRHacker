@@ -50,7 +50,16 @@ namespace QTRHacker.Views.PlayerEditor
 			set => SetValue(SelectedIndexProperty, value);
 		}
 		public static readonly DependencyProperty SelectedIndexProperty =
-			DependencyProperty.Register(nameof(SelectedIndex), typeof(int), typeof(ItemSlotsPanel));
+			DependencyProperty.Register(nameof(SelectedIndex), typeof(int), typeof(ItemSlotsPanel), new PropertyMetadata(-1, OnSelectedIndexChanged));
+
+		private static void OnSelectedIndexChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+		{
+			ItemSlotsPanel panel = obj as ItemSlotsPanel;
+			if (panel.Slots.Count == 0)
+				return;
+			var slot = panel.Slots[panel.SelectedIndex % panel.Slots.Count];
+			slot.IsChecked = true;
+		}
 
 		public readonly Grid MainGrid;
 
@@ -79,14 +88,12 @@ namespace QTRHacker.Views.PlayerEditor
 				for (int i = 0; i < slots.Count; i++)
 				{
 					ItemSlot slot = new();
-					BindingOperations.SetBinding(slot, ToggleButton.IsCheckedProperty,
-						new Binding(nameof(SelectedIndex))
-						{
-							Mode = BindingMode.OneWay,
-							Source = panel,
-							Converter = EqualityConverter.Instance,
-							ConverterParameter = i
-						});
+					int copy = i;
+					slot.Checked += (s, e) =>
+					{
+						if (panel.SelectedIndex != copy)
+							panel.SelectedIndex = copy;
+					};
 					panel.Slots.Add(slot);
 					panel.MainGrid.Children.Add(slot);
 

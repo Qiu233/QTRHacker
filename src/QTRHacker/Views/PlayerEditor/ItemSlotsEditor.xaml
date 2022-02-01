@@ -13,10 +13,10 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <local:ItemSlotsPanel d:Width="550"  x:Name="ItemSlotsPanel" Grid.Column="0" 
-                              SlotsLayout="{Binding SlotsLayout}" SelectedIndex="{Binding SelectedIndex}">
+                              SlotsLayout="{Binding SlotsLayout}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
         </local:ItemSlotsPanel>
-        <local:ItemPropertiesPanel Grid.Column="1">
-            
+        <local:ItemPropertiesPanel Grid.Column="1" Margin="5,0,0,0"
+                                   DataContext="{Binding ItemPropertiesPanelViewModel}">
         </local:ItemPropertiesPanel>
     </Grid>
 </UserControl>
