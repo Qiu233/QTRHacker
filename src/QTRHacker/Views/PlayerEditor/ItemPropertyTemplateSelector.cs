@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,19 +19,15 @@ namespace QTRHacker.Views.PlayerEditor
 			if (item is ItemPropertyData property)
 			{
 				FrameworkElement element = container as FrameworkElement;
-				string resKey = "DataTemplate_";
-				if (property.PropertyType == typeof(bool))
-				{
 
-				}
-				else
+				var match = Regex.Match(property.GetType().Name, "ItemPropertyData_([\\w]+)");
+				if (match.Success)
 				{
-					resKey += "TextBox";
+					if (element.TryFindResource("DataTemplate_" + match.Groups[1]) is DataTemplate res)
+						return res;
 				}
-				if (element.TryFindResource(resKey) is DataTemplate res)
-					return res;
 			}
-			return base.SelectTemplate(item, container);
+			throw new Exception();
 		}
 	}
 }

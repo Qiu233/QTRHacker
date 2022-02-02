@@ -13,15 +13,19 @@
             <SolidColorBrush x:Key="QTRHacker.StripButton.Background">#606060</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.StripButton.BackMouseHover">#707070</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.StripButton.BackMousePressed">#808080</SolidColorBrush>
-            <SolidColorBrush x:Key="QTRHacker.StripButton.BackDisabled">#A0A0A0</SolidColorBrush>
+            <SolidColorBrush x:Key="QTRHacker.StripButton.BackDisabled">#909090</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.StripButton.ForeDisabled">#707070</SolidColorBrush>
 
-            <Style x:Key="QTRHacker.StripButtonStyle" TargetType="{x:Type ButtonBase}">
+            <SolidColorBrush x:Key="QTRHacker.Light.Content.Foreground">#D0D0D0</SolidColorBrush>
+            <SolidColorBrush x:Key="QTRHacker.Light.Tip.Foreground">White</SolidColorBrush>
+            <SolidColorBrush x:Key="QTRHacker.Error">#FF5050</SolidColorBrush>
+
+            <Style x:Key="QTRHacker.StripButtonStyle" TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="{StaticResource QTRHacker.StripButton.Background}"/>
                 <Setter Property="FontSize" Value="15"/>
                 <Setter Property="Foreground" Value="{StaticResource QTRHacker.Common.Foreground}"/>
                 <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Padding" Value="0,2,0,2"/>
+                <Setter Property="Padding" Value="2"/>
                 <Setter Property="Margin" Value="0,0,0,1"/>
                 <Setter Property="Template">
                     <Setter.Value>

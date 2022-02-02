@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QTRHacker.ViewModels.PlayerEditor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace QTRHacker.Views.PlayerEditor
 	/// </summary>
 	public partial class ItemPropertiesPanel : UserControl
 	{
+		public ItemPropertiesPanelViewModel ViewModel => DataContext as ItemPropertiesPanelViewModel;
 		public ItemPropertiesPanel()
 		{
 			InitializeComponent();

@@ -5,32 +5,45 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor"
              xmlns:l="clr-namespace:QTRHacker.Localization"
+             xmlns:models="clr-namespace:QTRHacker.Models"
+             xmlns:converters="clr-namespace:QTRHacker.Converters"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="320" d:DesignWidth="300">
     <ItemsControl SnapsToDevicePixels="True" UseLayoutRounding="True" ItemsSource="{Binding ItemPropertyDatum}"
                   ItemTemplateSelector="{x:Static local:ItemPropertyTemplateSelector.Instance}" VerticalAlignment="Center">
         <ItemsControl.Resources>
             <DataTemplate x:Key="DataTemplate_TextBox">
-                <DockPanel>
+                <DockPanel MaxHeight="20">
                     <TextBox Width="60" DockPanel.Dock="Right" Margin="0,0.5,0,0.5" Padding="2,0,2,0"
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
-                             BorderThickness="0" Background="#787878" Foreground="#D0D0D0">
+                             BorderThickness="0" Background="#787878" Foreground="{StaticResource QTRHacker.Light.Content.Foreground}">
                         <TextBox.Text>
                             <Binding Path="Value" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True"/>
                         </TextBox.Text>
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property="Validation.HasError" Value="True">
-                                        <Setter Property="Background" Value="#CF5050"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
                     </TextBox>
+                    <TextBlock Text="{Binding Tip}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{StaticResource QTRHacker.Light.Tip.Foreground}">
+                    </TextBlock>
+                </DockPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="DataTemplate_ComboBox">
+                <DockPanel MaxHeight="20">
+                    <ComboBox Width="60" DockPanel.Dock="Right" FontSize="10"
+                              ItemsSource="{Binding Source}" DisplayMemberPath="Name"
+                              SelectedValuePath="Value" SelectedValue="{Binding Value, Mode=TwoWay}">
+                    </ComboBox>
                     <TextBlock Text="{Binding Tip}" HorizontalAlignment="Left" VerticalAlignment="Center">
                     </TextBlock>
                 </DockPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="DataTemplate_CheckBox">
+                <Grid MaxHeight="20">
+                    <CheckBox Content="{Binding Tip}" 
+                              VerticalContentAlignment="Center" 
+                              Foreground="{StaticResource QTRHacker.Light.Content.Foreground}"
+                              IsChecked="{Binding Value}">
+                    </CheckBox>
+                </Grid>
             </DataTemplate>
         </ItemsControl.Resources>
         <ItemsControl.ItemContainerStyle>

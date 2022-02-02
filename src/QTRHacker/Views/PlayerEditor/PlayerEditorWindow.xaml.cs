@@ -24,7 +24,7 @@ namespace QTRHacker.Views.PlayerEditor
 	public partial class PlayerEditorWindow : MWindow
 	{
 		public DispatcherTimer ItemUpdateTimer { get; }
-		private PlayerEditorWindowViewModel ViewModel => DataContext as PlayerEditorWindowViewModel;
+		public PlayerEditorWindowViewModel ViewModel => DataContext as PlayerEditorWindowViewModel;
 		public PlayerEditorWindow()
 		{
 			InitializeComponent();

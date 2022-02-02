@@ -7,6 +7,8 @@
     "TPTo": "TP To",
     "Inventory": "Inventory",
     "Piggy": "Piggy",
+    "Apply": "Apply",
+    "Initialize": "Initialize",
     "ItemProperties": {
       "Type": "Type",
       "Damage": "Damage",
@@ -31,6 +33,8 @@
       "CreateTile": "Tile Type",
       "PlaceStyle": "TileStyle",
       "CreateWall": "Wall Type",
+      "Prefix": "Prefix",
+      "AutoReuse": "Auto Reuse",
       "Accessory": "Accessory"
     }
   },

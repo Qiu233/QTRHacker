@@ -4,19 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor"
+             xmlns:l="clr-namespace:QTRHacker.Localization"
              mc:Ignorable="d" 
-             d:DesignHeight="320" d:DesignWidth="800">
+             d:DesignHeight="320">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <local:ItemSlotsPanel d:Width="550"  x:Name="ItemSlotsPanel" Grid.Column="0" 
                               SlotsLayout="{Binding SlotsLayout}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
         </local:ItemSlotsPanel>
-        <local:ItemPropertiesPanel Grid.Column="1" Margin="5,0,0,0"
+        <local:ItemPropertiesPanel d:Width="190" x:Name="ItemPropertiesPanel" Grid.Column="1" Margin="5,0,0,0"
                                    DataContext="{Binding ItemPropertiesPanelViewModel}">
         </local:ItemPropertiesPanel>
+        <StackPanel Grid.Column="2" Margin="0,12,3,0">
+            <Button x:Name="ApplyButton" Style="{StaticResource QTRHacker.StripButtonStyle}" Content="{l:Localization UI.Apply}"
+                    Click="ApplyButton_Click"/>
+            <Button x:Name="InitButton" Style="{StaticResource QTRHacker.StripButtonStyle}" Content="{l:Localization UI.Initialize}" 
+                    Click="InitButton_Click"/>
+        </StackPanel>
     </Grid>
 </UserControl>

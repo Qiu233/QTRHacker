@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>disable</Nullable>
     <UseWPF>true</UseWPF>
     <PlatformTarget>x86</PlatformTarget>
@@ -12,14 +12,12 @@
 
   <ItemGroup>
     <None Remove="Assets\ItemImages.bin" />
-    <None Remove="Localization\Content\en-US.json" />
-    <None Remove="Localization\zh-Hans.json" />
+    <None Remove="Localization\Content\*.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\GameImages\Items.bin" />
-    <Resource Include="Localization\Content\en-US.json" />
-    <Resource Include="Localization\Content\zh-Hans.json" />
+    <Resource Include="Localization\Content\*.json" />
   </ItemGroup>
 
   <ItemGroup>

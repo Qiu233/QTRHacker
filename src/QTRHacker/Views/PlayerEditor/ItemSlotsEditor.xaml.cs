@@ -23,7 +23,7 @@ namespace QTRHacker.Views.PlayerEditor
 	/// </summary>
 	public partial class ItemSlotsEditor : UserControl
 	{
-		private ItemSlotsEditorViewModel ViewModel => DataContext as ItemSlotsEditorViewModel;
+		public ItemSlotsEditorViewModel ViewModel => DataContext as ItemSlotsEditorViewModel;
 		public bool Updating
 		{
 			get => (bool)GetValue(UpdatingProperty);
@@ -63,6 +63,22 @@ namespace QTRHacker.Views.PlayerEditor
 		public ItemSlotsEditor()
 		{
 			InitializeComponent();
+		}
+
+		private void ApplyButton_Click(object sender, RoutedEventArgs e)
+		{
+			ItemPropertiesPanel.ViewModel.UpdatePropertiesToItem(ViewModel.SelectedItem);
+		}
+
+		private void InitButton_Click(object sender, RoutedEventArgs e)
+		{
+			int type = (int)ItemPropertiesPanel.ViewModel.GetValue("Type");
+			int stack = (int)ItemPropertiesPanel.ViewModel.GetValue("Stack");
+			stack = stack == 0 ? 1 : stack;
+			byte prefix = (byte)ItemPropertiesPanel.ViewModel.GetValue("Prefix");
+			var item = ViewModel.SelectedItem;
+			item.SetDefaultsAndPrefix(type, prefix);
+			item.Stack = stack;
 		}
 	}
 }

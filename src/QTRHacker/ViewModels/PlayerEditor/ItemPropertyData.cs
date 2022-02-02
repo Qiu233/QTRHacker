@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Functions.GameObjects.Terraria;
+using QTRHacker.Localization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,69 +12,79 @@ using System.Windows;
 
 namespace QTRHacker.ViewModels.PlayerEditor
 {
-	public class ItemPropertyData : ViewModelBase, IDataErrorInfo
+	public abstract class ItemPropertyData : ViewModelBase
 	{
+		private readonly LocalizationItem LocalizationItem;
 		private object _Value;
-		private readonly Localization.LocalizationItem LocalizationItem;
+
+		public PropertyInfo ItemProperty { get; }
+		public Type PropertyType => ItemProperty.PropertyType;
 
 		public string Key { get; }
 		public string Tip => LocalizationItem.Value;
-		public PropertyInfo ItemProperty { get; }
-		public Type PropertyType => ItemProperty.PropertyType;
-		public object Value
+
+		protected object InternalValue
 		{
 			get => _Value;
 			set
 			{
 				_Value = value;
-				OnPropertyChanged(nameof(Value));
+				InternalValueChanged?.Invoke(this, new EventArgs());
 			}
 		}
+		protected event EventHandler InternalValueChanged;
 
-		public string Error
+		public virtual void UpdateFromItem(Item item)
 		{
-			get
-			{
-				object res = null;
-				try
-				{
-					res = Convert.ChangeType(Value, PropertyType);
-				}
-				catch
-				{
-
-				}
-				if (res == null)
-					return $"Cannot convert {Value} to {PropertyType}";
-				return null;
-			}
+			InternalValue = ItemProperty.GetValue(item);
 		}
 
-		public string this[string columnName] => Error;
-
-		public void UpdateFromItem(Item item)
+		public virtual void UpdateToItem(Item item)
 		{
-			Value = ItemProperty.GetValue(item);
+			ItemProperty.SetValue(item, InternalValue);
 		}
 
-		public void UpdateToItem(Item item)
-		{
-			ItemProperty.SetValue(item, Value);
-		}
+		public object GetValue() => InternalValue;
 
-		public ItemPropertyData(string key)
+		protected ItemPropertyData(string key)
 		{
 			Key = key;
 			ItemProperty = typeof(Item).GetProperty(Key);
 			if (ItemProperty == null)
 				throw new Exception($"No such property: {Key}");//TODO: replace it with a user exception
-			LocalizationItem = new Localization.LocalizationItem($"UI.ItemProperties.{Key}");
+			LocalizationItem = new LocalizationItem($"UI.ItemProperties.{Key}");
 			LocalizationItem.PropertyChanged += LocalizationItem_PropertyChanged;
 		}
-
 		private void LocalizationItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			OnPropertyChanged(nameof(Tip));
+		}
+	}
+	public abstract class ItemPropertyData<T> : ItemPropertyData
+	{
+		public virtual T Value
+		{
+			get => (T)InternalValue;
+			set
+			{
+				InternalValue = value;
+				OnPropertyChanged(nameof(Value));
+			}
+		}
+
+		public ItemPropertyData(string key) : base(key)
+		{
+			if (ItemProperty.PropertyType != typeof(T))
+				throw new Exception(
+					$"Type doesn't match. " +
+					$"Expected {typeof(T).Name}, got {ItemProperty.PropertyType.Name}. " +
+					$"Key: {key}");//TODO: replace it with a user exception
+			InternalValueChanged += ItemPropertyData_InternalValueChanged;
+		}
+
+		private void ItemPropertyData_InternalValueChanged(object sender, EventArgs e)
+		{
+			OnPropertyChanged(nameof(Value));
 		}
 	}
 }
