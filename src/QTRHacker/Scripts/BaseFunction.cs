@@ -48,8 +48,8 @@ namespace QTRHacker.Scripts
 		public abstract string Key { get; }
 		public abstract bool CanDisable { get; }
 
-		public abstract void Enable(GameContext context);
-		public abstract void Disable(GameContext context);
+		public abstract FunctionResult Enable(GameContext context);
+		public abstract FunctionResult Disable(GameContext context);
 
 		public virtual void OnLoaded() { }
 

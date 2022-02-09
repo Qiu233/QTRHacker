@@ -23,11 +23,17 @@ class Test : BaseFunction
 				break;
 		}
 	}
-	public override void Enable(GameContext ctx)
+	public override FunctionResult Enable(GameContext ctx)
 	{
+		int off = ScriptHelper.GetOffset(ctx, "Terraria.Player", "statLife");
+		ScriptHelper.AobReplaceASM(ctx, $"sub [edx+{off}],eax\ncmp dword ptr [ebp+0x8],-1", $"add [edx+{off}],eax");
+		return FunctionResult.SUCCESS;
 	}
-	public override void Disable(GameContext ctx)
+	public override FunctionResult Disable(GameContext ctx)
 	{
+		int off = ScriptHelper.GetOffset(ctx, "Terraria.Player", "statLife");
+		ScriptHelper.AobReplaceASM(ctx, $"add [edx+{off}],eax\ncmp dword ptr [ebp+0x8],-1", $"sub [edx+{off}],eax");
+		return FunctionResult.SUCCESS;
 	}
 }
 

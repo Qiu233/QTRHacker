@@ -1,4 +1,6 @@
-﻿using QTRHacker.ViewModels.PagePanels;
+﻿using QTRHacker.Controls;
+using QTRHacker.Scripts;
+using QTRHacker.ViewModels.PagePanels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +29,22 @@ namespace QTRHacker.Views.PagePanels
 			InitializeComponent();
 		}
 
+		private void FunctionButton_FunctionEnabling(object sender, FunctionStatusChangedEventArgs e)
+		{
+			if (sender is not FunctionButton fb || fb.DataContext is not BaseFunction func)
+				return;
+			if (!HackGlobal.IsActive)
+				return;
+			e.Success = func.Enable(HackGlobal.GameContext) == FunctionResult.SUCCESS;
+		}
+
+		private void FunctionButton_FunctionDisabling(object sender, FunctionStatusChangedEventArgs e)
+		{
+			if (sender is not FunctionButton fb || fb.DataContext is not BaseFunction func)
+				return;
+			if (!HackGlobal.IsActive)
+				return;
+			e.Success = func.Disable(HackGlobal.GameContext) == FunctionResult.SUCCESS;
+		}
 	}
 }

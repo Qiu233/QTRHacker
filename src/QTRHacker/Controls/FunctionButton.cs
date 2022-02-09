@@ -18,16 +18,6 @@ namespace QTRHacker.Controls
 		static FunctionButton()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(FunctionButton), new FrameworkPropertyMetadata(typeof(FunctionButton)));
-			IsCheckedProperty.OverrideMetadata(typeof(FunctionButton), new FrameworkPropertyMetadata((s, e) => { }, (s, e) =>
-			{
-				if(s is FunctionButton fb)
-				{
-					if (fb.IsCheckable)
-						return e;
-					return false;
-				}
-				return false;
-			}));
 		}
 
 		public static readonly DependencyProperty IsCheckableProperty =
@@ -37,5 +27,32 @@ namespace QTRHacker.Controls
 			get => (bool)GetValue(IsCheckableProperty);
 			set => SetValue(IsCheckableProperty, value);
 		}
+
+		public event EventHandler<FunctionStatusChangedEventArgs> FunctionEnabling;
+		public event EventHandler<FunctionStatusChangedEventArgs> FunctionDisabling;
+
+		protected override void OnClick()
+		{
+			FunctionStatusChangedEventArgs args = new();
+			if (!IsCheckable)
+			{
+				FunctionEnabling?.Invoke(this, args);
+				return;
+			}
+			if (!IsChecked.GetValueOrDefault())
+			{
+				FunctionEnabling?.Invoke(this, args);
+				IsChecked = args.Success;
+			}
+			else
+			{
+				FunctionDisabling?.Invoke(this, args);
+				IsChecked = !args.Success;
+			}
+		}
+	}
+	public sealed class FunctionStatusChangedEventArgs : EventArgs
+	{
+		public bool Success { get; set; } = true;
 	}
 }

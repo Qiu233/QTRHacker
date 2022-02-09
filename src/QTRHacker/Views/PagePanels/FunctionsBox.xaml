@@ -29,9 +29,9 @@
                                         </Binding>
                                     </Ellipse.Visibility>
                                 </Ellipse>
-                                <Border DockPanel.Dock="Left" BorderThickness="1" BorderBrush="#05FFFFFF" Margin="0">
+                                <Border DockPanel.Dock="Left" BorderThickness="0" BorderBrush="#05FFFFFF" Margin="0">
                                     <StackPanel>
-                                        <Button x:Name="PART_TooltipButton" Content="?" Foreground="#AAAAAA" Padding="5,0,5,0" 
+                                        <Button x:Name="PART_TooltipButton" Content="?" Foreground="#AAAAAA" Padding="5,0,5,0"
                                                VerticalAlignment="Center" HorizontalAlignment="Center" Focusable="False" BorderThickness="0">
                                         </Button>
                                         <Popup IsOpen="{Binding IsMouseOver, Mode=OneWay, ElementName=PART_TooltipButton}" AllowsTransparency="True">
@@ -65,8 +65,11 @@
                 <ItemsControl.Resources>
                     <DataTemplate DataType="{x:Type scripts:BaseFunction}">
                         <Border x:Name="PART_Border" BorderThickness="1" BorderBrush="Transparent" SnapsToDevicePixels="True">
-                            <controls:FunctionButton Content="{Binding Name}"
-                               Foreground="{StaticResource QTRHacker.Common.Foreground}" IsCheckable="{Binding CanDisable}"/>
+                            <controls:FunctionButton Content="{Binding Name}" 
+                                                     FunctionEnabling="FunctionButton_FunctionEnabling" 
+                                                     FunctionDisabling="FunctionButton_FunctionDisabling"
+                                                     Foreground="{StaticResource QTRHacker.Common.Foreground}" 
+                                                     IsCheckable="{Binding CanDisable}"/>
                         </Border>
                         <DataTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
