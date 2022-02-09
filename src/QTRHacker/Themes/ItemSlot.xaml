@@ -6,8 +6,6 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     mc:Ignorable="d"
                     >
-    <converters:ItemTypeToImageConverter x:Key="itemTypeToImageConverter"/>
-    <converters:ItemStackToHintConverter x:Key="itemStackToHintConverter"/>
     <ControlTemplate x:Key="ItemSlotTemplate" TargetType="{x:Type controls:ItemSlot}">
         <Border Padding="0" Background="#505050" HorizontalAlignment="Center" VerticalAlignment="Center"
                 Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
@@ -18,11 +16,11 @@
                 </Grid.RowDefinitions>
                 <Grid Margin="10" Grid.RowSpan="2">
                     <Image x:Name="PART_ItemImage" Stretch="Uniform" 
-                       Source="{TemplateBinding ItemType, Converter={StaticResource itemTypeToImageConverter}}">
+                       Source="{TemplateBinding ItemType, Converter={x:Static converters:ItemTypeToImageConverter.Instance}}">
                     </Image>
                 </Grid>
                 <TextBlock Margin="4,0,0,2" FontSize="12"
-                    Text="{TemplateBinding ItemStack, Converter={StaticResource itemStackToHintConverter}}" Grid.Row="1"/>
+                    Text="{TemplateBinding ItemStack, Converter={x:Static converters:ItemStackToHintConverter.Instance}}" Grid.Row="1"/>
                 <Border x:Name="PART_Border" BorderThickness="0" BorderBrush="#FF8800" Grid.RowSpan="2"/>
             </Grid>
         </Border>

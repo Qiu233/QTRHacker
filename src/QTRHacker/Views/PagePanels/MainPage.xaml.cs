@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,6 +29,8 @@ namespace QTRHacker.Views.PagePanels
 			InitializeComponent();
 		}
 
+		public event EventHandler AttachedToGame;
+
 		private void Cross_CrossReleased(object sender, CrossReleaseEventArgs e)
 		{
 			Point p = (sender as Control).PointToScreen(e.Point);
@@ -44,7 +47,7 @@ namespace QTRHacker.Views.PagePanels
 				return;
 			}
 			HackGlobal.Initialize(pid);
-			MainWindow.Instance.EnableTabs();
+			AttachedToGame?.Invoke(this, new EventArgs());
 		}
 	}
 }

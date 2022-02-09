@@ -8,14 +8,14 @@ using System.Windows;
 
 namespace QTRHacker.Localization
 {
-	public sealed class LocalizationItem : INotifyPropertyChanged
+	public sealed class LocalizationItem : INotifyPropertyChanged, ILocalizationProvider
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 		private readonly string Key;
 
 		public string Value => LocalizationManager.Instance.GetValue(Key);
 
-		private void OnCultureChanged(object sender, EventArgs args)
+		public void OnCultureChanged(object sender, CultureChangedEventArgs args)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
 		}
@@ -23,8 +23,7 @@ namespace QTRHacker.Localization
 		public LocalizationItem(string key)
 		{
 			Key = key;
-			WeakEventManager<LocalizationManager, EventArgs>.AddHandler(
-				LocalizationManager.Instance, nameof(LocalizationManager.CultureChanged), OnCultureChanged);
+			LocalizationManager.RegisterCultureChanged(this);
 		}
 	}
 }

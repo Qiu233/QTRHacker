@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Newtonsoft.Json;
 using QTRHacker.Configs;
 using QTRHacker.Functions;
 using System;
@@ -17,7 +18,6 @@ namespace QTRHacker
 		private static CFG_QTRHacker _Config;
 		public static GameContext GameContext => _GameContext;
 		public static CFG_QTRHacker Config => _Config;
-
 		private const string FILE_CONFIG = "./HackConfig.json";
 
 		public static void SaveConfig()

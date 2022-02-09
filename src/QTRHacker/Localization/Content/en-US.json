@@ -1,5 +1,7 @@
 ﻿{
+  "Name": "English",
   "UI": {
+    "DirectFunction": "Functions",
     "MainPage": "Main Page",
     "Player": "Player",
     "Name": "Name",

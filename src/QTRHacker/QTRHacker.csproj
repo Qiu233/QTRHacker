@@ -8,7 +8,14 @@
     <PlatformTarget>x86</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RootNamespace>QTRHacker</RootNamespace>
+    <ProduceReferenceAssemblies>false</ProduceReferenceAssemblies>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)res\**" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Assets\ItemImages.bin" />
@@ -18,6 +25,10 @@
   <ItemGroup>
     <Resource Include="Assets\GameImages\Items.bin" />
     <Resource Include="Localization\Content\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>

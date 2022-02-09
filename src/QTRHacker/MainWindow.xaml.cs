@@ -1,5 +1,7 @@
 ﻿using QTRHacker.Assets;
 using QTRHacker.Controls;
+using QTRHacker.Localization;
+using QTRHacker.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,20 +21,18 @@ namespace QTRHacker
 {
 	public partial class MainWindow : MWindow
 	{
-		private static MainWindow instance;
-		public static MainWindow Instance => instance;
+		public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
 		public MainWindow()
 		{
-			Application.Current.DispatcherUnhandledException += (s, e) =>
-			{
-				if(e.Exception is System.ComponentModel.Win32Exception)
-					e.Handled = true;
-			};
-			if (instance != null)
-				throw new InvalidOperationException();
 			HackGlobal.LoadConfig();
+#if DEBUG
+#else
+			LocalizationManager.Instance.SetCulture(System.Threading.Thread.CurrentThread.CurrentCulture.ToString());
+#endif
+
 			InitializeComponent();
-			instance = this;
+
+			DataContext = new MainWindowViewModel();
 		}
 		internal void EnableTabs()
 		{
@@ -45,6 +45,11 @@ namespace QTRHacker
 		static MainWindow()
 		{
 			AssetsLoader.Touch();
+		}
+
+		private void MainPage_AttachedToGame(object sender, EventArgs e)
+		{
+			EnableTabs();
 		}
 	}
 }

@@ -10,17 +10,18 @@
     xmlns:l="clr-namespace:QTRHacker.Localization"
     mc:Ignorable="d"
     Title="QTRHacker"
-    WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True" UseLayoutRounding="True"
+    WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True"
     >
     <Grid>
         <TabControl x:Name="MainTabControl" TabStripPlacement="Left">
-            <!--TabItem Header="Basic" IsEnabled="False">
-            </TabItem-->
+            <TabItem Header="{l:Localization UI.DirectFunction}" IsEnabled="False" FontSize="20">
+                <pagepanels:DirectFunctionsPage DataContext="{Binding DirectFunctionsPageViewModel}"/>
+            </TabItem>
             <TabItem Header="{l:Localization UI.Player}" IsEnabled="False" FontSize="20">
-                <pagepanels:PlayersPage x:Name="PlayersPage"></pagepanels:PlayersPage>
+                <pagepanels:PlayersPage x:Name="PlayersPage" DataContext="{Binding PlayersPageViewModel}"/>
             </TabItem>
             <TabItem Header="{l:Localization UI.MainPage}" IsSelected="True" FontSize="20">
-                <pagepanels:MainPage></pagepanels:MainPage>
+                <pagepanels:MainPage AttachedToGame="MainPage_AttachedToGame" DataContext="{Binding MainPageViewModel}"/>
             </TabItem>
         </TabControl>
     </Grid>

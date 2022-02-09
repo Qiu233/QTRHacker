@@ -4,7 +4,7 @@
         <ResourceDictionary Source="/QTRHacker;component/Styles/Controls.Button.xaml"/>
         <ResourceDictionary Source="/QTRHacker;component/Styles/Controls.TabControl.xaml"/>
         <ResourceDictionary Source="/QTRHacker;component/Styles/Controls.TabItem.xaml"/>
-        
+
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

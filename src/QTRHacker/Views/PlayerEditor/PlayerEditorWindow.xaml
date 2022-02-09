@@ -6,7 +6,7 @@
                   xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor"
                   xmlns:controls="clr-namespace:QTRHacker.Controls"
                   xmlns:l="clr-namespace:QTRHacker.Localization"
-                  mc:Ignorable="d" Height="340" MinimizeBox="False" SizeToContent="Width" SnapsToDevicePixels="True" UseLayoutRounding="True"
+                  mc:Ignorable="d" Height="340" MinimizeBox="False" SizeToContent="Width" SnapsToDevicePixels="True"
                   Title="{Binding Player.Name}">
     <Grid>
         <TabControl>

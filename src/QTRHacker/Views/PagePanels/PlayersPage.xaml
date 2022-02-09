@@ -13,15 +13,17 @@
             <ColumnDefinition Width="230"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListView x:Name="PlayersList" FontSize="15" Grid.Column="0" Focusable="False" BorderThickness="0"
-                  Foreground="Black" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}"/>
-                    <GridViewColumn Header="{l:Localization UI.Name}" DisplayMemberBinding="{Binding Name}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <ListBox x:Name="PlayersList" FontSize="15" Grid.Column="0" Focusable="False" BorderThickness="0"
+                  Foreground="Black" ItemsSource="{Binding Players}" Background="#606060">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ID, StringFormat='{}{0}: '}" Foreground="{StaticResource QTRHacker.Common.Foreground}"/>
+                        <TextBlock Text="{Binding Name}" Foreground="{StaticResource QTRHacker.Common.Foreground}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <StackPanel Margin="2,0,0,0" Orientation="Vertical" Grid.Column="1">
             <StackPanel.Style>
                 <Style TargetType="StackPanel">
