@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QTRHacker.Localization;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,7 +10,6 @@ namespace QTRHacker.ViewModels.PagePanels
 {
 	public class MainPageViewModel : ViewModelBase
 	{
-		//public ObservableCollection<string>
 		public MainPageViewModel()
 		{
 		}

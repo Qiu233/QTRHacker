@@ -28,31 +28,17 @@ namespace QTRHacker.Controls
 			set => SetValue(IsCheckableProperty, value);
 		}
 
-		public event EventHandler<FunctionStatusChangedEventArgs> FunctionEnabling;
-		public event EventHandler<FunctionStatusChangedEventArgs> FunctionDisabling;
+		public event EventHandler FunctionEnabling;
+		public event EventHandler FunctionDisabling;
 
 		protected override void OnClick()
 		{
-			FunctionStatusChangedEventArgs args = new();
 			if (!IsCheckable)
-			{
-				FunctionEnabling?.Invoke(this, args);
-				return;
-			}
+				FunctionEnabling?.Invoke(this, EventArgs.Empty);
 			if (!IsChecked.GetValueOrDefault())
-			{
-				FunctionEnabling?.Invoke(this, args);
-				IsChecked = args.Success;
-			}
+				FunctionEnabling?.Invoke(this, EventArgs.Empty);
 			else
-			{
-				FunctionDisabling?.Invoke(this, args);
-				IsChecked = !args.Success;
-			}
+				FunctionDisabling?.Invoke(this, EventArgs.Empty);
 		}
-	}
-	public sealed class FunctionStatusChangedEventArgs : EventArgs
-	{
-		public bool Success { get; set; } = true;
 	}
 }

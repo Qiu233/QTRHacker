@@ -29,10 +29,6 @@ namespace QTRHacker.Functions
 		{
 			get;
 		}
-		public RemoteSignsManager Signs
-		{
-			get;
-		}
 
 		public QHackContext HContext
 		{
@@ -290,8 +286,6 @@ namespace QTRHacker.Functions
 			CachedDebuff = new bool[debuff.Length];
 			for (int i = 0; i < CachedDebuff.Length; i++)
 				CachedDebuff[i] = debuff[i];
-
-			Signs = RemoteSignsManager.CreateFromProcess(this);
 		}
 
 		/// <summary>

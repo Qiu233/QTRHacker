@@ -31,11 +31,8 @@ namespace QTRHacker.Views.PagePanels
 
 		public event EventHandler AttachedToGame;
 
-		private void Cross_CrossReleased(object sender, CrossReleaseEventArgs e)
+		private void Attach(int pid)
 		{
-			Point p = (sender as Control).PointToScreen(e.Point);
-			nuint hwnd = WindowFromPoint((int)p.X, (int)p.Y);
-			GetWindowThreadProcessId(hwnd, out int pid);
 			if (pid == 0)
 			{
 				MessageBox.Show("Failed to fetch pid(got 0)", "Error");
@@ -47,7 +44,22 @@ namespace QTRHacker.Views.PagePanels
 				return;
 			}
 			HackGlobal.Initialize(pid);
+		}
+
+		private async void Cross_CrossReleased(object sender, CrossReleasedEventArgs e)
+		{
+			Cross.Visibility = Visibility.Collapsed;
+			LoadingSpinner.Visibility = Visibility.Visible;
+			Point p = (sender as Control).PointToScreen(e.Point);
+			await Task.Run(() =>
+			{
+				nuint hwnd = WindowFromPoint((int)p.X, (int)p.Y);
+				GetWindowThreadProcessId(hwnd, out int pid);
+				Attach(pid);
+			});
 			AttachedToGame?.Invoke(this, new EventArgs());
+			LoadingSpinner.Visibility = Visibility.Collapsed;
+			Cross.Visibility = Visibility.Visible;
 		}
 	}
 }

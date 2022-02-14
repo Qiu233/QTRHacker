@@ -1,4 +1,7 @@
-﻿using QTRHacker.Functions;
+﻿using QTRHacker.Commands;
+using QTRHacker.Functions;
+using QTRHacker.ViewModels.PlayerEditor;
+using QTRHacker.Views.PlayerEditor;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace QTRHacker.ViewModels.PagePanels
@@ -17,6 +21,47 @@ namespace QTRHacker.ViewModels.PagePanels
 			get;
 		} = new();
 		private static readonly object _lock_update = new();
+		private PlayerInfo selectedPlayerInfo;
+
+		public PlayerInfo SelectedPlayerInfo
+		{
+			get => selectedPlayerInfo;
+			set
+			{
+				selectedPlayerInfo = value;
+				OnPropertyChanged(nameof(SelectedPlayerInfo));
+			}
+		}
+
+		public ICommand EditPlayerCommand
+		{
+			get
+			{
+				return new RelayCommand(GetIsPlayerSelected, (o) =>
+				{
+					var player = HackGlobal.GameContext.Players[SelectedPlayerInfo.ID];
+					if (!player.Active)
+						return;
+					PlayerEditorWindow window = new();
+					window.DataContext = new PlayerEditorWindowViewModel(player);
+					window.Show();
+				});
+			}
+		}
+		public ICommand TPToPlayerCommand
+		{
+			get
+			{
+				return new RelayCommand(GetIsPlayerSelected, (o) =>
+				{
+					var player = HackGlobal.GameContext.Players[SelectedPlayerInfo.ID];
+					if (!player.Active)
+						return;
+				});
+			}
+		}
+
+		private bool GetIsPlayerSelected(object o) => SelectedPlayerInfo is not null;
 
 		public void UpdatePlayersList()
 		{

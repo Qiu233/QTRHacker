@@ -13,8 +13,8 @@ namespace QTRHacker.Scripts
 	public abstract class BaseFunction : ViewModels.ViewModelBase, ILocalizationProvider
 	{
 		private string name;
-		private string category;
 		private string tooltip;
+		private bool isEnabled;
 
 		public string Name
 		{
@@ -23,15 +23,6 @@ namespace QTRHacker.Scripts
 			{
 				name = value;
 				OnPropertyChanged(nameof(Name));
-			}
-		}
-		public string Category
-		{
-			get => category;
-			set
-			{
-				category = value;
-				OnPropertyChanged(nameof(Category));
 			}
 		}
 		public string Tooltip
@@ -43,13 +34,19 @@ namespace QTRHacker.Scripts
 				OnPropertyChanged(nameof(Tooltip));
 			}
 		}
-
-
-		public abstract string Key { get; }
+		public bool IsEnabled
+		{
+			get => isEnabled;
+			set
+			{
+				isEnabled = value;
+				OnPropertyChanged(nameof(IsEnabled));
+			}
+		}
 		public abstract bool CanDisable { get; }
 
-		public abstract FunctionResult Enable(GameContext context);
-		public abstract FunctionResult Disable(GameContext context);
+		public abstract void Enable(GameContext context);
+		public abstract void Disable(GameContext context);
 
 		public virtual void OnLoaded() { }
 

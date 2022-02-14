@@ -21,11 +21,11 @@
                    Foreground="White" FontSize="15"
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,5" Text="{l:Localization Tip.DragCrossToGame}">
         </TextBlock>
-        <controls:Cross Width="25" Height="25" 
-                        Margin="0,10,10,0"
-                        Grid.Row="0" Grid.Column="1" 
-                        Foreground="White"
-                        CrossReleased="Cross_CrossReleased">
-        </controls:Cross>
+        <Grid Grid.Row="0" Grid.Column="1" 
+              Margin="0,10,10,0">
+            <controls:Cross x:Name="Cross" Foreground="White"
+                            CrossReleased="Cross_CrossReleased"/>
+            <controls:SpinnerDotCircle x:Name="LoadingSpinner" Visibility="Collapsed"/>
+        </Grid>
     </Grid>
 </UserControl>

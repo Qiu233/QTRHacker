@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)res\**" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Include="$(SolutionDir)res\**" CopyToOutputDirectory="PreserveNewest" Visible="True" />
   </ItemGroup>
 
   <ItemGroup>

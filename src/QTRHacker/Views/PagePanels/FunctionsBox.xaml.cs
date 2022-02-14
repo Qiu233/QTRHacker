@@ -29,22 +29,27 @@ namespace QTRHacker.Views.PagePanels
 			InitializeComponent();
 		}
 
-		private void FunctionButton_FunctionEnabling(object sender, FunctionStatusChangedEventArgs e)
+		private void FunctionButton_FunctionEnabling(object sender, EventArgs e)
 		{
 			if (sender is not FunctionButton fb || fb.DataContext is not BaseFunction func)
 				return;
 			if (!HackGlobal.IsActive)
 				return;
-			e.Success = func.Enable(HackGlobal.GameContext) == FunctionResult.SUCCESS;
+			func.Enable(HackGlobal.GameContext);
 		}
 
-		private void FunctionButton_FunctionDisabling(object sender, FunctionStatusChangedEventArgs e)
+		private void FunctionButton_FunctionDisabling(object sender, EventArgs e)
 		{
 			if (sender is not FunctionButton fb || fb.DataContext is not BaseFunction func)
 				return;
 			if (!HackGlobal.IsActive)
 				return;
-			e.Success = func.Disable(HackGlobal.GameContext) == FunctionResult.SUCCESS;
+			func.Disable(HackGlobal.GameContext);
+		}
+
+		private void PART_TooltipButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			e.Handled = true;
 		}
 	}
 }

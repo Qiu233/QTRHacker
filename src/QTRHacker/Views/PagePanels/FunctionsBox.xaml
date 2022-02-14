@@ -31,11 +31,11 @@
                                 </Ellipse>
                                 <Border DockPanel.Dock="Left" BorderThickness="0" BorderBrush="#05FFFFFF" Margin="0">
                                     <StackPanel>
-                                        <Button x:Name="PART_TooltipButton" Content="?" Foreground="#AAAAAA" Padding="5,0,5,0"
-                                               VerticalAlignment="Center" HorizontalAlignment="Center" Focusable="False" BorderThickness="0">
+                                        <Button x:Name="PART_TooltipButton" Content="?" Foreground="#AAAAAA" Padding="5,0,5,0" PreviewMouseDown="PART_TooltipButton_PreviewMouseDown"
+                                                VerticalAlignment="Center" HorizontalAlignment="Center" Focusable="False" BorderThickness="0">
                                         </Button>
                                         <Popup IsOpen="{Binding IsMouseOver, Mode=OneWay, ElementName=PART_TooltipButton}" AllowsTransparency="True">
-                                            <Border BorderThickness="1" Background="#40FFFFFF">
+                                            <Border BorderThickness="1" Background="#808080">
                                                 <TextBlock Text="{Binding Tooltip}"/>
                                             </Border>
                                         </Popup>
@@ -60,7 +60,7 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
             <ItemsControl ItemsSource="{Binding Functions}">
                 <ItemsControl.Resources>
                     <DataTemplate DataType="{x:Type scripts:BaseFunction}">
@@ -69,7 +69,7 @@
                                                      FunctionEnabling="FunctionButton_FunctionEnabling" 
                                                      FunctionDisabling="FunctionButton_FunctionDisabling"
                                                      Foreground="{StaticResource QTRHacker.Common.Foreground}" 
-                                                     IsCheckable="{Binding CanDisable}"/>
+                                                     IsCheckable="{Binding CanDisable}" IsChecked="{Binding IsEnabled}"/>
                         </Border>
                         <DataTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">

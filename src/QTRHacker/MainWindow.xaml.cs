@@ -50,6 +50,7 @@ namespace QTRHacker
 		private void MainPage_AttachedToGame(object sender, EventArgs e)
 		{
 			EnableTabs();
+			ViewModel.DirectFunctionsPageViewModel.UpdateFunctionsList();
 		}
 	}
 }

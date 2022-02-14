@@ -30,18 +30,5 @@ namespace QTRHacker.Views.PagePanels
 		{
 			InitializeComponent();
 		}
-
-		private void Edit_Click(object sender, RoutedEventArgs e)
-		{
-			var playerInfo = PlayersList.SelectedItem as PlayersPageViewModel.PlayerInfo;
-			if (playerInfo == null)
-				return;
-			var player = HackGlobal.GameContext.Players[playerInfo.ID];
-			if (!player.Active)
-				return;
-			PlayerEditorWindow window = new();
-			window.DataContext = new PlayerEditorWindowViewModel(player);
-			window.Show();
-		}
 	}
 }

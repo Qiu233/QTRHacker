@@ -5,16 +5,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace QTRHacker.Functions
 {
-	public class RemoteSignsManager
+	public class RemoteDataManager<T> where T : unmanaged
 	{
-		private const uint SIZE_SIGN = 1024 * 8;
-		private const uint SIZE_SIGN_HEADER = 16;
-		private const string SignHeadAob = "F3B354B2F6314D5AB44D946B4962AE82";
+		private const uint SIZE_SIGN = 4096;//1 pages
+		private readonly byte[] Header;
 
 		private nuint BaseAddress;
 
@@ -25,33 +25,44 @@ namespace QTRHacker.Functions
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public unsafe nint this[int index]
+		public unsafe T this[int index]
 		{
-			get => Context.HContext.DataAccess.Read<nint>(BaseAddress + SIZE_SIGN_HEADER + (uint)(index * sizeof(nint)));
-			set => Context.HContext.DataAccess.Write(BaseAddress + SIZE_SIGN_HEADER + (uint)(index * sizeof(nint)), value);
+			get => Context.HContext.DataAccess.Read<T>(GetAddress(index));
+			set => Context.HContext.DataAccess.Write(GetAddress(index), value);
 		}
 
 
-		private RemoteSignsManager(GameContext ctx) => Context = ctx;
-
-		public static RemoteSignsManager CreateFromProcess(GameContext ctx)
+		private RemoteDataManager(GameContext ctx, byte[] signHead)
 		{
-			RemoteSignsManager rsm = new(ctx);
+			Context = ctx;
+			int len = signHead.Length;
+			Header = new byte[len];
+			Array.Copy(signHead, Header, Header.Length);
+		}
+
+		public static RemoteDataManager<T> Create(GameContext ctx, byte[] header)
+		{
+			RemoteDataManager<T> rsm = new(ctx, header);
 			rsm.InitializeSign();
 			return rsm;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public unsafe nuint GetAddress(int index)
+		{
+			return BaseAddress + (uint)(index * sizeof(T));
+		}
+
 		private void InitializeSign()
 		{
-			byte[] hex = AobscanHelper.GetHexCodeFromString(SignHeadAob);
-			BaseAddress = AobscanHelper.Aobscan(Context.HContext.Handle, hex)
+			BaseAddress = AobscanHelper.Aobscan(Context.HContext.Handle, Header)
 							  .FirstOrDefault(t => true);
 			if (BaseAddress == 0)
 			{
 				BaseAddress = MemoryAllocation.Alloc(Context.HContext.Handle, SIZE_SIGN);
-				Context.HContext.DataAccess.WriteBytes(BaseAddress, hex);
+				Context.HContext.DataAccess.WriteBytes(BaseAddress, Header);
 			}
-			BaseAddress += (uint)hex.Length;
+			BaseAddress += (uint)Header.Length;
 		}
 	}
 }

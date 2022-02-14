@@ -9,14 +9,14 @@ using System.Windows.Input;
 
 namespace QTRHacker.Controls
 {
-	public class CrossReleaseEventArgs : EventArgs
+	public class CrossReleasedEventArgs : EventArgs
 	{
 		internal Point Point { get; set; }
 	}
 	public class Cross : Control
 	{
 		private bool Dragginng = false;
-		public event EventHandler<CrossReleaseEventArgs> CrossReleased;
+		public event EventHandler<CrossReleasedEventArgs> CrossReleased;
 		static Cross()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(Cross), new FrameworkPropertyMetadata(typeof(Cross)));
@@ -39,7 +39,7 @@ namespace QTRHacker.Controls
 			{
 				ReleaseMouseCapture();
 				Dragginng = false;
-				CrossReleased?.Invoke(this, new CrossReleaseEventArgs() { Point = e.GetPosition(this) });
+				CrossReleased?.Invoke(this, new CrossReleasedEventArgs() { Point = e.GetPosition(this) });
 				Opacity = 1;
 			}
 		}

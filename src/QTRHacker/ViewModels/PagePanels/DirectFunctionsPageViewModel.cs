@@ -15,13 +15,20 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Reflection;
 using QTRHacker.Localization;
+using QTRHacker.Functions;
+using System.Security.Cryptography;
+using System.Windows;
+using System.ComponentModel;
 
 namespace QTRHacker.ViewModels.PagePanels
 {
 	public class DirectFunctionsPageViewModel : ViewModelBase
 	{
 		public const string PATH_FUNCS = "./Content/Functions";
+
+		//TODO: merge the two variables into one, using ItemTemplate
 		public ObservableCollection<TabItem> TabItems { get; } = new();
+		private readonly List<FunctionCategory> Functions = new();
 
 		private TabItem GetOrCreateTab(string name)
 		{
@@ -35,34 +42,72 @@ namespace QTRHacker.ViewModels.PagePanels
 			return tab;
 		}
 
-		public void AddFunction(BaseFunction func)
+		private FunctionCategory LoadFunctionsFromFile(string file)
 		{
-			var itemsControl = GetOrCreateTab(func.Category).Content as FunctionsBox;
-			itemsControl.ViewModel.Functions.Add(func);
+			try
+			{
+				object result = CSharpScript.EvaluateAsync(File.ReadAllText(file), ScriptOptions.Default.AddReferences(GetType().Assembly)).Result;
+				if (result is FunctionCategory fc)
+				{
+					foreach (var func in fc)
+						func.ApplyLocalization(LocalizationManager.Instance.CultureName);
+					return fc;
+				}
+			}
+			catch (Exception e)
+			{
+				HackGlobal.Logging.Error($"Failed to initialize from file: {file}");
+				HackGlobal.Logging.Error(e.Message + "\n" + e.StackTrace);
+			}
+			return null;
 		}
 
-		public void UpdateFunctions()
+		public void UpdateFunctionsList()
 		{
-			lock (TabItems)
+			TabItems.Clear();
+			HackGlobal.Logging.Enter("Initializing functions from scripts.");
+			Functions.Clear();
+			Functions.AddRange(Directory.EnumerateFiles(PATH_FUNCS, "*.cs")
+				.ToList()
+				.Select(t => LoadFunctionsFromFile(t))
+				.Where(t => t is not null));
+			foreach (FunctionCategory group in Functions)
 			{
-				TabItems.Clear();
-				foreach (var file in Directory.EnumerateFiles(PATH_FUNCS, "*.cs"))
+				var itemsControl = GetOrCreateTab(group[LocalizationManager.Instance.CultureName]).Content as FunctionsBox;
+				var manager = RemoteDataManager<bool>.Create(HackGlobal.GameContext, SHA256.HashData(Encoding.UTF8.GetBytes(group.Category)));
+				int index = 0;
+				foreach (var func in group)
 				{
-					try
+					func.IsEnabled = manager[index];
+					int id = index; // to capture these two local variables
+					var sm = manager;
+					func.PropertyChanged += (s, e) =>
 					{
-						object result = CSharpScript.EvaluateAsync(File.ReadAllText(file), ScriptOptions.Default.AddReferences(GetType().Assembly)).Result;
-						if (result is BaseFunction func)
+						if (e.PropertyName == nameof(BaseFunction.IsEnabled))
 						{
-							func.ApplyLocalization(LocalizationManager.Instance.CultureName);
-							AddFunction(func);
-							func.OnLoaded();
+							BaseFunction f = s as BaseFunction;
+							sm[id] = f.IsEnabled;
 						}
-					}
-					catch //Currently we do nothing more than just skipping this function. TODO: show errors to user
-					{
-
-					}
+					};
+					itemsControl.ViewModel.Functions.Add(func);
+					index++;
 				}
+			}
+			if (TabItems.Any())
+			{
+				TabItems[0].IsSelected = true;
+			}
+			DispatchOnLoaded();
+			HackGlobal.Logging.Exit();
+		}
+
+		private void DispatchOnLoaded()
+		{
+			foreach (var tab in TabItems)
+			{
+				var box = tab.Content as FunctionsBox;
+				foreach (var item in box.ViewModel.Functions)
+					item.OnLoaded();
 			}
 		}
 
@@ -72,7 +117,6 @@ namespace QTRHacker.ViewModels.PagePanels
 			{
 				Directory.CreateDirectory(PATH_FUNCS);
 			}
-			UpdateFunctions();
 		}
 	}
 }

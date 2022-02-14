@@ -12,13 +12,22 @@ using System.Threading.Tasks;
 
 namespace QTRHacker
 {
-	public static class HackGlobal
+	internal static class HackGlobal
 	{
 		private static GameContext _GameContext;
 		private static CFG_QTRHacker _Config;
 		public static GameContext GameContext => _GameContext;
 		public static CFG_QTRHacker Config => _Config;
+		public static readonly Logging Logging;
+
 		private const string FILE_CONFIG = "./HackConfig.json";
+
+		static HackGlobal()
+		{
+			if (!Directory.Exists("./logs"))
+				Directory.CreateDirectory("./logs");
+			Logging = Logging.New(File.Open($"./logs/{DateTime.Now:yyyy-dd-M--HH.mm.ss}.log", FileMode.Create));
+		}
 
 		public static void SaveConfig()
 		{
