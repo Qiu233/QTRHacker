@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="QTRHacker.Views.Wiki.Item.ItemWikiTabPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QTRHacker.Views.Wiki.Item"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Padding="3">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListView x:Name="ItemsListView" Grid.Column="0" Focusable="False" Width="500" Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
+                  BorderBrush="#808080" BorderThickness="1"
+                  ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItemInfo}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Type}"/>
+                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Category" Width="100" DisplayMemberBinding="{Binding Category}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TabControl Grid.Column="1" Margin="3,0,0,0" Width="320"
+                    DataContext="{Binding ItemInfoSubPageViewModel}" Background="#C8C8C8">
+            <TabItem Header="Item Info">
+                <local:ItemInfoSubPage>
+                </local:ItemInfoSubPage>
+            </TabItem>
+            <TabItem Header="Details">
+
+            </TabItem>
+            <TabItem Header="Filter">
+
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

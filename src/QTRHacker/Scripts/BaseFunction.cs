@@ -59,7 +59,7 @@ namespace QTRHacker.Scripts
 
 		protected BaseFunction()
 		{
-			LocalizationManager.RegisterCultureChanged(this);
+			LocalizationManager.RegisterLocalizationProvider(this);
 		}
 	}
 }

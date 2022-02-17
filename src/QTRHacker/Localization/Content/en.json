@@ -38,6 +38,12 @@
       "Prefix": "Prefix",
       "AutoReuse": "Auto Reuse",
       "Accessory": "Accessory"
+    },
+    "ItemValue": {
+      "Platinum": "P",
+      "Gold": "G",
+      "Silver": "S",
+      "Copper": "C"
     }
   },
   "Tip": {

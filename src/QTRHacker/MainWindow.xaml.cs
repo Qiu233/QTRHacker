@@ -27,7 +27,7 @@ namespace QTRHacker
 			HackGlobal.LoadConfig();
 #if DEBUG
 #else
-			LocalizationManager.Instance.SetCulture(System.Threading.Thread.CurrentThread.CurrentCulture.ToString());
+			LocalizationManager.Instance.SetCulture(System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName);
 #endif
 
 			InitializeComponent();
@@ -44,7 +44,7 @@ namespace QTRHacker
 		}
 		static MainWindow()
 		{
-			AssetsLoader.Touch();
+			GameImages.Touch();
 		}
 
 		private void MainPage_AttachedToGame(object sender, EventArgs e)

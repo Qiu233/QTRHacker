@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Game\Localization.zip" />
+    <None Remove="Assets\Game\WikiRes.zip" />
     <None Remove="Assets\ItemImages.bin" />
     <None Remove="Localization\Content\*.json" />
   </ItemGroup>
@@ -25,6 +27,11 @@
   <ItemGroup>
     <Resource Include="Assets\GameImages\Items.bin" />
     <Resource Include="Localization\Content\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Game\Localization.zip" />
+    <Resource Include="Assets\Game\WikiRes.zip" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +43,10 @@
     <ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
     <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
     <ProjectReference Include="..\QTRHacker.Functions\QTRHacker.Functions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Wiki\NPC\" />
   </ItemGroup>
 
 </Project>

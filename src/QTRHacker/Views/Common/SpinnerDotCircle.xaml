@@ -4,7 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
-	x:Class="QTRHacker.Controls.SpinnerDotCircle"
+	x:Class="QTRHacker.Views.Common.SpinnerDotCircle"
 	x:Name="UserControl">
 	<UserControl.Resources>
 		<Storyboard x:Name="spinner" x:Key="spinner" RepeatBehavior="Forever" BeginTime="00:00:00">

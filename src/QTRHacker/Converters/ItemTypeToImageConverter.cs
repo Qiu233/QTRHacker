@@ -22,7 +22,7 @@ namespace QTRHacker.Converters
 			if (value is int v)
 			{
 				if (v == 0) return null;
-				return AssetsLoader.GetItemImage(v);
+				return GameImages.GetItemImage(v);
 			}
 			return null;
 		}

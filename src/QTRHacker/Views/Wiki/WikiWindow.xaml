@@ -1,0 +1,21 @@
+﻿<controls:MWindow x:Class="QTRHacker.Views.Wiki.WikiWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:QTRHacker.Controls"
+        xmlns:wiki_Item="clr-namespace:QTRHacker.Views.Wiki.Item"
+        xmlns:local="clr-namespace:QTRHacker.Views.Wiki"
+        mc:Ignorable="d"
+        Title="Wiki" Height="560" SizeToContent="Width">
+    <Grid>
+        <TabControl Background="#30FFFFFF">
+            <TabItem Header="Items">
+                <wiki_Item:ItemWikiTabPage DataContext="{Binding ItemPageViewModel}"/>
+            </TabItem>
+            <TabItem Header="NPCs">
+                
+            </TabItem>
+        </TabControl>
+    </Grid>
+</controls:MWindow>

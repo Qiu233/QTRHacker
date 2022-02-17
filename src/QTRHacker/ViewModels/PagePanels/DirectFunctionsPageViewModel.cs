@@ -48,11 +48,7 @@ namespace QTRHacker.ViewModels.PagePanels
 			{
 				object result = CSharpScript.EvaluateAsync(File.ReadAllText(file), ScriptOptions.Default.AddReferences(GetType().Assembly)).Result;
 				if (result is FunctionCategory fc)
-				{
-					foreach (var func in fc)
-						func.ApplyLocalization(LocalizationManager.Instance.CultureName);
 					return fc;
-				}
 			}
 			catch (Exception e)
 			{

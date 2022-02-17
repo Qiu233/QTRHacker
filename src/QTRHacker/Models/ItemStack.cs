@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QTRHacker.Assets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +9,13 @@ namespace QTRHacker.Models
 {
 	public readonly struct ItemStack
 	{
-		public readonly int Type;
-		public readonly int Stack;
-		public readonly byte Prefix;
+		public int Type { get; }
+		public int Stack { get; }
 
-		public ItemStack(int type, int stack, byte prefix)
+		public ItemStack(int type, int stack)
 		{
 			Type = type;
 			Stack = stack;
-			Prefix = prefix;
 		}
 	}
 }

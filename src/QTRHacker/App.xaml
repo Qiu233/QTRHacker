@@ -9,7 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/Controls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="QTRHacker.Common.Foreground">#CFCFCF</SolidColorBrush>
+            <SolidColorBrush x:Key="QTRHacker.Common.Foreground">#DFDFDF</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.StripButton.Background">#606060</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.StripButton.BackMouseHover">#707070</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.StripButton.BackMousePressed">#808080</SolidColorBrush>
@@ -21,14 +21,6 @@
             <SolidColorBrush x:Key="QTRHacker.Error">#FF5050</SolidColorBrush>
 
 
-            <Style x:Key="QTRHacker.ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
-                <Setter Property="BorderBrush" Value="#D0D0D0"/>
-                <Style.Triggers>
-                    <Trigger Property="IsSelected" Value="True">
-                        <Setter Property="Background" Value="#A0A0A0"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
 
             <Style x:Key="QTRHacker.StripButtonStyle" TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="{StaticResource QTRHacker.StripButton.Background}"/>

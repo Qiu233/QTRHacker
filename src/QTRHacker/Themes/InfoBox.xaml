@@ -1,0 +1,100 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:QTRHacker.Controls">
+    <ControlTemplate x:Key="InfoBox_Left" TargetType="{x:Type controls:InfoBox}">
+        <Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="{TemplateBinding TipSharedSizeScope}"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="PART_Tip"
+                        Grid.Column="0"
+                        BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding TipBackground}">
+                    <TextBlock x:Name="PART_TipTextBlock" Text="{TemplateBinding Tip}"
+                                           Background="{TemplateBinding Background}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                           Padding="6,2,6,2"/>
+                </Border>
+                <ContentPresenter x:Name="PART_ContentPresenter" Grid.Column="1"/>
+            </Grid>
+        </Border>
+    </ControlTemplate>
+    <ControlTemplate x:Key="InfoBox_Right" TargetType="{x:Type controls:InfoBox}">
+        <Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="{TemplateBinding TipSharedSizeScope}"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="PART_Tip"
+                        Grid.Column="1"
+                        BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding TipBackground}">
+                    <TextBlock x:Name="PART_TipTextBlock" Text="{TemplateBinding Tip}"
+                                           Background="{TemplateBinding Background}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                           Padding="6,2,6,2"/>
+                </Border>
+                <ContentPresenter x:Name="PART_ContentPresenter" Grid.Column="0"/>
+            </Grid>
+        </Border>
+    </ControlTemplate>
+    <ControlTemplate x:Key="InfoBox_Top" TargetType="{x:Type controls:InfoBox}">
+        <Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" SharedSizeGroup="{TemplateBinding TipSharedSizeScope}"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Border x:Name="PART_Tip"
+                        Grid.Row="0"
+                        BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding TipBackground}">
+                    <TextBlock x:Name="PART_TipTextBlock" Text="{TemplateBinding Tip}"
+                                           Background="{TemplateBinding Background}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                           Padding="6,2,6,2"/>
+                </Border>
+                <ContentPresenter x:Name="PART_ContentPresenter" Grid.Row="1"/>
+            </Grid>
+        </Border>
+    </ControlTemplate>
+    <ControlTemplate x:Key="InfoBox_Bottom" TargetType="{x:Type controls:InfoBox}">
+        <Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto" SharedSizeGroup="{TemplateBinding TipSharedSizeScope}"/>
+                </Grid.RowDefinitions>
+                <Border x:Name="PART_Tip"
+                        Grid.Row="1"
+                        BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding TipBackground}">
+                    <TextBlock x:Name="PART_TipTextBlock" Text="{TemplateBinding Tip}"
+                                           Background="{TemplateBinding Background}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                           Padding="6,2,6,2"/>
+                </Border>
+                <ContentPresenter x:Name="PART_ContentPresenter" Grid.Row="0"/>
+            </Grid>
+        </Border>
+    </ControlTemplate>
+    <Style TargetType="{x:Type controls:InfoBox}">
+        <Setter Property="TipDock" Value="Left"/>
+        <Setter Property="Foreground" Value="{DynamicResource QTRHacker.Common.Foreground}"/>
+        <Setter Property="TipBackground" Value="#7C7C7C"/>
+        <Setter Property="BorderBrush" Value="#50000000"/>
+        <Style.Triggers>
+            <Trigger Property="TipDock" Value="Left">
+                <Setter Property="Template" Value="{StaticResource InfoBox_Left}"/>
+            </Trigger>
+            <Trigger Property="TipDock" Value="Right">
+                <Setter Property="Template" Value="{StaticResource InfoBox_Right}"/>
+            </Trigger>
+            <Trigger Property="TipDock" Value="Top">
+                <Setter Property="Template" Value="{StaticResource InfoBox_Top}"/>
+            </Trigger>
+            <Trigger Property="TipDock" Value="Bottom">
+                <Setter Property="Template" Value="{StaticResource InfoBox_Bottom}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

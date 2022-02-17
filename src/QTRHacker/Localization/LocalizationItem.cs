@@ -23,7 +23,7 @@ namespace QTRHacker.Localization
 		public LocalizationItem(string key)
 		{
 			Key = key;
-			LocalizationManager.RegisterCultureChanged(this);
+			LocalizationManager.RegisterLocalizationProvider(this);
 		}
 	}
 }

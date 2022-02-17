@@ -12,11 +12,11 @@ public class InfiniteLife : BaseFunction
 	{
 		switch (culture)
 		{
-			case "zh-CN":
+			case "zh":
 				Name = "无限生命";
 				Tooltip = "免疫大部分伤害";
 				break;
-			case "en-US":
+			case "en":
 			default:
 				Name = "Infinite Life";
 				Tooltip = "Immune to most damages except continuous ones like burning";
@@ -44,10 +44,10 @@ public class InfiniteMana : BaseFunction
 	{
 		switch (culture)
 		{
-			case "zh-CN":
+			case "zh":
 				Name = "无限魔法";
 				break;
-			case "en-US":
+			case "en":
 			default:
 				Name = "Infinite Mana";
 				break;
@@ -76,10 +76,10 @@ public class InfiniteOxygen : BaseFunction
 	{
 		switch (culture)
 		{
-			case "zh-CN":
+			case "zh":
 				Name = "无限氧气";
 				break;
-			case "en-US":
+			case "en":
 			default:
 				Name = "Infinite Oxygen";
 				break;
@@ -106,10 +106,10 @@ public class InfiniteMinion : BaseFunction
 	{
 		switch (culture)
 		{
-			case "zh-CN":
+			case "zh":
 				Name = "无限召唤物";
 				break;
-			case "en-US":
+			case "en":
 			default:
 				Name = "Infinite Minion";
 				break;
@@ -138,10 +138,10 @@ public class InfiniteItemAmmo : BaseFunction
 	{
 		switch (culture)
 		{
-			case "zh-CN":
+			case "zh":
 				Name = "无限物品和子弹";
 				break;
-			case "en-US":
+			case "en":
 			default:
 				Name = "Infinite Items and Ammo";
 				break;
@@ -168,10 +168,10 @@ public class InfiniteFlyTime : BaseFunction
 	{
 		switch (culture)
 		{
-			case "zh-CN":
+			case "zh":
 				Name = "无限飞行时间";
 				break;
-			case "en-US":
+			case "en":
 			default:
 				Name = "Infinite Fly Time";
 				break;
@@ -194,8 +194,8 @@ public class InfiniteFlyTime : BaseFunction
 
 FunctionCategory category = new FunctionCategory("Basic1");
 
-category["zh-CN"] = "基础1";
-category["en-US"] = "Basic 1";
+category["zh"] = "基础1";
+category["en"] = "Basic 1";
 
 category.Add<InfiniteLife>();
 category.Add<InfiniteMana>();

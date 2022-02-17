@@ -1,4 +1,6 @@
 ﻿using QTRHacker.Controls;
+using QTRHacker.ViewModels.Wiki;
+using QTRHacker.Views.Wiki;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,19 +33,20 @@ namespace QTRHacker.Views.PagePanels
 
 		public event EventHandler AttachedToGame;
 
-		private void Attach(int pid)
+		private static bool Attach(int pid)
 		{
 			if (pid == 0)
 			{
 				MessageBox.Show("Failed to fetch pid(got 0)", "Error");
-				return;
+				return false;
 			}
 			else if (pid == Environment.ProcessId)
 			{
 				MessageBox.Show("Please drag the cross to Terraria's window.", "Error");
-				return;
+				return false;
 			}
 			HackGlobal.Initialize(pid);
+			return true;
 		}
 
 		private async void Cross_CrossReleased(object sender, CrossReleasedEventArgs e)
@@ -51,15 +54,22 @@ namespace QTRHacker.Views.PagePanels
 			Cross.Visibility = Visibility.Collapsed;
 			LoadingSpinner.Visibility = Visibility.Visible;
 			Point p = (sender as Control).PointToScreen(e.Point);
-			await Task.Run(() =>
+			if (await Task.Run(() =>
 			{
 				nuint hwnd = WindowFromPoint((int)p.X, (int)p.Y);
 				GetWindowThreadProcessId(hwnd, out int pid);
-				Attach(pid);
-			});
-			AttachedToGame?.Invoke(this, new EventArgs());
+				return Attach(pid);
+			}))
+				AttachedToGame?.Invoke(this, new EventArgs());
 			LoadingSpinner.Visibility = Visibility.Collapsed;
 			Cross.Visibility = Visibility.Visible;
+		}
+
+		private void WikiButton_Click(object sender, RoutedEventArgs e)
+		{
+			WikiWindow window = new();
+			window.DataContext = new WikiWindowViewModel();
+			window.Show();
 		}
 	}
 }

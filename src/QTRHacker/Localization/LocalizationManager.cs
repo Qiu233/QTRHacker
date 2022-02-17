@@ -18,14 +18,13 @@ namespace QTRHacker.Localization
 	}
 	public sealed class LocalizationManager
 	{
-		private readonly Dictionary<string, LocSet> Locs = new();
 		private readonly Dictionary<string, string> Current = new();
 		public event EventHandler<CultureChangedEventArgs> CultureChanged;
 		public string CultureName
 		{
 			get => cultureName; 
 		}
-		private LocalizationManager(string initialCulture = "en-US")
+		private LocalizationManager(string initialCulture = "en")
 		{
 			SetCulture(initialCulture);
 		}
@@ -37,11 +36,10 @@ namespace QTRHacker.Localization
 			return key;
 		}
 
-		private LocSet GetLocSet(string culture)
+		private void ApplySet(LocSet set)
 		{
-			if (Locs.TryGetValue(culture, out LocSet s))
-				return s;
-			return Locs[culture] = LocSet.LoadFromRes(culture);
+			foreach (var key in set.Keys)
+				Current[key] = set[key];
 		}
 
 		/// <summary>
@@ -52,9 +50,8 @@ namespace QTRHacker.Localization
 		public void SetCulture(string culture)
 		{
 			cultureName = culture;
-			var set = GetLocSet(culture);
-			foreach (var key in set.Keys)
-				Current[key] = set[key];
+			ApplySet(LocSet.LoadFromRes(culture));
+			ApplySet(LocSet.LoadFromGame(culture));
 			CultureChanged?.Invoke(this, new CultureChangedEventArgs(culture));
 		}
 		private static LocalizationManager _Instance;
@@ -62,10 +59,15 @@ namespace QTRHacker.Localization
 
 		public static LocalizationManager Instance => _Instance ??= new LocalizationManager();
 
-		public static void RegisterCultureChanged(ILocalizationProvider provider)
+		/// <summary>
+		/// This method will dispatch the handler after registering it.
+		/// </summary>
+		/// <param name="provider"></param>
+		public static void RegisterLocalizationProvider(ILocalizationProvider provider)
 		{
 			WeakEventManager<LocalizationManager, CultureChangedEventArgs>.AddHandler(
 				Instance, nameof(CultureChanged), provider.OnCultureChanged);
+			provider.OnCultureChanged(Instance, new CultureChangedEventArgs(Instance.CultureName));
 		}
 	}
 }

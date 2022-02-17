@@ -3,6 +3,7 @@ using QTRHacker.AssetLoaders;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -46,14 +47,17 @@ namespace QTRHacker.Localization
 			return manager;
 		}
 
-		public static LocSet LoadFromGame(GameASMResLoader loader, string culture)
+		public static LocSet LoadFromGame(string culture)
 		{
-			var locs = loader.Cache
-				.Where(t => t.Key.StartsWith($"Terraria.Localization.Content.{culture}") && t.Key.EndsWith(".json"))
-				.Select(t => Encoding.UTF8.GetString(t.Value));
+			using var s = Application.GetResourceStream(new Uri($"pack://application:,,,/QTRHacker;component/Assets/Game/Localization.zip")).Stream;
+			using ZipArchive z = new(s);
+			var es = z.Entries.Where(e => e.FullName.StartsWith($"Content.{culture}"));
 			LocSet manager = new();
-			foreach (var json in locs)
-				manager.Load(json);
+			foreach (var e in es)
+			{
+				using StreamReader sr = new(e.Open());
+				manager.Load(sr.ReadToEnd());
+			}
 			return manager;
 		}
 

@@ -5,5 +5,6 @@
         <ResourceDictionary Source="/QTRHacker;component/Themes/MWindow.xaml"/>
         <ResourceDictionary Source="/QTRHacker;component/Themes/Cross.xaml"/>
         <ResourceDictionary Source="/QTRHacker;component/Themes/ItemSlot.xaml"/>
+        <ResourceDictionary Source="/QTRHacker;component/Themes/InfoBox.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

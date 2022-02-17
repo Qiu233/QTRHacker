@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="QTRHacker.Views.Wiki.Item.ItemInfoSubPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QTRHacker.Views.Wiki.Item" 
+             xmlns:controls="clr-namespace:QTRHacker.Controls"
+             xmlns:converters="clr-namespace:QTRHacker.Converters"
+             mc:Ignorable="d" Padding="3">
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="TextBoxStyle" TargetType="TextBox">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
+            <DataTemplate x:Key="ItemStackInfoTemplate">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}[{0}] {1} * {2}">
+                            <Binding Path="ItemInfo.Type" />
+                            <Binding Path="ItemInfo.Name" />
+                            <Binding Path="Stack" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </DataTemplate>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
+            <controls:InfoBox Tip="Icon" TipDock="Top" DockPanel.Dock="Left">
+                <Border Padding="10" Width="100" Height="60">
+                    <Image Stretch="Uniform"
+                       Source="{Binding ItemInfo.Type, Converter={x:Static converters:ItemTypeToImageConverter.Instance}}"/>
+                </Border>
+            </controls:InfoBox>
+            <controls:InfoBox Tip="Details" TipDock="Top" Margin="3,0,0,0">
+                <StackPanel Grid.IsSharedSizeScope="True">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
+                            <Setter Property="TextAlignment" Value="Right"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="controls:InfoBox">
+                            <Setter Property="TipSharedSizeScope" Value="FirstColumn"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <controls:InfoBox x:Name="NameInfoBox" Tip="Name">
+                        <TextBox Text="{Binding ItemInfo.Name, Mode=OneWay}"/>
+                    </controls:InfoBox>
+                    <controls:InfoBox Tip="Category">
+                        <TextBox Text="{Binding ItemInfo.Category, Mode=OneWay}"/>
+                    </controls:InfoBox>
+                    <controls:InfoBox Tip="Value">
+                        <TextBox Text="{Binding ItemInfo.Data.Value, Mode=OneWay}"/>
+                    </controls:InfoBox>
+                </StackPanel>
+            </controls:InfoBox>
+
+        </DockPanel>
+        <controls:InfoBox Grid.Row="1" TipDock="Left" Tip="Tooltip" Margin="0,3,0,0" Height="80">
+            <TextBox Style="{StaticResource TextBoxStyle}" Text="{Binding Tooltip, Mode=OneWay}" TextWrapping="Wrap"/>
+        </controls:InfoBox>
+
+        <controls:InfoBox Grid.Row="2" TipDock="Top" Tip="Recipe(From)" Margin="0,3,0,0" Height="120">
+            <TabControl Background="Transparent" ItemsSource="{Binding RecipeFroms}" SelectedIndex="{Binding SelectedRecipeFrom}">
+                <TabControl.Resources>
+                    <SolidColorBrush x:Key="TabControl.Background.Header" Color="#808080"/>
+                    <SolidColorBrush x:Key="TabItem.Background.Selected" Color="#909090"/>
+                </TabControl.Resources>
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Tab}"/>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <ListBox ItemsSource="{Binding RequiredItems}" Background="Transparent" ItemTemplate="{StaticResource ItemStackInfoTemplate}"/>
+
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+        </controls:InfoBox>
+
+        <controls:InfoBox Grid.Row="3" TipDock="Top" Tip="Recipe(To)" Margin="0,3,0,0" Height="120">
+            <ListBox Background="Transparent" ItemsSource="{Binding RecipeTos}" ItemTemplate="{StaticResource ItemStackInfoTemplate}"/>
+        </controls:InfoBox>
+
+        <controls:InfoBox Grid.Row="4" TipDock="Left" Tip="Value" Margin="0,3,0,0">
+            <TextBox Style="{StaticResource TextBoxStyle}" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, Mode=OneWay}">
+            </TextBox>
+        </controls:InfoBox>
+    </Grid>
+</UserControl>

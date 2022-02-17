@@ -10,10 +10,10 @@ using System.Windows.Media.Imaging;
 
 namespace QTRHacker.Assets
 {
-	public static class AssetsLoader
+	public static class GameImages
 	{
 		private static readonly Dictionary<string, BitmapImage> ImagesCache = new();
-		static AssetsLoader()
+		static GameImages()
 		{
 			LoadGameImages();
 		}
