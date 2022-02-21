@@ -22,6 +22,8 @@ namespace QTRHacker.ViewModels.PagePanels
 		} = new();
 		private static readonly object _lock_update = new();
 		private PlayerInfo selectedPlayerInfo;
+		private readonly RelayCommand editPlayerCommand;
+		private readonly RelayCommand tpToPlayerCommand;
 
 		public PlayerInfo SelectedPlayerInfo
 		{
@@ -30,36 +32,13 @@ namespace QTRHacker.ViewModels.PagePanels
 			{
 				selectedPlayerInfo = value;
 				OnPropertyChanged(nameof(SelectedPlayerInfo));
+				EditPlayerCommand.TriggerCanExecuteChanged();
+				TPToPlayerCommand.TriggerCanExecuteChanged();
 			}
 		}
 
-		public ICommand EditPlayerCommand
-		{
-			get
-			{
-				return new RelayCommand(GetIsPlayerSelected, (o) =>
-				{
-					var player = HackGlobal.GameContext.Players[SelectedPlayerInfo.ID];
-					if (!player.Active)
-						return;
-					PlayerEditorWindow window = new();
-					window.DataContext = new PlayerEditorWindowViewModel(player);
-					window.Show();
-				});
-			}
-		}
-		public ICommand TPToPlayerCommand
-		{
-			get
-			{
-				return new RelayCommand(GetIsPlayerSelected, (o) =>
-				{
-					var player = HackGlobal.GameContext.Players[SelectedPlayerInfo.ID];
-					if (!player.Active)
-						return;
-				});
-			}
-		}
+		public RelayCommand EditPlayerCommand => editPlayerCommand;
+		public RelayCommand TPToPlayerCommand => tpToPlayerCommand;
 
 		private bool GetIsPlayerSelected(object o) => SelectedPlayerInfo is not null;
 
@@ -86,6 +65,21 @@ namespace QTRHacker.ViewModels.PagePanels
 
 		public PlayersPageViewModel()
 		{
+			editPlayerCommand = new RelayCommand(GetIsPlayerSelected, (o) =>
+			{
+				var player = HackGlobal.GameContext.Players[SelectedPlayerInfo.ID];
+				if (!player.Active)
+					return;
+				PlayerEditorWindow window = new();
+				window.DataContext = new PlayerEditorWindowViewModel(player);
+				window.Show();
+			});
+			tpToPlayerCommand = new(GetIsPlayerSelected, (o) =>
+			{
+				var player = HackGlobal.GameContext.Players[SelectedPlayerInfo.ID];
+				if (!player.Active)
+					return;
+			});
 			if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
 			{
 				PlayerUpdate = new();

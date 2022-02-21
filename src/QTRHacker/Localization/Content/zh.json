@@ -1,7 +1,52 @@
 ﻿{
   "Name": "简体中文",
   "UI": {
+    "DirectFunction": "基础功能",
     "MainPage": "主页",
-    "Player": "玩家"
+    "Player": "玩家",
+    "Name": "名称",
+    "Edit": "编辑",
+    "TPTo": "传送至",
+    "Inventory": "背包",
+    "Piggy": "猪猪罐",
+    "Apply": "应用",
+    "Initialize": "初始化",
+    "ItemProperties": {
+      "Type": "类型",
+      "Damage": "攻击力",
+      "Stack": "数量",
+      "KnockBack": "击退",
+      "Crit": "暴击",
+      "Scale": "缩放",
+      "BuffType": "Buff类型",
+      "BuffTime": "Buff时间",
+      "HealMana": "魔法回复",
+      "HealLife": "生命回复",
+      "UseTime": "使用CD",
+      "UseAnimation": "挥动CD",
+      "Defense": "防御",
+      "FishingPole": "鱼竿",
+      "Bait": "鱼饵",
+      "Shoot": "弹幕",
+      "ShootSpeed": "弹幕速度",
+      "Pick": "镐力",
+      "Axe": "斧力",
+      "Hammer": "锤力",
+      "CreateTile": "方块",
+      "PlaceStyle": "特殊值",
+      "CreateWall": "墙壁",
+      "Prefix": "前缀",
+      "AutoReuse": "长按鼠标连续使用",
+      "Accessory": "饰品"
+    },
+    "ItemValue": {
+      "Platinum": "铂",
+      "Gold": "金",
+      "Silver": "银",
+      "Copper": "铜"
+    }
+  },
+  "Tip": {
+    "DragCrossToGame": "拖动右边准星到Terraria游戏窗口"
   }
 }
