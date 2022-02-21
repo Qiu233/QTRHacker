@@ -7,7 +7,7 @@
         xmlns:wiki_Item="clr-namespace:QTRHacker.Views.Wiki.Item"
         xmlns:local="clr-namespace:QTRHacker.Views.Wiki"
         mc:Ignorable="d"
-        Title="Wiki" Height="560" SizeToContent="Width">
+        Title="Wiki" Height="540" SizeToContent="Width">
     <Grid>
         <TabControl Background="#30FFFFFF">
             <TabItem Header="Items">

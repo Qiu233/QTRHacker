@@ -9,7 +9,6 @@
     xmlns:pagepanels="clr-namespace:QTRHacker.Views.PagePanels"
     xmlns:l="clr-namespace:QTRHacker.Localization"
     mc:Ignorable="d"
-    Title="QTRHacker"
     WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True"
     >
     <Grid>

@@ -9,11 +9,6 @@
              mc:Ignorable="d" Padding="3">
     <Grid>
         <Grid.Resources>
-            <Style x:Key="TextBoxStyle" TargetType="TextBox">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
-            </Style>
-
             <DataTemplate x:Key="ItemStackInfoTemplate">
                 <TextBlock>
                     <TextBlock.Text>
@@ -43,29 +38,29 @@
             <controls:InfoBox Tip="Details" TipDock="Top" Margin="3,0,0,0">
                 <StackPanel Grid.IsSharedSizeScope="True">
                     <StackPanel.Resources>
-                        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
+                        <Style TargetType="TextBox" BasedOn="{StaticResource QTRHacker.WikiTextBoxStyleBase}">
                             <Setter Property="TextAlignment" Value="Right"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                         </Style>
                         <Style TargetType="controls:InfoBox">
-                            <Setter Property="TipSharedSizeScope" Value="FirstColumn"/>
+                            <Setter Property="TipSharedSizeScope" Value="TipColumn"/>
                         </Style>
                     </StackPanel.Resources>
-                    <controls:InfoBox x:Name="NameInfoBox" Tip="Name">
+                    <controls:InfoBox Tip="Name">
                         <TextBox Text="{Binding ItemInfo.Name, Mode=OneWay}"/>
                     </controls:InfoBox>
                     <controls:InfoBox Tip="Category">
                         <TextBox Text="{Binding ItemInfo.Category, Mode=OneWay}"/>
                     </controls:InfoBox>
-                    <controls:InfoBox Tip="Value">
-                        <TextBox Text="{Binding ItemInfo.Data.Value, Mode=OneWay}"/>
+                    <controls:InfoBox Tip="Rare">
+                        <TextBox Text="{Binding ItemInfo.Data.Rare, Mode=OneWay}"/>
                     </controls:InfoBox>
                 </StackPanel>
             </controls:InfoBox>
 
         </DockPanel>
         <controls:InfoBox Grid.Row="1" TipDock="Left" Tip="Tooltip" Margin="0,3,0,0" Height="80">
-            <TextBox Style="{StaticResource TextBoxStyle}" Text="{Binding Tooltip, Mode=OneWay}" TextWrapping="Wrap"/>
+            <TextBox Style="{StaticResource QTRHacker.WikiTextBoxStyleBase}" Text="{Binding ItemInfo.Tooltip, Mode=OneWay}" TextWrapping="Wrap"/>
         </controls:InfoBox>
 
         <controls:InfoBox Grid.Row="2" TipDock="Top" Tip="Recipe(From)" Margin="0,3,0,0" Height="120">
@@ -88,12 +83,12 @@
             </TabControl>
         </controls:InfoBox>
 
-        <controls:InfoBox Grid.Row="3" TipDock="Top" Tip="Recipe(To)" Margin="0,3,0,0" Height="120">
+        <controls:InfoBox Grid.Row="3" TipDock="Top" Tip="Recipe(To)" Margin="0,3,0,0" Height="100">
             <ListBox Background="Transparent" ItemsSource="{Binding RecipeTos}" ItemTemplate="{StaticResource ItemStackInfoTemplate}"/>
         </controls:InfoBox>
 
         <controls:InfoBox Grid.Row="4" TipDock="Left" Tip="Value" Margin="0,3,0,0">
-            <TextBox Style="{StaticResource TextBoxStyle}" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, Mode=OneWay}">
+            <TextBox Style="{StaticResource QTRHacker.WikiTextBoxStyleBase}" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, Mode=OneWay}">
             </TextBox>
         </controls:InfoBox>
     </Grid>

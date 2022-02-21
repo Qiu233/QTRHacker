@@ -21,6 +21,10 @@
             <SolidColorBrush x:Key="QTRHacker.Error">#FF5050</SolidColorBrush>
 
 
+            <Style x:Key="QTRHacker.WikiTextBoxStyleBase" TargetType="TextBox">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
 
             <Style x:Key="QTRHacker.StripButtonStyle" TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="{StaticResource QTRHacker.StripButton.Background}"/>

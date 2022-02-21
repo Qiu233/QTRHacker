@@ -7,7 +7,7 @@
              xmlns:l="clr-namespace:QTRHacker.Localization"
              mc:Ignorable="d" 
              d:DesignHeight="320">
-    <Grid>
+    <Grid Background="#404040">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>

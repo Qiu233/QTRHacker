@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="QTRHacker.Views.Wiki.Item.ItemFilterSubPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QTRHacker.Views.Wiki.Item"
+             xmlns:vm="clr-namespace:QTRHacker.ViewModels.Wiki.Item"
+             xmlns:l="clr-namespace:QTRHacker.Localization"
+             mc:Ignorable="d" Padding="3" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="HeaderRow" Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="1"
+                                    BorderThickness="1,0,1,1"
+                                    BorderBrush="#40000000" Background="Transparent">
+                                <ContentPresenter Margin="{TemplateBinding Padding}" />
+                            </Border>
+                            <Border Grid.Row="0"
+                                    BorderThickness="1,1,1,0"
+                                    BorderBrush="#40000000" Background="Transparent">
+
+                                <ContentPresenter Margin="10,4,10,4"
+                                                  ContentSource="Header"
+                                                  RecognizesAccessKey="True" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <StackPanel>
+        <GroupBox Header="Filter" Foreground="Black" Padding="10,5,10,5">
+            <ItemsControl ItemsSource="{Binding CategoryFilters}" Focusable="False">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox VerticalContentAlignment="Center"
+                                  IsChecked="{Binding IsSelected}" Content="{Binding Hint}" Focusable="False"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </GroupBox>
+        <Grid>
+            <Grid Margin="40,5,40,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Keyword:" FontSize="14"/>
+                <TextBox Grid.Column="1" Background="Transparent"
+                     Margin="5,0,0,0" AcceptsReturn="False" 
+                     TextWrapping="NoWrap" VerticalContentAlignment="Center"
+                     Text="{Binding KeywordInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+            </Grid>
+        </Grid>
+        <Grid Margin="0,5,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="{l:Localization UI.ReverseSelection}" Focusable="False" Command="{Binding ReverseSelection}"/>
+                <Button Content="{l:Localization UI.Search}" Margin="3,0,0,0" Focusable="False" Command="{Binding ApplyKeyword}"/>
+                <Button Content="{l:Localization UI.Reset}" Margin="3,0,0,0" Focusable="False" Command="{Binding ResetFilter}"/>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

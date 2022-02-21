@@ -32,7 +32,7 @@
                               ItemsSource="{Binding Source}" DisplayMemberPath="Name"
                               SelectedValuePath="Value" SelectedValue="{Binding Value, Mode=TwoWay}">
                     </ComboBox>
-                    <TextBlock Text="{Binding Tip}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Tip}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{StaticResource QTRHacker.Light.Tip.Foreground}">
                     </TextBlock>
                 </DockPanel>
             </DataTemplate>

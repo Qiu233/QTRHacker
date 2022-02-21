@@ -11,6 +11,9 @@
     "Piggy": "Piggy",
     "Apply": "Apply",
     "Initialize": "Initialize",
+    "ReverseSelection": "Reverse",
+    "Search": "Search",
+    "Reset": "Reset",
     "ItemProperties": {
       "Type": "Type",
       "Damage": "Damage",
@@ -23,7 +26,7 @@
       "HealMana": "Heal Mana",
       "HealLife": "Heal Life",
       "UseTime": "UseTime",
-      "UseAnimation": "UseAnimation",
+      "UseAnimation": "UseAnim",
       "Defense": "Defense",
       "FishingPole": "FishingPole",
       "Bait": "Bait",
@@ -37,13 +40,31 @@
       "CreateWall": "Wall Type",
       "Prefix": "Prefix",
       "AutoReuse": "Auto Reuse",
-      "Accessory": "Accessory"
+      "Accessory": "Accessory",
+      "TileBoost": "Tile Boost",
+      "Mana": "Mana"
     },
     "ItemValue": {
       "Platinum": "P",
       "Gold": "G",
       "Silver": "S",
       "Copper": "C"
+    },
+    "ItemCategories": {
+      "Others": "Others",
+      "Block": "Block",
+      "Wall": "Wall",
+      "Quest": "Quest",
+      "Head": "Head",
+      "Body": "Body",
+      "Leg": "Leg",
+      "Accessory": "Accessory",
+      "Melee": "Melee",
+      "Ranged": "Ranged",
+      "Magic": "Magic",
+      "Summon": "Summon",
+      "Buff": "Buff",
+      "Consumable": "Consumable"
     }
   },
   "Tip": {

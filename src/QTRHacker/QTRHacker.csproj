@@ -11,6 +11,7 @@
     <ProduceReferenceAssemblies>false</ProduceReferenceAssemblies>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
+    <Version>10.0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

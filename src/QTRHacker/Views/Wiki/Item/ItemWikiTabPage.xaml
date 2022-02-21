@@ -17,22 +17,33 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Type}"/>
-                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Category" Width="100" DisplayMemberBinding="{Binding Category}"/>
+                    <GridViewColumn Header="Name" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Category" Width="160">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Category}" TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-        <TabControl Grid.Column="1" Margin="3,0,0,0" Width="320"
-                    DataContext="{Binding ItemInfoSubPageViewModel}" Background="#C8C8C8">
+        <TabControl Grid.Column="1" Margin="3,0,0,0" Width="360"
+                    DataContext="{Binding ItemInfoPagesViewModel}" Background="#C8C8C8">
             <TabItem Header="Item Info">
-                <local:ItemInfoSubPage>
-                </local:ItemInfoSubPage>
+                <local:ItemInfoSubPage/>
             </TabItem>
             <TabItem Header="Details">
-
+                <local:ItemDetailsSubPage/>
             </TabItem>
             <TabItem Header="Filter">
-
+                <local:ItemFilterSubPage/>
             </TabItem>
         </TabControl>
     </Grid>

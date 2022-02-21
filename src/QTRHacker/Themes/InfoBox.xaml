@@ -78,6 +78,7 @@
         </Border>
     </ControlTemplate>
     <Style TargetType="{x:Type controls:InfoBox}">
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="TipDock" Value="Left"/>
         <Setter Property="Foreground" Value="{DynamicResource QTRHacker.Common.Foreground}"/>
         <Setter Property="TipBackground" Value="#7C7C7C"/>
