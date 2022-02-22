@@ -10,6 +10,5 @@ namespace QTRHacker.Configs
 	{
 		public int ItemUpdateInterval = 200;//milliseconds
 		public int PlayersListUpdateInterval = 500;//milliseconds
-		public string Culture = "en-US";
 	}
 }

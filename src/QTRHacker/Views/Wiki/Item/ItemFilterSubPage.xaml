@@ -37,7 +37,7 @@
         </Style>
     </UserControl.Resources>
     <StackPanel>
-        <GroupBox Header="Filter" Foreground="Black" Padding="10,5,10,5">
+        <GroupBox Header="{l:Localization UI.Filter}" Foreground="Black" Padding="10,5,10,5">
             <ItemsControl ItemsSource="{Binding CategoryFilters}" Focusable="False">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -58,7 +58,13 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Keyword:" FontSize="14"/>
+                <Label FontSize="14">
+                    <Label.Content>
+                        <MultiBinding StringFormat="{}{0}:">
+                            <l:Localization Key="UI.Keyword"/>
+                        </MultiBinding>
+                    </Label.Content>
+                </Label>
                 <TextBox Grid.Column="1" Background="Transparent"
                      Margin="5,0,0,0" AcceptsReturn="False" 
                      TextWrapping="NoWrap" VerticalContentAlignment="Center"

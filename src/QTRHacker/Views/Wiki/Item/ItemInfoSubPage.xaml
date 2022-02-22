@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QTRHacker.Views.Wiki.Item" 
+             xmlns:l="clr-namespace:QTRHacker.Localization"
              xmlns:controls="clr-namespace:QTRHacker.Controls"
              xmlns:converters="clr-namespace:QTRHacker.Converters"
              mc:Ignorable="d" Padding="3">
@@ -29,13 +30,13 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
-            <controls:InfoBox Tip="Icon" TipDock="Top" DockPanel.Dock="Left">
+            <controls:InfoBox Tip="{l:Localization UI.Icon}" TipDock="Top" DockPanel.Dock="Left">
                 <Border Padding="10" Width="100" Height="60">
                     <Image Stretch="Uniform"
                        Source="{Binding ItemInfo.Type, Converter={x:Static converters:ItemTypeToImageConverter.Instance}}"/>
                 </Border>
             </controls:InfoBox>
-            <controls:InfoBox Tip="Details" TipDock="Top" Margin="3,0,0,0">
+            <controls:InfoBox Tip="{l:Localization UI.Details}" TipDock="Top" Margin="3,0,0,0">
                 <StackPanel Grid.IsSharedSizeScope="True">
                     <StackPanel.Resources>
                         <Style TargetType="TextBox" BasedOn="{StaticResource QTRHacker.WikiTextBoxStyleBase}">
@@ -46,24 +47,29 @@
                             <Setter Property="TipSharedSizeScope" Value="TipColumn"/>
                         </Style>
                     </StackPanel.Resources>
-                    <controls:InfoBox Tip="Name">
+                    <controls:InfoBox Tip="{l:Localization UI.Name}">
                         <TextBox Text="{Binding ItemInfo.Name, Mode=OneWay}"/>
                     </controls:InfoBox>
-                    <controls:InfoBox Tip="Category">
+                    <controls:InfoBox Tip="{l:Localization UI.Category}">
                         <TextBox Text="{Binding ItemInfo.Category, Mode=OneWay}"/>
                     </controls:InfoBox>
-                    <controls:InfoBox Tip="Rare">
+                    <controls:InfoBox Tip="{l:Localization UI.Rare}">
                         <TextBox Text="{Binding ItemInfo.Data.Rare, Mode=OneWay}"/>
                     </controls:InfoBox>
                 </StackPanel>
             </controls:InfoBox>
 
         </DockPanel>
-        <controls:InfoBox Grid.Row="1" TipDock="Left" Tip="Tooltip" Margin="0,3,0,0" Height="80">
+        <controls:InfoBox Grid.Row="1" TipDock="Left" Tip="{l:Localization UI.Tooltip}" Margin="0,3,0,0" Height="80">
             <TextBox Style="{StaticResource QTRHacker.WikiTextBoxStyleBase}" Text="{Binding ItemInfo.Tooltip, Mode=OneWay}" TextWrapping="Wrap"/>
         </controls:InfoBox>
 
-        <controls:InfoBox Grid.Row="2" TipDock="Top" Tip="Recipe(From)" Margin="0,3,0,0" Height="120">
+        <controls:InfoBox Grid.Row="2" TipDock="Top" Margin="0,3,0,0" Height="120">
+            <controls:InfoBox.Tip>
+                <MultiBinding StringFormat="{}{0}(From)">
+                    <l:Localization Key="UI.Recipe"/>
+                </MultiBinding>
+            </controls:InfoBox.Tip>
             <TabControl Background="Transparent" ItemsSource="{Binding RecipeFroms}" SelectedIndex="{Binding SelectedRecipeFrom}">
                 <TabControl.Resources>
                     <SolidColorBrush x:Key="TabControl.Background.Header" Color="#808080"/>
@@ -83,11 +89,16 @@
             </TabControl>
         </controls:InfoBox>
 
-        <controls:InfoBox Grid.Row="3" TipDock="Top" Tip="Recipe(To)" Margin="0,3,0,0" Height="100">
+        <controls:InfoBox Grid.Row="3" TipDock="Top" Margin="0,3,0,0" Height="100">
+            <controls:InfoBox.Tip>
+                <MultiBinding StringFormat="{}{0}(To)">
+                    <l:Localization Key="UI.Recipe"/>
+                </MultiBinding>
+            </controls:InfoBox.Tip>
             <ListBox Background="Transparent" ItemsSource="{Binding RecipeTos}" ItemTemplate="{StaticResource ItemStackInfoTemplate}"/>
         </controls:InfoBox>
 
-        <controls:InfoBox Grid.Row="4" TipDock="Left" Tip="Value" Margin="0,3,0,0">
+        <controls:InfoBox Grid.Row="4" TipDock="Left" Tip="{l:Localization UI.Wiki.Value}" Margin="0,3,0,0">
             <TextBox Style="{StaticResource QTRHacker.WikiTextBoxStyleBase}" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, Mode=OneWay}">
             </TextBox>
         </controls:InfoBox>

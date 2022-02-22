@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QTRHacker.Views.Wiki.Item"
+             xmlns:l="clr-namespace:QTRHacker.Localization"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Padding="3">
     <Grid>
@@ -17,14 +18,14 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Type}"/>
-                    <GridViewColumn Header="Name" Width="200">
+                    <GridViewColumn Header="{l:Localization UI.Name}" Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Category" Width="160">
+                    <GridViewColumn Header="{l:Localization UI.Category}" Width="160">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Category}" TextTrimming="CharacterEllipsis"/>
@@ -36,13 +37,13 @@
         </ListView>
         <TabControl Grid.Column="1" Margin="3,0,0,0" Width="360"
                     DataContext="{Binding ItemInfoPagesViewModel}" Background="#C8C8C8">
-            <TabItem Header="Item Info">
+            <TabItem Header="{l:Localization UI.ItemInfo}">
                 <local:ItemInfoSubPage/>
             </TabItem>
-            <TabItem Header="Details">
+            <TabItem Header="{l:Localization UI.Details}">
                 <local:ItemDetailsSubPage/>
             </TabItem>
-            <TabItem Header="Filter">
+            <TabItem Header="{l:Localization UI.Filter}">
                 <local:ItemFilterSubPage/>
             </TabItem>
         </TabControl>

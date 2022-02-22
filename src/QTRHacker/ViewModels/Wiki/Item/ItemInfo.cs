@@ -1,6 +1,8 @@
 ﻿using QTRHacker.Assets;
 using QTRHacker.Localization;
 using QTRHacker.Models.Wiki;
+using System;
+using System.Linq;
 
 namespace QTRHacker.ViewModels.Wiki.Item;
 
@@ -22,7 +24,12 @@ public class ItemInfo : ViewModelBase, ILocalizationProvider
 		name = LocalizationManager.Instance.GetValue($"ItemName.{Key}");
 		OnPropertyChanged(nameof(Name));
 		var c = GetItemCategory();
-		category = c.ToString();
+		var values = Enum.GetValues<ItemCategory>()
+			.Where(t => t != ItemCategory.Others && c.HasFlag(t))
+			.Select(t => LocalizationManager.Instance.GetValue($"UI.ItemCategories.{t}"));
+		category = string.Join(", ", values);
+		if (!category.Any())
+			category = LocalizationManager.Instance.GetValue("UI.ItemCategories.Others");
 		OnPropertyChanged(nameof(Category));
 		string key = $"ItemTooltip.{Key}";
 		tooltip = LocalizationManager.Instance.GetValue(key);

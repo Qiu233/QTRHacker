@@ -13,6 +13,7 @@ namespace QTRHacker.Localization
 		public string Key
 		{
 			get;
+			set;
 		}
 
 		public LocalizationExtension(string key)
