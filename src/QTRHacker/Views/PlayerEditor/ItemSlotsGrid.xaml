@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="QTRHacker.Views.PlayerEditor.ItemSlotsGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor" 
+             xmlns:controls="clr-namespace:QTRHacker.Controls"
+             xmlns:vm="clr-namespace:QTRHacker.ViewModels.PlayerEditor"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" VerticalAlignment="Center" VerticalContentAlignment="Center">
+    <ItemsControl ItemsSource="{Binding Slots}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <controls:UniformGridEx/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemContainerStyle>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="controls:UniformGridEx.Column" Value="{Binding Path=Column}" />
+                <Setter Property="controls:UniformGridEx.Row" Value="{Binding Path=Row}" />
+            </Style>
+        </ItemsControl.ItemContainerStyle>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate DataType="{x:Type vm:ItemSlotViewModel}">
+                <controls:ItemSlot ItemImageSource="{Binding ItemImage}" ItemStack="{Binding Stack}" GroupName="Items"
+                                   Width="{Binding SlotWidth}" Height="{Binding SlotWidth}" Margin="{Binding SlotMargin}"
+                                   IsChecked="{Binding IsSelected}" Background="#505050"/>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>

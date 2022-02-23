@@ -13,17 +13,21 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <local:ItemSlotsPanel d:Width="550"  x:Name="ItemSlotsPanel" Grid.Column="0" 
-                              SlotsLayout="{Binding SlotsLayout}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
-        </local:ItemSlotsPanel>
+        <local:ItemSlotsGrid x:Name="ItemSlotsPanel" Grid.Column="0" Margin="2,6,2,6" DataContext="{Binding ItemSlotsGridViewModel}">
+        </local:ItemSlotsGrid>
         <local:ItemPropertiesPanel d:Width="190" x:Name="ItemPropertiesPanel" Grid.Column="1" Margin="5,0,0,0"
                                    DataContext="{Binding ItemPropertiesPanelViewModel}">
         </local:ItemPropertiesPanel>
         <StackPanel Grid.Column="2" Margin="0,12,3,0">
-            <Button x:Name="ApplyButton" Style="{StaticResource QTRHacker.StripButtonStyle}" Content="{l:Localization UI.Apply}"
-                    Click="ApplyButton_Click"/>
-            <Button x:Name="InitButton" Style="{StaticResource QTRHacker.StripButtonStyle}" Content="{l:Localization UI.Initialize}" 
-                    Click="InitButton_Click"/>
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource QTRHacker.StripButtonStyle}"/>
+            </StackPanel.Resources>
+            <Button x:Name="ApplyButton"
+                    Content="{l:Localization UI.Apply}"
+                    Command="{Binding ApplyItemData}"/>
+            <Button x:Name="InitButton"
+                    Content="{l:Localization UI.Initialize}" 
+                    Command="{Binding InitItemData}"/>
         </StackPanel>
     </Grid>
 </UserControl>

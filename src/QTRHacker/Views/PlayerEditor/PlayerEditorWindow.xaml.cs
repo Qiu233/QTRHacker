@@ -15,6 +15,7 @@ using QTRHacker.Functions.GameObjects.Terraria;
 using System.Windows.Threading;
 using QTRHacker.Controls;
 using QTRHacker.ViewModels.PlayerEditor;
+using System.ComponentModel;
 
 namespace QTRHacker.Views.PlayerEditor
 {
@@ -23,20 +24,15 @@ namespace QTRHacker.Views.PlayerEditor
 	/// </summary>
 	public partial class PlayerEditorWindow : MWindow
 	{
-		public DispatcherTimer ItemUpdateTimer { get; }
 		public PlayerEditorWindowViewModel ViewModel => DataContext as PlayerEditorWindowViewModel;
 		public PlayerEditorWindow()
 		{
 			InitializeComponent();
-
-			ItemUpdateTimer = new();
-			ItemUpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.ItemUpdateInterval);
-			ItemUpdateTimer.Tick += (s, e) =>
-			{
-				InvEditor.UpdateAll();
-				PiggyEditor.UpdateAll();
-			};
-			ItemUpdateTimer.Start();
+		}
+		protected override void OnClosed(EventArgs e)
+		{
+			base.OnClosed(e);
+			ViewModel.UpdateTimer.Stop();//I found no cleaner way to dispose the timer or the whole viewmodel
 		}
 	}
 }

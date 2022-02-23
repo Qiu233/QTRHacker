@@ -7,29 +7,31 @@
                     mc:Ignorable="d"
                     >
     <ControlTemplate x:Key="ItemSlotTemplate" TargetType="{x:Type controls:ItemSlot}">
-        <Border Padding="0" Background="#505050" HorizontalAlignment="Center" VerticalAlignment="Center"
+        <Border Padding="0" Background="{TemplateBinding Background}" HorizontalAlignment="Center" VerticalAlignment="Center"
                 Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+                <Border x:Name="PART_MaskBorder" BorderThickness="0" Background="#10FFFFFF" Visibility="Hidden" Grid.RowSpan="2"/>
                 <Grid Margin="10" Grid.RowSpan="2">
-                    <Image x:Name="PART_ItemImage" Stretch="Uniform" 
-                       Source="{TemplateBinding ItemType, Converter={x:Static converters:ItemTypeToImageConverter.Instance}}">
-                    </Image>
+                    <Image x:Name="PART_ItemImage" Stretch="Uniform" Source="{TemplateBinding ItemImageSource}"/>
                 </Grid>
                 <TextBlock Margin="4,0,0,2" FontSize="12"
                     Text="{TemplateBinding ItemStack, Converter={x:Static converters:ItemStackToHintConverter.Instance}}" Grid.Row="1"/>
-                <Border x:Name="PART_Border" BorderThickness="0" BorderBrush="#FF8800" Grid.RowSpan="2"/>
+                <Border x:Name="PART_Border" BorderThickness="0" BorderBrush="{TemplateBinding SelectedBorderBrush}" Grid.RowSpan="2"/>
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsChecked" Value="True">
-                <Setter TargetName="PART_Border" Property="BorderThickness" Value="2"></Setter>
+                <Setter TargetName="PART_Border" Property="BorderThickness" Value="2"/>
             </Trigger>
             <Trigger Property="IsChecked" Value="False">
-                <Setter TargetName="PART_Border" Property="BorderThickness" Value="0"></Setter>
+                <Setter TargetName="PART_Border" Property="BorderThickness" Value="0"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="PART_MaskBorder" Property="Visibility" Value="Visible"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

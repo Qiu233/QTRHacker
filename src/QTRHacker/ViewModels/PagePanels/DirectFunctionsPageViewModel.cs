@@ -58,15 +58,20 @@ namespace QTRHacker.ViewModels.PagePanels
 			return null;
 		}
 
+		private IEnumerable<FunctionCategory> GetAllFunctions()
+		{
+			return Directory.EnumerateFiles(PATH_FUNCS, "*.cs")
+				.ToList()
+				.Select(t => LoadFunctionsFromFile(t))
+				.Where(t => t is not null);
+		}
+
 		public void UpdateFunctionsList()
 		{
 			TabItems.Clear();
 			HackGlobal.Logging.Enter("Initializing functions from scripts.");
 			Functions.Clear();
-			Functions.AddRange(Directory.EnumerateFiles(PATH_FUNCS, "*.cs")
-				.ToList()
-				.Select(t => LoadFunctionsFromFile(t))
-				.Where(t => t is not null));
+			Functions.AddRange(GetAllFunctions());
 			foreach (FunctionCategory group in Functions)
 			{
 				var itemsControl = GetOrCreateTab(group[LocalizationManager.Instance.CultureName]).Content as FunctionsBox;

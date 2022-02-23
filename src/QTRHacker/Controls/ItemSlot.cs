@@ -13,13 +13,14 @@ namespace QTRHacker.Controls
 {
 	public class ItemSlot : RadioButton
 	{
-		public int ItemType
+		public ImageSource ItemImageSource
 		{
-			get => (int)GetValue(ItemTypeProperty);
-			set => SetValue(ItemTypeProperty, value);
+			get => (ImageSource)GetValue(ItemImageSourceProperty);
+			set => SetValue(ItemImageSourceProperty, value);
 		}
-		public static readonly DependencyProperty ItemTypeProperty =
-			DependencyProperty.Register(nameof(ItemType), typeof(int), typeof(ItemSlot), new PropertyMetadata(0));
+		public static readonly DependencyProperty ItemImageSourceProperty =
+			DependencyProperty.Register(nameof(ItemImageSource), typeof(ImageSource), typeof(ItemSlot));
+
 
 		public int ItemStack
 		{
@@ -37,17 +38,22 @@ namespace QTRHacker.Controls
 		public static readonly DependencyProperty TintColorProperty =
 			DependencyProperty.Register(nameof(TintColor), typeof(Color), typeof(ItemSlot), new PropertyMetadata(Colors.White));
 
+		public Brush SelectedBorderBrush
+		{
+			get => (Brush)GetValue(SelectedBorderBrushProperty);
+			set => SetValue(SelectedBorderBrushProperty, value);
+		}
+		public static readonly DependencyProperty SelectedBorderBrushProperty =
+			DependencyProperty.Register(nameof(SelectedBorderBrush), typeof(Brush), typeof(ItemSlot), 
+				new PropertyMetadata(new SolidColorBrush(Color.FromRgb(0xFF, 0x88, 0x00))));
+
+
 		public ItemSlot()
 		{
 		}
 		static ItemSlot()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(ItemSlot), new FrameworkPropertyMetadata(typeof(ItemSlot)));
-		}
-
-		public override void OnApplyTemplate()
-		{
-			base.OnApplyTemplate();
 		}
 	}
 }

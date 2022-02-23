@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:QTRHacker.Controls"
         xmlns:wiki_Item="clr-namespace:QTRHacker.Views.Wiki.Item"
+        xmlns:wiki_NPC="clr-namespace:QTRHacker.Views.Wiki.NPC"
         xmlns:local="clr-namespace:QTRHacker.Views.Wiki"
         mc:Ignorable="d"
         Title="Wiki" Height="540" SizeToContent="Width">
@@ -14,7 +15,7 @@
                 <wiki_Item:ItemWikiTabPage DataContext="{Binding ItemPageViewModel}"/>
             </TabItem>
             <TabItem Header="NPCs">
-                
+                <wiki_NPC:NPCWikiTabPage/>
             </TabItem>
         </TabControl>
     </Grid>

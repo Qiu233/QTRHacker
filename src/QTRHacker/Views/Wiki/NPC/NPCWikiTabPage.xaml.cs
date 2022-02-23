@@ -1,7 +1,4 @@
-﻿using QTRHacker.Functions.GameObjects.Terraria;
-using QTRHacker.ViewModels.PlayerEditor;
-using QTRHacker.Views.PlayerEditor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,15 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace QTRHacker.Views.PlayerEditor
+namespace QTRHacker.Views.Wiki.NPC
 {
 	/// <summary>
-	/// ItemSlotsEditor.xaml 的交互逻辑
+	/// NPCWikiTabPage.xaml 的交互逻辑
 	/// </summary>
-	public partial class ItemSlotsEditor : UserControl
+	public partial class NPCWikiTabPage : UserControl
 	{
-		public ItemSlotsEditorViewModel ViewModel => DataContext as ItemSlotsEditorViewModel;
-		public ItemSlotsEditor()
+		public NPCWikiTabPage()
 		{
 			InitializeComponent();
 		}

@@ -10,15 +10,19 @@
                   Title="{Binding Player.Name}">
     <Grid>
         <TabControl>
-            <TabItem Header="{l:Localization UI.Inventory}" x:Name="InvTabItem">
+            <TabItem Header="{l:Localization UI.Inventory}"
+                     IsSelected="{Binding InventoryEditorViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor x:Name="InvEditor"
-                                       Updating="{Binding ElementName=InvTabItem, Path=IsSelected}" 
-                                       DataContext="{Binding InventoryEditorViewModel}">
-                </local:ItemSlotsEditor>
+                                       DataContext="{Binding InventoryEditorViewModel}"/>
             </TabItem>
-            <TabItem Header="{l:Localization UI.Piggy}" x:Name="PiggyTabItem">
+            <TabItem Header="{l:Localization UI.Armor}"
+                     IsSelected="{Binding ArmorEditorViewModel.Updating, Mode=OneWayToSource}">
+                <local:ItemSlotsEditor x:Name="ArmorEditor"
+                                       DataContext="{Binding ArmorEditorViewModel}"/>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.Piggy}"
+                     IsSelected="{Binding PiggyBankViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor x:Name="PiggyEditor"
-                                       Updating="{Binding ElementName=PiggyTabItem, Path=IsSelected}"
                                        DataContext="{Binding PiggyBankViewModel}">
                 </local:ItemSlotsEditor>
             </TabItem>

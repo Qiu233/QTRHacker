@@ -20,7 +20,7 @@
                 <pagepanels:PlayersPage x:Name="PlayersPage" DataContext="{Binding PlayersPageViewModel}"/>
             </TabItem>
             <TabItem Header="{l:Localization UI.MainPage}" IsSelected="True" FontSize="20">
-                <pagepanels:MainPage AttachedToGame="MainPage_AttachedToGame" DataContext="{Binding MainPageViewModel}"/>
+                <pagepanels:MainPage DataContext="{Binding MainPageViewModel}"/>
             </TabItem>
         </TabControl>
     </Grid>

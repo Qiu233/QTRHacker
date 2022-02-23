@@ -1,6 +1,4 @@
-﻿using QTRHacker.Functions.GameObjects.Terraria;
-using QTRHacker.ViewModels.PlayerEditor;
-using QTRHacker.Views.PlayerEditor;
+﻿using QTRHacker.ViewModels.PlayerEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +17,11 @@ using System.Windows.Shapes;
 namespace QTRHacker.Views.PlayerEditor
 {
 	/// <summary>
-	/// ItemSlotsEditor.xaml 的交互逻辑
+	/// ItemSlotsGrid.xaml 的交互逻辑
 	/// </summary>
-	public partial class ItemSlotsEditor : UserControl
+	public partial class ItemSlotsGrid : UserControl
 	{
-		public ItemSlotsEditorViewModel ViewModel => DataContext as ItemSlotsEditorViewModel;
-		public ItemSlotsEditor()
+		public ItemSlotsGrid()
 		{
 			InitializeComponent();
 		}

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QTRHacker.Views.PlayerEditor
+namespace QTRHacker.ViewModels.PlayerEditor
 {
 	public interface ISlotsLayout
 	{

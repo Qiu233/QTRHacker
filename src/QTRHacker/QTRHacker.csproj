@@ -46,8 +46,4 @@
     <ProjectReference Include="..\QTRHacker.Functions\QTRHacker.Functions.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Wiki\NPC\" />
-  </ItemGroup>
-
 </Project>
