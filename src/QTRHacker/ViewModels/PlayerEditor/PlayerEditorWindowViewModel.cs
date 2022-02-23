@@ -15,6 +15,9 @@ namespace QTRHacker.ViewModels.PlayerEditor
 		public ItemSlotsEditorViewModel InventoryEditorViewModel { get; }
 		public ItemSlotsEditorViewModel ArmorEditorViewModel { get; }
 		public ItemSlotsEditorViewModel PiggyBankViewModel { get; }
+		public ItemSlotsEditorViewModel SafeViewModel { get; }
+		public ItemSlotsEditorViewModel ForgeViewModel { get; }
+		public ItemSlotsEditorViewModel VoidVaultViewModel { get; }
 		public DispatcherTimer UpdateTimer { get; }
 
 		public PlayerEditorWindowViewModel(Player player)
@@ -26,6 +29,9 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			InventoryEditorViewModel = new ItemSlotsEditorViewModel(new InventoryLayout(), GetInventoryItem, UpdateTimer);
 			ArmorEditorViewModel = new ItemSlotsEditorViewModel(new ArmorLayout(), GetArmorItem, UpdateTimer);
 			PiggyBankViewModel = new ItemSlotsEditorViewModel(new BankLayout(), GetPiggyBankItem, UpdateTimer);
+			SafeViewModel = new ItemSlotsEditorViewModel(new BankLayout(), GetSafeItem, UpdateTimer);
+			ForgeViewModel = new ItemSlotsEditorViewModel(new BankLayout(), GetForgeItem, UpdateTimer);
+			VoidVaultViewModel = new ItemSlotsEditorViewModel(new BankLayout(), GetVoidVaultItem, UpdateTimer);
 
 			UpdateTimer.Start();
 		}
@@ -51,5 +57,8 @@ namespace QTRHacker.ViewModels.PlayerEditor
 
 		private Item GetInventoryItem(int index) => Player.Inventory[index];//TODO: cache Inventory
 		private Item GetPiggyBankItem(int index) => Player.Bank.Item[index];//TODO: cache Bank.Item
+		private Item GetSafeItem(int index) => Player.Bank2.Item[index];//TODO: cache Bank.Item
+		private Item GetForgeItem(int index) => Player.Bank3.Item[index];//TODO: cache Bank.Item
+		private Item GetVoidVaultItem(int index) => Player.Bank4.Item[index];//TODO: cache Bank.Item
 	}
 }

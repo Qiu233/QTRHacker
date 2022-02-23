@@ -12,19 +12,27 @@
         <TabControl>
             <TabItem Header="{l:Localization UI.Inventory}"
                      IsSelected="{Binding InventoryEditorViewModel.Updating, Mode=OneWayToSource}">
-                <local:ItemSlotsEditor x:Name="InvEditor"
-                                       DataContext="{Binding InventoryEditorViewModel}"/>
+                <local:ItemSlotsEditor DataContext="{Binding InventoryEditorViewModel}"/>
             </TabItem>
             <TabItem Header="{l:Localization UI.Armor}"
                      IsSelected="{Binding ArmorEditorViewModel.Updating, Mode=OneWayToSource}">
-                <local:ItemSlotsEditor x:Name="ArmorEditor"
-                                       DataContext="{Binding ArmorEditorViewModel}"/>
+                <local:ItemSlotsEditor DataContext="{Binding ArmorEditorViewModel}"/>
             </TabItem>
             <TabItem Header="{l:Localization UI.Piggy}"
                      IsSelected="{Binding PiggyBankViewModel.Updating, Mode=OneWayToSource}">
-                <local:ItemSlotsEditor x:Name="PiggyEditor"
-                                       DataContext="{Binding PiggyBankViewModel}">
-                </local:ItemSlotsEditor>
+                <local:ItemSlotsEditor DataContext="{Binding PiggyBankViewModel}"/>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.Safe}"
+                     IsSelected="{Binding SafeViewModel.Updating, Mode=OneWayToSource}">
+                <local:ItemSlotsEditor DataContext="{Binding SafeViewModel}"/>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.Forge}"
+                     IsSelected="{Binding ForgeViewModel.Updating, Mode=OneWayToSource}">
+                <local:ItemSlotsEditor DataContext="{Binding ForgeViewModel}"/>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.VoidVault}"
+                     IsSelected="{Binding VoidVaultViewModel.Updating, Mode=OneWayToSource}">
+                <local:ItemSlotsEditor DataContext="{Binding VoidVaultViewModel}"/>
             </TabItem>
         </TabControl>
     </Grid>
