@@ -28,6 +28,42 @@ namespace QTRHacker.Controls
 			set => SetValue(IsCheckableProperty, value);
 		}
 
+		public static readonly DependencyProperty HasProgressProperty =
+			DependencyProperty.Register(nameof(HasProgress), typeof(bool), typeof(FunctionButton), 
+				new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+		public bool HasProgress
+		{
+			get => (bool)GetValue(HasProgressProperty);
+			set => SetValue(HasProgressProperty, value);
+		}
+
+		public static readonly DependencyProperty ProgressMaximumProperty =
+			DependencyProperty.Register(nameof(ProgressMaximum), typeof(double), typeof(FunctionButton),
+				new FrameworkPropertyMetadata(100.0, FrameworkPropertyMetadataOptions.AffectsRender));
+		public double ProgressMaximum
+		{
+			get => (double)GetValue(ProgressMaximumProperty);
+			set => SetValue(ProgressMaximumProperty, value);
+		}
+
+		public static readonly DependencyProperty ProgressValueProperty =
+			DependencyProperty.Register(nameof(ProgressValue), typeof(double), typeof(FunctionButton),
+				new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+		public double ProgressValue
+		{
+			get => (double)GetValue(ProgressValueProperty);
+			set => SetValue(ProgressValueProperty, value);
+		}
+
+		public static readonly DependencyProperty IsProgressingProperty =
+			DependencyProperty.Register(nameof(IsProgressing), typeof(bool), typeof(FunctionButton), 
+				new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+		public bool IsProgressing
+		{
+			get => (bool)GetValue(IsProgressingProperty);
+			set => SetValue(IsProgressingProperty, value);
+		}
+
 		public event EventHandler FunctionEnabling;
 		public event EventHandler FunctionDisabling;
 

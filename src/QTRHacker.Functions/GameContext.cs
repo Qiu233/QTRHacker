@@ -93,11 +93,6 @@ namespace QTRHacker.Functions
 			get;
 		}
 
-		public bool[] CachedDebuff
-		{
-			get;
-		}
-
 		public GameObjectArrayV<bool> Debuff
 			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "debuff"));
 
@@ -282,10 +277,6 @@ namespace QTRHacker.Functions
 			TileTargetX_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Player", "tileTargetX");
 			TileTargetY_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Player", "tileTargetY");
 
-			var debuff = Debuff;
-			CachedDebuff = new bool[debuff.Length];
-			for (int i = 0; i < CachedDebuff.Length; i++)
-				CachedDebuff[i] = debuff[i];
 		}
 
 		/// <summary>

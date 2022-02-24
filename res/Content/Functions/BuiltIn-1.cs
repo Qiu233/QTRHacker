@@ -1,8 +1,12 @@
+using QHackLib;
 using QHackLib.Memory;
+using QHackLib.Assemble;
+using QHackLib.FunctionHelper;
 using QTRHacker.Scripts;
 using QTRHacker.Functions;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Linq;
 using static QTRHacker.Scripts.ScriptHelper;
 
 public class InfiniteLife : BaseFunction
@@ -191,6 +195,121 @@ public class InfiniteFlyTime : BaseFunction
 	}
 }
 
+public class ImmuneToDebuffs : BaseFunction
+{
+	public override bool CanDisable => true;
+	public override void ApplyLocalization(string culture)
+	{
+		switch (culture)
+		{
+			case "zh":
+				Name = "免疫Debuff";
+				break;
+			case "en":
+			default:
+				Name = "Immune to debuffs";
+				break;
+		}
+	}
+	public override void Enable(GameContext ctx)
+	{
+		nuint a = GetFunctionAddress(ctx, "Terraria.Player", "AddBuff");
+		if (Read<byte>(ctx, a) == 0xE9)
+			return;
+		var player = ctx.MyPlayer;
+		InlineHook.Hook(ctx.HContext,
+			AssemblySnippet.FromCode(
+				new AssemblyCode[]{
+					(Instruction)$"pushad",
+					(Instruction)$"mov ebx,{ctx.Debuff.BaseAddress}",
+					(Instruction)$"cmp byte ptr [ebx+edx+8],0",
+					(Instruction)$"je end",
+					(Instruction)$"popad",
+					(Instruction)$"ret 8",
+					(Instruction)$"end:",
+					(Instruction)$"popad",
+				}), new HookParameters(a, 0x1000));
+		this.IsEnabled = true;
+	}
+	public override void Disable(GameContext ctx)
+	{
+		nuint a = GetFunctionAddress(ctx, "Terraria.Player", "AddBuff");
+		InlineHook.FreeHook(ctx.HContext, a);
+		this.IsEnabled = false;
+	}
+}
+
+public class HighLight : BaseFunction
+{
+	public override bool CanDisable => true;
+	public override void ApplyLocalization(string culture)
+	{
+		switch (culture)
+		{
+			case "zh":
+				Name = "全屏高亮";
+				Tooltip = "请将游戏内视频设置为\"彩色\"";
+				break;
+			case "en":
+			default:
+				Name = "High Light";
+				Tooltip = "Please set Video -> Lighting to \"Color\"";
+				break;
+		}
+	}
+	public override void Enable(GameContext ctx)
+	{
+		nuint[] a = Aobscan(
+			ctx,
+			@"C7 ** ** ******** D9 07 D9 45 F0 DF F1 DD D8 7A").ToArray();
+		if (!a.Any())
+			return;
+		InlineHook.Hook(ctx.HContext,
+			AssemblySnippet.FromASMCode(
+				@"mov dword ptr[ebp-0x10],0x3F800000
+mov dword ptr[ebp-0x14],0x3F800000
+mov dword ptr[ebp-0x18],0x3F800000"
+),
+				new HookParameters(a[0] + 7, 0x1000));
+		this.IsEnabled = true;
+	}
+	public override void Disable(GameContext ctx)
+	{
+		nuint[] a = Aobscan(ctx, "C7 ** ** ******** E9 ** ** ** ** DF F1 DD D8 7A").ToArray();
+		if (!a.Any())
+			return;
+		InlineHook.FreeHook(ctx.HContext, a[0] + 7);
+		this.IsEnabled = false;
+	}
+}
+
+public class GhostMode : BaseFunction
+{
+	public override bool CanDisable => true;
+	public override void ApplyLocalization(string culture)
+	{
+		switch (culture)
+		{
+			case "zh":
+				Name = "幽灵模式";
+				break;
+			case "en":
+			default:
+				Name = "Ghost Mode";
+				break;
+		}
+	}
+	public override void Enable(GameContext ctx)
+	{
+		ctx.MyPlayer.Ghost = true;
+		this.IsEnabled = true;
+	}
+	public override void Disable(GameContext ctx)
+	{
+		ctx.MyPlayer.Ghost = false;
+		this.IsEnabled = false;
+	}
+}
 
 FunctionCategory category = new FunctionCategory("Basic1");
 
@@ -203,5 +322,8 @@ category.Add<InfiniteOxygen>();
 category.Add<InfiniteMinion>();
 category.Add<InfiniteItemAmmo>();
 category.Add<InfiniteFlyTime>();
+category.Add<ImmuneToDebuffs>();
+category.Add<HighLight>();
+category.Add<GhostMode>();
 
 return category;

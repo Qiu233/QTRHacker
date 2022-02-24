@@ -22,7 +22,7 @@ using System.ComponentModel;
 
 namespace QTRHacker.ViewModels.PagePanels
 {
-	public class DirectFunctionsPageViewModel : ViewModelBase
+	public class DirectFunctionsPageViewModel : PagePanelViewModel
 	{
 		public const string PATH_FUNCS = "./Content/Functions";
 
@@ -58,20 +58,25 @@ namespace QTRHacker.ViewModels.PagePanels
 			return null;
 		}
 
-		private IEnumerable<FunctionCategory> GetAllFunctions()
+		public void LoadAllFunctions()
 		{
-			return Directory.EnumerateFiles(PATH_FUNCS, "*.cs")
+			HackGlobal.Logging.Enter("Initializing functions from scripts.");
+			var fs = Directory.EnumerateFiles(PATH_FUNCS, "*.cs")
 				.ToList()
 				.Select(t => LoadFunctionsFromFile(t))
 				.Where(t => t is not null);
+			Application.Current.Dispatcher.BeginInvoke(() =>
+			{
+				Functions.Clear();
+				Functions.AddRange(fs);
+			});
+			HackGlobal.Logging.Exit();
 		}
 
-		public void UpdateFunctionsList()
+		public void UpdateUI()
 		{
+			HackGlobal.Logging.Enter("Updating UI from functions.");
 			TabItems.Clear();
-			HackGlobal.Logging.Enter("Initializing functions from scripts.");
-			Functions.Clear();
-			Functions.AddRange(GetAllFunctions());
 			foreach (FunctionCategory group in Functions)
 			{
 				var itemsControl = GetOrCreateTab(group[LocalizationManager.Instance.CultureName]).Content as FunctionsBox;

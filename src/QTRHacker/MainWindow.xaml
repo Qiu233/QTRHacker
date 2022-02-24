@@ -13,14 +13,26 @@
     >
     <Grid>
         <TabControl x:Name="MainTabControl" TabStripPlacement="Left">
-            <TabItem Header="{l:Localization UI.DirectFunction}" IsEnabled="False" FontSize="20">
-                <pagepanels:DirectFunctionsPage DataContext="{Binding DirectFunctionsPageViewModel}"/>
+            <TabControl.Resources>
+                <Style x:Key="MainWindowTabItem" TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                    <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
+                </Style>
+            </TabControl.Resources>
+            <TabItem DataContext="{Binding PlayersPageViewModel}"
+                     Style="{StaticResource MainWindowTabItem}"
+                     Header="{l:Localization UI.Player}" FontSize="20">
+                <pagepanels:PlayersPage x:Name="PlayersPage"/>
             </TabItem>
-            <TabItem Header="{l:Localization UI.Player}" IsEnabled="False" FontSize="20">
-                <pagepanels:PlayersPage x:Name="PlayersPage" DataContext="{Binding PlayersPageViewModel}"/>
+            <TabItem DataContext="{Binding DirectFunctionsPageViewModel}"
+                     Style="{StaticResource MainWindowTabItem}"
+                     Header="{l:Localization UI.DirectFunction}" FontSize="20">
+                <pagepanels:DirectFunctionsPage/>
             </TabItem>
-            <TabItem Header="{l:Localization UI.MainPage}" IsSelected="True" FontSize="20">
-                <pagepanels:MainPage DataContext="{Binding MainPageViewModel}"/>
+            <TabItem DataContext="{Binding MainPageViewModel}" 
+                     Style="{StaticResource MainWindowTabItem}"
+                     Header="{l:Localization UI.MainPage}" FontSize="20">
+                <pagepanels:MainPage/>
             </TabItem>
         </TabControl>
     </Grid>

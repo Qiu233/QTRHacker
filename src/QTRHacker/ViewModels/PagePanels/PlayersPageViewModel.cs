@@ -14,7 +14,7 @@ using System.Windows.Threading;
 
 namespace QTRHacker.ViewModels.PagePanels
 {
-	public class PlayersPageViewModel : ViewModelBase
+	public class PlayersPageViewModel : PagePanelViewModel
 	{
 		public ObservableCollection<PlayerInfo> Players
 		{

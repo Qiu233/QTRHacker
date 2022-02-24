@@ -13,17 +13,16 @@
             <ColumnDefinition Width="230"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="PlayersList" FontSize="15" Grid.Column="0" Focusable="False" BorderThickness="0"
-                  Foreground="Black" ItemsSource="{Binding Players}" Background="#606060" SelectedItem="{Binding SelectedPlayerInfo}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding ID, StringFormat='{}{0}: '}" Foreground="{StaticResource QTRHacker.Common.Foreground}"/>
-                        <TextBlock Text="{Binding Name}" Foreground="{StaticResource QTRHacker.Common.Foreground}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <ListView x:Name="PlayersList" FontSize="15" Grid.Column="0" Focusable="False" BorderThickness="0"
+                  Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
+                  Foreground="Black" ItemsSource="{Binding Players}" Background="#404040" SelectedItem="{Binding SelectedPlayerInfo}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" Width="40"/>
+                    <GridViewColumn Header="{l:Localization UI.Name}" DisplayMemberBinding="{Binding Name}" Width="100"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <StackPanel Margin="2,0,0,0" Orientation="Vertical" Grid.Column="1">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource QTRHacker.StripButtonStyle}"/>

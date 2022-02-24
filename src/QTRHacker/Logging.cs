@@ -29,7 +29,7 @@ namespace QTRHacker
 
 		public void Log(string msg, LogLevel level = LogLevel.INFO)
 		{
-			LogWriter.WriteLine($"[{level}] {msg}");
+			LogWriter.WriteLine($"[{DateTime.Now}][{level}] {msg}");
 		}
 
 		public void Alert(string msg) => Log(msg, LogLevel.ALERT);

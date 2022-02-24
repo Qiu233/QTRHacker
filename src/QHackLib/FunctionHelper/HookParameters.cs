@@ -16,7 +16,7 @@ namespace QHackLib.FunctionHelper
 		public readonly bool IsOnce;
 		public readonly bool RawCode;
 
-		public HookParameters(nuint targetAddress, uint size, bool isOnce, bool rawCode)
+		public HookParameters(nuint targetAddress, uint size, bool isOnce = false, bool rawCode = true)
 		{
 			TargetAddress = targetAddress;
 			Size = size;

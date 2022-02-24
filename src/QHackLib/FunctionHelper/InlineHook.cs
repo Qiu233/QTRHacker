@@ -160,7 +160,7 @@ namespace QHackLib.FunctionHelper
 			return Detach();
 		}
 
-		public void WaitToDispose(int timeout)
+		public void WaitToDispose()
 		{
 			HookInfo hook = GetHookInfo();
 			while (Context.DataAccess.Read<int>(hook.Address_SafeFreeFlag) != 0) { }
@@ -169,7 +169,7 @@ namespace QHackLib.FunctionHelper
 
 		/// <summary>
 		/// Disposes this hook WITHOUT any check.<br/>
-		/// Disposing a hook means detach then free the memory region the hook uses.<br/>
+		/// Disposing a hook means to detach and then free memory regions the hook uses.<br/>
 		/// It's extremely dangerous to call this method.
 		/// Instead, you should call <see cref="WaitToDispose(int)"/>.
 		/// </summary>
@@ -215,17 +215,17 @@ namespace QHackLib.FunctionHelper
 				return false;
 			if (!Task.Run(() => hook.WaitToDetach()).Wait(timeout))
 				return false;
-			return Task.Run(() => hook.WaitToDispose(timeout)).Wait(timeout);
+			return Task.Run(() => hook.WaitToDispose()).Wait(timeout);
 		}
 
 		/// <summary>
-		/// Unconditionally detaches then releases the hook safely.<br/>
+		/// Unconditionally detaches and releases the hook.<br/>
 		/// For when hook objects get lost.<br/>
 		/// </summary>
 		/// <param name="Context"></param>
 		/// <param name="targetAddr"></param>
 		/// <returns>false if the target is not a valid hook</returns>
-		public unsafe static bool FreeHook(QHackContext Context, nuint targetAddr, int timeout = 1000)
+		public unsafe static bool FreeHook(QHackContext Context, nuint targetAddr, bool forceRelease = true, int timeout = 1000)
 		{
 			byte h = Context.DataAccess.Read<byte>(targetAddr);
 			if (h != 0xE9)
@@ -242,9 +242,13 @@ namespace QHackLib.FunctionHelper
 				bs[i] = hook.RawCodeBytes[i];
 			Context.DataAccess.WriteBytes(targetAddr, bs);
 			nuint sa = hook.Address_SafeFreeFlag;
-			Task.Run(() => { while (Context.DataAccess.Read<int>(sa) != 0) { } }).Wait(timeout);
-			NativeFunctions.VirtualFreeEx(Context.Handle, hook.AllocBase, 0);
-			return true;
+			bool result = Task.Run(() => { while (Context.DataAccess.Read<int>(sa) != 0) { } }).Wait(timeout);
+			if (forceRelease || result)
+			{
+				NativeFunctions.VirtualFreeEx(Context.Handle, hook.AllocBase, 0);
+				return true;
+			}
+			return false;
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -11,7 +12,7 @@ using System.Windows;
 
 namespace QTRHacker.ViewModels.PagePanels
 {
-	public class MainPageViewModel : ViewModelBase
+	public class MainPageViewModel : PagePanelViewModel
 	{
 		private readonly BackgroundWorker attachedToGameWorker = new();
 		private Visibility crossVisibility;
@@ -38,22 +39,6 @@ namespace QTRHacker.ViewModels.PagePanels
 			}
 		}
 
-		private static bool TryAttach(int pid)
-		{
-			if (pid == 0)
-			{
-				MessageBox.Show("Failed to fetch pid(got 0)", "Error");
-				return false;
-			}
-			else if (pid == Environment.ProcessId)
-			{
-				MessageBox.Show("Please drag the cross to Terraria's window.", "Error");
-				return false;
-			}
-			HackGlobal.Initialize(pid);
-			return true;
-		}
-
 		public async void InitGame(Point p)
 		{
 			CrossVisibility = Visibility.Collapsed;
@@ -62,9 +47,43 @@ namespace QTRHacker.ViewModels.PagePanels
 			{
 				nuint hwnd = WindowFromPoint((int)p.X, (int)p.Y);
 				GetWindowThreadProcessId(hwnd, out int pid);
-				return TryAttach(pid);
+				var process = Process.GetProcessById(pid);
+				HackGlobal.Logging.Log($"Cross released at {p}, pid = {pid}, name = {process.ProcessName}");
+				if (pid == 0)
+				{
+					HackGlobal.Logging.Error($"Attaching failed due to pid = 0");
+					MessageBox.Show("Failed to fetch pid (got 0)", "Error");
+					return false;
+				}
+				else if (pid == Environment.ProcessId)
+				{
+					HackGlobal.Logging.Error($"Attaching failed due to self attaching");
+					MessageBox.Show("Please drag the cross to Terraria's window.", "Error");
+					return false;
+				}
+				try
+				{
+					HackGlobal.Initialize(pid);
+				}
+				catch (Exception ex)
+				{
+					string msg = $"Attaching failed due to an exception:\n{ex.Message}\n{ex.StackTrace}";
+					HackGlobal.Logging.Error(msg);
+					MessageBox.Show(msg, "Error");
+					return false;
+				}
+				HackGlobal.Logging.Log("Successfully attached to game");
+				return true;
 			}))
 				AttachedToGameWorker.RunWorkerAsync(p);
+			else
+				PostAttaching();
+		}
+
+		private void PostAttaching()
+		{
+			SpinnerVisibility = Visibility.Collapsed;
+			CrossVisibility = Visibility.Visible;
 		}
 
 
@@ -72,8 +91,7 @@ namespace QTRHacker.ViewModels.PagePanels
 		{
 			AttachedToGameWorker.RunWorkerCompleted += (s, e) =>
 			{
-				SpinnerVisibility = Visibility.Collapsed;
-				CrossVisibility = Visibility.Visible;
+				PostAttaching();
 			};
 
 		}

@@ -17,7 +17,6 @@ namespace QTRHacker.Functions.Test
 		unsafe static void Main()
 		{
 			using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0]);
-			ctx.MyPlayer.Inventory[0].SetDefaults(3063);
 		}
 	}
 }

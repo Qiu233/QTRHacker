@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace QTRHacker.Scripts
 {
@@ -15,6 +16,8 @@ namespace QTRHacker.Scripts
 		private string name;
 		private string tooltip;
 		private bool isEnabled;
+		private double progress;
+		private bool isProgressing;
 
 		public string Name
 		{
@@ -34,15 +37,45 @@ namespace QTRHacker.Scripts
 				OnPropertyChanged(nameof(Tooltip));
 			}
 		}
+		/// <summary>
+		/// Note: this property would/ can be changed asynchronously
+		/// </summary>
 		public bool IsEnabled
 		{
 			get => isEnabled;
 			set
 			{
 				isEnabled = value;
-				OnPropertyChanged(nameof(IsEnabled));
+				Application.Current.Dispatcher.Invoke(()
+					=> OnPropertyChanged(nameof(IsEnabled)));
 			}
 		}
+		/// <summary>
+		/// Maximum is 100.0
+		/// Note: this property would/ can be changed asynchronously
+		/// </summary>
+		public double Progress
+		{
+			get => progress;
+			set
+			{
+				progress = value;
+				Application.Current.Dispatcher.Invoke(()
+					=> OnPropertyChanged(nameof(Progress)));
+			}
+		}
+		public bool IsProgressing
+		{
+			get => isProgressing;
+			set
+			{
+				isProgressing = value;
+				OnPropertyChanged(nameof(IsProgressing));
+			}
+		}
+
+
+		public virtual bool HasProgress => false;
 		public abstract bool CanDisable { get; }
 
 		public abstract void Enable(GameContext context);

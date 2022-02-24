@@ -35,10 +35,10 @@ namespace QHackLib
 			return methods[0];
 		}
 
-		public ClrMethod GetClrMethod(string typeName, Func<ClrMethod, bool> filter) => GetClrType(typeName).MethodsInVTable.First(t => filter(t));
+		public ClrMethod GetClrMethod(string typeName, Predicate<ClrMethod> filter) => GetClrType(typeName).MethodsInVTable.First(t => filter(t));
 
 		public nuint GetFunctionAddress(string typeName, string FunctionName) => GetClrMethod(typeName, FunctionName).NativeCode;
-		public nuint GetFunctionAddress(string typeName, Func<ClrMethod, bool> filter) => GetClrMethod(typeName, t => filter(t)).NativeCode;
+		public nuint GetFunctionAddress(string typeName, Predicate<ClrMethod> filter) => GetClrMethod(typeName, t => filter(t)).NativeCode;
 
 		//public ILToNativeMap GetFunctionInstruction(string typeName, string FunctionName, int ILOffset) => GetClrType(typeName).MethodsInVTable.First(t => t.Name == FunctionName).ILOffsetMap.First(t => t.ILOffset == ILOffset);
 

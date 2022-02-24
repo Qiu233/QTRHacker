@@ -36,32 +36,8 @@ namespace QTRHacker
 			DataContext = new MainWindowViewModel();
 			Title = "QTRHacker-" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-
-			ViewModel.AttachedToGame += ViewModel_AttachedToGame;
-			ViewModel.AttachedToGameWorksFinished += ViewModel_AttachedToGameWorksFinished;
 		}
 
-		private void ViewModel_AttachedToGameWorksFinished(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-		{
-			EnableTabs();
-		}
-
-		private void ViewModel_AttachedToGame(object sender, System.ComponentModel.DoWorkEventArgs e)
-		{
-			Application.Current.Dispatcher.Invoke(() =>
-			{
-				ViewModel.DirectFunctionsPageViewModel.UpdateFunctionsList();
-			});
-		}
-
-		internal void EnableTabs()
-		{
-			if (MainTabControl.Items.Count == 0)
-				return;
-			foreach (TabItem item in MainTabControl.Items)
-				item.IsEnabled = true;
-			(MainTabControl.Items[0] as TabItem).IsSelected = true;
-		}
 		static MainWindow()
 		{
 			GameImages.Touch();

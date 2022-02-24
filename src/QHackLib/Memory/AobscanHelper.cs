@@ -50,13 +50,6 @@ namespace QHackLib.Memory
 			return true;
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="src"></param>
-		/// <param name="sub"></param>
-		/// <param name="pos"></param>
-		/// <returns>-1 if nothing was found</returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool Search(ReadOnlySpan<byte> src, ReadOnlySpan<byte> sub, ref int pos)
 		{
@@ -68,9 +61,74 @@ namespace QHackLib.Memory
 			return false;
 		}
 
-		public static IEnumerable<nuint> Aobscan(nuint handle, string hexStr) => Aobscan(handle, GetHexCodeFromString(hexStr));
-
 		public static IEnumerable<nuint> AobscanASM(nuint handle, string asm) => Aobscan(handle, Assembler.Assemble(asm, 0));
+
+		public static IEnumerable<nuint> AobscanMatch(nuint handle, string hexCode)
+		{
+			int i = 0;
+			Dictionary<int, byte> pattern = new();
+			List<int> match = new();
+			foreach (var c in hexCode)
+			{
+				if (c == ' ') continue;
+				else if (c == '*')
+					match.Add(i++);
+				else
+					pattern[i++] = Convert.ToByte(c.ToString(), 16);
+			}
+			return AobscanMatch(handle, pattern, match);
+		}
+
+		private static IEnumerable<nuint> AobscanMatch(nuint handle, Dictionary<int, byte> pattern, List<int> match)
+		{
+			List<nuint> result = new();
+			Traverse(handle, mbi =>
+			{
+				if (!mbi.Protect.HasFlag(NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE)
+				|| !mbi.State.HasFlag(NativeFunctions.AllocationType.MEM_COMMIT))
+					return;
+				byte[] va = ArrayPool<byte>.Shared.Rent((int)mbi.RegionSize);
+				NativeFunctions.ReadProcessMemory(handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
+				int pos = 0;
+				while (SearchMatch(va, pattern, match, ref pos))
+				{
+					result.Add(mbi.BaseAddress + (uint)pos);
+					pos += (pattern.Count + match.Count + 1) / 2;
+				}
+				ArrayPool<byte>.Shared.Return(va);
+			});
+			return result;
+		}
+		private static bool SearchMatch(byte[] v, Dictionary<int, byte> pattern, List<int> match, ref int pos)
+		{
+			var vs = v.SelectMany(t => new byte[] { (byte)(t >> 4), (byte)(t & 0xF) }).ToArray();
+
+			int alen = vs.Length;
+			int blen = pattern.Count + match.Count;
+
+			for (int i = pos * 2; i < alen - blen; i += 2)
+			{
+				int j = 0;
+				for (; j < blen; j++)
+				{
+					byte t = vs[i + j];
+					if (match.Contains(j) || t == pattern[j])
+						continue;
+					break;
+				}
+				pos = i / 2;
+				if (j == blen)
+					return true;
+			}
+			return false;
+		}
+
+		public static IEnumerable<nuint> Aobscan(nuint handle, string src)
+		{
+			if (src.Contains('*'))
+				return AobscanMatch(handle, src);
+			return Aobscan(handle, GetHexCodeFromString(src));
+		}
 
 		public static IEnumerable<nuint> Aobscan(nuint handle, byte[] aob)
 		{
@@ -86,7 +144,10 @@ namespace QHackLib.Memory
 				NativeFunctions.ReadProcessMemory(handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
 				int pos = 0;
 				while (Search(va, aob, ref pos))
-					result.Add(mbi.BaseAddress + (uint)(pos++));
+				{
+					result.Add(mbi.BaseAddress + (uint)pos);
+					pos += aob.Length;
+				}
 				ArrayPool<byte>.Shared.Return(va);
 			});
 			return result;

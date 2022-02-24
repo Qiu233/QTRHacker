@@ -58,13 +58,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Label FontSize="14">
-                    <Label.Content>
-                        <MultiBinding StringFormat="{}{0}:">
-                            <l:Localization Key="UI.Keyword"/>
-                        </MultiBinding>
-                    </Label.Content>
-                </Label>
+                <Label FontSize="14" Content="{l:Localization UI.Keyword}"/>
                 <TextBox Grid.Column="1" Background="Transparent"
                      Margin="5,0,0,0" AcceptsReturn="False" 
                      TextWrapping="NoWrap" VerticalContentAlignment="Center"

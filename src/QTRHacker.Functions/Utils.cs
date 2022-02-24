@@ -139,7 +139,7 @@ mov dword ptr[ebp-0x18],0x3F800000"
 		{
 			ctx.MyPlayer.Ghost = false;
 		}
-		/*
+
 		public static void LowGravity_E(GameContext ctx)
 		{
 			int offA = GetOffset(ctx, "Terraria.Player", "slowFall");
@@ -149,39 +149,42 @@ mov dword ptr[ebp-0x18],0x3F800000"
 				$"88 96 {AobscanHelper.GetMByteCode(offA)} 88 96 {AobscanHelper.GetMByteCode(offB)}").FirstOrDefault();
 			if (a == 0)
 				return;
-			_ = new InlineHook(ctx.HContext, AssemblySnippet.FromASMCode(
+			InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
 				$"mov dword ptr [esi+{offA}],1"),
-				new HookParameters(a, 4096, false, false));
+				new HookParameters(a, 0x1000, false, false));
 		}
 		public static void LowGravity_D(GameContext ctx)
 		{
-			int a = AobscanHelper.Aobscan(
+			nuint a = AobscanHelper.Aobscan(
 				ctx.HContext.Handle,
-				$"E9 ******** 90 88 96 {AobscanHelper.GetMByteCode(GetOffset(ctx, "Terraria.Player", "findTreasure"))}", true);
-			if (a <= 0)
+				$"E9 ******** 90 88 96 {AobscanHelper.GetMByteCode(GetOffset(ctx, "Terraria.Player", "findTreasure"))}").FirstOrDefault();
+			if (a == 0)
 				return;
 			InlineHook.FreeHook(ctx.HContext, a);
-		}*/
+		}
 
-		/*public static void FastSpeed_E(GameContext ctx)
+		public static void FastSpeed_E(GameContext ctx)
 		{
-			int a = AobscanHelper.Aobscan(
+			int offA = GetOffset(ctx, "Terraria.Player", "moveSpeed");
+			int offB = GetOffset(ctx, "Terraria.Player", "boneArmor");
+			nuint a = AobscanHelper.Aobscan(
 				ctx.HContext.Handle,
-				$"D9 E8 D9 9E {AobscanHelper.GetMByteCode(Player.OFFSET_MoveSpeed)} 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_BoneArmor)}");
-			if (a <= 0)
+				$"D9 E8 D9 9E {AobscanHelper.GetMByteCode(offA)} 88 96 {AobscanHelper.GetMByteCode(offB)}").FirstOrDefault();
+			if (a == 0)
 				return;
-			InlineHook.Inject(ctx.HContext, AssemblySnippet.FromASMCode(
-				$"mov dword ptr [esi+{Player.OFFSET_MoveSpeed}],0x41A00000"),
-				a, false, false);
+			InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
+				$"mov dword ptr [esi+{offA}],0x41A00000"),
+				new HookParameters(a, 0x1000, false, false));
 		}
 		public static void FastSpeed_D(GameContext ctx)
 		{
-			int a = AobscanHelper.Aobscan(
+			int offB = GetOffset(ctx, "Terraria.Player", "boneArmor");
+			nuint a = AobscanHelper.Aobscan(
 				ctx.HContext.Handle,
-				$"E9 ******** 90 90 90 88 96 {AobscanHelper.GetMByteCode(Player.OFFSET_BoneArmor)}", true);
-			if (a <= 0) return;
+				$"E9 ******** 90 90 90 88 96 {AobscanHelper.GetMByteCode(offB)}").FirstOrDefault();
+			if (a == 0) return;
 			InlineHook.FreeHook(ctx.HContext, a);
-		}*/
+		}
 
 		/*[Obsolete("for the game of old version")]
 		public static void ProjectileIgnoreTile_E(GameContext ctx)
@@ -350,43 +353,41 @@ push 0").FirstOrDefault();
 			a += 18;
 			ctx.HContext.DataAccess.Write<int>(a, 4);
 		}
-		/*
-		public static void SuperRange_E(GameContext ctx)
+
+		/*public static void SuperRange_E(GameContext ctx)
 		{
-			//int a = (int)ctx.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "ResetEffects", 0x08AE).StartAddress;
-			int a = AobscanHelper.Aobscan(
+			nuint a = Aobscan(
 				ctx.HContext.Handle,
-				"C7 05 ******** 05000000 C7 05 ******** 04000000 A1", true);
-			if (a <= 0)
+				"C7 05 ******** 05000000 C7 05 ******** 04000000 A1").FirstOrDefault();
+			if (a == 0)
 				return;
-			int b = a + 6;
-			int c = a + 16;
+			nuint b = a + 6;
+			nuint c = a + 16;
 			int v = 0x1000;
-			NativeFunctions.WriteProcessMemory(ctx.HContext.Handle, b, ref v, 4, 0);
-			NativeFunctions.WriteProcessMemory(ctx.HContext.Handle, c, ref v, 4, 0);
+			Write<int>(b, v);
+			Write<int>(c, v);
 		}
 		public static void SuperRange_D(GameContext ctx)
 		{
-			//int a = (int)ctx.HContext.MainAddressHelper.GetFunctionInstruction("Terraria.Player", "ResetEffects", 0x08AE).StartAddress;
-			int a = AobscanHelper.Aobscan(
+			nuint a = Aobscan(
 				ctx.HContext.Handle,
-				"C7 05 ******** 00100000 C7 05 ******** 00100000 A1", true);
-			if (a <= 0)
+				"C7 05 ******** 00100000 C7 05 ******** 00100000 A1").FirstOrDefault();
+			if (a == 0)
 				return;
-			int b = a + 6;
-			int c = a + 16;
+			nuint b = a + 6;
+			nuint c = a + 16;
 			int v1 = 5;
 			int v2 = 4;
-			NativeFunctions.WriteProcessMemory(ctx.HContext.Handle, b, ref v1, 4, 0);
-			NativeFunctions.WriteProcessMemory(ctx.HContext.Handle, c, ref v2, 4, 0);
+			Write<int>(b, v1);
+			Write<int>(c, v2);
 		}
-		*/
-		/*public static void FastTileAndWallSpeed_E(GameContext ctx)
+
+		public static void FastTileAndWallSpeed_E(GameContext ctx)
 		{
 			int offA = GetOffset(ctx, "Terraria.Player", "wallSpeed");
 			int offB = GetOffset(ctx, "Terraria.Player", "tileSpeed");
-			nuint a = AobscanHelper.Aobscan(
-			ctx.HContext.Handle,
+			nuint a = Aobscan(
+			ctx,
 			$"D9 E8 D9 9E {AobscanHelper.GetMByteCode(offA)} D9 E8 D9 9E {AobscanHelper.GetMByteCode(offB)} 88 96").FirstOrDefault();
 			if (a == 0) return;
 
@@ -402,8 +403,8 @@ push 0").FirstOrDefault();
 		}
 		public static void FastTileAndWallSpeed_D(GameContext ctx)
 		{
-			int a = AobscanHelper.Aobscan(
-				   ctx.HContext.Handle,
+			int a = Aobscan(
+				   ctx,
 				   "E9 ******** 90 90 90 E9 ******** 90 90 90 88 96", true);
 			if (a <= 0) return;
 			InlineHook.FreeHook(ctx.HContext, a);

@@ -22,11 +22,15 @@ namespace QTRHacker
 		public static readonly Logging Logging;
 
 		private const string FILE_CONFIG = "./HackConfig.json";
+		private const int MAX_LOG_FILES = 10;
 
 		static HackGlobal()
 		{
 			if (!Directory.Exists("./logs"))
 				Directory.CreateDirectory("./logs");
+			var logs = Directory.EnumerateFiles("./logs", "*.log").ToArray();
+			for (int i = 0; i < logs.Length - MAX_LOG_FILES; i++)
+				File.Delete(logs[i]);
 			Logging = Logging.New(File.Open($"./logs/{DateTime.Now:yyyy-dd-M--HH.mm.ss}.log", FileMode.Create));
 		}
 

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,7 +36,25 @@ namespace QTRHacker.Views.PagePanels
 				return;
 			if (!HackGlobal.IsActive)
 				return;
-			func.Enable(HackGlobal.GameContext);
+			if (func.IsProgressing)
+				return;
+			func.IsProgressing = true;
+			Task.Run(() =>
+			{
+				try
+				{
+					func.Enable(HackGlobal.GameContext);
+				}
+				catch (Exception ex)
+				{
+					HackGlobal.Logging.Log($"Exception occured when running a function named {func.Name}({func.GetType().FullName}): \n{ex.Message}\n{ex.StackTrace}");
+					MessageBox.Show("Exception occured, please check the log file for more information");
+				}
+			}).ContinueWith(t =>
+			{
+				func.IsProgressing = false;
+				func.Progress = 0;
+			});
 		}
 
 		private void FunctionButton_FunctionDisabling(object sender, EventArgs e)
@@ -44,7 +63,17 @@ namespace QTRHacker.Views.PagePanels
 				return;
 			if (!HackGlobal.IsActive)
 				return;
-			func.Disable(HackGlobal.GameContext);
+			if (func.IsProgressing)
+				return;
+			func.IsProgressing = true;
+			Task.Run(() =>
+			{
+				func.Disable(HackGlobal.GameContext);
+			}).ContinueWith(t =>
+			{
+				func.IsProgressing = false;
+				func.Progress = 0;
+			});
 		}
 
 		private void PART_TooltipButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
