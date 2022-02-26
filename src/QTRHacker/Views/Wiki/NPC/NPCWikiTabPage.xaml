@@ -6,8 +6,34 @@
              xmlns:local="clr-namespace:QTRHacker.Views.Wiki.NPC" 
              xmlns:controls="clr-namespace:QTRHacker.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Padding="3">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <!--ListView x:Name="ItemsListView" Grid.Column="0" Focusable="False" Width="500" Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
+                  BorderBrush="#808080" BorderThickness="1"
+                  ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItemInfo}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Type}"/>
+                    <GridViewColumn Header="{l:Localization UI.Name}" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{l:Localization UI.Category}" Width="160">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Category}" TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView-->
     </Grid>
 </UserControl>

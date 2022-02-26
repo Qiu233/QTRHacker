@@ -58,10 +58,10 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 
 			Context.RunByHookOnUpdate(
 				new HackMethod(Context.HContext,
-					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.Item", 
-					"Terraria.Item.NewItem(Int32, Int32, Int32, Int32, Int32, Int32, Boolean, Int32, Boolean, Boolean)"))
+					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.Item",
+					"Terraria.Item.NewItem(Terraria.DataStructures.IEntitySource, Int32, Int32, Int32, Int32, Int32, Int32, Boolean, Int32, Boolean, Boolean)"))
 				.Call(null)
-				.Call(true, null, ret.AllocationBase, new object[] { X, Y, Width, Height, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup }));
+				.Call(true, null, ret.AllocationBase, new object[] { 0, X, Y, Width, Height, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup }));
 
 			return Context.HContext.DataAccess.Read<int>(ret.AllocationBase);
 		}

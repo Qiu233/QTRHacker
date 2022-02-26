@@ -14,7 +14,6 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <ListView x:Name="PlayersList" FontSize="15" Grid.Column="0" Focusable="False" BorderThickness="0"
-                  Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
                   Foreground="Black" ItemsSource="{Binding Players}" Background="#404040" SelectedItem="{Binding SelectedPlayerInfo}">
             <ListView.View>
                 <GridView>

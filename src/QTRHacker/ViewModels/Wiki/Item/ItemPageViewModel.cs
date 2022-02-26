@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Assets;
+using QTRHacker.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,8 +30,16 @@ public class ItemPageViewModel : ViewModelBase
 	public event EventHandler SelectedItemInfoChanged;
 	public ItemInfoPagesViewModel ItemInfoPagesViewModel { get; }
 
+	private readonly RelayCommand addOneCommand;
+	private readonly RelayCommand addMaxCommand;
+	public RelayCommand AddOneCommand => addOneCommand;
+	public RelayCommand AddMaxCommand => addMaxCommand;
+
 	public ItemPageViewModel()
 	{
+		addOneCommand = new RelayCommand(o => HackGlobal.IsActive, o => AddSelectedItemToGame_One());
+		addMaxCommand = new RelayCommand(o => HackGlobal.IsActive, o => AddSelectedItemToGame_Max());
+
 		ItemInfoPagesViewModel = new ItemInfoPagesViewModel();
 		ItemInfoPagesViewModel.FilterResumed += (s, e) => UpdateFilter();
 		ItemInfoPagesViewModel.CategoryFilters.CollectionChanged += (s, e) => UpdateFilter();
@@ -41,6 +50,34 @@ public class ItemPageViewModel : ViewModelBase
 		// this loop begins from 1 instead of 0, because 0 is ItemName.None
 		for (int i = 1; i < WikiResLoader.ItemDatum.Count; i++)
 			Items.Add(new ItemInfo(i));
+	}
+
+	public void AddSelectedItemToGame(int stack)
+	{
+		if (!HackGlobal.IsActive)
+			return;
+		var ctx = HackGlobal.GameContext;
+		if (SelectedItemInfo == null)
+			return;
+		int id = SelectedItemInfo.Type;
+		if (id == 0)
+			return;
+		var pos = ctx.MyPlayer.Position;
+		int num = Functions.GameObjects.Terraria.Item.NewItem(ctx, (int)pos.X, (int)pos.Y, 0, 0, id, stack, false, 0, true);
+		Functions.GameObjects.Terraria.NetMessage.SendData(ctx, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
+	}
+
+	public void AddSelectedItemToGame_Max()
+	{
+		if (SelectedItemInfo == null)
+			return;
+		AddSelectedItemToGame(SelectedItemInfo.Data.MaxStack);
+	}
+	public void AddSelectedItemToGame_One()
+	{
+		if (SelectedItemInfo == null)
+			return;
+		AddSelectedItemToGame(1);
 	}
 
 	private void ItemPageViewModel_SelectedItemInfoChanged(object sender, EventArgs e)

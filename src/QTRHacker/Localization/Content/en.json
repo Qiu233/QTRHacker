@@ -28,7 +28,9 @@
     "Recipe": "Recipe",
     "Keyword": "Keyword",
     "Wiki": {
-      "Value": "Value"
+      "Value": "Value",
+      "AddOne": "Add one to inventory",
+      "AddMax": "Add max to inventory"
     },
     "ItemProperties": {
       "Type": "Type",

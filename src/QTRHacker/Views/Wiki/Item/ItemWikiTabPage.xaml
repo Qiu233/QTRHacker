@@ -12,9 +12,20 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListView x:Name="ItemsListView" Grid.Column="0" Focusable="False" Width="500" Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
+        <ListView x:Name="ItemsListView" Grid.Column="0" Focusable="False" Width="500"
                   BorderBrush="#808080" BorderThickness="1"
                   ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItemInfo}">
+            <ListView.Resources>
+                <ContextMenu x:Key="Menu">
+                    <MenuItem x:Name="AddOneMenuItem" Header="{l:Localization UI.Wiki.AddOne}" Command="{Binding DataContext.AddOneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
+                    <MenuItem x:Name="AddMaxMenuItem" Header="{l:Localization UI.Wiki.AddMax}" Command="{Binding DataContext.AddMaxCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
+                </ContextMenu>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
+                    <Setter Property="ContextMenu" Value="{StaticResource Menu}">
+                    </Setter>
+                </Style>
+            </ListView.Resources>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Type}"/>

@@ -80,7 +80,6 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="ItemContainerStyle" Value="{DynamicResource MahApps.Styles.ListViewItem}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListView">
@@ -114,7 +113,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListView.Virtualized"
+    <Style
          BasedOn="{StaticResource MahApps.Styles.ListView}"
          TargetType="{x:Type ListView}">
         <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
@@ -124,7 +123,7 @@
         <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListViewItem" TargetType="{x:Type ListViewItem}">
+    <Style TargetType="{x:Type ListViewItem}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="{DynamicResource QTRHacker.Common.Foreground}" />

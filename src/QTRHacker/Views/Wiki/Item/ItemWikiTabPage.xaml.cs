@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QTRHacker.ViewModels.Wiki.Item;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,15 @@ namespace QTRHacker.Views.Wiki.Item
 	/// </summary>
 	public partial class ItemWikiTabPage : UserControl
 	{
+		public ItemPageViewModel ViewModel => DataContext as ItemPageViewModel;
 		public ItemWikiTabPage()
 		{
 			InitializeComponent();
+		}
+
+		private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			ViewModel.AddSelectedItemToGame_Max();
 		}
 	}
 }

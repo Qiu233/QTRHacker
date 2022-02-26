@@ -11,6 +11,11 @@
     "Piggy": "猪猪罐",
     "Apply": "应用",
     "Initialize": "初始化",
+    "Wiki": {
+      "Value": "价值",
+      "AddOne": "添加一个到背包",
+      "AddMax": "添加一组到背包"
+    },
     "ItemProperties": {
       "Type": "类型",
       "Damage": "攻击力",
@@ -44,6 +49,22 @@
       "Gold": "金",
       "Silver": "银",
       "Copper": "铜"
+    },
+    "ItemCategories": {
+      "Others": "其他",
+      "Block": "方块",
+      "Wall": "墙壁",
+      "Quest": "任务",
+      "Head": "头部",
+      "Body": "身体",
+      "Leg": "腿部",
+      "Accessory": "饰品",
+      "Melee": "近战",
+      "Ranged": "远程",
+      "Magic": "魔法",
+      "Summon": "召唤",
+      "Buff": "Buff",
+      "Consumable": "消耗品"
     }
   },
   "Tip": {
