@@ -7,37 +7,8 @@
              xmlns:vm="clr-namespace:QTRHacker.ViewModels.Wiki.Item"
              xmlns:l="clr-namespace:QTRHacker.Localization"
              mc:Ignorable="d" Padding="3" d:DesignWidth="300">
-    <UserControl.Resources>
-        <Style TargetType="GroupBox">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="GroupBox">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition x:Name="HeaderRow" Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Border Grid.Row="1"
-                                    BorderThickness="1,0,1,1"
-                                    BorderBrush="#40000000" Background="Transparent">
-                                <ContentPresenter Margin="{TemplateBinding Padding}" />
-                            </Border>
-                            <Border Grid.Row="0"
-                                    BorderThickness="1,1,1,0"
-                                    BorderBrush="#40000000" Background="Transparent">
-
-                                <ContentPresenter Margin="10,4,10,4"
-                                                  ContentSource="Header"
-                                                  RecognizesAccessKey="True" />
-                            </Border>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
     <StackPanel>
-        <GroupBox Header="{l:Localization UI.Filter}" Foreground="Black" Padding="10,5,10,5">
+        <GroupBox Style="{StaticResource FilterGroupBox}" Header="{l:Localization UI.Filter}" Foreground="Black" Padding="10,5,10,5">
             <ItemsControl ItemsSource="{Binding CategoryFilters}" Focusable="False">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

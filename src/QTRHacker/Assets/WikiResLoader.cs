@@ -79,4 +79,18 @@ public static class WikiResLoader
 			return v;
 		return 0;
 	}
+
+	public static string GetNPCKeyFromType(int type)
+	{
+		if (NPCKeys.TryGetValue(type, out string v))
+			return v;
+		return "Unknown";
+	}
+
+	public static int GetNPCTypeFromKey(string key)
+	{
+		if (NPCTypes.TryGetValue(key, out int v))
+			return v;
+		return 0;
+	}
 }

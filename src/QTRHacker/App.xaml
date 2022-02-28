@@ -20,7 +20,33 @@
             <SolidColorBrush x:Key="QTRHacker.Light.Tip.Foreground">White</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.Error">#FF5050</SolidColorBrush>
 
+            <Style TargetType="GroupBox" x:Key="FilterGroupBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="GroupBox">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition x:Name="HeaderRow" Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="1"
+                                    BorderThickness="1,0,1,1"
+                                    BorderBrush="#40000000" Background="Transparent">
+                                    <ContentPresenter Margin="{TemplateBinding Padding}" />
+                                </Border>
+                                <Border Grid.Row="0"
+                                    BorderThickness="1,1,1,0"
+                                    BorderBrush="#40000000" Background="Transparent">
 
+                                    <ContentPresenter Margin="10,4,10,4"
+                                                  ContentSource="Header"
+                                                  RecognizesAccessKey="True" />
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <Style x:Key="QTRHacker.WikiTextBoxStyleBase" TargetType="TextBox">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderThickness" Value="0"/>

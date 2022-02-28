@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QTRHacker.Views.Wiki.NPC" 
+             xmlns:l="clr-namespace:QTRHacker.Localization" 
              xmlns:controls="clr-namespace:QTRHacker.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Padding="3">
@@ -12,9 +13,18 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <!--ListView x:Name="ItemsListView" Grid.Column="0" Focusable="False" Width="500" Style="{StaticResource MahApps.Styles.ListView.Virtualized}"
+        <ListView x:Name="ItemsListView" Grid.Column="0" Focusable="False" Width="500"
                   BorderBrush="#808080" BorderThickness="1"
-                  ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItemInfo}">
+                  ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedNPCInfo}">
+            <ListView.Resources>
+                <ContextMenu x:Key="Menu">
+                    <MenuItem x:Name="AddOneMenuItem" Header="{l:Localization UI.Wiki.AddOneNPC}" Command="{Binding DataContext.AddOneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
+                </ContextMenu>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
+                    <Setter Property="ContextMenu" Value="{StaticResource Menu}"/>
+                </Style>
+            </ListView.Resources>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Type}"/>
@@ -34,6 +44,15 @@
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
-        </ListView-->
+        </ListView>
+        <TabControl Grid.Column="1" Margin="3,0,0,0" Width="360"
+                    DataContext="{Binding NPCInfoPagesViewModel}" Background="#C8C8C8">
+            <TabItem Header="{l:Localization UI.NPCInfo}">
+                <local:NPCInfoSubPage/>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.Filter}">
+                <local:NPCFilterSubPage/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

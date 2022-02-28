@@ -45,7 +45,7 @@
                 </StackPanel>
             </controls:InfoBox>
         </DockPanel>
-        <controls:InfoBox Grid.Row="1" Margin="0,3,0,0" TipDock="Top" Tip="Properties" DataContext="{Binding ItemInfo.Data}">
+        <controls:InfoBox Grid.Row="1" Margin="0,3,0,0" TipDock="Top" Tip="{l:Localization UI.Properties}" DataContext="{Binding ItemInfo.Data}">
             <controls:InfoBox.Resources>
                 <Style TargetType="TextBox" BasedOn="{StaticResource QTRHacker.WikiTextBoxStyleBase}">
                     <Setter Property="TextAlignment" Value="Center"/>
@@ -59,66 +59,66 @@
                     </Style>
                 </UniformGrid.Resources>
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.Damage}">
-                    <TextBox Text="{Binding Damage}"/>
+                    <TextBox Text="{Binding Damage, Mode=OneWay}"/>
                 </controls:InfoBox>
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.Defense}">
-                    <TextBox Text="{Binding Defense}"/>
+                    <TextBox Text="{Binding Defense, Mode=OneWay}"/>
                 </controls:InfoBox>
                 
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.Crit}">
-                    <TextBox Text="{Binding Crit}"/>
+                    <TextBox Text="{Binding Crit, Mode=OneWay}"/>
                 </controls:InfoBox>
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.KnockBack}">
-                    <TextBox Text="{Binding KnockBack}"/>
+                    <TextBox Text="{Binding KnockBack, Mode=OneWay}"/>
                 </controls:InfoBox>
                 
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.Shoot}">
-                    <TextBox Text="{Binding Shoot}"/>
+                    <TextBox Text="{Binding Shoot, Mode=OneWay}"/>
                 </controls:InfoBox>
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.ShootSpeed}">
-                    <TextBox Text="{Binding ShootSpeed}"/>
+                    <TextBox Text="{Binding ShootSpeed, Mode=OneWay}"/>
                 </controls:InfoBox>
                 
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.UseTime}">
-                    <TextBox Text="{Binding UseTime}"/>
+                    <TextBox Text="{Binding UseTime, Mode=OneWay}"/>
                 </controls:InfoBox>
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.UseAnimation}">
-                    <TextBox Text="{Binding UseAnimation}"/>
+                    <TextBox Text="{Binding UseAnimation, Mode=OneWay}"/>
                 </controls:InfoBox>
 
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.BuffType}">
-                    <TextBox Text="{Binding BuffType}"/>
+                    <TextBox Text="{Binding BuffType, Mode=OneWay}"/>
                 </controls:InfoBox>
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.BuffTime}">
-                    <TextBox Text="{Binding BuffTime}"/>
+                    <TextBox Text="{Binding BuffTime, Mode=OneWay}"/>
                 </controls:InfoBox>
 
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.HealLife}">
-                    <TextBox Text="{Binding HealLife}"/>
+                    <TextBox Text="{Binding HealLife, Mode=OneWay}"/>
                 </controls:InfoBox>
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.HealMana}">
-                    <TextBox Text="{Binding HealMana}"/>
+                    <TextBox Text="{Binding HealMana, Mode=OneWay}"/>
                 </controls:InfoBox>
 
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.CreateTile}">
-                    <TextBox Text="{Binding CreateTile}"/>
+                    <TextBox Text="{Binding CreateTile, Mode=OneWay}"/>
                 </controls:InfoBox>
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.PlaceStyle}">
-                    <TextBox Text="{Binding PlaceStyle}"/>
+                    <TextBox Text="{Binding PlaceStyle, Mode=OneWay}"/>
                 </controls:InfoBox>
 
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.CreateWall}">
-                    <TextBox Text="{Binding CreateWall}"/>
+                    <TextBox Text="{Binding CreateWall, Mode=OneWay}"/>
                 </controls:InfoBox>
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.TileBoost}">
-                    <TextBox Text="{Binding TileBoost}"/>
+                    <TextBox Text="{Binding TileBoost, Mode=OneWay}"/>
                 </controls:InfoBox>
 
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.Mana}">
-                    <TextBox Text="{Binding Mana}"/>
+                    <TextBox Text="{Binding Mana, Mode=OneWay}"/>
                 </controls:InfoBox>
                 <controls:InfoBox Tip="{l:Localization UI.ItemProperties.Bait}">
-                    <TextBox Text="{Binding Bait}"/>
+                    <TextBox Text="{Binding Bait, Mode=OneWay}"/>
                 </controls:InfoBox>
             </UniformGrid>
         </controls:InfoBox>

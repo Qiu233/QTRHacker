@@ -17,13 +17,12 @@
                   ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItemInfo}">
             <ListView.Resources>
                 <ContextMenu x:Key="Menu">
-                    <MenuItem x:Name="AddOneMenuItem" Header="{l:Localization UI.Wiki.AddOne}" Command="{Binding DataContext.AddOneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
-                    <MenuItem x:Name="AddMaxMenuItem" Header="{l:Localization UI.Wiki.AddMax}" Command="{Binding DataContext.AddMaxCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
+                    <MenuItem x:Name="AddOneMenuItem" Header="{l:Localization UI.Wiki.AddOneItem}" Command="{Binding DataContext.AddOneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
+                    <MenuItem x:Name="AddMaxMenuItem" Header="{l:Localization UI.Wiki.AddMaxItem}" Command="{Binding DataContext.AddMaxCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
                 </ContextMenu>
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
-                    <Setter Property="ContextMenu" Value="{StaticResource Menu}">
-                    </Setter>
+                    <Setter Property="ContextMenu" Value="{StaticResource Menu}"/>
                 </Style>
             </ListView.Resources>
             <ListView.View>

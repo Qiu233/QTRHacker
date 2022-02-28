@@ -8,9 +8,10 @@
     "Edit": "编辑",
     "TPTo": "传送至",
     "Inventory": "背包",
-    "Piggy": "猪猪罐",
+    "Piggy": "猪猪",
     "Apply": "应用",
     "Initialize": "初始化",
+    "Others": "其他",
     "Wiki": {
       "Value": "价值",
       "AddOne": "添加一个到背包",
@@ -51,7 +52,6 @@
       "Copper": "铜"
     },
     "ItemCategories": {
-      "Others": "其他",
       "Block": "方块",
       "Wall": "墙壁",
       "Quest": "任务",

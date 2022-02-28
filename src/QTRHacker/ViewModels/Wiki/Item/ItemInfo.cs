@@ -15,8 +15,8 @@ public class ItemInfo : ViewModelBase, ILocalizationProvider
 	public string Category => category;
 
 	public int Type { get; }
-	public string Key => WikiResLoader.GetItemKeyFromType(Type);
-	public ItemData Data => WikiResLoader.ItemDatum[Type];
+	public string Key { get; }
+	public ItemData Data { get; }
 	public string Tooltip => tooltip;
 
 	public void OnCultureChanged(object sender, CultureChangedEventArgs args)
@@ -61,6 +61,8 @@ public class ItemInfo : ViewModelBase, ILocalizationProvider
 	public ItemInfo(int type)
 	{
 		Type = type;
+		Key = WikiResLoader.GetItemKeyFromType(Type);
+		Data = WikiResLoader.ItemDatum[Type];
 		LocalizationManager.RegisterLocalizationProvider(this);
 	}
 }

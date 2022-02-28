@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="QTRHacker.Views.Wiki.NPC.NPCInfoSubPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QTRHacker.Views.Wiki.NPC" 
+             xmlns:controls="clr-namespace:QTRHacker.Controls"
+             xmlns:l="clr-namespace:QTRHacker.Localization"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Padding="3">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
+            <controls:InfoBox Tip="Icon" TipDock="Top" DockPanel.Dock="Left">
+                <local:NPCBox NPCType="{Binding NPCInfo.Data.Type}" Width="100" Height="Auto">
+                </local:NPCBox>
+            </controls:InfoBox>
+            <controls:InfoBox Tip="Details" TipDock="Top">
+                <StackPanel Grid.IsSharedSizeScope="True">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource QTRHacker.WikiTextBoxStyleBase}">
+                            <Setter Property="TextAlignment" Value="Right"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="controls:InfoBox">
+                            <Setter Property="TipSharedSizeScope" Value="TipColumn"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <controls:InfoBox Tip="{l:Localization UI.Name}">
+                        <TextBox Text="{Binding NPCInfo.Name, Mode=OneWay}"/>
+                    </controls:InfoBox>
+                    <controls:InfoBox Tip="{l:Localization UI.Category}">
+                        <TextBox Text="{Binding NPCInfo.Category, Mode=OneWay}"/>
+                    </controls:InfoBox>
+                    <controls:InfoBox Tip="AI">
+                        <TextBox Text="{Binding NPCInfo.Data.AiStyle, Mode=OneWay}"/>
+                    </controls:InfoBox>
+                </StackPanel>
+            </controls:InfoBox>
+        </DockPanel>
+        <controls:InfoBox Grid.Row="1" Tip="{l:Localization UI.Properties}" TipDock="Top" Margin="0,3,0,0" DataContext="{Binding NPCInfo.Data}">
+            <controls:InfoBox.Resources>
+                <Style TargetType="TextBox" BasedOn="{StaticResource QTRHacker.WikiTextBoxStyleBase}">
+                    <Setter Property="TextAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </controls:InfoBox.Resources>
+            <UniformGrid Grid.IsSharedSizeScope="True" Columns="1">
+                <UniformGrid.Resources>
+                    <Style TargetType="controls:InfoBox">
+                        <Setter Property="TipSharedSizeScope" Value="TipColumn"/>
+                    </Style>
+                </UniformGrid.Resources>
+                <controls:InfoBox Tip="{l:Localization UI.NPCProperties.Width}">
+                    <TextBox Text="{Binding Width, Mode=OneWay}"/>
+                </controls:InfoBox>
+                <controls:InfoBox Tip="{l:Localization UI.NPCProperties.Height}">
+                    <TextBox Text="{Binding Height, Mode=OneWay}"/>
+                </controls:InfoBox>
+                <controls:InfoBox Tip="{l:Localization UI.NPCProperties.DefDamage}">
+                    <TextBox Text="{Binding DefDamage, Mode=OneWay}"/>
+                </controls:InfoBox>
+                <controls:InfoBox Tip="{l:Localization UI.NPCProperties.DefDefense}">
+                    <TextBox Text="{Binding DefDefense, Mode=OneWay}"/>
+                </controls:InfoBox>
+                <controls:InfoBox Tip="{l:Localization UI.NPCProperties.LifeMax}">
+                    <TextBox Text="{Binding LifeMax, Mode=OneWay}"/>
+                </controls:InfoBox>
+                <controls:InfoBox Tip="{l:Localization UI.NPCProperties.KnockBackResist}">
+                    <TextBox Text="{Binding KnockBackResist, Mode=OneWay}"/>
+                </controls:InfoBox>
+            </UniformGrid>
+        </controls:InfoBox>
+    </Grid>
+</UserControl>

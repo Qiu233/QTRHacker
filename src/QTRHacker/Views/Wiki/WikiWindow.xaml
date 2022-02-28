@@ -15,7 +15,7 @@
                 <wiki_Item:ItemWikiTabPage DataContext="{Binding ItemPageViewModel}"/>
             </TabItem>
             <TabItem Header="NPCs">
-                <wiki_NPC:NPCWikiTabPage/>
+                <wiki_NPC:NPCWikiTabPage DataContext="{Binding NPCPageViewModel}"/>
             </TabItem>
         </TabControl>
     </Grid>

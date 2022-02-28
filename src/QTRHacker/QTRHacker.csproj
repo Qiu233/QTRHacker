@@ -11,7 +11,7 @@
     <ProduceReferenceAssemblies>false</ProduceReferenceAssemblies>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-    <Version>10.0.1.0</Version>
+    <Version>10.0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\GameImages\NPCs.bin" />
     <None Remove="Assets\Game\Localization.zip" />
     <None Remove="Assets\Game\WikiRes.zip" />
     <None Remove="Assets\ItemImages.bin" />
@@ -31,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\GameImages\NPCs.bin" />
     <Resource Include="Assets\Game\Localization.zip" />
     <Resource Include="Assets\Game\WikiRes.zip" />
   </ItemGroup>
@@ -44,10 +46,19 @@
     <ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
     <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
     <ProjectReference Include="..\QTRHacker.Functions\QTRHacker.Functions.csproj" />
+    <ProjectReference Include="..\WpfXnaControl\WpfXnaControl.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <Folder Include="ViewModels\Wiki\NPC\" />
+    <Reference Include="Microsoft.Xna.Framework">
+      <HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game">
+      <HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.Game.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics">
+      <HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.Graphics.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

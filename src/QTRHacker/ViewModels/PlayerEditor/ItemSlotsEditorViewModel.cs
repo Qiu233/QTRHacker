@@ -1,10 +1,12 @@
-﻿using QTRHacker.Assets;
+﻿using Microsoft.Win32;
+using QTRHacker.Assets;
 using QTRHacker.Commands;
 using QTRHacker.Functions.GameObjects.Terraria;
 using QTRHacker.Views.PlayerEditor;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +18,7 @@ namespace QTRHacker.ViewModels.PlayerEditor
 	public class ItemSlotsEditorViewModel : ViewModelBase
 	{
 		private bool updating;
+		private Player player;
 
 		public delegate Item ItemFromIndexDelegate(int index);
 		public ItemFromIndexDelegate ItemProvider { get; }
@@ -35,14 +38,19 @@ namespace QTRHacker.ViewModels.PlayerEditor
 
 		private readonly RelayCommand applyItemData;
 		private readonly RelayCommand initItemData;
+		private readonly RelayCommand saveInv;
+		private readonly RelayCommand loadInv;
 		public RelayCommand ApplyItemData => applyItemData;
 		public RelayCommand InitItemData => initItemData;
+		public RelayCommand SaveInv => saveInv;
+		public RelayCommand LoadInv => loadInv;
 
 		private Item SelectedItem => ItemProvider(ItemSlotsGridViewModel.SelectedIndex);
 
 
-		public ItemSlotsEditorViewModel(ISlotsLayout layout, ItemFromIndexDelegate itemProvider, DispatcherTimer updateTimer)
+		public ItemSlotsEditorViewModel(ISlotsLayout layout, Player player, ItemFromIndexDelegate itemProvider, DispatcherTimer updateTimer)
 		{
+			this.player = player;
 			ItemProvider = itemProvider;
 			ItemPropertiesPanelViewModel = new ItemPropertiesPanelViewModel();
 			ItemSlotsGridViewModel = new(layout);
@@ -55,10 +63,32 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			{
 				ItemPropertiesPanelViewModel.UpdatePropertiesToItem(SelectedItem);
 			});
-			initItemData= new RelayCommand(o => true, o =>
+			initItemData = new RelayCommand(o => true, o =>
 			{
 				InitItem();
 				ItemPropertiesPanelViewModel.UpdatePropertiesFromItem(SelectedItem);
+			});
+			saveInv = new RelayCommand(o => true, o =>
+			{
+				SaveFileDialog dialog = new();
+				dialog.Filter = "inv file|*.inv";
+				dialog.InitialDirectory = Path.GetFullPath("./Content/Invs");
+				if (dialog.ShowDialog() == true)
+				{
+					using var s = dialog.OpenFile();
+					this.player.SaveInventory(s);
+				}
+			});
+			loadInv = new RelayCommand(o => true, o =>
+			{
+				OpenFileDialog dialog = new();
+				dialog.Filter = "inv file|*.inv";
+				dialog.InitialDirectory = Path.GetFullPath("./Content/Invs");
+				if (dialog.ShowDialog() == true)
+				{
+					using var s = dialog.OpenFile();
+					this.player.LoadInventory(s);
+				}
 			});
 
 			Update();

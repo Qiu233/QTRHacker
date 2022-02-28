@@ -20,9 +20,9 @@ namespace QTRHacker.Functions.GameObjects.Terraria
 			Context.RunByHookOnUpdate(
 				new HackMethod(Context.HContext,
 					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.NPC",
-					"Terraria.NPC.NewNPC(Int32, Int32, Int32, Int32, Single, Single, Single, Single, Int32)"))
+					"Terraria.NPC.NewNPC(Terraria.DataStructures.IEntitySource, Int32, Int32, Int32, Int32, Single, Single, Single, Single, Int32)"))
 				.Call(null)
-				.Call(true, null, null, new object[] { x, y, type, start, ai0, ai1, ai2, ai3, target }));
+				.Call(true, null, null, new object[] { 0, x, y, type, start, ai0, ai1, ai2, ai3, target }));
 		}
 
 		public void AddBuff(int type, int time, bool quiet = false)

@@ -17,19 +17,24 @@ using System.Windows.Shapes;
 namespace QTRHacker.Views.Wiki.NPC
 {
 	/// <summary>
-	/// NPCWikiTabPage.xaml 的交互逻辑
+	/// NPCFilterSubPage.xaml 的交互逻辑
 	/// </summary>
-	public partial class NPCWikiTabPage : UserControl
+	public partial class NPCFilterSubPage : UserControl
 	{
-		public NPCPageViewModel ViewModel => DataContext as NPCPageViewModel;
-		public NPCWikiTabPage()
+		public NPCInfoPagesViewModel ViewModel => DataContext as NPCInfoPagesViewModel;
+		public NPCFilterSubPage()
 		{
 			InitializeComponent();
 		}
 
-		private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			ViewModel.AddSelectedNPCToGame();
+			if (e.Key == Key.Return)
+			{
+				if (ViewModel.ApplyKeyword.CanExecute(null))
+					ViewModel.ApplyKeyword.Execute(null);
+				e.Handled = true;
+			}
 		}
 	}
 }

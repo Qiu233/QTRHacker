@@ -12,7 +12,8 @@ namespace QTRHacker.Assets
 {
 	public static class GameImages
 	{
-		private static readonly Dictionary<string, BitmapImage> ImagesCache = new();
+		private static readonly Dictionary<string, BitmapImage> Images = new();
+		private static readonly Dictionary<string, byte[]> ImageDatum = new();
 		static GameImages()
 		{
 			LoadGameImages();
@@ -25,6 +26,7 @@ namespace QTRHacker.Assets
 		private static void LoadGameImages()
 		{
 			LoadGameImage("Items");
+			LoadGameImage("NPCs");
 		}
 		private static void LoadGameImage(string name)
 		{
@@ -32,17 +34,26 @@ namespace QTRHacker.Assets
 			var imgs = BinLoader.ReadBinFromStream(s);
 			foreach (var img in imgs)
 			{
+				string key = $"{name}.{img.Key}";
+				var data = ImageDatum[key] = new byte[img.Value.Length];
+				Array.Copy(img.Value, data, img.Value.Length);
 				BitmapImage bmp = new();
 				bmp.CacheOption = BitmapCacheOption.OnDemand;
 				bmp.BeginInit();
 				bmp.StreamSource = new MemoryStream(img.Value);
 				bmp.EndInit();
-				ImagesCache[$"{name}.{img.Key}"] = bmp;
+				Images[key] = bmp;
 			}
 		}
 		public static BitmapImage GetImage(string key)
 		{
-			if (ImagesCache.TryGetValue(key, out BitmapImage v))
+			if (Images.TryGetValue(key, out BitmapImage v))
+				return v;
+			return null;
+		}
+		public static byte[] GetImageData(string key)
+		{
+			if (ImageDatum.TryGetValue(key, out byte[] v))
 				return v;
 			return null;
 		}
@@ -50,6 +61,14 @@ namespace QTRHacker.Assets
 		public static BitmapImage GetItemImage(int type)
 		{
 			return GetImage($"Items.Item_{type}");
+		}
+		public static BitmapImage GetNPCImage(int type)
+		{
+			return GetImage($"NPCs.NPC_{type}");
+		}
+		public static byte[] GetNPCImageData(int type)
+		{
+			return GetImageData($"NPCs.NPC_{type}");
 		}
 	}
 }

@@ -20,6 +20,7 @@
     "Reset": "Reset",
     "Category": "Category",
     "ItemInfo": "Item Info",
+    "NPCInfo": "NPC Info",
     "Details": "Details",
     "Filter": "Filter",
     "Icon": "Icon",
@@ -27,10 +28,14 @@
     "Tooltip": "Tooltip",
     "Recipe": "Recipe",
     "Keyword": "Keyword",
+    "Properties": "Properties",
+    "Save": "Save",
+    "Load": "Load",
     "Wiki": {
       "Value": "Value",
-      "AddOne": "Add one to inventory",
-      "AddMax": "Add max to inventory"
+      "AddOneItem": "Add one to inventory",
+      "AddMaxItem": "Add max to inventory",
+      "AddOneNPC": "Spawn one"
     },
     "ItemProperties": {
       "Type": "Type",
@@ -83,6 +88,20 @@
       "Summon": "Summon",
       "Buff": "Buff",
       "Consumable": "Consumable"
+    },
+    "NPCProperties": {
+      "Width": "Width",
+      "Height": "Height",
+      "DefDamage": "Damage",
+      "DefDefense": "Defense",
+      "LifeMax": "Max Life",
+      "KnockBackResist": "KnockBack Resist"
+    },
+    "NPCCategories": {
+      "Others": "Others",
+      "Friendly": "Friendly",
+      "Town": "Town NPC",
+      "Boss": "Boss"
     }
   },
   "Tip": {

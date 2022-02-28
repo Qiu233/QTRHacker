@@ -26,12 +26,12 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			UpdateTimer = new();
 			UpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.ItemUpdateInterval);
 
-			InventoryEditorViewModel = new ItemSlotsEditorViewModel(new InventoryLayout(), GetInventoryItem, UpdateTimer);
-			ArmorEditorViewModel = new ItemSlotsEditorViewModel(new ArmorLayout(), GetArmorItem, UpdateTimer);
-			PiggyBankViewModel = new ItemSlotsEditorViewModel(new BankLayout(), GetPiggyBankItem, UpdateTimer);
-			SafeViewModel = new ItemSlotsEditorViewModel(new BankLayout(), GetSafeItem, UpdateTimer);
-			ForgeViewModel = new ItemSlotsEditorViewModel(new BankLayout(), GetForgeItem, UpdateTimer);
-			VoidVaultViewModel = new ItemSlotsEditorViewModel(new BankLayout(), GetVoidVaultItem, UpdateTimer);
+			InventoryEditorViewModel = new ItemSlotsEditorViewModel(new InventoryLayout(), player, GetInventoryItem, UpdateTimer);
+			ArmorEditorViewModel = new ItemSlotsEditorViewModel(new ArmorLayout(), player, GetArmorItem, UpdateTimer);
+			PiggyBankViewModel = new ItemSlotsEditorViewModel(new BankLayout(), player, GetPiggyBankItem, UpdateTimer);
+			SafeViewModel = new ItemSlotsEditorViewModel(new BankLayout(), player, GetSafeItem, UpdateTimer);
+			ForgeViewModel = new ItemSlotsEditorViewModel(new BankLayout(), player, GetForgeItem, UpdateTimer);
+			VoidVaultViewModel = new ItemSlotsEditorViewModel(new BankLayout(), player, GetVoidVaultItem, UpdateTimer);
 
 			UpdateTimer.Start();
 		}

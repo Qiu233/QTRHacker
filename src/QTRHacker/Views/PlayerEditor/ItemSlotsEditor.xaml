@@ -22,12 +22,14 @@
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource QTRHacker.StripButtonStyle}"/>
             </StackPanel.Resources>
-            <Button x:Name="ApplyButton"
-                    Content="{l:Localization UI.Apply}"
+            <Button Content="{l:Localization UI.Apply}"
                     Command="{Binding ApplyItemData}"/>
-            <Button x:Name="InitButton"
-                    Content="{l:Localization UI.Initialize}" 
+            <Button Content="{l:Localization UI.Initialize}" 
                     Command="{Binding InitItemData}"/>
+            <Button Content="{l:Localization UI.Save}" 
+                    Command="{Binding SaveInv}"/>
+            <Button Content="{l:Localization UI.Load}" 
+                    Command="{Binding LoadInv}"/>
         </StackPanel>
     </Grid>
 </UserControl>
