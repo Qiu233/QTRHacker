@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QTRHacker.ViewModels.Wiki.Item;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,19 @@ namespace QTRHacker.Views.Wiki.Item
 	/// </summary>
 	public partial class ItemInfoSubPage : UserControl
 	{
+		public ItemInfoPagesViewModel ViewModel => DataContext as ItemInfoPagesViewModel;
 		public ItemInfoSubPage()
 		{
 			InitializeComponent();
+		}
+
+		private void JumpToRecipe_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			if (sender is not ListBoxItem item)
+				return;
+			if (!ViewModel.JumpToCommand.CanExecute(item.DataContext))
+				return;
+			ViewModel.JumpToCommand.Execute(item.DataContext);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Newtonsoft.Json;
 using QTRHacker.Configs;
-using QTRHacker.Functions;
+using QTRHacker.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,9 +51,12 @@ namespace QTRHacker
 			SaveConfig();
 		}
 
+		public static event EventHandler Initialized;
+
 		public static void Initialize(int pid)
 		{
 			_GameContext = GameContext.OpenGame(Process.GetProcessById(pid));
+			Initialized?.Invoke(null, EventArgs.Empty);
 		}
 		public static bool IsActive => _GameContext != null;
 	}

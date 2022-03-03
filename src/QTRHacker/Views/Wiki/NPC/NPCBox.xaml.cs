@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using QTRHacker.Assets;
+using QTRHacker.Core;
 using QTRHacker.EventManagers;
-using QTRHacker.Functions;
 using System;
 using System.Collections.Generic;
 using System.IO;

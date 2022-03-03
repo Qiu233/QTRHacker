@@ -11,11 +11,29 @@
     "Piggy": "猪猪",
     "Apply": "应用",
     "Initialize": "初始化",
-    "Others": "其他",
+    "ReverseSelection": "反选",
+    "Search": "搜索",
+    "Reset": "重置",
+    "Category": "分类",
+    "ItemInfo": "物品信息",
+    "NPCInfo": "NPC信息",
+    "Details": "详细信息",
+    "Filter": "筛选",
+    "Icon": "图标",
+    "Rare": "稀有度",
+    "Tooltip": "描述",
+    "Recipe": "合成",
+    "Keyword": "关键词",
+    "Properties": "属性",
+    "Save": "保存",
+    "Load": "加载",
     "Wiki": {
       "Value": "价值",
       "AddOne": "添加一个到背包",
-      "AddMax": "添加一组到背包"
+      "AddMax": "添加一组到背包",
+      "AddOneNPC": "生成一个NPC",
+      "GetItemStack": "添加到游戏",
+      "JumpTo": "跳转到"
     },
     "ItemProperties": {
       "Type": "类型",
@@ -43,7 +61,9 @@
       "CreateWall": "墙壁",
       "Prefix": "前缀",
       "AutoReuse": "长按鼠标连续使用",
-      "Accessory": "饰品"
+      "Accessory": "饰品",
+      "TileBoost": "距离增益",
+      "Mana": "魔法消耗"
     },
     "ItemValue": {
       "Platinum": "铂",
@@ -65,6 +85,20 @@
       "Summon": "召唤",
       "Buff": "Buff",
       "Consumable": "消耗品"
+    },
+    "NPCProperties": {
+      "Width": "宽度",
+      "Height": "高度",
+      "DefDamage": "攻击力",
+      "DefDefense": "防御",
+      "LifeMax": "最大生命值",
+      "KnockBackResist": "击退抗性"
+    },
+    "NPCCategories": {
+      "Others": "其他",
+      "Friendly": "友好",
+      "Town": "NPC",
+      "Boss": "Boss"
     }
   },
   "Tip": {

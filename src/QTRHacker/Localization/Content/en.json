@@ -35,7 +35,9 @@
       "Value": "Value",
       "AddOneItem": "Add one to inventory",
       "AddMaxItem": "Add max to inventory",
-      "AddOneNPC": "Spawn one"
+      "AddOneNPC": "Spawn one",
+      "GetItemStack": "Add to game",
+      "JumpTo": "Jump to"
     },
     "ItemProperties": {
       "Type": "Type",

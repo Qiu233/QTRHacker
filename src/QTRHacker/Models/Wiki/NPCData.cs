@@ -1,4 +1,6 @@
-﻿namespace QTRHacker.Models.Wiki
+﻿using QTRHacker.Core.GameObjects.ValueTypeRedefs.Xna;
+
+namespace QTRHacker.Models.Wiki
 {
 	public class NPCData
 	{
@@ -14,6 +16,6 @@
 		public int DefDefense { get; set; }
 		public int LifeMax { get; set; }
 		public float KnockBackResist { get; set; }
-		public Functions.GameObjects.ValueTypeRedefs.Xna.Color Color { get; set; }
+		public Color Color { get; set; }
 	}
 }

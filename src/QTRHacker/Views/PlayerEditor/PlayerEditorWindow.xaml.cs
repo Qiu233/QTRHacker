@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using QTRHacker.Functions.GameObjects.Terraria;
+using QTRHacker.Core.GameObjects.Terraria;
 using System.Windows.Threading;
 using QTRHacker.Controls;
 using QTRHacker.ViewModels.PlayerEditor;

@@ -1,7 +1,7 @@
 ﻿using QHackCLR.Common;
 using QHackLib.Assemble;
 using QHackLib.Memory;
-using QTRHacker.Functions;
+using QTRHacker.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

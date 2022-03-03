@@ -16,13 +16,13 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <controls:InfoBox Tip="Icon" TipDock="Top" DockPanel.Dock="Left">
+            <controls:InfoBox Tip="{l:Localization UI.Icon}" TipDock="Top" DockPanel.Dock="Left">
                 <Border Padding="10" Width="100" Height="60">
                     <Image Stretch="Uniform"
                        Source="{Binding ItemInfo.Type, Converter={x:Static converters:ItemTypeToImageConverter.Instance}}"/>
                 </Border>
             </controls:InfoBox>
-            <controls:InfoBox Tip="Details" TipDock="Top" Margin="3,0,0,0">
+            <controls:InfoBox Tip="{l:Localization UI.Details}" TipDock="Top" Margin="3,0,0,0">
                 <StackPanel Grid.IsSharedSizeScope="True">
                     <StackPanel.Resources>
                         <Style TargetType="TextBox" BasedOn="{StaticResource QTRHacker.WikiTextBoxStyleBase}">
@@ -33,13 +33,13 @@
                             <Setter Property="TipSharedSizeScope" Value="FirstColumn"/>
                         </Style>
                     </StackPanel.Resources>
-                    <controls:InfoBox Tip="Pick">
+                    <controls:InfoBox Tip="{l:Localization UI.ItemProperties.Pick}">
                         <TextBox Text="{Binding ItemInfo.Data.Pick, Mode=OneWay}"/>
                     </controls:InfoBox>
-                    <controls:InfoBox Tip="Axe">
+                    <controls:InfoBox Tip="{l:Localization UI.ItemProperties.Axe}">
                         <TextBox Text="{Binding ItemInfo.Data.Axe, Mode=OneWay}"/>
                     </controls:InfoBox>
-                    <controls:InfoBox Tip="Hammer">
+                    <controls:InfoBox Tip="{l:Localization UI.ItemProperties.Hammer}">
                         <TextBox Text="{Binding ItemInfo.Data.Hammer, Mode=OneWay}"/>
                     </controls:InfoBox>
                 </StackPanel>
@@ -123,7 +123,7 @@
             </UniformGrid>
         </controls:InfoBox>
 
-        <controls:InfoBox Grid.Row="2" TipDock="Left" Tip="Tooltip" Margin="0,3,0,0" Height="80">
+        <controls:InfoBox Grid.Row="2" TipDock="Left" Tip="{l:Localization UI.Tooltip}" Margin="0,3,0,0" Height="80">
             <TextBox Style="{StaticResource QTRHacker.WikiTextBoxStyleBase}" Text="{Binding ItemInfo.Tooltip, Mode=OneWay}" TextWrapping="Wrap"/>
         </controls:InfoBox>
     </Grid>

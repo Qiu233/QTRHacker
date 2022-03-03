@@ -3,7 +3,7 @@ using QHackLib.Memory;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using QTRHacker.Scripts;
-using QTRHacker.Functions;
+using QTRHacker.Core;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;

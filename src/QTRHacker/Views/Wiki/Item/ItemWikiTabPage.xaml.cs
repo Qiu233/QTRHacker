@@ -31,5 +31,11 @@ namespace QTRHacker.Views.Wiki.Item
 		{
 			ViewModel.AddSelectedItemToGame_Max();
 		}
+
+		private void ItemsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var lb = (ListView)sender;
+			lb.ScrollIntoView(lb.SelectedItem);
+		}
 	}
 }

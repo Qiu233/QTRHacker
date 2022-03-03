@@ -1,4 +1,4 @@
-﻿using QTRHacker.Functions.GameObjects.Terraria;
+﻿using QTRHacker.Core.GameObjects.Terraria;
 using System;
 using System.Collections.Generic;
 using System.Linq;

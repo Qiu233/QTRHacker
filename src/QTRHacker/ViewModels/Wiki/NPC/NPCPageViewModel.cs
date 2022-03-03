@@ -56,7 +56,7 @@ namespace QTRHacker.ViewModels.Wiki.NPC
 				return;
 			int id = SelectedNPCInfo.Type;
 			var pos = ctx.MyPlayer.Position;
-			Functions.GameObjects.Terraria.NPC.NewNPC(ctx, (int)pos.X, (int)pos.Y, id);
+			Core.GameObjects.Terraria.NPC.NewNPC(ctx, (int)pos.X, (int)pos.Y, id);
 		}
 
 		private void NPCPageViewModel_SelectedNPCInfoChanged(object sender, EventArgs e)

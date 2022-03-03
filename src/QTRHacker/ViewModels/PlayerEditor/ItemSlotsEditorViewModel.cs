@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using QTRHacker.Assets;
 using QTRHacker.Commands;
-using QTRHacker.Functions.GameObjects.Terraria;
+using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.Views.PlayerEditor;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace QTRHacker.ViewModels.PlayerEditor
 	public class ItemSlotsEditorViewModel : ViewModelBase
 	{
 		private bool updating;
-		private Player player;
+		private readonly Player player;
 
 		public delegate Item ItemFromIndexDelegate(int index);
 		public ItemFromIndexDelegate ItemProvider { get; }

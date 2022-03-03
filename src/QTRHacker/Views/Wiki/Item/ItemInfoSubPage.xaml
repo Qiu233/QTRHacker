@@ -11,15 +11,22 @@
     <Grid>
         <Grid.Resources>
             <DataTemplate x:Key="ItemStackInfoTemplate">
-                <TextBlock>
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}[{0}] {1} * {2}">
-                            <Binding Path="ItemInfo.Type" />
-                            <Binding Path="ItemInfo.Name" />
-                            <Binding Path="Stack" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="LB"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Type"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="RB"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Name"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Multiplier"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Stack"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="[" TextAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding ItemInfo.Type}" TextAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="]" TextAlignment="Center"/>
+                    <TextBlock Grid.Column="3" Text="{Binding ItemInfo.Name}" Margin="2,0,2,0" TextAlignment="Left"/>
+                    <TextBlock Grid.Column="4" Text="*" Margin="2,0,2,0" TextAlignment="Center"/>
+                    <TextBlock Grid.Column="5" Text="{Binding Stack}" TextAlignment="Center"/>
+                </Grid>
             </DataTemplate>
         </Grid.Resources>
         <Grid.RowDefinitions>
@@ -82,8 +89,26 @@
                 </TabControl.ItemTemplate>
                 <TabControl.ContentTemplate>
                     <DataTemplate>
-                        <ListBox ItemsSource="{Binding RequiredItems}" Background="Transparent" ItemTemplate="{StaticResource ItemStackInfoTemplate}"/>
-
+                        <ListBox ItemsSource="{Binding RequiredItems}" 
+                                 Background="Transparent" 
+                                 ItemTemplate="{StaticResource ItemStackInfoTemplate}" 
+                                 SelectedItem="{Binding SelectedRecipeFromItem}" 
+                                 Grid.IsSharedSizeScope="True">
+                            <ListBox.Resources>
+                                <ContextMenu x:Key="Menu">
+                                    <MenuItem Header="{l:Localization UI.Wiki.GetItemStack}" 
+                                              Command="{Binding DataContext.GetItemStackCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:InfoBox}}"
+                                              CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"/>
+                                    <MenuItem Header="{l:Localization UI.Wiki.JumpTo}" 
+                                              Command="{Binding DataContext.JumpToCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:InfoBox}}"
+                                              CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"/>
+                                </ContextMenu>
+                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                    <EventSetter Event="MouseDoubleClick" Handler="JumpToRecipe_MouseDoubleClick"/>
+                                    <Setter Property="ContextMenu" Value="{StaticResource Menu}"/>
+                                </Style>
+                            </ListBox.Resources>
+                        </ListBox>
                     </DataTemplate>
                 </TabControl.ContentTemplate>
             </TabControl>
@@ -95,12 +120,33 @@
                     <l:Localization Key="UI.Recipe"/>
                 </MultiBinding>
             </controls:InfoBox.Tip>
-            <ListBox Background="Transparent" ItemsSource="{Binding RecipeTos}" ItemTemplate="{StaticResource ItemStackInfoTemplate}"/>
+            <ListBox Background="Transparent" 
+                     ItemsSource="{Binding RecipeTos}" 
+                     ItemTemplate="{StaticResource ItemStackInfoTemplate}"
+                     SelectedItem="{Binding SelectedRecipeTo}"
+                     Grid.IsSharedSizeScope="True">
+                <ListBox.Resources>
+                    <ContextMenu x:Key="Menu">
+                        <MenuItem Header="{l:Localization UI.Wiki.GetItemStack}" 
+                                  Command="{Binding DataContext.GetItemStackCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                  CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"/>
+                        <MenuItem Header="{l:Localization UI.Wiki.JumpTo}" 
+                                  Command="{Binding DataContext.JumpToCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                  CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"/>
+                    </ContextMenu>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                        <EventSetter Event="MouseDoubleClick" Handler="JumpToRecipe_MouseDoubleClick"/>
+                        <Setter Property="ContextMenu" Value="{StaticResource Menu}"/>
+                    </Style>
+                </ListBox.Resources>
+            </ListBox>
         </controls:InfoBox>
 
         <controls:InfoBox Grid.Row="4" TipDock="Left" Tip="{l:Localization UI.Wiki.Value}" Margin="0,3,0,0">
-            <TextBox Style="{StaticResource QTRHacker.WikiTextBoxStyleBase}" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, Mode=OneWay}">
-            </TextBox>
+            <TextBox Style="{StaticResource QTRHacker.WikiTextBoxStyleBase}" 
+                     TextAlignment="Center" 
+                     VerticalAlignment="Center" 
+                     Text="{Binding Value, Mode=OneWay}"/>
         </controls:InfoBox>
     </Grid>
 </UserControl>

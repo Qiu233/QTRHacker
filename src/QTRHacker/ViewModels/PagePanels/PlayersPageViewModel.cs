@@ -1,5 +1,5 @@
 ﻿using QTRHacker.Commands;
-using QTRHacker.Functions;
+using QTRHacker.Core;
 using QTRHacker.ViewModels.PlayerEditor;
 using QTRHacker.Views.PlayerEditor;
 using System;

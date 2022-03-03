@@ -2,6 +2,7 @@
 using QHackCLR.DataTargets;
 using QHackLib;
 using QHackLib.Memory;
+using QTRHacker.Core;
 using QTRHacker.Functions.GameObjects.Terraria;
 using System;
 using System.Collections.Generic;

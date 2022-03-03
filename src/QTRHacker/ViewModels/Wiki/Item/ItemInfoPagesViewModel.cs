@@ -1,5 +1,6 @@
 ﻿using QTRHacker.Assets;
 using QTRHacker.Commands;
+using QTRHacker.Core;
 using QTRHacker.Localization;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,13 @@ namespace QTRHacker.ViewModels.Wiki.Item
 	{
 		private string value;
 		private int selectedRecipeFrom = 0;
+		private ItemStackInfo selectedRecipeTo;
 		private ItemInfo itemInfo;
 		private string keyword = "";
 		private string keywordInput = "";
 		private bool isFilterSuspended;
+		private readonly RelayCommand getItemStackCommand;
+		private readonly RelayCommand jumpToCommand;
 
 		public string Value => value;
 		public ObservableCollection<RecipeFromInfo> RecipeFroms { get; } = new();
@@ -31,6 +35,15 @@ namespace QTRHacker.ViewModels.Wiki.Item
 			{
 				selectedRecipeFrom = value;
 				OnPropertyChanged(nameof(SelectedRecipeFrom));
+			}
+		}
+		public ItemStackInfo SelectedRecipeTo
+		{
+			get => selectedRecipeTo;
+			set
+			{
+				selectedRecipeTo = value;
+				OnPropertyChanged(nameof(SelectedRecipeTo));
 			}
 		}
 		public ItemInfo ItemInfo
@@ -97,10 +110,14 @@ namespace QTRHacker.ViewModels.Wiki.Item
 			IsFilterSuspended = false;
 		});
 
+		public RelayCommand GetItemStackCommand => getItemStackCommand;
+		public RelayCommand JumpToCommand => jumpToCommand;
+
 		public event EventHandler KeywordChanged;
 		public event EventHandler ItemCategoryFilterSelectedChanged;
 		public event EventHandler FilterSuspended;
 		public event EventHandler FilterResumed;
+		public event EventHandler<JumpToItemEventArgs> JumpToItem;
 
 		public void InitData()
 		{
@@ -150,6 +167,19 @@ namespace QTRHacker.ViewModels.Wiki.Item
 
 		public ItemInfoPagesViewModel()
 		{
+			getItemStackCommand = new HackCommand(o =>
+			{
+				if (o is not ItemStackInfo stack)
+					return;
+				HackGlobal.GameContext.AddItemStackToInv(stack.ItemInfo.Type, stack.Stack);
+			});
+			jumpToCommand = new RelayCommand(o => true, o =>
+			{
+				if (o is not ItemStackInfo stack)
+					return;
+				JumpToItem?.Invoke(this, new JumpToItemEventArgs(stack.ItemInfo));
+			});
+
 			var values = Enum.GetValues<ItemCategory>();
 			foreach (var cate in values)
 			{

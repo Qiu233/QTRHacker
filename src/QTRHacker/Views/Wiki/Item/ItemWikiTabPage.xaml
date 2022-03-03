@@ -14,11 +14,13 @@
         </Grid.ColumnDefinitions>
         <ListView x:Name="ItemsListView" Grid.Column="0" Focusable="False" Width="500"
                   BorderBrush="#808080" BorderThickness="1"
-                  ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItemInfo}">
+                  ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItemInfo}" 
+                  SelectedIndex="{Binding SelectedItemIndex, Mode=TwoWay}"
+                  SelectionChanged="ItemsListView_SelectionChanged">
             <ListView.Resources>
                 <ContextMenu x:Key="Menu">
-                    <MenuItem x:Name="AddOneMenuItem" Header="{l:Localization UI.Wiki.AddOneItem}" Command="{Binding DataContext.AddOneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
-                    <MenuItem x:Name="AddMaxMenuItem" Header="{l:Localization UI.Wiki.AddMaxItem}" Command="{Binding DataContext.AddMaxCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
+                    <MenuItem Header="{l:Localization UI.Wiki.AddOneItem}" Command="{Binding DataContext.AddOneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
+                    <MenuItem Header="{l:Localization UI.Wiki.AddMaxItem}" Command="{Binding DataContext.AddMaxCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
                 </ContextMenu>
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>

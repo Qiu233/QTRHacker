@@ -5,8 +5,19 @@ namespace QTRHacker.ViewModels.Wiki.Item
 {
 	public class RecipeFromInfo : ViewModelBase
 	{
+		private ItemStackInfo selectedRecipeFromItem;
+
 		public string Tab { get; }
 		public ObservableCollection<ItemStackInfo> RequiredItems { get; } = new();
+		public ItemStackInfo SelectedRecipeFromItem
+		{
+			get => selectedRecipeFromItem;
+			set
+			{
+				selectedRecipeFromItem = value;
+				OnPropertyChanged(nameof(SelectedRecipeFromItem));
+			}
+		}
 
 		public RecipeFromInfo(string tab)
 		{

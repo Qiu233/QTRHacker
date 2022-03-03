@@ -1,4 +1,4 @@
-﻿using QTRHacker.Functions;
+﻿using QTRHacker.Core;
 using QTRHacker.Localization;
 using System;
 using System.Collections.Generic;

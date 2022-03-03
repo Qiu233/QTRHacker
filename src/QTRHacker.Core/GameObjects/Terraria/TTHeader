@@ -1,0 +1,74 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+#pragma warning disable
+using QHackLib;
+using QTRHacker.Core.GameObjects.ValueTypeRedefs;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+<#+
+private string GetLegalName(string name)
+{
+	string newName = name.Trim(' ', '_');
+	if (newName.Length == 0)
+		return name.Trim();
+	return newName;
+}
+
+private void PROPERTY_VIRTUAL(string type, string newName, string name)
+{
+#>public virtual <#= type #> <#= newName #> { get => InternalObject.<#= name #>; set => InternalObject.<#= name #> = value; }<#+
+}
+private void PROPERTY_VIRTUAL(string type, string name)
+{
+	type = type.Trim();
+	string newName = GetLegalName(name);
+	newName = newName[0].ToString().ToUpper() + newName.Substring(1);
+	name = name.Trim();
+	PROPERTY_VIRTUAL(type, newName, name);
+}
+
+private void PROPERTY_GO_VIRTUAL(string type, string newName, string name)
+{
+#>public virtual <#= type #> <#= newName #> { get => new(Context, InternalObject.<#= name #>); set => InternalObject.<#= name #> = value.InternalObject; }<#+
+}
+private void PROPERTY_GO_VIRTUAL(string type, string name)
+{
+	string newName = GetLegalName(name);
+	newName = newName[0].ToString().ToUpper() + newName.Substring(1);
+	name = name.Trim();
+	PROPERTY_GO_VIRTUAL(type, newName, name);
+}
+
+private void PROPERTY_ARRAY_VIRTUAL(string type, string newName, string name)
+{
+#>public virtual GameObjectArray<<#= type #>> <#= newName #> { get => new GameObjectArray<<#= type #>>(Context, InternalObject.<#= name #>); set => InternalObject.<#= name #> = value.InternalObject; }<#+
+}
+private void PROPERTY_ARRAY_VIRTUAL(string type, string name)
+{
+	type = type.Trim();
+	string newName = GetLegalName(name);
+	newName = newName[0].ToString().ToUpper() + newName.Substring(1);
+	name = name.Trim();
+	PROPERTY_ARRAY_VIRTUAL(type, newName, name);
+}
+
+private void PROPERTY_ARRAYV_VIRTUAL(string type, string newName, string name)
+{
+#>public virtual GameObjectArrayV<<#= type #>> <#= newName #> { get => new GameObjectArrayV<<#= type #>>(Context, InternalObject.<#= name #>); set => InternalObject.<#= name #> = value.InternalObject; }<#+
+}
+private void PROPERTY_ARRAYV_VIRTUAL(string type, string name)
+{
+	type = type.Trim();
+	string newName = GetLegalName(name);
+	newName = newName[0].ToString().ToUpper() + newName.Substring(1);
+	name = name.Trim();
+	PROPERTY_ARRAYV_VIRTUAL(type, newName, name);
+}#>

@@ -11,7 +11,7 @@
     <ProduceReferenceAssemblies>false</ProduceReferenceAssemblies>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-    <Version>10.0.2.0</Version>
+    <Version>10.0.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -45,7 +45,7 @@
     <ProjectReference Include="..\Keystone.Net\Keystone.Net.csproj" />
     <ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
     <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
-    <ProjectReference Include="..\QTRHacker.Functions\QTRHacker.Functions.csproj" />
+    <ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
     <ProjectReference Include="..\WpfXnaControl\WpfXnaControl.csproj" />
   </ItemGroup>
   

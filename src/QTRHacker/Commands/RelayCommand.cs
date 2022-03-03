@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace QTRHacker.Commands
@@ -22,7 +23,7 @@ namespace QTRHacker.Commands
 
 		public void TriggerCanExecuteChanged()
 		{
-			CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+			Application.Current.Dispatcher.Invoke(() => CanExecuteChanged?.Invoke(this, EventArgs.Empty));
 		}
 
 		public bool CanExecute(object parameter)

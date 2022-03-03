@@ -1,7 +1,7 @@
 ﻿using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
-using QTRHacker.Functions.ProjectileImage.RainbowImage;
+using QTRHacker.Core.ProjectileImage.RainbowImage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

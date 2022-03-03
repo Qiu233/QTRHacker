@@ -1,5 +1,7 @@
 ﻿using QTRHacker.Assets;
 using QTRHacker.Commands;
+using QTRHacker.Core;
+using QTRHacker.Core.GameObjects.Terraria;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +15,7 @@ namespace QTRHacker.ViewModels.Wiki.Item;
 public class ItemPageViewModel : ViewModelBase
 {
 	private ItemInfo selectedItemInfo;
+	private int selectedItemIndex;
 
 	public ObservableCollection<ItemInfo> Items { get; } = new();
 
@@ -27,6 +30,16 @@ public class ItemPageViewModel : ViewModelBase
 		}
 	}
 
+	public int SelectedItemIndex
+	{
+		get => selectedItemIndex;
+		set
+		{
+			selectedItemIndex = value;
+			OnPropertyChanged(nameof(SelectedItemIndex));
+		}
+	}
+
 	public event EventHandler SelectedItemInfoChanged;
 	public ItemInfoPagesViewModel ItemInfoPagesViewModel { get; }
 
@@ -37,19 +50,33 @@ public class ItemPageViewModel : ViewModelBase
 
 	public ItemPageViewModel()
 	{
-		addOneCommand = new RelayCommand(o => HackGlobal.IsActive, o => AddSelectedItemToGame_One());
-		addMaxCommand = new RelayCommand(o => HackGlobal.IsActive, o => AddSelectedItemToGame_Max());
+		addOneCommand = new HackCommand(o => AddSelectedItemToGame_One());
+		addMaxCommand = new HackCommand(o => AddSelectedItemToGame_Max());
 
 		ItemInfoPagesViewModel = new ItemInfoPagesViewModel();
 		ItemInfoPagesViewModel.FilterResumed += (s, e) => UpdateFilter();
 		ItemInfoPagesViewModel.CategoryFilters.CollectionChanged += (s, e) => UpdateFilter();
 		ItemInfoPagesViewModel.KeywordChanged += (s, e) => UpdateFilter();
 		ItemInfoPagesViewModel.ItemCategoryFilterSelectedChanged += (s, e) => UpdateFilter();
+		ItemInfoPagesViewModel.JumpToItem += ItemInfoPagesViewModel_JumpToItem;
 		SelectedItemInfoChanged += ItemPageViewModel_SelectedItemInfoChanged;
 
 		// this loop begins from 1 instead of 0, because 0 is ItemName.None
 		for (int i = 1; i < WikiResLoader.ItemDatum.Count; i++)
 			Items.Add(new ItemInfo(i));
+	}
+
+	private void ItemInfoPagesViewModel_JumpToItem(object sender, JumpToItemEventArgs e)
+	{
+		if (e == null || e.ItemInfo == null)
+			return;
+		var type = e.ItemInfo.Type;
+		var item = Items.FirstOrDefault(t => t.Type == type);
+		int index = Items.IndexOf(item);
+		if (index == -1)
+			SelectedItemInfo = e.ItemInfo;
+		else
+			SelectedItemIndex = index;
 	}
 
 	public void AddSelectedItemToGame(int stack)
@@ -59,12 +86,10 @@ public class ItemPageViewModel : ViewModelBase
 		var ctx = HackGlobal.GameContext;
 		if (SelectedItemInfo == null)
 			return;
-		int id = SelectedItemInfo.Type;
-		if (id == 0)
+		int type = SelectedItemInfo.Type;
+		if (type <= 0)//ignoring the negative-indexed legacy items
 			return;
-		var pos = ctx.MyPlayer.Position;
-		int num = Functions.GameObjects.Terraria.Item.NewItem(ctx, (int)pos.X, (int)pos.Y, 0, 0, id, stack, false, 0, true);
-		Functions.GameObjects.Terraria.NetMessage.SendData(ctx, 21, -1, -1, 0, num, 0, 0, 0, 0, 0, 0);
+		ctx.AddItemStackToInv(type, stack);
 	}
 
 	public void AddSelectedItemToGame_Max()

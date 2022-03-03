@@ -1,4 +1,4 @@
-﻿using QTRHacker.Functions.GameObjects.Terraria;
+﻿using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.ViewModels.PlayerEditor;
 using QTRHacker.Views.PlayerEditor;
 using System;

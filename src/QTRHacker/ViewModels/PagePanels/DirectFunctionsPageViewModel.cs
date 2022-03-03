@@ -15,10 +15,10 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Reflection;
 using QTRHacker.Localization;
-using QTRHacker.Functions;
 using System.Security.Cryptography;
 using System.Windows;
 using System.ComponentModel;
+using QTRHacker.Core;
 
 namespace QTRHacker.ViewModels.PagePanels
 {
