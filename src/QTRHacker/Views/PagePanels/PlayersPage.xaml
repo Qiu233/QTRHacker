@@ -22,7 +22,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <StackPanel Margin="2,0,0,0" Orientation="Vertical" Grid.Column="1">
+        <StackPanel Margin="2,0,2,0" Orientation="Vertical" Grid.Column="1">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource QTRHacker.StripButtonStyle}"/>
             </StackPanel.Resources>

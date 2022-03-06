@@ -3,7 +3,7 @@ using QHackCLR.DataTargets;
 using QHackLib;
 using QHackLib.Memory;
 using QTRHacker.Core;
-using QTRHacker.Functions.GameObjects.Terraria;
+using QTRHacker.Core.GameObjects.Terraria;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

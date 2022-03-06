@@ -3,12 +3,17 @@
   "UI": {
     "DirectFunction": "基础功能",
     "MainPage": "主页",
+    "Advanced": "高级",
     "Player": "玩家",
     "Name": "名称",
     "Edit": "编辑",
     "TPTo": "传送至",
     "Inventory": "背包",
     "Piggy": "猪猪",
+    "Armor": "装备",
+    "Safe": "保险柜",
+    "Forge": "熔炉",
+    "VoidVault": "虚空背包",
     "Apply": "应用",
     "Initialize": "初始化",
     "ReverseSelection": "反选",
@@ -27,10 +32,15 @@
     "Properties": "属性",
     "Save": "保存",
     "Load": "加载",
+    "Sches": {
+      "Arrow": "鼠标",
+      "EyeDropper": "滴管",
+      "Brush": "刷子"
+    },
     "Wiki": {
       "Value": "价值",
-      "AddOne": "添加一个到背包",
-      "AddMax": "添加一组到背包",
+      "AddOneItem": "添加一个到背包",
+      "AddMaxItem": "添加一组到背包",
       "AddOneNPC": "生成一个NPC",
       "GetItemStack": "添加到游戏",
       "JumpTo": "跳转到"
@@ -72,6 +82,7 @@
       "Copper": "铜"
     },
     "ItemCategories": {
+      "Others": "其他",
       "Block": "方块",
       "Wall": "墙壁",
       "Quest": "任务",

@@ -30,5 +30,6 @@
         <Setter Property="Template" Value="{StaticResource CrossTemplate}"/>
         <Setter Property="Width" Value="24"/>
         <Setter Property="Height" Value="24"/>
+        <Setter Property="Focusable" Value="False"/>
     </Style>
 </ResourceDictionary>

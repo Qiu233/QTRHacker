@@ -37,31 +37,24 @@ namespace QTRHacker.Scripts
 				OnPropertyChanged(nameof(Tooltip));
 			}
 		}
-		/// <summary>
-		/// Note: this property would/ can be changed asynchronously
-		/// </summary>
+
 		public bool IsEnabled
 		{
 			get => isEnabled;
 			set
 			{
 				isEnabled = value;
-				Application.Current.Dispatcher.Invoke(()
-					=> OnPropertyChanged(nameof(IsEnabled)));
+				OnPropertyChanged(nameof(IsEnabled));
 			}
 		}
-		/// <summary>
-		/// Maximum is 100.0
-		/// Note: this property would/ can be changed asynchronously
-		/// </summary>
+
 		public double Progress
 		{
 			get => progress;
 			set
 			{
 				progress = value;
-				Application.Current.Dispatcher.Invoke(()
-					=> OnPropertyChanged(nameof(Progress)));
+				OnPropertyChanged(nameof(Progress));
 			}
 		}
 		public bool IsProgressing

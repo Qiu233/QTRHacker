@@ -38,8 +38,19 @@ namespace QTRHacker
 
 		}
 
+		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			if (e.ExceptionObject is not Exception ex)
+				return;
+			string log = $"Unhandled exception from {sender}:\nIsTerminating: {e.IsTerminating}\n{ex.Message}\n{ex.StackTrace}";
+			HackGlobal.Logging.Error(log);
+			MessageBox.Show("Unhandled exception occured, please check the log for more information");
+			Environment.Exit(0);
+		}
+
 		static MainWindow()
 		{
+			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			GameImages.Touch();
 		}
 	}

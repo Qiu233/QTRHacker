@@ -1,0 +1,28 @@
+﻿<controls:MWindow  xmlns:controls="clr-namespace:QTRHacker.Controls"
+                   x:Class="QTRHacker.Views.Advanced.Schematics.ScheWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:local="clr-namespace:QTRHacker.Views.Advanced.Schematics" 
+                   xmlns:wpfxnacontrol="clr-namespace:WpfXnaControl;assembly=WpfXnaControl"
+                   xmlns:l="clr-namespace:QTRHacker.Localization"
+                   mc:Ignorable="d"
+                   Title="Schematics" Height="450" Width="800" MinimizeBox="False">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="2,0,2,0">
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource QTRHacker.StripButtonStyle}"/>
+            </StackPanel.Resources>
+            <Button Content="{l:Localization UI.Sches.Arrow}" Command="{Binding EnableArrowCommand}"/>
+            <Button Content="{l:Localization UI.Sches.EyeDropper}" Command="{Binding EnableEyeDropperCommand}"/>
+            <Button Content="{l:Localization UI.Sches.Brush}" Command="{Binding EnableBrushCommand}"/>
+        </StackPanel>
+        <local:TileView x:Name="TileView" TilesData="{Binding Tiles}" Grid.Column="1">
+        </local:TileView>
+    </Grid>
+</controls:MWindow>

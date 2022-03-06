@@ -84,11 +84,16 @@ namespace QTRHacker.ViewModels.PagePanels
 			{
 				PlayerUpdate = new();
 				PlayerUpdate.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.PlayersListUpdateInterval);
-				PlayerUpdate.Tick += (s, e) => UpdatePlayersList();
+				WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(PlayerUpdate, nameof(DispatcherTimer.Tick), PlayerUpdate_Tick);
+				//Still need to stop the timer, but so far I've found no clean way to do so.
 				PlayerUpdate.Start();
 			}
 		}
 
+		private void PlayerUpdate_Tick(object sender, EventArgs args)
+		{
+			UpdatePlayersList();
+		}
 
 		public record PlayerInfo(int ID, string Name);
 	}

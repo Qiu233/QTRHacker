@@ -3,6 +3,7 @@
   "UI": {
     "DirectFunction": "Functions",
     "MainPage": "Main Page",
+    "Advanced": "Advanced",
     "Player": "Player",
     "Name": "Name",
     "Edit": "Edit",
@@ -31,6 +32,11 @@
     "Properties": "Properties",
     "Save": "Save",
     "Load": "Load",
+    "Sches": {
+      "Arrow": "Arrow",
+      "EyeDropper": "Eye Dropper",
+      "Brush": "Brush"
+    },
     "Wiki": {
       "Value": "Value",
       "AddOneItem": "Add one to inventory",

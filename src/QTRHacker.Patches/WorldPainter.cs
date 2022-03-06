@@ -71,6 +71,22 @@ namespace QTRHacker.Patches
 		{
 			int width = ClipBoard.GetLength(0);
 			int height = ClipBoard.GetLength(1);
+
+
+			for (int x = 0; x < width; x++)
+			{
+				for (int y = 0; y < height; y++)
+				{
+					STile tile = GetClipboard(x, y);
+					if (tile.Wall > 0)
+					{
+						Vector2 pos = position + new Vector2(x * 16, y * 16);
+						Texture2D wallTexture = Terraria.GameContent.TextureAssets.Wall[tile.Wall].Value;
+						sb.Draw(wallTexture, pos, new Rectangle(tile.WallFrameX(), tile.WallFrameY(), 32, 32), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+					}
+				}
+			}
+
 			for (int x = 0; x < width; x++)
 			{
 				for (int y = 0; y < height; y++)

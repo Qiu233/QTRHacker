@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QTRHacker.Functions\QTRHacker.Core.csproj" />
+    <ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -44,9 +44,11 @@ namespace QTRHacker.Core
 			Context = context;
 		}
 
+		public bool IsInitialized => PatchHelper != null;
+
 		public void Init()
 		{
-			if (PatchHelper != null)
+			if (IsInitialized)
 				return;
 			if (!Context.LoadAssemblyAsBytes(Path.GetFullPath("./QTRHacker.Patches.dll"), "QTRHacker.Patches.Boot"))
 				throw new InvalidOperationException("Couldn't load patches");

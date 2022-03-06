@@ -24,6 +24,11 @@
                      Header="{l:Localization UI.Player}" FontSize="20">
                 <pagepanels:PlayersPage x:Name="PlayersPage"/>
             </TabItem>
+            <TabItem DataContext="{Binding AdvancedPageViewModel}"
+                     Style="{StaticResource MainWindowTabItem}"
+                     Header="{l:Localization UI.Advanced}" FontSize="20">
+                <pagepanels:AdvancedPage/>
+            </TabItem>
             <TabItem DataContext="{Binding DirectFunctionsPageViewModel}"
                      Style="{StaticResource MainWindowTabItem}"
                      Header="{l:Localization UI.DirectFunction}" FontSize="20">

@@ -31,7 +31,7 @@ namespace QTRHacker
 			var logs = Directory.EnumerateFiles("./logs", "*.log").ToArray();
 			for (int i = 0; i < logs.Length - MAX_LOG_FILES; i++)
 				File.Delete(logs[i]);
-			Logging = Logging.New(File.Open($"./logs/{DateTime.Now:yyyy-dd-M--HH.mm.ss}.log", FileMode.Create));
+			Logging = Logging.New(File.Open($"./logs/{DateTime.Now:yyyy-M-dd--HH.mm.ss}.log", FileMode.Create));
 		}
 
 		public static void SaveConfig()

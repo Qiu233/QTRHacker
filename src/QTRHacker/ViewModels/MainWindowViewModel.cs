@@ -12,13 +12,19 @@ namespace QTRHacker.ViewModels
 	{
 		public DirectFunctionsPageViewModel DirectFunctionsPageViewModel { get; }
 		public PlayersPageViewModel PlayersPageViewModel { get; }
+		public AdvancedPageViewModel AdvancedPageViewModel { get; }
 		public MainPageViewModel MainPageViewModel { get; }
 		public MainWindowViewModel()
 		{
-			DirectFunctionsPageViewModel = new();
 			PlayersPageViewModel = new();
+			DirectFunctionsPageViewModel = new();
+			AdvancedPageViewModel = new();
+
+			PlayersPageViewModel.RegisterHackInitEvent();
+			DirectFunctionsPageViewModel.RegisterHackInitEvent();
+			AdvancedPageViewModel.RegisterHackInitEvent();
+
 			MainPageViewModel = new();
-			MainPageViewModel.IsEnabled = true;
 			MainPageViewModel.IsSelected = true;
 
 			AttachedToGame += MainWindowViewModel_AttachedToGame;
@@ -39,13 +45,6 @@ namespace QTRHacker.ViewModels
 			DirectFunctionsPageViewModel.UpdateUI();
 			DateTime t1 = DateTime.Now;
 			HackGlobal.Logging.Log("Time used by updating UI: " + (t1 - t0).TotalMilliseconds);
-			EnableTabs();
-		}
-
-		public void EnableTabs()
-		{
-			DirectFunctionsPageViewModel.IsEnabled = true;
-			PlayersPageViewModel.IsEnabled = true;
 			PlayersPageViewModel.IsSelected = true;
 		}
 

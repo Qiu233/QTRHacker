@@ -43,7 +43,7 @@ namespace WpfXnaControl
 
 		~XnaControl()
 		{
-			_imageSource.Dispose();
+			_imageSource?.Dispose();
 			_graphicsDeviceService?.Release();
 		}
 
@@ -68,7 +68,7 @@ namespace WpfXnaControl
 		{
 			if (!DesignerProperties.GetIsInDesignMode(this) && _graphicsDeviceService != null)
 			{
-				_imageSource.Dispose();
+				_imageSource?.Dispose();
 				_imageSource = new XnaImageSource(GraphicsDevice, (int)ActualWidth, (int)ActualHeight);
 				RootImage.Source = _imageSource.WriteableBitmap;
 			}

@@ -24,7 +24,7 @@ namespace QTRHacker.Views.Wiki.NPC
 	/// <summary>
 	/// NPCBox.xaml 的交互逻辑
 	/// </summary>
-	public partial class NPCBox : UserControl, IWeakEventListener
+	public partial class NPCBox : UserControl, IWeakEventListener, IDisposable
 	{
 		private readonly Dictionary<int, Texture2D> NPCTextures = new();
 		private readonly Dictionary<int, List<Microsoft.Xna.Framework.Rectangle>> FramesPlayList = new();
@@ -48,6 +48,7 @@ namespace QTRHacker.Views.Wiki.NPC
 				new PropertyMetadata(0, OnNPCTypeChanged));
 
 		private SpriteBatch batch;
+		private DispatcherTimer UpdateTimer;
 
 		public SpriteBatch Batch => batch;
 
@@ -72,14 +73,17 @@ namespace QTRHacker.Views.Wiki.NPC
 			batch = new SpriteBatch(XnaControl.GraphicsDevice);
 			LoadNPCTexture(NPCType);
 			RenderingEventManager.AddListener(this);
-			DispatcherTimer timer = new();
-			timer.Interval = TimeSpan.FromMilliseconds(100);
-			timer.Tick += (s, e) =>
-			{
-				if (++Frame >= Frames.Count)
-					Frame = 0;
-			};
-			timer.Start();
+			UpdateTimer = new();
+			UpdateTimer.Interval = TimeSpan.FromMilliseconds(100);
+			WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(UpdateTimer, nameof(DispatcherTimer.Tick), Timer_Tick);
+			//Still need to stop the timer, but so far I've found no clean way to do so.
+			UpdateTimer.Start();
+		}
+
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			if (++Frame >= Frames.Count)
+				Frame = 0;
 		}
 
 		private void NPCView_Update(Microsoft.Xna.Framework.GameTime obj)
@@ -154,6 +158,12 @@ namespace QTRHacker.Views.Wiki.NPC
 				return true;
 			}
 			return false;
+		}
+
+		public void Dispose()
+		{
+			GC.SuppressFinalize(this);
+			UpdateTimer.Stop();
 		}
 	}
 }

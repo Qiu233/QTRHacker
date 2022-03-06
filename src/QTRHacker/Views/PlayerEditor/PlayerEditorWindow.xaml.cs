@@ -29,10 +29,5 @@ namespace QTRHacker.Views.PlayerEditor
 		{
 			InitializeComponent();
 		}
-		protected override void OnClosed(EventArgs e)
-		{
-			base.OnClosed(e);
-			ViewModel.UpdateTimer.Stop();//I found no cleaner way to dispose the timer or the whole viewmodel
-		}
 	}
 }
