@@ -49,10 +49,12 @@ namespace QTRHacker.ViewModels.PagePanels
 				if (!HackGlobal.IsActive)
 					return;
 				var players = HackGlobal.GameContext.Players;
-				var active = players.
-					Select((Player, Index) => new { Player, Index }).
-					Where(t => t.Player.Active).Select(t => new PlayerInfo(t.Index, t.Player.Name)).OrderBy(t => t);
-				var currentPlayers = Players.ToList().OrderBy(t => t);
+				var active = players
+					.Select((Player, Index) => new { Player, Index })
+					.Where(t => t.Player.Active)
+					.Select(t => new PlayerInfo(t.Index, t.Player.Name))
+					.OrderBy(t => t);
+				var currentPlayers = Players.OrderBy(t => t);
 				if (active.SequenceEqual(currentPlayers))
 					return;
 
@@ -95,6 +97,9 @@ namespace QTRHacker.ViewModels.PagePanels
 			UpdatePlayersList();
 		}
 
-		public record PlayerInfo(int ID, string Name);
+		public record PlayerInfo(int ID, string Name) : IComparable<PlayerInfo>
+		{
+			public int CompareTo(PlayerInfo other) => ID - other.ID;
+		}
 	}
 }
