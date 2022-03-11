@@ -44,10 +44,19 @@ namespace QTRHacker.Patches
 		}
 		public static bool BrushActive, EyeDropperActive;
 		private static bool Brushing, Dropping;
+		private static bool Loading;
+		private unsafe static IntPtr Buffer;
 		private static Vector2 BeginPos, EndPos;
 		private static Vector2 BrushBeginPos;
 		private static STile[,] ClipBoard;
 		private static readonly Texture2D magicPixel;
+
+		[DllImport("kernel32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool VirtualFree(
+			IntPtr lpAddress,
+			IntPtr dwSize,
+			uint dwFreeType = 0x00008000);
 
 		static WorldPainter()
 		{
@@ -182,6 +191,27 @@ namespace QTRHacker.Patches
 		private static bool LastFocus = false;
 		private static void DoUpdateHook_Pre()
 		{
+			if (Loading)
+			{
+				unsafe
+				{
+					IntPtr ptr = Buffer;
+					int width = *(int*)ptr;
+					int height = *(int*)(ptr + 4);
+
+					STile[,] tiles = new STile[width, height];
+					for (int x = 0; x < width; x++)
+					{
+						for (int y = 0; y < height; y++)
+						{
+							tiles[x, y] = *((STile*)(ptr + 8) + x * height + y);
+						}
+					}
+					ClipBoard = tiles;
+				}
+				VirtualFree(Buffer, IntPtr.Zero);
+				Loading = false;
+			}
 			if (Main.gameMenu || Main.playerInventory)
 			{
 				Brushing = false;

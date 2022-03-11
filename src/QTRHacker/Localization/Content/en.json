@@ -5,6 +5,7 @@
     "MainPage": "Main Page",
     "Advanced": "Advanced",
     "Player": "Player",
+    "About": "About",
     "Name": "Name",
     "Edit": "Edit",
     "TPTo": "TP To",
@@ -32,6 +33,14 @@
     "Properties": "Properties",
     "Save": "Save",
     "Load": "Load",
+    "AboutContent": {
+      "Author": "Author",
+      "QQ": "QQ",
+      "QQGroup": "QQ Group",
+      "Discord": "Discord",
+      "GitHubRepo": "GitHub repo",
+      "Sponsor": "Sponsor"
+    },
     "Sches": {
       "Arrow": "Arrow",
       "EyeDropper": "Eye Dropper",
@@ -111,6 +120,14 @@
       "Town": "Town NPC",
       "Boss": "Boss"
     }
+  },
+  "About": {
+    "Author": "Qiu",
+    "QQ": "2393868407",
+    "QQGroup": "453858025",
+    "Discord": "https://discord.gg/bzKc9vM",
+    "GitHubRepo": "https://github.com/Qiu233/QTRHacker",
+    "Sponsor": "https://afdian.net/@Qiu233"
   },
   "Tip": {
     "DragCrossToGame": "Please drag the cross to game"

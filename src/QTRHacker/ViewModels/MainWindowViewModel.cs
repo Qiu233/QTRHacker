@@ -13,6 +13,7 @@ namespace QTRHacker.ViewModels
 		public DirectFunctionsPageViewModel DirectFunctionsPageViewModel { get; }
 		public PlayersPageViewModel PlayersPageViewModel { get; }
 		public AdvancedPageViewModel AdvancedPageViewModel { get; }
+		public AboutPageViewModel AboutPageViewModel { get; }
 		public MainPageViewModel MainPageViewModel { get; }
 		public MainWindowViewModel()
 		{
@@ -23,6 +24,8 @@ namespace QTRHacker.ViewModels
 			PlayersPageViewModel.RegisterHackInitEvent();
 			DirectFunctionsPageViewModel.RegisterHackInitEvent();
 			AdvancedPageViewModel.RegisterHackInitEvent();
+
+			AboutPageViewModel = new();
 
 			MainPageViewModel = new();
 			MainPageViewModel.IsSelected = true;

@@ -75,6 +75,6 @@ namespace QHackLib.Memory
 
 		public static nuint Alloc(nuint handle, uint size) => NativeFunctions.VirtualAllocEx(handle, 0, size,
 				NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
-		public static nuint Free(nuint handle, nuint addr) => NativeFunctions.VirtualFreeEx(handle, addr, 0);
+		public static bool Free(nuint handle, nuint addr) => NativeFunctions.VirtualFreeEx(handle, addr, 0);
 	}
 }

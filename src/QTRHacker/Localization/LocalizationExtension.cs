@@ -29,6 +29,7 @@ namespace QTRHacker.Localization
 		{
 			Binding binding = new(nameof(LocalizationItem.Value));
 			binding.Source = new LocalizationItem(Key);
+			binding.Mode = BindingMode.OneWay;
 			return binding.ProvideValue(serviceProvider);
 		}
 	}

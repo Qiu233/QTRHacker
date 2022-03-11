@@ -21,6 +21,8 @@
             <Button Content="{l:Localization UI.Sches.Arrow}" Command="{Binding EnableArrowCommand}"/>
             <Button Content="{l:Localization UI.Sches.EyeDropper}" Command="{Binding EnableEyeDropperCommand}"/>
             <Button Content="{l:Localization UI.Sches.Brush}" Command="{Binding EnableBrushCommand}"/>
+            <Button Content="{l:Localization UI.Save}" Command="{Binding SaveCommand}"/>
+            <Button Content="{l:Localization UI.Load}" Command="{Binding LoadCommand}"/>
         </StackPanel>
         <local:TileView x:Name="TileView" TilesData="{Binding Tiles}" Grid.Column="1">
         </local:TileView>

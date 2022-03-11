@@ -5,6 +5,7 @@
     "MainPage": "主页",
     "Advanced": "高级",
     "Player": "玩家",
+    "About": "关于",
     "Name": "名称",
     "Edit": "编辑",
     "TPTo": "传送至",
@@ -32,6 +33,14 @@
     "Properties": "属性",
     "Save": "保存",
     "Load": "加载",
+    "AboutContent": {
+      "Author": "作者",
+      "QQ": "QQ",
+      "QQGroup": "QQ群",
+      "Discord": "Discord",
+      "GitHubRepo": "GitHub仓库",
+      "Sponsor": "赞助"
+    },
     "Sches": {
       "Arrow": "鼠标",
       "EyeDropper": "滴管",
@@ -111,6 +120,14 @@
       "Town": "NPC",
       "Boss": "Boss"
     }
+  },
+  "About": {
+    "Author": "Qiu",
+    "QQ": "2393868407",
+    "QQGroup": "453858025",
+    "Discord": "https://discord.gg/bzKc9vM",
+    "GitHubRepo": "https://github.com/Qiu233/QTRHacker",
+    "Sponsor": "https://afdian.net/@Qiu233"
   },
   "Tip": {
     "DragCrossToGame": "拖动右边准星到Terraria游戏窗口"

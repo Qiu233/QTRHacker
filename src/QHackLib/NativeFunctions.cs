@@ -128,7 +128,8 @@ namespace QHackLib
 			ProtectionType flProtect);
 
 		[DllImport("kernel32.dll")]
-		internal static extern nuint VirtualFreeEx(
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool VirtualFreeEx(
 			nuint hProcess,
 			nuint lpAddress,
 			nuint dwSize,

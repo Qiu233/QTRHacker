@@ -26,10 +26,15 @@ namespace QTRHacker
 		public MainWindow()
 		{
 			HackGlobal.LoadConfig();
+			if (!HackGlobal.Config.ForceEnglish)
+			{
 #if DEBUG
 #else
 			LocalizationManager.Instance.SetCulture(System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName);
 #endif
+			}
+			else
+				LocalizationManager.Instance.SetCulture("en");
 
 			InitializeComponent();
 

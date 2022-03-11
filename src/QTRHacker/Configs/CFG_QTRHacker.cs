@@ -11,5 +11,6 @@ namespace QTRHacker.Configs
 		public int ItemUpdateInterval = 200;//milliseconds
 		public int PlayersListUpdateInterval = 500;
 		public int SchesUpdateInterval = 500;
+		public bool ForceEnglish = false;
 	}
 }

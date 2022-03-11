@@ -34,6 +34,11 @@
                      Header="{l:Localization UI.DirectFunction}" FontSize="20">
                 <pagepanels:DirectFunctionsPage/>
             </TabItem>
+            <TabItem DataContext="{Binding AboutPageViewModel}"
+                     Style="{StaticResource MainWindowTabItem}"
+                     Header="{l:Localization UI.About}" FontSize="20">
+                <pagepanels:AboutPage/>
+            </TabItem>
             <TabItem DataContext="{Binding MainPageViewModel}" 
                      Style="{StaticResource MainWindowTabItem}"
                      Header="{l:Localization UI.MainPage}" FontSize="20">
