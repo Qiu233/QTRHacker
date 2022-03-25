@@ -40,10 +40,17 @@ namespace QTRHacker.Localization
 
 		public static LocSet LoadFromRes(string culture)
 		{
-			using var s = Application.GetResourceStream(new Uri($"pack://application:,,,/QTRHacker;component/Localization/Content/{culture}.json")).Stream;
-			string json = new StreamReader(s, Encoding.UTF8).ReadToEnd();
 			LocSet manager = new();
-			manager.Load(json);
+			try
+			{
+				using var s = Application.GetResourceStream(new Uri($"pack://application:,,,/QTRHacker;component/Localization/Content/{culture}.json")).Stream;
+				string json = new StreamReader(s, Encoding.UTF8).ReadToEnd();
+				manager.Load(json);
+			}
+			catch
+			{
+				HackGlobal.Logging.Warn($"Failed to load localization file for {culture}, this should mean that the corresponding localization file is missing");
+			}
 			return manager;
 		}
 
