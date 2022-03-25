@@ -47,8 +47,9 @@ namespace QTRHacker
 		{
 			if (e.ExceptionObject is not Exception ex)
 				return;
-			string log = $"Unhandled exception from {sender}:\nIsTerminating: {e.IsTerminating}\n{ex.Message}\n{ex.StackTrace}";
+			string log = $"Unhandled exception from {sender}:\nIsTerminating: {e.IsTerminating}";
 			HackGlobal.Logging.Error(log);
+			HackGlobal.Logging.Exception(ex);
 			MessageBox.Show("Unhandled exception occured, please check the log for more information");
 			Environment.Exit(0);
 		}

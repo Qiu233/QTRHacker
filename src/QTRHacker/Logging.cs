@@ -37,6 +37,15 @@ namespace QTRHacker
 		public void Error(string msg) => Log(msg, LogLevel.ERROR);
 		public void Warn(string msg) => Log(msg, LogLevel.WARNING);
 
+		public void Exception(Exception e, int layer = 0)
+		{
+			if (e == null)
+				return;
+			string s = $"({layer}): {e.Message}\n{e.StackTrace}";
+			Error(s);
+			Exception(e.InnerException, layer + 1);
+		}
+
 		public void Enter(string label = null)
 		{
 			if (label != null)

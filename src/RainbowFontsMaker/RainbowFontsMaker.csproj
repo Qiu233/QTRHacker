@@ -5,9 +5,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-	<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+	  <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 

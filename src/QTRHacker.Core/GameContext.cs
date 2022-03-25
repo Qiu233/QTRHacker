@@ -303,6 +303,7 @@ namespace QTRHacker.Core
 
 		public bool RunByHookOnUpdate(AssemblyCode codeToRun, uint size = 0x1000)
 		{
+			Console.WriteLine(codeToRun);
 			System.Threading.Monitor.Enter(LOCK_UPDATE);
 			bool v = InlineHook.HookOnce(
 					HContext, codeToRun,

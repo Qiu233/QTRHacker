@@ -53,7 +53,7 @@ namespace QTRHacker.ViewModels.PagePanels
 			catch (Exception e)
 			{
 				HackGlobal.Logging.Error($"Failed to initialize from file: {file}");
-				HackGlobal.Logging.Error(e.Message + "\n" + e.StackTrace);
+				HackGlobal.Logging.Exception(e);
 			}
 			return null;
 		}

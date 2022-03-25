@@ -7,7 +7,7 @@
              xmlns:af="clr-namespace:QTRHacker.ViewModels.Advanced"
              mc:Ignorable="d" 
              Width="300" Height="340">
-    <ItemsControl ItemsSource="{Binding Functions}">
+    <ItemsControl ItemsSource="{Binding Functions}" Focusable="False">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <StackPanel Orientation="Vertical"/>

@@ -1,0 +1,205 @@
+<?xml version = "1.0" encoding = "utf-8" ?>
+<data>
+	<char>
+		<type>A</type>
+		<body>
+			<line start = "-5,-50" end = "-40,50"/>
+			<line start = "5,-50" end = "40,50"/>
+			<line start = "-20,30" end = "20,30"/>
+		</body>
+	</char>
+	<char>
+		<type>B</type>
+		<body>
+			<arcf center = "0,-30" radius = "30" start_radian_factor = "-0.50" end_radian_factor = "0.5"/>
+			<arcf center = "0,30" radius = "30" start_radian_factor = "-0.5" end_radian_factor = "0.5"/>
+			<line start = "-28,-50" end = "-28,50"/>
+			<point location = "-10,-60" direction = "0"/>
+			<point location = "-10,60" direction = "3.1415926535897932384626433832795"/>
+			<point location = "-10,0" direction = "0"/>
+		</body>
+	</char>
+	<char>
+		<type>C</type>
+		<body>
+			<arcf center = "15,0" radius = "60" start_radian_factor = "0.4" end_radian_factor = "1.6"/>
+		</body>
+	</char>
+	<char>
+		<type>D</type>
+		<body>
+			<arcf center = "-25,0" radius = "60" start_radian_factor = "-0.50" end_radian_factor = "0.5"/>
+			<line start = "-45,-50" end = "-45,50"/>
+		</body>
+	</char>
+	<char>
+		<type>E</type>
+		<body>
+			<line start = "25,-60" end = "-25,-60"/>
+			<line start = "15,0" end = "-25,0"/>
+			<line start = "25,60" end = "-25,60"/>
+			<line start = "-45,-50" end = "-45,50"/>	
+		</body>
+	</char>
+	<char>
+		<type>F</type>
+		<body>
+			<line start = "25,-60" end = "-25,-60"/>
+			<line start = "15,0" end = "-25,0"/>
+			<line start = "-45,-50" end = "-45,50"/>	
+		</body>
+	</char>
+	<char>
+		<type>G</type>
+		<body>
+			<arcf center = "10,0" radius = "60" start_radian_factor = "0.3" end_radian_factor = "1.6"/>
+			<line start = "55,20" end = "55,15"/>
+			<line start = "30,5" end = "35,5"/>
+		</body>
+	</char>
+	<char>
+		<type>H</type>
+		<body>
+			<line start = "-15,0" end = "15,0"/>
+			<line start = "-35,-50" end = "-35,50"/>
+			<line start = "35,-50" end = "35,50"/>
+		</body>
+	</char>
+	<char>
+		<type>I</type>
+		<body>
+			<line start = "0,-45" end = "0,45"/>
+			<line start = "-5,-60" end = "5,-60"/>
+			<line start = "-5,60" end = "5,60"/>
+		</body>
+	</char>
+	<char>
+		<type>J</type>
+		<body>
+			<line start = "15,-45" end = "15,35"/>
+			<line start = "10,-60" end = "15,-60"/>
+			<arcf center = "-5,40" radius = "20" start_radian_factor = "0" end_radian_factor = "0.6"/>
+		</body>
+	</char>
+	<char>
+		<type>K</type>
+		<body>
+			<line start = "-25,-50" end = "-25,50"/>
+			<line start = "-10,-10" end = "25,-45"/>
+			<line start = "-10,10" end = "25,45"/>
+		</body>
+	</char>
+	<char>
+		<type>L</type>
+		<body>
+			<line start = "-25,-50" end = "-25,50"/>
+			<line start = "-15,60" end = "25,60"/>
+		</body>
+	</char>
+	<char>
+		<type>M</type>
+		<body>
+			<line start = "-60,-50" end = "-60,50"/>
+			<line start = "60,-50" end = "60,50"/>
+			<line start = "-50,-50" end = "-9,0"/>
+			<line start = "50,-50" end = "9,0"/>
+		</body>
+	</char>
+	<char>
+		<type>N</type>
+		<body>
+			<line start = "-40,-50" end = "-40,50"/>
+			<line start = "-30,-50" end = "30,50"/>
+			<line start = "40,-50" end = "40,50"/>
+		</body>
+	</char>
+	<char>
+		<type>O</type>
+		<body>
+			<arcf center = "0,0" radius = "60" start_radian_factor = "-1" end_radian_factor = "1"/>
+		</body>
+	</char>
+	<char>
+		<type>P</type>
+		<body>
+			<arcf center = "-5,-25" radius = "35" start_radian_factor = "-0.5" end_radian_factor = "0.5"/>
+			<line start = "-25,-50" end = "-25,50"/>
+		</body>
+	</char>
+	<char>
+		<type>Q</type>
+		<body>
+			<arcf center = "0,0" radius = "60" start_radian_factor = "-1" end_radian_factor = "1"/>
+			<line start = "50,50" end = "55,55"/>
+		</body>
+	</char>
+	<char>
+		<type>R</type>
+		<body>
+			<arcf center = "-5,-25" radius = "35" start_radian_factor = "-0.5" end_radian_factor = "0.5"/>
+			<line start = "-25,-50" end = "-25,50"/>
+			<line start = "-10,20" end = "20,50"/>
+		</body>
+	</char>
+	<char>
+		<type>S</type>
+		<body>
+			<arcf center = "0,-30" radius = "30" start_radian_factor = "0.5" end_radian_factor = "1.7"/>
+			<arcf center = "0,30" radius = "30" start_radian_factor = "-0.5" end_radian_factor = "0.7"/>
+		</body>
+	</char>
+	<char>
+		<type>T</type>
+		<body>
+			<line start = "0,-45" end = "0,50"/>
+			<line start = "-25,-60" end = "25,-60"/>
+		</body>
+	</char>
+	<char>
+		<type>U</type>
+		<body>
+			<arcf center = "0,15" radius = "45" start_radian_factor = "0.15" end_radian_factor = "0.85"/>
+			<line start = "-45,-50" end = "-45,10"/>
+			<line start = "45,-50" end = "45,10"/>
+		</body>
+	</char>
+	<char>
+		<type>V</type>
+		<body>
+			<line start = "-45,-50" end = "-5,50"/>
+			<line start = "45,-50" end = "5,50"/>
+		</body>
+	</char>
+	<char>
+		<type>W</type>
+		<body>
+			<line start = "-25,50" end = "-5,-20"/>
+			<line start = "25,50" end = "5,-20"/>
+			<line start = "-35,50" end = "-60,-50"/>
+			<line start = "35,50" end = "60,-50"/>
+		</body>
+	</char>
+	<char>
+		<type>X</type>
+		<body>
+			<line start = "-35,-50" end = "35,50"/>
+			<line start = "35,-50" end = "-35,50"/>
+		</body>
+	</char>
+	<char>
+		<type>Y</type>
+		<body>
+			<line start = "-35,-50" end = "-8,-10"/>
+			<line start = "35,-50" end = "8,-10"/>
+			<line start = "0,10" end = "0,50"/>
+		</body>
+	</char>
+	<char>
+		<type>Z</type>
+		<body>
+			<line start = "35,-50" end = "-35,50"/>
+			<line start = "-35,-60" end = "28,-60"/>
+			<line start = "-28,60" end = "35,60"/>
+		</body>
+	</char>
+</data>

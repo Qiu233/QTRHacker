@@ -15,6 +15,7 @@ namespace QHackLib.Assemble
 		public static bool IsPTypePassingMustOnStack(string typeName) => typeName switch
 		{
 			"System.Int64" or "System.UInt64" or "System.Single" or "System.Double" => true,
+			"Int64" or "UInt64" or "Single" or "Double" => true,
 			_ => false,
 		};
 
@@ -23,7 +24,7 @@ namespace QHackLib.Assemble
 			List<object> processedUserArgs = new();
 			foreach (var arg in userArgs)
 			{
-				if(arg is null)
+				if (arg is null)
 				{
 					processedUserArgs.Add(0);
 					continue;
@@ -78,19 +79,18 @@ namespace QHackLib.Assemble
 				{
 					byte[] data = arg as byte[];
 					int count = (data.Length + 3) / 4;
-					byte[] targetData = ArrayPool<byte>.Shared.Rent(count * 4);
+					byte[] targetData = new byte[count * 4];
 					Array.Clear(targetData, 0, targetData.Length);//0
 					Array.Copy(data, targetData, data.Length);
 					for (int i = 0; i < count; i++)
 						snippet.Content.Add((Instruction)$"push {BitConverter.ToUInt32(targetData, (count - i - 1) * 4)}");
 					stack += count;
-					ArrayPool<byte>.Shared.Return(targetData);
 				}
 				else if (type.IsPrimitive)
 				{
 					if (IsPTypePassingMustOnStack(type.Name))
 					{
-						if (type.Name == "System.Int64" || type.Name == "System.UInt64")
+						if (type.Name == "Int64" || type.Name == "UInt64")
 						{
 							byte[] data = BitConverter.GetBytes((ulong)arg);
 							uint low = BitConverter.ToUInt32(data, 0);
@@ -99,7 +99,7 @@ namespace QHackLib.Assemble
 							snippet.Content.Add((Instruction)$"push {low}");
 							stack += 2;
 						}
-						else if (type.Name == "System.Double")
+						else if (type.Name == "Double")
 						{
 							byte[] data = BitConverter.GetBytes((double)arg);
 							uint low = BitConverter.ToUInt32(data, 0);

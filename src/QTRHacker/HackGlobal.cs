@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using QTRHacker.Configs;
 using QTRHacker.Core;
+using QTRHacker.Core.ProjectileImage;
+using QTRHacker.Core.ProjectileImage.RainbowImage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,6 +24,7 @@ namespace QTRHacker
 		public static readonly Logging Logging;
 
 		private const string FILE_CONFIG = "./HackConfig.json";
+		private const string PATH_RAINBOWFONTS = "./Content/RainbowFonts";
 		private const int MAX_LOG_FILES = 10;
 
 		static HackGlobal()
@@ -49,6 +52,28 @@ namespace QTRHacker
 			}
 			_Config = JsonConvert.DeserializeObject<CFG_QTRHacker>(File.ReadAllText(FILE_CONFIG));
 			SaveConfig();
+		}
+
+		public static Dictionary<char, ProjImage> Characters
+		{
+			get;
+			private set;
+		}
+
+		public static void LoadRainbowFonts()
+		{
+			if (Characters == null)
+				Characters = new Dictionary<char, ProjImage>();
+			Characters.Clear();
+			LoadRainbowFonts(PATH_RAINBOWFONTS, Characters);
+		}
+		private static void LoadRainbowFonts(string dir, Dictionary<char, ProjImage> characters)
+		{
+			Directory.EnumerateFiles(dir, "*.rbfont").ToList().ForEach(t =>
+			{
+				CharactersLoader.LoadCharacters(characters, File.ReadAllText(t));
+			});
+			Directory.EnumerateDirectories(dir).ToList().ForEach(t => LoadRainbowFonts(t, characters));
 		}
 
 		public static event EventHandler Initialized;

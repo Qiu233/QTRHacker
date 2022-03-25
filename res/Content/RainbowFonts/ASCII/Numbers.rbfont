@@ -1,0 +1,80 @@
+<?xml version = "1.0" encoding = "utf-8" ?>
+<data>
+	<char>
+		<type>0</type>
+		<body>
+			<arc center = "0,-30" radius = "40" start_radian = "3.4557519189487725623089077216075" end_radian = "5.9690260418206071530790224282311" />
+			<arc center = "0,30" radius = "40" start_radian = "0.31415926535897932384626433832795" end_radian = "2.8274333882308139146163790449516" />
+			<line start = "-43,-15" end = "-43,15"/>
+			<line start = "43,-15" end = "43,15"/>
+		</body>
+	</char>
+	<char>
+		<type>1</type>
+		<body>
+			<line start = "0,-60" end = "0,60"/>
+			<line start = "-20,73" end = "20,73"/>
+			<line start = "-10,-65" end = "-15,-60"/>
+		</body>
+	</char>
+	<char>
+		<type>2</type>
+		<body>
+			<arc center = "0,-30" radius = "40" start_radian = "3.4557519189487725623089077216075" end_radian = "6.283185307179586476925286766559" />
+			<line start = "35,-15" end = "-35,58"/>
+			<line start = "-35,67" end = "35,67"/>
+		</body>
+	</char>
+	<char>
+		<type>3</type>
+		<body>
+			<arc center = "0,-35" radius = "35" start_radian = "3.4557519189487725623089077216075" end_radian = "7.8539816339744830961566084581988" />
+			<arc center = "0,35" radius = "35" start_radian = "-1.5707963267948966192313216916398" end_radian = "2.8274333882308139146163790449516" />
+		</body>
+	</char>
+	<char>
+		<type>4</type>
+		<body>
+			<line start = "15,-60" end = "-40,25"/>
+			<line start = "-40,40" end = "40,40"/>
+			<line start = "20,-60" end = "20,60"/>
+		</body>
+	</char>
+	<char>
+		<type>5</type>
+		<body>
+			<arc center = "0,30" radius = "40" start_radian = "-1.8849555921538759430775860299677" end_radian = "2.5132741228718345907701147066236" />
+			<line start = "-25,-20" end = "-22,-55"/>
+			<line start = "-10,-65" end = "20,-65"/>
+		</body>
+	</char>
+	<char>
+		<type>6</type>
+		<body>
+			<arc center = "0,30" radius = "40" start_radian = "-3.1415926535897932384626433832795" end_radian = "3.1415926535897932384626433832795" />
+			<arc center = "60,15" radius = "100" start_radian = "3.1415926535897932384626433832795" end_radian = "4.0840704496667312100014363982634" />
+		</body>
+	</char>
+	<char>
+		<type>7</type>
+		<body>
+			<line start = "-35,-60" end = "25,-60"/>
+			<line start = "35,-50" end = "-10,60"/>
+		</body>
+	</char>
+	<char>
+		<type>8</type>
+		<body>
+			<arc center = "0,-35" radius = "35" start_radian = "-3.1415926535897932384626433832795" end_radian = "3.1415926535897932384626433832795" />
+			<arc center = "0,35" radius = "35" start_radian = "-3.1415926535897932384626433832795" end_radian = "3.1415926535897932384626433832795" />
+		</body>
+	</char>
+	<char>
+		<type>9</type>
+		<body>
+			<arc center = "0,-30" radius = "40" start_radian = "-3.1415926535897932384626433832795" end_radian = "3.1415926535897932384626433832795" />
+			<arc center = "-460,-15" radius = "500" start_radian = "0" end_radian = "0.12566370614359172953850573533118" />
+			<arc center = "0,30" radius = "45" start_radian = "0.94247779607693797153879301498385" end_radian = "2.0420352248333656050007181991317" />
+		</body>
+	</char>
+</data>
