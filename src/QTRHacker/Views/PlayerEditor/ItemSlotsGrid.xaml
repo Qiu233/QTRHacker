@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor" 
              xmlns:controls="clr-namespace:QTRHacker.Controls"
              xmlns:vm="clr-namespace:QTRHacker.ViewModels.PlayerEditor"
+             xmlns:l="clr-namespace:QTRHacker.Localization"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" VerticalAlignment="Center" VerticalContentAlignment="Center">
     <ItemsControl ItemsSource="{Binding Slots}">
@@ -24,7 +25,7 @@
             <DataTemplate DataType="{x:Type vm:ItemSlotViewModel}">
                 <controls:ItemSlot ItemImageSource="{Binding ItemImage}" ItemStack="{Binding Stack}" GroupName="Items"
                                    Width="{Binding SlotWidth}" Height="{Binding SlotWidth}" Margin="{Binding SlotMargin}"
-                                   IsChecked="{Binding IsSelected}" Background="#505050"/>
+                                   IsChecked="{Binding IsSelected}" Background="#505050" ContextMenu="{Binding ItemContextMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ItemSlotsGrid}}"/>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
     </ItemsControl>

@@ -80,7 +80,7 @@
     </UserControl.Resources>
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
-            <ItemsControl ItemsSource="{Binding Functions}">
+            <ItemsControl ItemsSource="{Binding Functions}" Focusable="False">
                 <ItemsControl.Resources>
                     <DataTemplate DataType="{x:Type scripts:BaseFunction}">
                         <Border x:Name="PART_Border" BorderThickness="1" BorderBrush="Transparent" SnapsToDevicePixels="True">

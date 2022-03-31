@@ -40,10 +40,14 @@ namespace QTRHacker.ViewModels.PlayerEditor
 		private readonly RelayCommand initItemData;
 		private readonly RelayCommand saveInv;
 		private readonly RelayCommand loadInv;
+		private readonly RelayCommand viewInWikiCommand;
+		private readonly RelayCommand editCommand;
 		public RelayCommand ApplyItemData => applyItemData;
 		public RelayCommand InitItemData => initItemData;
 		public RelayCommand SaveInv => saveInv;
 		public RelayCommand LoadInv => loadInv;
+		public RelayCommand ViewInWikiCommand => viewInWikiCommand;
+		public RelayCommand EditCommand => editCommand;
 
 		private Item SelectedItem => ItemProvider(ItemSlotsGridViewModel.SelectedIndex);
 
@@ -89,6 +93,17 @@ namespace QTRHacker.ViewModels.PlayerEditor
 					using var s = dialog.OpenFile();
 					this.player.LoadInventory(s);
 				}
+			});
+			viewInWikiCommand = new RelayCommand(o => true, o =>
+			{
+				Views.Wiki.WikiWindow window = new();
+				var d = new Wiki.WikiWindowViewModel();
+				d.ItemPageViewModel.SetSelectedItemType(SelectedItem.Type);
+				window.DataContext = d;
+				window.Show();
+			});
+			editCommand = new RelayCommand(o => true, o =>
+			{
 			});
 
 			Update();

@@ -15,7 +15,7 @@ namespace QTRHacker.ViewModels.Wiki.Item;
 public class ItemPageViewModel : ViewModelBase
 {
 	private ItemInfo selectedItemInfo;
-	private int selectedItemIndex;
+	private int selectedItemIndex = -1;
 
 	public ObservableCollection<ItemInfo> Items { get; } = new();
 
@@ -66,13 +66,21 @@ public class ItemPageViewModel : ViewModelBase
 			Items.Add(new ItemInfo(i));
 	}
 
+	public void SetSelectedItemType(int type)
+	{
+		var index = Items.ToList().FindIndex(t => t.Type == type);
+		if (index == -1)
+			SelectedItemIndex = 0;
+		else
+			SelectedItemIndex = index;
+	}
+
 	private void ItemInfoPagesViewModel_JumpToItem(object sender, JumpToItemEventArgs e)
 	{
 		if (e == null || e.ItemInfo == null)
 			return;
 		var type = e.ItemInfo.Type;
-		var item = Items.FirstOrDefault(t => t.Type == type);
-		int index = Items.IndexOf(item);
+		var index = Items.ToList().FindIndex(t => t.Type == type);
 		if (index == -1)
 			SelectedItemInfo = e.ItemInfo;
 		else

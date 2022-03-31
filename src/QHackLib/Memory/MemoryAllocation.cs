@@ -72,6 +72,7 @@ namespace QHackLib.Memory
 		public virtual T Read<T>(uint offset) where T : unmanaged =>
 			Context.DataAccess.Read<T>(AllocationBase + offset);
 
+		public static MemoryAllocation Alloc(QHackContext ctx, uint size = 0x1000) => new(ctx, size);
 
 		public static nuint Alloc(nuint handle, uint size) => NativeFunctions.VirtualAllocEx(handle, 0, size,
 				NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);

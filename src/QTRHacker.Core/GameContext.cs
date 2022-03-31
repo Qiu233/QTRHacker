@@ -63,10 +63,6 @@ namespace QTRHacker.Core
 		{
 			get;
 		}
-		public nuint MapFullscreenPos_Pointer
-		{
-			get;
-		}
 
 		public nuint MouseX_Address
 		{
@@ -194,7 +190,12 @@ namespace QTRHacker.Core
 		public WorldMap Map
 			=> new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "Map"));
 
-		public GameString UUID => new(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "clientUUID"));
+		public string UUID
+		{
+			get => new GameString(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "clientUUID"));
+			set => GameModuleHelper.SetStaticHackObject("Terraria.Main", "clientUUID", 
+				GameString.New(this, value).TypedInternalObject);
+		}
 
 		public int MaxTilesX => GameModuleHelper.GetStaticFieldValue<int>("Terraria.Main", "maxTilesX");
 		public int MaxTilesY => GameModuleHelper.GetStaticFieldValue<int>("Terraria.Main", "maxTilesY");
@@ -265,7 +266,7 @@ namespace QTRHacker.Core
 			MouseRightRelease_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mouseRightRelease");
 			ScreenWidth_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "screenWidth");
 			ScreenHeight_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "screenHeight");
-			MapFullscreenPos_Pointer = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mapFullscreenPos");
+			MapFullscreenPos_Address = GameModuleHelper.GetStaticHackObject("Terraria.Main", "mapFullscreenPos").BaseAddress;
 
 			MouseX_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mouseX");
 			MouseY_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "mouseY");
@@ -303,7 +304,6 @@ namespace QTRHacker.Core
 
 		public bool RunByHookOnUpdate(AssemblyCode codeToRun, uint size = 0x1000)
 		{
-			Console.WriteLine(codeToRun);
 			System.Threading.Monitor.Enter(LOCK_UPDATE);
 			bool v = InlineHook.HookOnce(
 					HContext, codeToRun,

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace QTRHacker.Controls
@@ -44,7 +45,7 @@ namespace QTRHacker.Controls
 			set => SetValue(SelectedBorderBrushProperty, value);
 		}
 		public static readonly DependencyProperty SelectedBorderBrushProperty =
-			DependencyProperty.Register(nameof(SelectedBorderBrush), typeof(Brush), typeof(ItemSlot), 
+			DependencyProperty.Register(nameof(SelectedBorderBrush), typeof(Brush), typeof(ItemSlot),
 				new PropertyMetadata(new SolidColorBrush(Color.FromRgb(0xFF, 0x88, 0x00))));
 
 
@@ -54,6 +55,14 @@ namespace QTRHacker.Controls
 		static ItemSlot()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(ItemSlot), new FrameworkPropertyMetadata(typeof(ItemSlot)));
+		}
+
+		protected override void OnMouseDown(MouseButtonEventArgs e)
+		{
+			base.OnMouseDown(e);
+			if (e.RightButton != MouseButtonState.Pressed)
+				return;
+			IsChecked = true;
 		}
 	}
 }

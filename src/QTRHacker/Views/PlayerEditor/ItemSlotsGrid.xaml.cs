@@ -21,6 +21,15 @@ namespace QTRHacker.Views.PlayerEditor
 	/// </summary>
 	public partial class ItemSlotsGrid : UserControl
 	{
+		public static readonly DependencyProperty ItemContextMenuProperty =
+			DependencyProperty.Register(nameof(ItemContextMenu), typeof(ContextMenu), typeof(ItemSlotsGrid));
+
+		public ContextMenu ItemContextMenu
+		{
+			get => (ContextMenu)GetValue(ItemContextMenuProperty);
+			set => SetValue(ItemContextMenuProperty, value);
+		}
+
 		public ItemSlotsGrid()
 		{
 			InitializeComponent();

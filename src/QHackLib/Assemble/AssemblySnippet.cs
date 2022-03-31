@@ -224,6 +224,12 @@ namespace QHackLib.Assemble
 			return FromClrCall(ctor, false, thisPtr: 0, retBuf: null, userEaxBuf: null, new object[] { strMemPtr });
 		}
 
+		public static AssemblySnippet FromConstructString(QHackContext ctx, nuint strMemPtr, nuint retPtr)
+		{
+			nuint ctor = ctx.BCLHelper.GetFunctionAddress("System.String", "CtorCharPtr");
+			return FromClrCall(ctor, false, thisPtr: 0, retBuf: null, userEaxBuf: retPtr, new object[] { strMemPtr });
+		}
+
 		/// <summary>
 		/// Loads an assembly.<br/>
 		/// Naked call.<br/>

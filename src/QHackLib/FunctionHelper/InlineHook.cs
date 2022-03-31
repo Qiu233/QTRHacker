@@ -79,7 +79,7 @@ namespace QHackLib.FunctionHelper
 			assembler.Emit(DataHelper.GetBytes(info));//emit the header before runnable code
 			assembler.Emit((Instruction)$"mov dword ptr [{safeFreeFlagAddr}],1");
 			assembler.Emit(Parameters.IsOnce ? GetOnceCheckedCode(Code, onceFlagAddr) : Code);//once or not
-			if (Parameters.RawCode)
+			if (Parameters.Original)
 				assembler.Emit(headInstBytes);//emit the raw code replaced by hook jmp
 			assembler.Emit((Instruction)$"mov dword ptr [{safeFreeFlagAddr}],0");
 			assembler.Emit((Instruction)$"jmp {retAddr}");

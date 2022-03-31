@@ -5,8 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor"
              xmlns:l="clr-namespace:QTRHacker.Localization"
+             xmlns:common="clr-namespace:QTRHacker.Common"
              mc:Ignorable="d" 
              d:DesignHeight="320">
+    <UserControl.Resources>
+        <common:BindingProxy x:Key="proxy" Data="{Binding}"/>
+    </UserControl.Resources>
     <Grid Background="#404040">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -14,6 +18,14 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <local:ItemSlotsGrid x:Name="ItemSlotsPanel" Grid.Column="0" Margin="2,6,2,6" DataContext="{Binding ItemSlotsGridViewModel}">
+            <local:ItemSlotsGrid.ItemContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{l:Localization UI.ViewInWiki}" 
+                              Command="{Binding Data.ViewInWikiCommand, Source={StaticResource proxy}}"/>
+                    <!--MenuItem Header="{l:Localization UI.Edit}" 
+                              Command="{Binding Data.EditCommand, Source={StaticResource proxy}}"/-->
+                </ContextMenu>
+            </local:ItemSlotsGrid.ItemContextMenu>
         </local:ItemSlotsGrid>
         <local:ItemPropertiesPanel d:Width="190" x:Name="ItemPropertiesPanel" Grid.Column="1" Margin="5,0,0,0"
                                    DataContext="{Binding ItemPropertiesPanelViewModel}">

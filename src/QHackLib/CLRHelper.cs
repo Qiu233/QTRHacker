@@ -58,5 +58,13 @@ namespace QHackLib
 				throw new ArgumentException("Primitive static field cannot be cast to HackObject.", nameof(fieldName));
 			return new HackObject(Context, field.Type, field.GetRawValue<nuint>());
 		}
+
+		public void SetStaticHackObject(string typeName, string fieldName, HackObject o)
+		{
+			var field = GetClrType(typeName).GetStaticFieldByName(fieldName);
+			if (field.Type.IsPrimitive)
+				throw new ArgumentException("Primitive static field cannot be cast to HackObject.", nameof(fieldName));
+			Context.DataAccess.Write(field.GetAddress(), o.BaseAddress);
+		}
 	}
 }
