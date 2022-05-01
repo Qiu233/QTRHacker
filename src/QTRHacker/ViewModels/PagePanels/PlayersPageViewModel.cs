@@ -81,6 +81,7 @@ namespace QTRHacker.ViewModels.PagePanels
 				var player = HackGlobal.GameContext.Players[SelectedPlayerInfo.ID];
 				if (!player.Active)
 					return;
+				HackGlobal.GameContext.MyPlayer.Position = player.Position;
 			});
 			if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
 			{

@@ -46,7 +46,9 @@
     "Sches": {
       "Arrow": "Arrow",
       "EyeDropper": "Eye Dropper",
-      "Brush": "Brush"
+      "Brush": "Brush",
+      "FlipH": "Flip H \u21C6",
+      "FlipV": "Flip V \u21C5"
     },
     "Wiki": {
       "Value": "Value",
@@ -126,7 +128,7 @@
   "About": {
     "Author": "Qiu",
     "QQ": "2393868407",
-    "QQGroup": "453858025",
+    "QQGroup": "630590096",
     "Discord": "https://discord.gg/bzKc9vM",
     "GitHubRepo": "https://github.com/Qiu233/QTRHacker",
     "Sponsor": "https://afdian.net/@Qiu233"

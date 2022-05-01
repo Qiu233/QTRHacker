@@ -21,7 +21,7 @@ namespace QTRHacker.Functions.Test
 		unsafe static void Main()
 		{
 			using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0]);
-			Console.WriteLine(ctx.MapFullscreenPos_Address);
+			Console.WriteLine(ctx.MyPlayer.Inventory.Length);
 		}
 	}
 }

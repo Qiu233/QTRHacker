@@ -22,6 +22,10 @@ namespace QTRHacker.ViewModels.Advanced.Schematics
 		private readonly HackCommand enableArrowCommand;
 		private readonly HackCommand saveCommand;
 		private readonly HackCommand loadCommand;
+		private readonly HackCommand flipH;
+		private readonly HackCommand flipV;
+
+		private readonly object _UpdateLock = new();
 
 		public PatchesManager.STile[,] Tiles
 		{
@@ -40,6 +44,94 @@ namespace QTRHacker.ViewModels.Advanced.Schematics
 		public HackCommand EnableBrushCommand => enableBrushCommand;
 		public HackCommand SaveCommand => saveCommand;
 		public HackCommand LoadCommand => loadCommand;
+		public HackCommand FlipH => flipH;
+		public HackCommand FlipV => flipV;
+
+		public static void SelectArrow()
+		{
+			HackGlobal.GameContext.Patches.WorldPainter_BrushActive = false;
+			HackGlobal.GameContext.Patches.WorldPainter_EyeDropperActive = false;
+		}
+		public static void SelectEyeDropper()
+		{
+			HackGlobal.GameContext.Patches.WorldPainter_BrushActive = false;
+			HackGlobal.GameContext.Patches.WorldPainter_EyeDropperActive = true;
+		}
+		public static void SelectBrush()
+		{
+			HackGlobal.GameContext.Patches.WorldPainter_EyeDropperActive = false;
+			HackGlobal.GameContext.Patches.WorldPainter_BrushActive = true;
+		}
+		public static void Save(PatchesManager.STile[,] tiles)
+		{
+			SaveFileDialog dialog = new();
+			dialog.Filter = "Schematics files (*.sche)|*.sche";
+			dialog.InitialDirectory = Path.GetFullPath(DIR);
+			if (dialog.ShowDialog() == true)
+			{
+				SchematicsData data = new(tiles);
+				using var s = dialog.OpenFile();
+				data.Save(s);
+			}
+		}
+
+		public static void Load()
+		{
+			OpenFileDialog dialog = new();
+			dialog.Filter = "Schematics files (*.sche)|*.sche";
+			dialog.InitialDirectory = Path.GetFullPath(DIR);
+			if (dialog.ShowDialog() == true)
+			{
+				using var s = dialog.OpenFile();
+				var sche = SchematicsData.Load(s);
+				LoadData(sche.Tiles);
+			}
+		}
+
+		public static void LoadData(PatchesManager.STile[,] tiles)
+		{
+			MemoryStream ms = new();
+			BinaryWriter bw = new(ms);
+			int width = tiles.GetLength(0);
+			int height = tiles.GetLength(1);
+			bw.Write(width);
+			bw.Write(height);
+			for (int x = 0; x < width; x++)
+				for (int y = 0; y < height; y++)
+					bw.Write(QHackLib.Memory.DataHelper.GetBytes(tiles[x, y]));
+			byte[] data = ms.ToArray();
+			nuint addr = QHackLib.Memory.MemoryAllocation.Alloc(HackGlobal.GameContext.HContext.Handle, (uint)data.Length);
+			HackGlobal.GameContext.HContext.DataAccess.WriteBytes(addr, data);
+			HackGlobal.GameContext.Patches.WorldPainter_Buffer = addr;
+			HackGlobal.GameContext.Patches.WorldPainter_Loading = true;
+		}
+
+		public void FlipVertically()
+		{
+			lock (_UpdateLock)
+			{
+				int width = Tiles.GetLength(0);
+				int height = Tiles.GetLength(1);
+				PatchesManager.STile[,] data = new PatchesManager.STile[width, height];
+				for (int j = 0; j < height; j++)
+					for (int i = 0; i < width; i++)
+						data[i, j] = Tiles[i, height - j - 1];
+				LoadData(data);
+			}
+		}
+		public void FlipHorizontally()
+		{
+			lock (_UpdateLock)
+			{
+				int width = Tiles.GetLength(0);
+				int height = Tiles.GetLength(1);
+				PatchesManager.STile[,] data = new PatchesManager.STile[width, height];
+				for (int i = 0; i < width; i++)
+					for (int j = 0; j < height; j++)
+						data[i, j] = Tiles[width - i - 1, j];
+				LoadData(data);
+			}
+		}
 
 		public ScheWindowViewModel()
 		{
@@ -47,60 +139,17 @@ namespace QTRHacker.ViewModels.Advanced.Schematics
 				Directory.CreateDirectory(DIR);
 			HackGlobal.GameContext.Patches.Init();
 
-			enableArrowCommand = new HackCommand(o =>
-			{
-				HackGlobal.GameContext.Patches.WorldPainter_BrushActive = false;
-				HackGlobal.GameContext.Patches.WorldPainter_EyeDropperActive = false;
-			});
-			enableEyeDropperCommand = new HackCommand(o =>
-			{
-				HackGlobal.GameContext.Patches.WorldPainter_BrushActive = false;
-				HackGlobal.GameContext.Patches.WorldPainter_EyeDropperActive = true;
-			});
-			enableBrushCommand = new HackCommand(o =>
-			{
-				HackGlobal.GameContext.Patches.WorldPainter_EyeDropperActive = false;
-				HackGlobal.GameContext.Patches.WorldPainter_BrushActive = true;
-			});
+			enableArrowCommand = new HackCommand(o => SelectArrow());
+			enableEyeDropperCommand = new HackCommand(o => SelectEyeDropper());
+			enableBrushCommand = new HackCommand(o => SelectBrush());
 			saveCommand = new HackCommand(o =>
 			{
-				SaveFileDialog dialog = new();
-				dialog.Filter = "Schematics files (*.sche)|*.sche";
-				dialog.InitialDirectory = Path.GetFullPath(DIR);
-				if (dialog.ShowDialog() == true)
-				{
-					SchematicsData data = new(Tiles);
-					using var s = dialog.OpenFile();
-					data.Save(s);
-				}
+				lock (_UpdateLock)
+					Save(Tiles);
 			});
-			loadCommand = new HackCommand(o =>
-			{
-				OpenFileDialog dialog = new();
-				dialog.Filter = "Schematics files (*.sche)|*.sche";
-				dialog.InitialDirectory = Path.GetFullPath(DIR);
-				if (dialog.ShowDialog() == true)
-				{
-					using var s = dialog.OpenFile();
-					var sche = SchematicsData.Load(s);
-					MemoryStream ms = new();
-					BinaryWriter bw = new(ms);
-					int width = sche.Tiles.GetLength(0);
-					int height = sche.Tiles.GetLength(1);
-					bw.Write(width);
-					bw.Write(height);
-					for (int x = 0; x < width; x++)
-						for (int y = 0; y < height; y++)
-							bw.Write(QHackLib.Memory.DataHelper.GetBytes(sche.Tiles[x, y]));
-					byte[] data = ms.ToArray();
-					
-					nuint addr = QHackLib.Memory.MemoryAllocation.Alloc(HackGlobal.GameContext.HContext.Handle, (uint)data.Length);
-					HackGlobal.GameContext.HContext.DataAccess.WriteBytes(addr, data);
-					HackGlobal.GameContext.Patches.WorldPainter_Buffer = addr;
-					HackGlobal.GameContext.Patches.WorldPainter_Loading = true;
-				}
-			});
-
+			loadCommand = new HackCommand(o => Load());
+			flipH = new HackCommand(o => FlipHorizontally());
+			flipV = new HackCommand(o => FlipVertically());
 
 			UpdateTimer = new();
 			UpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.SchesUpdateInterval);
@@ -120,14 +169,17 @@ namespace QTRHacker.ViewModels.Advanced.Schematics
 
 		private void UpdateTimer_Tick(object sender, EventArgs e)
 		{
-			if (!HackGlobal.IsActive || !HackGlobal.GameContext.Patches.IsInitialized)
-				return;
-			(int width, int height, var data) = GetDataFromGame();
-			PatchesManager.STile[,] targetData = new PatchesManager.STile[width, height];
-			for (int i = 0; i < width; i++)
-				for (int j = 0; j < height; j++)
-					targetData[i, j] = data[i * height + j];
-			Tiles = targetData;
+			lock (_UpdateLock)
+			{
+				if (!HackGlobal.IsActive || !HackGlobal.GameContext.Patches.IsInitialized)
+					return;
+				(int width, int height, var data) = GetDataFromGame();
+				PatchesManager.STile[,] targetData = new PatchesManager.STile[width, height];
+				for (int i = 0; i < width; i++)
+					for (int j = 0; j < height; j++)
+						targetData[i, j] = data[i * height + j];
+				Tiles = targetData;
+			}
 		}
 	}
 }

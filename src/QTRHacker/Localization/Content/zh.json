@@ -46,7 +46,9 @@
     "Sches": {
       "Arrow": "鼠标",
       "EyeDropper": "滴管",
-      "Brush": "刷子"
+      "Brush": "刷子",
+      "FlipH": "水平翻转 \u21C6",
+      "FlipV": "垂直翻转 \u21C5"
     },
     "Wiki": {
       "Value": "价值",
@@ -126,7 +128,7 @@
   "About": {
     "Author": "Qiu",
     "QQ": "2393868407",
-    "QQGroup": "453858025",
+    "QQGroup": "630590096",
     "Discord": "https://discord.gg/bzKc9vM",
     "GitHubRepo": "https://github.com/Qiu233/QTRHacker",
     "Sponsor": "https://afdian.net/@Qiu233"

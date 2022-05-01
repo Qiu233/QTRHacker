@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Scripts
 {
-	public class FunctionCategory : IEnumerable<BaseFunction>
+	public abstract class FunctionCategory : IEnumerable<BaseFunction>
 	{
-		public string Category { get; }
+		public abstract string Category { get; }
 		private readonly Dictionary<string, string> Name = new();
 		private readonly List<BaseFunction> Functions = new();
 		public string this[string culture]
@@ -21,11 +21,6 @@ namespace QTRHacker.Scripts
 				return null;
 			}
 			set => Name[culture] = value;
-		}
-
-		public FunctionCategory(string category)
-		{
-			Category = category;
 		}
 
 		public void Add(BaseFunction func)

@@ -1,32 +1,21 @@
-using QHackLib;
 using QHackLib.Memory;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
-using QTRHacker.Scripts;
 using QTRHacker.Core;
-using QTRHacker.Core.GameObjects;
-using QTRHacker.Core.GameObjects.Terraria;
-using System;
 using System.Linq;
-using System.Globalization;
-using System.Collections.Generic;
 using static QTRHacker.Scripts.ScriptHelper;
 
+namespace QTRHacker.Scripts.Functions;
 public class SuperRange : BaseFunction
 {
 	public override bool CanDisable => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "超远距离";
-				break;
-			case "en":
-			default:
-				Name = "Super range";
-				break;
-		}
+			"zh" => "超远距离",
+			_ => "Super range",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -40,7 +29,7 @@ public class SuperRange : BaseFunction
 		int v = 0x1000;
 		Write<int>(ctx, b, v);
 		Write<int>(ctx, c, v);
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
@@ -55,7 +44,7 @@ public class SuperRange : BaseFunction
 		int v2 = 4;
 		Write<int>(ctx, b, v1);
 		Write<int>(ctx, c, v2);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
@@ -64,16 +53,11 @@ public class FastTileAndWallPlacingSpeed : BaseFunction
 	public override bool CanDisable => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "加快方块/墙壁放置速度";
-				break;
-			case "en":
-			default:
-				Name = "Super Fast Tile/Wall Placing Speed";
-				break;
-		}
+			"zh" => "加快方块/墙壁放置速度",
+			_ => "Super Fast Tile/Wall Placing Speed",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -93,7 +77,7 @@ public class FastTileAndWallPlacingSpeed : BaseFunction
 			AssemblySnippet.FromASMCode(
 			$"mov dword ptr [esi+{offB}],0x41200000"),
 			new HookParameters(a + 8, 4096, false, false));
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
@@ -103,7 +87,7 @@ public class FastTileAndWallPlacingSpeed : BaseFunction
 		if (a == 0) return;
 		InlineHook.FreeHook(ctx.HContext, a);
 		InlineHook.FreeHook(ctx.HContext, a + 8);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
@@ -113,16 +97,11 @@ public class MachanicalRuler : BaseFunction
 	public override bool CanDisable => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "机械尺";
-				break;
-			case "en":
-			default:
-				Name = "Machanical Ruler";
-				break;
-		}
+			"zh" => "机械尺",
+			_ => "Machanical Ruler",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -136,7 +115,7 @@ public class MachanicalRuler : BaseFunction
 		InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
 			$"mov byte ptr [esi+{offA}],0x1"),
 			new HookParameters(a, 4096, false, false));
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
@@ -147,7 +126,7 @@ public class MachanicalRuler : BaseFunction
 		if (a == 0)
 			return;
 		InlineHook.FreeHook(ctx.HContext, a);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
@@ -156,16 +135,11 @@ public class MachanicalLens : BaseFunction
 	public override bool CanDisable => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "机械眼镜";
-				break;
-			case "en":
-			default:
-				Name = "Machanical Lens";
-				break;
-		}
+			"zh" => "机械眼镜",
+			_ => "Machanical Lens",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -179,7 +153,7 @@ public class MachanicalLens : BaseFunction
 		InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
 			$"mov byte ptr [esi+{offA}],0x1"),
 			new HookParameters(a, 4096, false, false));
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
@@ -190,18 +164,20 @@ public class MachanicalLens : BaseFunction
 		if (a == 0)
 			return;
 		InlineHook.FreeHook(ctx.HContext, a);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
-FunctionCategory category = new FunctionCategory("Builder");
-
-category["zh"] = "建筑";
-category["en"] = "Builder";
-
-category.Add<SuperRange>();
-category.Add<FastTileAndWallPlacingSpeed>();
-category.Add<MachanicalRuler>();
-category.Add<MachanicalLens>();
-
-return category;
+public class BuiltIn_5 : FunctionCategory
+{
+	public override string Category => "Builder";
+	public BuiltIn_5()
+	{
+		this["zh"] = "建筑";
+		this["en"] = "Builder"; 
+		Add<SuperRange>();
+		Add<FastTileAndWallPlacingSpeed>();
+		Add<MachanicalRuler>();
+		Add<MachanicalLens>();
+	}
+}
