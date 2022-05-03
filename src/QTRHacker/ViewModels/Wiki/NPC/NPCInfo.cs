@@ -40,7 +40,7 @@ namespace QTRHacker.ViewModels.Wiki.NPC
 
 		public void OnCultureChanged(object sender, CultureChangedEventArgs args)
 		{
-			name = LocalizationManager.Instance.GetValue($"NPCName.{Key}");
+			name = LocalizationManager.Instance.GetValue($"NPCName.{Key}", LocalizationType.Game);
 			OnPropertyChanged(nameof(Name));
 			var c = GetNPCCategory();
 			var values = Enum.GetValues<NPCCategory>()

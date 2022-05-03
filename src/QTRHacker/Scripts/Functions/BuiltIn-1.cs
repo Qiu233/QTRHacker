@@ -10,6 +10,38 @@ using System.Linq;
 using static QTRHacker.Scripts.ScriptHelper;
 
 namespace QTRHacker.Scripts.Functions;
+public class CreativeMenu : BaseFunction
+{
+	public override bool CanDisable => true;
+	public override void ApplyLocalization(string culture)
+	{
+		switch (culture)
+		{
+			case "zh":
+				Name = "旅行模式菜单";
+				Tooltip = "在非旅行模式下可用";
+				break;
+			case "en":
+			default:
+				Name = "Journey Mode Menu";
+				Tooltip = "Force journey mode menu enbaled";
+				break;
+		}
+	}
+	public override void Enable(GameContext ctx)
+	{
+		int off = GetOffset(ctx, "Terraria.Player", "difficulty");
+		AobReplace(ctx, $"80 B8 {AobscanHelper.GetMByteCode(off)} 03 74", $"80 B8 {AobscanHelper.GetMByteCode(off)} 03 EB");
+		IsEnabled = true;
+	}
+	public override void Disable(GameContext ctx)
+	{
+		int off = GetOffset(ctx, "Terraria.Player", "difficulty");
+		AobReplace(ctx, $"80 B8 {AobscanHelper.GetMByteCode(off)} 03 EB", $"80 B8 {AobscanHelper.GetMByteCode(off)} 03 74");
+		IsEnabled = false;
+	}
+}
+
 public class InfiniteLife : BaseFunction
 {
 	public override bool CanDisable => true;
@@ -159,14 +191,16 @@ public class InfiniteFlyTime : BaseFunction
 	}
 	public override void Enable(GameContext ctx)
 	{
-		int off = GetOffset(ctx, "Terraria.Player", "wingTime");
-		AobReplace(ctx, $"D9 99 {AobscanHelper.GetMByteCode(off)} 80 B9 F7060000 00", "90 90 90 90 90 90");
+		int off1 = GetOffset(ctx, "Terraria.Player", "wingTime");
+		int off2 = GetOffset(ctx, "Terraria.Player", "empressBrooch");
+		AobReplace(ctx, $"D9 99 {AobscanHelper.GetMByteCode(off1)} 80 B9 {AobscanHelper.GetMByteCode(off2)} 00", "90 90 90 90 90 90");
 		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
-		int off = GetOffset(ctx, "Terraria.Player", "wingTime");
-		AobReplace(ctx, "90 90 90 90 90 90 80 B9 F7060000 00", $"D9 99 {AobscanHelper.GetMByteCode(off)}");
+		int off1 = GetOffset(ctx, "Terraria.Player", "wingTime");
+		int off2 = GetOffset(ctx, "Terraria.Player", "empressBrooch");
+		AobReplace(ctx, $"90 90 90 90 90 90 80 B9 {AobscanHelper.GetMByteCode(off2)} 00", $"D9 99 {AobscanHelper.GetMByteCode(off1)}");
 		IsEnabled = false;
 	}
 }
@@ -283,6 +317,7 @@ public class BuiltIn_1 : FunctionCategory
 		this["zh"] = "基础1";
 		this["en"] = "Basic 1";
 
+		Add<CreativeMenu>();
 		Add<InfiniteLife>();
 		Add<InfiniteMana>();
 		Add<InfiniteOxygen>();

@@ -5,6 +5,7 @@ using QTRHacker.Core;
 using QTRHacker.Core.GameObjects.Terraria;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -59,6 +60,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 		private static void InitItemFromStream(Item item, BinaryReader br)
 		{
 			int type = br.ReadInt32();
+			Debug.WriteLine(type);
 			int stack = br.ReadInt32();
 			byte prefix = br.ReadByte();
 			if (type < 0) return;

@@ -11,7 +11,7 @@
     <ProduceReferenceAssemblies>false</ProduceReferenceAssemblies>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-    <Version>10.5.0.0</Version>
+    <Version>10.6.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,6 +46,7 @@
     <ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
     <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
     <ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
+    <ProjectReference Include="..\RainbowFontsMaker\RainbowFontsMaker.csproj" />
     <ProjectReference Include="..\WpfXnaControl\WpfXnaControl.csproj" />
   </ItemGroup>
   

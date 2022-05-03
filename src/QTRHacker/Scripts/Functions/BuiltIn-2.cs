@@ -313,31 +313,6 @@ public class StrengthenVampireKnives : BaseFunction
 	}
 }
 
-public class SwingingAttacksAllMob : BaseFunction
-{
-	public override bool CanDisable => true;
-	public override void ApplyLocalization(string culture)
-	{
-		switch (culture)
-		{
-			case "zh":
-				Name = "挥砍攻击所有怪物";
-				break;
-			case "en":
-			default:
-				Name = "Swinging Attacks All Mobs";
-				break;
-		}
-	}
-	public override void Enable(GameContext ctx)
-	{
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		IsEnabled = false;
-	}
-}
 
 public class BuiltIn_2 : FunctionCategory
 {
@@ -354,5 +329,6 @@ public class BuiltIn_2 : FunctionCategory
 		Add<CoinPortalDropsBags>();
 		Add<FishCratesOnly>();
 		Add<EnableAllRecipes>();
+		Add<StrengthenVampireKnives>();
 	}
 }

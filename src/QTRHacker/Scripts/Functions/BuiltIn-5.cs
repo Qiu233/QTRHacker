@@ -102,6 +102,11 @@ public class MachanicalRuler : BaseFunction
 			"zh" => "机械尺",
 			_ => "Machanical Ruler",
 		};
+		Tooltip = culture switch
+		{
+			"zh" => "显示网格",
+			_ => "Show grids",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -140,10 +145,15 @@ public class MachanicalLens : BaseFunction
 			"zh" => "机械眼镜",
 			_ => "Machanical Lens",
 		};
+		Tooltip = culture switch
+		{
+			"zh" => "显示电线",
+			_ => "Show wires",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
-		int offA = GetOffset(ctx, "Terraria.Player", "infoAccMechShowWires");
+		int offA = GetOffset(ctx, "Terraria.Player", "InfoAccMechShowWires");
 		int offB = GetOffset(ctx, "Terraria.Player", "accJarOfSouls");
 		nuint a = Aobscan(
 			ctx,

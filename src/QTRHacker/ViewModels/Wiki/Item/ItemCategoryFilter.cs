@@ -24,7 +24,7 @@ namespace QTRHacker.ViewModels.Wiki.Item
 
 		public void OnCultureChanged(object sender, CultureChangedEventArgs args)
 		{
-			hint = LocalizationManager.Instance.GetValue($"UI.ItemCategories.{Category}");
+			hint = LocalizationManager.Instance.GetValue($"UI.ItemCategories.{Category}", LocalizationType.Hack);
 			OnPropertyChanged(nameof(Hint));
 		}
 
