@@ -24,7 +24,7 @@ namespace QTRHacker.Views.Wiki.NPC
 	/// <summary>
 	/// NPCBox.xaml 的交互逻辑
 	/// </summary>
-	public partial class NPCBox : UserControl, IWeakEventListener, IDisposable
+	public partial class NPCBox : UserControl, IWeakEventListener
 	{
 		private readonly Dictionary<int, Texture2D> NPCTextures = new();
 		private readonly Dictionary<int, List<Microsoft.Xna.Framework.Rectangle>> FramesPlayList = new();
@@ -160,10 +160,13 @@ namespace QTRHacker.Views.Wiki.NPC
 			return false;
 		}
 
-		public void Dispose()
+		~NPCBox()
 		{
-			GC.SuppressFinalize(this);
 			UpdateTimer.Stop();
+			/*foreach (var (_, t) in NPCTextures)
+				t.Dispose();*/
+			// I'm not sure whether this will cause memory leak or not.
+			// Later tests will be taken to find out.
 		}
 	}
 }

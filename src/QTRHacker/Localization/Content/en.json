@@ -35,6 +35,20 @@
     "Load": "Load",
     "Confirm": "Confirm",
     "ViewInWiki": "View in wiki",
+    "Refresh": "Refresh",
+    "PlayerColors": {
+      "Hair": "Hair",
+      "Skin": "Skin",
+      "Eyes": "Eyes",
+      "Shirt": "Shirt",
+      "Undershirt": "Undershirt",
+      "Pants": "Pants",
+      "Shoes": "Shoes"
+    },
+    "PlayerProperties": {
+      "MaxLife": "Max Life",
+      "MaxMana": "Max Mana"
+    },
     "AboutContent": {
       "Author": "Author",
       "QQ": "QQ",

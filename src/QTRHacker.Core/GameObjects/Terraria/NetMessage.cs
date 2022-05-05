@@ -16,7 +16,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 			object text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f,
 			int number5 = 0, int number6 = 0, int number7 = 0)
 		{
-			Context.RunByHookOnUpdate(
+			Context.RunByHookUpdate(
 					new HackMethod(Context.HContext,
 					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.NetMessage",
 					"Terraria.NetMessage.SendData(Int32, Int32, Int32, Terraria.Localization.NetworkText, Int32, Single, Single, Single, Int32, Int32, Int32)"))
@@ -25,7 +25,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 		}
 		public static void SendWater(GameContext Context, int x, int y)
 		{
-			Context.RunByHookOnUpdate(
+			Context.RunByHookUpdate(
 					new HackMethod(Context.HContext,
 					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.NetMessage",
 					"Terraria.NetMessage.sendWater(Int32, Int32)"))

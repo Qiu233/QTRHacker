@@ -19,6 +19,7 @@
             <SolidColorBrush x:Key="QTRHacker.Light.Content.Foreground">#D0D0D0</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.Light.Tip.Foreground">White</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.Error">#FF5050</SolidColorBrush>
+            <SolidColorBrush x:Key="QTRHacker.SoftWhite">#FFC0C0C0</SolidColorBrush>
 
             <Style TargetType="GroupBox" x:Key="FilterGroupBox">
                 <Setter Property="Template">

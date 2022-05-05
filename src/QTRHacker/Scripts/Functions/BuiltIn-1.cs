@@ -8,6 +8,9 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using static QTRHacker.Scripts.ScriptHelper;
+using System;
+using System.Windows;
+using System.Threading.Tasks;
 
 namespace QTRHacker.Scripts.Functions;
 public class CreativeMenu : BaseFunction
@@ -39,6 +42,62 @@ public class CreativeMenu : BaseFunction
 		int off = GetOffset(ctx, "Terraria.Player", "difficulty");
 		AobReplace(ctx, $"80 B8 {AobscanHelper.GetMByteCode(off)} 03 EB", $"80 B8 {AobscanHelper.GetMByteCode(off)} 03 74");
 		IsEnabled = false;
+	}
+}
+public class UnlockAllDuplications : BaseFunction
+{
+	private string ErrorMsg1 { get; set; }
+	public override bool CanDisable => false;
+	public override void ApplyLocalization(string culture)
+	{
+		switch (culture)
+		{
+			case "zh":
+				Name = "解锁所有研究";
+				Tooltip = "旅行模式菜单";
+				ErrorMsg1 = "请先关闭/折叠旅行模式菜单";
+				break;
+			case "en":
+			default:
+				Name = "Unlock all duplications";
+				Tooltip = "In journey mode menu";
+				ErrorMsg1 = "Please first close or fold journey mode menu";
+				break;
+		}
+	}
+	public override void Enable(GameContext ctx)
+	{
+		dynamic enabled = ctx.GameModuleHelper
+			.GetStaticHackObject("Terraria.Main", "CreativeMenu")
+			.InternalGetMember("<Enabled>k__BackingField");
+		if ((bool)enabled)// This restriction prevents crashes
+		{
+			MessageBox.Show(ErrorMsg1);
+			return;
+		}
+		HackObject c = ctx.MyPlayer.InternalObject.creativeTracker.ItemSacrifices;
+		nuint addr = ctx.GameModuleHelper
+			.GetFunctionAddress("Terraria.GameContent.Creative.ItemsSacrificedUnlocksTracker",
+			"RegisterItemSacrifice");
+		var code = AssemblySnippet.FromCode(new AssemblyCode[] {
+				AssemblySnippet.Loop(
+					AssemblySnippet.FromCode(new AssemblyCode[] {
+						(Instruction)$"mov ecx, {c.BaseAddress}",
+						(Instruction)$"mov edx, [esp]",
+						(Instruction)$"push 9999",
+						(Instruction)$"call {addr}",
+					}),
+					GameConstants.MaxItemTypes, true)
+			});
+		var task = Task.Run(() => ctx.RunOnManagedThread(code).WaitToDispose());
+		if (!task.Wait(2000))
+		{
+			//TODO: abort the task
+		}
+	}
+	public override void Disable(GameContext ctx)
+	{
+		throw new InvalidOperationException();
 	}
 }
 
@@ -318,6 +377,7 @@ public class BuiltIn_1 : FunctionCategory
 		this["en"] = "Basic 1";
 
 		Add<CreativeMenu>();
+		Add<UnlockAllDuplications>();
 		Add<InfiniteLife>();
 		Add<InfiniteMana>();
 		Add<InfiniteOxygen>();

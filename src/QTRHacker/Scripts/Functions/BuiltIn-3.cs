@@ -108,7 +108,7 @@ public class RevealTheWholeMap : BaseFunction
 		asm.Content.Add(Instruction.Create("pop edx"));
 		asm.Content.Add(Instruction.Create("pop ecx"));
 
-		ctx.RunByHookOnUpdate(asm);
+		ctx.RunByHookUpdate(asm);
 		ctx.RefreshMap = true;
 	}
 }

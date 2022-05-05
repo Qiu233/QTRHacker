@@ -23,6 +23,7 @@ namespace QTRHacker
 	public partial class MainWindow : MWindow
 	{
 		public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
+		public const string GameVersion = "1.4.3.6";
 		public MainWindow()
 		{
 			HackGlobal.LoadConfig();
@@ -39,7 +40,7 @@ namespace QTRHacker
 			InitializeComponent();
 
 			DataContext = new MainWindowViewModel();
-			Title = "QTRHacker-" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			Title = $"QTRHacker-{Assembly.GetExecutingAssembly().GetName().Version} for {GameVersion}";
 
 		}
 

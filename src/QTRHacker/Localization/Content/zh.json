@@ -35,6 +35,20 @@
     "Load": "加载",
     "Confirm": "确定",
     "ViewInWiki": "在Wiki中显示",
+    "Refresh": "刷新",
+    "PlayerColors": {
+      "Hair": "头发",
+      "Skin": "皮肤",
+      "Eyes": "眼睛",
+      "Shirt": "衬衫",
+      "Undershirt": "内衬",
+      "Pants": "裤子",
+      "Shoes": "鞋子"
+    },
+    "PlayerProperties": {
+      "MaxLife": "最大生命",
+      "MaxMana": "最大魔法"
+    },
     "AboutContent": {
       "Author": "作者",
       "QQ": "QQ",

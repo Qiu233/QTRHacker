@@ -34,7 +34,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 
 		public void AddBuff(int type, int time, bool quiet = true, bool foodHack = false)
 		{
-			Context.RunByHookOnUpdate(TypedInternalObject.GetMethodCall("Terraria.Player.AddBuff(Int32, Int32, Boolean, Boolean)")
+			Context.RunByHookUpdate(TypedInternalObject.GetMethodCall("Terraria.Player.AddBuff(Int32, Int32, Boolean, Boolean)")
 				.Call(true, null, null, new object[] { type, time, quiet, foodHack }));
 		}
 

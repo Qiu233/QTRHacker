@@ -77,7 +77,7 @@ namespace QTRHacker.ViewModels.PagePanels
 				.ToList()
 				.Select(t => LoadFunctionsFromFile(t))
 				.Where(t => t is not null);
-			Application.Current.Dispatcher.BeginInvoke(() =>
+			Application.Current.Dispatcher.Invoke(() =>
 			{
 				Functions.Clear();
 				Functions.AddRange(builtin);
