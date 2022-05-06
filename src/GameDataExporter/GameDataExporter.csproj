@@ -1,20 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
+	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+		<PlatformTarget>x86</PlatformTarget>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.CodeDom" Version="6.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.CodeDom" Version="6.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
-    <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
+		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
+	</ItemGroup>
 
 </Project>

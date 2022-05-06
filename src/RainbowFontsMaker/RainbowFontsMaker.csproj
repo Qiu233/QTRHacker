@@ -1,51 +1,52 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-	  <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
+	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PlatformTarget>x86</PlatformTarget>
+		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Res\Example.txt" />
-    <None Remove="Res\Projectile_251.png" />
-    <None Remove="XSHD\XML-Mode.xshd" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Res\Example.txt" />
+		<None Remove="Res\Projectile_251.png" />
+		<None Remove="XSHD\XML-Mode.xshd" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Res\Example.txt" />
-    <EmbeddedResource Include="Res\Projectile_251.png" />
-    <EmbeddedResource Include="XSHD\XML-Mode.xshd" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Res\Example.txt" />
+		<EmbeddedResource Include="Res\Projectile_251.png" />
+		<EmbeddedResource Include="XSHD\XML-Mode.xshd" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AvalonEdit" Version="6.1.2.30" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Microsoft.Xna.Framework">
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Game">
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Graphics">
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="WinFormsGraphicsDevice">
-      <HintPath>$(SolutionDir)\refdlls\WinFormsGraphicsDevice.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  
+	<ItemGroup>
+		<Reference Include="Microsoft.Xna.Framework">
+			<HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Microsoft.Xna.Framework.Game">
+			<HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Microsoft.Xna.Framework.Graphics">
+			<HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="WinFormsGraphicsDevice">
+			<HintPath>$(SolutionDir)\refdlls\WinFormsGraphicsDevice.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
 </Project>

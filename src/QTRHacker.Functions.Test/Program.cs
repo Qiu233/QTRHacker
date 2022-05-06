@@ -44,7 +44,6 @@ namespace QTRHacker.Functions.Test
 			//InlineHook.FreeHook(ctx.HContext, ctx.GameModuleHelper.GetFunctionAddress("Terraria.GameContent.Creative.CreativeUI", "set_Enabled"));
 			/*Projectile p = new Projectile(ctx, new HackObject(ctx.HContext, ctx.GameModuleHelper.GetClrType("Terraria.Projectile"), 0x44E88978));
 			Console.WriteLine(p.Velocity);*/
-			ctx.Patches.AimBot_Enabled = true;
 		}
 	}
 }

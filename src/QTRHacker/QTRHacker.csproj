@@ -1,65 +1,67 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>disable</Nullable>
-    <UseWPF>true</UseWPF>
-    <PlatformTarget>x86</PlatformTarget>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <RootNamespace>QTRHacker</RootNamespace>
-    <ProduceReferenceAssemblies>false</ProduceReferenceAssemblies>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-    <Version>10.7.0.0</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Nullable>disable</Nullable>
+		<UseWPF>true</UseWPF>
+		<PlatformTarget>x86</PlatformTarget>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<RootNamespace>QTRHacker</RootNamespace>
+		<ProduceReferenceAssemblies>false</ProduceReferenceAssemblies>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
+		<SatelliteResourceLanguages>none</SatelliteResourceLanguages>
+		<Version>10.7.0.0</Version>
+		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="$(SolutionDir)res\**" CopyToOutputDirectory="PreserveNewest" Visible="True" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="$(SolutionDir)res\**" CopyToOutputDirectory="PreserveNewest" Visible="True" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Assets\GameImages\NPCs.bin" />
-    <None Remove="Assets\Game\Localization.zip" />
-    <None Remove="Assets\Game\WikiRes.zip" />
-    <None Remove="Assets\ItemImages.bin" />
-    <None Remove="Localization\Content\*.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Assets\GameImages\NPCs.bin" />
+		<None Remove="Assets\Game\Localization.zip" />
+		<None Remove="Assets\Game\WikiRes.zip" />
+		<None Remove="Assets\ItemImages.bin" />
+		<None Remove="Localization\Content\*.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Assets\GameImages\Items.bin" />
-    <Resource Include="Localization\Content\*.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Assets\GameImages\Items.bin" />
+		<Resource Include="Localization\Content\*.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Assets\GameImages\NPCs.bin" />
-    <Resource Include="Assets\Game\Localization.zip" />
-    <Resource Include="Assets\Game\WikiRes.zip" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Assets\GameImages\NPCs.bin" />
+		<Resource Include="Assets\Game\Localization.zip" />
+		<Resource Include="Assets\Game\WikiRes.zip" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Keystone.Net\Keystone.Net.csproj" />
-    <ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
-    <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
-    <ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
-    <ProjectReference Include="..\RainbowFontsMaker\RainbowFontsMaker.csproj" />
-    <ProjectReference Include="..\WpfXnaControl\WpfXnaControl.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Reference Include="Microsoft.Xna.Framework">
-      <HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Game">
-      <HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.Game.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Graphics">
-      <HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.Graphics.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Keystone.Net\Keystone.Net.csproj" />
+		<ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
+		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
+		<ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
+		<ProjectReference Include="..\RainbowFontsMaker\RainbowFontsMaker.csproj" />
+		<ProjectReference Include="..\WpfXnaControl\WpfXnaControl.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Microsoft.Xna.Framework">
+			<HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Xna.Framework.Game">
+			<HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.Game.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Xna.Framework.Graphics">
+			<HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.Graphics.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
 </Project>
