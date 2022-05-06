@@ -46,10 +46,7 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			set
 			{
 				if (value < 0)
-				{
-					OnPropertyChanged(nameof(MaxLife));
 					return;
-				}
 				maxLife = value;
 				OnPropertyChanged(nameof(MaxLife));
 			}

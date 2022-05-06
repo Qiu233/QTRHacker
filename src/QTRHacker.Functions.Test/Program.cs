@@ -42,22 +42,9 @@ namespace QTRHacker.Functions.Test
 				AssemblySnippet.FromASMCode("mov byte ptr [ecx+0x20], 1"),
 				new HookParameters(ctx.GameModuleHelper.GetFunctionAddress("Terraria.GameContent.Creative.CreativeUI", "set_Enabled"), 4096, false, true));*/
 			//InlineHook.FreeHook(ctx.HContext, ctx.GameModuleHelper.GetFunctionAddress("Terraria.GameContent.Creative.CreativeUI", "set_Enabled"));
-
-			HackObject c = ctx.MyPlayer.InternalObject.creativeTracker.ItemSacrifices;
-			nuint addr = ctx.GameModuleHelper
-				.GetFunctionAddress("Terraria.GameContent.Creative.ItemsSacrificedUnlocksTracker", 
-				"RegisterItemSacrifice");
-			var code = AssemblySnippet.FromCode(new AssemblyCode[] {
-				AssemblySnippet.Loop(
-					AssemblySnippet.FromCode(new AssemblyCode[] {
-						(Instruction)$"mov ecx, {c.BaseAddress}",
-						(Instruction)$"mov edx, [esp]",
-						(Instruction)$"push 9999",
-						(Instruction)$"call {addr}",
-					}),
-					GameConstants.MaxItemTypes, true)
-			});
-			ctx.RunOnManagedThread(code);
+			/*Projectile p = new Projectile(ctx, new HackObject(ctx.HContext, ctx.GameModuleHelper.GetClrType("Terraria.Projectile"), 0x44E88978));
+			Console.WriteLine(p.Velocity);*/
+			ctx.Patches.AimBot_Enabled = true;
 		}
 	}
 }

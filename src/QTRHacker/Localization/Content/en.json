@@ -36,6 +36,15 @@
     "Confirm": "Confirm",
     "ViewInWiki": "View in wiki",
     "Refresh": "Refresh",
+    "AimBot": {
+      "Help": "Aimbot is now disabled, you can select a mode from left to enable.\nAlso you can disable Aimbot by selecting this tab.",
+      "MaxDistance": "Max Distance",
+      "HostilesOnly": "Hostiles Only",
+      "Disabled": "Disabled",
+      "NearestNPC": "Nearest NPC",
+      "NearestPlayer": "Nearest Player",
+      "TargetedPlayer": "Targeted Player"
+    },
     "PlayerColors": {
       "Hair": "Hair",
       "Skin": "Skin",

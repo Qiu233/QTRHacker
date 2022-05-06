@@ -20,7 +20,6 @@ namespace QTRHacker.ViewModels.PagePanels
 		{
 			get;
 		} = new();
-		private static readonly object _lock_update = new();
 		private PlayerInfo selectedPlayerInfo;
 		private readonly RelayCommand editPlayerCommand;
 		private readonly RelayCommand tpToPlayerCommand;
@@ -44,23 +43,20 @@ namespace QTRHacker.ViewModels.PagePanels
 
 		public void UpdatePlayersList()
 		{
-			lock (_lock_update)
-			{
-				if (!HackGlobal.IsActive)
-					return;
-				var players = HackGlobal.GameContext.Players;
-				var active = players
-					.Select((Player, Index) => new { Player, Index })
-					.Where(t => t.Player.Active)
-					.Select(t => new PlayerInfo(t.Index, t.Player.Name))
-					.OrderBy(t => t);
-				var currentPlayers = Players.OrderBy(t => t);
-				if (active.SequenceEqual(currentPlayers))
-					return;
+			if (!HackGlobal.IsActive)
+				return;
+			var players = HackGlobal.GameContext.Players;
+			var active = players
+				.Select((Player, Index) => new { Player, Index })
+				.Where(t => t.Player.Active)
+				.Select(t => new PlayerInfo(t.Index, t.Player.Name))
+				.OrderBy(t => t);
+			var currentPlayers = Players.OrderBy(t => t);
+			if (active.SequenceEqual(currentPlayers))
+				return;
 
-				currentPlayers.Except(active).ToList().ForEach(t => Players.Remove(t));
-				active.Except(currentPlayers).ToList().ForEach(t => Players.Add(t));
-			}
+			currentPlayers.Except(active).ToList().ForEach(t => Players.Remove(t));
+			active.Except(currentPlayers).ToList().ForEach(t => Players.Add(t));
 		}
 
 		public DispatcherTimer PlayerUpdate { get; }
@@ -96,11 +92,6 @@ namespace QTRHacker.ViewModels.PagePanels
 		private void PlayerUpdate_Tick(object sender, EventArgs args)
 		{
 			UpdatePlayersList();
-		}
-
-		public record PlayerInfo(int ID, string Name) : IComparable<PlayerInfo>
-		{
-			public int CompareTo(PlayerInfo other) => ID - other.ID;
 		}
 	}
 }

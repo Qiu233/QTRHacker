@@ -45,7 +45,9 @@ namespace QTRHacker.Patches
 		public static bool BrushActive, EyeDropperActive;
 		private static bool Brushing, Dropping;
 		private static bool Loading;
+#pragma warning disable IDE0044 // 添加只读修饰符
 		private unsafe static IntPtr Buffer;
+#pragma warning restore IDE0044 // 添加只读修饰符
 		private static Vector2 BeginPos, EndPos;
 		private static Vector2 BrushBeginPos;
 		private static STile[,] ClipBoard;

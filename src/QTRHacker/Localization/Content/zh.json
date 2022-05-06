@@ -36,6 +36,15 @@
     "Confirm": "确定",
     "ViewInWiki": "在Wiki中显示",
     "Refresh": "刷新",
+    "AimBot": {
+      "Help": "自瞄已关闭，请在左侧选择一个模式开启。",
+      "MaxDistance": "最大距离",
+      "HostilesOnly": "仅敌人",
+      "Disabled": "关闭",
+      "NearestNPC": "最近的NPC",
+      "NearestPlayer": "最近的玩家",
+      "TargetedPlayer": "锁定玩家"
+    },
     "PlayerColors": {
       "Hair": "头发",
       "Skin": "皮肤",
