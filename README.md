@@ -7,3 +7,7 @@
 * .NET 6 Desktop Runtime x86
 * .NET Framework 4.6 for Terraria
 
+## Sponsor
+This hack is completely free to use. But sponsor me if possible please.
+
+https://afdian.net/@Qiu233
