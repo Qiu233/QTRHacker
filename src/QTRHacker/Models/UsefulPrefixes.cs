@@ -9,12 +9,14 @@ namespace QTRHacker.Models
 	public enum UsefulPrefixes : byte
 	{
 		None = 0,
-		Demonic = 60,
-		Warding = 65,
-		Menacing = 72,
-		Quick2 = 76,
 		Legendary = 81,
 		Unreal = 82,
 		Mythical = 83,
+		Ruthless = 57,
+		Menacing = 72,
+		Demonic = 60,
+		Light = 15,
+		Warding = 65,
+		Quick2 = 76,
 	}
 }
