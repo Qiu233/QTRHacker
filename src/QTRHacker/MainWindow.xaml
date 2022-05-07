@@ -9,7 +9,7 @@
     xmlns:pagepanels="clr-namespace:QTRHacker.Views.PagePanels"
     xmlns:l="clr-namespace:QTRHacker.Localization"
     mc:Ignorable="d"
-    WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True"
+    WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True" UseLayoutRounding="True"
     >
     <Grid>
         <TabControl x:Name="MainTabControl" TabStripPlacement="Left">
@@ -24,15 +24,15 @@
                      Header="{l:Localization UI.Player}" FontSize="20">
                 <pagepanels:PlayersPage x:Name="PlayersPage"/>
             </TabItem>
-            <TabItem DataContext="{Binding AdvancedPageViewModel}"
-                     Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.Advanced}" FontSize="20">
-                <pagepanels:AdvancedPage/>
-            </TabItem>
             <TabItem DataContext="{Binding DirectFunctionsPageViewModel}"
                      Style="{StaticResource MainWindowTabItem}"
                      Header="{l:Localization UI.DirectFunction}" FontSize="20">
                 <pagepanels:DirectFunctionsPage/>
+            </TabItem>
+            <TabItem DataContext="{Binding AdvancedPageViewModel}"
+                     Style="{StaticResource MainWindowTabItem}"
+                     Header="{l:Localization UI.Advanced}" FontSize="20">
+                <pagepanels:AdvancedPage/>
             </TabItem>
             <TabItem DataContext="{Binding AboutPageViewModel}"
                      Style="{StaticResource MainWindowTabItem}"

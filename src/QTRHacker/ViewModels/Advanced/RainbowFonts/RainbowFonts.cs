@@ -29,14 +29,15 @@ namespace QTRHacker.ViewModels.Advanced.RainbowFonts
 		{
 			if (HackGlobal.Characters == null)
 				HackGlobal.LoadRainbowFonts();
-			string s = ShowWindow();
+			if (!ShowWindow(out string s))
+				return;
 			RainbowTextDrawer rtd = new(HackGlobal.Characters);
 			rtd.DrawString(s, center: new MPointF());
 			var ctx = HackGlobal.GameContext;
 			var pos = ctx.MyPlayer.Position;
 			rtd.Emit(ctx, new MPointF(pos.X, pos.Y));
 		}
-		private static string ShowWindow()
+		private static bool ShowWindow(out string s)
 		{
 			MWindow window = new();
 			window.SizeToContent = SizeToContent.WidthAndHeight;
@@ -68,19 +69,19 @@ namespace QTRHacker.ViewModels.Advanced.RainbowFonts
 			Button btn = new();
 			btn.Foreground = new SolidColorBrush(Colors.White);
 			btn.Padding = new Thickness(2);
-			var loc = new LocalizationItem("UI.Confirm");
-			BindingOperations.SetBinding(btn, ContentControl.ContentProperty,
-				new Binding("Value") { Mode = BindingMode.OneWay, Source = loc });
+			btn.Content = LocalizationManager.Instance.GetValue("UI.Confirm");
 			grid.Children.Add(btn);
 			Grid.SetColumn(btn, 2);
 
 			btn.Click += (s, e) =>
 			{
+				window.DialogResult = true;
 				window.Close();
 			};
 
-			window.ShowDialog();
-			return box.Text;
+			var result = window.ShowDialog();
+			s = box.Text;
+			return result == true;
 		}
 	}
 }

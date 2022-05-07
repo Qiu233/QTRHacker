@@ -21,7 +21,7 @@ public class ItemInfo : ViewModelBase, ILocalizationProvider
 
 	public void OnCultureChanged(object sender, CultureChangedEventArgs args)
 	{
-		name = LocalizationManager.Instance.GetValue($"ItemName.{Key}");
+		name = LocalizationManager.Instance.GetValue($"ItemName.{Key}", LocalizationType.Game);
 		OnPropertyChanged(nameof(Name));
 		var c = GetItemCategory();
 		var values = Enum.GetValues<ItemCategory>()
@@ -32,7 +32,7 @@ public class ItemInfo : ViewModelBase, ILocalizationProvider
 			category = LocalizationManager.Instance.GetValue("UI.ItemCategories.Others");
 		OnPropertyChanged(nameof(Category));
 		string key = $"ItemTooltip.{Key}";
-		tooltip = LocalizationManager.Instance.GetValue(key);
+		tooltip = LocalizationManager.Instance.GetValue(key, LocalizationType.Game);
 		if (tooltip == key)
 			tooltip = string.Empty;
 		OnPropertyChanged(nameof(Tooltip));

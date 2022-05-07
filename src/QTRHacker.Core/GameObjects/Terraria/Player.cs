@@ -5,6 +5,7 @@ using QTRHacker.Core;
 using QTRHacker.Core.GameObjects.Terraria;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 
 		public void AddBuff(int type, int time, bool quiet = true, bool foodHack = false)
 		{
-			Context.RunByHookOnUpdate(TypedInternalObject.GetMethodCall("Terraria.Player.AddBuff(Int32, Int32, Boolean, Boolean)")
+			Context.RunByHookUpdate(TypedInternalObject.GetMethodCall("Terraria.Player.AddBuff(Int32, Int32, Boolean, Boolean)")
 				.Call(true, null, null, new object[] { type, time, quiet, foodHack }));
 		}
 
@@ -41,83 +42,54 @@ namespace QTRHacker.Core.GameObjects.Terraria
 		{
 			BinaryWriter bw = new(s);
 			bw.Write(-1);
-			for (int i = 0; i < ITEM_MAX_COUNT; i++)
-			{
-				var item = Inventory[i];
-				bw.Write(item.Type);
-				bw.Write(item.Stack);
-				bw.Write(item.Prefix);
-			}
-			for (int i = 0; i < ARMOR_MAX_COUNT; i++)
-			{
-				var item = Armor[i];
-				bw.Write(item.Type);
-				bw.Write(item.Stack);
-				bw.Write(item.Prefix);
-			}
-			for (int i = 0; i < DYE_MAX_COUNT; i++)
-			{
-				var item = Dye[i];
-				bw.Write(item.Type);
-				bw.Write(item.Stack);
-				bw.Write(item.Prefix);
-			}
-			for (int i = 0; i < MISC_MAX_COUNT; i++)
-			{
-				var item = MiscEquips[i];
-				bw.Write(item.Type);
-				bw.Write(item.Stack);
-				bw.Write(item.Prefix);
-			}
-			for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
-			{
-				var item = MiscDyes[i];
-				bw.Write(item.Type);
-				bw.Write(item.Stack);
-				bw.Write(item.Prefix);
-			}
+			WriteItemsToStream(Inventory, bw);
+			WriteItemsToStream(Armor, bw);
+			WriteItemsToStream(Dye, bw);
+			WriteItemsToStream(MiscEquips, bw);
+			WriteItemsToStream(MiscDyes, bw);
 			bw.Flush();
+		}
+
+		private static void WriteItemToStream(Item item, BinaryWriter bw)
+		{
+			bw.Write(item.Type);
+			bw.Write(item.Stack);
+			bw.Write(item.Prefix);
+		}
+
+		private static void InitItemFromStream(Item item, BinaryReader br)
+		{
+			int type = br.ReadInt32();
+			Debug.WriteLine(type);
+			int stack = br.ReadInt32();
+			byte prefix = br.ReadByte();
+			if (type < 0) return;
+			item.SetDefaultsAndPrefix(type, prefix);
+			item.Stack = stack;
+		}
+
+		private static void WriteItemsToStream(GameObjectArray<Item> items, BinaryWriter bw)
+		{
+			int len = items.Length;
+			for (int i = 0; i < len; i++)
+				WriteItemToStream(items[i], bw);
+		}
+
+		private static void InitItemsFromStream(GameObjectArray<Item> items, BinaryReader br)
+		{
+			int len = items.Length;
+			for (int i = 0; i < len; i++)
+				InitItemFromStream(items[i], br);
 		}
 
 		public void LoadInventoryV1(Stream s)
 		{
-			BinaryWriter bw = new(s);
-			for (int i = 0; i < ITEM_MAX_COUNT; i++)
-			{
-				var item = Inventory[i];
-				bw.Write(item.Type);
-				bw.Write(item.Stack);
-				bw.Write(item.Prefix);
-			}
-			for (int i = 0; i < ARMOR_MAX_COUNT; i++)
-			{
-				var item = Armor[i];
-				bw.Write(item.Type);
-				bw.Write(item.Stack);
-				bw.Write(item.Prefix);
-			}
-			for (int i = 0; i < DYE_MAX_COUNT; i++)
-			{
-				var item = Dye[i];
-				bw.Write(item.Type);
-				bw.Write(item.Stack);
-				bw.Write(item.Prefix);
-			}
-			for (int i = 0; i < MISC_MAX_COUNT; i++)
-			{
-				var item = MiscEquips[i];
-				bw.Write(item.Type);
-				bw.Write(item.Stack);
-				bw.Write(item.Prefix);
-			}
-			for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
-			{
-				var item = MiscDyes[i];
-				bw.Write(item.Type);
-				bw.Write(item.Stack);
-				bw.Write(item.Prefix);
-			}
-			bw.Flush();
+			BinaryReader br = new(s);
+			InitItemsFromStream(Inventory, br);
+			InitItemsFromStream(Armor, br);
+			InitItemsFromStream(Dye, br);
+			InitItemsFromStream(MiscEquips, br);
+			InitItemsFromStream(MiscDyes, br);
 		}
 
 		public void LoadInventory(Stream s)
@@ -139,57 +111,11 @@ namespace QTRHacker.Core.GameObjects.Terraria
 		public void LoadInventoryV0(Stream file)
 		{
 			BinaryReader br = new(file);
-			for (int i = 0; i < ITEM_MAX_COUNT; i++)
-			{
-				var item = Inventory[i];
-				int type = br.ReadInt32();
-				int stack = br.ReadInt32();
-				byte prefix = br.ReadByte();
-				if (type < 0) continue;
-				item.SetDefaultsAndPrefix(type, prefix);
-				item.Stack = stack;
-			}
-			for (int i = 0; i < ARMOR_MAX_COUNT; i++)
-			{
-				var item = Armor[i];
-				int type = br.ReadInt32();
-				int stack = br.ReadInt32();
-				byte prefix = br.ReadByte();
-				if (type < 0) continue;
-				item.SetDefaultsAndPrefix(type, prefix);
-				item.Stack = stack;
-			}
-			for (int i = 0; i < DYE_MAX_COUNT; i++)
-			{
-				var item = Dye[i];
-				int type = br.ReadInt32();
-				int stack = br.ReadInt32();
-				byte prefix = br.ReadByte();
-				if (type < 0) continue;
-				item.SetDefaultsAndPrefix(type, prefix);
-				item.Stack = stack;
-			}
-			for (int i = 0; i < MISC_MAX_COUNT; i++)
-			{
-				var item = MiscEquips[i];
-				int type = br.ReadInt32();
-				int stack = br.ReadInt32();
-				byte prefix = br.ReadByte();
-				if (type < 0) continue;
-				item.SetDefaultsAndPrefix(type, prefix);
-				item.Stack = stack;
-			}
-			for (int i = 0; i < MISCDYE_MAX_COUNT; i++)
-			{
-				var item = MiscDyes[i];
-				int type = br.ReadInt32();
-				int stack = br.ReadInt32();
-				byte prefix = br.ReadByte();
-				if (type < 0) continue;
-				item.SetDefaultsAndPrefix(type, prefix);
-				item.Stack = stack;
-			}
-
+			InitItemsFromStream(Inventory, br);
+			InitItemsFromStream(Armor, br);
+			InitItemsFromStream(Dye, br);
+			InitItemsFromStream(MiscEquips, br);
+			InitItemsFromStream(MiscDyes, br);
 		}
 	}
 }

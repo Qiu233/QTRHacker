@@ -35,6 +35,35 @@
     "Load": "Load",
     "Confirm": "Confirm",
     "ViewInWiki": "View in wiki",
+    "Refresh": "Refresh",
+    "Type": "Type",
+    "Time": "Time",
+    "AddBuff": "Buff",
+    "SetPet": "Pet",
+    "SetMount": "Mount",
+    "None": "None",
+    "AimBot": {
+      "Help": "Aimbot is now disabled, you can select a mode from left to enable.\nAlso you can disable Aimbot by selecting this tab.",
+      "MaxDistance": "Max Distance",
+      "HostilesOnly": "Hostiles Only",
+      "Disabled": "Disabled",
+      "NearestNPC": "Nearest NPC",
+      "NearestPlayer": "Nearest Player",
+      "TargetedPlayer": "Targeted Player"
+    },
+    "PlayerColors": {
+      "Hair": "Hair",
+      "Skin": "Skin",
+      "Eyes": "Eyes",
+      "Shirt": "Shirt",
+      "Undershirt": "Undershirt",
+      "Pants": "Pants",
+      "Shoes": "Shoes"
+    },
+    "PlayerProperties": {
+      "MaxLife": "Max Life",
+      "MaxMana": "Max Mana"
+    },
     "AboutContent": {
       "Author": "Author",
       "QQ": "QQ",
@@ -46,7 +75,10 @@
     "Sches": {
       "Arrow": "Arrow",
       "EyeDropper": "Eye Dropper",
-      "Brush": "Brush"
+      "Brush": "Brush",
+      "FlipH": "Flip H \u21C6",
+      "FlipV": "Flip V \u21C5",
+      "LoadImage": "Load Image"
     },
     "Wiki": {
       "Value": "Value",
@@ -126,7 +158,7 @@
   "About": {
     "Author": "Qiu",
     "QQ": "2393868407",
-    "QQGroup": "453858025",
+    "QQGroup": "630590096",
     "Discord": "https://discord.gg/bzKc9vM",
     "GitHubRepo": "https://github.com/Qiu233/QTRHacker",
     "Sponsor": "https://afdian.net/@Qiu233"

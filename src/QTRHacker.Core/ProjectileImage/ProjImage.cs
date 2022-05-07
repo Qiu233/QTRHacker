@@ -118,7 +118,7 @@ namespace QTRHacker.Core.ProjectileImage
 				}),
 				Projs.Count, true));
 			snippet.Content.Add((Instruction)"popad");
-			context.RunByHookOnUpdate(snippet);
+			context.RunByHookUpdate(snippet);
 		}
 		public void ToStream(Stream stream)
 		{

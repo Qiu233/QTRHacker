@@ -24,13 +24,13 @@ namespace QTRHacker.Core.GameObjects.Terraria
 
 		public void SetDefaults(int type)
 		{
-			Context.RunByHookOnUpdate(TypedInternalObject.GetMethodCall("Terraria.Item.SetDefaults(Int32)")
+			Context.RunByHookUpdate(TypedInternalObject.GetMethodCall("Terraria.Item.SetDefaults(Int32)")
 				.Call(true, null, null, new object[] { type }));
 		}
 
 		public void SetPrefix(int prefix)
 		{
-			Context.RunByHookOnUpdate(TypedInternalObject.GetMethodCall("Terraria.Item.Prefix(Int32)")
+			Context.RunByHookUpdate(TypedInternalObject.GetMethodCall("Terraria.Item.Prefix(Int32)")
 				.Call(true, null, null, new object[] { prefix }));
 		}
 
@@ -41,7 +41,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 		/// <param name="prefix"></param>
 		public void SetDefaultsAndPrefix(int type, int prefix)
 		{
-			Context.RunByHookOnUpdate(AssemblySnippet.FromCode(
+			Context.RunByHookUpdate(AssemblySnippet.FromCode(
 				new AssemblyCode[] {
 					Instruction.Create("push ecx"),
 					Instruction.Create("push edx"),
@@ -58,7 +58,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 		{
 			using MemoryAllocation ret = new(Context.HContext);
 
-			Context.RunByHookOnUpdate(
+			Context.RunByHookUpdate(
 				new HackMethod(Context.HContext,
 					Context.GameModuleHelper.GetClrMethodBySignature("Terraria.Item",
 					"Terraria.Item.NewItem(Terraria.DataStructures.IEntitySource, Int32, Int32, Int32, Int32, Int32, Int32, Boolean, Int32, Boolean, Boolean)"))

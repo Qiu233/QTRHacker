@@ -24,6 +24,13 @@ namespace QTRHacker.Core
 			public short FrameX;
 			public short FrameY;
 
+			public void Active(bool active)
+			{
+				if (active)
+					STileHeader |= 32;
+				else
+					STileHeader = (short)(STileHeader & 0xFFDF);
+			}
 			public bool Active()
 			{
 				return (STileHeader & 0x20) == 0x20;
@@ -76,6 +83,40 @@ namespace QTRHacker.Core
 		{
 			get => PatchHelper.GetStaticFieldValue<nuint>("QTRHacker.Patches.WorldPainter", "Buffer");
 			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.WorldPainter", "Buffer", value);
+		}
+
+		public bool AimBot_HostileNPCsOnly
+		{
+			get => PatchHelper.GetStaticFieldValue<bool>("QTRHacker.Patches.AimBot", "HostileNPCsOnly");
+			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AimBot", "HostileNPCsOnly", value);
+		}
+		public bool AimBot_HostilePlayersOnly
+		{
+			get => PatchHelper.GetStaticFieldValue<bool>("QTRHacker.Patches.AimBot", "HostilePlayersOnly");
+			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AimBot", "HostilePlayersOnly", value);
+		}
+		public float AimBot_MaxDistance_NPC
+		{
+			get => PatchHelper.GetStaticFieldValue<float>("QTRHacker.Patches.AimBot", "MaxDistance_NPC");
+			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AimBot", "MaxDistance_NPC", value);
+		}
+		public float AimBot_MaxDistance_Player
+		{
+			get => PatchHelper.GetStaticFieldValue<float>("QTRHacker.Patches.AimBot", "MaxDistance_Player");
+			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AimBot", "MaxDistance_Player", value);
+		}
+		public int AimBot_TargetedPlayerIndex
+		{
+			get => PatchHelper.GetStaticFieldValue<int>("QTRHacker.Patches.AimBot", "TargetedPlayerIndex");
+			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AimBot", "TargetedPlayerIndex", value);
+		}
+		/// <summary>
+		/// This is an enum
+		/// </summary>
+		public int AimBot_Mode
+		{
+			get => PatchHelper.GetStaticFieldValue<int>("QTRHacker.Patches.AimBot", "Mode");
+			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AimBot", "Mode", value);
 		}
 	}
 }

@@ -18,28 +18,31 @@ namespace QTRHacker.Localization
 	}
 	public sealed class LocalizationManager
 	{
-		private readonly Dictionary<string, string> Current = new();
+		private readonly Dictionary<string, string> CurrentHack = new();
+		private readonly Dictionary<string, string> CurrentGame = new();
 		public event EventHandler<CultureChangedEventArgs> CultureChanged;
 		public string CultureName
 		{
-			get => cultureName; 
+			get => cultureName;
 		}
 		private LocalizationManager(string initialCulture = "en")
 		{
 			SetCulture(initialCulture);
 		}
 
-		public string GetValue(string key)
+		public string GetValue(string key, LocalizationType type = LocalizationType.Hack)
 		{
-			if (Current.TryGetValue(key, out string s))
-				return s;
+			if (type == LocalizationType.Hack && CurrentHack.TryGetValue(key, out string s1))
+				return s1;
+			else if (type == LocalizationType.Game && CurrentGame.TryGetValue(key, out string s2))
+				return s2;
 			return key;
 		}
 
-		private void ApplySet(LocSet set)
+		private static void ApplySet(Dictionary<string, string> dic, LocSet set)
 		{
 			foreach (var key in set.Keys)
-				Current[key] = set[key];
+				dic[key] = set[key];
 		}
 
 		/// <summary>
@@ -50,8 +53,8 @@ namespace QTRHacker.Localization
 		public void SetCulture(string culture)
 		{
 			cultureName = culture;
-			ApplySet(LocSet.LoadFromRes(culture));
-			ApplySet(LocSet.LoadFromGame(culture));
+			ApplySet(CurrentHack, LocSet.LoadFromRes(culture));
+			ApplySet(CurrentGame, LocSet.LoadFromGame(culture));
 			CultureChanged?.Invoke(this, new CultureChangedEventArgs(culture));
 		}
 		private static LocalizationManager _Instance;

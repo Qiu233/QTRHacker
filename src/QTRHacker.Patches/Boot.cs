@@ -12,7 +12,7 @@ namespace QTRHacker.Patches
 {
 	public class Boot
 	{
-		public static readonly string Version = "1.0.0.0";
+		public static readonly string Version = "1.1.0.0";
 		public static bool Initialized = false;
 		public static event Action<SpriteBatch> OnGameDraw;
 		static Boot()

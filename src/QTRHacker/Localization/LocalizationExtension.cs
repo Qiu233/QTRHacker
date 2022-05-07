@@ -15,6 +15,11 @@ namespace QTRHacker.Localization
 			get;
 			set;
 		}
+		public LocalizationType Type
+		{
+			get;
+			set;
+		}
 
 		public LocalizationExtension(string key)
 		{
@@ -28,7 +33,7 @@ namespace QTRHacker.Localization
 		public override object ProvideValue(IServiceProvider serviceProvider)
 		{
 			Binding binding = new(nameof(LocalizationItem.Value));
-			binding.Source = new LocalizationItem(Key);
+			binding.Source = new LocalizationItem(Key, Type);
 			binding.Mode = BindingMode.OneWay;
 			return binding.ProvideValue(serviceProvider);
 		}

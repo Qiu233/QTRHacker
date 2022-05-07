@@ -34,6 +34,9 @@
                      IsSelected="{Binding VoidVaultViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor DataContext="{Binding VoidVaultViewModel}"/>
             </TabItem>
+            <TabItem Header="{l:Localization UI.Properties}">
+                <local:PlayerPropertiesEditor DataContext="{Binding PlayerPropertiesEditorViewModel}"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </controls:MWindow>

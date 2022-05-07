@@ -1,0 +1,2186 @@
+[
+  {
+    "Type": 0,
+    "Color": "#976B4B"
+  },
+  {
+    "Type": 1,
+    "Color": "#808080"
+  },
+  {
+    "Type": 2,
+    "Color": "#1CD85E"
+  },
+  {
+    "Type": 3,
+    "Color": "#1E9648"
+  },
+  {
+    "Type": 5,
+    "Color": "#976B4B"
+  },
+  {
+    "Type": 6,
+    "Color": "#B5A495"
+  },
+  {
+    "Type": 7,
+    "Color": "#964316"
+  },
+  {
+    "Type": 8,
+    "Color": "#B9A417"
+  },
+  {
+    "Type": 9,
+    "Color": "#D9DFDF"
+  },
+  {
+    "Type": 12,
+    "Color": "#B61239"
+  },
+  {
+    "Type": 13,
+    "Color": "#4EC5FC"
+  },
+  {
+    "Type": 17,
+    "Color": "#636363"
+  },
+  {
+    "Type": 20,
+    "Color": "#1E9648"
+  },
+  {
+    "Type": 22,
+    "Color": "#625FA7"
+  },
+  {
+    "Type": 23,
+    "Color": "#8D89DF"
+  },
+  {
+    "Type": 24,
+    "Color": "#6D6AAE"
+  },
+  {
+    "Type": 25,
+    "Color": "#7D7991"
+  },
+  {
+    "Type": 27,
+    "Color": "#E3B903"
+  },
+  {
+    "Type": 28,
+    "Color": "#796E61"
+  },
+  {
+    "Type": 29,
+    "Color": "#9C546C"
+  },
+  {
+    "Type": 30,
+    "Color": "#A97D5D"
+  },
+  {
+    "Type": 32,
+    "Color": "#7A618F"
+  },
+  {
+    "Type": 35,
+    "Color": "#EAAD53"
+  },
+  {
+    "Type": 36,
+    "Color": "#C22E32"
+  },
+  {
+    "Type": 37,
+    "Color": "#685654"
+  },
+  {
+    "Type": 38,
+    "Color": "#8C8C8C"
+  },
+  {
+    "Type": 39,
+    "Color": "#C37057"
+  },
+  {
+    "Type": 40,
+    "Color": "#925144"
+  },
+  {
+    "Type": 41,
+    "Color": "#454E63"
+  },
+  {
+    "Type": 43,
+    "Color": "#526556"
+  },
+  {
+    "Type": 44,
+    "Color": "#8A4469"
+  },
+  {
+    "Type": 45,
+    "Color": "#947E18"
+  },
+  {
+    "Type": 46,
+    "Color": "#AEC1C2"
+  },
+  {
+    "Type": 47,
+    "Color": "#D5651A"
+  },
+  {
+    "Type": 48,
+    "Color": "#AFAFAF"
+  },
+  {
+    "Type": 49,
+    "Color": "#0B2EFF"
+  },
+  {
+    "Type": 50,
+    "Color": "#3095AA"
+  },
+  {
+    "Type": 51,
+    "Color": "#9EADAE"
+  },
+  {
+    "Type": 52,
+    "Color": "#1E9648"
+  },
+  {
+    "Type": 53,
+    "Color": "#D3C66F"
+  },
+  {
+    "Type": 54,
+    "Color": "#C8F6FE"
+  },
+  {
+    "Type": 55,
+    "Color": "#7F5C45"
+  },
+  {
+    "Type": 56,
+    "Color": "#41414D"
+  },
+  {
+    "Type": 57,
+    "Color": "#44444C"
+  },
+  {
+    "Type": 58,
+    "Color": "#8E4242"
+  },
+  {
+    "Type": 59,
+    "Color": "#5C4449"
+  },
+  {
+    "Type": 60,
+    "Color": "#8FD71D"
+  },
+  {
+    "Type": 61,
+    "Color": "#63971F"
+  },
+  {
+    "Type": 62,
+    "Color": "#28650D"
+  },
+  {
+    "Type": 63,
+    "Color": "#2A82FA"
+  },
+  {
+    "Type": 64,
+    "Color": "#FA2A51"
+  },
+  {
+    "Type": 65,
+    "Color": "#05C95D"
+  },
+  {
+    "Type": 66,
+    "Color": "#C78B09"
+  },
+  {
+    "Type": 67,
+    "Color": "#A30BD5"
+  },
+  {
+    "Type": 68,
+    "Color": "#19D1E7"
+  },
+  {
+    "Type": 69,
+    "Color": "#855141"
+  },
+  {
+    "Type": 70,
+    "Color": "#5D7FFF"
+  },
+  {
+    "Type": 71,
+    "Color": "#B1AE83"
+  },
+  {
+    "Type": 72,
+    "Color": "#968F6E"
+  },
+  {
+    "Type": 73,
+    "Color": "#0D6524"
+  },
+  {
+    "Type": 74,
+    "Color": "#28650D"
+  },
+  {
+    "Type": 75,
+    "Color": "#0B0B0B"
+  },
+  {
+    "Type": 76,
+    "Color": "#8E4242"
+  },
+  {
+    "Type": 77,
+    "Color": "#EE6646"
+  },
+  {
+    "Type": 78,
+    "Color": "#796E61"
+  },
+  {
+    "Type": 80,
+    "Color": "#497811"
+  },
+  {
+    "Type": 81,
+    "Color": "#e5533f"
+  },
+  {
+    "Type": 86,
+    "Color": "#7F5C45"
+  },
+  {
+    "Type": 92,
+    "Color": "#323232"
+  },
+  {
+    "Type": 94,
+    "Color": "#A87858"
+  },
+  {
+    "Type": 95,
+    "Color": "#F87800"
+  },
+  {
+    "Type": 96,
+    "Color": "#606060"
+  },
+  {
+    "Type": 97,
+    "Color": "#808080"
+  },
+  {
+    "Type": 98,
+    "Color": "#B2B28A"
+  },
+  {
+    "Type": 99,
+    "Color": "#808080"
+  },
+  {
+    "Type": 102,
+    "Color": "#780C08"
+  },
+  {
+    "Type": 105,
+    "Color": "#282828"
+  },
+  {
+    "Type": 106,
+    "Color": "#563E2C"
+  },
+  {
+    "Type": 107,
+    "Color": "#0B508F"
+  },
+  {
+    "Type": 108,
+    "Color": "#5BA9A9"
+  },
+  {
+    "Type": 109,
+    "Color": "#4EC1E3"
+  },
+  {
+    "Type": 110,
+    "Color": "#1E9648"
+  },
+  {
+    "Type": 111,
+    "Color": "#801A34"
+  },
+  {
+    "Type": 112,
+    "Color": "#67627A"
+  },
+  {
+    "Type": 113,
+    "Color": "#1E9648"
+  },
+  {
+    "Type": 114,
+    "Color": "#7F5C45"
+  },
+  {
+    "Type": 115,
+    "Color": "#327FA1"
+  },
+  {
+    "Type": 116,
+    "Color": "#D5C4C5"
+  },
+  {
+    "Type": 117,
+    "Color": "#B5ACBE"
+  },
+  {
+    "Type": 118,
+    "Color": "#D5C4C5"
+  },
+  {
+    "Type": 119,
+    "Color": "#3F3F49"
+  },
+  {
+    "Type": 120,
+    "Color": "#967A7D"
+  },
+  {
+    "Type": 121,
+    "Color": "#2576AB"
+  },
+  {
+    "Type": 122,
+    "Color": "#91BF75"
+  },
+  {
+    "Type": 123,
+    "Color": "#595353"
+  },
+  {
+    "Type": 124,
+    "Color": "#5C4436"
+  },
+  {
+    "Type": 125,
+    "Color": "#81A5FF"
+  },
+  {
+    "Type": 126,
+    "Color": "#DBDBDB"
+  },
+  {
+    "Type": 127,
+    "Color": "#68B3C8"
+  },
+  {
+    "Type": 128,
+    "Color": "#906850"
+  },
+  {
+    "Type": 129,
+    "Color": "#004979"
+  },
+  {
+    "Type": 130,
+    "Color": "#A5A5A5"
+  },
+  {
+    "Type": 131,
+    "Color": "#1A1A1A"
+  },
+  {
+    "Type": 132,
+    "Color": "#C90303"
+  },
+  {
+    "Type": 136,
+    "Color": "#CCC0C0"
+  },
+  {
+    "Type": 138,
+    "Color": "#636363"
+  },
+  {
+    "Type": 140,
+    "Color": "#7875B3"
+  },
+  {
+    "Type": 141,
+    "Color": "#AD2323"
+  },
+  {
+    "Type": 142,
+    "Color": "#C90303"
+  },
+  {
+    "Type": 143,
+    "Color": "#C90303"
+  },
+  {
+    "Type": 144,
+    "Color": "#C90303"
+  },
+  {
+    "Type": 145,
+    "Color": "#C01E1E"
+  },
+  {
+    "Type": 146,
+    "Color": "#2BC01E"
+  },
+  {
+    "Type": 147,
+    "Color": "#C7DCDF"
+  },
+  {
+    "Type": 148,
+    "Color": "#D3ECF1"
+  },
+  {
+    "Type": 150,
+    "Color": "#731736"
+  },
+  {
+    "Type": 151,
+    "Color": "#baa854"
+  },
+  {
+    "Type": 152,
+    "Color": "#5f5f95"
+  },
+  {
+    "Type": 153,
+    "Color": "#ef8d7e"
+  },
+  {
+    "Type": 154,
+    "Color": "#dfdb93"
+  },
+  {
+    "Type": 155,
+    "Color": "#83a2a1"
+  },
+  {
+    "Type": 156,
+    "Color": "#bcbcb1"
+  },
+  {
+    "Type": 157,
+    "Color": "#9989a5"
+  },
+  {
+    "Type": 158,
+    "Color": "#915155"
+  },
+  {
+    "Type": 159,
+    "Color": "#57503f"
+  },
+  {
+    "Type": 160,
+    "Color": "#d4d4d4"
+  },
+  {
+    "Type": 161,
+    "Color": "#90c3e8"
+  },
+  {
+    "Type": 162,
+    "Color": "#92aebf"
+  },
+  {
+    "Type": 163,
+    "Color": "#9188cb"
+  },
+  {
+    "Type": 164,
+    "Color": "#d197bc"
+  },
+  {
+    "Type": 165,
+    "Color": "#5c8faf"
+  },
+  {
+    "Type": 166,
+    "Color": "#817d5d"
+  },
+  {
+    "Type": 167,
+    "Color": "#2f3e57"
+  },
+  {
+    "Type": 168,
+    "Color": "#5a7d53"
+  },
+  {
+    "Type": 169,
+    "Color": "#8097b8"
+  },
+  {
+    "Type": 170,
+    "Color": "#003F2C"
+  },
+  {
+    "Type": 171,
+    "Color": "#269660"
+  },
+  {
+    "Type": 173,
+    "Color": "#8097b8"
+  },
+  {
+    "Type": 174,
+    "Color": "#fe7902"
+  },
+  {
+    "Type": 175,
+    "Color": "#bba57c"
+  },
+  {
+    "Type": 176,
+    "Color": "#9cc09d"
+  },
+  {
+    "Type": 177,
+    "Color": "#b5c2d9"
+  },
+  {
+    "Type": 179,
+    "Color": "#318672"
+  },
+  {
+    "Type": 180,
+    "Color": "#7e8631"
+  },
+  {
+    "Type": 181,
+    "Color": "#863b31"
+  },
+  {
+    "Type": 182,
+    "Color": "#2b568c"
+  },
+  {
+    "Type": 183,
+    "Color": "#793186"
+  },
+  {
+    "Type": 185,
+    "Color": "#808080"
+  },
+  {
+    "Type": 186,
+    "Color": "#999979"
+  },
+  {
+    "Type": 187,
+    "Color": "#63971f"
+  },
+  {
+    "Type": 188,
+    "Color": "#497811"
+  },
+  {
+    "Type": 189,
+    "Color": "#ffffff"
+  },
+  {
+    "Type": 190,
+    "Color": "#b6af82"
+  },
+  {
+    "Type": 191,
+    "Color": "#9e7354"
+  },
+  {
+    "Type": 192,
+    "Color": "#0d6524"
+  },
+  {
+    "Type": 193,
+    "Color": "#3879ff"
+  },
+  {
+    "Type": 194,
+    "Color": "#b2b28a"
+  },
+  {
+    "Type": 195,
+    "Color": "#b74d70"
+  },
+  {
+    "Type": 196,
+    "Color": "#9390b2"
+  },
+  {
+    "Type": 197,
+    "Color": "#61c8e1"
+  },
+  {
+    "Type": 198,
+    "Color": "#202122"
+  },
+  {
+    "Type": 199,
+    "Color": "#9f3a3a"
+  },
+  {
+    "Type": 200,
+    "Color": "#e6bab7"
+  },
+  {
+    "Type": 201,
+    "Color": "#a63f3f"
+  },
+  {
+    "Type": 202,
+    "Color": "#171594"
+  },
+  {
+    "Type": 203,
+    "Color": "#c34343"
+  },
+  {
+    "Type": 204,
+    "Color": "#85212e"
+  },
+  {
+    "Type": 205,
+    "Color": "#b74544"
+  },
+  {
+    "Type": 206,
+    "Color": "#7cafc9"
+  },
+  {
+    "Type": 207,
+    "Color": "#838383"
+  },
+  {
+    "Type": 208,
+    "Color": "#687986"
+  },
+  {
+    "Type": 210,
+    "Color": "#ed1c24"
+  },
+  {
+    "Type": 211,
+    "Color": "#4fbf2d"
+  },
+  {
+    "Type": 212,
+    "Color": "#f5f5f5"
+  },
+  {
+    "Type": 213,
+    "Color": "#897843"
+  },
+  {
+    "Type": 214,
+    "Color": "#676767"
+  },
+  {
+    "Type": 217,
+    "Color": "#676767"
+  },
+  {
+    "Type": 218,
+    "Color": "#4d4d4d"
+  },
+  {
+    "Type": 219,
+    "Color": "#676767"
+  },
+  {
+    "Type": 220,
+    "Color": "#563a01"
+  },
+  {
+    "Type": 221,
+    "Color": "#f35e36"
+  },
+  {
+    "Type": 222,
+    "Color": "#841380"
+  },
+  {
+    "Type": 223,
+    "Color": "#a7d29f"
+  },
+  {
+    "Type": 224,
+    "Color": "#7e989d"
+  },
+  {
+    "Type": 225,
+    "Color": "#c86c10"
+  },
+  {
+    "Type": 226,
+    "Color": "#8d3800"
+  },
+  {
+    "Type": 228,
+    "Color": "#a87858"
+  },
+  {
+    "Type": 229,
+    "Color": "#ff9c0c"
+  },
+  {
+    "Type": 230,
+    "Color": "#5e3e24"
+  },
+  {
+    "Type": 231,
+    "Color": "#c8964a"
+  },
+  {
+    "Type": 232,
+    "Color": "#734144"
+  },
+  {
+    "Type": 233,
+    "Color": "#6bb600"
+  },
+  {
+    "Type": 234,
+    "Color": "#4d4c42"
+  },
+  {
+    "Type": 235,
+    "Color": "#b3bb44"
+  },
+  {
+    "Type": 236,
+    "Color": "#cd733d"
+  },
+  {
+    "Type": 237,
+    "Color": "#fff133"
+  },
+  {
+    "Type": 238,
+    "Color": "#e180ce"
+  },
+  {
+    "Type": 241,
+    "Color": "#4d4a48"
+  },
+  {
+    "Type": 243,
+    "Color": "#c6c4aa"
+  },
+  {
+    "Type": 244,
+    "Color": "#c8f5fd"
+  },
+  {
+    "Type": 247,
+    "Color": "#696969"
+  },
+  {
+    "Type": 248,
+    "Color": "#e1623f"
+  },
+  {
+    "Type": 249,
+    "Color": "#df23dc"
+  },
+  {
+    "Type": 250,
+    "Color": "#636169"
+  },
+  {
+    "Type": 251,
+    "Color": "#FAAC0F"
+  },
+  {
+    "Type": 252,
+    "Color": "#D7BA36"
+  },
+  {
+    "Type": 253,
+    "Color": "#4F3E5C"
+  },
+  {
+    "Type": 254,
+    "Color": "#1E9648"
+  },
+  {
+    "Type": 255,
+    "Color": "#6B319A"
+  },
+  {
+    "Type": 256,
+    "Color": "#9A9431"
+  },
+  {
+    "Type": 257,
+    "Color": "#31319A"
+  },
+  {
+    "Type": 258,
+    "Color": "#319A44"
+  },
+  {
+    "Type": 259,
+    "Color": "#9A314D"
+  },
+  {
+    "Type": 260,
+    "Color": "#555976"
+  },
+  {
+    "Type": 261,
+    "Color": "#9A5331"
+  },
+  {
+    "Type": 262,
+    "Color": "#DD4FFF"
+  },
+  {
+    "Type": 263,
+    "Color": "#FAFF4F"
+  },
+  {
+    "Type": 264,
+    "Color": "#4F66FF"
+  },
+  {
+    "Type": 265,
+    "Color": "#4FFF59"
+  },
+  {
+    "Type": 266,
+    "Color": "#FF4F4F"
+  },
+  {
+    "Type": 267,
+    "Color": "#F0F0F7"
+  },
+  {
+    "Type": 268,
+    "Color": "#FF914F"
+  },
+  {
+    "Type": 269,
+    "Color": "#906850"
+  },
+  {
+    "Type": 270,
+    "Color": "#3E6350"
+  },
+  {
+    "Type": 271,
+    "Color": "#4BA8AF"
+  },
+  {
+    "Type": 272,
+    "Color": "#434343"
+  },
+  {
+    "Type": 273,
+    "Color": "#636363"
+  },
+  {
+    "Type": 274,
+    "Color": "#D3C66F"
+  },
+  {
+    "Type": 275,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 276,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 277,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 278,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 279,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 280,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 281,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 282,
+    "Color": "#0839B5"
+  },
+  {
+    "Type": 283,
+    "Color": "#332E29"
+  },
+  {
+    "Type": 284,
+    "Color": "#B75819"
+  },
+  {
+    "Type": 285,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 286,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 287,
+    "Color": "#40660D"
+  },
+  {
+    "Type": 288,
+    "Color": "#B7BBD8"
+  },
+  {
+    "Type": 289,
+    "Color": "#B7BBD8"
+  },
+  {
+    "Type": 290,
+    "Color": "#B7BBD8"
+  },
+  {
+    "Type": 291,
+    "Color": "#B7BBD8"
+  },
+  {
+    "Type": 292,
+    "Color": "#B7BBD8"
+  },
+  {
+    "Type": 293,
+    "Color": "#B7BBD8"
+  },
+  {
+    "Type": 294,
+    "Color": "#B7BBD8"
+  },
+  {
+    "Type": 295,
+    "Color": "#B7BBD8"
+  },
+  {
+    "Type": 296,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 297,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 298,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 299,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 300,
+    "Color": "#81815F"
+  },
+  {
+    "Type": 301,
+    "Color": "#DEECAF"
+  },
+  {
+    "Type": 302,
+    "Color": "#C1CACB"
+  },
+  {
+    "Type": 303,
+    "Color": "#8D3800"
+  },
+  {
+    "Type": 304,
+    "Color": "#345401"
+  },
+  {
+    "Type": 305,
+    "Color": "#007FA6"
+  },
+  {
+    "Type": 306,
+    "Color": "#687799"
+  },
+  {
+    "Type": 307,
+    "Color": "#808080"
+  },
+  {
+    "Type": 308,
+    "Color": "#73450C"
+  },
+  {
+    "Type": 309,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 310,
+    "Color": "#3E7994"
+  },
+  {
+    "Type": 311,
+    "Color": "#874C1F"
+  },
+  {
+    "Type": 312,
+    "Color": "#B4443E"
+  },
+  {
+    "Type": 313,
+    "Color": "#599BA8"
+  },
+  {
+    "Type": 314,
+    "Color": "#A3A6A8"
+  },
+  {
+    "Type": 315,
+    "Color": "#C94642"
+  },
+  {
+    "Type": 316,
+    "Color": "#7792E2"
+  },
+  {
+    "Type": 317,
+    "Color": "#76E381"
+  },
+  {
+    "Type": 318,
+    "Color": "#E2A0DA"
+  },
+  {
+    "Type": 319,
+    "Color": "#C8F6FE"
+  },
+  {
+    "Type": 320,
+    "Color": "#CBB997"
+  },
+  {
+    "Type": 321,
+    "Color": "#604D40"
+  },
+  {
+    "Type": 322,
+    "Color": "#8F6D3F"
+  },
+  {
+    "Type": 323,
+    "Color": "#B68D56"
+  },
+  {
+    "Type": 325,
+    "Color": "#817D5D"
+  },
+  {
+    "Type": 326,
+    "Color": "#093DBF"
+  },
+  {
+    "Type": 327,
+    "Color": "#FD2003"
+  },
+  {
+    "Type": 328,
+    "Color": "#C8F6FE"
+  },
+  {
+    "Type": 329,
+    "Color": "#FF20D8"
+  },
+  {
+    "Type": 330,
+    "Color": "#E2764C"
+  },
+  {
+    "Type": 331,
+    "Color": "#464D50"
+  },
+  {
+    "Type": 332,
+    "Color": "#CCB548"
+  },
+  {
+    "Type": 333,
+    "Color": "#BEBEB2"
+  },
+  {
+    "Type": 334,
+    "Color": "#78553C"
+  },
+  {
+    "Type": 335,
+    "Color": "#E3B994"
+  },
+  {
+    "Type": 336,
+    "Color": "#FE7902"
+  },
+  {
+    "Type": 337,
+    "Color": "#606460"
+  },
+  {
+    "Type": 338,
+    "Color": "#19C762"
+  },
+  {
+    "Type": 339,
+    "Color": "#57ADBD"
+  },
+  {
+    "Type": 340,
+    "Color": "#B3FC00"
+  },
+  {
+    "Type": 341,
+    "Color": "#660CD4"
+  },
+  {
+    "Type": 342,
+    "Color": "#00BAF2"
+  },
+  {
+    "Type": 343,
+    "Color": "#FECA50"
+  },
+  {
+    "Type": 344,
+    "Color": "#83FCF5"
+  },
+  {
+    "Type": 345,
+    "Color": "#FF9C0C"
+  },
+  {
+    "Type": 346,
+    "Color": "#246133"
+  },
+  {
+    "Type": 347,
+    "Color": "#A42A49"
+  },
+  {
+    "Type": 348,
+    "Color": "#2215A4"
+  },
+  {
+    "Type": 349,
+    "Color": "#37589D"
+  },
+  {
+    "Type": 350,
+    "Color": "#629AB3"
+  },
+  {
+    "Type": 351,
+    "Color": "#191919"
+  },
+  {
+    "Type": 352,
+    "Color": "#883231"
+  },
+  {
+    "Type": 353,
+    "Color": "#1E9648"
+  },
+  {
+    "Type": 354,
+    "Color": "#4C2200"
+  },
+  {
+    "Type": 355,
+    "Color": "#6D4E47"
+  },
+  {
+    "Type": 356,
+    "Color": "#006887"
+  },
+  {
+    "Type": 357,
+    "Color": "#A8B2CC"
+  },
+  {
+    "Type": 358,
+    "Color": "#CBB349"
+  },
+  {
+    "Type": 359,
+    "Color": "#CBB349"
+  },
+  {
+    "Type": 360,
+    "Color": "#CBB349"
+  },
+  {
+    "Type": 361,
+    "Color": "#CBB349"
+  },
+  {
+    "Type": 362,
+    "Color": "#CBB349"
+  },
+  {
+    "Type": 363,
+    "Color": "#CBB349"
+  },
+  {
+    "Type": 364,
+    "Color": "#CBB349"
+  },
+  {
+    "Type": 365,
+    "Color": "#757FB9"
+  },
+  {
+    "Type": 366,
+    "Color": "#DFE8E9"
+  },
+  {
+    "Type": 367,
+    "Color": "#C3CEE3"
+  },
+  {
+    "Type": 368,
+    "Color": "#322E68"
+  },
+  {
+    "Type": 369,
+    "Color": "#221F47"
+  },
+  {
+    "Type": 370,
+    "Color": "#7F74C2"
+  },
+  {
+    "Type": 371,
+    "Color": "#F97FC8"
+  },
+  {
+    "Type": 372,
+    "Color": "#FE95D2"
+  },
+  {
+    "Type": 377,
+    "Color": "#6C6257"
+  },
+  {
+    "Type": 378,
+    "Color": "#DDB487"
+  },
+  {
+    "Type": 379,
+    "Color": "#D3D2FF"
+  },
+  {
+    "Type": 381,
+    "Color": "#FE7902"
+  },
+  {
+    "Type": 382,
+    "Color": "#1E9648"
+  },
+  {
+    "Type": 383,
+    "Color": "#DD8890"
+  },
+  {
+    "Type": 384,
+    "Color": "#476D0B"
+  },
+  {
+    "Type": 385,
+    "Color": "#0B377F"
+  },
+  {
+    "Type": 386,
+    "Color": "#4F3A2E"
+  },
+  {
+    "Type": 387,
+    "Color": "#6B4F3F"
+  },
+  {
+    "Type": 388,
+    "Color": "#503B30"
+  },
+  {
+    "Type": 389,
+    "Color": "#2E2119"
+  },
+  {
+    "Type": 390,
+    "Color": "#FD2003"
+  },
+  {
+    "Type": 391,
+    "Color": "#57ADBD"
+  },
+  {
+    "Type": 392,
+    "Color": "#57ADBD"
+  },
+  {
+    "Type": 393,
+    "Color": "#57ADBD"
+  },
+  {
+    "Type": 394,
+    "Color": "#57ADBD"
+  },
+  {
+    "Type": 395,
+    "Color": "#634732"
+  },
+  {
+    "Type": 396,
+    "Color": "#B36741"
+  },
+  {
+    "Type": 397,
+    "Color": "#D49458"
+  },
+  {
+    "Type": 398,
+    "Color": "#604475"
+  },
+  {
+    "Type": 399,
+    "Color": "#4D4C42"
+  },
+  {
+    "Type": 400,
+    "Color": "#604475"
+  },
+  {
+    "Type": 401,
+    "Color": "#573937"
+  },
+  {
+    "Type": 402,
+    "Color": "#B18ABA"
+  },
+  {
+    "Type": 403,
+    "Color": "#9E71A4"
+  },
+  {
+    "Type": 404,
+    "Color": "#8C543C"
+  },
+  {
+    "Type": 405,
+    "Color": "#FD3E03"
+  },
+  {
+    "Type": 406,
+    "Color": "#8C8C8C"
+  },
+  {
+    "Type": 407,
+    "Color": "#FFE384"
+  },
+  {
+    "Type": 408,
+    "Color": "#5EE5A3"
+  },
+  {
+    "Type": 409,
+    "Color": "#3A3736"
+  },
+  {
+    "Type": 411,
+    "Color": "#C90303"
+  },
+  {
+    "Type": 412,
+    "Color": "#936857"
+  },
+  {
+    "Type": 413,
+    "Color": "#57ADBD"
+  },
+  {
+    "Type": 414,
+    "Color": "#CBB349"
+  },
+  {
+    "Type": 415,
+    "Color": "#FE9E23"
+  },
+  {
+    "Type": 416,
+    "Color": "#00A0AA"
+  },
+  {
+    "Type": 417,
+    "Color": "#A057EA"
+  },
+  {
+    "Type": 418,
+    "Color": "#5057B6"
+  },
+  {
+    "Type": 419,
+    "Color": "#000000"
+  },
+  {
+    "Type": 420,
+    "Color": "#757d97"
+  },
+  {
+    "Type": 421,
+    "Color": "#494646"
+  },
+  {
+    "Type": 422,
+    "Color": "#494646"
+  },
+  {
+    "Type": 424,
+    "Color": "#929bbb"
+  },
+  {
+    "Type": 425,
+    "Color": "#aec3d7"
+  },
+  {
+    "Type": 426,
+    "Color": "#4d0b23"
+  },
+  {
+    "Type": 427,
+    "Color": "#771634"
+  },
+  {
+    "Type": 429,
+    "Color": "#3f3f3f"
+  },
+  {
+    "Type": 430,
+    "Color": "#17774f"
+  },
+  {
+    "Type": 431,
+    "Color": "#173677"
+  },
+  {
+    "Type": 432,
+    "Color": "#774417"
+  },
+  {
+    "Type": 433,
+    "Color": "#4a1777"
+  },
+  {
+    "Type": 434,
+    "Color": "#4e526d"
+  },
+  {
+    "Type": 435,
+    "Color": "#27a860"
+  },
+  {
+    "Type": 436,
+    "Color": "#275ea8"
+  },
+  {
+    "Type": 437,
+    "Color": "#a87927"
+  },
+  {
+    "Type": 438,
+    "Color": "#6f27a8"
+  },
+  {
+    "Type": 439,
+    "Color": "#9694ae"
+  },
+  {
+    "Type": 442,
+    "Color": "#0390c9"
+  },
+  {
+    "Type": 443,
+    "Color": "#7b7b7b"
+  },
+  {
+    "Type": 444,
+    "Color": "#bfb07c"
+  },
+  {
+    "Type": 445,
+    "Color": "#373749"
+  },
+  {
+    "Type": 446,
+    "Color": "#FF4298"
+  },
+  {
+    "Type": 447,
+    "Color": "#B384FF"
+  },
+  {
+    "Type": 448,
+    "Color": "#00CEB4"
+  },
+  {
+    "Type": 449,
+    "Color": "#5BBAF0"
+  },
+  {
+    "Type": 450,
+    "Color": "#5CF05B"
+  },
+  {
+    "Type": 451,
+    "Color": "#F05B93"
+  },
+  {
+    "Type": 452,
+    "Color": "#FF96B5"
+  },
+  {
+    "Type": 454,
+    "Color": "#AE10B0"
+  },
+  {
+    "Type": 455,
+    "Color": "#30FF6E"
+  },
+  {
+    "Type": 456,
+    "Color": "#B384FF"
+  },
+  {
+    "Type": 458,
+    "Color": "#D3C66F"
+  },
+  {
+    "Type": 459,
+    "Color": "#BEDFE8"
+  },
+  {
+    "Type": 460,
+    "Color": "#8DA3B5"
+  },
+  {
+    "Type": 461,
+    "Color": "#FFDE64"
+  },
+  {
+    "Type": 462,
+    "Color": "#E7B21C"
+  },
+  {
+    "Type": 463,
+    "Color": "#9BD6F0"
+  },
+  {
+    "Type": 464,
+    "Color": "#E9B780"
+  },
+  {
+    "Type": 465,
+    "Color": "#3354C3"
+  },
+  {
+    "Type": 466,
+    "Color": "#CD9949"
+  },
+  {
+    "Type": 470,
+    "Color": "#b18567"
+  },
+  {
+    "Type": 471,
+    "Color": "#563e2c"
+  },
+  {
+    "Type": 472,
+    "Color": "#696969"
+  },
+  {
+    "Type": 473,
+    "Color": "#29313f"
+  },
+  {
+    "Type": 474,
+    "Color": "#726a96"
+  },
+  {
+    "Type": 475,
+    "Color": "#a07858"
+  },
+  {
+    "Type": 476,
+    "Color": "#a1a9b0"
+  },
+  {
+    "Type": 477,
+    "Color": "#1cd85e"
+  },
+  {
+    "Type": 478,
+    "Color": "#cc766c"
+  },
+  {
+    "Type": 479,
+    "Color": "#c67c4e"
+  },
+  {
+    "Type": 480,
+    "Color": "#9d2929"
+  },
+  {
+    "Type": 481,
+    "Color": "#35394a"
+  },
+  {
+    "Type": 482,
+    "Color": "#69816d"
+  },
+  {
+    "Type": 483,
+    "Color": "#8a4469"
+  },
+  {
+    "Type": 484,
+    "Color": "#497811"
+  },
+  {
+    "Type": 485,
+    "Color": "#cfbfa0"
+  },
+  {
+    "Type": 486,
+    "Color": "#689eba"
+  },
+  {
+    "Type": 487,
+    "Color": "#634732"
+  },
+  {
+    "Type": 488,
+    "Color": "#7f5c45"
+  },
+  {
+    "Type": 489,
+    "Color": "#0e6d91"
+  },
+  {
+    "Type": 490,
+    "Color": "#9eadae"
+  },
+  {
+    "Type": 491,
+    "Color": "#bc77f7"
+  },
+  {
+    "Type": 492,
+    "Color": "#4ec1e3"
+  },
+  {
+    "Type": 494,
+    "Color": "#72738d"
+  },
+  {
+    "Type": 495,
+    "Color": "#9e7867"
+  },
+  {
+    "Type": 496,
+    "Color": "#827a73"
+  },
+  {
+    "Type": 498,
+    "Color": "#a57869"
+  },
+  {
+    "Type": 499,
+    "Color": "#8ba778"
+  },
+  {
+    "Type": 500,
+    "Color": "#fe9e23"
+  },
+  {
+    "Type": 501,
+    "Color": "#22dd97"
+  },
+  {
+    "Type": 502,
+    "Color": "#a057ea"
+  },
+  {
+    "Type": 503,
+    "Color": "#23c8fe"
+  },
+  {
+    "Type": 504,
+    "Color": "#272245"
+  },
+  {
+    "Type": 505,
+    "Color": "#0039b5"
+  },
+  {
+    "Type": 506,
+    "Color": "#5c5c5c"
+  },
+  {
+    "Type": 507,
+    "Color": "#060016"
+  },
+  {
+    "Type": 508,
+    "Color": "#060016"
+  },
+  {
+    "Type": 509,
+    "Color": "#0a0a0a"
+  },
+  {
+    "Type": 510,
+    "Color": "#976b4b"
+  },
+  {
+    "Type": 511,
+    "Color": "#902626"
+  },
+  {
+    "Type": 512,
+    "Color": "#318672"
+  },
+  {
+    "Type": 513,
+    "Color": "#7e8628"
+  },
+  {
+    "Type": 514,
+    "Color": "#863b31"
+  },
+  {
+    "Type": 515,
+    "Color": "#2b568c"
+  },
+  {
+    "Type": 516,
+    "Color": "#793186"
+  },
+  {
+    "Type": 517,
+    "Color": "#fd3e03"
+  },
+  {
+    "Type": 520,
+    "Color": "#ecebf9"
+  },
+  {
+    "Type": 521,
+    "Color": "#226f55"
+  },
+  {
+    "Type": 522,
+    "Color": "#226f55"
+  },
+  {
+    "Type": 523,
+    "Color": "#226f55"
+  },
+  {
+    "Type": 524,
+    "Color": "#226f55"
+  },
+  {
+    "Type": 525,
+    "Color": "#226f55"
+  },
+  {
+    "Type": 526,
+    "Color": "#226f55"
+  },
+  {
+    "Type": 527,
+    "Color": "#226f55"
+  },
+  {
+    "Type": 528,
+    "Color": "#8b855f"
+  },
+  {
+    "Type": 531,
+    "Color": "#5a5a5a"
+  },
+  {
+    "Type": 532,
+    "Color": "#a0b194"
+  },
+  {
+    "Type": 533,
+    "Color": "#ab9f77"
+  },
+  {
+    "Type": 534,
+    "Color": "#72fe02"
+  },
+  {
+    "Type": 535,
+    "Color": "#72fe02"
+  },
+  {
+    "Type": 536,
+    "Color": "#00c5d0"
+  },
+  {
+    "Type": 537,
+    "Color": "#00c5d0"
+  },
+  {
+    "Type": 538,
+    "Color": "#a46755"
+  },
+  {
+    "Type": 539,
+    "Color": "#d0007e"
+  },
+  {
+    "Type": 540,
+    "Color": "#d0007e"
+  },
+  {
+    "Type": 541,
+    "Color": "#22cdd8"
+  },
+  {
+    "Type": 542,
+    "Color": "#69513b"
+  },
+  {
+    "Type": 543,
+    "Color": "#20a875"
+  },
+  {
+    "Type": 544,
+    "Color": "#b4b260"
+  },
+  {
+    "Type": 545,
+    "Color": "#ff7e91"
+  },
+  {
+    "Type": 546,
+    "Color": "#70584f"
+  },
+  {
+    "Type": 549,
+    "Color": "#53710e"
+  },
+  {
+    "Type": 550,
+    "Color": "#109c26"
+  },
+  {
+    "Type": 551,
+    "Color": "#4f8e38"
+  },
+  {
+    "Type": 552,
+    "Color": "#d3c66f"
+  },
+  {
+    "Type": 553,
+    "Color": "#5c625f"
+  },
+  {
+    "Type": 554,
+    "Color": "#8a9ba4"
+  },
+  {
+    "Type": 555,
+    "Color": "#3794cb"
+  },
+  {
+    "Type": 556,
+    "Color": "#b4b260"
+  },
+  {
+    "Type": 557,
+    "Color": "#331b29"
+  },
+  {
+    "Type": 558,
+    "Color": "#1163c6"
+  },
+  {
+    "Type": 559,
+    "Color": "#1163c6"
+  },
+  {
+    "Type": 561,
+    "Color": "#868da0"
+  },
+  {
+    "Type": 562,
+    "Color": "#838f39"
+  },
+  {
+    "Type": 563,
+    "Color": "#838f39"
+  },
+  {
+    "Type": 564,
+    "Color": "#414d5b"
+  },
+  {
+    "Type": 565,
+    "Color": "#4ca4f1"
+  },
+  {
+    "Type": 566,
+    "Color": "#d58e30"
+  },
+  {
+    "Type": 567,
+    "Color": "#b57575"
+  },
+  {
+    "Type": 568,
+    "Color": "#d86baa"
+  },
+  {
+    "Type": 569,
+    "Color": "#5fe4b0"
+  },
+  {
+    "Type": 570,
+    "Color": "#5fbcea"
+  },
+  {
+    "Type": 571,
+    "Color": "#51651c"
+  },
+  {
+    "Type": 573,
+    "Color": "#9f8066"
+  },
+  {
+    "Type": 574,
+    "Color": "#4d3e33"
+  },
+  {
+    "Type": 575,
+    "Color": "#744144"
+  },
+  {
+    "Type": 576,
+    "Color": "#14122b"
+  },
+  {
+    "Type": 577,
+    "Color": "#955d3b"
+  },
+  {
+    "Type": 578,
+    "Color": "#736f52"
+  },
+  {
+    "Type": 579,
+    "Color": "#404040"
+  },
+  {
+    "Type": 580,
+    "Color": "#ac4548"
+  },
+  {
+    "Type": 581,
+    "Color": "#ff7c6b"
+  },
+  {
+    "Type": 582,
+    "Color": "#dc8828"
+  },
+  {
+    "Type": 583,
+    "Color": "#cbcbcb"
+  },
+  {
+    "Type": 584,
+    "Color": "#cbcbcb"
+  },
+  {
+    "Type": 585,
+    "Color": "#cbcbcb"
+  },
+  {
+    "Type": 586,
+    "Color": "#cbcbcb"
+  },
+  {
+    "Type": 587,
+    "Color": "#cbcbcb"
+  },
+  {
+    "Type": 588,
+    "Color": "#cbcbcb"
+  },
+  {
+    "Type": 589,
+    "Color": "#cbcbcb"
+  },
+  {
+    "Type": 592,
+    "Color": "#fddd03"
+  },
+  {
+    "Type": 593,
+    "Color": "#936857"
+  },
+  {
+    "Type": 594,
+    "Color": "#8e684c"
+  },
+  {
+    "Type": 595,
+    "Color": "#b65081"
+  },
+  {
+    "Type": 596,
+    "Color": "#977d69"
+  },
+  {
+    "Type": 598,
+    "Color": "#ef1d02"
+  },
+  {
+    "Type": 599,
+    "Color": "#b54beb"
+  },
+  {
+    "Type": 600,
+    "Color": "#c29433"
+  },
+  {
+    "Type": 601,
+    "Color": "#2b87d3"
+  },
+  {
+    "Type": 602,
+    "Color": "#199570"
+  },
+  {
+    "Type": 603,
+    "Color": "#dd7b81"
+  },
+  {
+    "Type": 604,
+    "Color": "#a0a7db"
+  },
+  {
+    "Type": 605,
+    "Color": "#dba84a"
+  },
+  {
+    "Type": 606,
+    "Color": "#cc7ff2"
+  },
+  {
+    "Type": 607,
+    "Color": "#d2a226"
+  },
+  {
+    "Type": 608,
+    "Color": "#2db5d3"
+  },
+  {
+    "Type": 609,
+    "Color": "#2cb682"
+  },
+  {
+    "Type": 610,
+    "Color": "#d5474c"
+  },
+  {
+    "Type": 611,
+    "Color": "#c9dfe7"
+  },
+  {
+    "Type": 612,
+    "Color": "#dba84a"
+  },
+  {
+    "Type": 614,
+    "Color": "#5d5d5d"
+  },
+  {
+    "Type": 615,
+    "Color": "#d0ba69"
+  },
+  {
+    "Type": 616,
+    "Color": "#bc7e7e"
+  },
+  {
+    "Type": 617,
+    "Color": "#fff9b7"
+  },
+  {
+    "Type": 618,
+    "Color": "#808080"
+  },
+  {
+    "Type": 619,
+    "Color": "#534553"
+  },
+  {
+    "Type": 620,
+    "Color": "#606376"
+  },
+  {
+    "Type": 621,
+    "Color": "#b0895a"
+  },
+  {
+    "Type": 622,
+    "Color": "#cbd4dd"
+  }
+]

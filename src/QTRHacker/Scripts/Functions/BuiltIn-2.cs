@@ -11,21 +11,17 @@ using System.Collections.Generic;
 using System.Linq;
 using static QTRHacker.Scripts.ScriptHelper;
 
+namespace QTRHacker.Scripts.Functions;
 public class SlowFall : BaseFunction
 {
 	public override bool CanDisable => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "缓慢下落";
-				break;
-			case "en":
-			default:
-				Name = "Slow falling";
-				break;
-		}
+			"zh" => "缓慢下落",
+			_ => "Slow falling",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -39,7 +35,7 @@ public class SlowFall : BaseFunction
 		InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
 			$"mov dword ptr [esi+{offA}],1"),
 			new HookParameters(a, 4096, false, false));
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
@@ -49,7 +45,7 @@ public class SlowFall : BaseFunction
 		if (a == 0)
 			return;
 		InlineHook.FreeHook(ctx.HContext, a);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
@@ -58,16 +54,11 @@ public class FastSpeed : BaseFunction
 	public override bool CanDisable => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "加快移动速度";
-				break;
-			case "en":
-			default:
-				Name = "Super Fast Speed";
-				break;
-		}
+			"zh" => "加快移动速度",
+			_ => "Super Fast Speed",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -81,7 +72,7 @@ public class FastSpeed : BaseFunction
 		InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
 			$"mov dword ptr [esi+{offA}],0x41A00000"),
 			new HookParameters(a, 0x1000, false, false));
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
@@ -91,7 +82,7 @@ public class FastSpeed : BaseFunction
 			$"E9 ******** 90 90 90 88 96 {AobscanHelper.GetMByteCode(offB)}").FirstOrDefault();
 		if (a == 0) return;
 		InlineHook.FreeHook(ctx.HContext, a);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
@@ -100,16 +91,11 @@ public class SuperGrabRange : BaseFunction
 	public override bool CanDisable => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "超远拾取距离";
-				break;
-			case "en":
-			default:
-				Name = "Super Grab Range";
-				break;
-		}
+			"zh" => "超远拾取距离",
+			_ => "Super Grab Range",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -119,13 +105,13 @@ public class SuperGrabRange : BaseFunction
 		InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
 			"mov eax,1000\nret"),
 			new HookParameters(a, 4096, false, false));
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
 		nuint a = ctx.GameModuleHelper["Terraria.Player", "GetItemGrabRange"];
 		InlineHook.FreeHook(ctx.HContext, a);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
@@ -134,16 +120,11 @@ public class BonusTwoSlots : BaseFunction
 	public override bool CanDisable => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "额外两个饰品栏";
-				break;
-			case "en":
-			default:
-				Name = "Bonus Two Acc Slots";
-				break;
-		}
+			"zh" => "额外两个饰品栏",
+			_ => "Bonus Two Acc Slots",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -154,13 +135,13 @@ public class BonusTwoSlots : BaseFunction
 			AssemblySnippet.FromASMCode(
 			"mov eax,1\nret"),
 			new HookParameters(a, 4096, false, false));
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
 		nuint a = ctx.GameModuleHelper["Terraria.Player", "IsAValidEquipmentSlotForIteration"];
 		InlineHook.FreeHook(ctx.HContext, a);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
@@ -201,7 +182,7 @@ push 0").FirstOrDefault();
 			AssemblySnippet.FromASMCode(
 			"mov dword ptr [esp+8],3332"),
 			new HookParameters(a, 4096, false, false));
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
@@ -216,7 +197,7 @@ push 0").FirstOrDefault();
 			return;
 		a += 2 * 5;
 		InlineHook.FreeHook(ctx.HContext, a);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
@@ -225,16 +206,11 @@ public class FishCratesOnly : BaseFunction
 	public override bool CanDisable => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "只钓板条箱";
-				break;
-			case "en":
-			default:
-				Name = "Fish Crates only";
-				break;
-		}
+			"zh" => "只钓板条箱",
+			_ => "Fish Crates only",
+		};
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -244,7 +220,7 @@ public class FishCratesOnly : BaseFunction
 		if (a == 0)
 			return;
 		Write<byte>(ctx, a + 11, 1);
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
@@ -254,7 +230,7 @@ public class FishCratesOnly : BaseFunction
 		if (a == 0)
 			return;
 		Write<byte>(ctx, a + 11, 0);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
@@ -286,14 +262,14 @@ public class EnableAllRecipes : BaseFunction
 		int len = array.Length;
 		for (int i = 0; i < len; i++)
 			array[i] = i;
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
 		Write<byte>(ctx,
 			ctx.GameModuleHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
 			0x55);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
@@ -323,7 +299,7 @@ public class StrengthenVampireKnives : BaseFunction
 		if (a == 0)
 			return;
 		ctx.HContext.DataAccess.Write<int>(a + 18, 100);
-		this.IsEnabled = true;
+		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
@@ -333,47 +309,26 @@ public class StrengthenVampireKnives : BaseFunction
 		if (a == 0)
 			return;
 		ctx.HContext.DataAccess.Write<int>(a + 18, 4);
-		this.IsEnabled = false;
+		IsEnabled = false;
 	}
 }
 
-public class SwingingAttacksAllMob : BaseFunction
+
+public class BuiltIn_2 : FunctionCategory
 {
-	public override bool CanDisable => true;
-	public override void ApplyLocalization(string culture)
+	public override string Category => "Basic2";
+	public BuiltIn_2()
 	{
-		switch (culture)
-		{
-			case "zh":
-				Name = "挥砍攻击所有怪物";
-				break;
-			case "en":
-			default:
-				Name = "Swinging Attacks All Mobs";
-				break;
-		}
-	}
-	public override void Enable(GameContext ctx)
-	{
-		this.IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		this.IsEnabled = false;
+		this["zh"] = "基础2";
+		this["en"] = "Basic 2";
+
+		Add<SlowFall>();
+		Add<FastSpeed>();
+		Add<SuperGrabRange>();
+		Add<BonusTwoSlots>();
+		Add<CoinPortalDropsBags>();
+		Add<FishCratesOnly>();
+		Add<EnableAllRecipes>();
+		Add<StrengthenVampireKnives>();
 	}
 }
-
-FunctionCategory category = new FunctionCategory("Basic2");
-
-category["zh"] = "基础2";
-category["en"] = "Basic 2";
-
-category.Add<SlowFall>();
-category.Add<FastSpeed>();
-category.Add<SuperGrabRange>();
-category.Add<BonusTwoSlots>();
-category.Add<CoinPortalDropsBags>();
-category.Add<FishCratesOnly>();
-category.Add<EnableAllRecipes>();
-
-return category;

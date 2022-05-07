@@ -24,7 +24,7 @@ namespace QTRHacker.ViewModels.PagePanels
 {
 	public class DirectFunctionsPageViewModel : PagePanelViewModel
 	{
-		public const string PATH_FUNCS = "./Content/Functions";
+		public const string PATH_FUNCS = "./Content/Scripts";
 
 		//TODO: merge the two variables into one, using ItemTemplate
 		public ObservableCollection<TabItem> TabItems { get; } = new();
@@ -58,16 +58,29 @@ namespace QTRHacker.ViewModels.PagePanels
 			return null;
 		}
 
+		private static IEnumerable<FunctionCategory> LoadBuiltInFunctions()
+		{
+			var types = Assembly.GetExecutingAssembly().DefinedTypes.Where(
+				t => t.Namespace != null &&
+					t.Namespace.StartsWith("QTRHacker.Scripts.Functions")).Where(t=>t.IsSubclassOf(typeof(FunctionCategory)));
+			foreach (var type in types)
+			{
+				yield return Activator.CreateInstance(type) as FunctionCategory;
+			}
+		}
+
 		public void LoadAllFunctions()
 		{
 			HackGlobal.Logging.Enter("Initializing functions from scripts.");
+			var builtin = LoadBuiltInFunctions();
 			var fs = Directory.EnumerateFiles(PATH_FUNCS, "*.cs")
 				.ToList()
 				.Select(t => LoadFunctionsFromFile(t))
 				.Where(t => t is not null);
-			Application.Current.Dispatcher.BeginInvoke(() =>
+			Application.Current.Dispatcher.Invoke(() =>
 			{
 				Functions.Clear();
+				Functions.AddRange(builtin);
 				Functions.AddRange(fs);
 			});
 			HackGlobal.Logging.Exit();

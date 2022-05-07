@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Core.GameObjects.Terraria;
+using QTRHacker.Localization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -92,15 +93,30 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			OnPropertyChanged(nameof(Rows));
 		}
 
-		public readonly struct Prefix
+		public class Prefix : ViewModelBase, ILocalizationProvider
 		{
-			public string Name { get; }
+			public string Key { get; }
 			public byte Value { get; }
 
-			public Prefix(string name, byte value)
+			public string Name
 			{
-				Name = name;
+				get
+				{
+					if (Key == "None")
+						return LocalizationManager.Instance.GetValue($"UI.None");
+					return LocalizationManager.Instance.GetValue($"Prefix.{Key}", LocalizationType.Game);
+				}
+			}
+
+			public Prefix(string key, byte value)
+			{
+				Key = key;
 				Value = value;
+			}
+
+			public void OnCultureChanged(object sender, CultureChangedEventArgs args)
+			{
+				OnPropertyChanged(nameof(Name));
 			}
 		}
 	}

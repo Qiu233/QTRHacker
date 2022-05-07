@@ -281,7 +281,7 @@ namespace QTRHacker.Core
 		}
 
 		/// <summary>
-		/// This method would be blocked for a long time if there were any other code running by a hook on DoUpdate.
+		/// This method would be blocked for a long time if there were any other code running by a hook on Update.
 		/// </summary>
 		/// <param name="codeToRun"></param>
 		/// <param name="size"></param>
@@ -294,7 +294,7 @@ namespace QTRHacker.Core
 			alloc.Write<short>(0, (uint)bs.Length);
 			RemoteThread re = RemoteThread.Create(HContext, codeToRun);
 
-			RunByHookOnUpdate(AssemblySnippet.StartManagedThread(
+			RunByHookUpdate(AssemblySnippet.StartManagedThread(
 					HContext,
 					re.CodeAddress,
 					alloc.AllocationBase));
@@ -302,7 +302,7 @@ namespace QTRHacker.Core
 			return re;
 		}
 
-		public bool RunByHookOnUpdate(AssemblyCode codeToRun, uint size = 0x1000)
+		public bool RunByHookUpdate(AssemblyCode codeToRun, uint size = 0x1000)
 		{
 			System.Threading.Monitor.Enter(LOCK_UPDATE);
 			bool v = InlineHook.HookOnce(

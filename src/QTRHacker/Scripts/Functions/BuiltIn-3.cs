@@ -12,28 +12,22 @@ using System.Globalization;
 using System.Collections.Generic;
 using static QTRHacker.Scripts.ScriptHelper;
 
+namespace QTRHacker.Scripts.Functions;
 public class BurnAllNPCs : BaseFunction
 {
 	public override bool CanDisable => false;
 	public override bool HasProgress => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		(Name, Tooltip) = culture switch
 		{
-			case "zh":
-				Name = "燃烧所有NPC";
-				Tooltip = "包括怪物和城镇/友好NPC";
-				break;
-			case "en":
-			default:
-				Name = "Burn All NPCs";
-				Tooltip = "Including mobs and town/friendly npcs";
-				break;
-		}
+			"zh" => ("燃烧所有NPC", "包括怪物和城镇/友好NPC"),
+			_ => ("Burn All NPCs", "Including mobs and town/friendly npcs"),
+		};
 	}
 	public override void Disable(GameContext ctx)
 	{
-		throw new NotImplementedException();
+		throw new InvalidOperationException();
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -54,22 +48,15 @@ public class BurnAllPlayers : BaseFunction
 	public override bool HasProgress => true;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		(Name, Tooltip) = culture switch
 		{
-			case "zh":
-				Name = "燃烧所有玩家";
-				Tooltip = "包括自己";
-				break;
-			case "en":
-			default:
-				Name = "Burn All Players";
-				Tooltip = "Including my player also";
-				break;
-		}
+			"zh" => ("燃烧所有玩家", "包括自己"),
+			_ => ("Burn All Players", "Including my player also"),
+		};
 	}
 	public override void Disable(GameContext ctx)
 	{
-		throw new NotImplementedException();
+		throw new InvalidOperationException();
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -89,22 +76,15 @@ public class RevealTheWholeMap : BaseFunction
 	public override bool CanDisable => false;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		(Name, Tooltip) = culture switch
 		{
-			case "zh":
-				Name = "揭示整张地图";
-				Tooltip = "有点慢，请稍等";
-				break;
-			case "en":
-			default:
-				Name = "Reveal The Whole Map";
-				Tooltip = "A bit slow, please wait";
-				break;
-		}
+			"zh" => ("揭示整张地图", "有点慢，请稍等"),
+			_ => ("Reveal The Whole Map", "A bit slow, please wait"),
+		};
 	}
 	public override void Disable(GameContext ctx)
 	{
-		throw new NotImplementedException();
+		throw new InvalidOperationException();
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -128,7 +108,7 @@ public class RevealTheWholeMap : BaseFunction
 		asm.Content.Add(Instruction.Create("pop edx"));
 		asm.Content.Add(Instruction.Create("pop ecx"));
 
-		ctx.RunByHookOnUpdate(asm);
+		ctx.RunByHookUpdate(asm);
 		ctx.RefreshMap = true;
 	}
 }
@@ -138,20 +118,15 @@ public class RightClickToTP : BaseFunction
 	public override bool CanDisable => false;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "大地图右键传送";
-				break;
-			case "en":
-			default:
-				Name = "Right Click on Map to TP";
-				break;
-		}
+			"zh" => "大地图右键传送",
+			_ => "Right Click on Map to TP",
+		};
 	}
 	public override void Disable(GameContext ctx)
 	{
-		throw new NotImplementedException();
+		throw new InvalidOperationException();
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -207,7 +182,7 @@ public class RightClickToTP : BaseFunction
 						Instruction.Create("_rwualfna:"),
 						Instruction.Create("popad")
 				});
-		HookParameters ps = new HookParameters(ctx.GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, 4096);
+		HookParameters ps = new(ctx.GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update") + 5, 4096);
 		InlineHook.Hook(ctx.HContext, ass, ps);
 	}
 }
@@ -217,20 +192,15 @@ public class RandomizeUUID : BaseFunction
 	public override bool CanDisable => false;
 	public override void ApplyLocalization(string culture)
 	{
-		switch (culture)
+		Name = culture switch
 		{
-			case "zh":
-				Name = "随机UUID";
-				break;
-			case "en":
-			default:
-				Name = "Randomize UUID";
-				break;
-		}
+			"zh" => "随机UUID",
+			_ => "Randomize UUID",
+		};
 	}
 	public override void Disable(GameContext ctx)
 	{
-		throw new NotImplementedException();
+		throw new InvalidOperationException();
 	}
 	public override void Enable(GameContext ctx)
 	{
@@ -238,15 +208,18 @@ public class RandomizeUUID : BaseFunction
 	}
 }
 
-FunctionCategory category = new FunctionCategory("Advanced");
 
-category["zh"] = "高级";
-category["en"] = "Advanced";
-
-category.Add<BurnAllNPCs>();
-category.Add<BurnAllPlayers>();
-category.Add<RandomizeUUID>();
-category.Add<RightClickToTP>();
-category.Add<RevealTheWholeMap>();
-
-return category;
+public class BuiltIn_3 : FunctionCategory
+{
+	public override string Category => "Advanced";
+	public BuiltIn_3()
+	{
+		this["zh"] = "高级";
+		this["en"] = "Advanced";
+		Add<BurnAllNPCs>();
+		Add<BurnAllPlayers>();
+		Add<RandomizeUUID>();
+		Add<RightClickToTP>();
+		Add<RevealTheWholeMap>();
+	}
+}

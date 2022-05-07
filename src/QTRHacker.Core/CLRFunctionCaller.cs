@@ -34,7 +34,7 @@ namespace QTRHacker.Core
 						args),
 					(Instruction)"popad"
 			});
-			Context.RunByHookOnUpdate(snippet);
+			Context.RunByHookUpdate(snippet);
 
 		}
 	}

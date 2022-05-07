@@ -1,17 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-	  <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PlatformTarget>x86</PlatformTarget>
+		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\QHackLib\QHackLib.csproj" />
-    <ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
+		<ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
+	</ItemGroup>
 
 </Project>

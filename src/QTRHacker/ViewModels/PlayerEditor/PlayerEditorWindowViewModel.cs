@@ -12,6 +12,7 @@ namespace QTRHacker.ViewModels.PlayerEditor
 	public class PlayerEditorWindowViewModel : ViewModelBase
 	{
 		public Player Player { get; }
+		public PlayerPropertiesEditorViewModel PlayerPropertiesEditorViewModel { get; }
 		public ItemSlotsEditorViewModel InventoryEditorViewModel { get; }
 		public ItemSlotsEditorViewModel ArmorEditorViewModel { get; }
 		public ItemSlotsEditorViewModel PiggyBankViewModel { get; }
@@ -25,6 +26,8 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			Player = player;
 			UpdateTimer = new();
 			UpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.ItemUpdateInterval);
+
+			PlayerPropertiesEditorViewModel = new PlayerPropertiesEditorViewModel(player);
 
 			InventoryEditorViewModel = new ItemSlotsEditorViewModel(new InventoryLayout(), player, GetInventoryItem, UpdateTimer);
 			ArmorEditorViewModel = new ItemSlotsEditorViewModel(new ArmorLayout(), player, GetArmorItem, UpdateTimer);

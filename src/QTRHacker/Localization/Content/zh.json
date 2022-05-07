@@ -35,6 +35,35 @@
     "Load": "加载",
     "Confirm": "确定",
     "ViewInWiki": "在Wiki中显示",
+    "Refresh": "刷新",
+    "Type": "类型",
+    "Time": "时间",
+    "AddBuff": "Buff",
+    "SetPet": "宠物",
+    "SetMount": "坐骑",
+    "None": "无",
+    "AimBot": {
+      "Help": "自瞄已关闭，请在左侧选择一个模式开启。",
+      "MaxDistance": "最大距离",
+      "HostilesOnly": "仅敌人",
+      "Disabled": "关闭",
+      "NearestNPC": "最近的NPC",
+      "NearestPlayer": "最近的玩家",
+      "TargetedPlayer": "锁定玩家"
+    },
+    "PlayerColors": {
+      "Hair": "头发",
+      "Skin": "皮肤",
+      "Eyes": "眼睛",
+      "Shirt": "衬衫",
+      "Undershirt": "内衬",
+      "Pants": "裤子",
+      "Shoes": "鞋子"
+    },
+    "PlayerProperties": {
+      "MaxLife": "最大生命",
+      "MaxMana": "最大魔法"
+    },
     "AboutContent": {
       "Author": "作者",
       "QQ": "QQ",
@@ -46,7 +75,10 @@
     "Sches": {
       "Arrow": "鼠标",
       "EyeDropper": "滴管",
-      "Brush": "刷子"
+      "Brush": "刷子",
+      "FlipH": "翻转 \u21C6",
+      "FlipV": "翻转 \u21C5",
+      "LoadImage": "加载图片"
     },
     "Wiki": {
       "Value": "价值",
@@ -126,7 +158,7 @@
   "About": {
     "Author": "Qiu",
     "QQ": "2393868407",
-    "QQGroup": "453858025",
+    "QQGroup": "630590096",
     "Discord": "https://discord.gg/bzKc9vM",
     "GitHubRepo": "https://github.com/Qiu233/QTRHacker",
     "Sponsor": "https://afdian.net/@Qiu233"
