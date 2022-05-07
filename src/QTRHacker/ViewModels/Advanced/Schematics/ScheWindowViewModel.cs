@@ -1,9 +1,11 @@
 ﻿using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using QTRHacker.Commands;
 using QTRHacker.Core;
 using QTRHacker.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,8 +26,11 @@ namespace QTRHacker.ViewModels.Advanced.Schematics
 		private readonly HackCommand loadCommand;
 		private readonly HackCommand flipH;
 		private readonly HackCommand flipV;
+		private readonly HackCommand loadImageCommand;
 
 		private readonly object _UpdateLock = new();
+
+		private readonly Dictionary<int, Color> TilesColor = new();
 
 		public PatchesManager.STile[,] Tiles
 		{
@@ -46,6 +51,7 @@ namespace QTRHacker.ViewModels.Advanced.Schematics
 		public HackCommand LoadCommand => loadCommand;
 		public HackCommand FlipH => flipH;
 		public HackCommand FlipV => flipV;
+		public HackCommand LoadImageCommand => loadImageCommand;
 
 		public static void SelectArrow()
 		{
@@ -133,6 +139,66 @@ namespace QTRHacker.ViewModels.Advanced.Schematics
 			}
 		}
 
+		private void LoadTilesColor()
+		{
+			if (TilesColor.Any())
+				return;
+			using var s = Application.GetResourceStream(new Uri($"pack://application:,,,/Assets/Game/TilesColor.json", UriKind.Absolute)).Stream;
+			StreamReader sr = new(s);
+			JArray array = JArray.Parse(sr.ReadToEnd());
+			var conv = new ColorConverter();
+			foreach (var item in array)
+			{
+				var colorText = item["Color"].Value<string>();
+				colorText = colorText.Replace("#", "");
+				int colorValue = int.Parse(colorText, System.Globalization.NumberStyles.HexNumber);
+				TilesColor[item["Type"].Value<int>()] = Color.FromArgb((colorValue >> 16) & 0xFF, (colorValue >> 8) & 0xFF, colorValue & 0xFF);
+			}
+		}
+
+		private int GetTileFromColor(Color color)
+		{
+			int result = -1;
+			int off = int.MaxValue;
+			foreach (var (i, c) in TilesColor)
+			{
+				int o = (int)(Math.Pow(c.R - color.R, 2) + Math.Pow(c.G - color.G, 2) + Math.Pow(c.B - color.B, 2));
+				if (o < off)
+				{
+					result = i;
+					off = o;
+				}
+			}
+			return result;
+		}
+
+		public void LoadImage()
+		{
+			LoadTilesColor();
+			OpenFileDialog ofd = new();
+			ofd.Filter = "png files (*.png)|*.png|jpg files (*.jpg)|*.jpg|jpeg files (*.jpeg)|*.jpeg|bmp files (*.bmp)|*.bmp";
+			if (ofd.ShowDialog() == true)
+			{
+				using var s = ofd.OpenFile();
+				if (Image.FromStream(s) is not Bitmap img)
+					return;
+				PatchesManager.STile[,] data = new PatchesManager.STile[img.Width, img.Height];
+				for (int i = 0; i < img.Width; i++)
+				{
+					for (int j = 0; j < img.Height; j++)
+					{
+						int tile = GetTileFromColor(img.GetPixel(i, j));
+						if (tile == -1)
+							continue;
+						data[i, j].Type = (ushort)tile;
+						data[i, j].Active(true);
+					}
+				}
+
+				LoadData(data);
+			}
+		}
+
 		public ScheWindowViewModel()
 		{
 			if (!Directory.Exists(DIR))
@@ -150,6 +216,7 @@ namespace QTRHacker.ViewModels.Advanced.Schematics
 			loadCommand = new HackCommand(o => Load());
 			flipH = new HackCommand(o => FlipHorizontally());
 			flipV = new HackCommand(o => FlipVertically());
+			loadImageCommand = new HackCommand(o => LoadImage());
 
 			UpdateTimer = new();
 			UpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.SchesUpdateInterval);

@@ -25,6 +25,7 @@
             <Button Content="{l:Localization UI.Sches.FlipV}" Command="{Binding FlipV}"/>
             <Button Content="{l:Localization UI.Save}" Command="{Binding SaveCommand}"/>
             <Button Content="{l:Localization UI.Load}" Command="{Binding LoadCommand}"/>
+            <!--Button Content="{l:Localization UI.Sches.LoadImage}" Command="{Binding LoadImageCommand}"/-->
         </StackPanel>
         <local:TileView x:Name="TileView" TilesData="{Binding Tiles}" Grid.Column="1">
         </local:TileView>

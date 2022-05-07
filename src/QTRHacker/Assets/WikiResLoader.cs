@@ -13,10 +13,12 @@ namespace QTRHacker.Assets;
 
 public static class WikiResLoader
 {
-	private static readonly Dictionary<int, string> ItemKeys = new();
-	private static readonly Dictionary<string, int> ItemTypes = new();
-	private static readonly Dictionary<int, string> NPCKeys = new();
-	private static readonly Dictionary<string, int> NPCTypes = new();
+	public static readonly Dictionary<int, string> ItemKeys = new();
+	public static readonly Dictionary<string, int> ItemTypes = new();
+	public static readonly Dictionary<int, string> NPCKeys = new();
+	public static readonly Dictionary<string, int> NPCTypes = new();
+	public static readonly Dictionary<int, string> BuffKeys = new();
+	public static readonly Dictionary<string, int> BuffTypes = new();
 	public static readonly List<ItemData> ItemDatum = new();
 	public static readonly List<NPCData> NPCDatum = new();
 	public static readonly List<RecipeData> RecipeDatum = new();
@@ -26,9 +28,21 @@ public static class WikiResLoader
 		using ZipArchive z = new(s);
 		LoadItemDatum(z);
 		LoadNPCDatum(z);
+		LoadBuffDatum(z);
 		GC.Collect();
 	}
 
+	private static void LoadBuffDatum(ZipArchive z)
+	{
+		using var u = new StreamReader(z.GetEntry("ID/BuffID.json").Open());
+		BuffTypes.Clear();
+		BuffKeys.Clear();
+		JsonConvert.DeserializeObject<Dictionary<string, int>>(u.ReadToEnd()).ToList().ForEach(t =>
+		{
+			BuffTypes[t.Key] = t.Value;
+			BuffKeys[t.Value] = t.Key;
+		});
+	}
 	private static void LoadNPCDatum(ZipArchive z)
 	{
 		using (var u = new StreamReader(z.GetEntry("ID/NPCID.json").Open()))
@@ -90,6 +104,19 @@ public static class WikiResLoader
 	public static int GetNPCTypeFromKey(string key)
 	{
 		if (NPCTypes.TryGetValue(key, out int v))
+			return v;
+		return 0;
+	}
+	public static string GetBuffKeyFromType(int type)
+	{
+		if (BuffKeys.TryGetValue(type, out string v))
+			return v;
+		return "Unknown";
+	}
+
+	public static int GetBuffTypeFromKey(string key)
+	{
+		if (BuffTypes.TryGetValue(key, out int v))
 			return v;
 		return 0;
 	}

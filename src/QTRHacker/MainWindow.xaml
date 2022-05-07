@@ -9,7 +9,7 @@
     xmlns:pagepanels="clr-namespace:QTRHacker.Views.PagePanels"
     xmlns:l="clr-namespace:QTRHacker.Localization"
     mc:Ignorable="d"
-    WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True"
+    WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True" UseLayoutRounding="True"
     >
     <Grid>
         <TabControl x:Name="MainTabControl" TabStripPlacement="Left">

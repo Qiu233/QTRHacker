@@ -10,8 +10,8 @@
              >
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="230"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <ListView x:Name="PlayersList" FontSize="15" Grid.Column="0" Focusable="False" BorderThickness="0"
                   Foreground="Black" ItemsSource="{Binding Players}" Background="#404040" SelectedItem="{Binding SelectedPlayerInfo}">
@@ -28,6 +28,9 @@
             </StackPanel.Resources>
             <Button Content="{l:Localization UI.Edit}" Command="{Binding EditPlayerCommand}"/>
             <Button Content="{l:Localization UI.TPTo}" Command="{Binding TPToPlayerCommand}"/>
+            <Button Content="{l:Localization UI.AddBuff}" Command="{Binding AddBuffCommand}"/>
+            <Button Content="{l:Localization UI.SetPet}" Command="{Binding SetPetCommand}"/>
+            <Button Content="{l:Localization UI.SetMount}" Command="{Binding SetMountCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

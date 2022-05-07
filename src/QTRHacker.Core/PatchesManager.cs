@@ -24,6 +24,13 @@ namespace QTRHacker.Core
 			public short FrameX;
 			public short FrameY;
 
+			public void Active(bool active)
+			{
+				if (active)
+					STileHeader |= 32;
+				else
+					STileHeader = (short)(STileHeader & 0xFFDF);
+			}
 			public bool Active()
 			{
 				return (STileHeader & 0x20) == 0x20;

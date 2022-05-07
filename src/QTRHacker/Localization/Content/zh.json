@@ -36,6 +36,12 @@
     "Confirm": "确定",
     "ViewInWiki": "在Wiki中显示",
     "Refresh": "刷新",
+    "Type": "类型",
+    "Time": "时间",
+    "AddBuff": "Buff",
+    "SetPet": "宠物",
+    "SetMount": "坐骑",
+    "None": "无",
     "AimBot": {
       "Help": "自瞄已关闭，请在左侧选择一个模式开启。",
       "MaxDistance": "最大距离",
@@ -70,8 +76,9 @@
       "Arrow": "鼠标",
       "EyeDropper": "滴管",
       "Brush": "刷子",
-      "FlipH": "水平翻转 \u21C6",
-      "FlipV": "垂直翻转 \u21C5"
+      "FlipH": "翻转 \u21C6",
+      "FlipV": "翻转 \u21C5",
+      "LoadImage": "加载图片"
     },
     "Wiki": {
       "Value": "价值",

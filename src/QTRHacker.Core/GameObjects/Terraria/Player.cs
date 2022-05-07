@@ -70,13 +70,15 @@ namespace QTRHacker.Core.GameObjects.Terraria
 
 		private static void WriteItemsToStream(GameObjectArray<Item> items, BinaryWriter bw)
 		{
-			for (int i = 0; i < items.Length; i++)
+			int len = items.Length;
+			for (int i = 0; i < len; i++)
 				WriteItemToStream(items[i], bw);
 		}
 
 		private static void InitItemsFromStream(GameObjectArray<Item> items, BinaryReader br)
 		{
-			for (int i = 0; i < items.Length; i++)
+			int len = items.Length;
+			for (int i = 0; i < len; i++)
 				InitItemFromStream(items[i], br);
 		}
 

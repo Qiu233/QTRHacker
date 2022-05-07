@@ -36,6 +36,12 @@
     "Confirm": "Confirm",
     "ViewInWiki": "View in wiki",
     "Refresh": "Refresh",
+    "Type": "Type",
+    "Time": "Time",
+    "AddBuff": "Buff",
+    "SetPet": "Pet",
+    "SetMount": "Mount",
+    "None": "None",
     "AimBot": {
       "Help": "Aimbot is now disabled, you can select a mode from left to enable.\nAlso you can disable Aimbot by selecting this tab.",
       "MaxDistance": "Max Distance",
@@ -71,7 +77,8 @@
       "EyeDropper": "Eye Dropper",
       "Brush": "Brush",
       "FlipH": "Flip H \u21C6",
-      "FlipV": "Flip V \u21C5"
+      "FlipV": "Flip V \u21C5",
+      "LoadImage": "Load Image"
     },
     "Wiki": {
       "Value": "Value",
