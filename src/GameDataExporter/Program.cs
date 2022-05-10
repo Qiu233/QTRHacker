@@ -14,6 +14,23 @@ namespace GameDataExporter
 {
 	class Program
 	{
+		private static readonly Dictionary<string, string> TypeRedefs = new()
+		{
+			{ "Microsoft.Xna.Framework.Color", "ValueTypeRedefs.Xna.Color" },
+			{ "Microsoft.Xna.Framework.Rectangle", "ValueTypeRedefs.Xna.Rectangle" },
+			{ "Microsoft.Xna.Framework.Vector2", "ValueTypeRedefs.Xna.Vector2" },
+			{ "Microsoft.Xna.Framework.Point", "ValueTypeRedefs.Xna.Point" },
+		};
+
+		static string GetTypeName(string type)
+		{
+			if (TypeRedefs.TryGetValue(type, out string v))
+				return v;
+			string name;
+			using CSharpCodeProvider provider = new();
+			name = provider.GetTypeOutput(new CodeTypeReference(type));
+			return name;
+		}
 		static void WriteTypeInfo(string file, ClrType type)
 		{
 			StringBuilder sb = new StringBuilder();
@@ -68,7 +85,43 @@ namespace GameDataExporter
 				string typeName;
 				using (var provider = new CSharpCodeProvider())
 					typeName = provider.GetTypeOutput(new CodeTypeReference(t.Type.Name));
-				sw.Write(string.Format("\t\t<# PROPERTY_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", typeName, t.Name));
+				if (t.Type.IsArray)
+				{
+					var ct = t.Type.ComponentType;
+					typeName = GetTypeName(ct.Name);
+					if (t.Type.Rank == 1)
+					{
+						if (ct.IsValueType)
+							sw.Write(string.Format("\t\t<# PROPERTY_ARRAYV_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", typeName, t.Name));
+						else
+							sw.Write(string.Format("\t\t<# PROPERTY_ARRAY_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", typeName, t.Name));
+					}
+					else if (t.Type.Rank == 2)
+					{
+						if (ct.IsValueType)
+							sw.Write(string.Format("\t\t<# PROPERTY_ARRAY2DV_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", typeName, t.Name));
+						else
+							sw.Write(string.Format("\t\t<# PROPERTY_ARRAY2D_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", typeName, t.Name));
+					}
+					else
+					{
+						if (ct.IsValueType)
+							sw.Write(string.Format("\t\t<# PROPERTY_ARRAYMDV_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", typeName, t.Name));
+						else
+							sw.Write(string.Format("\t\t<# PROPERTY_ARRAYMD_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", typeName, t.Name));
+					}
+				}
+				else if (t.Type == Runtime.Heap.StringType)
+				{
+					sw.Write(string.Format("\t\t<# PROPERTY_GO_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", "GameString", t.Name));
+				}
+				else
+				{
+					if (TypeRedefs.TryGetValue(typeName, out string v))
+						sw.Write(string.Format("\t\t<# PROPERTY_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", v, t.Name));
+					else
+						sw.Write(string.Format("\t\t<# PROPERTY_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", typeName, t.Name));
+				}
 			});
 			sw.Close();
 			File.WriteAllText(file, sb.ToString());
@@ -114,12 +167,13 @@ namespace GameDataExporter
 				}
 			}
 		}
+		private static ClrRuntime Runtime;
 		static void Main(string[] args)
 		{
-			var id = Process.GetProcessesByName("Terraria")[0].Id;
+			var id = Process.GetProcessesByName("tModLoader")[0].Id;
 			DataTarget dataTarget = new(id);
-			ClrRuntime runtime = dataTarget.ClrVersions[0].CreateRuntime();
-			ClrModule module = runtime.AppDomain.Modules.First(t => t.Name == "Terraria");
+			Runtime = dataTarget.ClrVersions[0].CreateRuntime();
+			ClrModule module = Runtime.AppDomain.Modules.First(t => t.Name == "Terraria");
 			WriteTypes(module);
 		}
 	}
