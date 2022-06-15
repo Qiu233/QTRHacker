@@ -22,10 +22,12 @@ namespace QTRHacker
 {
 	public partial class MainWindow : MWindow
 	{
+		public static MainWindow Instance { get; private set; }
 		public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
 		public const string GameVersion = "1.4.3.6";
 		public MainWindow()
 		{
+			Instance = this;
 			HackGlobal.LoadConfig();
 			if (!HackGlobal.Config.ForceEnglish)
 			{

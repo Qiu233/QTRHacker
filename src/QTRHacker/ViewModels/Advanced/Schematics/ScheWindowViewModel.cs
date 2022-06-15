@@ -221,8 +221,12 @@ namespace QTRHacker.ViewModels.Advanced.Schematics
 			UpdateTimer = new();
 			UpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.SchesUpdateInterval);
 			WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(UpdateTimer, nameof(DispatcherTimer.Tick), UpdateTimer_Tick);
-			//Still need to stop the timer, but so far I've found no clean way to do so.
 			UpdateTimer.Start();
+		}
+
+		~ScheWindowViewModel()
+		{
+			UpdateTimer?.Stop();
 		}
 
 		private static (int Width, int Height, PatchesManager.STile[] Data) GetDataFromGame()

@@ -36,7 +36,19 @@
                                         </Button>
                                         <Popup IsOpen="{Binding IsMouseOver, Mode=OneWay, ElementName=PART_TooltipButton}" AllowsTransparency="True">
                                             <Border Background="#707070">
-                                                <TextBlock Text="{Binding Tooltip}"/>
+                                                <TextBlock>
+                                                    <Run Foreground="White">
+                                                        <Run.Text>
+                                                            <Binding Path="Name" StringFormat="{}{0}:"/>
+                                                        </Run.Text>
+                                                    </Run>
+                                                    <LineBreak/>
+                                                    <Run>
+                                                        <Run.Text>
+                                                            <Binding Path="Tooltip"/>
+                                                        </Run.Text>
+                                                    </Run>
+                                                </TextBlock>
                                             </Border>
                                         </Popup>
                                     </StackPanel>
@@ -63,7 +75,7 @@
                                     </ContentPresenter>
                                 </Grid>
                             </DockPanel>
-                            <Border x:Name="PART_Mask" Background="#10FFFFFF" Visibility="Collapsed"/>
+                            <Border x:Name="PART_Mask" Background="Transparent" Visibility="Collapsed"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
@@ -71,6 +83,11 @@
                             </Trigger>
                             <Trigger Property="Button.IsPressed" Value="True">
                                 <Setter TargetName="PART_Mask" Property="Control.Visibility" Value="Visible"/>
+                                <Setter TargetName="PART_Mask" Property="Control.Background" Value="#10FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsProgressing" Value="True">
+                                <Setter TargetName="PART_Mask" Property="Control.Visibility" Value="Visible"/>
+                                <Setter TargetName="PART_Mask" Property="Control.Background" Value="#08FFFFFF"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

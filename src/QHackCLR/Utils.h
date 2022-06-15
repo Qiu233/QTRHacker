@@ -10,4 +10,14 @@ namespace QHackCLR {
 		static bool CorElementTypeIsValueType(CorElementType cet);
 		static bool CorElementTypeIsObjectReference(CorElementType cet);
 	};
+
+	ref class QHackCLRException : Exception {
+	public:
+		QHackCLRException(String^ str): Exception(str) {}
+	};
+
+	ref class QHackCLRMismatchedArchitectureException : QHackCLRException {
+	public:
+		QHackCLRMismatchedArchitectureException(String^ str): QHackCLRException(str) {}
+	};
 }

@@ -12,7 +12,9 @@ namespace QTRHacker.Controls
 	public class MWindow : Window
 	{
 		public static readonly DependencyProperty MinimizeBoxProperty =
-			DependencyProperty.Register(nameof(MinimizeBox), typeof(bool), typeof(MWindow), new PropertyMetadata(true));
+			DependencyProperty.Register(nameof(MinimizeBox), typeof(bool), typeof(MWindow), new PropertyMetadata(false));
+
+		private ContentControl PART_Content;
 
 		public bool MinimizeBox
 		{
@@ -38,6 +40,7 @@ namespace QTRHacker.Controls
 			base.OnApplyTemplate();
 			TextBlock title = Template.FindName("PART_TitleText", this) as TextBlock;
 			title.MouseDown += TitleMouseDown;
+			PART_Content = GetTemplateChild(nameof(PART_Content)) as ContentControl;
 		}
 
 		private void TitleMouseDown(object sender, MouseButtonEventArgs e)

@@ -363,7 +363,7 @@ namespace QTRHacker.Core
 					(Instruction)$"mov ecx,eax",
 					(Instruction)$"call {createInstance}",
 			});
-			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(3000);
+			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(5000);
 			Flush();
 			return result;
 		}
@@ -394,7 +394,7 @@ namespace QTRHacker.Core
 					(Instruction)$"mov ecx,eax",
 					(Instruction)$"call {createInstance}",
 			});
-			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(3000);
+			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(5000);
 			Flush();
 			return result;
 		}
@@ -414,7 +414,7 @@ namespace QTRHacker.Core
 					(Instruction)$"mov ecx,eax",
 					(Instruction)$"call {loadFrom}",
 			});
-			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(3000);
+			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(5000);
 			Flush();
 			return result;
 		}
@@ -433,7 +433,7 @@ namespace QTRHacker.Core
 					(Instruction)$"mov ecx,{pArray}",
 					(Instruction)$"call {load}",
 			});
-			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(3000);
+			bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(5000);
 			Flush();
 			return result;
 		}

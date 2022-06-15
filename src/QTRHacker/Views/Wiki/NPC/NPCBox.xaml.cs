@@ -76,7 +76,6 @@ namespace QTRHacker.Views.Wiki.NPC
 			UpdateTimer = new();
 			UpdateTimer.Interval = TimeSpan.FromMilliseconds(100);
 			WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(UpdateTimer, nameof(DispatcherTimer.Tick), Timer_Tick);
-			//Still need to stop the timer, but so far I've found no clean way to do so.
 			UpdateTimer.Start();
 		}
 
@@ -162,9 +161,10 @@ namespace QTRHacker.Views.Wiki.NPC
 
 		~NPCBox()
 		{
-			UpdateTimer.Stop();
+			UpdateTimer?.Stop();
 			/*foreach (var (_, t) in NPCTextures)
 				t.Dispose();*/
+			// Perhaps the textures will be destroyed as the graphics does.
 			// I'm not sure whether this will cause memory leak or not.
 			// Later tests will be taken to find out.
 		}

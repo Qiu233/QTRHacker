@@ -11,6 +11,14 @@ using static QTRHacker.Scripts.ScriptHelper;
 using System;
 using System.Windows;
 using System.Threading.Tasks;
+using QTRHacker.Controls;
+using System.Windows.Controls;
+using System.Windows.Media;
+using QTRHacker.Localization;
+using QTRHacker.ViewModels;
+using QTRHacker.Core.GameObjects.Terraria;
+using System.Windows.Data;
+using System.IO;
 
 namespace QTRHacker.Scripts.Functions;
 public class CreativeMenu : BaseFunction

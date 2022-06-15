@@ -6,6 +6,7 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:local="clr-namespace:QTRHacker.Views.Advanced.AimBot"
                   xmlns:l="clr-namespace:QTRHacker.Localization"
+                  xmlns:commonViews="clr-namespace:QTRHacker.Views.Common"
                   mc:Ignorable="d"
                   Title="Aimbot" Height="240" Width="400"
                   Loaded="MWindow_Loaded">
@@ -93,16 +94,7 @@
             </TabItem>
             <TabItem Header="{l:Localization UI.AimBot.TargetedPlayer}" IsSelected="{Binding TargetedPlayer, Mode=TwoWay}">
                 <Grid>
-                    <ListView x:Name="PlayersList" FontSize="15" Grid.Column="0" Focusable="False" BorderThickness="0"
-                              Foreground="Black" ItemsSource="{Binding Players}" 
-                              Background="#404040" SelectedItem="{Binding SelectedPlayerInfo}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" Width="40"/>
-                                <GridViewColumn Header="{l:Localization UI.Name}" DisplayMemberBinding="{Binding Name}" Width="100"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                    <commonViews:PlayersListView DataContext="{Binding PlayersListViewViewModel}"/>
                 </Grid>
             </TabItem>
         </TabControl>

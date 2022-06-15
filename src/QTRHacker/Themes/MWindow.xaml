@@ -28,25 +28,26 @@
                         <RowDefinition Height="1"/>
                     </Grid.RowDefinitions>
 
-                    <Rectangle
-                Grid.Row="1"
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
-                Fill="#202020"
-                Focusable="False"
-                StrokeThickness="0" />
+                    <Rectangle Grid.Row="1"
+                               Grid.Column="1"
+                               Grid.ColumnSpan="2"
+                               Fill="#202020"
+                               Focusable="False"
+                               StrokeThickness="0" />
 
-                    <TextBlock x:Name="PART_TitleText" Grid.Row="1" Grid.Column="1" Text="{TemplateBinding Title}"
-                       Foreground="White" FontSize="18" VerticalAlignment="Center" Padding="6,2,0,2"
-                       >
+                    <TextBlock x:Name="PART_TitleText" Grid.Row="1" Grid.Column="1" 
+                               Text="{TemplateBinding Title}"
+                               Foreground="White" FontSize="18" VerticalAlignment="Center"
+                               Padding="6,2,6,2"
+                               TextTrimming="CharacterEllipsis">
                     </TextBlock>
 
                     <StackPanel x:Name="PART_WindowButtonCommands" Orientation="Horizontal"
-                        Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" Panel.ZIndex="1" Background="Transparent">
+                        Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" Panel.ZIndex="1">
                         <Button x:Name="PART_MinimizeButton"
-                    Command="{x:Static SystemCommands.MinimizeWindowCommand}"
-                    Focusable="False"
-                    Width="30" Height="30" BorderThickness="0" Foreground="#9FFFFFFF">
+                                Command="{x:Static SystemCommands.MinimizeWindowCommand}"
+                                Focusable="False"
+                                Width="30" Height="30" BorderThickness="0" Foreground="#9FFFFFFF">
                             <Button.Visibility>
                                 <TemplateBinding Property="MinimizeBox" Converter="{StaticResource BoolToVisibilityConverter}">
                                     <TemplateBindingExtension.ConverterParameter>
@@ -62,24 +63,24 @@
                         </Button>
 
                         <Button x:Name="PART_CloseButton"
-                    Command="{x:Static SystemCommands.CloseWindowCommand}"
-                    Focusable="False"
-                    Width="30" Height="30" BorderThickness="0" Foreground="#9FFFFFFF">
+                                Command="{x:Static SystemCommands.CloseWindowCommand}"
+                                Focusable="False"
+                                Width="30" Height="30" BorderThickness="0" Foreground="#9FFFFFFF">
                             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Line SnapsToDevicePixels="True"
-                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-                          StrokeThickness="1"
-                          X1="1"
-                          X2="9"
-                          Y1="1"
-                          Y2="9" />
+                                        Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                        StrokeThickness="1"
+                                        X1="1"
+                                        X2="9"
+                                        Y1="1"
+                                        Y2="9" />
                                 <Line SnapsToDevicePixels="True"
-                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-                          StrokeThickness="1"
-                          X1="1"
-                          X2="9"
-                          Y1="9"
-                          Y2="1" />
+                                        Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                        StrokeThickness="1"
+                                        X1="1"
+                                        X2="9"
+                                        Y1="9"
+                                        Y2="1" />
                             </Grid>
                         </Button>
                     </StackPanel>
