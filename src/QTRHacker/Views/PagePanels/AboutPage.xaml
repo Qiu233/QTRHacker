@@ -43,6 +43,9 @@
                         <Run Text="{l:Localization About.Sponsor}"/>
                     </Underline>
                 </Paragraph>
+                <Paragraph>
+                    <Run Text="{l:Localization About.Content}"/>
+                </Paragraph>
             </FlowDocument>
         </RichTextBox>
     </Grid>

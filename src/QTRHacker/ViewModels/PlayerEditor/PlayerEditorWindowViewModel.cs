@@ -39,6 +39,11 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			UpdateTimer.Start();
 		}
 
+		~PlayerEditorWindowViewModel()
+		{
+			UpdateTimer?.Stop();
+		}
+
 		private Item GetArmorItem(int index)
 		{
 			if (index < Player.ARMOR_MAX_COUNT)

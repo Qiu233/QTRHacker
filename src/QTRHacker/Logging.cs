@@ -3,12 +3,13 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace QTRHacker
 {
-	internal class Logging
+	public class Logging
 	{
 		public enum LogLevel
 		{
@@ -24,6 +25,9 @@ namespace QTRHacker
 		public static Logging New(Stream stream)
 		{
 			Logging logging = new(stream);
+			logging.Log($"Hack Version:\t{Assembly.GetExecutingAssembly().GetName().Version}-{MainWindow.GameVersion}");
+			logging.Log($"OS:\t{Environment.OSVersion}");
+			logging.Log($"OS is X64:\t{Environment.Is64BitOperatingSystem}");
 			return logging;
 		}
 
