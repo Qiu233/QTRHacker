@@ -21,10 +21,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ContentWithTargetPath Include="..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll">
+		<!--ContentWithTargetPath Include="..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>QTRHacker.Patches.dll</TargetPath>
-		</ContentWithTargetPath>
+		</ContentWithTargetPath-->
+		<ProjectReference Include="..\QTRHacker.Patches\QTRHacker.Patches.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

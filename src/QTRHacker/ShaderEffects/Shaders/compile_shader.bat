@@ -1,0 +1,1 @@
+fxc /O0 /T ps_2_0 /Fo XNATintShader.ps XNATintShader.fx
