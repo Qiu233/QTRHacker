@@ -22,8 +22,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="Assets\GameImages\Images.bin" />
 		<None Remove="Assets\GameImages\NPCs.bin" />
+		<None Remove="Assets\GameImages\Tiles.bin" />
 		<None Remove="Assets\GameImages\Walls.bin" />
 		<None Remove="Assets\Game\Localization.zip" />
 		<None Remove="Assets\Game\TilesColor.json" />
@@ -34,7 +34,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Resource Include="Assets\GameImages\Images.bin" />
+		<Resource Include="Assets\GameImages\Tiles.bin" />
 		<Resource Include="Assets\GameImages\Items.bin" />
 		<Resource Include="Localization\Content\*.json" />
 	</ItemGroup>
@@ -58,19 +58,6 @@
 		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
 		<ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
 		<ProjectReference Include="..\RainbowFontsMaker\RainbowFontsMaker.csproj" />
-		<ProjectReference Include="..\WpfXnaControl\WpfXnaControl.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Microsoft.Xna.Framework">
-			<HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Xna.Framework.Game">
-			<HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.Game.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Xna.Framework.Graphics">
-			<HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.Graphics.dll</HintPath>
-		</Reference>
 	</ItemGroup>
 
 </Project>

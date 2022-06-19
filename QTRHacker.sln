@@ -27,8 +27,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker", "src\QTRHacker\
 		{95F6F23E-5623-4159-BF5A-8D9AB53DF807} = {95F6F23E-5623-4159-BF5A-8D9AB53DF807}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfXnaControl", "src\WpfXnaControl\WpfXnaControl.csproj", "{35BB6B45-9103-47FD-99BC-7E61A70DC3E2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -71,10 +69,6 @@ Global
 		{BAC742AD-C90D-487B-A1BB-75240B4DE545}.Debug|x86.Build.0 = Debug|Any CPU
 		{BAC742AD-C90D-487B-A1BB-75240B4DE545}.Release|x86.ActiveCfg = Release|Any CPU
 		{BAC742AD-C90D-487B-A1BB-75240B4DE545}.Release|x86.Build.0 = Release|Any CPU
-		{35BB6B45-9103-47FD-99BC-7E61A70DC3E2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{35BB6B45-9103-47FD-99BC-7E61A70DC3E2}.Debug|x86.Build.0 = Debug|Any CPU
-		{35BB6B45-9103-47FD-99BC-7E61A70DC3E2}.Release|x86.ActiveCfg = Release|Any CPU
-		{35BB6B45-9103-47FD-99BC-7E61A70DC3E2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
