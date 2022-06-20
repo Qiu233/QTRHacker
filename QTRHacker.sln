@@ -18,14 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker.Patches", "src\QT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker.Functions.Test", "src\QTRHacker.Functions.Test\QTRHacker.Functions.Test.csproj", "{C9F17D0E-5E21-48D9-A6CE-2F8CC15734A3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainbowFontsMaker", "src\RainbowFontsMaker\RainbowFontsMaker.csproj", "{95F6F23E-5623-4159-BF5A-8D9AB53DF807}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keystone.Net", "src\Keystone.Net\Keystone.Net.csproj", "{464CD179-FE10-48A4-B71A-D9AAD5D7EF43}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker", "src\QTRHacker\QTRHacker.csproj", "{BAC742AD-C90D-487B-A1BB-75240B4DE545}"
-	ProjectSection(ProjectDependencies) = postProject
-		{95F6F23E-5623-4159-BF5A-8D9AB53DF807} = {95F6F23E-5623-4159-BF5A-8D9AB53DF807}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,10 +52,6 @@ Global
 		{C9F17D0E-5E21-48D9-A6CE-2F8CC15734A3}.Debug|x86.Build.0 = Debug|Any CPU
 		{C9F17D0E-5E21-48D9-A6CE-2F8CC15734A3}.Release|x86.ActiveCfg = Release|Any CPU
 		{C9F17D0E-5E21-48D9-A6CE-2F8CC15734A3}.Release|x86.Build.0 = Release|Any CPU
-		{95F6F23E-5623-4159-BF5A-8D9AB53DF807}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{95F6F23E-5623-4159-BF5A-8D9AB53DF807}.Debug|x86.Build.0 = Debug|Any CPU
-		{95F6F23E-5623-4159-BF5A-8D9AB53DF807}.Release|x86.ActiveCfg = Release|Any CPU
-		{95F6F23E-5623-4159-BF5A-8D9AB53DF807}.Release|x86.Build.0 = Release|Any CPU
 		{464CD179-FE10-48A4-B71A-D9AAD5D7EF43}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{464CD179-FE10-48A4-B71A-D9AAD5D7EF43}.Debug|x86.Build.0 = Debug|Any CPU
 		{464CD179-FE10-48A4-B71A-D9AAD5D7EF43}.Release|x86.ActiveCfg = Release|Any CPU

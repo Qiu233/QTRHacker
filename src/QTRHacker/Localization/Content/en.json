@@ -42,6 +42,20 @@
     "SetPet": "Pet",
     "SetMount": "Mount",
     "None": "None",
+    "RainbowFonts": {
+      "MakerTitle": "Rainbow Fonts Maker",
+      "File": "File",
+      "New": "New",
+      "Open": "Open",
+      "Save": "Save",
+      "Char": "Character",
+      "Messages": {
+        "FailedToNewFile": "Failed to create new file.\nThis often indicates that some unaccepted characters for path/file name are used.",
+        "FailedToWriteToFile": "This file is broken or not valid xml format.\nPlease select another file.",
+        "InvalidXMLCode": "Your code is not valid xml.\nPlease check it before saving.",
+        "OverrideCharacter": "The same character has already existed in the same file.\nDo you want to override?"
+      }
+    },
     "AimBot": {
       "Help": "Aimbot is now disabled, you can select a mode from left to enable.\nAlso you can disable Aimbot by selecting this tab.",
       "MaxDistance": "Max Distance",

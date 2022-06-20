@@ -21,14 +21,13 @@ namespace QTRHacker.ViewModels.Advanced.RainbowFonts
 			Name = culture switch
 			{
 				"zh" => "彩虹字",
-				_ => "Rainbow fonts",
+				_ => "Rainbow Fonts",
 			};
 		}
 
 		public override void Run()
 		{
-			if (HackGlobal.Characters == null)
-				HackGlobal.LoadRainbowFonts();
+			HackGlobal.LoadRainbowFonts();
 			if (!ShowWindow(out string s))
 				return;
 			RainbowTextDrawer rtd = new(HackGlobal.Characters);

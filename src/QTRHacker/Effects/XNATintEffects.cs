@@ -7,13 +7,13 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
-namespace QTRHacker.ShaderEffects
+namespace QTRHacker.Effects
 {
 	public class XNATintEffects : ShaderEffect
 	{
 		static XNATintEffects()
 		{
-			_pixelShader.UriSource = new Uri("pack://application:,,,/QTRHacker;component/ShaderEffects/Shaders/XNATintShader.ps");
+			_pixelShader.UriSource = new Uri("pack://application:,,,/QTRHacker;component/Effects/Shaders/XNATintShader.ps");
 		}
 
 		private static readonly PixelShader _pixelShader = new();

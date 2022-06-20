@@ -28,8 +28,8 @@ namespace QTRHacker
 		public static CFG_QTRHacker Config => _Config;
 		public static readonly Logging Logging;
 
-		private const string FILE_CONFIG = "./HackConfig.json";
-		private const string PATH_RAINBOWFONTS = "./Content/RainbowFonts";
+		public const string FILE_CONFIG = "./HackConfig.json";
+		public const string PATH_RAINBOWFONTS = "./Content/RainbowFonts";
 		private const int MAX_LOG_FILES = 10;
 
 		static HackGlobal()

@@ -42,6 +42,20 @@
     "SetPet": "宠物",
     "SetMount": "坐骑",
     "None": "无",
+    "RainbowFonts": {
+      "MakerTitle": "彩虹字设计器",
+      "File": "文件",
+      "New": "新建",
+      "Open": "打开",
+      "Save": "保存",
+      "Char": "字",
+      "Messages": {
+        "FailedToNewFile": "新建失败。\n可能使用了文件名/路径不允许的字符。",
+        "FailedToWriteToFile": "该文件已损坏或不是xml格式。\n请选择其他文件。",
+        "InvalidXMLCode": "你的代码不是有效的xml代码，请先检查代码。",
+        "OverrideCharacter": "该文件已包含相同的字符，是否覆盖？"
+      }
+    },
     "AimBot": {
       "Help": "自瞄已关闭，请在左侧选择一个模式开启。",
       "MaxDistance": "最大距离",

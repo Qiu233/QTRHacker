@@ -5,6 +5,7 @@
         <ResourceDictionary Source="/QTRHacker;component/Styles/Controls.TabControl.xaml"/>
         <ResourceDictionary Source="/QTRHacker;component/Styles/Controls.ListView.xaml"/>
         <ResourceDictionary Source="/QTRHacker;component/Styles/Controls.ListBox.xaml"/>
+        <ResourceDictionary Source="/QTRHacker;component/Styles/Controls.Menu.xaml"/>
 
     </ResourceDictionary.MergedDictionaries>
 
