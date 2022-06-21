@@ -849,3 +849,9 @@ UI大量调整，包括Wiki的优化
 恢复原有的三个脚本功能。
 避免了在主页加载时阻塞UI线程。
 优化了UI。
+
+6/21/2022
+11.1.0.0
+移除项目RainbowFontsMaker，转而新增一个内置的彩虹字设计器。
+彻底移除对Xna以及附属的WpfXnaControl和WinformXnaControl的引用。
+恢复玩家列表页的玩家属性栏。

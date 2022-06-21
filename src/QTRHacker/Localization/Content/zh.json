@@ -76,7 +76,9 @@
     },
     "PlayerProperties": {
       "MaxLife": "最大生命",
-      "MaxMana": "最大魔法"
+      "MaxMana": "最大魔法",
+      "X": "X",
+      "Y": "Y"
     },
     "AboutContent": {
       "Author": "作者",

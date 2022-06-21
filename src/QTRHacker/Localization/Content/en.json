@@ -76,7 +76,9 @@
     },
     "PlayerProperties": {
       "MaxLife": "Max Life",
-      "MaxMana": "Max Mana"
+      "MaxMana": "Max Mana",
+      "X": "X",
+      "Y": "Y"
     },
     "AboutContent": {
       "Author": "Author",

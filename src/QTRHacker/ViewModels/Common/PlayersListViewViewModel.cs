@@ -12,11 +12,12 @@ namespace QTRHacker.ViewModels.Common
 {
 	public class PlayersListViewViewModel : ViewModelBase
 	{
+
 		private double idColumnWidth = 40;
-		private double nameColumnWidth = 100;
+		private double nameColumnWidth = 140;
 		private PlayerInfo selectedPlayerInfo;
 
-		public event Action<PlayerInfo> SelectedPlayerInfoChanged;
+		public event EventHandler<PlayerInfo> SelectedPlayerInfoChanged;
 
 		public double IDColumnWidth
 		{
@@ -46,10 +47,15 @@ namespace QTRHacker.ViewModels.Common
 			{
 				selectedPlayerInfo = value;
 				OnPropertyChanged(nameof(SelectedPlayerInfo));
-				SelectedPlayerInfoChanged?.Invoke(selectedPlayerInfo);
+				SelectedPlayerInfoChanged?.Invoke(this, selectedPlayerInfo);
 			}
 		}
 		public DispatcherTimer PlayerUpdate { get; }
+
+		public void AddWeakHandlerToTimer(EventHandler<EventArgs> handler)
+		{
+			WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(PlayerUpdate, nameof(DispatcherTimer.Tick), handler);
+		}
 
 		public PlayersListViewViewModel(DispatcherTimer timer = null)
 		{
@@ -57,13 +63,13 @@ namespace QTRHacker.ViewModels.Common
 			{
 				PlayerUpdate = new();
 				PlayerUpdate.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.PlayersListUpdateInterval);
-				WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(PlayerUpdate, nameof(DispatcherTimer.Tick), PlayerUpdate_Tick);
+				AddWeakHandlerToTimer(PlayerUpdate_Tick);
 				PlayerUpdate.Start();
 			}
 			else
 			{
 				PlayerUpdate = timer;
-				WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(PlayerUpdate, nameof(DispatcherTimer.Tick), PlayerUpdate_Tick);
+				AddWeakHandlerToTimer(PlayerUpdate_Tick);
 			}
 		}
 		private void PlayerUpdate_Tick(object sender, EventArgs args)

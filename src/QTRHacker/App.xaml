@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="/Styles/Controls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="QTRHacker.Common.Foreground">#DFDFDF</SolidColorBrush>
+            <SolidColorBrush x:Key="QTRHacker.TextBox.Background">#20FFFFFF</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.StripButton.Background">#606060</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.StripButton.BackMouseHover">#707070</SolidColorBrush>
             <SolidColorBrush x:Key="QTRHacker.StripButton.BackMousePressed">#808080</SolidColorBrush>

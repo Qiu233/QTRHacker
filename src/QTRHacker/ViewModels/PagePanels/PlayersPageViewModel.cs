@@ -33,7 +33,11 @@ namespace QTRHacker.ViewModels.PagePanels
 
 		private readonly List<PetInfo> Pets = new();
 		private readonly List<MountInfo> Mounts = new();
-
+		private string infoBoxName;
+		private int infoBoxMaxLife;
+		private int infoBoxMaxMana;
+		private float infoBoxCoordinateX;
+		private float infoBoxCoordinateY;
 
 		public RelayCommand EditPlayerCommand => editPlayerCommand;
 		public RelayCommand TPToPlayerCommand => tpToPlayerCommand;
@@ -45,7 +49,55 @@ namespace QTRHacker.ViewModels.PagePanels
 
 		private bool GetIsPlayerSelected(object o) => PlayersListViewViewModel.SelectedPlayerInfo is not null;
 
-		public DispatcherTimer PlayerUpdate { get; }
+		public string InfoBoxName
+		{
+			get => infoBoxName;
+			set
+			{
+				infoBoxName = value;
+				OnPropertyChanged(nameof(InfoBoxName));
+			}
+		}
+
+		public int? InfoBoxMaxLife
+		{
+			get => infoBoxMaxLife == 0 ? null : infoBoxMaxLife;
+			set
+			{
+				infoBoxMaxLife = value ?? 0;
+				OnPropertyChanged(nameof(InfoBoxMaxLife));
+			}
+		}
+
+		public int? InfoBoxMaxMana
+		{
+			get => infoBoxMaxMana == 0 ? null : infoBoxMaxMana;
+			set
+			{
+				infoBoxMaxMana = value ?? 0;
+				OnPropertyChanged(nameof(InfoBoxMaxMana));
+			}
+		}
+
+		public float? InfoBoxCoordinateX
+		{
+			get => infoBoxCoordinateX == 0 ? null : infoBoxCoordinateX;
+			set
+			{
+				infoBoxCoordinateX = value ?? 0;
+				OnPropertyChanged(nameof(InfoBoxCoordinateX));
+			}
+		}
+
+		public float? InfoBoxCoordinateY
+		{
+			get => infoBoxCoordinateY == 0 ? null : infoBoxCoordinateY;
+			set
+			{
+				infoBoxCoordinateY = value ?? 0;
+				OnPropertyChanged(nameof(InfoBoxCoordinateY));
+			}
+		}
 
 		private bool ShowWindow_GetMount(out int type)
 		{
@@ -246,16 +298,31 @@ namespace QTRHacker.ViewModels.PagePanels
 			}
 		}
 
+		public void UpdateInfo()
+		{
+			if (PlayersListViewViewModel.SelectedPlayerInfo is not PlayerInfo info)//null check
+				return;
+			var player = HackGlobal.GameContext.Players[info.ID];
+			InfoBoxName = player.Name;
+			InfoBoxMaxLife = player.StatLifeMax;
+			InfoBoxMaxMana = player.StatManaMax;
+			var pos = player.Position;// here we cache the whole struct so that only one read is needed.
+			InfoBoxCoordinateX = pos.X;
+			InfoBoxCoordinateY = pos.Y;
+		}
+
 		public PlayersPageViewModel()
 		{
-			PlayersListViewViewModel.SelectedPlayerInfoChanged += (s) =>
+			PlayersListViewViewModel.SelectedPlayerInfoChanged += (s, e) =>
 			{
+				UpdateInfo();
 				EditPlayerCommand.TriggerCanExecuteChanged();
 				TPToPlayerCommand.TriggerCanExecuteChanged();
 				AddBuffCommand.TriggerCanExecuteChanged();
 				SetPetCommand.TriggerCanExecuteChanged();
 				setMountCommand.TriggerCanExecuteChanged();
 			};
+			PlayersListViewViewModel.AddWeakHandlerToTimer((s, e) => UpdateInfo());
 			editPlayerCommand = new RelayCommand(GetIsPlayerSelected, (o) =>
 			{
 				var player = HackGlobal.GameContext.Players[PlayersListViewViewModel.SelectedPlayerInfo.ID];

@@ -146,14 +146,14 @@ namespace QTRHacker.ViewModels.Advanced.AimBot
 			UpdateTimer = new();
 			UpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.SchesUpdateInterval);
 			playersListViewViewModel = new PlayersListViewViewModel(UpdateTimer);
-			PlayersListViewViewModel.SelectedPlayerInfoChanged += (s) =>
+			PlayersListViewViewModel.SelectedPlayerInfoChanged += (s, e) =>
 			{
-				if (s is null)
+				if (e is null)
 				{
 					HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = -1;
 					return;
 				}
-				HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = s.ID;
+				HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = e.ID;
 			};
 			HackGlobal.GameContext.Patches.Init();
 			PropertyChanged += AimBotWindowViewModel_PropertyChanged;

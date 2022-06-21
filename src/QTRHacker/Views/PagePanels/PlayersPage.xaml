@@ -14,8 +14,50 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <commonViews:PlayersListView DataContext="{Binding PlayersListViewViewModel}">
-        </commonViews:PlayersListView>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <commonViews:PlayersListView DataContext="{Binding PlayersListViewViewModel}" Grid.Row="0"/>
+            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.IsSharedSizeScope="True">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Background" Value="{StaticResource QTRHacker.TextBox.Background}"/>
+                        <Setter Property="Foreground" Value="{StaticResource QTRHacker.Common.Foreground}"/>
+                        <Setter Property="CaretBrush" Value="{StaticResource QTRHacker.Common.Foreground}"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="IsReadOnly" Value="True"/>
+                        <Setter Property="IsReadOnlyCaretVisible" Value="True"/>
+                    </Style>
+                    <Style TargetType="{x:Type controls:InfoBox}">
+                        <Setter Property="TipBackground" Value="#30FFFFFF"/>
+                        <Setter Property="TipDock" Value="Left"/>
+                        <Setter Property="TipSharedSizeScope" Value="TipColumn"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="BorderBrush" Value="#40FFFFFF"/>
+                    </Style>
+                </StackPanel.Resources>
+                <controls:InfoBox Tip="{l:Localization UI.Name}" Margin="0,1,0,0">
+                    <TextBox Text="{Binding InfoBoxName,Mode=OneWay}"/>
+                </controls:InfoBox>
+                <controls:InfoBox Tip="{l:Localization UI.PlayerProperties.MaxLife}" Margin="0,1,0,0">
+                    <TextBox Text="{Binding InfoBoxMaxLife,Mode=OneWay}"/>
+                </controls:InfoBox>
+                <controls:InfoBox Tip="{l:Localization UI.PlayerProperties.MaxMana}" Margin="0,1,0,0">
+                    <TextBox Text="{Binding InfoBoxMaxMana,Mode=OneWay}"/>
+                </controls:InfoBox>
+                <controls:InfoBox Tip="{l:Localization UI.PlayerProperties.X}" Margin="0,1,0,0">
+                    <TextBox Text="{Binding InfoBoxCoordinateX,Mode=OneWay}"/>
+                </controls:InfoBox>
+                <controls:InfoBox Tip="{l:Localization UI.PlayerProperties.Y}" Margin="0,1,0,1">
+                    <TextBox Text="{Binding InfoBoxCoordinateY,Mode=OneWay}"/>
+                </controls:InfoBox>
+            </StackPanel>
+        </Grid>
         <StackPanel Margin="2,0,2,0" Orientation="Vertical" Grid.Column="1">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource QTRHacker.StripButtonStyle}"/>

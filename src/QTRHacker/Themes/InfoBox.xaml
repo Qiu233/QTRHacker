@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:QTRHacker.Controls">
     <ControlTemplate x:Key="InfoBox_Left" TargetType="{x:Type controls:InfoBox}">
-        <Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="{TemplateBinding TipSharedSizeScope}"/>
@@ -83,6 +83,7 @@
         <Setter Property="Foreground" Value="{DynamicResource QTRHacker.Common.Foreground}"/>
         <Setter Property="TipBackground" Value="#7C7C7C"/>
         <Setter Property="BorderBrush" Value="#50000000"/>
+        <Setter Property="BorderThickness" Value="1"/>
         <Style.Triggers>
             <Trigger Property="TipDock" Value="Left">
                 <Setter Property="Template" Value="{StaticResource InfoBox_Left}"/>
