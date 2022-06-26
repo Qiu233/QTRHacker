@@ -52,11 +52,22 @@ namespace QHackLib
 
 			Type valueType = value.GetType();
 			nuint addr = field.GetAddress(OffsetBase);
-			if (value is ClrObject obj)
+			if (value is HackObject hobj)
+			{
+				if (field.Type == hobj.Type)
+					Context.DataAccess.Write(addr, hobj.BaseAddress);
+			}
+			else if (value is HackValue hval)
+			{
+				if (field.Type == hval.Type)
+					Context.DataAccess.Write(addr, 
+						Context.DataAccess.ReadBytes(hval.OffsetBase, hval.Type.DataSize));
+			}
+			else if (value is ClrObject obj)
 				Context.DataAccess.Write(addr, obj.Address);
 			else if (value is ClrValue val)
 				Context.DataAccess.WriteBytes(addr,
-					Context.DataAccess.ReadBytes(val.Address, field.Type.BaseSize - 2 * (uint)sizeof(nuint)));
+					Context.DataAccess.ReadBytes(val.Address, field.Type.DataSize));
 			else if (valueType.IsValueType)
 				Context.DataAccess.Write(addr, value);
 		}

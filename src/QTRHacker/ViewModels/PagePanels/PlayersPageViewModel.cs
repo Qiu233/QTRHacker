@@ -4,7 +4,9 @@ using QTRHacker.Controls;
 using QTRHacker.Core;
 using QTRHacker.Localization;
 using QTRHacker.ViewModels.Common;
+using QTRHacker.ViewModels.Common.PropertyEditor;
 using QTRHacker.ViewModels.PlayerEditor;
+using QTRHacker.Views.Common;
 using QTRHacker.Views.PlayerEditor;
 using System;
 using System.Collections.Generic;
@@ -24,13 +26,6 @@ namespace QTRHacker.ViewModels.PagePanels
 {
 	public class PlayersPageViewModel : PagePanelViewModel
 	{
-
-		private readonly RelayCommand editPlayerCommand;
-		private readonly RelayCommand tpToPlayerCommand;
-		private readonly RelayCommand addBuffCommand;
-		private readonly RelayCommand setPetCommand;
-		private readonly RelayCommand setMountCommand;
-
 		private readonly List<PetInfo> Pets = new();
 		private readonly List<MountInfo> Mounts = new();
 		private string infoBoxName;
@@ -39,11 +34,12 @@ namespace QTRHacker.ViewModels.PagePanels
 		private float infoBoxCoordinateX;
 		private float infoBoxCoordinateY;
 
-		public RelayCommand EditPlayerCommand => editPlayerCommand;
-		public RelayCommand TPToPlayerCommand => tpToPlayerCommand;
-		public RelayCommand AddBuffCommand => addBuffCommand;
-		public RelayCommand SetPetCommand => setPetCommand;
-		public RelayCommand SetMountCommand => setMountCommand;
+		public RelayCommand EditPlayerCommand { get; }
+		public RelayCommand EditPlayerPropertyCommand { get; }
+		public RelayCommand TPToPlayerCommand { get; }
+		public RelayCommand AddBuffCommand { get; }
+		public RelayCommand SetPetCommand { get; }
+		public RelayCommand SetMountCommand { get; }
 
 		public PlayersListViewViewModel PlayersListViewViewModel { get; } = new();
 
@@ -317,13 +313,14 @@ namespace QTRHacker.ViewModels.PagePanels
 			{
 				UpdateInfo();
 				EditPlayerCommand.TriggerCanExecuteChanged();
+				EditPlayerPropertyCommand.TriggerCanExecuteChanged();
 				TPToPlayerCommand.TriggerCanExecuteChanged();
 				AddBuffCommand.TriggerCanExecuteChanged();
 				SetPetCommand.TriggerCanExecuteChanged();
-				setMountCommand.TriggerCanExecuteChanged();
+				SetMountCommand.TriggerCanExecuteChanged();
 			};
 			PlayersListViewViewModel.AddWeakHandlerToTimer((s, e) => UpdateInfo());
-			editPlayerCommand = new RelayCommand(GetIsPlayerSelected, (o) =>
+			EditPlayerCommand = new RelayCommand(GetIsPlayerSelected, (o) =>
 			{
 				var player = HackGlobal.GameContext.Players[PlayersListViewViewModel.SelectedPlayerInfo.ID];
 				if (!player.Active)
@@ -332,14 +329,22 @@ namespace QTRHacker.ViewModels.PagePanels
 				window.DataContext = new PlayerEditorWindowViewModel(player);
 				window.Show();
 			});
-			tpToPlayerCommand = new(GetIsPlayerSelected, (o) =>
+			EditPlayerPropertyCommand = new RelayCommand(GetIsPlayerSelected, (o) =>
+			{
+				var player = HackGlobal.GameContext.Players[PlayersListViewViewModel.SelectedPlayerInfo.ID];
+				PropertyEditorWindow window = new();
+				window.DataContext = new PropertyEditorWindowViewModel();
+				window.ViewModel.Roots.Add(new PropertyComplex(player.TypedInternalObject, "Player"));
+				window.Show();
+			});
+			TPToPlayerCommand = new(GetIsPlayerSelected, (o) =>
 			{
 				var player = HackGlobal.GameContext.Players[PlayersListViewViewModel.SelectedPlayerInfo.ID];
 				if (!player.Active)
 					return;
 				HackGlobal.GameContext.MyPlayer.Position = player.Position;
 			});
-			addBuffCommand = new(GetIsPlayerSelected, (o) =>
+			AddBuffCommand = new(GetIsPlayerSelected, (o) =>
 			{
 				if (!ShowWindow_GetBuff(out string type, out string time))
 					return;
@@ -347,13 +352,13 @@ namespace QTRHacker.ViewModels.PagePanels
 					return;
 				HackGlobal.GameContext.MyPlayer.AddBuff(type_i, time_i);
 			});
-			setPetCommand = new(GetIsPlayerSelected, (o) =>
+			SetPetCommand = new(GetIsPlayerSelected, (o) =>
 			{
 				LoadPets();
 				if (ShowWindow_GetPet(out int type))
 					HackGlobal.GameContext.MyPlayer.AddBuff(type, 3600);
 			});
-			setMountCommand = new(GetIsPlayerSelected, (o) =>
+			SetMountCommand = new(GetIsPlayerSelected, (o) =>
 			{
 				LoadMounts();
 				if (ShowWindow_GetMount(out int type))

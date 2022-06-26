@@ -49,7 +49,7 @@ namespace QTRHacker.Views.PagePanels
 				catch (Exception ex)
 				{
 					HackGlobal.Logging.Log($"Exception occured when enabling/running a function named {func.Name}({func.GetType().FullName}): \n{ex.Message}\n{ex.StackTrace}");
-					MessageBox.Show("Exception occured, please check the log file for more information");
+					HackGlobal.AlertExceptionOccured(ex);
 				}
 			}).ContinueWith(t =>
 			{
@@ -77,7 +77,7 @@ namespace QTRHacker.Views.PagePanels
 				catch (Exception ex)
 				{
 					HackGlobal.Logging.Log($"Exception occured when disabling a function named {func.Name}({func.GetType().FullName}): \n{ex.Message}\n{ex.StackTrace}");
-					MessageBox.Show("Exception occured, please check the log file for more information");
+					HackGlobal.AlertExceptionOccured(ex);
 				}
 			}).ContinueWith(t =>
 			{

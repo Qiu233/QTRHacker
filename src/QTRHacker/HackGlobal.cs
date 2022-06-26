@@ -4,6 +4,7 @@ using QTRHacker.Configs;
 using QTRHacker.Core;
 using QTRHacker.Core.ProjectileImage;
 using QTRHacker.Core.ProjectileImage.RainbowImage;
+using QTRHacker.Localization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -92,6 +93,11 @@ namespace QTRHacker
 
 		private static BackgroundWorker Worker = new();
 
+		public static void AlertExceptionOccured(Exception e)
+		{
+			MessageBox.Show($"{LocalizationManager.Instance.GetValue("UI.Messages.ExceptionOccured")}\nError:\n{e.Message}\n{e.StackTrace}", "Error");
+		}
+
 		public static void StartBackgroundWork(UIElement parent, DoWorkEventHandler work, bool suspendParent = false)
 		{
 			if (Worker == null)
@@ -121,7 +127,7 @@ namespace QTRHacker
 				if (e.Error != null)
 				{
 					Logging.Exception(e.Error);
-					MessageBox.Show("Exception occured when running background work, please check the log file.");
+					AlertExceptionOccured(e.Error);
 				}
 				if (suspendParent)
 					MainWindow.Instance.IsEnabled = true;

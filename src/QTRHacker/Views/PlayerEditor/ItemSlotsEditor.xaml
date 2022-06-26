@@ -22,8 +22,10 @@
                 <ContextMenu>
                     <MenuItem Header="{l:Localization UI.ViewInWiki}" 
                               Command="{Binding Data.ViewInWikiCommand, Source={StaticResource proxy}}"/>
-                    <!--MenuItem Header="{l:Localization UI.Edit}" 
-                              Command="{Binding Data.EditCommand, Source={StaticResource proxy}}"/-->
+                    <MenuItem Header="{l:Localization UI.Copy}" 
+                              Command="{Binding Data.CopyCommand, Source={StaticResource proxy}}"/>
+                    <MenuItem Header="{l:Localization UI.Paste}" 
+                              Command="{Binding Data.PasteCommand, Source={StaticResource proxy}}"/>
                 </ContextMenu>
             </local:ItemSlotsGrid.ItemContextMenu>
         </local:ItemSlotsGrid>
@@ -35,13 +37,15 @@
                 <Style TargetType="Button" BasedOn="{StaticResource QTRHacker.StripButtonStyle}"/>
             </StackPanel.Resources>
             <Button Content="{l:Localization UI.Apply}"
-                    Command="{Binding ApplyItemData}"/>
+                    Command="{Binding ApplyItemDataCommand}"/>
             <Button Content="{l:Localization UI.Initialize}" 
-                    Command="{Binding InitItemData}"/>
+                    Command="{Binding InitItemDataCommand}"/>
             <Button Content="{l:Localization UI.Save}" 
-                    Command="{Binding SaveInv}"/>
+                    Command="{Binding SaveInvCommand}"/>
             <Button Content="{l:Localization UI.Load}" 
-                    Command="{Binding LoadInv}"/>
+                    Command="{Binding LoadInvCommand}"/>
+            <Button Content="{l:Localization UI.Edit}" 
+                    Command="{Binding EditCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -886,11 +886,11 @@
 		<# PROPERTY_VIRTUAL("float     ", "wingTime            "); #>
 		<# PROPERTY_ARRAYV_VIRTUAL("float   ", "shadowRotation      "); #>
 		<# PROPERTY_ARRAYV_VIRTUAL("float   ", "speedSlice          "); #>
-		<# PROPERTY_GO_VIRTUAL("GameString", "cursorItemIconText  "); #>
-		<# PROPERTY_GO_VIRTUAL("GameString", "displayedFishingInfo"); #>
-		<# PROPERTY_GO_VIRTUAL("GameString", "lostCoinString      "); #>
-		<# PROPERTY_GO_VIRTUAL("GameString", "name                "); #>
-		<# PROPERTY_GO_VIRTUAL("GameString", "setBonus            "); #>
+		<# PROPERTY_STR_VIRTUAL("cursorItemIconText  "); #>
+		<# PROPERTY_STR_VIRTUAL("displayedFishingInfo"); #>
+		<# PROPERTY_STR_VIRTUAL("lostCoinString      "); #>
+		<# PROPERTY_STR_VIRTUAL("name                "); #>
+		<# PROPERTY_STR_VIRTUAL("setBonus            "); #>
 		<# PROPERTY_ARRAY_VIRTUAL("GameString  ", "spN                 "); #>
 		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "hideMisc            "); #>
 		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Terraria.BitsByte", "ownedLargeGems      "); #>

@@ -1,5 +1,9 @@
-﻿using QTRHacker.Core.GameObjects;
+﻿using QTRHacker.Commands;
+using QTRHacker.Core.GameObjects;
 using QTRHacker.Localization;
+using QTRHacker.ViewModels.Common;
+using QTRHacker.ViewModels.Common.PropertyEditor;
+using QTRHacker.Views.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +22,9 @@ namespace QTRHacker.ViewModels.PagePanels
 
 		private Visibility crossVisibility;
 		private Visibility spinnerVisibility = Visibility.Collapsed;
-
+		private string playersArrayAddress;
+		private string npcsArrayAddress;
+		private string myPlayerAddress;
 		private readonly List<Action> ActionsAfterAttachedToGame = new();
 
 		public event Action AttachedToGame
@@ -45,6 +51,40 @@ namespace QTRHacker.ViewModels.PagePanels
 				OnPropertyChanged(nameof(SpinnerVisibility));
 			}
 		}
+
+		public string PlayersArrayAddress
+		{
+			get => playersArrayAddress;
+			set
+			{
+				playersArrayAddress = value;
+				OnPropertyChanged(nameof(PlayersArrayAddress));
+			}
+		}
+
+		public string NPCsArrayAddress
+		{
+			get => npcsArrayAddress;
+			set
+			{
+				npcsArrayAddress = value;
+				OnPropertyChanged(nameof(NPCsArrayAddress));
+			}
+		}
+
+		public string MyPlayerAddress
+		{
+			get => myPlayerAddress;
+			set
+			{
+				myPlayerAddress = value;
+				OnPropertyChanged(nameof(MyPlayerAddress));
+			}
+		}
+
+		public HackCommand EditPlayersCommand { get; }
+		public HackCommand EditMyPlayerCommand { get; }
+		public HackCommand EditNPCsCommand { get; }
 
 		private static bool InternalInit(Point p)
 		{
@@ -93,12 +133,20 @@ namespace QTRHacker.ViewModels.PagePanels
 			return true;
 		}
 
+		public void UpdateAddrs()
+		{
+			PlayersArrayAddress = HackGlobal.GameContext.Players.BaseAddress.ToHexAddr();
+			NPCsArrayAddress = HackGlobal.GameContext.NPC.BaseAddress.ToHexAddr();
+			MyPlayerAddress = HackGlobal.GameContext.MyPlayer.BaseAddress.ToHexAddr();
+		}
+
 		public async void InitGame(Point p)
 		{
 			CrossVisibility = Visibility.Collapsed;
 			SpinnerVisibility = Visibility.Visible;
 			if (await Task.Run(() => InternalInit(p)))
 			{
+				UpdateAddrs();
 				var tasks = ActionsAfterAttachedToGame.Select(t => new Task(t)).ToList();
 				tasks.ForEach(t => t.Start());
 				await Task.WhenAll(tasks);
@@ -110,6 +158,27 @@ namespace QTRHacker.ViewModels.PagePanels
 
 		public MainPageViewModel()
 		{
+			EditPlayersCommand = new HackCommand(o =>
+			{
+				PropertyEditorWindow window = new();
+				window.DataContext = new PropertyEditorWindowViewModel();
+				window.ViewModel.Roots.Add(PropertyBase.New(HackGlobal.GameContext.Players.TypedInternalObject, "Players"));
+				window.Show();
+			});
+			EditMyPlayerCommand = new HackCommand(o =>
+			{
+				PropertyEditorWindow window = new();
+				window.DataContext = new PropertyEditorWindowViewModel();
+				window.ViewModel.Roots.Add(PropertyBase.New(HackGlobal.GameContext.MyPlayer.TypedInternalObject, "MyPlayer"));
+				window.Show();
+			});
+			EditNPCsCommand = new HackCommand(o =>
+			{
+				PropertyEditorWindow window = new();
+				window.DataContext = new PropertyEditorWindowViewModel();
+				window.ViewModel.Roots.Add(PropertyBase.New(HackGlobal.GameContext.NPC.TypedInternalObject, "NPCs"));
+				window.Show();
+			});
 		}
 
 

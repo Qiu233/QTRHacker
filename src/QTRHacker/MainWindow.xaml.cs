@@ -53,7 +53,7 @@ namespace QTRHacker
 			string log = $"Unhandled exception from {sender}:\nIsTerminating: {e.IsTerminating}";
 			HackGlobal.Logging.Error(log);
 			HackGlobal.Logging.Exception(ex);
-			MessageBox.Show("Unhandled exception occured, please check the log for more information");
+			HackGlobal.AlertExceptionOccured(ex);
 			Environment.Exit(0);
 		}
 

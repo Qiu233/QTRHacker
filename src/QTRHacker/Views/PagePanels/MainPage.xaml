@@ -9,30 +9,87 @@
              mc:Ignorable="d" 
              Width="300" Height="340"
              >
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" 
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Grid.IsSharedSizeScope="True">
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource QTRHacker.StripButtonStyle}">
+                    <Setter Property="Background" Value="{StaticResource QTRHacker.Common.WhiteMusk.O40}"/>
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="TextAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource QTRHacker.Common.Foreground}"/>
+                    <Setter Property="IsReadOnly" Value="True"/>
+                    <Setter Property="IsReadOnlyCaretVisible" Value="True"/>
+                    <Setter Property="CaretBrush" Value="{StaticResource QTRHacker.Common.Foreground}"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+                <Style TargetType="{x:Type controls:InfoBox}">
+                    <Setter Property="TipSharedSizeScope" Value="Tip"/>
+                    <Setter Property="TipDock" Value="Left"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="TipBackground" Value="{StaticResource QTRHacker.Common.WhiteMusk.O20}"/>
+                    <Setter Property="Foreground" Value="{StaticResource QTRHacker.Common.Foreground}"/>
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+            </StackPanel.Resources>
+            <controls:InfoBox Tip="Players Array" BorderThickness="0,1,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition SharedSizeGroup="EditButton"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding PlayersArrayAddress}"/>
+                    <Button Content="{l:Localization UI.Edit}" Grid.Column="1" Command="{Binding EditPlayersCommand}"/>
+                </Grid>
+            </controls:InfoBox>
+            <controls:InfoBox Tip="My Player" BorderThickness="0,1,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition SharedSizeGroup="EditButton"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding MyPlayerAddress}"/>
+                    <Button Content="{l:Localization UI.Edit}" Grid.Column="1" Command="{Binding EditMyPlayerCommand}"/>
+                </Grid>
+            </controls:InfoBox>
+            <controls:InfoBox Tip="NPCs Array" BorderThickness="0,1,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition SharedSizeGroup="EditButton"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding NPCsArrayAddress}"/>
+                    <Button Content="{l:Localization UI.Edit}" Grid.Column="1" Command="{Binding EditNPCsCommand}"/>
+                </Grid>
+            </controls:InfoBox>
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" 
                    Foreground="White" FontSize="15"
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,5" Text="{l:Localization Tip.DragCrossToGame}">
-        </TextBlock>
-        <Grid Grid.Row="0" Grid.Column="1" 
+            </TextBlock>
+            <Grid Grid.Row="0" Grid.Column="1" 
               Margin="0,10,10,0">
-            <controls:Cross x:Name="Cross" Foreground="White"
+                <controls:Cross x:Name="Cross" Foreground="White"
                             CrossReleased="Cross_CrossReleased" Visibility="{Binding CrossVisibility}"/>
-            <views_common:SpinnerDotCircle x:Name="LoadingSpinner" Visibility="{Binding SpinnerVisibility}"/>
-        </Grid>
-        <Button x:Name="WikiButton" Grid.Row="1" Grid.Column="1" 
+                <views_common:SpinnerDotCircle x:Name="LoadingSpinner" Visibility="{Binding SpinnerVisibility}"/>
+            </Grid>
+            <Button x:Name="WikiButton" Grid.Row="1" Grid.Column="1" 
                 Content="Wiki" 
                 Margin="2,8,2,0" Padding="2,0,2,0" 
                 FontSize="15" Foreground="{StaticResource QTRHacker.Common.Foreground}"
                 Click="WikiButton_Click"/>
-    </Grid>
+        </Grid>
+    </DockPanel>
 </UserControl>

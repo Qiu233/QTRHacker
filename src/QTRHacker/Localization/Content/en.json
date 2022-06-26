@@ -8,6 +8,7 @@
     "About": "About",
     "Name": "Name",
     "Edit": "Edit",
+    "Edit_P": "Edit(P)",
     "TPTo": "TP To",
     "Inventory": "Inventory",
     "Piggy": "Piggy",
@@ -42,6 +43,18 @@
     "SetPet": "Pet",
     "SetMount": "Mount",
     "None": "None",
+    "Copy": "Copy",
+    "Paste": "Paste",
+    "Help": "Help",
+    "PropertyEditor": {
+      "Title": "Property Editor",
+      "ScopeTo": "Scope to",
+      "ScopeToInNewWindow": "Scope to in a new window",
+      "Help": "1.Double click to edit an editable property or expand a complex property.\n2.Right click to scope to a property."
+    },
+    "Messages": {
+      "ExceptionOccured": "Exception(s) occured, please check the log file (in logs folder) for detailed information.\nYou will need to share this file to solve the problem."
+    },
     "RainbowFonts": {
       "MakerTitle": "Rainbow Fonts Maker",
       "File": "File",

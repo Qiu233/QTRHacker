@@ -63,6 +63,7 @@
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource QTRHacker.StripButtonStyle}"/>
             </StackPanel.Resources>
             <Button Content="{l:Localization UI.Edit}" Command="{Binding EditPlayerCommand}"/>
+            <Button Content="{l:Localization UI.Edit_P}" Command="{Binding EditPlayerPropertyCommand}"/>
             <Button Content="{l:Localization UI.TPTo}" Command="{Binding TPToPlayerCommand}"/>
             <Button Content="{l:Localization UI.AddBuff}" Command="{Binding AddBuffCommand}"/>
             <Button Content="{l:Localization UI.SetPet}" Command="{Binding SetPetCommand}"/>

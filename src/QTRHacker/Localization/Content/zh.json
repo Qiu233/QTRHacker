@@ -8,6 +8,7 @@
     "About": "关于",
     "Name": "名称",
     "Edit": "编辑",
+    "Edit_P": "编辑(P)",
     "TPTo": "传送至",
     "Inventory": "背包",
     "Piggy": "猪猪",
@@ -42,6 +43,18 @@
     "SetPet": "宠物",
     "SetMount": "坐骑",
     "None": "无",
+    "Copy": "复制",
+    "Paste": "粘贴",
+    "Help": "帮助",
+    "PropertyEditor": {
+      "Title": "属性编辑器",
+      "ScopeTo": "限定为此范围",
+      "ScopeToInNewWindow": "在新窗口中限定为此范围",
+      "Help": "1.双击一个属性来展开或编辑。\n2.右键以限定到范围。"
+    },
+    "Messages": {
+      "ExceptionOccured": "程序出现异常，请查看并分享log文件(在logs文件夹中)以解决该问题。"
+    },
     "RainbowFonts": {
       "MakerTitle": "彩虹字设计器",
       "File": "文件",
