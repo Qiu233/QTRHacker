@@ -24,8 +24,8 @@ namespace QTRHacker.Functions.Test
 		public static unsafe int GetOffset(GameContext context, string type, string field) => (int)context.GameModuleHelper.GetInstanceFieldOffset(type, field) + sizeof(nuint);
 		unsafe static void Main()
 		{
-			using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0]);
-			Console.WriteLine(ctx.MyPlayer.Inventory[0].Type);
+			using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("dotnet")[0], "tModLoader");
+			ctx.HContext.CLRHelpers.ToList().ForEach(t => { Console.WriteLine(t.Key.ToString()); });
 		}
 	}
 }

@@ -25,6 +25,10 @@ namespace QTRHacker.Core
 	public class GameContext : IDisposable
 	{
 		private readonly object LOCK_UPDATE = new();
+		public string ModuleName
+		{
+			get;
+		}
 		public nuint My_Player_Address
 		{
 			get;
@@ -193,7 +197,7 @@ namespace QTRHacker.Core
 		public string UUID
 		{
 			get => new GameString(this, GameModuleHelper.GetStaticHackObject("Terraria.Main", "clientUUID"));
-			set => GameModuleHelper.SetStaticHackObject("Terraria.Main", "clientUUID", 
+			set => GameModuleHelper.SetStaticHackObject("Terraria.Main", "clientUUID",
 				GameString.New(this, value).TypedInternalObject);
 		}
 
@@ -251,11 +255,13 @@ namespace QTRHacker.Core
 			get;
 		}
 
-		private GameContext(Process process)
+		private GameContext(Process process, string moduleName)
 		{
 			GameProcess = process;
+			ModuleName = moduleName;
 			HContext = QHackContext.Create(process.Id);
-
+			throw new Exception(process.Id.ToString());
+			throw new Exception(string.Join(", ", HContext.CLRHelpers.ToList().Select(t => t.Key.Name).Where(t => !t.StartsWith("System") && !t.StartsWith("Microsoft"))));
 			Patches = new PatchesManager(this);
 
 			My_Player_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "myPlayer");
@@ -312,15 +318,14 @@ namespace QTRHacker.Core
 			return v;
 		}
 		private CLRHelper _GameModuleHelper;
-		public CLRHelper GameModuleHelper => _GameModuleHelper ??= HContext.CLRHelpers.First(t
-				=> string.Equals(Path.GetFullPath(t.Key.FileName),
-					Path.GetFullPath(GameProcess.MainModule.FileName),
-					StringComparison.OrdinalIgnoreCase))
-				.Value;
+		public CLRHelper GameModuleHelper => _GameModuleHelper
+			??= HContext.CLRHelpers.First(t =>
+				string.Equals(t.Key.Name, ModuleName,
+					StringComparison.OrdinalIgnoreCase)).Value;
 
-		public static GameContext OpenGame(Process process)
+		public static GameContext OpenGame(Process process, string moduleName)
 		{
-			return new GameContext(process);
+			return new GameContext(process, moduleName);
 		}
 
 		public void Dispose()

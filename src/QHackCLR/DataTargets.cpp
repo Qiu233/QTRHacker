@@ -18,12 +18,12 @@ namespace QHackCLR {
 				DWORD hr = GetLastError();
 				throw gcnew QHackCLRException("Could not attach to process " + pid + ", error: " + hr.ToString("X"));
 			}
-			BOOL targetx64;
-			IsWow64Process(m_Handle, &targetx64);
-			if (targetx64 == (System::UIntPtr::Size == 8))
+			BOOL targetx32;
+			IsWow64Process(m_Handle, &targetx32);
+			if (!targetx32 == (System::UIntPtr::Size != 8))
 			{
 				throw gcnew QHackCLRMismatchedArchitectureException("Mismatched architecture between this process and the target process.\n" +
-					"This process is " + (System::UIntPtr::Size == 8 ? "x64" : "x86") + " while the target is " + (targetx64 ? "x64" : "x86") + ".");
+					"This process is " + (System::UIntPtr::Size == 8 ? "x64" : "x86") + " while the target is " + (targetx32 ? "x86" : "x64") + ".");
 			}
 
 			DataAccess = gcnew DataTargets::DataAccess(UIntPtr(m_Handle));

@@ -86,7 +86,7 @@ namespace QTRHacker
 
 		public static void Initialize(int pid)
 		{
-			_GameContext = GameContext.OpenGame(Process.GetProcessById(pid));
+			_GameContext = GameContext.OpenGame(Process.GetProcessById(pid), "tModLoader");
 			Initialized?.Invoke(null, EventArgs.Empty);
 		}
 		public static bool IsActive => _GameContext != null;

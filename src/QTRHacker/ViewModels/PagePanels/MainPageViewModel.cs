@@ -90,6 +90,7 @@ namespace QTRHacker.ViewModels.PagePanels
 		{
 			nuint hwnd = WindowFromPoint((int)p.X, (int)p.Y);
 			GetWindowThreadProcessId(hwnd, out int pid);
+			MessageBox.Show(pid.ToString());
 			var process = Process.GetProcessById(pid);
 			HackGlobal.Logging.Log($"Cross released at ({p}), pid = {pid}, name = {process.ProcessName}");
 			List<ProcessModule> modules = new();

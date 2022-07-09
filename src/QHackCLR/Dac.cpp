@@ -8,7 +8,7 @@ using namespace System;
 using namespace System::IO;
 using namespace QHackCLR::DataTargets;
 
-struct CONTEXT_AMD64 {
+struct CUSTOM_CONTEXT_AMD64 {
 	DWORD64 P1Home;
 	DWORD64 P2Home;
 	DWORD64 P3Home;
@@ -144,7 +144,7 @@ namespace QHackCLR {
 			byte* ptr = context;
 			if (amd64)
 			{
-				CONTEXT_AMD64* ctx = (CONTEXT_AMD64*)ptr;
+				CUSTOM_CONTEXT_AMD64* ctx = (CUSTOM_CONTEXT_AMD64*)ptr;
 				ctx->ContextFlags = contextFlags;
 			}
 			else

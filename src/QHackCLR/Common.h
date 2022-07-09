@@ -80,7 +80,7 @@ namespace QHackCLR {
 				return Equals(dynamic_cast<IClrHandled^>(obj));
 			}
 			int GetHashCode() override {
-				return m_ClrHandle.ToUInt32();
+				return (int)m_ClrHandle.ToUInt64();
 			}
 			static bool operator ==(ClrEntity^ a, ClrEntity^ b) {
 				if (Object::ReferenceEquals(a, nullptr))
