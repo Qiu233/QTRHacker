@@ -12,24 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Color = Microsoft.Xna.Framework.Color;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
-using Vector2 = Microsoft.Xna.Framework.Vector2;
-using STile = QTRHacker.Core.PatchesManager.STile;
-using Microsoft.Xna.Framework.Graphics;
+using QTRHacker.Assets;
 using QTRHacker.EventManagers;
+using static QTRHacker.Core.PatchesManager;
 
 namespace QTRHacker.Views.Advanced.Schematics
 {
 	/// <summary>
 	/// TileView.xaml 的交互逻辑
 	/// </summary>
-	public partial class TileView : UserControl, IWeakEventListener
+	public partial class TileView : UserControl
 	{
-		private SpriteBatch Batch;
-		private Texture2D Pixel;
-		private readonly Dictionary<int, Texture2D> TileTextures = new();
-		private readonly Dictionary<int, Texture2D> WallTextures = new();
+		private readonly Dictionary<(int, Int32Rect), ImageSource> TileTextures = new();
+		private readonly Dictionary<(int, Int32Rect), ImageSource> WallTextures = new();
 
 		public STile[,] TilesData
 		{
@@ -37,103 +32,69 @@ namespace QTRHacker.Views.Advanced.Schematics
 			set => SetValue(TilesDataProperty, value);
 		}
 		public static readonly DependencyProperty TilesDataProperty =
-			DependencyProperty.Register(nameof(TilesData), typeof(STile[,]), typeof(TileView));
+			DependencyProperty.Register(nameof(TilesData), typeof(STile[,]), typeof(TileView), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
-		public TileView()
+		protected override void OnRender(DrawingContext drawingContext)
 		{
-			InitializeComponent();
-			XnaControl.Draw += XnaControl_Draw;
-			XnaControl.LoadContent += XnaControl_LoadContent;
-			XnaControl.Initialize += XnaControl_Initialize;
+			DrawTiles(drawingContext);
 		}
 
-		public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
-		{
-			if (managerType == typeof(RenderingEventManager))
-			{
-				XnaControl.Render();
-				return true;
-			}
-			return false;
-		}
-
-		private Texture2D GetTileTexture(int tile)
-		{
-			if (TileTextures.TryGetValue(tile, out Texture2D t))
-				return t;
-			return TileTextures[tile] = XnaControl.ContentManager.Load<Texture2D>($"Images/Tiles_{tile}");
-		}
-		private Texture2D GetWallTexture(int wall)
-		{
-			if (WallTextures.TryGetValue(wall, out Texture2D t))
-				return t;
-			return WallTextures[wall] = XnaControl.ContentManager.Load<Texture2D>($"Images/Wall_{wall}");
-		}
-
-		private void XnaControl_LoadContent(Microsoft.Xna.Framework.Content.ContentManager obj)
-		{
-			XnaControl.ContentManager.RootDirectory = HackGlobal.GameContext.GameContentDir;
-			Pixel = new Texture2D(XnaControl.GraphicsDevice, 1, 1);
-			Pixel.SetData(new Color[] { new Color(255, 255, 255) });
-		}
-
-		private void XnaControl_Initialize()
-		{
-			Batch = new SpriteBatch(XnaControl.GraphicsDevice);
-			RenderingEventManager.AddListener(this);
-		}
-
-		private void DrawBG(int step)
+		private void DrawBG(DrawingContext drawingContext, int step)
 		{
 			int width = (int)(ActualWidth / step + 1), height = (int)(ActualHeight / step + 1);
 			for (int i = 0; i < width; i += 2)
 			{
 				for (int j = 0; j < height; j += 2)
 				{
-					Color light = new(0xA0, 0xA0, 0xA0);
-					Color dark = new(0x50, 0x50, 0x50);
-					Batch.Draw(Pixel, new Rectangle(i * step, j * step, step, step), dark);
-					Batch.Draw(Pixel, new Rectangle(i * step, (j + 1) * step, step, step), light);
-					Batch.Draw(Pixel, new Rectangle((i + 1) * step, j * step, step, step), light);
-					Batch.Draw(Pixel, new Rectangle((i + 1) * step, (j + 1) * step, step, step), dark);
+					Brush light = new SolidColorBrush(Color.FromArgb(0xFF, 0xA0, 0xA0, 0xA0));
+					Brush dark = new SolidColorBrush(Color.FromArgb(0xFF, 0x50, 0x50, 0x50));
+					drawingContext.DrawRectangle(dark, null, new Rect(i * step, j * step, step, step));
+					drawingContext.DrawRectangle(light, null, new Rect(i * step, (j + 1) * step, step, step));
+					drawingContext.DrawRectangle(light, null, new Rect((i + 1) * step, j * step, step, step));
+					drawingContext.DrawRectangle(dark, null, new Rect((i + 1) * step, (j + 1) * step, step, step));
 				}
 			}
 		}
 
-		private void DrawBorder(Vector2 pos, int width, int height, float scale)
+		private static void DrawBorder(DrawingContext drawingContext, Point pos, int width, int height, float scale)
 		{
-			float w = width * 16 * scale;
-			float h = height * 16 * scale;
-			Color color = Color.White;
-			Batch.Draw(Pixel, new Rectangle((int)pos.X, (int)pos.Y, (int)w, 1), color);
-			Batch.Draw(Pixel, new Rectangle((int)pos.X, (int)pos.Y, 1, (int)h), color);
-			Batch.Draw(Pixel, new Rectangle((int)pos.X, (int)(pos.Y + h), (int)w, 1), color);
-			Batch.Draw(Pixel, new Rectangle((int)(pos.X + w), (int)pos.Y, 1, (int)h), color);
+			double w = width * 16 * scale;
+			double h = height * 16 * scale;
+			Brush color = new SolidColorBrush(Colors.White);
+			drawingContext.DrawRectangle(color, null, new Rect(pos.X, pos.Y, w, 1));
+			drawingContext.DrawRectangle(color, null, new Rect(pos.X, pos.Y, 1, h));
+			drawingContext.DrawRectangle(color, null, new Rect(pos.X, (pos.Y + h), w, 1));
+			drawingContext.DrawRectangle(color, null, new Rect((pos.X + w), pos.Y, 1, h));
 		}
 
-		private void DrawTiles()
+		private static Point Point_Add(Point p1, Point p2) => new(p1.X + p2.X, p1.Y + p2.Y);
+
+		private static Point Point_Sub(Point p1, Point p2) => new(p1.X - p2.X, p1.Y - p2.Y);
+		private static Point Point_Mul(Point p1, double f) => new(p1.X * f, p1.Y * f);
+
+		private void DrawTiles(DrawingContext drawingContext)
 		{
 			if (TilesData == null)
 				return;
 			int width = TilesData.GetLength(0);
 			int height = TilesData.GetLength(1);
-			Vector2 targetView = new((float)ActualWidth, (float)ActualHeight);
-			Vector2 targetSize = new Vector2(width, height) * 16;
+			Point targetView = new(ActualWidth, ActualHeight);
+			Point targetSize = Point_Mul(new Point(width, height), 16);
 			float scale = (float)Math.Min(ActualWidth / targetSize.X, ActualHeight / targetSize.Y);
 			scale = scale > 1.5f ? 1.5f : scale;
-			DrawBG((int)Math.Round(16 * scale));
-			Vector2 position = (targetView - targetSize * scale) / 2;
-			DrawBorder(position, width, height, scale);
+			DrawBG(drawingContext, (int)Math.Round(16 * scale));
+			Point position = Point_Mul((Point_Sub(targetView, Point_Mul(targetSize, scale))), 0.5);
+			DrawBorder(drawingContext, position, width, height, scale);
 			for (int x = 0; x < width; x++)
 			{
 				for (int y = 0; y < height; y++)
 				{
 					STile tile = TilesData[x, y];
-					Vector2 pos = position + new Vector2(x - 0.5f, y - 0.5f) * 16 * scale;
 					if (tile.Wall > 0)
 					{
-						Texture2D wallTexture = GetWallTexture(tile.Wall);
-						Batch.Draw(wallTexture, pos, new Rectangle(tile.WallFrameX(), tile.WallFrameY(), 32, 32), Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+						ImageSource wallTexture = GetWallTexture(tile.Wall, new Int32Rect(tile.WallFrameX(), tile.WallFrameY(), 32, 32));
+						Point pos = Point_Add(position, Point_Mul(new Point(x - 0.5f, y - 0.5f), 16 * scale));
+						drawingContext.DrawImage(wallTexture, new Rect(pos, new Size(32 * scale, 32 * scale)));
 					}
 				}
 			}
@@ -142,22 +103,37 @@ namespace QTRHacker.Views.Advanced.Schematics
 				for (int y = 0; y < height; y++)
 				{
 					STile tile = TilesData[x, y];
-					Vector2 pos = position + new Vector2(x, y) * 16 * scale;
 					if (tile.Active())
 					{
-						Texture2D tileTexture = GetTileTexture(tile.Type);
-						Batch.Draw(tileTexture, pos, new Rectangle(tile.FrameX, tile.FrameY, 16, 16), Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+						ImageSource tileTexture = GetTileTexture(tile.Type, new Int32Rect(tile.FrameX, tile.FrameY, 16, 16));
+						Point pos = Point_Add(position, Point_Mul(new Point(x, y), 16 * scale));
+						drawingContext.DrawImage(tileTexture, new Rect(pos, new Size(16 * scale, 16 * scale)));
 					}
 				}
 			}
 		}
 
-		private void XnaControl_Draw()
+		public TileView()
 		{
-			XnaControl.GraphicsDevice.Clear(new Color(0xFF, 0xFF, 0xFF));
-			Batch.Begin();
-			DrawTiles();
-			Batch.End();
+			InitializeComponent();
+			/*XnaControl.Draw += XnaControl_Draw;
+			XnaControl.LoadContent += XnaControl_LoadContent;
+			XnaControl.Initialize += XnaControl_Initialize;*/
+		}
+
+		private ImageSource GetTileTexture(int tile, Int32Rect source)
+		{
+			if (TileTextures.TryGetValue((tile, source), out var texture))
+				return texture;
+			var rawImg = GameImages.GetTileImage(tile);
+			return TileTextures[(tile, source)] = new CroppedBitmap(rawImg, new Int32Rect(source.X, source.Y, source.Width, source.Height));
+		}
+		private ImageSource GetWallTexture(int wall, Int32Rect source)
+		{
+			if (WallTextures.TryGetValue((wall, source), out var texture))
+				return texture;
+			var rawImg = GameImages.GetWallImage(wall);
+			return WallTextures[(wall, source)] = new CroppedBitmap(rawImg, new Int32Rect(source.X, source.Y, source.Width, source.Height));
 		}
 	}
 }

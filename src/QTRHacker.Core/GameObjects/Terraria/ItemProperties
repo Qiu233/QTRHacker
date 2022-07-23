@@ -113,7 +113,7 @@
 		<# PROPERTY_VIRTUAL("float     ", "knockBack           "); #>
 		<# PROPERTY_VIRTUAL("float     ", "scale               "); #>
 		<# PROPERTY_VIRTUAL("float     ", "shootSpeed          "); #>
-		<# PROPERTY_VIRTUAL("string    ", "_nameOverride       "); #>
-		<# PROPERTY_VIRTUAL("string    ", "BestiaryNotes       "); #>
+		<# PROPERTY_STR_VIRTUAL("_nameOverride       "); #>
+		<# PROPERTY_STR_VIRTUAL("BestiaryNotes       "); #>
 		[Obsolete] <# PROPERTY_VIRTUAL("GameObject", "UseSound            "); #>
 		[Obsolete] <# PROPERTY_VIRTUAL("GameObject", "ToolTip             "); #>

@@ -27,6 +27,8 @@ namespace QTRHacker.Assets
 		{
 			LoadGameImage("Items");
 			LoadGameImage("NPCs");
+			LoadGameImage("Tiles");
+			LoadGameImage("Walls");
 		}
 		private static void LoadGameImage(string name)
 		{
@@ -58,17 +60,11 @@ namespace QTRHacker.Assets
 			return null;
 		}
 
-		public static BitmapImage GetItemImage(int type)
-		{
-			return GetImage($"Items.Item_{type}");
-		}
-		public static BitmapImage GetNPCImage(int type)
-		{
-			return GetImage($"NPCs.NPC_{type}");
-		}
-		public static byte[] GetNPCImageData(int type)
-		{
-			return GetImageData($"NPCs.NPC_{type}");
-		}
+		public static BitmapImage GetItemImage(int type) => GetImage($"Items.Item_{type}");
+		public static BitmapImage GetNPCImage(int type) => GetImage($"NPCs.NPC_{type}");
+		public static BitmapImage GetTileImage(int type) => GetImage($"Tiles.Tiles_{type}");
+		public static BitmapImage GetWallImage(int type) => GetImage($"Walls.Wall_{type}");
+		public static byte[] GetItemImageData(int type) => GetImageData($"Items.Item_{type}");
+		public static byte[] GetNPCImageData(int type) => GetImageData($"NPCs.NPC_{type}");
 	}
 }

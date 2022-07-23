@@ -243,4 +243,4 @@
 		<# PROPERTY_VIRTUAL("float[]   ", "ai                  "); #>
 		<# PROPERTY_VIRTUAL("float[]   ", "localAI             "); #>
 		<# PROPERTY_VIRTUAL("float[]   ", "oldRot              "); #>
-		<# PROPERTY_VIRTUAL("string    ", "_givenName          "); #>
+		<# PROPERTY_STR_VIRTUAL("_givenName          "); #>

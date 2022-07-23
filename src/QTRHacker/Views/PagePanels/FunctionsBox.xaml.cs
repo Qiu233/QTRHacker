@@ -38,6 +38,7 @@ namespace QTRHacker.Views.PagePanels
 				return;
 			if (func.IsProgressing)
 				return;
+			HackGlobal.Logging.Log($"Attempting to enable/run function: [{func.Name}]({func.GetType().FullName})");
 			func.IsProgressing = true;
 			Task.Run(() =>
 			{
@@ -47,8 +48,8 @@ namespace QTRHacker.Views.PagePanels
 				}
 				catch (Exception ex)
 				{
-					HackGlobal.Logging.Log($"Exception occured when running a function named {func.Name}({func.GetType().FullName}): \n{ex.Message}\n{ex.StackTrace}");
-					MessageBox.Show("Exception occured, please check the log file for more information");
+					HackGlobal.Logging.Log($"Exception occured when enabling/running a function named {func.Name}({func.GetType().FullName}): \n{ex.Message}\n{ex.StackTrace}");
+					HackGlobal.AlertExceptionOccured(ex);
 				}
 			}).ContinueWith(t =>
 			{
@@ -65,10 +66,19 @@ namespace QTRHacker.Views.PagePanels
 				return;
 			if (func.IsProgressing)
 				return;
+			HackGlobal.Logging.Log($"Attempting to disable function: [{func.Name}]({func.GetType().FullName})");
 			func.IsProgressing = true;
 			Task.Run(() =>
 			{
-				func.Disable(HackGlobal.GameContext);
+				try
+				{
+					func.Disable(HackGlobal.GameContext);
+				}
+				catch (Exception ex)
+				{
+					HackGlobal.Logging.Log($"Exception occured when disabling a function named {func.Name}({func.GetType().FullName}): \n{ex.Message}\n{ex.StackTrace}");
+					HackGlobal.AlertExceptionOccured(ex);
+				}
 			}).ContinueWith(t =>
 			{
 				func.IsProgressing = false;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QTRHacker.ViewModels.Common;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace QTRHacker.ViewModels.Advanced.AimBot
 {
 	public class AimBotWindowViewModel : ViewModelBase
 	{
-		private PlayerInfo selectedPlayerInfo;
+		private readonly PlayersListViewViewModel playersListViewViewModel;
+
 		public enum AimBotMode : int
 		{
 			Disabled = 0,
@@ -19,6 +21,8 @@ namespace QTRHacker.ViewModels.Advanced.AimBot
 			NearestPlayer = 2,
 			TargetedPlayer = 3
 		}
+
+		public PlayersListViewViewModel PlayersListViewViewModel => playersListViewViewModel;
 
 		public AimBotMode Mode
 		{
@@ -85,26 +89,6 @@ namespace QTRHacker.ViewModels.Advanced.AimBot
 			}
 		}
 
-		public ObservableCollection<PlayerInfo> Players
-		{
-			get;
-		} = new();
-
-		public PlayerInfo SelectedPlayerInfo
-		{
-			get => selectedPlayerInfo;
-			set
-			{
-				selectedPlayerInfo = value;
-				if (selectedPlayerInfo is null)
-				{
-					HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = -1;
-					return;
-				}
-				HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = selectedPlayerInfo.ID;
-				OnPropertyChanged(nameof(SelectedPlayerInfo));
-			}
-		}
 
 #pragma warning disable CA1822 // 将成员标记为 static
 		public bool HostileNPCsOnly
@@ -149,45 +133,37 @@ namespace QTRHacker.ViewModels.Advanced.AimBot
 				OnPropertyChanged(nameof(MaxDistance_NPC));
 				OnPropertyChanged(nameof(MaxDistance_Player));
 			}
-			UpdatePlayersList();
-			int index = HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex;
-			var players = Players.Where(t => t.ID == index).ToList();
-			if (players.Count == 1)
+			int index = TargetedPlayerIndex;
+			var players = PlayersListViewViewModel.Players.Where(t => t.ID == index).ToList();
+			if (players.Count == 1 && PlayersListViewViewModel.SelectedPlayerInfo?.ID != index)
 			{
-				selectedPlayerInfo = players[0];
-				OnPropertyChanged(nameof(SelectedPlayerInfo));
+				PlayersListViewViewModel.SelectedPlayerInfo = players[0];
 			}
-		}
-
-		public void UpdatePlayersList()
-		{
-			if (!HackGlobal.IsActive)
-				return;
-			var players = HackGlobal.GameContext.Players;
-			var active = players
-				.Select((Player, Index) => new { Player, Index })
-				.Where(t => t.Player.Active)
-				.Select(t => new PlayerInfo(t.Index, t.Player.Name))
-				.OrderBy(t => t);
-			var currentPlayers = Players.OrderBy(t => t);
-			if (active.SequenceEqual(currentPlayers))
-				return;
-
-			currentPlayers.Except(active).ToList().ForEach(t => Players.Remove(t));
-			active.Except(currentPlayers).ToList().ForEach(t => Players.Add(t));
 		}
 
 		public AimBotWindowViewModel()
 		{
-			HackGlobal.GameContext.Patches.Init();
-			PropertyChanged += AimBotWindowViewModel_PropertyChanged;
 			UpdateTimer = new();
 			UpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.SchesUpdateInterval);
+			playersListViewViewModel = new PlayersListViewViewModel(UpdateTimer);
+			PlayersListViewViewModel.SelectedPlayerInfoChanged += (s, e) =>
+			{
+				if (e is null)
+				{
+					HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = -1;
+					return;
+				}
+				HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = e.ID;
+			};
+			HackGlobal.GameContext.Patches.Init();
+			PropertyChanged += AimBotWindowViewModel_PropertyChanged;
 			WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(UpdateTimer, nameof(DispatcherTimer.Tick), UpdateTimer_Tick);
-			//Still need to stop the timer, but so far I've found no clean way to do so.
 			UpdateTimer.Start();
+		}
 
-			Update();
+		~AimBotWindowViewModel()
+		{
+			UpdateTimer?.Stop();
 		}
 
 		private void UpdateTimer_Tick(object sender, EventArgs e)

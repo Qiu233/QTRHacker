@@ -4,18 +4,24 @@ using QTRHacker.Configs;
 using QTRHacker.Core;
 using QTRHacker.Core.ProjectileImage;
 using QTRHacker.Core.ProjectileImage.RainbowImage;
+using QTRHacker.Localization;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace QTRHacker
 {
-	internal static class HackGlobal
+	public static class HackGlobal
 	{
 		private static GameContext _GameContext;
 		private static CFG_QTRHacker _Config;
@@ -23,8 +29,8 @@ namespace QTRHacker
 		public static CFG_QTRHacker Config => _Config;
 		public static readonly Logging Logging;
 
-		private const string FILE_CONFIG = "./HackConfig.json";
-		private const string PATH_RAINBOWFONTS = "./Content/RainbowFonts";
+		public const string FILE_CONFIG = "./HackConfig.json";
+		public const string PATH_RAINBOWFONTS = "./Content/RainbowFonts";
 		private const int MAX_LOG_FILES = 10;
 
 		static HackGlobal()
@@ -84,5 +90,50 @@ namespace QTRHacker
 			Initialized?.Invoke(null, EventArgs.Empty);
 		}
 		public static bool IsActive => _GameContext != null;
+
+		private static BackgroundWorker Worker = new();
+
+		public static void AlertExceptionOccured(Exception e)
+		{
+			MessageBox.Show($"{LocalizationManager.Instance.GetValue("UI.Messages.ExceptionOccured")}\nError:\n{e.Message}\n{e.StackTrace}", "Error");
+		}
+
+		public static void StartBackgroundWork(UIElement parent, DoWorkEventHandler work, bool suspendParent = false)
+		{
+			if (Worker == null)
+				throw new InvalidOperationException();
+			Popup popup = new();
+			popup = new Popup
+			{
+				PlacementTarget = parent,
+				Placement = PlacementMode.Center
+			};
+			ProgressBar bar = new();
+			bar.Foreground = new SolidColorBrush(Colors.DarkGray);
+			bar.IsIndeterminate = true;
+			bar.Width = 300;
+			bar.Height = 40;
+			popup.Child = bar;
+			if (suspendParent)
+				MainWindow.Instance.IsEnabled = false;
+			popup.IsOpen = true;
+			Worker = new BackgroundWorker
+			{
+				WorkerReportsProgress = true
+			};
+			Worker.DoWork += work;
+			Worker.RunWorkerCompleted += (s, e) =>
+			{
+				if (e.Error != null)
+				{
+					Logging.Exception(e.Error);
+					AlertExceptionOccured(e.Error);
+				}
+				if (suspendParent)
+					MainWindow.Instance.IsEnabled = true;
+				popup.IsOpen = false;
+			};
+			Worker.RunWorkerAsync();
+		}
 	}
 }

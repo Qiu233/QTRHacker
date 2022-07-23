@@ -223,6 +223,8 @@ namespace QHackCLR {
 
 			array<byte>^ ReadBytes(nuint addr, unsigned __int32 length) {
 				array<byte>^ bs = gcnew array<byte>(length);
+				if (length == 0)
+					return bs;
 				pin_ptr<byte> ptr = &bs[0];
 				Read(addr, ptr, length);
 				return bs;

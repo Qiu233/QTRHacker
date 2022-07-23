@@ -3,7 +3,10 @@ using QTRHacker.Commands;
 using QTRHacker.Controls;
 using QTRHacker.Core;
 using QTRHacker.Localization;
+using QTRHacker.ViewModels.Common;
+using QTRHacker.ViewModels.Common.PropertyEditor;
 using QTRHacker.ViewModels.PlayerEditor;
+using QTRHacker.Views.Common;
 using QTRHacker.Views.PlayerEditor;
 using System;
 using System.Collections.Generic;
@@ -23,62 +26,74 @@ namespace QTRHacker.ViewModels.PagePanels
 {
 	public class PlayersPageViewModel : PagePanelViewModel
 	{
-		public ObservableCollection<PlayerInfo> Players
-		{
-			get;
-		} = new();
-		private PlayerInfo selectedPlayerInfo;
-		private readonly RelayCommand editPlayerCommand;
-		private readonly RelayCommand tpToPlayerCommand;
-		private readonly RelayCommand addBuffCommand;
-		private readonly RelayCommand setPetCommand;
-		private readonly RelayCommand setMountCommand;
-
 		private readonly List<PetInfo> Pets = new();
 		private readonly List<MountInfo> Mounts = new();
+		private string infoBoxName;
+		private int infoBoxMaxLife;
+		private int infoBoxMaxMana;
+		private float infoBoxCoordinateX;
+		private float infoBoxCoordinateY;
 
-		public PlayerInfo SelectedPlayerInfo
+		public RelayCommand EditPlayerCommand { get; }
+		public RelayCommand EditPlayerPropertyCommand { get; }
+		public RelayCommand TPToPlayerCommand { get; }
+		public RelayCommand AddBuffCommand { get; }
+		public RelayCommand SetPetCommand { get; }
+		public RelayCommand SetMountCommand { get; }
+
+		public PlayersListViewViewModel PlayersListViewViewModel { get; } = new();
+
+		private bool GetIsPlayerSelected(object o) => PlayersListViewViewModel.SelectedPlayerInfo is not null;
+
+		public string InfoBoxName
 		{
-			get => selectedPlayerInfo;
+			get => infoBoxName;
 			set
 			{
-				selectedPlayerInfo = value;
-				OnPropertyChanged(nameof(SelectedPlayerInfo));
-				EditPlayerCommand.TriggerCanExecuteChanged();
-				TPToPlayerCommand.TriggerCanExecuteChanged();
-				AddBuffCommand.TriggerCanExecuteChanged();
-				SetPetCommand.TriggerCanExecuteChanged();
-				SetMountCommand.TriggerCanExecuteChanged();
+				infoBoxName = value;
+				OnPropertyChanged(nameof(InfoBoxName));
 			}
 		}
 
-		public RelayCommand EditPlayerCommand => editPlayerCommand;
-		public RelayCommand TPToPlayerCommand => tpToPlayerCommand;
-		public RelayCommand AddBuffCommand => addBuffCommand;
-		public RelayCommand SetPetCommand => setPetCommand;
-		public RelayCommand SetMountCommand => setMountCommand;
-
-		private bool GetIsPlayerSelected(object o) => SelectedPlayerInfo is not null;
-
-		public void UpdatePlayersList()
+		public int? InfoBoxMaxLife
 		{
-			if (!HackGlobal.IsActive)
-				return;
-			var players = HackGlobal.GameContext.Players;
-			var active = players
-				.Select((Player, Index) => new { Player, Index })
-				.Where(t => t.Player.Active)
-				.Select(t => new PlayerInfo(t.Index, t.Player.Name))
-				.OrderBy(t => t);
-			var currentPlayers = Players.OrderBy(t => t);
-			if (active.SequenceEqual(currentPlayers))
-				return;
-
-			currentPlayers.Except(active).ToList().ForEach(t => Players.Remove(t));
-			active.Except(currentPlayers).ToList().ForEach(t => Players.Add(t));
+			get => infoBoxMaxLife == 0 ? null : infoBoxMaxLife;
+			set
+			{
+				infoBoxMaxLife = value ?? 0;
+				OnPropertyChanged(nameof(InfoBoxMaxLife));
+			}
 		}
 
-		public DispatcherTimer PlayerUpdate { get; }
+		public int? InfoBoxMaxMana
+		{
+			get => infoBoxMaxMana == 0 ? null : infoBoxMaxMana;
+			set
+			{
+				infoBoxMaxMana = value ?? 0;
+				OnPropertyChanged(nameof(InfoBoxMaxMana));
+			}
+		}
+
+		public float? InfoBoxCoordinateX
+		{
+			get => infoBoxCoordinateX == 0 ? null : infoBoxCoordinateX;
+			set
+			{
+				infoBoxCoordinateX = value ?? 0;
+				OnPropertyChanged(nameof(InfoBoxCoordinateX));
+			}
+		}
+
+		public float? InfoBoxCoordinateY
+		{
+			get => infoBoxCoordinateY == 0 ? null : infoBoxCoordinateY;
+			set
+			{
+				infoBoxCoordinateY = value ?? 0;
+				OnPropertyChanged(nameof(InfoBoxCoordinateY));
+			}
+		}
 
 		private bool ShowWindow_GetMount(out int type)
 		{
@@ -279,25 +294,57 @@ namespace QTRHacker.ViewModels.PagePanels
 			}
 		}
 
+		public void UpdateInfo()
+		{
+			if (PlayersListViewViewModel.SelectedPlayerInfo is not PlayerInfo info)//null check
+				return;
+			var player = HackGlobal.GameContext.Players[info.ID];
+			InfoBoxName = player.Name;
+			InfoBoxMaxLife = player.StatLifeMax;
+			InfoBoxMaxMana = player.StatManaMax;
+			var pos = player.Position;// here we cache the whole struct so that only one read is needed.
+			InfoBoxCoordinateX = pos.X;
+			InfoBoxCoordinateY = pos.Y;
+		}
+
 		public PlayersPageViewModel()
 		{
-			editPlayerCommand = new RelayCommand(GetIsPlayerSelected, (o) =>
+			PlayersListViewViewModel.SelectedPlayerInfoChanged += (s, e) =>
 			{
-				var player = HackGlobal.GameContext.Players[SelectedPlayerInfo.ID];
+				UpdateInfo();
+				EditPlayerCommand.TriggerCanExecuteChanged();
+				EditPlayerPropertyCommand.TriggerCanExecuteChanged();
+				TPToPlayerCommand.TriggerCanExecuteChanged();
+				AddBuffCommand.TriggerCanExecuteChanged();
+				SetPetCommand.TriggerCanExecuteChanged();
+				SetMountCommand.TriggerCanExecuteChanged();
+			};
+			PlayersListViewViewModel.AddWeakHandlerToTimer((s, e) => UpdateInfo());
+			EditPlayerCommand = new RelayCommand(GetIsPlayerSelected, (o) =>
+			{
+				var player = HackGlobal.GameContext.Players[PlayersListViewViewModel.SelectedPlayerInfo.ID];
 				if (!player.Active)
 					return;
 				PlayerEditorWindow window = new();
 				window.DataContext = new PlayerEditorWindowViewModel(player);
 				window.Show();
 			});
-			tpToPlayerCommand = new(GetIsPlayerSelected, (o) =>
+			EditPlayerPropertyCommand = new RelayCommand(GetIsPlayerSelected, (o) =>
 			{
-				var player = HackGlobal.GameContext.Players[SelectedPlayerInfo.ID];
+				var player = HackGlobal.GameContext.Players[PlayersListViewViewModel.SelectedPlayerInfo.ID];
+				PropertyEditorWindow window = new();
+				window.DataContext = new PropertyEditorWindowViewModel();
+				window.ViewModel.Roots.Add(new PropertyComplex(player.TypedInternalObject, "Player"));
+				window.Show();
+			});
+			TPToPlayerCommand = new(GetIsPlayerSelected, (o) =>
+			{
+				var player = HackGlobal.GameContext.Players[PlayersListViewViewModel.SelectedPlayerInfo.ID];
 				if (!player.Active)
 					return;
 				HackGlobal.GameContext.MyPlayer.Position = player.Position;
 			});
-			addBuffCommand = new(GetIsPlayerSelected, (o) =>
+			AddBuffCommand = new(GetIsPlayerSelected, (o) =>
 			{
 				if (!ShowWindow_GetBuff(out string type, out string time))
 					return;
@@ -305,31 +352,18 @@ namespace QTRHacker.ViewModels.PagePanels
 					return;
 				HackGlobal.GameContext.MyPlayer.AddBuff(type_i, time_i);
 			});
-			setPetCommand = new(GetIsPlayerSelected, (o) =>
+			SetPetCommand = new(GetIsPlayerSelected, (o) =>
 			{
 				LoadPets();
 				if (ShowWindow_GetPet(out int type))
 					HackGlobal.GameContext.MyPlayer.AddBuff(type, 3600);
 			});
-			setMountCommand = new(GetIsPlayerSelected, (o) =>
+			SetMountCommand = new(GetIsPlayerSelected, (o) =>
 			{
 				LoadMounts();
 				if (ShowWindow_GetMount(out int type))
 					HackGlobal.GameContext.MyPlayer.AddBuff(type, 3600);
 			});
-			if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-			{
-				PlayerUpdate = new();
-				PlayerUpdate.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.PlayersListUpdateInterval);
-				WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(PlayerUpdate, nameof(DispatcherTimer.Tick), PlayerUpdate_Tick);
-				//Still need to stop the timer, but so far I've found no clean way to do so.
-				PlayerUpdate.Start();
-			}
-		}
-
-		private void PlayerUpdate_Tick(object sender, EventArgs args)
-		{
-			UpdatePlayersList();
 		}
 		public class PetInfo : ViewModelBase, ILocalizationProvider
 		{

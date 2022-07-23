@@ -27,13 +27,13 @@ public class InfoBox : ContentControl
 	public static readonly DependencyProperty TipProperty =
 		DependencyProperty.Register(nameof(Tip), typeof(string), typeof(InfoBox));
 
-	public SolidColorBrush TipBackground
+	public Brush TipBackground
 	{
-		get => (SolidColorBrush)GetValue(TipBackgroundProperty);
+		get => (Brush)GetValue(TipBackgroundProperty);
 		set => SetValue(TipBackgroundProperty, value);
 	}
 	public static readonly DependencyProperty TipBackgroundProperty =
-		DependencyProperty.Register(nameof(TipBackground), typeof(SolidColorBrush), typeof(InfoBox));
+		DependencyProperty.Register(nameof(TipBackground), typeof(Brush), typeof(InfoBox));
 	
 	public string TipSharedSizeScope
 	{

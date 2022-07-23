@@ -1,4 +1,5 @@
 ﻿using QTRHacker.Commands;
+using QTRHacker.ViewModels.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

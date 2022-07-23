@@ -1,0 +1,128 @@
+﻿<controls:MWindow x:Class="QTRHacker.Views.Common.PropertyEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QTRHacker.Views.Common"
+        xmlns:localVM="clr-namespace:QTRHacker.ViewModels.Common.PropertyEditor"
+        xmlns:controls="clr-namespace:QTRHacker.Controls"
+        xmlns:converters="clr-namespace:QTRHacker.Converters"
+        xmlns:l="clr-namespace:QTRHacker.Localization"
+        mc:Ignorable="d"
+        Title="{l:Localization UI.PropertyEditor.Title}" Height="500" Width="1000">
+    <controls:MWindow.Resources>
+        <DataTemplate x:Key="Editing">
+            <TextBox x:Name="EditorBox" Grid.Column="1" 
+                     BorderThickness="0"
+                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+                     Foreground="{StaticResource QTRHacker.Common.Foreground.Inverse}"
+                     Background="{StaticResource QTRHacker.Common.WhiteMusk.O80}"
+                     HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                     AcceptsReturn="False"
+                     MinWidth="40" MaxWidth="320"
+                     KeyDown="EditorBox_KeyDown" LostFocus="EditorBox_LostFocus" Loaded="EditorBox_Loaded"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="Editing_ReadOnly">
+            <TextBox x:Name="EditorBox" Grid.Column="1" 
+                     BorderThickness="0"
+                     Text="{Binding Path=Value, Mode=OneWay}" 
+                     IsReadOnly="True"
+                     IsReadOnlyCaretVisible="True"
+                     Foreground="{StaticResource QTRHacker.Common.Foreground.Inverse}"
+                     Background="{StaticResource QTRHacker.Common.WhiteMusk.O80}"
+                     HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                     AcceptsReturn="False"
+                     MinWidth="40" MaxWidth="320"
+                     KeyDown="EditorBox_KeyDown" LostFocus="EditorBox_LostFocus" Loaded="EditorBox_Loaded"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NonEditing">
+            <TextBlock x:Name="ShowBox" Grid.Column="1"
+                       Text="{Binding Value}"
+                       Foreground="{StaticResource QTRHacker.Common.Foreground}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       TextAlignment="Center" TextTrimming="CharacterEllipsis"
+                       MinWidth="40" MaxWidth="320"/>
+        </DataTemplate>
+    </controls:MWindow.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" IsMainMenu="True">
+            <MenuItem Header="{l:Localization UI.Help}" Command="{Binding HelpCommand}"/>
+        </Menu>
+        <TreeView ItemsSource="{Binding Roots}" 
+                  Background="Transparent" 
+                  FontSize="20" FontFamily="Consolas" 
+                  SelectedItemChanged="TreeView_SelectedItemChanged"
+                  RequestBringIntoView="TreeView_RequestBringIntoView">
+            <TreeView.Resources>
+
+                <HierarchicalDataTemplate DataType="{x:Type localVM:PropertyComplex}" ItemsSource="{Binding Path=Items}">
+                    <TextBlock Text="{Binding Path=Text}" Foreground="{StaticResource QTRHacker.Common.Foreground}"/>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type localVM:EditableProperty}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding Path=Text}"
+                                   Foreground="{StaticResource QTRHacker.Common.Foreground}"/>
+                        <ContentControl Grid.Column="1" Content="{Binding}">
+                            <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource Editing}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsEditing}" Value="False">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource NonEditing}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </Grid>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type localVM:PropertyString}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding Path=Text}"
+                                   Foreground="{StaticResource QTRHacker.Common.Foreground}"/>
+                        <ContentControl Grid.Column="1" Content="{Binding}">
+                            <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource Editing_ReadOnly}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsEditing}" Value="False">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource NonEditing}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </Grid>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{l:Localization UI.PropertyEditor.ScopeTo}" Command="{Binding ScopeToCommand}"/>
+                    <MenuItem Header="{l:Localization UI.PropertyEditor.ScopeToInNewWindow}" Command="{Binding ScopeToInNewWindowCommand}"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="IsExpanded" Value="{Binding Path=IsExpanded, Mode=TwoWay}"/>
+                    <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"/>
+                    <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick"/>
+                    <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+    </DockPanel>
+</controls:MWindow>

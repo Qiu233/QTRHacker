@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QTRHacker.Views.Wiki.NPC" 
              xmlns:controls="clr-namespace:QTRHacker.Controls"
+             xmlns:commonViews="clr-namespace:QTRHacker.Views.Common"
              xmlns:l="clr-namespace:QTRHacker.Localization"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Padding="3">
@@ -18,10 +19,10 @@
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
             <controls:InfoBox Tip="Icon" TipDock="Top" DockPanel.Dock="Left">
-                <local:NPCBox NPCType="{Binding NPCInfo.Data.Type}" Width="100" Height="Auto">
-                </local:NPCBox>
+                <commonViews:NPCView NPCType="{Binding NPCInfo.Data.Type}" Width="100" Height="Auto" MaxHeight="60">
+                </commonViews:NPCView>
             </controls:InfoBox>
-            <controls:InfoBox Tip="Details" TipDock="Top">
+            <controls:InfoBox Tip="Details" TipDock="Top" DockPanel.Dock="Right" Margin="3,0,0,0">
                 <StackPanel Grid.IsSharedSizeScope="True">
                     <StackPanel.Resources>
                         <Style TargetType="TextBox" BasedOn="{StaticResource QTRHacker.WikiTextBoxStyleBase}">

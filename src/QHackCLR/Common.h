@@ -454,6 +454,8 @@ namespace QHackCLR {
 			[NativeInteger]
 			property UIntPtr NativeCode {
 				UIntPtr get() {
+					if (Data->NativeCodeAddr == -1)//this field is sign extended hence would cause exception on getting -1
+						return UIntPtr(UIntPtr::Size == 4 ? (unsigned int)(-1) : (unsigned long long) - 1);
 					return UIntPtr(Data->NativeCodeAddr);
 				}
 			}

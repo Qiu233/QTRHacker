@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using QTRHacker.Controls;
+﻿using QTRHacker.Controls;
 using QTRHacker.EventManagers;
 using QTRHacker.ViewModels.Advanced.Schematics;
 using System;

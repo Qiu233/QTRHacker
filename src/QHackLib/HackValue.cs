@@ -20,6 +20,11 @@ namespace QHackLib
 			return Context.DataAccess.Read(type, BaseAddress);
 		}
 
+		public T InternalConvert<T>() where T : unmanaged
+		{
+			return Context.DataAccess.Read<T>(BaseAddress);
+		}
+
 		public override bool TryConvert(ConvertBinder binder, out object result)
 		{
 			result = InternalConvert(binder.Type);

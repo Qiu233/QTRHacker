@@ -48,11 +48,14 @@ namespace QTRHacker.ViewModels.PagePanels
 			{
 				object result = CSharpScript.EvaluateAsync(File.ReadAllText(file), ScriptOptions.Default.AddReferences(GetType().Assembly)).Result;
 				if (result is FunctionCategory fc)
+				{
+					HackGlobal.Logging.Log($"Loaded function category: [{fc.Category}] from file: [{file}]");
 					return fc;
+				}
 			}
 			catch (Exception e)
 			{
-				HackGlobal.Logging.Error($"Failed to initialize from file: {file}");
+				HackGlobal.Logging.Error($"Failed to load functions from file: [{file}]");
 				HackGlobal.Logging.Exception(e);
 			}
 			return null;
@@ -62,14 +65,28 @@ namespace QTRHacker.ViewModels.PagePanels
 		{
 			var types = Assembly.GetExecutingAssembly().DefinedTypes.Where(
 				t => t.Namespace != null &&
-					t.Namespace.StartsWith("QTRHacker.Scripts.Functions")).Where(t=>t.IsSubclassOf(typeof(FunctionCategory)));
+					t.Namespace.StartsWith("QTRHacker.Scripts.Functions")).Where(t => t.IsSubclassOf(typeof(FunctionCategory)));
 			foreach (var type in types)
 			{
-				yield return Activator.CreateInstance(type) as FunctionCategory;
+				var fc = Activator.CreateInstance(type) as FunctionCategory;
+				HackGlobal.Logging.Log($"Loaded built-in function category: [{fc.Category}]");
+				yield return fc;
 			}
 		}
 
-		public void LoadAllFunctions()
+		public void Load()
+		{
+			DateTime t0 = DateTime.Now;
+			LoadAllFunctions();
+			DateTime t1 = DateTime.Now;
+			HackGlobal.Logging.Log("Time used to load scripts: " + (t1 - t0).TotalMilliseconds);
+			HackGlobal.Logging.Log($"Loaded functions:\n{string.Join("\n", Functions.Select(t => $"{{{t?.Category}:\t{string.Join(", ", t.Select(s => $"[{s?.Name}]"))}}}"))}");
+			t0 = DateTime.Now;
+			Application.Current.Dispatcher.Invoke(new Action(() => UpdateUI()));
+			t1 = DateTime.Now;
+			HackGlobal.Logging.Log("Time used to update UI: " + (t1 - t0).TotalMilliseconds);
+		}
+		private void LoadAllFunctions()
 		{
 			HackGlobal.Logging.Enter("Initializing functions from scripts.");
 			var builtin = LoadBuiltInFunctions();
@@ -77,16 +94,13 @@ namespace QTRHacker.ViewModels.PagePanels
 				.ToList()
 				.Select(t => LoadFunctionsFromFile(t))
 				.Where(t => t is not null);
-			Application.Current.Dispatcher.Invoke(() =>
-			{
-				Functions.Clear();
-				Functions.AddRange(builtin);
-				Functions.AddRange(fs);
-			});
+			Functions.Clear();
+			Functions.AddRange(builtin);
+			Functions.AddRange(fs);
 			HackGlobal.Logging.Exit();
 		}
 
-		public void UpdateUI()
+		private void UpdateUI()
 		{
 			HackGlobal.Logging.Enter("Updating UI from functions.");
 			TabItems.Clear();
@@ -113,9 +127,7 @@ namespace QTRHacker.ViewModels.PagePanels
 				}
 			}
 			if (TabItems.Any())
-			{
 				TabItems[0].IsSelected = true;
-			}
 			DispatchOnLoaded();
 			HackGlobal.Logging.Exit();
 		}

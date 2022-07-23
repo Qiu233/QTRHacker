@@ -22,6 +22,13 @@ namespace QTRHacker.Core.GameObjects
 					TypedInternalObject.BaseAddress + (uint)sizeof(nuint) * 2, (uint)Length * sizeof(char)));
 		}
 
+		public unsafe static string GetString(HackObject obj)
+		{
+			return Encoding.Unicode.GetString(
+				obj.Context.DataAccess.ReadBytes(
+					obj.BaseAddress + (uint)sizeof(nuint) * 2, (uint)obj.GetArrayLength() * sizeof(char)));
+		}
+
 		/// <summary>
 		/// This method will make the game create a new object of string.
 		/// </summary>

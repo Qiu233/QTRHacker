@@ -11,9 +11,10 @@
 		<ProduceReferenceAssemblies>false</ProduceReferenceAssemblies>
 		<ApplicationIcon>Icon.ico</ApplicationIcon>
 		<SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-		<Version>10.8.0.0</Version>
+		<Version>11.2.0.0</Version>
 		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<UseAppHost>true</UseAppHost>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -22,26 +23,48 @@
 
 	<ItemGroup>
 		<None Remove="Assets\GameImages\NPCs.bin" />
+		<None Remove="Assets\GameImages\Tiles.bin" />
+		<None Remove="Assets\GameImages\Walls.bin" />
 		<None Remove="Assets\Game\Localization.zip" />
 		<None Remove="Assets\Game\TilesColor.json" />
 		<None Remove="Assets\Game\WikiRes.zip" />
 		<None Remove="Assets\ItemImages.bin" />
+		<None Remove="Assets\Misc\RainbowFonts\Example.txt" />
+		<None Remove="Assets\Misc\RainbowProj.png" />
+		<None Remove="Effects\XNATintShader.ps" />
+		<None Remove="XSHD\XML-Mode.xshd" />
 		<None Remove="Localization\Content\*.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<Resource Include="Assets\GameImages\Tiles.bin" />
 		<Resource Include="Assets\GameImages\Items.bin" />
 		<Resource Include="Localization\Content\*.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Resource Include="Assets\GameImages\NPCs.bin" />
-		<Resource Include="Assets\Game\Localization.zip" />
-		<Resource Include="Assets\Game\TilesColor.json" />
-		<Resource Include="Assets\Game\WikiRes.zip" />
+	  <Resource Include="Assets\Misc\RainbowFonts\Example.txt" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Resource Include="Assets\Misc\RainbowFonts\RainbowProj.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="XSHD\XML-Mode.xshd" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Assets\GameImages\NPCs.bin" />
+		<Resource Include="Assets\GameImages\Walls.bin" />
+		<Resource Include="Assets\Game\Localization.zip" />
+		<Resource Include="Assets\Game\TilesColor.json" />
+		<Resource Include="Assets\Game\WikiRes.zip" />
+		<Resource Include="Effects\Shaders\XNATintShader.ps" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AvalonEdit" Version="6.1.3.50" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.1" />
 	</ItemGroup>
 
@@ -50,20 +73,6 @@
 		<ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
 		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
 		<ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
-		<ProjectReference Include="..\RainbowFontsMaker\RainbowFontsMaker.csproj" />
-		<ProjectReference Include="..\WpfXnaControl\WpfXnaControl.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Microsoft.Xna.Framework">
-			<HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Xna.Framework.Game">
-			<HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.Game.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Xna.Framework.Graphics">
-			<HintPath>$(SolutionDir)refdlls\Microsoft.Xna.Framework.Graphics.dll</HintPath>
-		</Reference>
 	</ItemGroup>
 
 </Project>

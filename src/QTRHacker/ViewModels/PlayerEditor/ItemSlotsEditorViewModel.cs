@@ -2,6 +2,8 @@
 using QTRHacker.Assets;
 using QTRHacker.Commands;
 using QTRHacker.Core.GameObjects.Terraria;
+using QTRHacker.ViewModels.Common;
+using QTRHacker.Views.Common;
 using QTRHacker.Views.PlayerEditor;
 using System;
 using System.Collections.Generic;
@@ -17,8 +19,10 @@ namespace QTRHacker.ViewModels.PlayerEditor
 {
 	public class ItemSlotsEditorViewModel : ViewModelBase
 	{
+		private record struct Clipboard(int Type, int Stack, byte Prefix);
 		private bool updating;
 		private readonly Player player;
+		private Clipboard ItemClipboard = new(0, 0, 0);
 
 		public delegate Item ItemFromIndexDelegate(int index);
 		public ItemFromIndexDelegate ItemProvider { get; }
@@ -35,19 +39,14 @@ namespace QTRHacker.ViewModels.PlayerEditor
 				OnPropertyChanged(nameof(Updating));
 			}
 		}
-
-		private readonly RelayCommand applyItemData;
-		private readonly RelayCommand initItemData;
-		private readonly RelayCommand saveInv;
-		private readonly RelayCommand loadInv;
-		private readonly RelayCommand viewInWikiCommand;
-		private readonly RelayCommand editCommand;
-		public RelayCommand ApplyItemData => applyItemData;
-		public RelayCommand InitItemData => initItemData;
-		public RelayCommand SaveInv => saveInv;
-		public RelayCommand LoadInv => loadInv;
-		public RelayCommand ViewInWikiCommand => viewInWikiCommand;
-		public RelayCommand EditCommand => editCommand;
+		public RelayCommand ApplyItemDataCommand { get; }
+		public RelayCommand InitItemDataCommand { get; }
+		public RelayCommand SaveInvCommand { get; }
+		public RelayCommand LoadInvCommand { get; }
+		public RelayCommand ViewInWikiCommand { get; }
+		public RelayCommand CopyCommand { get; }
+		public RelayCommand PasteCommand { get; }
+		public RelayCommand EditCommand { get; }
 
 		private Item SelectedItem => ItemProvider(ItemSlotsGridViewModel.SelectedIndex);
 
@@ -63,16 +62,16 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			if (updateTimer != null)
 				WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(updateTimer, nameof(DispatcherTimer.Tick), Timer_Tick);
 
-			applyItemData = new RelayCommand(o => true, o =>
+			ApplyItemDataCommand = new RelayCommand(o => true, o =>
 			{
 				ItemPropertiesPanelViewModel.UpdatePropertiesToItem(SelectedItem);
 			});
-			initItemData = new RelayCommand(o => true, o =>
+			InitItemDataCommand = new RelayCommand(o => true, o =>
 			{
 				InitItem();
 				ItemPropertiesPanelViewModel.UpdatePropertiesFromItem(SelectedItem);
 			});
-			saveInv = new RelayCommand(o => true, o =>
+			SaveInvCommand = new RelayCommand(o => true, o =>
 			{
 				SaveFileDialog dialog = new();
 				dialog.Filter = "inv file|*.inv";
@@ -83,7 +82,7 @@ namespace QTRHacker.ViewModels.PlayerEditor
 					this.player.SaveInventory(s);
 				}
 			});
-			loadInv = new RelayCommand(o => true, o =>
+			LoadInvCommand = new RelayCommand(o => true, o =>
 			{
 				OpenFileDialog dialog = new();
 				dialog.Filter = "inv file|*.inv";
@@ -94,7 +93,7 @@ namespace QTRHacker.ViewModels.PlayerEditor
 					this.player.LoadInventory(s);
 				}
 			});
-			viewInWikiCommand = new RelayCommand(o => true, o =>
+			ViewInWikiCommand = new RelayCommand(o => true, o =>
 			{
 				Views.Wiki.WikiWindow window = new();
 				var d = new Wiki.WikiWindowViewModel();
@@ -102,8 +101,24 @@ namespace QTRHacker.ViewModels.PlayerEditor
 				window.DataContext = d;
 				window.Show();
 			});
-			editCommand = new RelayCommand(o => true, o =>
+			CopyCommand = new RelayCommand(o => true, o =>
 			{
+				ItemClipboard = new Clipboard(SelectedItem.Type, SelectedItem.Stack, SelectedItem.Prefix);
+			});
+			PasteCommand = new RelayCommand(o => true, o =>
+			{
+				if (ItemClipboard.Type == 0 || ItemClipboard.Stack == 0)
+					return;
+				SelectedItem.SetDefaultsAndPrefix(ItemClipboard.Type, ItemClipboard.Prefix);
+				SelectedItem.Stack = ItemClipboard.Stack;
+			});
+			EditCommand = new RelayCommand(o => true, o =>
+			{
+				var vm = new PropertyEditorWindowViewModel();
+				vm.Roots.Add(new Common.PropertyEditor.PropertyComplex(SelectedItem.InternalObject, "Item"));
+				PropertyEditorWindow window = new();
+				window.DataContext = vm;
+				window.Show();
 			});
 
 			Update();

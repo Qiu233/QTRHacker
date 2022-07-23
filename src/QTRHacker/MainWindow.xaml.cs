@@ -22,10 +22,12 @@ namespace QTRHacker
 {
 	public partial class MainWindow : MWindow
 	{
+		public static MainWindow Instance { get; private set; }
 		public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
 		public const string GameVersion = "1.4.3.6";
 		public MainWindow()
 		{
+			Instance = this;
 			HackGlobal.LoadConfig();
 			if (!HackGlobal.Config.ForceEnglish)
 			{
@@ -51,7 +53,7 @@ namespace QTRHacker
 			string log = $"Unhandled exception from {sender}:\nIsTerminating: {e.IsTerminating}";
 			HackGlobal.Logging.Error(log);
 			HackGlobal.Logging.Exception(ex);
-			MessageBox.Show("Unhandled exception occured, please check the log for more information");
+			HackGlobal.AlertExceptionOccured(ex);
 			Environment.Exit(0);
 		}
 
