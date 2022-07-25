@@ -19,14 +19,14 @@ namespace QTRHacker.Core.GameObjects
 		{
 			return Encoding.Unicode.GetString(
 				Context.HContext.DataAccess.ReadBytes(
-					TypedInternalObject.BaseAddress + (uint)sizeof(nuint) * 2, (uint)Length * sizeof(char)));
+					TypedInternalObject.BaseAddress + (uint)sizeof(nuint) + 4, (uint)Length * sizeof(char)));
 		}
 
 		public unsafe static string GetString(HackObject obj)
 		{
 			return Encoding.Unicode.GetString(
 				obj.Context.DataAccess.ReadBytes(
-					obj.BaseAddress + (uint)sizeof(nuint) * 2, (uint)obj.GetArrayLength() * sizeof(char)));
+					obj.BaseAddress + (uint)sizeof(nuint) + 4, (uint)obj.GetArrayLength() * sizeof(char)));
 		}
 
 		/// <summary>

@@ -34,7 +34,6 @@ namespace QTRHacker.Views.PagePanels
 		private void Cross_CrossReleased(object sender, CrossReleasedEventArgs e)
 		{
 			Point p = (sender as Control).PointToScreen(e.Point);
-			MessageBox.Show(p.ToString());
 			ViewModel.InitGame(p);
 		}
 

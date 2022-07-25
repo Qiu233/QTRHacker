@@ -12,15 +12,15 @@ namespace QHackLib.FunctionHelper
 {
 	public class InlineHook : IDisposable
 	{
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		private unsafe struct HookInfo
 		{
 			public const int RAW_CODE_BYTES_LENGTH = 32;
 			public static readonly int HeaderSize = sizeof(HookInfo);
-			public static readonly int Offset_OnceFlag = (int)Marshal.OffsetOf<HookInfo>(nameof(OnceFlag));
-			public static readonly int Offset_SafeFreeFlag = (int)Marshal.OffsetOf<HookInfo>(nameof(SafeFreeFlag));
-			public static readonly int Offset_RawCodeLength = (int)Marshal.OffsetOf<HookInfo>(nameof(RawCodeLength));
-			public static readonly int Offset_RawCodeBytes = (int)Marshal.OffsetOf<HookInfo>(nameof(RawCodeBytes));
+			public static readonly int Offset_OnceFlag = sizeof(nuint);
+			public static readonly int Offset_SafeFreeFlag = Offset_OnceFlag + sizeof(int);
+			public static readonly int Offset_RawCodeLength = Offset_SafeFreeFlag + sizeof(int);
+			public static readonly int Offset_RawCodeBytes = Offset_RawCodeLength + sizeof(uint);
 
 			public nuint Address_Code => AllocBase + (uint)HeaderSize;
 
@@ -58,14 +58,14 @@ namespace QHackLib.FunctionHelper
 
 		private readonly byte[] JmpHeadBytes;
 
-		private InlineHook(QHackContext ctx, AssemblyCode code, HookParameters parameters)
+		public InlineHook(QHackContext ctx, AssemblyCode code, HookParameters parameters)
 		{
 			Context = ctx;
 			Code = code.Copy();
 			MemoryAllocation = new MemoryAllocation(ctx);
 			Parameters = parameters;
 
-			byte[] headInstBytes = GetHeadBytes(Context.DataAccess.ReadBytes(Parameters.TargetAddress, 32));
+			byte[] headInstBytes = GetHeadBytes(Context.DataAccess.ReadBytes(Parameters.TargetAddress, 32), Utils.Is32Bit ? 5 : 12, !Utils.Is32Bit);
 
 			nuint allocAddr = MemoryAllocation.AllocationBase;
 			nuint safeFreeFlagAddr = allocAddr + (uint)HookInfo.Offset_SafeFreeFlag;
@@ -76,22 +76,47 @@ namespace QHackLib.FunctionHelper
 			HookInfo info = new(allocAddr, headInstBytes);
 
 			Assembler assembler = new();
-			assembler.Emit(DataHelper.GetBytes(info));//emit the header before runnable code
-			assembler.Emit((Instruction)$"mov dword ptr [{safeFreeFlagAddr}],1");
-			assembler.Emit(Parameters.IsOnce ? GetOnceCheckedCode(Code, onceFlagAddr) : Code);//once or not
-			if (Parameters.Original)
-				assembler.Emit(headInstBytes);//emit the raw code replaced by hook jmp
-			assembler.Emit((Instruction)$"mov dword ptr [{safeFreeFlagAddr}],0");
-			assembler.Emit((Instruction)$"jmp {retAddr}");
+
+			if (Utils.Is32Bit)
+			{
+				assembler.Emit(DataHelper.GetBytes(info));//emit the header before runnable code
+				assembler.Emit((Instruction)$"mov dword ptr [{safeFreeFlagAddr}],1");
+				assembler.Emit(Parameters.IsOnce ? GetOnceCheckedCode(Code, onceFlagAddr) : Code);//once or not
+				if (Parameters.Preserve)
+					assembler.Emit(headInstBytes);//emit the original code replaced by hook jmp
+				assembler.Emit((Instruction)$"mov dword ptr [{safeFreeFlagAddr}],0");
+				assembler.Emit((Instruction)$"jmp {retAddr}");
+			}
+			else
+			{
+				assembler.Emit(DataHelper.GetBytes(info));
+
+				assembler.Emit((Instruction)$"mov rax, {safeFreeFlagAddr}"); // set flag = 1
+				assembler.Emit((Instruction)$"mov dword ptr [rax], 1");
+
+				assembler.Emit(Parameters.IsOnce ? GetOnceCheckedCode(Code, onceFlagAddr) : Code);//once or not
+
+				if (Parameters.Preserve)
+					assembler.Emit(headInstBytes); //emit the original code replaced by hook jmp
+
+				assembler.Emit((Instruction)$"mov rax, {safeFreeFlagAddr}"); // set flag = 0
+				assembler.Emit((Instruction)$"mov dword ptr [rax], 0");
+
+				assembler.Emit((Instruction)$"mov rax, {retAddr}"); //jmp back
+				assembler.Emit((Instruction)$"jmp rax");
+			}
 
 			Context.DataAccess.WriteBytes(allocAddr, assembler.GetByteCode(allocAddr));
 
 			JmpHeadBytes = new byte[headInstBytes.Length];
 			Array.Fill<byte>(JmpHeadBytes, 0x90);
-			Assembler.Assemble($"jmp {codeAddr}", Parameters.TargetAddress).CopyTo(JmpHeadBytes, 0);
+			if (Utils.Is32Bit)
+				Assembler.Assemble($"jmp {codeAddr}", Parameters.TargetAddress).CopyTo(JmpHeadBytes, 0);
+			else
+				Assembler.Assemble($"mov rax, {codeAddr}\njmp rax", Parameters.TargetAddress).CopyTo(JmpHeadBytes, 0);
 		}
 
-		public static InlineHook Hook(QHackContext ctx, AssemblyCode code, HookParameters parameters)
+		public static InlineHook Hook(QHackContext ctx, AssemblyCode code, in HookParameters parameters)
 		{
 			var hook = new InlineHook(ctx, code, parameters);
 			hook.Attach();
@@ -100,14 +125,22 @@ namespace QHackLib.FunctionHelper
 
 		public bool IsAttached()
 		{
-			byte h = Context.DataAccess.Read<byte>(Parameters.TargetAddress);
-			if (h != 0xE9)
-				return false;
-			nuint addr =
-				Parameters.TargetAddress +
-				(uint)(Context.DataAccess.Read<int>(Parameters.TargetAddress + 1)
-				+ 5 - HookInfo.HeaderSize);
-			return Context.DataAccess.Read<nuint>(addr) == addr;
+			if (Utils.Is32Bit)
+			{
+				byte h = Context.DataAccess.Read<byte>(Parameters.TargetAddress);
+				if (h != 0xE9)
+					return false;
+				nuint addr =
+					Parameters.TargetAddress +
+					(uint)(Context.DataAccess.Read<int>(Parameters.TargetAddress + 1)
+					+ 5 - HookInfo.HeaderSize);
+				return Context.DataAccess.Read<nuint>(addr) == addr;
+			}
+			else
+			{
+				byte[] head = Context.DataAccess.ReadBytes(Parameters.TargetAddress, 12);
+				return head[0] == 0x48 && head[1] == 0xb8 && head[10] == 0xff && head[11] == 0xe0; // structure of  `mov rax, addr` & `jmp rax`
+			}
 		}
 
 		/// <summary>
@@ -141,10 +174,16 @@ namespace QHackLib.FunctionHelper
 			return true;
 		}
 
-		private HookInfo GetHookInfo() => Context.DataAccess.Read<HookInfo>(
-				Parameters.TargetAddress +
-				(uint)(Context.DataAccess.Read<int>(Parameters.TargetAddress + 1)
-				+ 5 - HookInfo.HeaderSize));
+		private HookInfo GetHookInfo()
+		{
+			if (Utils.Is32Bit)
+				return Context.DataAccess.Read<HookInfo>(
+					Parameters.TargetAddress +
+					(uint)(Context.DataAccess.Read<int>(Parameters.TargetAddress + 1)
+					+ 5 - HookInfo.HeaderSize));
+			else
+				return Context.DataAccess.Read<HookInfo>(Context.DataAccess.Read<nuint>(Parameters.TargetAddress + 2) - (nuint)HookInfo.HeaderSize);
+		}
 
 		/// <summary>
 		/// Waits to detach until the code is executed at least once.<br/>
@@ -186,26 +225,41 @@ namespace QHackLib.FunctionHelper
 			}
 		}
 
-		private unsafe static byte[] GetHeadBytes(byte[] code)
+		public unsafe static byte[] GetHeadBytes(byte[] code, int len, bool is64)
 		{
 			fixed (byte* p = code)
 			{
 				byte* i = p;
-				while (i - p < 5)
-					i += Ldasm.GetInst(i, out _, false);
+				while (i - p < len)
+					i += Ldasm.GetInst(i, out _, is64);
 				return code[..(int)(i - p)];
 			}
 		}
 
 		private static AssemblyCode GetOnceCheckedCode(AssemblyCode code, nuint onceFlagAddr)
 		{
-			AssemblySnippet result = AssemblySnippet.FromEmpty();
-			result.Content.Add(Instruction.Create("cmp dword ptr [" + onceFlagAddr + "],0"));
-			result.Content.Add(Instruction.Create("jle bodyEnd"));
-			result.Content.Add(code);
-			result.Content.Add(Instruction.Create("dec dword ptr [" + onceFlagAddr + "]"));
-			result.Content.Add(Instruction.Create("bodyEnd:"));
-			return result;
+			if (Utils.Is32Bit)
+			{
+				return AssemblySnippet.FromCode(new AssemblyCode[] {
+					(Instruction)$"cmp dword ptr [{onceFlagAddr}],0",
+					(Instruction)"jle bodyEnd",
+					code,
+					(Instruction)$"dec dword ptr [{onceFlagAddr}]",
+					(Instruction)"bodyEnd:"
+				});
+			}
+			else
+			{
+				return AssemblySnippet.FromCode(new AssemblyCode[] {
+					(Instruction)$"mov rax, {onceFlagAddr}",
+					(Instruction)$"cmp dword ptr [rax],0",
+					(Instruction)"jle bodyEnd",
+					code,
+					(Instruction)$"mov rax, {onceFlagAddr}",
+					(Instruction)$"dec dword ptr [rax]",
+					(Instruction)"bodyEnd:"
+				});
+			}
 		}
 
 		public static bool HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, int timeout = 1000, uint size = 4096)

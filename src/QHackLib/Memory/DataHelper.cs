@@ -16,6 +16,14 @@ namespace QHackLib.Memory
 					data[i] = ((byte*)ptr)[i];
 			return data;
 		}
+		public unsafe static byte[] GetBytes(ValueType t)
+		{
+			return typeof(DataHelper)
+				.GetMethods()
+				.First(t => t.Name == "GetBytes" && t.IsGenericMethodDefinition)
+				.MakeGenericMethod(t.GetType())
+				.Invoke(null, new object[] { t }) as byte[];
+		}
 		public unsafe static T GetValueFromBytes<T>(in ReadOnlySpan<byte> data) where T : unmanaged
 		{
 			T t = default;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.Models
 {
-	public enum UsefulPrefixes : byte
+	public enum UsefulPrefixes : int
 	{
 		None = 0,
 		Legendary = 81,

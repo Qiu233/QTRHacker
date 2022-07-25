@@ -1,4 +1,5 @@
-﻿using QTRHacker.Commands;
+﻿using QHackLib;
+using QTRHacker.Commands;
 using QTRHacker.Core.GameObjects;
 using QTRHacker.Localization;
 using QTRHacker.ViewModels.Common;
@@ -86,13 +87,10 @@ namespace QTRHacker.ViewModels.PagePanels
 		public HackCommand EditMyPlayerCommand { get; }
 		public HackCommand EditNPCsCommand { get; }
 
-		private static bool InternalInit(Point p)
+		private static bool InternalInit(int pid)
 		{
-			nuint hwnd = WindowFromPoint((int)p.X, (int)p.Y);
-			GetWindowThreadProcessId(hwnd, out int pid);
-			MessageBox.Show(pid.ToString());
 			var process = Process.GetProcessById(pid);
-			HackGlobal.Logging.Log($"Cross released at ({p}), pid = {pid}, name = {process.ProcessName}");
+			HackGlobal.Logging.Log($"pid = {pid}, name = {process.ProcessName}");
 			List<ProcessModule> modules = new();
 			foreach (ProcessModule module in process.Modules)
 				modules.Add(module);
@@ -141,11 +139,41 @@ namespace QTRHacker.ViewModels.PagePanels
 			MyPlayerAddress = HackGlobal.GameContext.MyPlayer.BaseAddress.ToHexAddr();
 		}
 
-		public async void InitGame(Point p)
+		public async void TryInitGame()
 		{
+			var ps = Process.GetProcesses().Where(t =>
+			{
+				if (!string.Equals(t.ProcessName, "dotnet", StringComparison.OrdinalIgnoreCase))
+					return false;
+				using QHackContext ctx = QHackContext.Create(t.Id);
+				return ctx.CLRHelpers.Where(t => string.Equals(t.Key.Name, "tModLoader", StringComparison.OrdinalIgnoreCase)).Any();
+			}).ToArray();
+			if (ps.Length == 0)
+			{
+				MessageBox.Show("Please be sure that you have launched tModLoader");
+				return;
+			}
+
 			CrossVisibility = Visibility.Collapsed;
 			SpinnerVisibility = Visibility.Visible;
-			if (await Task.Run(() => InternalInit(p)))
+			if (await Task.Run(() => InternalInit(ps[0].Id)))
+			{
+				UpdateAddrs();
+				var tasks = ActionsAfterAttachedToGame.Select(t => new Task(t)).ToList();
+				tasks.ForEach(t => t.Start());
+				await Task.WhenAll(tasks);
+			}
+			SpinnerVisibility = Visibility.Collapsed;
+			CrossVisibility = Visibility.Visible;
+		}
+
+		public async void InitGame(Point p)
+		{
+			nuint hwnd = WindowFromPoint(new Point32((int)p.X, (int)p.Y));
+			GetWindowThreadProcessId(hwnd, out int pid);
+			CrossVisibility = Visibility.Collapsed;
+			SpinnerVisibility = Visibility.Visible;
+			if (await Task.Run(() => InternalInit(pid)))
 			{
 				UpdateAddrs();
 				var tasks = ActionsAfterAttachedToGame.Select(t => new Task(t)).ToList();
@@ -183,8 +211,11 @@ namespace QTRHacker.ViewModels.PagePanels
 		}
 
 
+		[StructLayout(LayoutKind.Sequential)]
+		private record struct Point32(int X, int Y);
+
 		[DllImport("User32.dll")]
-		private static extern nuint WindowFromPoint(int x, int y);
+		private static extern nuint WindowFromPoint(Point32 point);
 		[DllImport("User32.dll")]
 		private static extern void GetWindowThreadProcessId(nuint hwnd, out int ID);
 	}

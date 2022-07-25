@@ -21,17 +21,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ContentWithTargetPath Include="..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>QTRHacker.Patches.dll</TargetPath>
-		</ContentWithTargetPath>
-		<!--ProjectReference Include="..\QTRHacker.Patches\QTRHacker.Patches.csproj" /-->
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Update="GameObjects\Terraria\Item.ps.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
 			<LastGenOutput>Item.ps.cs</LastGenOutput>
+		</None>
+		<None Update="GameObjects\Terraria\ItemProperties">
+		  <Generator>TextTemplatingFileGenerator</Generator>
+		  <LastGenOutput>ItemProperties.cs</LastGenOutput>
 		</None>
 		<None Update="GameObjects\Terraria\NPC.ps.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
@@ -44,6 +40,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="GameObjects\Terraria\ItemProperties.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ItemProperties</DependentUpon>
+		</Compile>
 		<Compile Update="GameObjects\Terraria\Item.ps.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>

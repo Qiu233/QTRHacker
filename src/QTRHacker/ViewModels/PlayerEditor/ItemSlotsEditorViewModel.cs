@@ -19,7 +19,7 @@ namespace QTRHacker.ViewModels.PlayerEditor
 {
 	public class ItemSlotsEditorViewModel : ViewModelBase
 	{
-		private record struct Clipboard(int Type, int Stack, byte Prefix);
+		private record struct Clipboard(int Type, int Stack, int Prefix);
 		private bool updating;
 		private readonly Player player;
 		private Clipboard ItemClipboard = new(0, 0, 0);
@@ -131,7 +131,7 @@ namespace QTRHacker.ViewModels.PlayerEditor
 				return;
 			int stack = (int)ItemPropertiesPanelViewModel.GetValue("Stack");
 			stack = stack == 0 ? 1 : stack;
-			byte prefix = (byte)ItemPropertiesPanelViewModel.GetValue("Prefix");
+			int prefix = (int)ItemPropertiesPanelViewModel.GetValue("Prefix");
 			var item = SelectedItem;
 			item.SetDefaultsAndPrefix(type, prefix);
 			item.Stack = stack;

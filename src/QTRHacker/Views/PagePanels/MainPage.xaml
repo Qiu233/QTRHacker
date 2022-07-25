@@ -81,14 +81,14 @@
             </TextBlock>
             <Grid Grid.Row="0" Grid.Column="1" 
               Margin="0,10,10,0">
-                <controls:Cross x:Name="Cross" Foreground="White"
-                            CrossReleased="Cross_CrossReleased" Visibility="{Binding CrossVisibility}"/>
+                <controls:Cross x:Name="Cross" Foreground="{StaticResource QTRHacker.Common.Foreground}" Visibility="{Binding CrossVisibility}" FontSize="16"
+                        CrossReleased="Cross_CrossReleased"/>
                 <views_common:SpinnerDotCircle x:Name="LoadingSpinner" Visibility="{Binding SpinnerVisibility}"/>
             </Grid>
             <Button x:Name="WikiButton" Grid.Row="1" Grid.Column="1" 
                 Content="Wiki" 
                 Margin="2,8,2,0" Padding="2,0,2,0" 
-                FontSize="15" Foreground="{StaticResource QTRHacker.Common.Foreground}"
+                FontSize="16" Foreground="{StaticResource QTRHacker.Common.Foreground}"
                 Click="WikiButton_Click"/>
         </Grid>
     </DockPanel>

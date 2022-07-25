@@ -153,7 +153,7 @@ namespace QHackLib.Memory
 			return result;
 		}
 
-		private static void Traverse(nuint handle, MemoryTraverse traverse)
+		internal static void Traverse(nuint handle, MemoryTraverse traverse)
 		{
 			nuint addr = 0;
 			while (true)
@@ -166,6 +166,6 @@ namespace QHackLib.Memory
 			}
 		}
 
-		private delegate void MemoryTraverse(NativeFunctions.MEMORY_BASIC_INFORMATION mbi);
+		internal delegate void MemoryTraverse(NativeFunctions.MEMORY_BASIC_INFORMATION mbi);
 	}
 }

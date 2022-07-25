@@ -1,6 +1,7 @@
 ﻿using Microsoft.CSharp;
 using QHackCLR.Common;
 using QHackCLR.DataTargets;
+using QHackLib;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace GameDataExporter
 			{ "Microsoft.Xna.Framework.Rectangle", "ValueTypeRedefs.Xna.Rectangle" },
 			{ "Microsoft.Xna.Framework.Vector2", "ValueTypeRedefs.Xna.Vector2" },
 			{ "Microsoft.Xna.Framework.Point", "ValueTypeRedefs.Xna.Point" },
+			{ "Terraria.BitsByte", "ValueTypeRedefs.Terraria.BitsByte" },
 		};
 
 		static string GetTypeName(string type)
@@ -113,7 +115,7 @@ namespace GameDataExporter
 				}
 				else if (t.Type == Runtime.Heap.StringType)
 				{
-					sw.Write(string.Format("\t\t<# PROPERTY_GO_VIRTUAL(\"{0,-10}\", \"{1,-20}\"); #>\r\n", "GameString", t.Name));
+					sw.Write(string.Format("\t\t<# PROPERTY_STR_VIRTUAL(\"{0,-10}\"); #>\r\n", t.Name));
 				}
 				else
 				{
@@ -170,10 +172,22 @@ namespace GameDataExporter
 		private static ClrRuntime Runtime;
 		static void Main(string[] args)
 		{
-			var id = Process.GetProcessesByName("tModLoader")[0].Id;
+			var ps = Process.GetProcesses().Where(t =>
+			{
+				if (!string.Equals(t.ProcessName, "dotnet", StringComparison.OrdinalIgnoreCase))
+					return false;
+				using QHackContext ctx = QHackContext.Create(t.Id);
+				return ctx.CLRHelpers.Where(t => string.Equals(t.Key.Name, "tModLoader", StringComparison.OrdinalIgnoreCase)).Any();
+			}).ToArray();
+			if (ps.Length == 0)
+			{
+				Console.WriteLine("Please be sure that you have launched tModLoader");
+				return;
+			}
+			var id = ps[0].Id;
 			DataTarget dataTarget = new(id);
 			Runtime = dataTarget.ClrVersions[0].CreateRuntime();
-			ClrModule module = Runtime.AppDomain.Modules.First(t => t.Name == "Terraria");
+			ClrModule module = Runtime.AppDomain.Modules.First(t => t.Name == "tModLoader");
 			WriteTypes(module);
 		}
 	}

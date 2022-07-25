@@ -1,6 +1,7 @@
 ﻿{
   "Name": "English",
   "UI": {
+    "Lock": "Lock",
     "DirectFunction": "Functions",
     "MainPage": "Main Page",
     "Advanced": "Advanced",

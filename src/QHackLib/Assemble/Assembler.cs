@@ -29,7 +29,7 @@ namespace QHackLib.Assemble
 		{
 			lock (InternalData)
 			{
-				InternalData.Content.Add(inst);
+				InternalData.Add(inst);
 			}
 		}
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -44,6 +44,12 @@ namespace QHackLib.Assemble
 		[MethodImpl(MethodImplOptions.AggressiveInlining)] public void Emit(uint v) => Emit($".int {v}");
 		[MethodImpl(MethodImplOptions.AggressiveInlining)] public void Emit(int v) => Emit($".int {(uint)v}");
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)] public void Emit(ulong v) => Emit($".long {v}");
+		[MethodImpl(MethodImplOptions.AggressiveInlining)] public void Emit(long v) => Emit($".long {(ulong)v}");
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)] public void Emit(float v) => Emit($".float {v}");
+		[MethodImpl(MethodImplOptions.AggressiveInlining)] public void Emit(double v) => Emit($".double {v}");
+
 		public void Emit(in ReadOnlySpan<byte> bs)
 		{
 			foreach (var elem in bs)
@@ -54,7 +60,7 @@ namespace QHackLib.Assemble
 
 		public unsafe static byte[] Assemble(string code, nuint IP)
 		{
-			using Engine keystone = new(Keystone.Architecture.X86, Mode.X32) { ThrowOnError = true };
+			using Engine keystone = new(Keystone.Architecture.X86, IntPtr.Size == 4 ? Mode.X32 : Mode.X64) { ThrowOnError = true };
 			EncodedData enc = keystone.Assemble(code, IP);
 			return enc.Buffer;
 		}

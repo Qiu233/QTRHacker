@@ -80,9 +80,9 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("PlaceStyle"));
 			ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("CreateWall"));
 
-			var prefix = new ItemPropertyData_ComboBox<byte>("Prefix");
+			var prefix = new ItemPropertyData_ComboBox<int>("Prefix");
 			Enum.GetValues<Models.UsefulPrefixes>().ToList().ForEach(
-				t => prefix.Source.Add(new Prefix(t.ToString(), (byte)t)));
+				t => prefix.Source.Add(new Prefix(t.ToString(), (int)t)));
 			ItemPropertyDatum.Add(prefix);
 			ItemPropertyDatum.Add(new ItemPropertyData_CheckBox("AutoReuse"));
 			ItemPropertyDatum.Add(new ItemPropertyData_CheckBox("Accessory"));
@@ -96,7 +96,7 @@ namespace QTRHacker.ViewModels.PlayerEditor
 		public class Prefix : ViewModelBase, ILocalizationProvider
 		{
 			public string Key { get; }
-			public byte Value { get; }
+			public int Value { get; }
 
 			public string Name
 			{
@@ -108,7 +108,7 @@ namespace QTRHacker.ViewModels.PlayerEditor
 				}
 			}
 
-			public Prefix(string key, byte value)
+			public Prefix(string key, int value)
 			{
 				Key = key;
 				Value = value;

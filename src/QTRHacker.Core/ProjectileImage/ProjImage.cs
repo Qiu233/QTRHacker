@@ -95,7 +95,7 @@ namespace QTRHacker.Core.ProjectileImage
 					(Instruction)$"pushad",
 					(Instruction)$"mov ebx,{alloc.AllocationBase}",
 			});
-			snippet.Content.Add(AssemblySnippet.Loop(
+			snippet.Add(AssemblySnippet.Loop(
 					AssemblySnippet.FromCode(
 						new AssemblyCode[] {
 							(Instruction)$"mov eax,[esp]",		//i
@@ -117,7 +117,7 @@ namespace QTRHacker.Core.ProjectileImage
 
 				}),
 				Projs.Count, true));
-			snippet.Content.Add((Instruction)"popad");
+			snippet.Add((Instruction)"popad");
 			context.RunByHookUpdate(snippet);
 		}
 		public void ToStream(Stream stream)

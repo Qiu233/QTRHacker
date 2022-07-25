@@ -10,6 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using static QHackLib.NativeFunctions;
 using QHackCLR.Common;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("QTRHacker.Functions.Test")]
 
 namespace QHackLib
 {

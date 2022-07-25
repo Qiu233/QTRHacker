@@ -1,6 +1,7 @@
 ﻿{
   "Name": "简体中文",
   "UI": {
+    "Lock": "锁定",
     "DirectFunction": "基础功能",
     "MainPage": "主页",
     "Advanced": "高级",

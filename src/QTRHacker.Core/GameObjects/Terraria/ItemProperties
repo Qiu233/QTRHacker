@@ -1,4 +1,4 @@
-﻿		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "color               "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "color               "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "accessory           "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "autoReuse           "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "beingGrabbed        "); #>
@@ -15,10 +15,10 @@
 		<# PROPERTY_VIRTUAL("bool      ", "flame               "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "instanced           "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "isAShopItem         "); #>
-		<# PROPERTY_VIRTUAL("bool      ", "magic               "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "master              "); #>
+		<# PROPERTY_VIRTUAL("bool      ", "masterOnly          "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "material            "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "mech                "); #>
-		<# PROPERTY_VIRTUAL("bool      ", "melee               "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "newAndShiny         "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "noMelee             "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "notAmmo             "); #>
@@ -26,20 +26,17 @@
 		<# PROPERTY_VIRTUAL("bool      ", "noWet               "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "potion              "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "questItem           "); #>
-		<# PROPERTY_VIRTUAL("bool      ", "ranged              "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "sentry              "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "social              "); #>
-		<# PROPERTY_VIRTUAL("bool      ", "summon              "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "uniqueStack         "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "useTurn             "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "vanity              "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "wornArmor           "); #>
-		<# PROPERTY_VIRTUAL("byte      ", "dye                 "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "claw                "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "staff               "); #>
 		<# PROPERTY_VIRTUAL("byte      ", "paint               "); #>
-		<# PROPERTY_VIRTUAL("byte      ", "prefix              "); #>
 		<# PROPERTY_VIRTUAL("short     ", "glowMask            "); #>
-		<# PROPERTY_VIRTUAL("short     ", "hairDye             "); #>
-		<# PROPERTY_VIRTUAL("short     ", "makeNPC             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "_armorPenetration   "); #>
 		<# PROPERTY_VIRTUAL("int       ", "alpha               "); #>
 		<# PROPERTY_VIRTUAL("int       ", "ammo                "); #>
 		<# PROPERTY_VIRTUAL("int       ", "axe                 "); #>
@@ -47,16 +44,20 @@
 		<# PROPERTY_VIRTUAL("int       ", "bodySlot            "); #>
 		<# PROPERTY_VIRTUAL("int       ", "buffTime            "); #>
 		<# PROPERTY_VIRTUAL("int       ", "buffType            "); #>
+		<# PROPERTY_VIRTUAL("int       ", "coinGrabRange       "); #>
 		<# PROPERTY_VIRTUAL("int       ", "createTile          "); #>
 		<# PROPERTY_VIRTUAL("int       ", "createWall          "); #>
 		<# PROPERTY_VIRTUAL("int       ", "crit                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "currentUseAnimationCompensation"); #>
 		<# PROPERTY_VIRTUAL("int       ", "damage              "); #>
 		<# PROPERTY_VIRTUAL("int       ", "defense             "); #>
 		<# PROPERTY_VIRTUAL("int       ", "dungeonPrice        "); #>
+		<# PROPERTY_VIRTUAL("int       ", "dye                 "); #>
 		<# PROPERTY_VIRTUAL("int       ", "eclipseMothronPrice "); #>
 		<# PROPERTY_VIRTUAL("int       ", "eclipsePostPlanteraPrice"); #>
 		<# PROPERTY_VIRTUAL("int       ", "eclipsePrice        "); #>
 		<# PROPERTY_VIRTUAL("int       ", "fishingPole         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "hairDye             "); #>
 		<# PROPERTY_VIRTUAL("int       ", "hammer              "); #>
 		<# PROPERTY_VIRTUAL("int       ", "headSlot            "); #>
 		<# PROPERTY_VIRTUAL("int       ", "healLife            "); #>
@@ -65,20 +66,28 @@
 		<# PROPERTY_VIRTUAL("int       ", "holdStyle           "); #>
 		<# PROPERTY_VIRTUAL("int       ", "keepTime            "); #>
 		<# PROPERTY_VIRTUAL("int       ", "legSlot             "); #>
+		<# PROPERTY_VIRTUAL("int       ", "lifeGrabRange       "); #>
 		<# PROPERTY_VIRTUAL("int       ", "lifeRegen           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "makeNPC             "); #>
 		<# PROPERTY_VIRTUAL("int       ", "mana                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "manaGrabRange       "); #>
 		<# PROPERTY_VIRTUAL("int       ", "manaIncrease        "); #>
 		<# PROPERTY_VIRTUAL("int       ", "maxStack            "); #>
 		<# PROPERTY_VIRTUAL("int       ", "mountType           "); #>
+		<# PROPERTY_VIRTUAL("int       ", "mushroomDelay       "); #>
 		<# PROPERTY_VIRTUAL("int       ", "netID               "); #>
 		<# PROPERTY_VIRTUAL("int       ", "noGrabDelay         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "numberOfNewItems    "); #>
 		<# PROPERTY_VIRTUAL("int       ", "ownIgnore           "); #>
 		<# PROPERTY_VIRTUAL("int       ", "ownTime             "); #>
 		<# PROPERTY_VIRTUAL("int       ", "pick                "); #>
 		<# PROPERTY_VIRTUAL("int       ", "placeStyle          "); #>
 		<# PROPERTY_VIRTUAL("int       ", "playerIndexTheItemIsReservedFor"); #>
+		<# PROPERTY_VIRTUAL("int       ", "potionDelay         "); #>
+		<# PROPERTY_VIRTUAL("int       ", "prefix              "); #>
 		<# PROPERTY_VIRTUAL("int       ", "queenBeePrice       "); #>
 		<# PROPERTY_VIRTUAL("int       ", "rare                "); #>
+		<# PROPERTY_VIRTUAL("int       ", "restorationDelay    "); #>
 		<# PROPERTY_VIRTUAL("int       ", "reuseDelay          "); #>
 		<# PROPERTY_VIRTUAL("int       ", "shadowOrbPrice      "); #>
 		<# PROPERTY_VIRTUAL("int       ", "shoot               "); #>
@@ -91,13 +100,18 @@
 		<# PROPERTY_VIRTUAL("int       ", "timeSinceItemSpawned"); #>
 		<# PROPERTY_VIRTUAL("int       ", "timeSinceTheItemHasBeenReservedForSomeone"); #>
 		<# PROPERTY_VIRTUAL("int       ", "tooltipContext      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "treasureGrabRange   "); #>
 		<# PROPERTY_VIRTUAL("int       ", "type                "); #>
 		<# PROPERTY_VIRTUAL("int       ", "useAmmo             "); #>
 		<# PROPERTY_VIRTUAL("int       ", "useAnimation        "); #>
 		<# PROPERTY_VIRTUAL("int       ", "useStyle            "); #>
 		<# PROPERTY_VIRTUAL("int       ", "useTime             "); #>
 		<# PROPERTY_VIRTUAL("int       ", "value               "); #>
-		<# PROPERTY_VIRTUAL("System.Nullable<System.Int32>", "shopCustomPrice     "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "bodyType            "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "cachedItemSpawnsByType"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "headType            "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "legType             "); #>
+		<# PROPERTY_VIRTUAL("int?", "shopCustomPrice     "); #>
 		<# PROPERTY_VIRTUAL("sbyte     ", "backSlot            "); #>
 		<# PROPERTY_VIRTUAL("sbyte     ", "balloonSlot         "); #>
 		<# PROPERTY_VIRTUAL("sbyte     ", "beardSlot           "); #>
@@ -113,7 +127,5 @@
 		<# PROPERTY_VIRTUAL("float     ", "knockBack           "); #>
 		<# PROPERTY_VIRTUAL("float     ", "scale               "); #>
 		<# PROPERTY_VIRTUAL("float     ", "shootSpeed          "); #>
-		<# PROPERTY_STR_VIRTUAL("_nameOverride       "); #>
-		<# PROPERTY_STR_VIRTUAL("BestiaryNotes       "); #>
-		[Obsolete] <# PROPERTY_VIRTUAL("GameObject", "UseSound            "); #>
-		[Obsolete] <# PROPERTY_VIRTUAL("GameObject", "ToolTip             "); #>
+		<# PROPERTY_STR_VIRTUAL("_nameOverride"); #>
+		<# PROPERTY_STR_VIRTUAL("BestiaryNotes"); #>

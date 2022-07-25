@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ using QTRHacker.Core.GameObjects;
 using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.Core.GameObjects.Terraria.IO;
 using QTRHacker.Core.GameObjects.Terraria.Map;
+
+[assembly: InternalsVisibleTo("QTRHacker.Functions.Test")]
 
 namespace QTRHacker.Core
 {
@@ -260,8 +263,7 @@ namespace QTRHacker.Core
 			GameProcess = process;
 			ModuleName = moduleName;
 			HContext = QHackContext.Create(process.Id);
-			throw new Exception(process.Id.ToString());
-			throw new Exception(string.Join(", ", HContext.CLRHelpers.ToList().Select(t => t.Key.Name).Where(t => !t.StartsWith("System") && !t.StartsWith("Microsoft"))));
+
 			Patches = new PatchesManager(this);
 
 			My_Player_Address = GameModuleHelper.GetStaticFieldAddress("Terraria.Main", "myPlayer");

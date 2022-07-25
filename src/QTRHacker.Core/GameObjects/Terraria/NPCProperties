@@ -2,7 +2,7 @@
 		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Rectangle", "frame               "); #>
 		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Rectangle", "targetRect          "); #>
 		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "netOffset           "); #>
-		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Vector2[]", "oldPos              "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("ValueTypeRedefs.Xna.Vector2", "oldPos              "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "behindTiles         "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "betsysCurse         "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "boss                "); #>
@@ -118,13 +118,12 @@
 		<# PROPERTY_VIRTUAL("bool      ", "travelNPC           "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "venom               "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "WoFKilledToday      "); #>
-		<# PROPERTY_VIRTUAL("bool[]    ", "buffImmune          "); #>
-		<# PROPERTY_VIRTUAL("bool[]    ", "npcsFoundForCheckActive"); #>
-		<# PROPERTY_VIRTUAL("bool[]    ", "playerInteraction   "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "buffImmune          "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "npcsFoundForCheckActive"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("bool      ", "playerInteraction   "); #>
 		<# PROPERTY_VIRTUAL("byte      ", "netStream           "); #>
-		<# PROPERTY_VIRTUAL("byte[]    ", "streamPlayer        "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("byte      ", "streamPlayer        "); #>
 		<# PROPERTY_VIRTUAL("double    ", "frameCounter        "); #>
-		<# PROPERTY_VIRTUAL("short     ", "catchItem           "); #>
 		<# PROPERTY_VIRTUAL("short     ", "releaseOwner        "); #>
 		<# PROPERTY_VIRTUAL("int       ", "activeRangeX        "); #>
 		<# PROPERTY_VIRTUAL("int       ", "activeRangeY        "); #>
@@ -137,6 +136,7 @@
 		<# PROPERTY_VIRTUAL("int       ", "breath              "); #>
 		<# PROPERTY_VIRTUAL("int       ", "breathCounter       "); #>
 		<# PROPERTY_VIRTUAL("int       ", "butterflyChance     "); #>
+		<# PROPERTY_VIRTUAL("int       ", "catchItem           "); #>
 		<# PROPERTY_VIRTUAL("int       ", "crimsonBoss         "); #>
 		<# PROPERTY_VIRTUAL("int       ", "damage              "); #>
 		<# PROPERTY_VIRTUAL("int       ", "defaultMaxSpawns    "); #>
@@ -212,18 +212,18 @@
 		<# PROPERTY_VIRTUAL("int       ", "townRangeY          "); #>
 		<# PROPERTY_VIRTUAL("int       ", "type                "); #>
 		<# PROPERTY_VIRTUAL("int       ", "waveNumber          "); #>
-		<# PROPERTY_VIRTUAL("int[,,,]  ", "MoonLordAttacksArray"); #>
-		<# PROPERTY_VIRTUAL("int[,]    ", "cavernMonsterType   "); #>
-		<# PROPERTY_VIRTUAL("int[,]    ", "MoonLordAttacksArray2"); #>
-		<# PROPERTY_VIRTUAL("int[]     ", "_deerclopsAttack1Frames"); #>
-		<# PROPERTY_VIRTUAL("int[]     ", "_deerclopsAttack2Frames"); #>
-		<# PROPERTY_VIRTUAL("int[]     ", "_deerclopsAttack3Frames"); #>
-		<# PROPERTY_VIRTUAL("int[]     ", "attackNPC           "); #>
-		<# PROPERTY_VIRTUAL("int[]     ", "buffTime            "); #>
-		<# PROPERTY_VIRTUAL("int[]     ", "buffType            "); #>
-		<# PROPERTY_VIRTUAL("int[]     ", "immune              "); #>
-		<# PROPERTY_VIRTUAL("int[]     ", "killCount           "); #>
-		<# PROPERTY_VIRTUAL("int[]     ", "lazyNPCOwnedProjectileSearchArray"); #>
+		<# PROPERTY_ARRAYMDV_VIRTUAL("int       ", "MoonLordAttacksArray"); #>
+		<# PROPERTY_ARRAY2DV_VIRTUAL("int       ", "cavernMonsterType   "); #>
+		<# PROPERTY_ARRAY2DV_VIRTUAL("int       ", "MoonLordAttacksArray2"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "_deerclopsAttack1Frames"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "_deerclopsAttack2Frames"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "_deerclopsAttack3Frames"); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "attackNPC           "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "buffTime            "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "buffType            "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "immune              "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "killCount           "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("int       ", "lazyNPCOwnedProjectileSearchArray"); #>
 		<# PROPERTY_VIRTUAL("float     ", "gfxOffY             "); #>
 		<# PROPERTY_VIRTUAL("float     ", "gravity             "); #>
 		<# PROPERTY_VIRTUAL("float     ", "honeyMovementSpeed  "); #>
@@ -240,7 +240,7 @@
 		<# PROPERTY_VIRTUAL("float     ", "value               "); #>
 		<# PROPERTY_VIRTUAL("float     ", "waterMovementSpeed  "); #>
 		<# PROPERTY_VIRTUAL("float     ", "waveKills           "); #>
-		<# PROPERTY_VIRTUAL("float[]   ", "ai                  "); #>
-		<# PROPERTY_VIRTUAL("float[]   ", "localAI             "); #>
-		<# PROPERTY_VIRTUAL("float[]   ", "oldRot              "); #>
-		<# PROPERTY_STR_VIRTUAL("_givenName          "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("float     ", "ai                  "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("float     ", "localAI             "); #>
+		<# PROPERTY_ARRAYV_VIRTUAL("float     ", "oldRot              "); #>
+		<# PROPERTY_STR_VIRTUAL("_givenName"); #>
