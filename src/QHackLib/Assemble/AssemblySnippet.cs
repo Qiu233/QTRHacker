@@ -160,11 +160,12 @@ namespace QHackLib.Assemble
 			return s;
 		}
 
-		private static AssemblySnippet PreserveReg64()
+		public static AssemblySnippet PreserveReg64()
 		{
 			AssemblySnippet s = new();
 			s.Content.Add(Instruction.Create("push rcx"));
 			s.Content.Add(Instruction.Create("push rdx"));
+			s.Content.Add(Instruction.Create("push rbx"));//for alignment
 
 			s.Content.Add(Instruction.Create("push r8"));
 			s.Content.Add(Instruction.Create("push r9"));
@@ -174,11 +175,23 @@ namespace QHackLib.Assemble
 
 			s.Content.Add(Instruction.Create("sub rsp, 0x10"));
 			s.Content.Add(Instruction.Create("movdqu [rsp], xmm1"));
+
+			s.Content.Add(Instruction.Create("sub rsp, 0x10"));
+			s.Content.Add(Instruction.Create("movdqu [rsp], xmm2"));
+
+			s.Content.Add(Instruction.Create("sub rsp, 0x10"));
+			s.Content.Add(Instruction.Create("movdqu [rsp], xmm3"));
 			return s;
 		}
-		private static AssemblySnippet RestoreReg64()
+		public static AssemblySnippet RestoreReg64()
 		{
 			AssemblySnippet s = new();
+			s.Content.Add(Instruction.Create("movdqu xmm3, [rsp]"));
+			s.Content.Add(Instruction.Create("add rsp, 0x10"));
+
+			s.Content.Add(Instruction.Create("movdqu xmm2, [rsp]"));
+			s.Content.Add(Instruction.Create("add rsp, 0x10"));
+
 			s.Content.Add(Instruction.Create("movdqu xmm1, [rsp]"));
 			s.Content.Add(Instruction.Create("add rsp, 0x10"));
 
@@ -188,6 +201,7 @@ namespace QHackLib.Assemble
 			s.Content.Add(Instruction.Create("pop r9"));
 			s.Content.Add(Instruction.Create("pop r8"));
 
+			s.Content.Add(Instruction.Create("pop rbx"));
 			s.Content.Add(Instruction.Create("pop rdx"));
 			s.Content.Add(Instruction.Create("pop rcx"));
 			return s;
@@ -198,7 +212,11 @@ namespace QHackLib.Assemble
 		{
 			object[] args = ProcessUserArgs(userArgs);
 			AssemblySnippet s = new();
-			int localOffset = 0x18 + (args.Length + (thisPtr.HasValue ? 1 : 0) + (retBuf.HasValue ? 1 : 0) - 4) * 8;
+			int off = (args.Length + (thisPtr.HasValue ? 1 : 0) + (retBuf.HasValue ? 1 : 0) - 4) * 8;
+			if (off < 0)
+				off = 0;
+			stackSize += off;
+			int localOffset = 0x18 + off;
 			int regIndex = 0;
 			for (int i = 0; i < args.Length; i++)   //preprocess the structs whose size is not bigger than 8 bytes,
 			{
@@ -314,7 +332,7 @@ namespace QHackLib.Assemble
 				}
 				else
 				{
-					ulong urep = Convert.ToUInt64(arg);
+					ulong urep = (ulong)Convert.ToInt64(arg);
 					if (regIndex < 4)
 					{
 						s.Add((Instruction)$"mov {I()}, {urep}");
@@ -352,7 +370,7 @@ namespace QHackLib.Assemble
 			return s;
 			static int AlignSize(int size)
 			{
-				return ((size + 15) / 16 * 16) + 8;
+				return ((size + 15) / 16 * 16);
 			}
 		}
 
@@ -365,7 +383,8 @@ namespace QHackLib.Assemble
 		#endregion
 
 		#region Thread
-		public static AssemblySnippet StartManagedThread(QHackContext ctx, nuint lpCodeAddr, nuint lpwStrName_System_Action)
+
+		private static AssemblySnippet StartManagedThread32(QHackContext ctx, nuint lpCodeAddr, nuint lpwStrName_System_Action)
 		{
 			nuint getTypeMethod = ctx.BCLHelper.GetFunctionAddress("System.Type",
 				t => t.Signature == "System.Type.GetType(System.String)");
@@ -374,18 +393,54 @@ namespace QHackLib.Assemble
 			nuint taskRunMethod = ctx.BCLHelper.GetFunctionAddress("System.Threading.Tasks.Task",
 				t => t.Signature == "System.Threading.Tasks.Task.Run(System.Action)");
 			return FromCode(
-					new AssemblyCode[] {
-						(Instruction)"pushad",
-						FromConstructString(ctx,lpwStrName_System_Action),
-						(Instruction)"mov ecx,eax",
-						(Instruction)$"call {getTypeMethod}",
-						(Instruction)$"mov ecx,{lpCodeAddr}",
-						(Instruction)"mov edx,eax",
-						(Instruction)$"call {getPtrMethod}",
-						(Instruction)"mov ecx,eax",
-						(Instruction)$"call {taskRunMethod}",
-						(Instruction)"popad",
-				});
+				new AssemblyCode[] {
+					(Instruction)"pushad",
+					FromConstructString(ctx,lpwStrName_System_Action),
+					(Instruction)"mov ecx,eax",
+					(Instruction)$"call {getTypeMethod}",
+					(Instruction)$"mov ecx,{lpCodeAddr}",
+					(Instruction)"mov edx,eax",
+					(Instruction)$"call {getPtrMethod}",
+					(Instruction)"mov ecx,eax",
+					(Instruction)$"call {taskRunMethod}",
+					(Instruction)"popad",
+			});
+		}
+		private static AssemblySnippet StartManagedThread64(QHackContext ctx, nuint lpCodeAddr, nuint lpwStrName_System_Action)
+		{
+			nuint getTypeMethod = ctx.BCLHelper.GetFunctionAddress("System.Type",
+				t => t.Signature == "System.Type.GetType(System.String)");
+			nuint getPtrMethod = ctx.BCLHelper.GetFunctionAddress("System.Runtime.InteropServices.Marshal",
+				t => t.Signature == "System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(IntPtr, System.Type)");
+			nuint taskRunMethod = ctx.BCLHelper.GetFunctionAddress("System.Threading.Tasks.Task",
+				t => t.Signature == "System.Threading.Tasks.Task.Run(System.Action)");
+			using MemoryAllocation tmp = new(ctx);
+			return FromCode(
+				new AssemblyCode[] {
+					PreserveReg64(),
+					FromConstructString(ctx,lpwStrName_System_Action, tmp.AllocationBase),
+					(Instruction)$"sub rsp, 0x40",
+					(Instruction)$"mov rax,{tmp.AllocationBase}",
+					(Instruction)$"mov rcx,[rax]",
+					(Instruction)$"mov rax,{getTypeMethod}",
+					(Instruction)$"call rax",
+					(Instruction)$"mov rcx,{lpCodeAddr}",
+					(Instruction)$"mov rdx,rax",
+					(Instruction)$"mov rax,{getPtrMethod}",
+					(Instruction)$"call rax",
+					(Instruction)$"mov rcx,rax",
+					(Instruction)$"mov rax,{taskRunMethod}",
+					(Instruction)$"call rax",
+					(Instruction)$"add rsp, 0x40",
+					RestoreReg64()
+			});
+		}
+
+		public static AssemblySnippet StartManagedThread(QHackContext ctx, nuint lpCodeAddr, nuint lpwStrName_System_Action)
+		{
+			if (Utils.Is32Bit)
+				return StartManagedThread32(ctx, lpCodeAddr, lpwStrName_System_Action);
+			return StartManagedThread64(ctx, lpCodeAddr, lpwStrName_System_Action);
 		}
 		#endregion
 
@@ -427,16 +482,22 @@ namespace QHackLib.Assemble
 		/// <param name="strMemPtr">char* pointer of the string to be constructed</param>
 		/// <param name="retPtr">the pointer to receive the result</param>
 		/// <returns></returns>
-		public static AssemblySnippet FromConstructString(QHackContext ctx, nuint strMemPtr)
+		public static AssemblySnippet FromConstructString(QHackContext ctx, nuint strMemPtr, bool regProtection = false)
 		{
-			nuint ctor = ctx.BCLHelper.GetFunctionAddress("System.String", "CtorCharPtr");
-			return FromClrCall(ctor, false, thisPtr: 0, retBuf: null, null, new object[] { strMemPtr });
+			nuint ctor = GetCtorCharPtr(ctx);
+			return FromClrCall(ctor, regProtection, thisPtr: 0, retBuf: null, null, new object[] { strMemPtr });
 		}
 
-		public static AssemblySnippet FromConstructString(QHackContext ctx, nuint strMemPtr, nuint retPtr)
+		public static AssemblySnippet FromConstructString(QHackContext ctx, nuint strMemPtr, nuint retPtr, bool regProtection = false)
 		{
-			nuint ctor = ctx.BCLHelper.GetFunctionAddress("System.String", "CtorCharPtr");
-			return FromClrCall(ctor, false, thisPtr: 0, retBuf: null, retPtr, new object[] { strMemPtr });
+			nuint ctor = GetCtorCharPtr(ctx);
+			return FromClrCall(ctor, regProtection, thisPtr: 0, retBuf: null, retPtr, new object[] { strMemPtr });
+		}
+
+		private static nuint GetCtorCharPtr(QHackContext ctx)
+		{
+			return ctx.BCLHelper.GetFunctionAddress("System.String", 
+				t => t.Name == "CtorCharPtr" || t.Signature == "System.String.Ctor(Char*)"); //the latter is for .net core
 		}
 
 		/// <summary>
@@ -454,31 +515,61 @@ namespace QHackLib.Assemble
 			return FromClrCall(loadFrom, false, null, null, null, new object[] { assemblyFileNamePtr });
 		}
 
-		private static readonly Random random = new();
-		public static AssemblySnippet Loop(AssemblySnippet body, int times, bool regProtection)
+		private static AssemblySnippet Loop32(AssemblySnippet body, int times, bool regProtection)
 		{
-			byte[] lA = new byte[16];
-			byte[] lB = new byte[16];
-			random.NextBytes(lA);
-			random.NextBytes(lB);
+			byte[] lA = new Guid().ToByteArray();
+			byte[] lB = new Guid().ToByteArray();
 			AssemblySnippet s = new();
 			string labelA = "lab_" + string.Concat(lA.Select(t => t.ToString("x2")));
 			string labelB = "lab_" + string.Concat(lB.Select(t => t.ToString("x2")));
 			if (regProtection)
 				s.Content.Add(Instruction.Create("push ecx"));
 			s.Content.Add(Instruction.Create("mov ecx,0"));
-			s.Content.Add(Instruction.Create("" + labelA + ":"));
+			s.Content.Add(Instruction.Create($"{labelA}:"));
 			s.Content.Add(Instruction.Create("cmp ecx," + times + ""));
-			s.Content.Add(Instruction.Create("jge " + labelB + ""));
+			s.Content.Add(Instruction.Create($"jge {labelB}"));
 			s.Content.Add(Instruction.Create("push ecx"));
 			s.Content.Add(body);
 			s.Content.Add(Instruction.Create("pop ecx"));
 			s.Content.Add(Instruction.Create("inc ecx"));
-			s.Content.Add(Instruction.Create("jmp " + labelA + ""));
-			s.Content.Add(Instruction.Create("" + labelB + ":"));
+			s.Content.Add(Instruction.Create($"jmp {labelA}"));
+			s.Content.Add(Instruction.Create($"{labelB}:"));
 			if (regProtection)
 				s.Content.Add(Instruction.Create("pop ecx"));
 			return s;
+		}
+
+		private static AssemblySnippet Loop64(AssemblySnippet body, int times, bool regProtection)
+		{
+			byte[] lA = Guid.NewGuid().ToByteArray();
+			byte[] lB = Guid.NewGuid().ToByteArray();
+			AssemblySnippet s = new();
+			string labelA = "lab_" + string.Concat(lA.Select(t => t.ToString("x2")));
+			string labelB = "lab_" + string.Concat(lB.Select(t => t.ToString("x2")));
+			if (regProtection)
+				s.Content.Add(PreserveReg64());
+			s.Content.Add(Instruction.Create("mov rcx, 0"));
+			s.Content.Add(Instruction.Create($"{labelA}:"));
+			s.Content.Add(Instruction.Create($"cmp rcx, {times}"));
+			s.Content.Add(Instruction.Create($"jge {labelB}"));
+			s.Content.Add(Instruction.Create("push rcx"));//for alignment
+			s.Content.Add(Instruction.Create("push rcx"));
+			s.Content.Add(body);
+			s.Content.Add(Instruction.Create("pop rcx"));
+			s.Content.Add(Instruction.Create("pop rcx"));//for alignment
+			s.Content.Add(Instruction.Create("inc rcx"));
+			s.Content.Add(Instruction.Create($"jmp {labelA}"));
+			s.Content.Add(Instruction.Create($"{labelB}:"));
+			if (regProtection)
+				s.Content.Add(RestoreReg64());
+			return s;
+		}
+
+		public static AssemblySnippet Loop(AssemblySnippet body, int times, bool regProtection)
+		{
+			if (Utils.Is32Bit)
+				return Loop32(body, times, regProtection);
+			return Loop64(body, times, regProtection);
 		}
 
 		public override string GetCode()

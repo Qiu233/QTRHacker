@@ -315,7 +315,7 @@ namespace QTRHacker.Core
 			System.Threading.Monitor.Enter(LOCK_UPDATE);
 			bool v = InlineHook.HookOnce(
 					HContext, codeToRun,
-					GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update"), 1000, size);
+					GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update"), size);
 			System.Threading.Monitor.Exit(LOCK_UPDATE);
 			return v;
 		}

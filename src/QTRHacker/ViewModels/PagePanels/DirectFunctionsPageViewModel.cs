@@ -76,7 +76,7 @@ namespace QTRHacker.ViewModels.PagePanels
 
 		public void Load()
 		{
-			DateTime t0 = DateTime.Now;
+			/*DateTime t0 = DateTime.Now;
 			LoadAllFunctions();
 			DateTime t1 = DateTime.Now;
 			HackGlobal.Logging.Log("Time used to load scripts: " + (t1 - t0).TotalMilliseconds);
@@ -84,7 +84,7 @@ namespace QTRHacker.ViewModels.PagePanels
 			t0 = DateTime.Now;
 			Application.Current.Dispatcher.Invoke(new Action(() => UpdateUI()));
 			t1 = DateTime.Now;
-			HackGlobal.Logging.Log("Time used to update UI: " + (t1 - t0).TotalMilliseconds);
+			HackGlobal.Logging.Log("Time used to update UI: " + (t1 - t0).TotalMilliseconds);*/
 		}
 		private void LoadAllFunctions()
 		{

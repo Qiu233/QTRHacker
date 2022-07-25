@@ -73,23 +73,8 @@ namespace QTRHacker.Core.ProjectileImage
 			}
 		}
 
-		public void Emit(GameContext context, MPointF Location)
+		private void Emit32(GameContext context, MemoryAllocation alloc)
 		{
-			using MemoryAllocation alloc = new(context.HContext, 32 * (uint)Projs.Count + 64);
-			RemoteMemoryStream stream = new(context.HContext, alloc.AllocationBase, 0);
-			stream.Write<long>(Projs.Count);//8 bytes
-
-			byte[] bs = new byte[12];
-			for (int i = 0; i < Projs.Count; i++)
-			{
-				stream.Write(Projs[i].ProjType);//4
-				stream.Write(Location.X + Projs[i].Location.X);//4
-				stream.Write(Location.Y + Projs[i].Location.Y);//4
-				stream.Write(Projs[i].Speed.X);//4
-				stream.Write(Projs[i].Speed.Y);//4
-
-				stream.Write(bs, (uint)bs.Length);
-			}
 			AssemblySnippet snippet = AssemblySnippet.FromCode(
 				new AssemblyCode[] {
 					(Instruction)$"pushad",
@@ -119,6 +104,62 @@ namespace QTRHacker.Core.ProjectileImage
 				Projs.Count, true));
 			snippet.Add((Instruction)"popad");
 			context.RunByHookUpdate(snippet);
+		}
+
+		private void Emit64(GameContext context, MemoryAllocation alloc)
+		{
+			AssemblySnippet snippet = AssemblySnippet.FromEmpty();
+			snippet.Add((Instruction)$"mov rbx, {alloc.AllocationBase}");
+			snippet.Add(AssemblySnippet.Loop(
+					AssemblySnippet.FromCode(
+						new AssemblyCode[] {
+							(Instruction)$"mov rax, [rsp]",		//i
+							(Instruction)$"shl rax, 5",			//*32
+							(Instruction)$"lea rax, [rbx+8+rax]",
+
+							(Instruction)$"sub rsp, 0x80",
+
+							(Instruction)$"movd xmm1, [rax+4]",		//X:float
+							(Instruction)$"movd xmm2, [rax+8]",		//Y:float
+							(Instruction)$"movd xmm3, [rax+12]",		//SpeedX:float
+							(Instruction)$"mov ecx, [rax+16]",		//SpeedY:float
+							(Instruction)$"mov [rsp+0x20], rcx",
+							(Instruction)$"mov ecx, [rax]",			//Type:int
+							(Instruction)$"mov [rsp+0x28], rcx",
+							(Instruction)$"mov qword ptr [rsp+0x30], 0",	//Damage:int
+							(Instruction)$"mov qword ptr [rsp+0x38], 0",	//KnockBack:float
+							(Instruction)$"mov qword ptr [rsp+0x40], {context.MyPlayerIndex}",//Owner:int
+							(Instruction)$"mov qword ptr [rsp+0x48], 0",				//ai0:float
+							(Instruction)$"mov qword ptr [rsp+0x50], 0",				//ai1:float
+							(Instruction)$"xor rcx, rcx",		//SpawnSource:IProjectileSource
+							(Instruction)$"mov rax, {context.GameModuleHelper.GetClrMethodBySignature("Terraria.Projectile", "Terraria.Projectile.NewProjectile(Terraria.DataStructures.IEntitySource, Single, Single, Single, Single, Int32, Int32, Single, Int32, Single, Single)").NativeCode}",
+							(Instruction)$"call rax",
+							(Instruction)$"add rsp, 0x80",
+
+				}),
+				Projs.Count, true));
+			context.RunByHookUpdate(snippet);
+		}
+
+		public void Emit(GameContext context, MPointF Location)
+		{
+			using MemoryAllocation alloc = new(context.HContext, 32 * (uint)Projs.Count + 64);
+			RemoteMemoryStream stream = new(context.HContext, alloc.AllocationBase, 0);
+			stream.Write<long>(Projs.Count);//8 bytes
+
+			byte[] bs = new byte[12];
+			for (int i = 0; i < Projs.Count; i++)
+			{
+				stream.Write(Projs[i].ProjType);//4
+				stream.Write(Location.X + Projs[i].Location.X);//4
+				stream.Write(Location.Y + Projs[i].Location.Y);//4
+				stream.Write(Projs[i].Speed.X);//4
+				stream.Write(Projs[i].Speed.Y);//4
+
+				stream.Write(bs, (uint)bs.Length);
+			}
+			if (IntPtr.Size == 4) Emit32(context, alloc);
+			else Emit64(context, alloc);
 		}
 		public void ToStream(Stream stream)
 		{

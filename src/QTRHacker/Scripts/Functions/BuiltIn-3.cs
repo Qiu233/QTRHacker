@@ -89,9 +89,9 @@ public class RevealTheWholeMap : BaseFunction
 	public override void Enable(GameContext ctx)
 	{
 		AssemblySnippet asm = AssemblySnippet.FromEmpty();
-		asm.Content.Add(Instruction.Create("push ecx"));
-		asm.Content.Add(Instruction.Create("push edx"));
-		asm.Content.Add(
+		asm.Add(Instruction.Create("push ecx"));
+		asm.Add(Instruction.Create("push edx"));
+		asm.Add(
 			AssemblySnippet.Loop(
 				AssemblySnippet.Loop(
 					AssemblySnippet.FromCode(
@@ -105,8 +105,8 @@ public class RevealTheWholeMap : BaseFunction
 						}),
 					ctx.MaxTilesY, false),
 				ctx.MaxTilesX, false));
-		asm.Content.Add(Instruction.Create("pop edx"));
-		asm.Content.Add(Instruction.Create("pop ecx"));
+		asm.Add(Instruction.Create("pop edx"));
+		asm.Add(Instruction.Create("pop ecx"));
 
 		ctx.RunByHookUpdate(asm);
 		ctx.RefreshMap = true;

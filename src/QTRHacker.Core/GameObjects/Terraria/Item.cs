@@ -43,12 +43,10 @@ namespace QTRHacker.Core.GameObjects.Terraria
 		{
 			Context.RunByHookUpdate(AssemblySnippet.FromCode(
 				new AssemblyCode[] {
-					Instruction.Create("push ecx"),
-					Instruction.Create("push edx"),
+					AssemblySnippet.PreserveReg64(),
 					TypedInternalObject.GetMethodCall("Terraria.Item.SetDefaults(Int32)").Call(false, null, null, new object[] { type }),
 					TypedInternalObject.GetMethodCall("Terraria.Item.Prefix(Int32)").Call(false, null, null, new object[] { prefix }),
-					Instruction.Create("pop edx"),
-					Instruction.Create("pop ecx")
+					AssemblySnippet.RestoreReg64(),
 				}));
 		}
 

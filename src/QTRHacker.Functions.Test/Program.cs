@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.Test;
@@ -33,6 +34,7 @@ class Program
 			new AssemblyCode[] {
 				(Instruction)"push rcx",
 				(Instruction)"push rdx",
+				(Instruction)"push rbx",//for alignment
 				(Instruction)"push r8",
 				(Instruction)"push r9",
 
@@ -41,14 +43,14 @@ class Program
 				(Instruction)"sub rsp, 0x10",
 				(Instruction)"movdqu [rsp], xmm1",
 
-				(Instruction)"sub rsp, 40",
+				(Instruction)"sub rsp, 32",
 
 				(Instruction)$"mov rcx, {ctx.MyPlayer.Inventory[0].BaseAddress}",
 				(Instruction)$"mov edx, 3064",
 				(Instruction)$"mov rax, {method.NativeCode}",
 				(Instruction)$"call rax",
 
-				(Instruction)"add rsp, 40",
+				(Instruction)"add rsp, 32",
 
 				(Instruction)"movdqu xmm1, [rsp]",
 				(Instruction)"add rsp, 0x10",
@@ -57,6 +59,7 @@ class Program
 
 				(Instruction)"pop r9",
 				(Instruction)"pop r8",
+				(Instruction)"pop rbx",
 				(Instruction)"pop rdx",
 				(Instruction)"pop rcx",
 			}
@@ -100,8 +103,8 @@ class Program
 
 		var code = AssemblySnippet.FromClrCall(method.NativeCode, true, null, null, null,
 			new object[] { 0, (int)ctx.MyPlayer.Position.X, (int)ctx.MyPlayer.Position.Y, 50, 0, 0f, 0f, 0f, 0f, 255 });
-		Console.WriteLine(code);
-		using InlineHook hook = new InlineHook(ctx.HContext, code, new HookParameters(targetAddress: ctx.GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update"), 4096, true, true));
+		Console.WriteLine(code);*/
+		/*using InlineHook hook = new InlineHook(ctx.HContext, code, new HookParameters(targetAddress: ctx.GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update"), 4096, true, true));
 		Console.WriteLine(hook.MemoryAllocation.AllocationBase.ToString("X16"));
 		Console.ReadKey();
 		hook.Attach();
@@ -109,5 +112,10 @@ class Program
 		Console.ReadKey();
 		hook.WaitToDetach();
 		hook.WaitToDispose();*/
+
+		/*var code = AssemblySnippet.Loop(AssemblySnippet.FromASMCode("xor edx,edx"), 100, true);
+		ctx.RunByHookUpdate(code);*/
+
+		Projectile.NewProjectile(ctx, null, ctx.MyPlayer.Position.X, ctx.MyPlayer.Position.Y, 10f, 0f, 502, 0, 0, ctx.MyPlayerIndex, 0f, 0f);
 	}
 }

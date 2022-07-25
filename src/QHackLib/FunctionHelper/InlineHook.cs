@@ -262,14 +262,15 @@ namespace QHackLib.FunctionHelper
 			}
 		}
 
-		public static bool HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, int timeout = 1000, uint size = 4096)
+		public static bool HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, uint size = 4096)
 		{
 			var hook = new InlineHook(Context, code, new HookParameters(targetAddr, size, true, true));
 			if (!hook.Attach())
 				return false;
-			if (!Task.Run(() => hook.WaitToDetach()).Wait(timeout))
+			if (!hook.WaitToDetach())
 				return false;
-			return Task.Run(() => hook.WaitToDispose()).Wait(timeout);
+			hook.WaitToDispose();
+			return true;
 		}
 
 		/// <summary>
