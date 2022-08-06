@@ -1,0 +1,40 @@
+﻿<controls:MWindow x:Class="QTRHacker.Views.Advanced.AutoFishing.AutoFishingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QTRHacker.Views.Advanced.AutoFishing"
+        xmlns:controls="clr-namespace:QTRHacker.Controls"
+        xmlns:l="clr-namespace:QTRHacker.Localization"
+        mc:Ignorable="d"
+        Title="Fishing Bot" Height="240" Width="360">
+    <Grid>
+        <TabControl TabStripPlacement="Left">
+            <TabItem Header="{l:Localization UI.AutoFishing.Disabled}" IsSelected="{Binding Disabled, Mode=TwoWay}">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{l:Localization UI.AutoFishing.Help}" TextWrapping="WrapWithOverflow" Padding="4,2,4,0"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.AutoFishing.All}" IsSelected="{Binding All, Mode=TwoWay}">
+            </TabItem>
+            <TabItem Header="{l:Localization UI.AutoFishing.Items}" IsSelected="{Binding Items, Mode=TwoWay}">
+                <Border Padding="2">
+                    <StackPanel Orientation="Vertical">
+                        <CheckBox Content="{l:Localization UI.AutoFishing.CratesOnly}"
+                                  FlowDirection="LeftToRight" VerticalContentAlignment="Center"
+                                  FontSize="22" HorizontalAlignment="Left"
+                                  Foreground="{StaticResource QTRHacker.SoftWhite}"
+                                  IsChecked="{Binding CratesOnly}"/>
+                        <CheckBox Content="{l:Localization UI.AutoFishing.QuestItemsOnly}"
+                                  FlowDirection="LeftToRight" VerticalContentAlignment="Center"
+                                  FontSize="22" HorizontalAlignment="Left"
+                                  Foreground="{StaticResource QTRHacker.SoftWhite}"
+                                  IsChecked="{Binding QuestItemsOnly}"/>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.AutoFishing.NPCs}" IsSelected="{Binding NPCs, Mode=TwoWay}">
+            </TabItem>
+        </TabControl>
+    </Grid>
+</controls:MWindow>

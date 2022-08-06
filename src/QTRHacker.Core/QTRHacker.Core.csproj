@@ -9,23 +9,28 @@
 		<PlatformTarget>x86</PlatformTarget>
 		<NoWarn>1701;1702;CA2211;NU1702</NoWarn>
 		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
+		<DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
-	</ItemGroup>
-
+	
 	<ItemGroup>
 		<ContentWithTargetPath Include="..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>QTRHacker.Patches.dll</TargetPath>
 		</ContentWithTargetPath>
-		<!--ProjectReference Include="..\QTRHacker.Patches\QTRHacker.Patches.csproj" /-->
+		<UpToDateCheckBuilt Include="$(OutputPath)QTRHacker.Patches.dll"
+							Original="..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
+		<ProjectReference Include="..\QTRHacker.Patches\QTRHacker.Patches.csproj">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+		</ProjectReference>
 	</ItemGroup>
 
 	<ItemGroup>

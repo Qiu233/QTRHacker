@@ -17,10 +17,11 @@ namespace QHackLib.FunctionHelper
 		{
 			public const int RAW_CODE_BYTES_LENGTH = 32;
 			public static readonly int HeaderSize = sizeof(HookInfo);
-			public static readonly int Offset_OnceFlag = (int)Marshal.OffsetOf<HookInfo>(nameof(OnceFlag));
-			public static readonly int Offset_SafeFreeFlag = (int)Marshal.OffsetOf<HookInfo>(nameof(SafeFreeFlag));
-			public static readonly int Offset_RawCodeLength = (int)Marshal.OffsetOf<HookInfo>(nameof(RawCodeLength));
-			public static readonly int Offset_RawCodeBytes = (int)Marshal.OffsetOf<HookInfo>(nameof(RawCodeBytes));
+			public static readonly int Offset_UserData = sizeof(nuint);
+			public static readonly int Offset_OnceFlag = Offset_UserData + sizeof(nuint);
+			public static readonly int Offset_SafeFreeFlag = Offset_OnceFlag + sizeof(int);
+			public static readonly int Offset_RawCodeLength = Offset_SafeFreeFlag + sizeof(int);
+			public static readonly int Offset_RawCodeBytes = Offset_RawCodeLength + sizeof(uint);
 
 			public nuint Address_Code => AllocBase + (uint)HeaderSize;
 
@@ -34,6 +35,7 @@ namespace QHackLib.FunctionHelper
 				if (rawCodeBytes.Length > RAW_CODE_BYTES_LENGTH)
 					throw new ArgumentOutOfRangeException(nameof(rawCodeBytes));
 				AllocBase = allocBase;
+				UserData = 0;
 				OnceFlag = 1;
 				SafeFreeFlag = 0; //initially safe
 				RawCodeLength = (uint)rawCodeBytes.Length;
@@ -42,6 +44,7 @@ namespace QHackLib.FunctionHelper
 			}
 
 			public nuint AllocBase;
+			public nuint UserData;
 			public int OnceFlag;
 			public int SafeFreeFlag;
 			public uint RawCodeLength;
@@ -79,7 +82,7 @@ namespace QHackLib.FunctionHelper
 			assembler.Emit(DataHelper.GetBytes(info));//emit the header before runnable code
 			assembler.Emit((Instruction)$"mov dword ptr [{safeFreeFlagAddr}],1");
 			assembler.Emit(Parameters.IsOnce ? GetOnceCheckedCode(Code, onceFlagAddr) : Code);//once or not
-			if (Parameters.Original)
+			if (Parameters.PreserveCode)
 				assembler.Emit(headInstBytes);//emit the raw code replaced by hook jmp
 			assembler.Emit((Instruction)$"mov dword ptr [{safeFreeFlagAddr}],0");
 			assembler.Emit((Instruction)$"jmp {retAddr}");
@@ -208,14 +211,15 @@ namespace QHackLib.FunctionHelper
 			return result;
 		}
 
-		public static bool HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, int timeout = 1000, uint size = 4096)
+		public static bool HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, uint size = 4096)
 		{
 			var hook = new InlineHook(Context, code, new HookParameters(targetAddr, size, true, true));
 			if (!hook.Attach())
 				return false;
-			if (!Task.Run(() => hook.WaitToDetach()).Wait(timeout))
+			if (hook.WaitToDetach())
 				return false;
-			return Task.Run(() => hook.WaitToDispose()).Wait(timeout);
+			hook.WaitToDispose();
+			return true;
 		}
 
 		/// <summary>

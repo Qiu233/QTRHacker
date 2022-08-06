@@ -26,7 +26,7 @@ namespace QTRHacker.Core.GameObjects
 		{
 			return Encoding.Unicode.GetString(
 				obj.Context.DataAccess.ReadBytes(
-					obj.BaseAddress + (uint)sizeof(nuint) * 2, (uint)obj.GetArrayLength() * sizeof(char)));
+					obj.BaseAddress + (uint)sizeof(nuint) + 4, (uint)obj.GetArrayLength() * sizeof(char)));
 		}
 
 		/// <summary>
