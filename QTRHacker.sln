@@ -10,9 +10,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QHackLib", "src\QHackLib\QHackLib.csproj", "{61EA2FEE-9135-4855-B699-EB74731F57A4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker.Core", "src\QTRHacker.Core\QTRHacker.Core.csproj", "{6C367E9E-E1E2-4247-ABA2-C7D1C82804ED}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CE0330C6-9C1C-45CF-90C0-AE98F78E4881} = {CE0330C6-9C1C-45CF-90C0-AE98F78E4881}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker.Patches", "src\QTRHacker.Patches\QTRHacker.Patches.csproj", "{CE0330C6-9C1C-45CF-90C0-AE98F78E4881}"
 EndProject

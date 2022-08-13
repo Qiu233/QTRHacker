@@ -313,7 +313,7 @@ public class StrengthenVampireKnives : BaseFunction
 	}
 }
 
-
+/*
 public class BuiltIn_2 : FunctionCategory
 {
 	public override string Category => "Basic2";
@@ -332,3 +332,4 @@ public class BuiltIn_2 : FunctionCategory
 		Add<StrengthenVampireKnives>();
 	}
 }
+*/

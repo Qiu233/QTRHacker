@@ -116,6 +116,8 @@ class Program
 		/*var code = AssemblySnippet.Loop(AssemblySnippet.FromASMCode("xor edx,edx"), 100, true);
 		ctx.RunByHookUpdate(code);*/
 
-		Projectile.NewProjectile(ctx, null, ctx.MyPlayer.Position.X, ctx.MyPlayer.Position.Y, 10f, 0f, 502, 0, 0, ctx.MyPlayerIndex, 0f, 0f);
+		//Projectile.NewProjectile(ctx, null, ctx.MyPlayer.Position.X, ctx.MyPlayer.Position.Y, 10f, 0f, 502, 0, 0, ctx.MyPlayerIndex, 0f, 0f);
+
+		ctx.MyPlayer.Inventory[0].SetDefaults(3063);
 	}
 }

@@ -186,7 +186,7 @@ public class CopyPlayersInventoryAndAppearance : BaseFunction
 	}
 }
 
-public class Inventory : FunctionCategory
+/*public class Inventory : FunctionCategory
 {
 	public override string Category => "Inventory";
 	public Inventory()
@@ -200,4 +200,4 @@ public class Inventory : FunctionCategory
 	}
 }
 
-return new Inventory();
+return new Inventory();*/

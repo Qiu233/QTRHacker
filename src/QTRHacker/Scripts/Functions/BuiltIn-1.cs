@@ -376,6 +376,7 @@ public class GhostMode : BaseFunction
 		IsEnabled = false;
 	}
 }
+/*
 public class BuiltIn_1 : FunctionCategory
 {
 	public override string Category => "Basic1";
@@ -397,3 +398,4 @@ public class BuiltIn_1 : FunctionCategory
 		Add<GhostMode>();
 	}
 }
+*/

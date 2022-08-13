@@ -177,7 +177,7 @@ public class MachanicalLens : BaseFunction
 		IsEnabled = false;
 	}
 }
-
+/*
 public class BuiltIn_5 : FunctionCategory
 {
 	public override string Category => "Builder";
@@ -191,3 +191,4 @@ public class BuiltIn_5 : FunctionCategory
 		Add<MachanicalLens>();
 	}
 }
+*/

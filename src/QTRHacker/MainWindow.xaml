@@ -18,31 +18,32 @@
                 <Style x:Key="MainWindowTabItem" TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
                     <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
                     <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
+                    <Setter Property="FontSize" Value="18"/>
                 </Style>
             </TabControl.Resources>
             <TabItem DataContext="{Binding PlayersPageViewModel}"
                      Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.Player}" FontSize="20">
+                     Header="{l:Localization UI.Player}" >
                 <pagepanels:PlayersPage x:Name="PlayersPage"/>
             </TabItem>
             <TabItem DataContext="{Binding DirectFunctionsPageViewModel}"
                      Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.DirectFunction}" FontSize="20">
+                     Header="{l:Localization UI.DirectFunction}" >
                 <pagepanels:DirectFunctionsPage/>
             </TabItem>
             <TabItem DataContext="{Binding AdvancedPageViewModel}"
                      Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.Advanced}" FontSize="20">
+                     Header="{l:Localization UI.Advanced}" >
                 <pagepanels:AdvancedPage/>
             </TabItem>
             <TabItem DataContext="{Binding AboutPageViewModel}"
                      Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.About}" FontSize="20">
+                     Header="{l:Localization UI.About}" >
                 <pagepanels:AboutPage/>
             </TabItem>
             <TabItem DataContext="{Binding MainPageViewModel}" 
                      Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.MainPage}" FontSize="20">
+                     Header="{l:Localization UI.MainPage}" >
                 <pagepanels:MainPage/>
             </TabItem>
         </TabControl>

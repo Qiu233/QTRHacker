@@ -17,13 +17,18 @@ namespace QTRHacker.Core.GameObjects
 
 		public unsafe string GetValue()
 		{
-			return Encoding.Unicode.GetString(
-				Context.HContext.DataAccess.ReadBytes(
-					TypedInternalObject.BaseAddress + (uint)sizeof(nuint) + 4, (uint)Length * sizeof(char)));
+			return GetString(TypedInternalObject);
 		}
 
 		public unsafe static string GetString(HackObject obj)
 		{
+			if (obj.BaseAddress == 0)
+				return null;
+			int len = obj.GetArrayLength();
+			if (len == 0)
+				return "";
+			else if (len < 0)
+				return null;
 			return Encoding.Unicode.GetString(
 				obj.Context.DataAccess.ReadBytes(
 					obj.BaseAddress + (uint)sizeof(nuint) + 4, (uint)obj.GetArrayLength() * sizeof(char)));

@@ -218,8 +218,8 @@ public class BuiltIn_3 : FunctionCategory
 		this["en"] = "Advanced";
 		Add<BurnAllNPCs>();
 		Add<BurnAllPlayers>();
-		Add<RandomizeUUID>();
-		Add<RightClickToTP>();
-		Add<RevealTheWholeMap>();
+		//Add<RandomizeUUID>();
+		//Add<RightClickToTP>();
+		//Add<RevealTheWholeMap>();
 	}
 }

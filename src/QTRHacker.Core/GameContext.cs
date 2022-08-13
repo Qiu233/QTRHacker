@@ -310,12 +310,19 @@ namespace QTRHacker.Core
 			return re;
 		}
 
+		private nuint GetHookCheckedAddress(nuint addr)
+		{
+			if (HContext.DataAccess.Read<byte>(addr) != 0xE9)
+				return addr;
+			return addr + HContext.DataAccess.Read<uint>(addr + 1) + 5;
+		}
+
 		public bool RunByHookUpdate(AssemblyCode codeToRun, uint size = 0x1000)
 		{
 			System.Threading.Monitor.Enter(LOCK_UPDATE);
 			bool v = InlineHook.HookOnce(
 					HContext, codeToRun,
-					GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update"), size);
+					GetHookCheckedAddress(GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update")), size);
 			System.Threading.Monitor.Exit(LOCK_UPDATE);
 			return v;
 		}
