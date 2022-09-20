@@ -118,5 +118,21 @@ namespace QTRHacker.Core
 			get => PatchHelper.GetStaticFieldValue<int>("QTRHacker.Patches.AimBot", "Mode");
 			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AimBot", "Mode", value);
 		}
+
+		public int AutoFishing_Mode
+		{
+			get => PatchHelper.GetStaticFieldValue<int>("QTRHacker.Patches.AutoFishing", "Mode");
+			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AutoFishing", "Mode", value);
+		}
+		public bool AutoFishing_CratesOnly
+		{
+			get => PatchHelper.GetStaticFieldValue<bool>("QTRHacker.Patches.AutoFishing", "CratesOnly");
+			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AutoFishing", "CratesOnly", value);
+		}
+		public bool AutoFishing_QuestItemsOnly
+		{
+			get => PatchHelper.GetStaticFieldValue<bool>("QTRHacker.Patches.AutoFishing", "QuestItemsOnly");
+			set => PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AutoFishing", "QuestItemsOnly", value);
+		}
 	}
 }

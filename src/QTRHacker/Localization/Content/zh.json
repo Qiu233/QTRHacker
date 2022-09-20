@@ -78,6 +78,15 @@
       "NearestPlayer": "最近的玩家",
       "TargetedPlayer": "锁定玩家"
     },
+    "AutoFishing": {
+      "Help": "自动钓鱼已关闭，请在左侧选择一个模式开启。\n开启后，你需要先手动扔出鱼钩并且不要移动鼠标，直到第一条鱼上钩。\n受到伤害可能会中断自动钓鱼。",
+      "Disabled": "关闭",
+      "All": "所有",
+      "Items": "物品",
+      "NPCs": "NPC",
+      "CratesOnly": "仅板条箱",
+      "QuestItemsOnly": "仅任务鱼"
+    },
     "PlayerColors": {
       "Hair": "头发",
       "Skin": "皮肤",

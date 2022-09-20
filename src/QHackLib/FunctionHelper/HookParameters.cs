@@ -14,14 +14,14 @@ namespace QHackLib.FunctionHelper
 		public readonly nuint TargetAddress;
 		public readonly uint Size;
 		public readonly bool IsOnce;
-		public readonly bool Original;
+		public readonly bool PreserveCode;
 
-		public HookParameters(nuint targetAddress, uint size, bool isOnce = false, bool original = true)
+		public HookParameters(nuint targetAddress, uint size, bool isOnce = false, bool preserveCode = true)
 		{
 			TargetAddress = targetAddress;
 			Size = size;
 			IsOnce = isOnce;
-			Original = original;
+			PreserveCode = preserveCode;
 		}
 	}
 }
