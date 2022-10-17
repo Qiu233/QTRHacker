@@ -10,7 +10,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 {
 	public class Mount : GameObject
 	{
-		protected Mount(GameContext ctx, HackObject obj) : base(ctx, obj)
+		public Mount(GameContext ctx, HackObject obj) : base(ctx, obj)
 		{
 		}
 	}

@@ -20,6 +20,7 @@ namespace GameDataExporter
 			{ "Microsoft.Xna.Framework.Rectangle", "ValueTypeRedefs.Xna.Rectangle" },
 			{ "Microsoft.Xna.Framework.Vector2", "ValueTypeRedefs.Xna.Vector2" },
 			{ "Microsoft.Xna.Framework.Point", "ValueTypeRedefs.Xna.Point" },
+			{ "Terraria.BitsByte", "ValueTypeRedefs.Terraria.BitsByte" },
 		};
 
 		static string GetTypeName(string type)
@@ -170,7 +171,7 @@ namespace GameDataExporter
 		private static ClrRuntime Runtime;
 		static void Main(string[] args)
 		{
-			var id = Process.GetProcessesByName("tModLoader")[0].Id;
+			var id = Process.GetProcessesByName("Terraria")[0].Id;
 			DataTarget dataTarget = new(id);
 			Runtime = dataTarget.ClrVersions[0].CreateRuntime();
 			ClrModule module = Runtime.AppDomain.Modules.First(t => t.Name == "Terraria");

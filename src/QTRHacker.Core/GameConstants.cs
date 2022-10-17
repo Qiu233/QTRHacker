@@ -8,8 +8,8 @@ namespace QTRHacker.Core
 {
 	public static class GameConstants
 	{
-		public const int MaxItemTypes = 5125;
-		public static int[] NPCFrameCount = new int[670]
+		public const int MaxItemTypes = 5456;
+		public static int[] NPCFrameCount = new int[688]
 		{
 			1, 2, 2, 3, 6, 2, 2, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 2, 25, 23, 25,
@@ -23,7 +23,7 @@ namespace QTRHacker.Core
 			1, 1, 1, 4, 3, 1, 1, 1, 1, 1,
 			1, 5, 6, 7, 16, 1, 1, 25, 23, 12,
 			20, 21, 1, 2, 2, 3, 6, 1, 1, 1,
-			15, 4, 11, 1, 23, 6, 6, 3, 1, 2,
+			15, 4, 11, 1, 23, 6, 6, 6, 1, 2,
 			2, 1, 3, 4, 1, 2, 1, 4, 2, 1,
 			15, 3, 25, 4, 5, 7, 3, 2, 12, 12,
 			4, 4, 4, 8, 8, 13, 5, 6, 4, 15,
@@ -77,7 +77,9 @@ namespace QTRHacker.Core
 			16, 21, 16, 23, 5, 16, 2, 28, 28, 6,
 			6, 6, 6, 6, 6, 6, 7, 7, 7, 7,
 			7, 7, 7, 3, 4, 6, 27, 16, 2, 2,
-			4, 3, 4, 23, 6, 1, 1, 2, 8, 1
+			4, 3, 4, 23, 6, 1, 1, 2, 8, 8,
+			14, 6, 6, 6, 6, 6, 2, 4, 14, 14,
+			14, 14, 14, 14, 14, 1, 1, 13
 		};
 	}
 }

@@ -19,6 +19,9 @@ namespace QTRHacker.ViewModels.PlayerEditor
 		public ItemSlotsEditorViewModel SafeViewModel { get; }
 		public ItemSlotsEditorViewModel ForgeViewModel { get; }
 		public ItemSlotsEditorViewModel VoidVaultViewModel { get; }
+		public ItemSlotsEditorViewModel Loadout1ViewModel { get; }
+		public ItemSlotsEditorViewModel Loadout2ViewModel { get; }
+		public ItemSlotsEditorViewModel Loadout3ViewModel { get; }
 		public DispatcherTimer UpdateTimer { get; }
 
 		public PlayerEditorWindowViewModel(Player player)
@@ -35,6 +38,10 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			SafeViewModel = new ItemSlotsEditorViewModel(new BankLayout(), player, GetSafeItem, UpdateTimer);
 			ForgeViewModel = new ItemSlotsEditorViewModel(new BankLayout(), player, GetForgeItem, UpdateTimer);
 			VoidVaultViewModel = new ItemSlotsEditorViewModel(new BankLayout(), player, GetVoidVaultItem, UpdateTimer);
+
+			Loadout1ViewModel = new ItemSlotsEditorViewModel(new LoadoutLayout(), player, index => GetLoadoutItem(0, index), UpdateTimer);
+			Loadout2ViewModel = new ItemSlotsEditorViewModel(new LoadoutLayout(), player, index => GetLoadoutItem(1, index), UpdateTimer);
+			Loadout3ViewModel = new ItemSlotsEditorViewModel(new LoadoutLayout(), player, index => GetLoadoutItem(2, index), UpdateTimer);
 
 			UpdateTimer.Start();
 		}
@@ -61,6 +68,16 @@ namespace QTRHacker.ViewModels.PlayerEditor
 			if (index < Player.MISCDYE_MAX_COUNT)
 				return Player.MiscDyes[index];
 			return Player.Armor[0];
+		}
+
+		private Item GetLoadoutItem(int loadoutIndex, int index)
+		{
+			if (0 <= index && index < 20)
+				return Player.Loadouts[loadoutIndex].Armor[index];//TODO: cache Inventory
+			else if (20 <= index && index < 30)
+				return Player.Loadouts[loadoutIndex].Dye[index];//TODO: cache Inventory
+			else
+				throw new IndexOutOfRangeException();
 		}
 
 		private Item GetInventoryItem(int index) => Player.Inventory[index];//TODO: cache Inventory

@@ -10,32 +10,44 @@
                   Title="{Binding Player.Name}">
     <Grid>
         <TabControl>
-            <TabItem Header="{l:Localization UI.Inventory}"
+            <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Inventory}"
                      IsSelected="{Binding InventoryEditorViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor DataContext="{Binding InventoryEditorViewModel}"/>
             </TabItem>
-            <TabItem Header="{l:Localization UI.Armor}"
+            <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Armor}"
                      IsSelected="{Binding ArmorEditorViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor DataContext="{Binding ArmorEditorViewModel}"/>
             </TabItem>
-            <TabItem Header="{l:Localization UI.Piggy}"
+            <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Piggy}"
                      IsSelected="{Binding PiggyBankViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor DataContext="{Binding PiggyBankViewModel}"/>
             </TabItem>
-            <TabItem Header="{l:Localization UI.Safe}"
+            <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Safe}"
                      IsSelected="{Binding SafeViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor DataContext="{Binding SafeViewModel}"/>
             </TabItem>
-            <TabItem Header="{l:Localization UI.Forge}"
+            <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Forge}"
                      IsSelected="{Binding ForgeViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor DataContext="{Binding ForgeViewModel}"/>
             </TabItem>
-            <TabItem Header="{l:Localization UI.VoidVault}"
+            <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.VoidVault}"
                      IsSelected="{Binding VoidVaultViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor DataContext="{Binding VoidVaultViewModel}"/>
             </TabItem>
             <TabItem Header="{l:Localization UI.Properties}">
                 <local:PlayerPropertiesEditor DataContext="{Binding PlayerPropertiesEditorViewModel}"/>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Loadout1}"
+                     IsSelected="{Binding VoidVaultViewModel.Updating, Mode=OneWayToSource}">
+                <local:ItemSlotsEditor DataContext="{Binding Loadout1ViewModel}"/>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Loadout2}"
+                     IsSelected="{Binding VoidVaultViewModel.Updating, Mode=OneWayToSource}">
+                <local:ItemSlotsEditor DataContext="{Binding Loadout2ViewModel}"/>
+            </TabItem>
+            <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Loadout3}"
+                     IsSelected="{Binding VoidVaultViewModel.Updating, Mode=OneWayToSource}">
+                <local:ItemSlotsEditor DataContext="{Binding Loadout3ViewModel}"/>
             </TabItem>
         </TabControl>
     </Grid>

@@ -24,7 +24,7 @@ namespace QTRHacker
 	{
 		public static MainWindow Instance { get; private set; }
 		public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
-		public const string GameVersion = "1.4.3.6";
+		public const string GameVersion = "1.4.4.5";
 		public MainWindow()
 		{
 			Instance = this;

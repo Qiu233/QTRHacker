@@ -55,6 +55,21 @@ private void PROPERTY_GO_VIRTUAL(string type, string name)
 	PROPERTY_GO_VIRTUAL(type, newName, name);
 }
 
+private void PROPERTY_GO_VIRTUAL_READONLY(string type, string newName, string name)
+{
+#>public virtual <#= type #> <#= newName #>
+{
+	get => new(Context, InternalObject.<#= name #>);
+}<#+
+}
+private void PROPERTY_GO_VIRTUAL_READONLY(string type, string name)
+{
+	string newName = GetLegalName(name);
+	newName = newName[0].ToString().ToUpper() + newName.Substring(1);
+	name = name.Trim();
+	PROPERTY_GO_VIRTUAL_READONLY(type, newName, name);
+}
+
 private void PROPERTY_STR_VIRTUAL(string newName, string name)
 {
 #>public virtual string <#= newName #>

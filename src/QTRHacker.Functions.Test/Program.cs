@@ -41,48 +41,16 @@ namespace QTRHacker.Functions.Test
 		unsafe static void Main()
 		{
 			using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0]);
-			/*byte off = (byte)-((byte)(ctx.GameModuleHelper.GetClrType("Terraria.DataStructures.FishingAttempt").DataSize + 0xC));
-			Console.WriteLine(off.ToString("X2"));
-			nuint addr = AobscanHelper.AobscanMatch(ctx.HContext.Handle, $"8D55 {off:X2} 8BCB FF15 ******** 33C0").FirstOrDefault();
-			if (addr != 0)
-			{
-				var hook = InlineHook.Hook(ctx.HContext, AssemblySnippet.FromCode(new AssemblyCode[] {
-					(Instruction)"pushad",
 
-					// if state.ForceLevel != -1:
-					//   set common, uncommon, rare, veryrare, legendary
-					// if Mode == ForceQuest:
-					//   set rolledEnemySpawn = 0
-					//   set rolledItemDrop = QuestItem
-					//   jmp label_end
-					// if Mode == ForceItem:
-					//   set rolledEnemySpawn = 0
-					//   set rolledItemDrop = state.ForceItemType
-					//   jmp label_end
-					// if Mode == ForceCrates && !crate:
-					//   set rolledEnemySpawn = 0
-					//   set crate = true
-					//   jmp call_FishingCheck_RollItemDrop
-					// if Mode == ForceEnemies && rolledEnemySpawn == 0:
-					//   set rolledItemDrop = 0
-					//   jmp call_FishingCheck_RollEnemySpawns
-
-					(Instruction)"label_end:",
-					(Instruction)"popad",
-				}), new HookParameters(addr + 0xB, 4096, false, true));
-				Console.WriteLine(hook.MemoryAllocation.AllocationBase.ToString("X8"));
-				Console.Read();
-				InlineHook.FreeHook(ctx.HContext, addr, true);
-			}*//*
-			ctx.MyPlayer.ControlUseItem = true;
-			ctx.MyPlayer.ReleaseUseItem = true;
-			ctx.RunByHookUpdate(AssemblySnippet.FromClrCall(
-					ctx.GameModuleHelper.GetFunctionAddress("Terraria.Player", "ItemCheck"), true, ctx.MyPlayer.BaseAddress, null, null,
-					new object[] { ctx.MyPlayerIndex }));*/
-			foreach (var m in ctx.HContext.Runtime.AppDomain.Modules)
+			var type = ctx.GameModuleHelper.GetClrType("Terraria.Projectile");
+			foreach (var t in type.MethodsInVTable.Where(t=>t.Name== "NewProjectile"))
 			{
+				Console.WriteLine(t.Signature);
 			}
-			Console.Read();
+			/*Console.WriteLine(string.Join(", ", ctx.MyPlayer.Loadouts[0].Armor.Select(t => t.Type)));
+			Console.WriteLine(string.Join(", ", ctx.MyPlayer.Loadouts[1].Armor.Select(t => t.Type)));
+			ctx.MyPlayer.Loadouts[0].Armor[0].SetDefaults(3063);*/
+			//Console.WriteLine(ctx.MyPlayer.Armor.Length);
 		}
 	}
 }
