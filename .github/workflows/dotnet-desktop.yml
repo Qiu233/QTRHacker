@@ -1,0 +1,38 @@
+name: AutoBuild
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: ["win-x64"]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.100'
+
+      - name: Produce build
+        run: |
+            cd src/QTRHacker
+            dotnet publish -r ${{ matrix.arch }} -f net6.0 -c Release -p:PublishSingleFile=true --self-contained false
+            
+      - name: Archiving
+        run: |
+            tar -cvf ./Release.tar *
+            
+      - name: Update release
+        uses: IsaacShelton/update-existing-release@v1.3.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: QTRHacker.tar
+          release: Latest
+          tag: latest
+          replace: true
+          updateTag: true
