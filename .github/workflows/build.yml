@@ -20,12 +20,11 @@ jobs:
 
       - name: Produce build
         run: |
-            cd src/QTRHacker
             dotnet publish -r ${{ matrix.arch }} -f net6.0 -c Release -p:PublishSingleFile=true --self-contained false
             
       - name: Archiving
         run: |
-            tar -cvf ./Release.tar *
+            tar -cvf ./QTRHacker.tar *
             
       - name: Update release
         uses: IsaacShelton/update-existing-release@v1.3.1
