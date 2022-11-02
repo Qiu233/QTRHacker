@@ -22,7 +22,7 @@ namespace QTRHacker.Patches
 			public ushort Type;
 			public ushort Wall;
 			public byte Liquid;
-			public short STileHeader;
+			public ushort STileHeader;
 			public byte BTileHeader;
 			public byte BTileHeader2;
 			public byte BTileHeader3;

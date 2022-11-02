@@ -53,7 +53,7 @@ namespace QTRHacker.Models
 						BTileHeader3 = br.ReadByte(),
 						FrameX = br.ReadInt16(),
 						FrameY = br.ReadInt16(),
-						STileHeader = br.ReadInt16()
+						STileHeader = br.ReadUInt16()
 					};
 				}
 			}

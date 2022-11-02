@@ -13,7 +13,7 @@ public sealed class PatchesManager
 		public ushort Type;
 		public ushort Wall;
 		public byte Liquid;
-		public short STileHeader;
+		public ushort STileHeader;
 		public byte BTileHeader;
 		public byte BTileHeader2;
 		public byte BTileHeader3;
@@ -25,7 +25,7 @@ public sealed class PatchesManager
 			if (active)
 				STileHeader |= 32;
 			else
-				STileHeader = (short)(STileHeader & 0xFFDF);
+				STileHeader = (ushort)(STileHeader & 0xFFDF);
 		}
 		public bool Active()
 		{

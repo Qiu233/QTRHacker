@@ -36,7 +36,7 @@ namespace QTRHacker.Patches
 			var p = Main.LocalPlayer;
 			p.controlUseItem = true;
 			p.releaseUseItem = true;
-			p.ItemCheck(Main.myPlayer);
+			p.ItemCheck();
 		}
 
 		private static void DoUpdateHook_Pre()
