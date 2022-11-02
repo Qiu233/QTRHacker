@@ -2,23 +2,9 @@ using QHackLib;
 using QHackLib.Memory;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
-using QTRHacker.Scripts;
 using QTRHacker.Core;
-using System.Globalization;
-using System.Collections.Generic;
-using System.Linq;
 using static QTRHacker.Scripts.ScriptHelper;
-using System;
 using System.Windows;
-using System.Threading.Tasks;
-using QTRHacker.Controls;
-using System.Windows.Controls;
-using System.Windows.Media;
-using QTRHacker.Localization;
-using QTRHacker.ViewModels;
-using QTRHacker.Core.GameObjects.Terraria;
-using System.Windows.Data;
-using System.IO;
 
 namespace QTRHacker.Scripts.Functions;
 public class CreativeMenu : BaseFunction

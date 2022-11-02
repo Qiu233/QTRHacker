@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace QTRHacker.Localization;
 
-namespace QTRHacker.Localization
+public interface ILocalizationProvider
 {
-	public interface ILocalizationProvider
-	{
-		void OnCultureChanged(object sender, CultureChangedEventArgs args);
-	}
+	void OnCultureChanged(object sender, CultureChangedEventArgs args);
 }

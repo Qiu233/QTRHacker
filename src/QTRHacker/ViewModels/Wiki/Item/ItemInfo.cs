@@ -1,8 +1,6 @@
 ﻿using QTRHacker.Assets;
 using QTRHacker.Localization;
 using QTRHacker.Models.Wiki;
-using System;
-using System.Linq;
 
 namespace QTRHacker.ViewModels.Wiki.Item;
 

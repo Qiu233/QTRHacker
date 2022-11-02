@@ -5,6 +5,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 	{
 #region Virtual Properties
 <#@ include file="ItemProperties" #>
+
 #endregion
 	}
 }

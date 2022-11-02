@@ -2,7 +2,6 @@ using QHackLib.Memory;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using QTRHacker.Core;
-using System.Linq;
 using static QTRHacker.Scripts.ScriptHelper;
 
 namespace QTRHacker.Scripts.Functions;

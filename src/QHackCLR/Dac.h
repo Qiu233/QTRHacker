@@ -119,6 +119,7 @@ namespace QHackCLR {
 		private:
 			ICLRDataTarget* DataTarget;
 			IXCLRDataProcess* m_ClrDataProcess;
+			HMODULE m_DacModule;
 		public:
 			DacLibrary(DataTargets::DataTarget^ dataTarget, System::String^ dacPath, System::UInt64 runtimeBase);
 			~DacLibrary() {

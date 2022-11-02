@@ -19,21 +19,6 @@ using System.Runtime.InteropServices;
 
 namespace QTRHacker.Functions.Test
 {
-	enum FishingMode : byte
-	{
-		Disabled = 0, // do nothing
-		ForceQuest, // force quest item
-		ForceItem, // only the specified item will be caught
-		ForceCrates, // only crates will be caught
-		ForceEnemies, // only enemies will be caught
-	}
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	struct FishingData
-	{
-		public FishingMode Mode;
-		public sbyte ForceLevel; // -1 means non-forceful
-		public int ForceItemType;
-	}
 	class Program
 	{
 		public static unsafe int GetOffset(GameContext context, string module, string type, string field) => (int)context.HContext.GetCLRHelper(module).GetInstanceFieldOffset(type, field) + sizeof(nuint);
@@ -42,10 +27,9 @@ namespace QTRHacker.Functions.Test
 		{
 			using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0]);
 
-			var type = ctx.GameModuleHelper.GetClrType("Terraria.Projectile");
-			foreach (var t in type.MethodsInVTable.Where(t=>t.Name== "NewProjectile"))
+			foreach (var (module,_) in ctx.HContext.CLRHelpers)
 			{
-				Console.WriteLine(t.Signature);
+				Console.WriteLine(module.FileName);
 			}
 			/*Console.WriteLine(string.Join(", ", ctx.MyPlayer.Loadouts[0].Armor.Select(t => t.Type)));
 			Console.WriteLine(string.Join(", ", ctx.MyPlayer.Loadouts[1].Armor.Select(t => t.Type)));

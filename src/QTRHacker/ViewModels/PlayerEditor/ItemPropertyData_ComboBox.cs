@@ -1,22 +1,15 @@
-﻿using QTRHacker.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
-namespace QTRHacker.ViewModels.PlayerEditor
+namespace QTRHacker.ViewModels.PlayerEditor;
+
+public class ItemPropertyData_ComboBox<T> : ItemPropertyData<T> where T:unmanaged
 {
-	public class ItemPropertyData_ComboBox<T> : ItemPropertyData<T> where T:unmanaged
+	public ObservableCollection<object> Source
 	{
-		public ObservableCollection<object> Source
-		{
-			get;
-		} = new();
+		get;
+	} = new();
 
-		public ItemPropertyData_ComboBox(string key) : base(key)
-		{
-		}
+	public ItemPropertyData_ComboBox(string key) : base(key)
+	{
 	}
 }

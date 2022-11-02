@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace QTRHacker.Core.ProjectileMaker.Parse.AST
+namespace QTRHacker.Core.ProjectileMaker.Parse.AST;
+
+public class Stmt_DEF : Statement
 {
-	public class Stmt_DEF : Statement
+	public string Name { get; set; }
+	public IEnumerable<Statement> Statements { get; set; }
+
+	public Stmt_DEF(int off) : base(off)
 	{
-		public string Name { get; set; }
-		public IEnumerable<Statement> Statements { get; set; }
 
-		public Stmt_DEF(int off) : base(off)
-		{
-
-		}
 	}
 }

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace QTRHacker.Localization;
 
-namespace QTRHacker.Localization
+public enum LocalizationType
 {
-	public enum LocalizationType
-	{
-		Hack,
-		Game
-	}
+	Hack,
+	Game
 }

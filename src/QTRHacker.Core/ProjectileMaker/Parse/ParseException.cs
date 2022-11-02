@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace QTRHacker.Core.ProjectileMaker.Parse
+namespace QTRHacker.Core.ProjectileMaker.Parse;
+
+public class ParseException : Exception
 {
-	public class ParseException : Exception
+	public int Offset
 	{
-		public int Offset
-		{
-			get;
-		}
-		public ParseException(string t, int offset) : base(t)
-		{
-			Offset = offset;
-		}
+		get;
+	}
+	public ParseException(string t, int offset) : base(t)
+	{
+		Offset = offset;
 	}
 }

@@ -84,15 +84,15 @@ namespace QHackCLR {
 	namespace Dac {
 		DacLibrary::DacLibrary(DataTargets::DataTarget^ dataTarget, System::String^ dacPath, System::UInt64 runtimeBase) {
 			pin_ptr<const wchar_t> _dacPath = PtrToStringChars(dacPath);
-			HMODULE dac = LoadLibraryW(_dacPath);
-			if (dac == nullptr)
+			this->m_DacModule = LoadLibraryW(_dacPath);
+			if (this->m_DacModule == nullptr)
 				throw gcnew Exception("Failure loading DAC: LoadLibraryW failed when loading file: \"" + dacPath + "\"");
-			FARPROC addr = GetProcAddress(dac, "CLRDataCreateInstance");
+			FARPROC addr = GetProcAddress(this->m_DacModule, "CLRDataCreateInstance");
 			if (addr == 0)
 				throw gcnew Exception("Failed to obtain Dac CLRDataCreateInstance");
 			this->DataTarget = new DacDataTargetImpl(dataTarget, runtimeBase);
 			auto func = (HRESULT(__stdcall*)(REFIID, ICLRDataTarget*, IUnknown**))addr;
-			IXCLRDataProcess* iUnk;
+			IXCLRDataProcess* iUnk = nullptr;
 			HRESULT res = func(__uuidof(IXCLRDataProcess), DataTarget, (IUnknown**)&iUnk);
 			if (res != S_OK)
 				throw gcnew Exception("Failure loading DAC: CreateDacInstance failed 0x" + res.ToString("X8") + "");

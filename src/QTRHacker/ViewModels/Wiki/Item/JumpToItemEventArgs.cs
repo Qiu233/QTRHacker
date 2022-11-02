@@ -1,14 +1,11 @@
-﻿using System;
+﻿namespace QTRHacker.ViewModels.Wiki.Item;
 
-namespace QTRHacker.ViewModels.Wiki.Item
+public class JumpToItemEventArgs : EventArgs
 {
-	public class JumpToItemEventArgs : EventArgs
-	{
-		public ItemInfo ItemInfo { get; }
+	public ItemInfo ItemInfo { get; }
 
-		public JumpToItemEventArgs(ItemInfo itemInfo)
-		{
-			ItemInfo = itemInfo;
-		}
+	public JumpToItemEventArgs(ItemInfo itemInfo)
+	{
+		ItemInfo = itemInfo;
 	}
 }

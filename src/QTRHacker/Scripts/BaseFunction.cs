@@ -1,91 +1,82 @@
 ﻿using QTRHacker.Core;
 using QTRHacker.Localization;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
-namespace QTRHacker.Scripts
+namespace QTRHacker.Scripts;
+
+public abstract class BaseFunction : ViewModels.ViewModelBase, ILocalizationProvider
 {
-	public abstract class BaseFunction : ViewModels.ViewModelBase, ILocalizationProvider
+	private string name;
+	private string tooltip;
+	private bool isEnabled;
+	private double progress;
+	private bool isProgressing;
+
+	public string Name
 	{
-		private string name;
-		private string tooltip;
-		private bool isEnabled;
-		private double progress;
-		private bool isProgressing;
-
-		public string Name
+		get => name;
+		set
 		{
-			get => name;
-			set
-			{
-				name = value;
-				OnPropertyChanged(nameof(Name));
-			}
+			name = value;
+			OnPropertyChanged(nameof(Name));
 		}
-		public string Tooltip
+	}
+	public string Tooltip
+	{
+		get => tooltip;
+		set
 		{
-			get => tooltip;
-			set
-			{
-				tooltip = value;
-				OnPropertyChanged(nameof(Tooltip));
-			}
+			tooltip = value;
+			OnPropertyChanged(nameof(Tooltip));
 		}
+	}
 
-		public bool IsEnabled
+	public bool IsEnabled
+	{
+		get => isEnabled;
+		set
 		{
-			get => isEnabled;
-			set
-			{
-				isEnabled = value;
-				OnPropertyChanged(nameof(IsEnabled));
-			}
+			isEnabled = value;
+			OnPropertyChanged(nameof(IsEnabled));
 		}
+	}
 
-		public double Progress
+	public double Progress
+	{
+		get => progress;
+		set
 		{
-			get => progress;
-			set
-			{
-				progress = value;
-				OnPropertyChanged(nameof(Progress));
-			}
+			progress = value;
+			OnPropertyChanged(nameof(Progress));
 		}
-		public bool IsProgressing
+	}
+	public bool IsProgressing
+	{
+		get => isProgressing;
+		set
 		{
-			get => isProgressing;
-			set
-			{
-				isProgressing = value;
-				OnPropertyChanged(nameof(IsProgressing));
-			}
+			isProgressing = value;
+			OnPropertyChanged(nameof(IsProgressing));
 		}
+	}
 
 
-		public virtual bool HasProgress => false;
-		public abstract bool CanDisable { get; }
+	public virtual bool HasProgress => false;
+	public abstract bool CanDisable { get; }
 
-		public abstract void Enable(GameContext context);
-		public abstract void Disable(GameContext context);
+	public abstract void Enable(GameContext context);
+	public abstract void Disable(GameContext context);
 
-		public virtual void OnLoaded() { }
+	public virtual void OnLoaded() { }
 
-		public abstract void ApplyLocalization(string culture);
+	public abstract void ApplyLocalization(string culture);
 
-		public void OnCultureChanged(object sender, CultureChangedEventArgs args)
-		{
-			ApplyLocalization(args.Name);
-		}
+	public void OnCultureChanged(object sender, CultureChangedEventArgs args)
+	{
+		ApplyLocalization(args.Name);
+	}
 
-		protected BaseFunction()
-		{
-			LocalizationManager.RegisterLocalizationProvider(this);
-		}
+	protected BaseFunction()
+	{
+		LocalizationManager.RegisterLocalizationProvider(this);
 	}
 }

@@ -1,14 +1,7 @@
 ﻿using QTRHacker.Assets;
 using QTRHacker.Commands;
 using QTRHacker.Core;
-using QTRHacker.Core.GameObjects.Terraria;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QTRHacker.ViewModels.Wiki.Item;
 

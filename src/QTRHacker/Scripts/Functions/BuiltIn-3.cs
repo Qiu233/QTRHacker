@@ -1,15 +1,6 @@
-using QHackLib;
-using QHackLib.Memory;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
-using QTRHacker.Scripts;
 using QTRHacker.Core;
-using QTRHacker.Core.GameObjects;
-using QTRHacker.Core.GameObjects.Terraria;
-using System;
-using System.Linq;
-using System.Globalization;
-using System.Collections.Generic;
 using static QTRHacker.Scripts.ScriptHelper;
 
 namespace QTRHacker.Scripts.Functions;

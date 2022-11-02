@@ -1,94 +1,92 @@
-﻿using System;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
-namespace QTRHacker.ViewModels.PlayerEditor
+namespace QTRHacker.ViewModels.PlayerEditor;
+
+public class ItemSlotViewModel : ViewModelBase
 {
-	public class ItemSlotViewModel : ViewModelBase
+	private int slotWidth = 50;
+	private int slotMargin = 2;
+	private int row;
+	private int column;
+	private ImageSource itemImage;
+	private int stack;
+	private bool isSelected;
+
+	public int Index { get; }
+
+	public int SlotWidth
 	{
-		private int slotWidth = 50;
-		private int slotMargin = 2;
-		private int row;
-		private int column;
-		private ImageSource itemImage;
-		private int stack;
-		private bool isSelected;
+		get => slotWidth;
+		set
+		{
+			slotWidth = value;
+			OnPropertyChanged(nameof(SlotWidth));
+		}
+	}
 
-		public int Index { get; }
+	public int SlotMargin
+	{
+		get => slotMargin;
+		set
+		{
+			slotMargin = value;
+			OnPropertyChanged(nameof(SlotMargin));
+		}
+	}
 
-		public int SlotWidth
+	public int Row
+	{
+		get => row;
+		set
 		{
-			get => slotWidth;
-			set
-			{
-				slotWidth = value;
-				OnPropertyChanged(nameof(SlotWidth));
-			}
+			row = value;
+			OnPropertyChanged(nameof(Row));
 		}
+	}
+	public int Column
+	{
+		get => column;
+		set
+		{
+			column = value;
+			OnPropertyChanged(nameof(Column));
+		}
+	}
+	public ImageSource ItemImage
+	{
+		get => itemImage;
+		set
+		{
+			itemImage = value;
+			OnPropertyChanged(nameof(ItemImage));
+		}
+	}
+	public int Stack
+	{
+		get => stack;
+		set
+		{
+			stack = value;
+			OnPropertyChanged(nameof(Stack));
+		}
+	}
 
-		public int SlotMargin
+	public bool IsSelected
+	{
+		get => isSelected;
+		set
 		{
-			get => slotMargin;
-			set
-			{
-				slotMargin = value;
-				OnPropertyChanged(nameof(SlotMargin));
-			}
+			isSelected = value;
+			OnPropertyChanged(nameof(IsSelected));
+			if (IsSelected)
+				Selected?.Invoke(this, EventArgs.Empty);
 		}
+	}
 
-		public int Row
-		{
-			get => row;
-			set
-			{
-				row = value;
-				OnPropertyChanged(nameof(Row));
-			}
-		}
-		public int Column
-		{
-			get => column;
-			set
-			{
-				column = value;
-				OnPropertyChanged(nameof(Column));
-			}
-		}
-		public ImageSource ItemImage
-		{
-			get => itemImage;
-			set
-			{
-				itemImage = value;
-				OnPropertyChanged(nameof(ItemImage));
-			}
-		}
-		public int Stack
-		{
-			get => stack;
-			set
-			{
-				stack = value;
-				OnPropertyChanged(nameof(Stack));
-			}
-		}
+	public event EventHandler Selected;
 
-		public bool IsSelected
-		{
-			get => isSelected;
-			set
-			{
-				isSelected = value;
-				OnPropertyChanged(nameof(IsSelected));
-				if (IsSelected)
-					Selected?.Invoke(this, EventArgs.Empty);
-			}
-		}
-
-		public event EventHandler Selected;
-
-		public ItemSlotViewModel(int index)
-		{
-			Index = index;
-		}
+	public ItemSlotViewModel(int index)
+	{
+		Index = index;
 	}
 }

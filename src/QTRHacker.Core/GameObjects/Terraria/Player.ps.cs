@@ -4086,6 +4086,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 	get => new(Context, InternalObject.mount); 
 	set => InternalObject.mount = value.InternalObject; 
 }
+
 #endregion
 	}
 }

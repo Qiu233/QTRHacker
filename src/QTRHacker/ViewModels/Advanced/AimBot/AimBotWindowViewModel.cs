@@ -1,185 +1,178 @@
 ﻿using QTRHacker.ViewModels.Common;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace QTRHacker.ViewModels.Advanced.AimBot
+namespace QTRHacker.ViewModels.Advanced.AimBot;
+
+public class AimBotWindowViewModel : ViewModelBase
 {
-	public class AimBotWindowViewModel : ViewModelBase
+	private readonly PlayersListViewViewModel playersListViewViewModel;
+
+	public enum AimBotMode : int
 	{
-		private readonly PlayersListViewViewModel playersListViewViewModel;
+		Disabled = 0,
+		NearestNPC = 1,
+		NearestPlayer = 2,
+		TargetedPlayer = 3
+	}
 
-		public enum AimBotMode : int
+	public PlayersListViewViewModel PlayersListViewViewModel => playersListViewViewModel;
+
+	public AimBotMode Mode
+	{
+		get => (AimBotMode)HackGlobal.GameContext.Patches.AimBot_Mode;
+		set
 		{
-			Disabled = 0,
-			NearestNPC = 1,
-			NearestPlayer = 2,
-			TargetedPlayer = 3
+			if (Enum.GetValues<AimBotMode>().Contains(value))
+				HackGlobal.GameContext.Patches.AimBot_Mode = (int)value;
+			else
+				HackGlobal.GameContext.Patches.AimBot_Mode = (int)AimBotMode.Disabled;
+			OnPropertyChanged(nameof(Mode));
 		}
+	}
 
-		public PlayersListViewViewModel PlayersListViewViewModel => playersListViewViewModel;
-
-		public AimBotMode Mode
+	public bool Disabled
+	{
+		get => Mode == AimBotMode.Disabled;
+		set
 		{
-			get => (AimBotMode)HackGlobal.GameContext.Patches.AimBot_Mode;
-			set
-			{
-				if (Enum.GetValues<AimBotMode>().Contains(value))
-					HackGlobal.GameContext.Patches.AimBot_Mode = (int)value;
-				else
-					HackGlobal.GameContext.Patches.AimBot_Mode = (int)AimBotMode.Disabled;
-				OnPropertyChanged(nameof(Mode));
-			}
+			if (value)
+				Mode = AimBotMode.Disabled;
 		}
+	}
 
-		public bool Disabled
+	public bool NearestNPC
+	{
+		get => Mode == AimBotMode.NearestNPC;
+		set
 		{
-			get => Mode == AimBotMode.Disabled;
-			set
-			{
-				if (value)
-					Mode = AimBotMode.Disabled;
-			}
+			if (value)
+				Mode = AimBotMode.NearestNPC;
 		}
+	}
 
-		public bool NearestNPC
+	public bool NearestPlayer
+	{
+		get => Mode == AimBotMode.NearestPlayer;
+		set
 		{
-			get => Mode == AimBotMode.NearestNPC;
-			set
-			{
-				if (value)
-					Mode = AimBotMode.NearestNPC;
-			}
+			if (value)
+				Mode = AimBotMode.NearestPlayer;
 		}
+	}
 
-		public bool NearestPlayer
+	public bool TargetedPlayer
+	{
+		get => Mode == AimBotMode.TargetedPlayer;
+		set
 		{
-			get => Mode == AimBotMode.NearestPlayer;
-			set
-			{
-				if (value)
-					Mode = AimBotMode.NearestPlayer;
-			}
+			if (value)
+				Mode = AimBotMode.TargetedPlayer;
 		}
+	}
 
-		public bool TargetedPlayer
+	public int TargetedPlayerIndex
+	{
+		get => HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex;
+		set
 		{
-			get => Mode == AimBotMode.TargetedPlayer;
-			set
-			{
-				if (value)
-					Mode = AimBotMode.TargetedPlayer;
-			}
+			if (value < 0 || value >= HackGlobal.GameContext.Players.Length)
+				return;
+			HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = value;
+			OnPropertyChanged(nameof(TargetedPlayerIndex));
 		}
-
-		public int TargetedPlayerIndex
-		{
-			get => HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex;
-			set
-			{
-				if (value < 0 || value >= HackGlobal.GameContext.Players.Length)
-					return;
-				HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = value;
-				OnPropertyChanged(nameof(TargetedPlayerIndex));
-			}
-		}
+	}
 
 
 #pragma warning disable CA1822 // 将成员标记为 static
-		public bool HostileNPCsOnly
-		{
-			get => HackGlobal.GameContext.Patches.AimBot_HostileNPCsOnly;
-			set => HackGlobal.GameContext.Patches.AimBot_HostileNPCsOnly = value;
-		}
-		public bool HostilePlayersOnly
-		{
-			get => HackGlobal.GameContext.Patches.AimBot_HostilePlayersOnly;
-			set => HackGlobal.GameContext.Patches.AimBot_HostilePlayersOnly = value;
-		}
-		public float MaxDistance_NPC
-		{
-			get => HackGlobal.GameContext.Patches.AimBot_MaxDistance_NPC;
-			set => HackGlobal.GameContext.Patches.AimBot_MaxDistance_NPC = value;
-		}
-		public float MaxDistance_Player
-		{
-			get => HackGlobal.GameContext.Patches.AimBot_MaxDistance_Player;
-			set => HackGlobal.GameContext.Patches.AimBot_MaxDistance_Player = value;
-		}
+	public bool HostileNPCsOnly
+	{
+		get => HackGlobal.GameContext.Patches.AimBot_HostileNPCsOnly;
+		set => HackGlobal.GameContext.Patches.AimBot_HostileNPCsOnly = value;
+	}
+	public bool HostilePlayersOnly
+	{
+		get => HackGlobal.GameContext.Patches.AimBot_HostilePlayersOnly;
+		set => HackGlobal.GameContext.Patches.AimBot_HostilePlayersOnly = value;
+	}
+	public float MaxDistance_NPC
+	{
+		get => HackGlobal.GameContext.Patches.AimBot_MaxDistance_NPC;
+		set => HackGlobal.GameContext.Patches.AimBot_MaxDistance_NPC = value;
+	}
+	public float MaxDistance_Player
+	{
+		get => HackGlobal.GameContext.Patches.AimBot_MaxDistance_Player;
+		set => HackGlobal.GameContext.Patches.AimBot_MaxDistance_Player = value;
+	}
 #pragma warning restore CA1822 // 将成员标记为 static
 
-		public bool UpdateTextBoxes
-		{
-			get;
-			set;
-		} = true;
+	public bool UpdateTextBoxes
+	{
+		get;
+		set;
+	} = true;
 
-		public DispatcherTimer UpdateTimer { get; }
+	public DispatcherTimer UpdateTimer { get; }
 
-		public void Update()
+	public void Update()
+	{
+		OnPropertyChanged(nameof(Mode));
+		OnPropertyChanged(nameof(TargetedPlayerIndex));
+		OnPropertyChanged(nameof(HostileNPCsOnly));
+		OnPropertyChanged(nameof(HostilePlayersOnly));
+		if (UpdateTextBoxes)
 		{
-			OnPropertyChanged(nameof(Mode));
-			OnPropertyChanged(nameof(TargetedPlayerIndex));
-			OnPropertyChanged(nameof(HostileNPCsOnly));
-			OnPropertyChanged(nameof(HostilePlayersOnly));
-			if (UpdateTextBoxes)
+			UpdateTextBoxes = false;
+			OnPropertyChanged(nameof(MaxDistance_NPC));
+			OnPropertyChanged(nameof(MaxDistance_Player));
+		}
+		int index = TargetedPlayerIndex;
+		var players = PlayersListViewViewModel.Players.Where(t => t.ID == index).ToList();
+		if (players.Count == 1 && PlayersListViewViewModel.SelectedPlayerInfo?.ID != index)
+		{
+			PlayersListViewViewModel.SelectedPlayerInfo = players[0];
+		}
+	}
+
+	public AimBotWindowViewModel()
+	{
+		UpdateTimer = new();
+		UpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.SchesUpdateInterval);
+		playersListViewViewModel = new PlayersListViewViewModel(UpdateTimer);
+		PlayersListViewViewModel.SelectedPlayerInfoChanged += (s, e) =>
+		{
+			if (e is null)
 			{
-				UpdateTextBoxes = false;
-				OnPropertyChanged(nameof(MaxDistance_NPC));
-				OnPropertyChanged(nameof(MaxDistance_Player));
+				HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = -1;
+				return;
 			}
-			int index = TargetedPlayerIndex;
-			var players = PlayersListViewViewModel.Players.Where(t => t.ID == index).ToList();
-			if (players.Count == 1 && PlayersListViewViewModel.SelectedPlayerInfo?.ID != index)
-			{
-				PlayersListViewViewModel.SelectedPlayerInfo = players[0];
-			}
-		}
+			HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = e.ID;
+		};
+		HackGlobal.GameContext.Patches.Init();
+		PropertyChanged += AimBotWindowViewModel_PropertyChanged;
+		WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(UpdateTimer, nameof(DispatcherTimer.Tick), UpdateTimer_Tick);
+		UpdateTimer.Start();
+	}
 
-		public AimBotWindowViewModel()
-		{
-			UpdateTimer = new();
-			UpdateTimer.Interval = TimeSpan.FromMilliseconds(HackGlobal.Config.SchesUpdateInterval);
-			playersListViewViewModel = new PlayersListViewViewModel(UpdateTimer);
-			PlayersListViewViewModel.SelectedPlayerInfoChanged += (s, e) =>
-			{
-				if (e is null)
-				{
-					HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = -1;
-					return;
-				}
-				HackGlobal.GameContext.Patches.AimBot_TargetedPlayerIndex = e.ID;
-			};
-			HackGlobal.GameContext.Patches.Init();
-			PropertyChanged += AimBotWindowViewModel_PropertyChanged;
-			WeakEventManager<DispatcherTimer, EventArgs>.AddHandler(UpdateTimer, nameof(DispatcherTimer.Tick), UpdateTimer_Tick);
-			UpdateTimer.Start();
-		}
+	~AimBotWindowViewModel()
+	{
+		UpdateTimer?.Stop();
+	}
 
-		~AimBotWindowViewModel()
-		{
-			UpdateTimer?.Stop();
-		}
+	private void UpdateTimer_Tick(object sender, EventArgs e)
+	{
+		Update();
+	}
 
-		private void UpdateTimer_Tick(object sender, EventArgs e)
+	private void AimBotWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+	{
+		if (e.PropertyName == nameof(Mode))
 		{
-			Update();
-		}
-
-		private void AimBotWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(Mode))
-			{
-				OnPropertyChanged(nameof(Disabled));
-				OnPropertyChanged(nameof(NearestNPC));
-				OnPropertyChanged(nameof(NearestPlayer));
-				OnPropertyChanged(nameof(TargetedPlayer));
-			}
+			OnPropertyChanged(nameof(Disabled));
+			OnPropertyChanged(nameof(NearestNPC));
+			OnPropertyChanged(nameof(NearestPlayer));
+			OnPropertyChanged(nameof(TargetedPlayer));
 		}
 	}
 }

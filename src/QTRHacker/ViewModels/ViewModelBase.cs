@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 
-namespace QTRHacker.ViewModels
-{
-	public abstract class ViewModelBase : INotifyPropertyChanged
-	{
-		public event PropertyChangedEventHandler PropertyChanged;
+namespace QTRHacker.ViewModels;
 
-		protected void OnPropertyChanged(string name)
-		{
-			Application.Current.Dispatcher.Invoke(
-				() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
-		}
+public abstract class ViewModelBase : INotifyPropertyChanged
+{
+	public event PropertyChangedEventHandler PropertyChanged;
+
+	protected void OnPropertyChanged(string name)
+	{
+		Application.Current.Dispatcher.Invoke(
+			() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
 	}
 }
