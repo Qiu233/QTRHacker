@@ -1,6 +1,8 @@
 #pragma once
 #include "dummys.h"
 
+#define MAGIC_CALLBACK_CONSTANT 0x43
+
 namespace QHackCLR {
 	ref class Utils;
 

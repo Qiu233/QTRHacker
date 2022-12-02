@@ -44,7 +44,7 @@ static String^ name(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS addrName) {\
 			{
 				DacpAppDomainStoreData adsData;
 				SOSDac->GetAppDomainStoreData(&adsData);
-
+				
 				unsigned int needed = adsData.DomainCount;
 				if (needed == 0)
 					return Array::Empty<CLRDATA_ADDRESS>();

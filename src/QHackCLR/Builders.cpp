@@ -8,11 +8,24 @@
 namespace QHackCLR {
 	namespace Builders {
 
-		RuntimeBuilder::RuntimeBuilder(DataTargets::ClrInfo^ clrInfo, Dac::DacLibrary^ dacCibrary)
+		namespace {
+			ref class Anonymous_1 {
+			public:
+				IXCLRDataProcess* obj;
+				void Flush() {
+					this->obj->Flush();
+				}
+			};
+		}
+
+		RuntimeBuilder::RuntimeBuilder(DataTargets::ClrInfo^ clrInfo, Dac::DacLibrary^ dacLibrary)
 		{
 			m_ClrInfo = clrInfo;
-			m_DacLibrary = dacCibrary;
+			m_DacLibrary = dacLibrary;
 			m_Runtime = gcnew Common::ClrRuntime(clrInfo, this);
+			Anonymous_1^ tmp = gcnew Anonymous_1();
+			tmp->obj = m_DacLibrary->ClrDataProcess;
+			m_DacLibrary->DataTarget->SetMagicCallback(gcnew Action(tmp, &Anonymous_1::Flush));
 		}
 		Common::ClrHeap^ RuntimeBuilder::Heap::get() {
 			return this->m_Runtime->Heap;
@@ -28,6 +41,22 @@ namespace QHackCLR {
 		}
 		DataTargets::DataAccess^ RuntimeBuilder::DataAccess::get() {
 			return this->Runtime->DataTarget->DataAccess;
+		}
+		void RuntimeBuilder::Flush() {
+			// CLRDataProcess->Flush();
+			// The above cannot be called directly because it would potentially cause heap corruption.
+			// A tricky solution is to call it in DataTarget's Read function, on getting a magic number.
+			this->m_DacLibrary->DataTarget->EnterMagicCallbackContext();
+			try {
+				DacpWorkRequestData _;
+				this->m_DacLibrary->SOSDac->GetWorkRequestData(MAGIC_CALLBACK_CONSTANT, &_);
+			}
+			finally {
+				this->m_DacLibrary->DataTarget->ExitMagicCallbackContext();
+			}
+			AppDomains->Clear();
+			Modules->Clear();
+			Types->Clear();
 		}
 
 		System::Collections::Generic::IEnumerable<Common::ClrModule^>^ RuntimeBuilder::EnumerateModules(Common::ClrAppDomain^ appDomain)

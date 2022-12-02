@@ -106,18 +106,19 @@ namespace QHackCLR {
 			UINT index,
 			CLRDATA_ADDRESS methodTable,
 			LPVOID token);
+		namespace {
+			ref class Anonymous_1 {
+			public:
+				Generic::List<CLRDATA_ADDRESS>^ Types;
+				void Add(
+					UINT index,
+					CLRDATA_ADDRESS methodTable,
+					LPVOID token) {
 
-		ref class Anonymous_1 {
-		public:
-			Generic::List<CLRDATA_ADDRESS>^ Types;
-			void Add(
-				UINT index,
-				CLRDATA_ADDRESS methodTable,
-				LPVOID token) {
-
-				Types->Add(methodTable);
-			}
-		};
+					Types->Add(methodTable);
+				}
+			};
+		}
 
 		Generic::IReadOnlyList<ClrType^>^ ClrModule::Traverse(ModuleMapType type) {
 			auto holder = gcnew Generic::List<CLRDATA_ADDRESS>();

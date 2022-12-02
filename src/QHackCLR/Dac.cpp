@@ -90,10 +90,10 @@ namespace QHackCLR {
 			FARPROC addr = GetProcAddress(this->m_DacModule, "CLRDataCreateInstance");
 			if (addr == 0)
 				throw gcnew Exception("Failed to obtain Dac CLRDataCreateInstance");
-			this->DataTarget = new DacDataTargetImpl(dataTarget, runtimeBase);
+			this->m_DataTarget = new DacDataTargetImpl(dataTarget, runtimeBase);
 			auto func = (HRESULT(__stdcall*)(REFIID, ICLRDataTarget*, IUnknown**))addr;
 			IXCLRDataProcess* iUnk = nullptr;
-			HRESULT res = func(__uuidof(IXCLRDataProcess), DataTarget, (IUnknown**)&iUnk);
+			HRESULT res = func(__uuidof(IXCLRDataProcess), m_DataTarget, (IUnknown**)&iUnk);
 			if (res != S_OK)
 				throw gcnew Exception("Failure loading DAC: CreateDacInstance failed 0x" + res.ToString("X8") + "");
 			m_ClrDataProcess = iUnk;
@@ -120,6 +120,13 @@ namespace QHackCLR {
 			/* [length_is][size_is][out] */ BYTE* buffer,
 			/* [in] */ ULONG32 bytesRequested,
 			/* [out] */ ULONG32* bytesRead) {
+			if (address == MAGIC_CALLBACK_CONSTANT && this->m_CallbackContext > 0)
+			{
+				if (!System::Object::ReferenceEquals(this->m_Magic_Callback, nullptr))
+					this->m_Magic_Callback->Invoke();
+				*bytesRead = 0;
+				return E_FAIL;
+			}
 			this->m_DataTarget->DataAccess->Read(UIntPtr(address), buffer, bytesRequested);
 			*bytesRead = bytesRequested;
 			return S_OK;

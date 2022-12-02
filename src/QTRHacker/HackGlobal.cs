@@ -30,10 +30,23 @@ public static class HackGlobal
 	{
 		if (!Directory.Exists("./logs"))
 			Directory.CreateDirectory("./logs");
-		var logs = Directory.EnumerateFiles("./logs", "*.log").ToArray();
-		for (int i = 0; i < logs.Length - MAX_LOG_FILES; i++)
-			File.Delete(logs[i]);
-		Logging = Logging.New(File.Open($"./logs/{DateTime.Now:yyyy-M-dd--HH.mm.ss}.log", FileMode.Create));
+		var logs = Directory.EnumerateFiles("./logs", "*.log").ToList();
+		string format = "yyyy-M-dd--HH.mm.ss";
+		logs.Where(t =>
+		{
+			try { DateTime.ParseExact(t, format, null); } catch { return true; }
+			return false;
+		})
+			.ToList()
+			.ForEach(t => { try { File.Delete(t); } catch { } logs.Remove(t); });
+		logs.Sort((a, b) =>
+		{
+			var span = DateTime.ParseExact(a, format, null) - DateTime.ParseExact(b, format, null);
+			return (int)Math.Round(span.TotalMilliseconds);
+		});
+		foreach (var file in logs.Take(logs.Count - MAX_LOG_FILES))
+			File.Delete(file);
+		Logging = Logging.New(File.Open($"./logs/{DateTime.Now.ToString(format)}.log", FileMode.Create));
 	}
 
 	public static void SaveConfig()

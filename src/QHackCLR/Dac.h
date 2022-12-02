@@ -12,6 +12,8 @@ namespace QHackCLR {
 		private:
 			gcroot<DataTargets::DataTarget^> m_DataTarget;
 			ULONG m_ref;
+			gcroot<Action^> m_Magic_Callback;
+			int m_CallbackContext = 0;
 
 		public:
 			CLRDATA_ADDRESS RuntimeBase;
@@ -20,6 +22,18 @@ namespace QHackCLR {
 				this->m_DataTarget = target;
 				this->RuntimeBase = runtimeBase;
 				m_ref = 1;
+			}
+
+			void SetMagicCallback(Action^ action) {
+				this->m_Magic_Callback = action;
+			}
+
+			void EnterMagicCallbackContext() {
+				System::Threading::Interlocked::Increment(m_CallbackContext);
+			}
+
+			void ExitMagicCallbackContext() {
+				System::Threading::Interlocked::Decrement(m_CallbackContext);
 			}
 
 
@@ -117,13 +131,19 @@ namespace QHackCLR {
 
 		public ref class DacLibrary {
 		private:
-			ICLRDataTarget* DataTarget;
+			DacDataTargetImpl* m_DataTarget;
 			IXCLRDataProcess* m_ClrDataProcess;
 			HMODULE m_DacModule;
+			ISOSDacInterface* m_SOSDac = nullptr;
 		public:
 			DacLibrary(DataTargets::DataTarget^ dataTarget, System::String^ dacPath, System::UInt64 runtimeBase);
+
 			~DacLibrary() {
-				delete this->DataTarget;
+				if (this->m_ClrDataProcess != nullptr)
+					this->m_ClrDataProcess->Release();
+				if (this->m_SOSDac != nullptr)
+					this->m_SOSDac->Release();
+				delete this->m_DataTarget;
 			}
 
 			property IXCLRDataProcess* ClrDataProcess {
@@ -132,11 +152,23 @@ namespace QHackCLR {
 				}
 			}
 
+			property DacDataTargetImpl* DataTarget {
+				DacDataTargetImpl* get() {
+					return m_DataTarget;
+				}
+			}
+
 			property ISOSDacInterface* SOSDac {
 				ISOSDacInterface* get() {
-					ISOSDacInterface* result;
-					ClrDataProcess->QueryInterface<ISOSDacInterface>(&result);
-					return result;
+					if (this->m_SOSDac == nullptr)
+					{
+						ISOSDacInterface* result;
+						ClrDataProcess->QueryInterface<ISOSDacInterface>(&result);
+						if (result == nullptr)
+							throw gcnew System::NullReferenceException("QueryInterface for ISOSDacInterface returns nullptr");
+						this->m_SOSDac = result;
+					}
+					return this->m_SOSDac;
 				}
 			}
 		};

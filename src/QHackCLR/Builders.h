@@ -149,12 +149,7 @@ namespace QHackCLR {
 
 			virtual bool GetFieldProps(Common::ClrType^ parentType, int token, String^% name, FieldAttributes% attributes) sealed;
 
-			virtual void Flush() sealed {
-				CLRDataProcess->Flush();
-				AppDomains->Clear();
-				Modules->Clear();
-				Types->Clear();
-			}
+			virtual void Flush() sealed;
 
 			virtual Common::ClrAppDomain^ GetAppDomain(UIntPtr handle) sealed;
 			virtual Common::ClrType^ GetClrType(UIntPtr handle) sealed;
