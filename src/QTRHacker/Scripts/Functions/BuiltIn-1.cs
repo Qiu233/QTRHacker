@@ -255,7 +255,34 @@ mov dword ptr[ebp-0x18],0x3F800000"
 		IsEnabled = false;
 	}
 }
+public class HealthESP : BaseFunction
+{
+    public override bool CanDisable => true;
+    nuint[] original = new nuint[0];
+    public override void ApplyLocalization(string culture)
+    {
+        Name = culture switch
+        {
+            "zh" => "生命值ESP",
+            _ => "Health ESP",
+        };
+    }
+    public override void Enable(GameContext ctx)
+    {
+        nuint a = GetFunctionAddress(ctx, "Terraria.Main", "DrawInterface_14_EntityHealthBars");
+        byte[] code = AobscanHelper.GetHexCodeFromString("90 90 90 90 90 90");
+        ctx.HContext.DataAccess.WriteBytes(a + 0x1EB, code); // this function checks if the npc/entity health is equal to their max health, usually this is true, so healthbar is hidden, but since we nop this check it never hides the healthbar.
+        IsEnabled = true;
+    }
 
+    public override void Disable(GameContext ctx)
+    {
+        nuint a = GetFunctionAddress(ctx, "Terraria.Main", "DrawInterface_14_EntityHealthBars");
+        byte[] code = AobscanHelper.GetHexCodeFromString("3B 81 10 01 00 00"); // Terraria.Main::DrawInterface_14_EntityHealthBars+1EB - 3B 81 10 01 00 00 - cmp eax,[ecx+00000110] 
+        ctx.HContext.DataAccess.WriteBytes(a + 0x1EB, code);
+        IsEnabled = false;
+    }
+}
 public class GhostMode : BaseFunction
 {
 	public override bool CanDisable => true;
@@ -292,7 +319,8 @@ public class BuiltIn_1 : FunctionCategory
 		Add<InfiniteAmmo>();
 		Add<InfiniteFlyTime>();
 		Add<ImmuneToDebuffs>();
-		Add<HighLight>();
+        Add<HealthESP>();
+        Add<HighLight>();
 		Add<GhostMode>();
 	}
 }
