@@ -20,7 +20,6 @@ public class CharactersLoader
 		XmlDocument doc = new XmlDocument();
 		doc.LoadXml(xml);
 		var data = doc["data"];
-		Console.WriteLine(data.HasChildNodes);
 		foreach (var c in data.ChildNodes)
 		{
 			var ch = ParseChar(c as XmlElement);

@@ -11,7 +11,7 @@ public partial class MainWindow : MWindow
 {
 	public static MainWindow Instance { get; private set; }
 	public MainWindowViewModel ViewModel => DataContext as MainWindowViewModel;
-	public const string GameVersion = "1.4.4.7";
+	public const string GameVersion = "1.4.4.9";
 	public MainWindow()
 	{
 		Instance = this;
