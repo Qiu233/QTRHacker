@@ -203,11 +203,17 @@ public class GameContext : IDisposable
 	{
 		get;
 	}
+	public JitHelpersManager JitHelpersManager
+	{
+		get;
+	}
+
 
 	private GameContext(Process process)
 	{
 		GameProcess = process;
 		HContext = QHackContext.Create(process.Id);
+		JitHelpersManager = new JitHelpersManager(this);
 		Patches = new PatchesManager(this);
 	}
 
@@ -268,44 +274,24 @@ public class GameContext : IDisposable
 		_GameModuleHelper = null;// Invalidate so it will be loaded again.
 	}
 
-	public bool LoadAssembly(string assemblyFile, string typeName)
-	{
-		using MemoryAllocation alloc = new(HContext);
-		var stream = new RemoteMemorySpan(HContext, alloc.AllocationBase, (int)alloc.AllocationSize).GetStream();
-		nuint pLibAsmStr = stream.IP; stream.WriteWCHARArray(assemblyFile);
-		nuint pTypeStr = stream.IP; stream.WriteWCHARArray(typeName);
-		nuint loadFrom = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
-			"System.Reflection.Assembly.LoadFrom(System.String)").NativeCode;
-		nuint getType = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
-			"System.Reflection.Assembly.GetType(System.String)").NativeCode;
-		nuint createInstance = HContext.BCLHelper.GetClrMethodBySignature("System.Activator",
-			"System.Activator.CreateInstance(System.Type)").NativeCode;
-
-		var thCode = AssemblySnippet.FromCode(
-			new AssemblyCode[] {
-				AssemblySnippet.FromConstructString(HContext, pLibAsmStr),
-				(Instruction)$"mov ecx,eax",
-				(Instruction)$"call {loadFrom}",
-				(Instruction)$"push eax",
-				AssemblySnippet.FromConstructString(HContext, pTypeStr),
-				(Instruction)$"mov edx,eax",
-				(Instruction)$"pop ecx",
-				(Instruction)$"call {getType}",
-				(Instruction)$"mov ecx,eax",
-				(Instruction)$"call {createInstance}",
-		});
-		bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(5000);
-		Flush();
-		return result;
-	}
 	public unsafe bool LoadAssemblyAsBytes(string assemblyFile, string typeName)
 	{
 		byte[] data = File.ReadAllBytes(assemblyFile);
 		using MemoryAllocation alloc = new(HContext, (uint)data.Length + 64);
 		var stream = new RemoteMemorySpan(HContext, alloc.AllocationBase, (int)alloc.AllocationSize).GetStream();
-		nuint pArray = stream.FakeManagedByteArray(data);
-		nuint pTypeStr = stream.IP; stream.WriteWCHARArray(typeName);
 
+		nuint pData = stream.IP; stream.Write(data, (uint)data.Length);
+		nuint pTypeStr = stream.IP; stream.WriteWCHARArray(typeName);
+		nuint byteMT = HContext.Runtime.BaseClassLibrary.GetTypeByName("System.Byte").ClrHandle;
+		nuint jitHelper_typeof = JitHelpersManager.GetJitHelperAddress("CORINFO_HELP_TYPEHANDLE_TO_RUNTIMETYPE");
+		// The key is to find this jit helper, so we can create an array of bytes.
+		// Although there's another dedicated jit helper for creating array objects directly,
+		// the required type handle seems not the same as System.Byte,
+		// which contradicts the source code of coreclr.
+		// The only reason I could thought of is that legacy clr is a bit more tricky in this way.
+
+		nuint arrayCreateInstance = HContext.BCLHelper.GetClrMethodBySignature("System.Array",
+			"System.Array.CreateInstance(System.Type, Int32)").NativeCode;
 		nuint load = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
 			"System.Reflection.Assembly.Load(Byte[])").NativeCode;
 		nuint getType = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
@@ -315,54 +301,34 @@ public class GameContext : IDisposable
 
 		var thCode = AssemblySnippet.FromCode(
 			new AssemblyCode[] {
-				(Instruction)$"mov ecx,{pArray}",
+				(Instruction)$"mov ecx, {byteMT}",
+				(Instruction)$"call {jitHelper_typeof}",
+				(Instruction)$"mov ecx, eax",
+				(Instruction)$"mov edx, {data.Length}",
+				(Instruction)$"call {arrayCreateInstance}",
+				(Instruction)$"mov esi, eax",
+				// LOOP TO COPY
+				(Instruction)$"xor ebx, ebx",
+				(Instruction)$"label_loop_begin:",
+				(Instruction)$"cmp ebx, {data.Length}",
+				(Instruction)$"jae label_loop_end",
+
+				(Instruction)$"mov al, [{pData} + ebx]",
+				(Instruction)$"mov [esi + 8 + ebx], al",
+
+				(Instruction)$"inc ebx",
+				(Instruction)$"jmp label_loop_begin",
+				(Instruction)$"label_loop_end:",
+				// LOOP END
+				(Instruction)$"mov ecx, esi",
 				(Instruction)$"call {load}",
 				(Instruction)$"push eax",
 				AssemblySnippet.FromConstructString(HContext, pTypeStr),
-				(Instruction)$"mov edx,eax",
+				(Instruction)$"mov edx, eax",
 				(Instruction)$"pop ecx",
 				(Instruction)$"call {getType}",
-				(Instruction)$"mov ecx,eax",
+				(Instruction)$"mov ecx, eax",
 				(Instruction)$"call {createInstance}",
-		});
-		bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(5000);
-		Flush();
-		return result;
-	}
-
-	public bool LoadAssembly(string assemblyFile)
-	{
-		using MemoryAllocation alloc = new(HContext);
-		var stream = new RemoteMemorySpan(HContext, alloc.AllocationBase, (int)alloc.AllocationSize).GetStream();
-		stream.WriteWCHARArray(assemblyFile);
-
-		nuint loadFrom = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
-			"System.Reflection.Assembly.LoadFrom(System.String)").NativeCode;
-
-		var thCode = AssemblySnippet.FromCode(
-			new AssemblyCode[] {
-				AssemblySnippet.FromConstructString(HContext, alloc.AllocationBase),
-				(Instruction)$"mov ecx,eax",
-				(Instruction)$"call {loadFrom}",
-		});
-		bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(5000);
-		Flush();
-		return result;
-	}
-
-	public unsafe bool LoadAssemblyAsBytes(string assemblyFile)
-	{
-		byte[] data = File.ReadAllBytes(assemblyFile);
-		using MemoryAllocation alloc = new(HContext, (uint)data.Length + 64);
-		var stream = new RemoteMemorySpan(HContext, alloc.AllocationBase, (int)alloc.AllocationSize).GetStream();
-		nuint pArray = stream.FakeManagedByteArray(data);
-		nuint load = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
-			"System.Reflection.Assembly.Load(Byte[])").NativeCode;
-
-		var thCode = AssemblySnippet.FromCode(
-			new AssemblyCode[] {
-				(Instruction)$"mov ecx,{pArray}",
-				(Instruction)$"call {load}",
 		});
 		bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(5000);
 		Flush();

@@ -55,4 +55,9 @@ public static class ScriptHelper
 	{
 		return AobscanHelper.AobscanASM(Context.HContext.Handle, asm);
 	}
+
+	public static string GetStringRepresentation(byte[] data)
+	{
+		return string.Join("", data.Select(t=>t.ToString("X2")));
+	}
 }

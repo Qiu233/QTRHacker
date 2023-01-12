@@ -28,8 +28,28 @@ static String^ name(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS addrName) {\
 }
 			GET_STRING_ADDR_PROB_U(GetAppDomainName, GetAppDomainName, appDomain);
 			GET_STRING_ADDR_PROB_U(GetMethodTableName, GetMethodTableName, mt);
-			GET_STRING_ADDR_PROB_U(GetMethodDescName, GetMethodDescName, md);
 #undef GET_STRING_ADDR_PROB_U
+
+			static String^ GetMethodDescName(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS md) {
+				if (md == 0)
+					return nullptr;
+				unsigned int needed;
+				if (SOSDac->GetMethodDescName(md, 0, nullptr, &needed) < 0)
+					return nullptr;
+				array<byte>^ buffer = gcnew array<byte>(needed * sizeof(Char));
+				unsigned int actuallyNeeded;
+				pin_ptr<byte> ptr = &buffer[0];
+				if (SOSDac->GetMethodDescName(md, needed, (WCHAR*)ptr, &actuallyNeeded) < 0)
+					return nullptr;
+				if (needed != actuallyNeeded)
+				{
+					buffer = gcnew array<byte>(actuallyNeeded * sizeof(Char));
+					ptr = &buffer[0];
+					if (SOSDac->GetMethodDescName(md, actuallyNeeded, (WCHAR*)ptr, &actuallyNeeded) < 0)
+						return nullptr;
+				}
+				return System::Text::Encoding::Unicode->GetString(buffer, 0, (actuallyNeeded - 1) * sizeof(Char));
+			}
 
 			static IMetaDataImport* GetMetaDataImport(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS module)
 			{
@@ -44,7 +64,7 @@ static String^ name(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS addrName) {\
 			{
 				DacpAppDomainStoreData adsData;
 				SOSDac->GetAppDomainStoreData(&adsData);
-				
+
 				unsigned int needed = adsData.DomainCount;
 				if (needed == 0)
 					return Array::Empty<CLRDATA_ADDRESS>();

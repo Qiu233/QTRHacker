@@ -41,13 +41,15 @@ namespace QHackCLR {
 			ClrFlavor m_Flavor;
 			UIntPtr m_RuntimeBase;
 			String^ m_DacPath;
+			String^ m_ClrModulePath;
 		internal:
-			ClrInfo(DataTargets::DataTarget^ dt, ClrFlavor flavor, [NativeInteger] UIntPtr moduleBase, String^ dacPath)
+			ClrInfo(DataTargets::DataTarget^ dt, ClrFlavor flavor, [NativeInteger] UIntPtr moduleBase, String^ dacPath, String^ clrPath)
 			{
 				m_DataTarget = dt;
 				m_Flavor = flavor;
 				m_RuntimeBase = moduleBase;
 				m_DacPath = dacPath;
+				m_ClrModulePath = clrPath;
 			}
 		public:
 			property DataTargets::DataTarget^ DataTarget {
@@ -59,6 +61,9 @@ namespace QHackCLR {
 			}
 			property System::String^ DacPath {
 				System::String^ get() { return m_DacPath; }
+			}
+			property String^ ClrModulePath {
+				String^ get() { return m_ClrModulePath; }
 			}
 			property ClrFlavor Flavor {
 				ClrFlavor get() { return m_Flavor; }

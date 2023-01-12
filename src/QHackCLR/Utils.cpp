@@ -57,4 +57,18 @@ namespace QHackCLR {
 			|| cet == CorElementType::ELEMENT_TYPE_ARRAY || cet == CorElementType::ELEMENT_TYPE_SZARRAY
 			|| cet == CorElementType::ELEMENT_TYPE_OBJECT;
 	}
+
+	String^ Utils::GetJitHelperFunctionName(ISOSDacInterface* sosDac, UIntPtr addr)
+	{
+		unsigned int needed = 0;
+		auto naddr = addr.ToUInt64();
+		sosDac->GetJitHelperFunctionName(naddr, 0, nullptr, &needed);
+		if (needed <= 1)
+			return nullptr;
+		array<unsigned char>^ buffer = gcnew array<unsigned char>(needed);
+		pin_ptr<unsigned char> ptr = &buffer[0];
+		sosDac->GetJitHelperFunctionName(naddr, needed, static_cast<unsigned char*>(ptr), &needed);
+		int index = Array::IndexOf(buffer, (unsigned char)0);
+		return System::Text::Encoding::UTF8->GetString(buffer, 0, index >= 0 ? index : buffer->Length);
+	}
 }

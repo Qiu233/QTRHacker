@@ -163,7 +163,7 @@ namespace QHackCLR {
 				CLRDATA_ADDRESS slot;
 				DacpCodeHeaderData chdata;
 				SOSDac->GetMethodTableSlot(mt, i, &slot);
-				SOSDac->GetCodeHeaderData(slot, &chdata);
+				auto hr = SOSDac->GetCodeHeaderData(slot, &chdata);
 				methods->Add(gcnew Common::ClrMethod(this, UIntPtr(chdata.MethodDescPtr)));
 			}
 			return methods;

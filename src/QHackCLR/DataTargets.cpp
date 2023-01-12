@@ -44,7 +44,7 @@ namespace QHackCLR {
 				OSPlatform platform;
 				if (ClrInfoProvider::IsSupportedRuntime(fileName, flavor, platform)) {
 					String^ dacPath = Path::Combine(Path::GetDirectoryName(fileName), ClrInfoProvider::GetDacFileName(flavor, platform));
-					versionBuilder->Add(gcnew ClrInfo(this, flavor, UIntPtr(module), dacPath));
+					versionBuilder->Add(gcnew ClrInfo(this, flavor, UIntPtr(module), dacPath, fileName));
 				}
 			}
 			delete[] nameBuilder;

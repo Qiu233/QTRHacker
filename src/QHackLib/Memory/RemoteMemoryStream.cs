@@ -73,15 +73,5 @@ namespace QHackLib.Memory
 			_Position += (uint)sizeof(T);
 			return val;
 		}
-
-		public nuint FakeManagedByteArray(byte[] data)
-		{
-			Write<nuint>(0);//sync block
-			nuint ip = IP;
-			Write(Context.Runtime.BaseClassLibrary.GetTypeByName("System.Byte").ClrHandle);//handle
-			Write((nuint)data.Length);//length
-			Write(data, (uint)data.Length);
-			return ip;
-		}
 	}
 }

@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net7.0-windows</TargetFramework>
 		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
 		<PlatformTarget>x86</PlatformTarget>
 	</PropertyGroup>

@@ -95,6 +95,90 @@ public class UnlockAllDuplications : BaseFunction
 	}
 }
 
+public class InfiniteLife : BaseFunction
+{
+	public override bool CanDisable => true;
+	public override void ApplyLocalization(string culture)
+	{
+		switch (culture)
+		{
+			case "zh":
+				Name = "无限生命";
+				Tooltip = "免疫大部分伤害";
+				break;
+			case "en":
+			default:
+				Name = "Infinite Life";
+				Tooltip = "Immune to most damages except continuous ones like burning";
+				break;
+		}
+	}
+	public override void Enable(GameContext ctx)
+	{
+		string off = GetStringRepresentation(BitConverter.GetBytes(GetOffset(ctx, "Terraria.Player", "statLife")));
+		AobReplace(ctx, $"29 82 {off} 83 7D", $"01 82 {off} 83 7D");
+		IsEnabled = true;
+	}
+	public override void Disable(GameContext ctx)
+	{
+		string off = GetStringRepresentation(BitConverter.GetBytes(GetOffset(ctx, "Terraria.Player", "statLife")));
+		AobReplace(ctx, $"01 82 {off} 83 7D", $"29 82 {off} 83 7D");
+		IsEnabled = false;
+	}
+}
+
+public class InfiniteMana : BaseFunction
+{
+	public override bool CanDisable => true;
+	public override void ApplyLocalization(string culture)
+	{
+		Name = culture switch
+		{
+			"zh" => "无限魔法",
+			_ => "Infinite Mana",
+		};
+	}
+	public override void Enable(GameContext ctx)
+	{
+		int off = GetOffset(ctx, "Terraria.Player", "statMana");
+		AobReplaceASM(ctx, $"sub [esi+{off}],edi", $"add [esi+{off}],edi");
+		AobReplaceASM(ctx, $"sub [esi+{off}],eax", $"add [esi+{off}],eax");
+		IsEnabled = true;
+	}
+	public override void Disable(GameContext ctx)
+	{
+		int off = GetOffset(ctx, "Terraria.Player", "statMana");
+		AobReplaceASM(ctx, $"add [esi+{off}],edi", $"sub [esi+{off}],edi");
+		AobReplaceASM(ctx, $"add [esi+{off}],eax", $"sub [esi+{off}],eax");
+		IsEnabled = false;
+	}
+}
+
+public class InfiniteOxygen : BaseFunction
+{
+	public override bool CanDisable => true;
+	public override void ApplyLocalization(string culture)
+	{
+		Name = culture switch
+		{
+			"zh" => "无限氧气",
+			_ => "Infinite Oxygen",
+		};
+	}
+	public override void Enable(GameContext ctx)
+	{
+		int off = GetOffset(ctx, "Terraria.Player", "breath");
+		AobReplaceASM(ctx, $"dec dword ptr [eax+{off}]\ncmp dword ptr [eax+{off}],0", $"inc dword ptr [eax+{off}]");
+		IsEnabled = true;
+	}
+	public override void Disable(GameContext ctx)
+	{
+		int off = GetOffset(ctx, "Terraria.Player", "breath");
+		AobReplaceASM(ctx, $"inc dword ptr [eax+{off}]\ncmp dword ptr [eax+{off}],0", $"dec dword ptr [eax+{off}]");
+		IsEnabled = false;
+	}
+}
+
 public class InfiniteMinion : BaseFunction
 {
 	public override bool CanDisable => true;
@@ -288,6 +372,9 @@ public class BuiltIn_1 : FunctionCategory
 
 		Add<CreativeMenu>();
 		Add<UnlockAllDuplications>();
+		Add<InfiniteLife>();
+		Add<InfiniteMana>();
+		Add<InfiniteOxygen>();
 		Add<InfiniteMinion>();
 		Add<InfiniteAmmo>();
 		Add<InfiniteFlyTime>();

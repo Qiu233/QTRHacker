@@ -29,8 +29,56 @@ namespace QHackCLR {
 
 			UIntPtr EEClass; //nuint CanonMT;
 			UIntPtr ElementTypeHnd; //nuint PerInstInfo;
-										 //nuint MultipurposeSlot1;
+			//nuint MultipurposeSlot1;
 			UIntPtr InterfaceMap; //nuint MultipurposeSlot2;
+		};
+		public enum class ElementType
+		{
+			TYPE_END = 0x00,
+			TYPE_VOID = 0x01,
+			TYPE_BOOLEAN = 0x02,
+			TYPE_CHAR = 0x03,
+			TYPE_I1 = 0x04,
+			TYPE_U1 = 0x05,
+			TYPE_I2 = 0x06,
+			TYPE_U2 = 0x07,
+			TYPE_I4 = 0x08,
+			TYPE_U4 = 0x09,
+			TYPE_I8 = 0x0a,
+			TYPE_U8 = 0x0b,
+			TYPE_R4 = 0x0c,
+			TYPE_R8 = 0x0d,
+			TYPE_STRING = 0x0e,
+
+			TYPE_PTR = 0x0f,
+			TYPE_BYREF = 0x10,
+
+			TYPE_VALUETYPE = 0x11,
+			TYPE_CLASS = 0x12,
+			TYPE_VAR = 0x13,
+			TYPE_ARRAY = 0x14,
+			TYPE_GENERICINST = 0x15,
+			TYPE_TYPEDBYREF = 0x16,
+
+			TYPE_I = 0x18,
+			TYPE_U = 0x19,
+			TYPE_FNPTR = 0x1b,
+			TYPE_OBJECT = 0x1c,
+			TYPE_SZARRAY = 0x1d,
+			TYPE_MVAR = 0x1e,
+
+			TYPE_CMOD_REQD = 0x1f,
+			TYPE_CMOD_OPT = 0x20,
+
+			TYPE_INTERNAL = 0x21,
+
+			TYPE_MAX = 0x22,
+
+
+			TYPE_MODIFIER = 0x40,
+			TYPE_SENTINEL = 0x01 | TYPE_MODIFIER,
+			TYPE_PINNED = 0x05 | TYPE_MODIFIER,
+
 		};
 
 		public interface class IClrHandled : IEquatable<IClrHandled^> {
@@ -97,12 +145,11 @@ namespace QHackCLR {
 			initonly DataTargets::ClrInfo^ m_ClrInfo;
 			ClrAppDomain^ m_AppDomain;
 			ClrHeap^ m_Heap;
-		protected:
-			initonly IRuntimeHelper^ RuntimeHelper;
+			initonly IRuntimeHelper^ m_RuntimeHelper;
 		public:
 			ClrRuntime(DataTargets::ClrInfo^ clrInfo, IRuntimeHelper^ helper) {
 				this->m_ClrInfo = clrInfo;
-				this->RuntimeHelper = helper;
+				this->m_RuntimeHelper = helper;
 			}
 			property DataTargets::ClrInfo^ ClrInfo {
 				DataTargets::ClrInfo^ get() {
@@ -127,6 +174,9 @@ namespace QHackCLR {
 			}
 			property ClrModule^ BaseClassLibrary {
 				ClrModule^ get();
+			}
+			property IRuntimeHelper^ RuntimeHelper {
+				IRuntimeHelper^ get();
 			}
 
 			void Flush();
@@ -271,6 +321,11 @@ namespace QHackCLR {
 					if (m_ElementType == CorElementType::ELEMENT_TYPE_END)
 						m_ElementType = GetCorElementType();
 					return m_ElementType;
+				}
+			}
+			property QHackCLR::Common::ElementType WrappedElementType {
+				QHackCLR::Common::ElementType get() {
+					return (QHackCLR::Common::ElementType)ElementType;
 				}
 			}
 

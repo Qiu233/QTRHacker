@@ -1,12 +1,13 @@
 ﻿using QTRHacker.Commands;
 using QTRHacker.Localization;
+using System.Windows.Input;
 
 namespace QTRHacker.ViewModels.Advanced;
 
 public abstract class AdvancedFunction : ViewModelBase, ILocalizationProvider
 {
 	private string name;
-	private readonly RelayCommand runCommand;
+	private readonly HackCommand runCommand;
 
 	public string Name
 	{
@@ -18,7 +19,7 @@ public abstract class AdvancedFunction : ViewModelBase, ILocalizationProvider
 		}
 	}
 
-	public RelayCommand RunCommand => runCommand;
+	public ICommand RunCommand => runCommand;
 
 	public abstract void Run();
 
@@ -32,6 +33,6 @@ public abstract class AdvancedFunction : ViewModelBase, ILocalizationProvider
 	public AdvancedFunction()
 	{
 		LocalizationManager.RegisterLocalizationProvider(this);
-		runCommand = new RelayCommand(o => true, o => Run());
+		runCommand = new HackCommand(o => Run());
 	}
 }

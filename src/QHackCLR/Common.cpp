@@ -34,11 +34,14 @@ namespace QHackCLR {
 		ClrModule^ ClrRuntime::BaseClassLibrary::get() {
 			return Heap->ObjectType->Module;
 		}
+		IRuntimeHelper^ ClrRuntime::RuntimeHelper::get() {
+			return this->m_RuntimeHelper;
+		}
 		void ClrRuntime::Flush()
 		{
 			m_AppDomain = nullptr;
 			m_Heap = nullptr;
-			RuntimeHelper->Flush();
+			m_RuntimeHelper->Flush();
 		}
 
 

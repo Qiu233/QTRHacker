@@ -28,13 +28,5 @@ namespace QHackLib.Memory
 			stream.Write(data, (uint)data.Length);
 			stream.Write<byte>(0);
 		}
-
-		public static void FakeManagedString(this RemoteMemoryStream stream, string str)
-		{
-			stream.Write<nuint>(0);//sync block
-			stream.Write(stream.Context.Runtime.Heap.StringType.ClrHandle);//handle
-			stream.Write((nuint)str.Length);//length
-			WriteWCHARArray(stream, str);
-		}
 	}
 }

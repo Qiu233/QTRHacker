@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net7.0-windows</TargetFramework>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<OutputType>Library</OutputType>
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
@@ -22,8 +22,7 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>QTRHacker.Patches.dll</TargetPath>
 		</ContentWithTargetPath>
-		<UpToDateCheckBuilt Include="$(OutputPath)QTRHacker.Patches.dll"
-							Original="..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll" />
+		<UpToDateCheckBuilt Include="$(OutputPath)QTRHacker.Patches.dll" Original="..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll" />
 	</ItemGroup>
 	
 	<ItemGroup>
