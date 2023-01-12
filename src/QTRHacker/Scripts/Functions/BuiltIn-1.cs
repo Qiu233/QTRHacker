@@ -115,14 +115,14 @@ public class InfiniteLife : BaseFunction
 	}
 	public override void Enable(GameContext ctx)
 	{
-		string off = GetStringRepresentation(BitConverter.GetBytes(GetOffset(ctx, "Terraria.Player", "statLife")));
-		AobReplace(ctx, $"29 82 {off} 83 7D", $"01 82 {off} 83 7D");
+		int off = GetOffset(ctx, "Terraria.Player", "statLife");
+		AobReplace(ctx, $"29 82 {AobscanHelper.GetMByteCode(off)} 83 7D", $"01 82 {AobscanHelper.GetMByteCode(off)} 83 7D");
 		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
-		string off = GetStringRepresentation(BitConverter.GetBytes(GetOffset(ctx, "Terraria.Player", "statLife")));
-		AobReplace(ctx, $"01 82 {off} 83 7D", $"29 82 {off} 83 7D");
+		int off = GetOffset(ctx, "Terraria.Player", "statLife");
+		AobReplace(ctx, $"01 82 {AobscanHelper.GetMByteCode(off)} 83 7D", $"29 82 {AobscanHelper.GetMByteCode(off)} 83 7D");
 		IsEnabled = false;
 	}
 }
