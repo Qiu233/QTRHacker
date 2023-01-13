@@ -3,7 +3,6 @@
 	public enum UsefulPrefixes : byte
 	{
 		None = 0,
-		Weapon = 0,
 		Godly = 59,
 		Legendary = 81,
 		Unreal = 82,
