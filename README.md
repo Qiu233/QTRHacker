@@ -1,7 +1,5 @@
 # QTRHacker
 
-**:** 
-
 ## Requirements
 * Windows 10 x64
 * .NET 6 Desktop Runtime x86
