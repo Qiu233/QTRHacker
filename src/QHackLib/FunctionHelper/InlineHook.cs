@@ -216,7 +216,7 @@ namespace QHackLib.FunctionHelper
 			var hook = new InlineHook(Context, code, new HookParameters(targetAddr, size, true, true));
 			if (!hook.Attach())
 				return false;
-			if (hook.WaitToDetach())
+			if (!hook.WaitToDetach())
 				return false;
 			hook.WaitToDispose();
 			return true;
