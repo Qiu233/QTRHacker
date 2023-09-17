@@ -288,7 +288,7 @@ public class GameContext : IDisposable
 		// Although there's another dedicated jit helper for creating array objects directly,
 		// the required type handle seems not the same as System.Byte,
 		// which contradicts the source code of coreclr.
-		// The only reason I could thought of is that legacy clr is a bit more tricky in this way.
+		// The only reason I can think of is that legacy clr is a bit more tricky in this way.
 
 		nuint arrayCreateInstance = HContext.BCLHelper.GetClrMethodBySignature("System.Array",
 			"System.Array.CreateInstance(System.Type, Int32)").NativeCode;

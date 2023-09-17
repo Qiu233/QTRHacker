@@ -117,6 +117,7 @@ namespace QTRHacker.ViewModels.PagePanels
 			{
 				var obj = HackGlobal.GameContext.GameModuleHelper.GetStaticHackObject("Terraria.Main", "versionNumber");
 				HackGlobal.Logging.Log("Game Version:\t" + new GameString(HackGlobal.GameContext, obj).GetValue());
+				HackGlobal.Logging.Log($"CLR Modules:\t[{string.Join(", ", HackGlobal.GameContext.HContext.CLRHelpers.Select(t => t.Key.Name))}]");
 			}
 			catch
 			{

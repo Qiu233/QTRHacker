@@ -44,16 +44,28 @@ namespace QHackLib
 
 		public ClrMethod GetClrMethodBySignature(string typeName, string signature) => GetClrMethod(typeName, m => m.Signature == signature);
 
-		public nuint GetStaticFieldAddress(string typeName, string fieldName) => GetClrType(typeName).GetStaticFieldByName(fieldName).GetAddress();
+		public nuint GetStaticFieldAddress(string typeName, string fieldName) => GetStaticFieldByName(typeName, fieldName).GetAddress();
 
 		public uint GetInstanceFieldOffset(string typeName, string fieldName) => GetClrType(typeName).GetInstanceFieldByName(fieldName).Offset;
 
-		public T GetStaticFieldValue<T>(string typeName, string fieldName) where T : unmanaged => Context.DataAccess.Read<T>(GetClrType(typeName).GetStaticFieldByName(fieldName).GetAddress());
-		public void SetStaticFieldValue<T>(string typeName, string fieldName, T value) where T : unmanaged => Context.DataAccess.Write(GetClrType(typeName).GetStaticFieldByName(fieldName).GetAddress(), value);
+		public T GetStaticFieldValue<T>(string typeName, string fieldName) where T : unmanaged => Context.DataAccess.Read<T>(GetStaticFieldByName(typeName, fieldName).GetAddress());
+
+		public void SetStaticFieldValue<T>(string typeName, string fieldName, T value) where T : unmanaged => Context.DataAccess.Write(GetStaticFieldByName(typeName, fieldName).GetAddress(), value);
+
+		private ClrStaticField GetStaticFieldByName(string typeName, string fieldName)
+		{
+			var type = GetClrType(typeName);
+			if (type is null)
+				throw new ArgumentException($"No such type found: {typeName}");
+			var field = type.GetStaticFieldByName(fieldName);
+			if (field is null)
+				throw new ArgumentException($"No such field found: {fieldName} of type {typeName}");
+			return field;
+		}
 
 		public HackObject GetStaticHackObject(string typeName, string fieldName)
 		{
-			var field = GetClrType(typeName).GetStaticFieldByName(fieldName);
+			var field = GetStaticFieldByName(typeName, fieldName);
 			if (field.Type.IsPrimitive)
 				throw new ArgumentException("Primitive static field cannot be cast to HackObject.", nameof(fieldName));
 			return new HackObject(Context, field.Type, field.GetRawValue<nuint>());
