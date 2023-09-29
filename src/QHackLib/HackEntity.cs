@@ -1,4 +1,5 @@
 ﻿using QHackCLR.Common;
+using QHackCLR.Entities;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -11,18 +12,18 @@ namespace QHackLib
 	public abstract class HackEntity : DynamicObject, IEquatable<HackEntity>
 	{
 		public QHackContext Context { get; }
-		public ClrType Type { get; }
+		public CLRType Type { get; }
 		public nuint BaseAddress { get; }
 
 		public abstract nuint OffsetBase { get; }
 
-		protected HackEntity(QHackContext ctx, ClrType type, nuint baseAddress)
+		protected HackEntity(QHackContext ctx, CLRType type, nuint baseAddress)
 		{
 			Context = ctx;
 			Type = type;
 			BaseAddress = baseAddress;
 		}
-		protected static ClrInstanceField SearchFieldRecursively(ClrType type, string name)
+		protected static CLRInstanceField SearchFieldRecursively(CLRType type, string name)
 		{
 			var field = type.GetInstanceFieldByName(name);
 			if (field is not null)
@@ -34,19 +35,16 @@ namespace QHackLib
 
 		public unsafe HackEntity InternalGetMember(string name)
 		{
-			ClrInstanceField field = SearchFieldRecursively(Type, name);
-			if (field is null)
-				throw new ArgumentException($"No such field: {name} in ", nameof(name));
-
+			CLRInstanceField field = SearchFieldRecursively(Type, name) ?? throw new ArgumentException($"No such field: {name} in ", nameof(name));
 			nuint addr = field.GetAddress(OffsetBase);
 			if (field.Type.IsObjectReference)
-				return new HackObject(Context, field.Type, Context.DataAccess.Read<nuint>(addr));
+				return new HackObject(Context, field.Type, Context.DataAccess.ReadValue<nuint>(addr));
 			return new HackValue(Context, field.Type, addr);
 		}
 
 		public unsafe void InternalSetMember(string name, object value)
 		{
-			ClrInstanceField field = SearchFieldRecursively(Type, name);
+			CLRInstanceField field = SearchFieldRecursively(Type, name);
 			if (field is null)
 				throw new ArgumentException($"No such field: {name} in ", nameof(name));
 
@@ -55,21 +53,21 @@ namespace QHackLib
 			if (value is HackObject hobj)
 			{
 				if (field.Type == hobj.Type)
-					Context.DataAccess.Write(addr, hobj.BaseAddress);
+					Context.DataAccess.WriteValue(addr, hobj.BaseAddress);
 			}
 			else if (value is HackValue hval)
 			{
 				if (field.Type == hval.Type)
-					Context.DataAccess.Write(addr, 
-						Context.DataAccess.ReadBytes(hval.OffsetBase, hval.Type.DataSize));
+					Context.DataAccess.WriteBytes(addr, 
+						Context.DataAccess.ReadBytes(hval.OffsetBase, (int)hval.Type.DataSize));
 			}
-			else if (value is ClrObject obj)
-				Context.DataAccess.Write(addr, obj.Address);
-			else if (value is ClrValue val)
+			else if (value is CLRObject obj)
+				Context.DataAccess.WriteValue(addr, obj.Address);
+			else if (value is CLRValue val)
 				Context.DataAccess.WriteBytes(addr,
-					Context.DataAccess.ReadBytes(val.Address, field.Type.DataSize));
+					Context.DataAccess.ReadBytes(val.Address, (int)field.Type.DataSize));
 			else if (valueType.IsValueType)
-				Context.DataAccess.Write(addr, value);
+				Context.DataAccess.WriteObject(addr, value);
 		}
 
 		public override bool TryGetMember(GetMemberBinder binder, out object result)

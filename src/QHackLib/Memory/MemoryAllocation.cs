@@ -54,23 +54,23 @@ namespace QHackLib.Memory
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public virtual bool Write(byte[] data, uint length, uint offset) =>
-			Context.DataAccess.Write(AllocationBase + offset, data, length);
+			Context.DataAccess.WriteBytes(AllocationBase + offset, data.AsSpan()[0..(int)length]);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public virtual bool Read(byte[] data, uint length, uint offset) =>
-			Context.DataAccess.Read(AllocationBase + offset, data, length);
+			Context.DataAccess.Read(AllocationBase + offset, data.AsSpan()[0..(int)length]);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public virtual bool Write<T>(T val, uint offset) where T : unmanaged =>
-			Context.DataAccess.Write(AllocationBase + offset, val);
+			Context.DataAccess.WriteValue(AllocationBase + offset, val);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public virtual bool Read<T>(out T val, uint offset) where T : unmanaged =>
-			Context.DataAccess.Read(AllocationBase + offset, out val);
+			Context.DataAccess.ReadValue(AllocationBase + offset, out val);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public virtual T Read<T>(uint offset) where T : unmanaged =>
-			Context.DataAccess.Read<T>(AllocationBase + offset);
+			Context.DataAccess.ReadValue<T>(AllocationBase + offset);
 
 		public static MemoryAllocation Alloc(QHackContext ctx, uint size = 0x1000) => new(ctx, size);
 

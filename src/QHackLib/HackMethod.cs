@@ -1,4 +1,5 @@
 ﻿using QHackCLR.Common;
+using QHackCLR.Entities;
 using QHackLib.Assemble;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace QHackLib
 	public sealed class HackMethod : IEquatable<HackMethod>
 	{
 		public QHackContext Context { get; }
-		public ClrMethod InternalClrMethod { get; }
+		public CLRMethod InternalClrMethod { get; }
 
-		public HackMethod(QHackContext context, ClrMethod method)
+		public HackMethod(QHackContext context, CLRMethod method)
 		{
 			Context = context;
 			InternalClrMethod = method;

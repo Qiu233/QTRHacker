@@ -32,7 +32,7 @@ namespace QHackLib.Memory
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool Write(byte[] data, uint length)
 		{
-			if (!Context.DataAccess.Write(IP, data, length))
+			if (!Context.DataAccess.WriteBytes(IP, data.AsSpan()[0..(int)length]))
 				return false;
 			_Position += length;
 			return true;
@@ -41,7 +41,7 @@ namespace QHackLib.Memory
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool Read(byte[] data, uint length)
 		{
-			if (!Context.DataAccess.Read(IP, data, length))
+			if (!Context.DataAccess.Read(IP, data.AsSpan()[0..(int)length]))
 				return false;
 			_Position += length;
 			return true;
@@ -50,7 +50,7 @@ namespace QHackLib.Memory
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool Write<T>(T val) where T : unmanaged
 		{
-			if (!Context.DataAccess.Write(IP, val))
+			if (!Context.DataAccess.WriteValue(IP, val))
 				return false;
 			_Position += (uint)sizeof(T);
 			return true;
@@ -59,7 +59,7 @@ namespace QHackLib.Memory
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool Read<T>(out T val) where T : unmanaged
 		{
-			if (!Context.DataAccess.Read(IP, out val))
+			if (!Context.DataAccess.ReadValue(IP, out val))
 				return false;
 			_Position += (uint)sizeof(T);
 			return true;
@@ -68,7 +68,7 @@ namespace QHackLib.Memory
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public T Read<T>() where T : unmanaged
 		{
-			if (!Context.DataAccess.Read(IP, out T val))
+			if (!Context.DataAccess.ReadValue(IP, out T val))
 				return default;
 			_Position += (uint)sizeof(T);
 			return val;

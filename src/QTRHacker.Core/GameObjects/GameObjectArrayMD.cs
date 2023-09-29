@@ -55,7 +55,7 @@ public class GameObjectArrayMDV<T> : GameObject, IGameObjectArrayMD<T> where T :
 	{
 		nuint addr = TypedInternalObject.Type.GetArrayElementAddress(TypedInternalObject.BaseAddress, indices);
 		var array = new T[length];
-		Context.HContext.DataAccess.Read(addr, array, (uint)length);
+		Context.HContext.DataAccess.Read(addr, array.AsSpan());
 		return array;
 	}
 	public T[] GetAllElements()
@@ -64,7 +64,7 @@ public class GameObjectArrayMDV<T> : GameObject, IGameObjectArrayMD<T> where T :
 			return Array.Empty<T>();
 		nuint addr = TypedInternalObject.Type.GetElementsBase(TypedInternalObject.BaseAddress);
 		var array = new T[Length];
-		Context.HContext.DataAccess.Read(addr, array, (uint)array.Length);
+		Context.HContext.DataAccess.Read(addr, array.AsSpan());
 		return array;
 	}
 }

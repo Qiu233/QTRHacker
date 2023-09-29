@@ -42,86 +42,86 @@ public class GameContext : IDisposable
 
 	public int NetMode
 	{
-		get => HContext.DataAccess.Read<int>(NetMode_Address);
-		set => HContext.DataAccess.Write(NetMode_Address, value);
+		get => HContext.DataAccess.ReadValue<int>(NetMode_Address);
+		set => HContext.DataAccess.WriteValue(NetMode_Address, value);
 	}
 
 	public float MapFullScreenScale
 	{
-		get => HContext.DataAccess.Read<float>(MapFullScreenScale_Address);
-		set => HContext.DataAccess.Write(MapFullScreenScale_Address, value);
+		get => HContext.DataAccess.ReadValue<float>(MapFullScreenScale_Address);
+		set => HContext.DataAccess.WriteValue(MapFullScreenScale_Address, value);
 	}
 	public int MouseX
 	{
-		get => HContext.DataAccess.Read<int>(MouseX_Address);
-		set => HContext.DataAccess.Write(MouseX_Address, value);
+		get => HContext.DataAccess.ReadValue<int>(MouseX_Address);
+		set => HContext.DataAccess.WriteValue(MouseX_Address, value);
 	}
 	public int MouseY
 	{
-		get => HContext.DataAccess.Read<int>(MouseY_Address);
-		set => HContext.DataAccess.Write(MouseY_Address, value);
+		get => HContext.DataAccess.ReadValue<int>(MouseY_Address);
+		set => HContext.DataAccess.WriteValue(MouseY_Address, value);
 	}
 
 	public int TileTargetX
 	{
-		get => HContext.DataAccess.Read<int>(TileTargetX_Address);
-		set => HContext.DataAccess.Write(TileTargetX_Address, value);
+		get => HContext.DataAccess.ReadValue<int>(TileTargetX_Address);
+		set => HContext.DataAccess.WriteValue(TileTargetX_Address, value);
 	}
 	public int TileTargetY
 	{
-		get => HContext.DataAccess.Read<int>(TileTargetY_Address);
-		set => HContext.DataAccess.Write(TileTargetY_Address, value);
+		get => HContext.DataAccess.ReadValue<int>(TileTargetY_Address);
+		set => HContext.DataAccess.WriteValue(TileTargetY_Address, value);
 	}
 
 	public unsafe GameObjects.ValueTypeRedefs.Xna.Vector2 MapFullscreenPos
 	{
-		get => HContext.DataAccess.Read<GameObjects.ValueTypeRedefs.Xna.Vector2>(MapFullscreenPos_Address + (uint)sizeof(nuint));
-		set => HContext.DataAccess.Write(MapFullscreenPos_Address + (uint)sizeof(nuint), value);
+		get => HContext.DataAccess.ReadValue<GameObjects.ValueTypeRedefs.Xna.Vector2>(MapFullscreenPos_Address + (uint)sizeof(nuint));
+		set => HContext.DataAccess.WriteValue(MapFullscreenPos_Address + (uint)sizeof(nuint), value);
 	}
 
 	public int ScreenWidth
 	{
-		get => HContext.DataAccess.Read<int>(ScreenWidth_Address);
-		set => HContext.DataAccess.Write(ScreenWidth_Address, value);
+		get => HContext.DataAccess.ReadValue<int>(ScreenWidth_Address);
+		set => HContext.DataAccess.WriteValue(ScreenWidth_Address, value);
 	}
 
 	public int ScreenHeight
 	{
-		get => HContext.DataAccess.Read<int>(ScreenHeight_Address);
-		set => HContext.DataAccess.Write(ScreenHeight_Address, value);
+		get => HContext.DataAccess.ReadValue<int>(ScreenHeight_Address);
+		set => HContext.DataAccess.WriteValue(ScreenHeight_Address, value);
 	}
 
 	public bool MouseRightRelease
 	{
-		get => HContext.DataAccess.Read<bool>(MouseRightRelease_Address);
-		set => HContext.DataAccess.Write(MouseRightRelease_Address, value);
+		get => HContext.DataAccess.ReadValue<bool>(MouseRightRelease_Address);
+		set => HContext.DataAccess.WriteValue(MouseRightRelease_Address, value);
 	}
 
 	public bool MouseRight
 	{
-		get => HContext.DataAccess.Read<bool>(MouseRight_Address);
-		set => HContext.DataAccess.Write(MouseRight_Address, value);
+		get => HContext.DataAccess.ReadValue<bool>(MouseRight_Address);
+		set => HContext.DataAccess.WriteValue(MouseRight_Address, value);
 	}
 
 
 	public bool MapFullScreen
 	{
-		get => HContext.DataAccess.Read<bool>(MapFullScreen_Address);
-		set => HContext.DataAccess.Write(MapFullScreen_Address, value);
+		get => HContext.DataAccess.ReadValue<bool>(MapFullScreen_Address);
+		set => HContext.DataAccess.WriteValue(MapFullScreen_Address, value);
 	}
 
 
 	public bool RefreshMap
 	{
-		get => HContext.DataAccess.Read<bool>(Main_RefreshMap_Address);
-		set => HContext.DataAccess.Write(Main_RefreshMap_Address, value);
+		get => HContext.DataAccess.ReadValue<bool>(Main_RefreshMap_Address);
+		set => HContext.DataAccess.WriteValue(Main_RefreshMap_Address, value);
 	}
 
 
 	public int MyPlayerIndex
 	{
-		get => HContext.DataAccess.Read<int>(My_Player_Address);
-		set => HContext.DataAccess.Write(My_Player_Address, value);
+		get => HContext.DataAccess.ReadValue<int>(My_Player_Address);
+		set => HContext.DataAccess.WriteValue(My_Player_Address, value);
 	}
 
 	public GameObjectArray2D<Tile> Tile

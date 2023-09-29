@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static QHackLib.NativeFunctions;
 using QHackCLR.Common;
+using QHackCLR.Entities;
 
 namespace QHackLib
 {
@@ -18,9 +19,9 @@ namespace QHackLib
 		public int ProcessID { get; }
 
 		public DataTarget DataTarget { get; }
-		public ClrRuntime Runtime { get; }
+		public CLRRuntime Runtime { get; }
 
-		public Dictionary<ClrModule, CLRHelper> CLRHelpers { get; } = new();
+		public Dictionary<CLRModule, CLRHelper> CLRHelpers { get; } = new();
 
 		public CLRHelper BCLHelper => CLRHelpers[Runtime.BaseClassLibrary];
 

@@ -95,7 +95,7 @@ namespace QHackLib.FunctionHelper
 		/// Only when this method returns true can you dispose this object.
 		/// </summary>
 		/// <returns></returns>
-		public bool ReadyToRelease() => Context.DataAccess.Read<int>(Header.Address_SafeFreeFlag) == 0;
+		public bool ReadyToRelease() => Context.DataAccess.ReadValue<int>(Header.Address_SafeFreeFlag) == 0;
 
 		/// <summary>
 		/// Calling this method will forcefully release the code region, 

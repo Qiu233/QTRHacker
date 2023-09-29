@@ -103,14 +103,14 @@ namespace QHackLib.FunctionHelper
 
 		public bool IsAttached()
 		{
-			byte h = Context.DataAccess.Read<byte>(Parameters.TargetAddress);
+			byte h = Context.DataAccess.ReadValue<byte>(Parameters.TargetAddress);
 			if (h != 0xE9)
 				return false;
 			nuint addr =
 				Parameters.TargetAddress +
-				(uint)(Context.DataAccess.Read<int>(Parameters.TargetAddress + 1)
+				(uint)(Context.DataAccess.ReadValue<int>(Parameters.TargetAddress + 1)
 				+ 5 - HookInfo.HeaderSize);
-			return Context.DataAccess.Read<nuint>(addr) == addr;
+			return Context.DataAccess.ReadValue<nuint>(addr) == addr;
 		}
 
 		/// <summary>
@@ -144,9 +144,9 @@ namespace QHackLib.FunctionHelper
 			return true;
 		}
 
-		private HookInfo GetHookInfo() => Context.DataAccess.Read<HookInfo>(
+		private HookInfo GetHookInfo() => Context.DataAccess.ReadValue<HookInfo>(
 				Parameters.TargetAddress +
-				(uint)(Context.DataAccess.Read<int>(Parameters.TargetAddress + 1)
+				(uint)(Context.DataAccess.ReadValue<int>(Parameters.TargetAddress + 1)
 				+ 5 - HookInfo.HeaderSize));
 
 		/// <summary>
@@ -159,14 +159,14 @@ namespace QHackLib.FunctionHelper
 			if (!Parameters.IsOnce)
 				throw new InvalidOperationException("Not a once hook.");
 			HookInfo hook = GetHookInfo();
-			while (Context.DataAccess.Read<int>(hook.Address_OnceFlag) != 0) { }
+			while (Context.DataAccess.ReadValue<int>(hook.Address_OnceFlag) != 0) { }
 			return Detach();
 		}
 
 		public void WaitToDispose()
 		{
 			HookInfo hook = GetHookInfo();
-			while (Context.DataAccess.Read<int>(hook.Address_SafeFreeFlag) != 0) { }
+			while (Context.DataAccess.ReadValue<int>(hook.Address_SafeFreeFlag) != 0) { }
 			Dispose();
 		}
 
@@ -231,13 +231,13 @@ namespace QHackLib.FunctionHelper
 		/// <returns>false if the target is not a valid hook</returns>
 		public unsafe static bool FreeHook(QHackContext Context, nuint targetAddr, bool forceRelease = true, int timeout = 1000)
 		{
-			byte h = Context.DataAccess.Read<byte>(targetAddr);
+			byte h = Context.DataAccess.ReadValue<byte>(targetAddr);
 			if (h != 0xE9)
 				return false;
 			nuint addr = targetAddr +
-				(uint)(Context.DataAccess.Read<int>(targetAddr + 1)
+				(uint)(Context.DataAccess.ReadValue<int>(targetAddr + 1)
 				+ 5 - HookInfo.HeaderSize);
-			HookInfo hook = Context.DataAccess.Read<HookInfo>(addr);
+			HookInfo hook = Context.DataAccess.ReadValue<HookInfo>(addr);
 			if (addr != hook.AllocBase)
 				return false;
 
@@ -246,7 +246,7 @@ namespace QHackLib.FunctionHelper
 				bs[i] = hook.RawCodeBytes[i];
 			Context.DataAccess.WriteBytes(targetAddr, bs);
 			nuint sa = hook.Address_SafeFreeFlag;
-			bool result = Task.Run(() => { while (Context.DataAccess.Read<int>(sa) != 0) { } }).Wait(timeout);
+			bool result = Task.Run(() => { while (Context.DataAccess.ReadValue<int>(sa) != 0) { } }).Wait(timeout);
 			if (forceRelease || result)
 			{
 				NativeFunctions.VirtualFreeEx(Context.Handle, hook.AllocBase, 0);

@@ -46,10 +46,10 @@ namespace QHackLib.Memory
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool Write(byte[] data, uint length, uint offset = 0) =>
-			Context.DataAccess.Write(Base + offset, data, length);
+			Context.DataAccess.WriteBytes(Base + offset, data.AsSpan()[0..(int)length]);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool Read(byte[] data, uint length, uint offset = 0) =>
-			Context.DataAccess.Read(Base + offset, data, length);
+			Context.DataAccess.Read(Base + offset, data.AsSpan()[0..(int)length]);
 	}
 }

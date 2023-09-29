@@ -1,4 +1,5 @@
 ﻿using QHackCLR.Common;
+using QHackCLR.Entities;
 using QHackLib;
 using QHackLib.Assemble;
 
@@ -13,7 +14,7 @@ public class CLRFunctionCaller
 		Call(Context, addr, args);
 	}
 
-	public static void Call(GameContext Context, ClrMethod method, params object[] args)
+	public static void Call(GameContext Context, CLRMethod method, params object[] args)
 	{
 		Call(Context, method.NativeCode, args);
 	}

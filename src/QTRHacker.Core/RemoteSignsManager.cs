@@ -21,8 +21,8 @@ public class RemoteDataManager<T> where T : unmanaged
 	/// <returns></returns>
 	public unsafe T this[int index]
 	{
-		get => Context.HContext.DataAccess.Read<T>(GetAddress(index));
-		set => Context.HContext.DataAccess.Write(GetAddress(index), value);
+		get => Context.HContext.DataAccess.ReadValue<T>(GetAddress(index));
+		set => Context.HContext.DataAccess.WriteValue(GetAddress(index), value);
 	}
 
 

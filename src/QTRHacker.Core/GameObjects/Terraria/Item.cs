@@ -56,6 +56,6 @@ public partial class Item : Entity
 			.Call(null)
 			.Call(true, null, ret.AllocationBase, new object[] { 0, X, Y, Width, Height, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup }));
 
-		return Context.HContext.DataAccess.Read<int>(ret.AllocationBase);
+		return Context.HContext.DataAccess.ReadValue<int>(ret.AllocationBase);
 	}
 }

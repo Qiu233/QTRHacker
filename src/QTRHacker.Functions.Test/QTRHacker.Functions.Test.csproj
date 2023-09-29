@@ -11,6 +11,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\QHackCLR\QHackCLR.csproj" />
 		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
 		<ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
 	</ItemGroup>

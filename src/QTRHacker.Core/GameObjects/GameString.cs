@@ -17,14 +17,14 @@ public class GameString : GameObjectArrayV<char>
 	{
 		return Encoding.Unicode.GetString(
 			Context.HContext.DataAccess.ReadBytes(
-				TypedInternalObject.BaseAddress + (uint)sizeof(nuint) * 2, (uint)Length * sizeof(char)));
+				TypedInternalObject.BaseAddress + (uint)sizeof(nuint) * 2, Length * sizeof(char)));
 	}
 
 	public unsafe static string GetString(HackObject obj)
 	{
 		return Encoding.Unicode.GetString(
 			obj.Context.DataAccess.ReadBytes(
-				obj.BaseAddress + (uint)sizeof(nuint) + 4, (uint)obj.GetArrayLength() * sizeof(char)));
+				obj.BaseAddress + (uint)sizeof(nuint) + 4, obj.GetArrayLength() * sizeof(char)));
 	}
 
 	/// <summary>
@@ -38,7 +38,7 @@ public class GameString : GameObjectArrayV<char>
 		nuint resAddr = addr + (uint)(s.Length * 2 + 2);
 		byte[] data = Encoding.Unicode.GetBytes(s);
 		ctx.HContext.DataAccess.WriteBytes(addr, data);
-		ctx.HContext.DataAccess.Write<short>(addr + (uint)data.Length, 0);
+		ctx.HContext.DataAccess.WriteValue<short>(addr + (uint)data.Length, 0);
 		var asm = AssemblySnippet.FromCode(new AssemblyCode[] {
 			AssemblySnippet.FromConstructString(ctx.HContext, addr, resAddr)
 		});
@@ -47,7 +47,7 @@ public class GameString : GameObjectArrayV<char>
 		{
 			throw new Exception("Failed to create string object");
 		}
-		nuint res = ctx.HContext.DataAccess.Read<nuint>(resAddr);
+		nuint res = ctx.HContext.DataAccess.ReadValue<nuint>(resAddr);
 		return new GameString(ctx, new HackObject(ctx.HContext, ctx.HContext.Runtime.Heap.StringType, res));
 	}
 

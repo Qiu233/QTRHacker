@@ -61,14 +61,14 @@ public class GameObjectArrayV<T> : GameObject, IGameObjectArray<T> where T : unm
 	{
 		nuint addr = TypedInternalObject.Type.GetArrayElementAddress(TypedInternalObject.BaseAddress, new int[] { index });
 		var array = new T[length];
-		Context.HContext.DataAccess.Read(addr, array, (uint)length);
+		Context.HContext.DataAccess.Read(addr, array.AsSpan());
 		return array;
 	}
 	public T[] GetAllElements()
 	{
 		nuint addr = TypedInternalObject.Type.GetElementsBase(TypedInternalObject.BaseAddress);
 		var array = new T[Length];
-		Context.HContext.DataAccess.Read(addr, array, (uint)array.Length);
+		Context.HContext.DataAccess.Read(addr, array.AsSpan());
 		return array;
 	}
 

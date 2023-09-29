@@ -12,7 +12,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Keystone.Net\Keystone.Net.csproj" />
-		<ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
+		<ProjectReference Include="..\QHackCLR\QHackCLR.csproj" />
 	</ItemGroup>
 
 </Project>

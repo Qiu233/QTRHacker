@@ -13,7 +13,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
 		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
 	</ItemGroup>
 

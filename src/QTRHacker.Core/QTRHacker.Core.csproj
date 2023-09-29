@@ -26,6 +26,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+		<ProjectReference Include="..\QHackCLR\QHackCLR.csproj" />
 		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
 		<ProjectReference Include="..\QTRHacker.Patches\QTRHacker.Patches.csproj">
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>

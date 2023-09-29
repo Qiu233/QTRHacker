@@ -70,7 +70,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Keystone.Net\Keystone.Net.csproj" />
-		<ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
 		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
 		<ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
 	</ItemGroup>

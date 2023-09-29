@@ -1,4 +1,5 @@
 ﻿using QHackCLR.Common;
+using QHackCLR.Entities;
 using QHackLib;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace QHackLib
 	{
 		public unsafe override nuint OffsetBase => BaseAddress + (uint)sizeof(nuint);
 
-		public HackObject(QHackContext context, ClrType type, nuint address) : base(context, type, address)
+		public HackObject(QHackContext context, CLRType type, nuint address) : base(context, type, address)
 		{
 		}
 
@@ -44,26 +45,26 @@ namespace QHackLib
 			var type = Type.ComponentType;
 			nuint addr = Type.GetArrayElementAddress(BaseAddress, indexes);
 			if (type.IsObjectReference)
-				return new HackObject(Context, type, Context.DataAccess.Read<nuint>(addr));
+				return new HackObject(Context, type, Context.DataAccess.ReadValue<nuint>(addr));
 			return new HackValue(Context, type, addr);
 		}
 
 		public void InternalSetIndex(int[] indexes, object value)
 		{
 			Type valueType = value.GetType();
-			ClrType iobjType = Type;
+			CLRType iobjType = Type;
 			nuint addr = iobjType.GetArrayElementAddress(BaseAddress, indexes);
-			if (value is ClrObject obj)
-				Context.DataAccess.Write(addr, obj.Address);
-			else if (value is ClrValue val)
-				Context.DataAccess.WriteBytes(addr, Context.DataAccess.ReadBytes(val.Address, iobjType.ComponentSize));
+			if (value is CLRObject obj)
+				Context.DataAccess.WriteValue(addr, obj.Address);
+			else if (value is CLRValue val)
+				Context.DataAccess.WriteBytes(addr, Context.DataAccess.ReadBytes(val.Address, (int)iobjType.ComponentSize));
 			else if (valueType.IsValueType)
-				Context.DataAccess.Write(addr, value);
+				Context.DataAccess.WriteObject(addr, value);
 		}
 
 
 		public HackMethodCall GetMethodCall(string sig) => new HackMethod(Context, Type.MethodsInVTable.First(t => t.Signature == sig)).Call(BaseAddress);
-		public HackMethodCall GetMethodCall(Func<ClrMethod, bool> filter) => new HackMethod(Context, Type.MethodsInVTable.First(t => filter(t))).Call(BaseAddress);
+		public HackMethodCall GetMethodCall(Func<CLRMethod, bool> filter) => new HackMethod(Context, Type.MethodsInVTable.First(t => filter(t))).Call(BaseAddress);
 
 	}
 }

@@ -27,7 +27,6 @@ unsafe class Program
 	unsafe static void Main()
 	{
 		using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0]);
-		ctx.Patches.WorldPainter_BrushActive = true;
+		Console.WriteLine(ctx.MyPlayer.StatLife);
 	}
-
 }

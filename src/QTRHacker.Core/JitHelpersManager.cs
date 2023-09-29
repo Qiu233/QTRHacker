@@ -27,7 +27,7 @@ public unsafe partial class JitHelpersManager
 	{
 		Context = context;
 		nuint offset = GetJitHelpersRVA(Context.HContext.Runtime.ClrInfo.ClrModulePath);
-		JitHelpersBaseAddress = Context.HContext.Runtime.BaseAddresss + offset;
+		JitHelpersBaseAddress = Context.HContext.Runtime.BaseAddress + offset;
 	}
 	public IEnumerable<JitHelperEntry> EnumerateJitHelpers()
 	{
@@ -41,14 +41,15 @@ public unsafe partial class JitHelpersManager
 
 	private string GetJitHelperName(nuint addr)
 	{
-		return QHackCLR.Utils.GetJitHelperFunctionName(Context.HContext.Runtime.DacLibrary.SOSDac, addr);
+		return Context.HContext.Runtime.GetJitHelperFunctionName(addr);
+		//return QHackCLR.Utils.GetJitHelperFunctionName(Context.HContext.Runtime.DacLibrary.SOSDac, addr);
 	}
 	private IEnumerable<JitHelperEntry> EnumerateJitHelpers(int len)
 	{
 		int i = 0;
 		while (i < len)
 		{
-			nuint addr = Context.HContext.DataAccess.Read<nuint>(this[i++]);
+			nuint addr = Context.HContext.DataAccess.ReadValue<nuint>(this[i++]);
 			string name = GetJitHelperName(addr);
 			yield return new JitHelperEntry(name, addr);
 		}
