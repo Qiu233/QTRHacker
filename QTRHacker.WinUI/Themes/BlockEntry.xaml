@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="using:Microsoft.Xaml.Interactivity" 
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:local="using:QTRHacker"
+    xmlns:local2="using:QTRHacker.Controls">
+
+    <Style TargetType="local2:BlockEntry">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local2:BlockEntry">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid ColumnSpacing="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox Stretch="Uniform" Height="36" Margin="8,4,16,4" Visibility="{TemplateBinding ComputedIconVisibility}">
+                                <ContentControl Content="{TemplateBinding Icon}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                            </Viewbox>
+                            <Grid Grid.Column="1" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter Name="HeaderPresenter" Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}" 
+                                                  Grid.Column="1"
+                                                  FontSize="{ThemeResource SubtitleTextBlockFontSize}" FontWeight="Normal"
+                                                  VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                                </Grid>
+                                <ContentPresenter Name="DescriptionPresenter" Content="{TemplateBinding Description}" ContentTemplate="{TemplateBinding DescriptionTemplate}" 
+                                                  Grid.Row="1"
+                                                  FontSize="{ThemeResource BodyTextBlockFontSize}" Margin="0,6,0,6" FontWeight="SemiLight"
+                                                  Visibility="{TemplateBinding ComputedDescriptionVisibility}"
+                                                  VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                            </Grid>
+                            <ContentPresenter Name="ContentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Grid.Column="2"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

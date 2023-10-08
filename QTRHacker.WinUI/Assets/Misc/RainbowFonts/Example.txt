@@ -1,0 +1,6 @@
+﻿<body>
+	<arc center = "0,-30" radius = "40" start_radian = "3.4558" end_radian = "5.9690" />
+	<arc center = "0,30" radius = "40" start_radian = "0.3142" end_radian = "2.8274" />
+	<line start = "-43,-15" end = "-43,15"/>
+	<line start = "43,-15" end = "43,15"/>
+</body>

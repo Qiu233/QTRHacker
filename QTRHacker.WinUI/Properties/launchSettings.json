@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "QTRHacker.WinUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "QTRHacker.WinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

@@ -1,0 +1,110 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows10.0.22621.0</TargetFramework>
+		<TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
+		<RootNamespace>QTRHacker</RootNamespace>
+		<AssemblyName>QTRHacker</AssemblyName>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>x86</Platforms>
+		<RuntimeIdentifiers>win10-x86</RuntimeIdentifiers>
+		<PublishProfile>win10-$(Platform).pubxml</PublishProfile>
+		<UseWinUI>true</UseWinUI>
+		<EnableMsixTooling>true</EnableMsixTooling>
+		<ImplicitUsings>true</ImplicitUsings>
+		<ApplicationIcon>Assets\Logo.ico</ApplicationIcon>
+		<Nullable>enable</Nullable>
+		<Version>20.0.0.0</Version>
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Remove="Assets\AssetReader.cs" />
+		<Content Remove="Assets\GameImages.cs" />
+		<Content Remove="Assets\GameImages\GameImageExtension.cs" />
+		<Content Remove="Assets\Misc\RainbowFonts\Example.txt" />
+		<Content Remove="Assets\Misc\RainbowFonts\RainbowProj.png" />
+		<Content Remove="Assets\WikiResLoader.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Assets\GameImages\Items.bin" />
+		<None Remove="Assets\GameImages\NPCs.bin" />
+		<None Remove="Assets\GameImages\Tiles.bin" />
+		<None Remove="Assets\GameImages\Walls.bin" />
+		<None Remove="Assets\Game\Localization.zip" />
+		<None Remove="Assets\Game\TilesColor.json" />
+		<None Remove="Assets\Game\WikiRes.zip" />
+		<None Remove="Assets\Logo.ico" />
+		<None Remove="Assets\Logo.png" />
+		<None Remove="Assets\Misc\RainbowFonts\Example.txt" />
+		<None Remove="Assets\Misc\RainbowFonts\RainbowProj.png" />
+		<None Remove="Localization\Content\en.json" />
+		<None Remove="Localization\Content\zh.json" />
+		<None Remove="Themes\Block.xaml" />
+		<None Remove="Themes\BlockEntry.xaml" />
+		<None Remove="Themes\Cross.xaml" />
+		<None Remove="Themes\SpinnerDotCircle.xaml" />
+		<None Remove="Views\Pages\MainPage.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+		<PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+		<PackageReference Include="WinUIEx" Version="2.3.1" />
+		<Manifest Include="$(ApplicationManifest)" />
+	</ItemGroup>
+
+	<!-- 
+    Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
+    Tools extension to be activated for this project even if the Windows App SDK Nuget
+    package has not yet been restored.
+  -->
+	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+		<ProjectCapability Include="Msix" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\src\QTRHacker.Core\QTRHacker.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Assets\Misc\RainbowFonts\Example.txt" />
+		<Resource Include="Assets\Misc\RainbowFonts\RainbowProj.png" />
+		<Content Include="Localization\Content\en.json" />
+		<Content Include="Localization\Content\zh.json" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Themes\SpinnerDotCircle.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Views\Pages\MainPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Themes\BlockEntry.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Themes\Block.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Themes\Cross.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+
+	<!-- 
+    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
+    Explorer "Package and Publish" context menu entry to be enabled for this project even if 
+    the Windows App SDK Nuget package has not yet been restored.
+  -->
+	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+	</PropertyGroup>
+</Project>

@@ -1,0 +1,213 @@
+﻿{
+  "Name": "简体中文",
+  "UI": {
+    "DirectFunction": "基础功能",
+    "MainPage": "主页",
+    "Advanced": "高级",
+    "Player": "玩家",
+    "About": "关于",
+    "Name": "名称",
+    "Edit": "编辑",
+    "Edit_P": "编辑(P)",
+    "TPTo": "传送至",
+    "Apply": "应用",
+    "Initialize": "初始化",
+    "ReverseSelection": "反选",
+    "Search": "搜索",
+    "Reset": "重置",
+    "Category": "分类",
+    "ItemInfo": "物品信息",
+    "NPCInfo": "NPC信息",
+    "Details": "详细信息",
+    "Filter": "筛选",
+    "Icon": "图标",
+    "Rare": "稀有度",
+    "Tooltip": "描述",
+    "Recipe": "合成",
+    "Keyword": "关键词",
+    "Properties": "属性",
+    "Save": "保存",
+    "Load": "加载",
+    "Confirm": "确定",
+    "ViewInWiki": "在Wiki中显示",
+    "Refresh": "刷新",
+    "Type": "类型",
+    "Time": "时间",
+    "AddBuff": "Buff",
+    "SetPet": "宠物",
+    "SetMount": "坐骑",
+    "None": "无",
+    "Copy": "复制",
+    "Paste": "粘贴",
+    "Help": "帮助",
+    "PlayerEditorWindowTabs": {
+      "Inventory": "背包",
+      "Armor": "装备",
+      "Piggy": "猪猪",
+      "Safe": "保险箱",
+      "Forge": "熔炉",
+      "VoidVault": "虚空袋",
+      "Loadout1": "装备1",
+      "Loadout2": "装备2",
+      "Loadout3": "装备3"
+    },
+    "PropertyEditor": {
+      "Title": "属性编辑器",
+      "ScopeTo": "限定为此范围",
+      "ScopeToInNewWindow": "在新窗口中限定为此范围",
+      "Help": "1.双击一个属性来展开或编辑。\n2.右键以限定到范围。"
+    },
+    "Messages": {
+      "ExceptionOccured": "程序出现异常，请查看并分享log文件(在logs文件夹中)以解决该问题。"
+    },
+    "RainbowFonts": {
+      "MakerTitle": "彩虹字设计器",
+      "File": "文件",
+      "New": "新建",
+      "Open": "打开",
+      "Save": "保存",
+      "Char": "字",
+      "Messages": {
+        "FailedToNewFile": "新建失败。\n可能使用了文件名/路径不允许的字符。",
+        "FailedToWriteToFile": "该文件已损坏或不是xml格式。\n请选择其他文件。",
+        "InvalidXMLCode": "你的代码不是有效的xml代码，请先检查代码。",
+        "OverrideCharacter": "该文件已包含相同的字符，是否覆盖？"
+      }
+    },
+    "AimBot": {
+      "Help": "自瞄已关闭，请在左侧选择一个模式开启。",
+      "MaxDistance": "最大距离",
+      "HostilesOnly": "仅敌人",
+      "Disabled": "关闭",
+      "NearestNPC": "最近的NPC",
+      "NearestPlayer": "最近的玩家",
+      "TargetedPlayer": "锁定玩家"
+    },
+    "AutoFishing": {
+      "Help": "自动钓鱼已关闭，请在左侧选择一个模式开启。\n开启后，你需要先手动扔出鱼钩并且不要移动鼠标，直到第一条鱼上钩。\n受到伤害可能会中断自动钓鱼。",
+      "Disabled": "关闭",
+      "All": "所有",
+      "Items": "物品",
+      "NPCs": "NPC",
+      "CratesOnly": "仅板条箱",
+      "QuestItemsOnly": "仅任务鱼"
+    },
+    "PlayerColors": {
+      "Hair": "头发",
+      "Skin": "皮肤",
+      "Eyes": "眼睛",
+      "Shirt": "衬衫",
+      "Undershirt": "内衬",
+      "Pants": "裤子",
+      "Shoes": "鞋子"
+    },
+    "PlayerProperties": {
+      "MaxLife": "最大生命",
+      "MaxMana": "最大魔法",
+      "X": "X",
+      "Y": "Y"
+    },
+    "AboutContent": {
+      "Author": "作者",
+      "QQ": "QQ",
+      "QQGroup": "QQ群",
+      "Discord": "Discord",
+      "GitHubRepo": "GitHub仓库",
+      "Sponsor": "赞助"
+    },
+    "Sches": {
+      "Arrow": "鼠标",
+      "EyeDropper": "滴管",
+      "Brush": "刷子",
+      "FlipH": "翻转 \u21C6",
+      "FlipV": "翻转 \u21C5",
+      "LoadImage": "加载图片"
+    },
+    "Wiki": {
+      "Value": "价值",
+      "AddOneItem": "添加一个到背包",
+      "AddMaxItem": "添加一组到背包",
+      "AddOneNPC": "生成一个NPC",
+      "GetItemStack": "添加到游戏",
+      "JumpTo": "跳转到"
+    },
+    "ItemProperties": {
+      "Type": "类型",
+      "Damage": "攻击力",
+      "Stack": "数量",
+      "KnockBack": "击退",
+      "Crit": "暴击",
+      "Scale": "缩放",
+      "BuffType": "Buff类型",
+      "BuffTime": "Buff时间",
+      "HealMana": "魔法回复",
+      "HealLife": "生命回复",
+      "UseTime": "使用CD",
+      "UseAnimation": "挥动CD",
+      "Defense": "防御",
+      "FishingPole": "鱼竿",
+      "Bait": "鱼饵",
+      "Shoot": "弹幕",
+      "ShootSpeed": "弹幕速度",
+      "Pick": "镐力",
+      "Axe": "斧力",
+      "Hammer": "锤力",
+      "CreateTile": "方块",
+      "PlaceStyle": "特殊值",
+      "CreateWall": "墙壁",
+      "Prefix": "前缀",
+      "AutoReuse": "长按鼠标连续使用",
+      "Accessory": "饰品",
+      "TileBoost": "距离增益",
+      "Mana": "魔法消耗"
+    },
+    "ItemValue": {
+      "Platinum": "铂",
+      "Gold": "金",
+      "Silver": "银",
+      "Copper": "铜"
+    },
+    "ItemCategories": {
+      "Others": "其他",
+      "Block": "方块",
+      "Wall": "墙壁",
+      "Quest": "任务",
+      "Head": "头部",
+      "Body": "身体",
+      "Leg": "腿部",
+      "Accessory": "饰品",
+      "Melee": "近战",
+      "Ranged": "远程",
+      "Magic": "魔法",
+      "Summon": "召唤",
+      "Buff": "Buff",
+      "Consumable": "消耗品"
+    },
+    "NPCProperties": {
+      "Width": "宽度",
+      "Height": "高度",
+      "DefDamage": "攻击力",
+      "DefDefense": "防御",
+      "LifeMax": "最大生命值",
+      "KnockBackResist": "击退抗性"
+    },
+    "NPCCategories": {
+      "Others": "其他",
+      "Friendly": "友好",
+      "Town": "NPC",
+      "Boss": "Boss"
+    }
+  },
+  "About": {
+    "Author": "Qiu",
+    "QQ": "2393868407",
+    "QQGroup": "745435687",
+    "Discord": "https://discord.gg/bzKc9vM",
+    "GitHubRepo": "https://github.com/Qiu233/QTRHacker",
+    "Sponsor": "https://afdian.net/@Qiu233",
+    "Content": "QQ群持续被封禁，如要获取最新版修改器请联系作者QQ进新群。"
+  },
+  "Tip": {
+    "DragCrossToGame": "拖动右边准星到Terraria游戏窗口"
+  }
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="QTRHacker.Views.Pages.PlayersPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QTRHacker.Views.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ctp="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
+    xmlns:vm="using:QTRHacker.ViewModels.Pages"
+    xmlns:controls="using:QTRHacker.Controls"
+    d:DataContext="{d:DesignInstance Type=vm:PlayersPageViewModel, IsDesignTimeCreatable=False}"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid ColumnSpacing="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <ct:DataGrid ItemsSource="{Binding Players}" AutoGenerateColumns="False" IsReadOnly="True">
+            <ct:DataGrid.Columns>
+                <ct:DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
+                <ct:DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+            </ct:DataGrid.Columns>
+        </ct:DataGrid>
+        <StackPanel Orientation="Vertical" Grid.Column="1" Spacing="3">
+            <Button Content="Edit" HorizontalAlignment="Stretch"/>
+            <Button Content="Set Mount" HorizontalAlignment="Stretch"/>
+            <Button Content="Set Pet" HorizontalAlignment="Stretch"/>
+        </StackPanel>
+    </Grid>
+</Page>

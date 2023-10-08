@@ -1,0 +1,12 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QTRHacker">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///Themes/Cross.xaml"/>
+        <ResourceDictionary Source="ms-appx:///Themes/Block.xaml"/>
+        <ResourceDictionary Source="ms-appx:///Themes/BlockEntry.xaml"/>
+        <ResourceDictionary Source="ms-appx:///Themes/SpinnerDotCircle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

@@ -1,0 +1,213 @@
+﻿{
+  "Name": "English",
+  "UI": {
+    "DirectFunction": "Functions",
+    "MainPage": "Main Page",
+    "Advanced": "Advanced",
+    "Player": "Player",
+    "About": "About",
+    "Name": "Name",
+    "Edit": "Edit",
+    "Edit_P": "Edit(P)",
+    "TPTo": "TP To",
+    "Apply": "Apply",
+    "Initialize": "Initialize",
+    "ReverseSelection": "Reverse",
+    "Search": "Search",
+    "Reset": "Reset",
+    "Category": "Category",
+    "ItemInfo": "Item Info",
+    "NPCInfo": "NPC Info",
+    "Details": "Details",
+    "Filter": "Filter",
+    "Icon": "Icon",
+    "Rare": "Rare",
+    "Tooltip": "Tooltip",
+    "Recipe": "Recipe",
+    "Keyword": "Keyword",
+    "Properties": "Properties",
+    "Save": "Save",
+    "Load": "Load",
+    "Confirm": "Confirm",
+    "ViewInWiki": "View in wiki",
+    "Refresh": "Refresh",
+    "Type": "Type",
+    "Time": "Time",
+    "AddBuff": "Buff",
+    "SetPet": "Pet",
+    "SetMount": "Mount",
+    "None": "None",
+    "Copy": "Copy",
+    "Paste": "Paste",
+    "Help": "Help",
+    "PlayerEditorWindowTabs": {
+      "Inventory": "Inventory",
+      "Armor": "Armor",
+      "Piggy": "Piggy",
+      "Safe": "Safe",
+      "Forge": "Forge",
+      "VoidVault": "Void Vault",
+      "Loadout1": "Loadout 1",
+      "Loadout2": "Loadout 2",
+      "Loadout3": "Loadout 3"
+    },
+    "PropertyEditor": {
+      "Title": "Property Editor",
+      "ScopeTo": "Scope to",
+      "ScopeToInNewWindow": "Scope to in a new window",
+      "Help": "1.Double click to edit an editable property or expand a complex property.\n2.Right click to scope to a property."
+    },
+    "Messages": {
+      "ExceptionOccured": "Exception(s) occured, please check the log file (in logs folder) for detailed information.\nYou will need to share this file to solve the problem."
+    },
+    "RainbowFonts": {
+      "MakerTitle": "Rainbow Fonts Maker",
+      "File": "File",
+      "New": "New",
+      "Open": "Open",
+      "Save": "Save",
+      "Char": "Character",
+      "Messages": {
+        "FailedToNewFile": "Failed to create new file.\nThis often indicates that some unaccepted characters for path/file name are used.",
+        "FailedToWriteToFile": "This file is broken or not valid xml format.\nPlease select another file.",
+        "InvalidXMLCode": "Your code is not valid xml.\nPlease check it before saving.",
+        "OverrideCharacter": "The same character has already existed in the same file.\nDo you want to override?"
+      }
+    },
+    "AimBot": {
+      "Help": "Aimbot is now disabled, you can select a mode from left to enable.\nAlso you can disable Aimbot by selecting this tab.",
+      "MaxDistance": "Max Distance",
+      "HostilesOnly": "Hostiles Only",
+      "Disabled": "Disabled",
+      "NearestNPC": "Nearest NPC",
+      "NearestPlayer": "Nearest Player",
+      "TargetedPlayer": "Targeted Player"
+    },
+    "AutoFishing": {
+      "Help": "Fishing Bot is now disabled, you can select a mode from left to enable.\nPlease manually cast the bobber and keep the mouse position until the very first fish catch so the bot learns the way to take over.\nTaking damage would halt Fishing Bot.",
+      "Disabled": "Disabled",
+      "All": "All",
+      "Items": "Items",
+      "NPCs": "NPCs",
+      "CratesOnly": "Crates Only",
+      "QuestItemsOnly": "Quest Items Only"
+    },
+    "PlayerColors": {
+      "Hair": "Hair",
+      "Skin": "Skin",
+      "Eyes": "Eyes",
+      "Shirt": "Shirt",
+      "Undershirt": "Undershirt",
+      "Pants": "Pants",
+      "Shoes": "Shoes"
+    },
+    "PlayerProperties": {
+      "MaxLife": "Max Life",
+      "MaxMana": "Max Mana",
+      "X": "X",
+      "Y": "Y"
+    },
+    "AboutContent": {
+      "Author": "Author",
+      "QQ": "QQ",
+      "QQGroup": "QQ Group",
+      "Discord": "Discord",
+      "GitHubRepo": "GitHub repo",
+      "Sponsor": "Sponsor"
+    },
+    "Sches": {
+      "Arrow": "Arrow",
+      "EyeDropper": "Eye Dropper",
+      "Brush": "Brush",
+      "FlipH": "Flip H \u21C6",
+      "FlipV": "Flip V \u21C5",
+      "LoadImage": "Load Image"
+    },
+    "Wiki": {
+      "Value": "Value",
+      "AddOneItem": "Add one to inventory",
+      "AddMaxItem": "Add max to inventory",
+      "AddOneNPC": "Spawn one",
+      "GetItemStack": "Add to game",
+      "JumpTo": "Jump to"
+    },
+    "ItemProperties": {
+      "Type": "Type",
+      "Damage": "Damage",
+      "Stack": "Stack",
+      "KnockBack": "KnockBack",
+      "Crit": "Crit",
+      "Scale": "Scale",
+      "BuffType": "Buff Type",
+      "BuffTime": "Buff Time",
+      "HealMana": "Heal Mana",
+      "HealLife": "Heal Life",
+      "UseTime": "UseTime",
+      "UseAnimation": "UseAnim",
+      "Defense": "Defense",
+      "FishingPole": "FishingPole",
+      "Bait": "Bait",
+      "Shoot": "Shoot Type",
+      "ShootSpeed": "Shoot Speed",
+      "Pick": "Pick",
+      "Axe": "Axe",
+      "Hammer": "Hammer",
+      "CreateTile": "Tile Type",
+      "PlaceStyle": "TileStyle",
+      "CreateWall": "Wall Type",
+      "Prefix": "Prefix",
+      "AutoReuse": "Auto Reuse",
+      "Accessory": "Accessory",
+      "TileBoost": "Tile Boost",
+      "Mana": "Mana"
+    },
+    "ItemValue": {
+      "Platinum": "P",
+      "Gold": "G",
+      "Silver": "S",
+      "Copper": "C"
+    },
+    "ItemCategories": {
+      "Others": "Others",
+      "Block": "Block",
+      "Wall": "Wall",
+      "Quest": "Quest",
+      "Head": "Head",
+      "Body": "Body",
+      "Leg": "Leg",
+      "Accessory": "Accessory",
+      "Melee": "Melee",
+      "Ranged": "Ranged",
+      "Magic": "Magic",
+      "Summon": "Summon",
+      "Buff": "Buff",
+      "Consumable": "Consumable"
+    },
+    "NPCProperties": {
+      "Width": "Width",
+      "Height": "Height",
+      "DefDamage": "Damage",
+      "DefDefense": "Defense",
+      "LifeMax": "Max Life",
+      "KnockBackResist": "KnockBack Resist"
+    },
+    "NPCCategories": {
+      "Others": "Others",
+      "Friendly": "Friendly",
+      "Town": "Town NPC",
+      "Boss": "Boss"
+    }
+  },
+  "About": {
+    "Author": "Qiu",
+    "QQ": "2393868407",
+    "QQGroup": "745435687",
+    "Discord": "https://discord.gg/bzKc9vM",
+    "GitHubRepo": "https://github.com/Qiu233/QTRHacker",
+    "Sponsor": "https://afdian.net/@Qiu233",
+    "Content": "The QQ groups keep being banned/disabled in China due to censorship. You may contact me by QQ id above to join in the new group."
+  },
+  "Tip": {
+    "DragCrossToGame": "Please drag the cross to game"
+  }
+}

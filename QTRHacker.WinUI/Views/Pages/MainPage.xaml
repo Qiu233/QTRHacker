@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="QTRHacker.Views.Pages.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:local="using:QTRHacker.Views.Pages"
+    xmlns:qtr="using:QTRHacker"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:assets="using:QTRHacker.Assets"
+    xmlns:vm="using:QTRHacker.ViewModels.Pages"
+    xmlns:controls="using:QTRHacker.Controls"
+    d:DataContext="{d:DesignInstance Type=vm:MainPageViewModel, IsDesignTimeCreatable=False}"
+    mc:Ignorable="d"
+    Background="Transparent">
+    <ScrollViewer>
+        <StackPanel Padding="8" Orientation="Vertical" Spacing="4">
+            <Expander x:Name="AttachExpander" HorizontalAlignment="Stretch" Expanding="Expander_Expanding" HorizontalContentAlignment="Stretch">
+                <Expander.Header>
+                    <controls:BlockEntry Header="Attach to Terraria" Margin="10">
+                        <controls:BlockEntry.Description>
+                            <StackPanel Orientation="Vertical" Spacing="10">
+                                <TextBlock>
+                                    You can either:
+                                    <LineBreak/>
+                                    <Run Text="&#x20;"/> 1. Drag the cross on the right side to a running <Bold>Terraria's window</Bold>, or
+                                    <LineBreak/>
+                                    <Run Text="&#x20;"/> 2. Manually select a process from the list expanded below, if you know which one is.
+                                </TextBlock>
+                                <TextBlock DataContext="{Binding AttachedTo}">
+                                    <Run Text="Pid:&#009;"/> <Run Text="{Binding Pid}"/><LineBreak/>
+                                    <Run Text="Name:&#009;"/> <Run Text="{Binding Name}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </controls:BlockEntry.Description>
+                        <Grid Width="24" Height="24">
+                            <controls:Cross x:Name="Cross" CrossReleased="Cross_CrossReleased"/>
+                            <controls:SpinnerDotCircle Visibility="Collapsed" x:Name="SpinnerDotCircle"/>
+                        </Grid>
+                    </controls:BlockEntry>
+                </Expander.Header>
+                <StackPanel Orientation="Vertical" Spacing="4">
+                    <TextBox x:Name="ProcessSearchBox" Grid.Row="0" PlaceholderText="Search here..." Text="{Binding ProcessSearchKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                             Margin="0"/>
+                    <ListView x:Name="ProcessesListView" Grid.Row="1" ItemsSource="{Binding FilteredProcesses}" MaxHeight="240" MinHeight="80" HorizontalAlignment="Stretch"
+                              SelectionMode="Single" ItemClick="ProcessesListView_ItemClick" IsItemClickEnabled="True"
+                              BorderThickness="1" BorderBrush="{ThemeResource MenuFlyoutSeparatorThemeBrush}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ProcessItem">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="9*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Pid}" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding Name}" Grid.Column="1">
+                                        <i:Interaction.Behaviors>
+                                            <ic:DataTriggerBehavior Binding="{Binding UAC}" Value="True">
+                                                <ic:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AccentTextFillColorTertiaryBrush}"/>
+                                            </ic:DataTriggerBehavior>
+                                            <ic:DataTriggerBehavior Binding="{Binding UAC}" Value="False">
+                                                <ic:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource TextFillColorPrimary}"/>
+                                            </ic:DataTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+                                    </TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Expander>
+
+            <controls:Block>
+                <controls:BlockEntry Header="QTRHacker">
+                    <controls:BlockEntry.Icon>
+                        <ImageIcon Source="ms-appx:///Assets/Logo.png"/>
+                    </controls:BlockEntry.Icon>
+                    <controls:BlockEntry.Description>
+                        <TextBlock>
+                            <Run Text="Version:"/>
+                            <Run Text="{x:Bind qtr:App.Version}"/>
+                            <LineBreak/>
+                            <Run Text="Game Version:"/>
+                            <Run Text="{x:Bind qtr:App.GameVersion}"/>
+                        </TextBlock>
+                    </controls:BlockEntry.Description>
+                </controls:BlockEntry>
+            </controls:Block>
+
+            <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsExpanded="False" Padding="0,4,0,4">
+                <Expander.Header>
+                    <controls:BlockEntry Margin="10" Header="Quick Start" Description="For when you're not familiar with QTRHacker, &#xA;or want quick access to functionalities."/>
+                </Expander.Header>
+                <ListBox MinHeight="80" MaxHeight="400" Background="Transparent">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="24,4,24,4"/>
+                            <Setter Property="AllowFocusOnInteraction" Value="False"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <controls:BlockEntry Header="Edit Player" Description="Edit your own player.&#xA;You cannot edit other players."/>
+                    <controls:BlockEntry Header="Edit Inventory" Description="Edit your inventory.&#xA;You can view other players' inventory, though it's impossible to edit.">
+                        <controls:BlockEntry.Icon>
+                            <ImageIcon Source="{assets:GameImageItem Type=3063}"/>
+                        </controls:BlockEntry.Icon>
+                    </controls:BlockEntry>
+                    <controls:BlockEntry Header="Spawn Items by Wiki" Description="For when you don't know id of items."/>
+                    <controls:BlockEntry Header="Spawn Items by ID"/>
+                    <controls:BlockEntry Header="Spawn NPCs by Wiki"/>
+                    <controls:BlockEntry Header="Spawn NPCs by ID"/>
+                </ListBox>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
