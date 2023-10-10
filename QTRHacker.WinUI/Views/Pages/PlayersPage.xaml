@@ -26,7 +26,7 @@
             </ct:DataGrid.Columns>
         </ct:DataGrid>
         <StackPanel Orientation="Vertical" Grid.Column="1" Spacing="3">
-            <Button Content="Edit" HorizontalAlignment="Stretch"/>
+            <Button Content="Edit" HorizontalAlignment="Stretch" Click="Button_Click"/>
             <Button Content="Set Mount" HorizontalAlignment="Stretch"/>
             <Button Content="Set Pet" HorizontalAlignment="Stretch"/>
         </StackPanel>

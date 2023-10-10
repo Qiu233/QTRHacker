@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winex="using:WinUIEx"
     xmlns:assets="using:QTRHacker.Assets"
-    xmlns:loc="using:QTRHacker.Localization"
+    xmlns:loc="using:QTRHacker.Localization" xmlns:views="using:QTRHacker.Views"
     Width="1080"
     Height="600"
     mc:Ignorable="d">
@@ -17,19 +17,10 @@
     </Window.SystemBackdrop>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="32"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" x:Name="TitleBar">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Viewbox Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <ImageIcon Source="{assets:GameImageItem Type=990}"/>
-            </Viewbox>
-            <TextBlock Text="QTRHacker" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0,0,0"/>
-        </Grid>
+        <views:TitleBar Grid.Row="0" x:Name="TitleBar" IconSource="{assets:GameImageItem Type=990}" Title="QTRHacker"/>
         <NavigationView Grid.Row="1" 
                         IsBackEnabled="False" IsBackButtonVisible="Collapsed" IsPaneOpen="False" 
                         Loaded="NavigationView_Loaded"

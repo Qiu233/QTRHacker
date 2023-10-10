@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QTRHacker"
+    xmlns:controls="using:QTRHacker.Controls"
+    xmlns:converters="using:QTRHacker.Converters"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    >
+
+    <ControlTemplate x:Key="ItemSlotTemplate" TargetType="controls:ItemSlot">
+        <Border Padding="0" Background="{TemplateBinding Background}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" CornerRadius="{TemplateBinding CornerRadius}">
+            <Grid>
+                <Grid.Resources>
+                    <converters:ItemStackToHintConverter x:Key="ItemStackToHintConverter"/>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border x:Name="PART_MaskBorder" BorderThickness="0" Background="{ThemeResource AccentControlElevationBorderBrush}" Visibility="Collapsed" Grid.RowSpan="2"
+                        CornerRadius="{TemplateBinding CornerRadius}"/>
+                <Grid Margin="10" Grid.RowSpan="2">
+                    <Image x:Name="PART_ItemImage" Stretch="Uniform" Source="{TemplateBinding ItemImageSource}"/>
+                </Grid>
+                <TextBlock Margin="4,0,0,2" FontSize="12" Foreground="{ThemeResource TextFillColorPrimary}"
+                    Text="{Binding ItemStack, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={ThemeResource ItemStackToHintConverter}}" Grid.Row="1"/>
+                <Border x:Name="PART_Border" BorderThickness="0" BorderBrush="{TemplateBinding SelectedBorderBrush}" Grid.RowSpan="2"
+                        CornerRadius="{TemplateBinding CornerRadius}"/>
+            </Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_MaskBorder" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame Value="Collapsed"/>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="PointerOver">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_MaskBorder" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame Value="Visible"/>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="CheckStates">
+                    <VisualState x:Name="Checked">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="BorderThickness">
+                                <DiscreteObjectKeyFrame Value="2"/>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Unchecked">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="BorderThickness">
+                                <DiscreteObjectKeyFrame Value="0"/>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Border>
+    </ControlTemplate>
+    <Style TargetType="controls:ItemSlot">
+        <Setter Property="Template" Value="{StaticResource ItemSlotTemplate}"/>
+        <Setter Property="CornerRadius" Value="2"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Width" Value="48"/>
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="Background" Value="{ThemeResource ControlElevationBorderBrush}"/>
+        <Setter Property="SelectedBorderBrush" Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+    </Style>
+</ResourceDictionary>

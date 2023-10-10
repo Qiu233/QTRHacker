@@ -26,6 +26,13 @@ public sealed partial class MainWindow : WindowEx
 		this.InitializeComponent();
 		this.ExtendsContentIntoTitleBar = true;
 		this.SetTitleBar(TitleBar);
+		this.AppWindow.TitleBar.IconShowOptions = Microsoft.UI.Windowing.IconShowOptions.HideIconAndSystemMenu;
+		this.Closed += MainWindow_Closed;
+	}
+
+	private void MainWindow_Closed(object sender, WindowEventArgs args)
+	{
+		Application.Current.Exit();
 	}
 
 	private void NavigationView_Loaded(object sender, RoutedEventArgs e)

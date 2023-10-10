@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="QTRHacker.Views.PlayerEditor.InventorySlotsPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QTRHacker.Views.PlayerEditor"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:QTRHacker.Controls"
+    xmlns:vm="using:QTRHacker.ViewModels.PlayerEditor"
+    xmlns:ctp="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:helpers="using:QTRHacker.Helpers"
+    xmlns:converters="using:QTRHacker.Converters"
+    d:DataContext="{d:DesignInstance Type=vm:ItemSlotsGridViewModel, IsDesignTimeCreatable=False}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Pivot>
+            <PivotItem Header="Inventory" Padding="4,10,4,10">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ct:UniformGrid x:Name="InvGrid" Grid.RowSpan="3" 
+                        Columns="10" Rows="5" ColumnSpacing="6" RowSpacing="6"/>
+                    <ct:UniformGrid x:Name="InvSubGrid" Grid.Column="1" Grid.Row="1"
+                        Columns="2" Rows="4" ColumnSpacing="4" RowSpacing="4"/>
+                    <controls:ItemSlot x:Name="TrashItem" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Armors/Miscs" Padding="4,10,4,10">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ct:UniformGrid x:Name="ArmorsGrid" Grid.ColumnSpan="2"
+                                Columns="10" Rows="3" ColumnSpacing="6" RowSpacing="6"/>
+                    <ct:UniformGrid x:Name="MiscsGrid" Grid.Row="1"
+                                Columns="5" Rows="2" ColumnSpacing="6" RowSpacing="6"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Piggy" Padding="4,10,4,10">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                    <ct:UniformGrid x:Name="PiggyGrid"
+                                Columns="10" Rows="4" ColumnSpacing="6" RowSpacing="6"/>
+                </Grid>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</UserControl>

@@ -41,14 +41,19 @@
 		<None Remove="Themes\Block.xaml" />
 		<None Remove="Themes\BlockEntry.xaml" />
 		<None Remove="Themes\Cross.xaml" />
+		<None Remove="Themes\ItemSlot.xaml" />
 		<None Remove="Themes\SpinnerDotCircle.xaml" />
 		<None Remove="Views\Pages\MainPage.xaml" />
+		<None Remove="Views\PlayerEditor\InventoryEditorWindow.xaml" />
+		<None Remove="Views\PlayerEditor\InventorySlotsPanel.xaml" />
+		<None Remove="Views\TitleBar.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Primitives" Version="7.1.2" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
@@ -72,6 +77,26 @@
 		<Resource Include="Assets\Misc\RainbowFonts\RainbowProj.png" />
 		<Content Include="Localization\Content\en.json" />
 		<Content Include="Localization\Content\zh.json" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\TitleBar.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\PlayerEditor\InventoryEditorWindow.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Themes\ItemSlot.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\PlayerEditor\InventorySlotsPanel.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 	<ItemGroup>
 	  <Page Update="Themes\SpinnerDotCircle.xaml">
