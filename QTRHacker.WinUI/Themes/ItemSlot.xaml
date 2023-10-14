@@ -25,8 +25,9 @@
                 <Grid Margin="10" Grid.RowSpan="2">
                     <Image x:Name="PART_ItemImage" Stretch="Uniform" Source="{TemplateBinding ItemImageSource}"/>
                 </Grid>
-                <TextBlock Margin="4,0,0,2" FontSize="12" Foreground="{ThemeResource TextFillColorPrimary}"
-                    Text="{Binding ItemStack, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={ThemeResource ItemStackToHintConverter}}" Grid.Row="1"/>
+                <TextBlock x:Name="PART_ItemStackBlock" Margin="4,0,0,2" FontSize="12" Foreground="{ThemeResource TextFillColorPrimary}"
+                           Text="{Binding ItemStack, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={ThemeResource ItemStackToHintConverter}}"
+                           Grid.Row="1"/>
                 <Border x:Name="PART_Border" BorderThickness="0" BorderBrush="{TemplateBinding SelectedBorderBrush}" Grid.RowSpan="2"
                         CornerRadius="{TemplateBinding CornerRadius}"/>
             </Grid>
@@ -59,6 +60,22 @@
                         <Storyboard>
                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="BorderThickness">
                                 <DiscreteObjectKeyFrame Value="0"/>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="StackStates">
+                    <VisualState x:Name="StackVisible">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_ItemStackBlock" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame Value="Visible"/>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="StackInvisible">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_ItemStackBlock" Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame Value="Collapsed"/>
                             </ObjectAnimationUsingKeyFrames>
                         </Storyboard>
                     </VisualState>

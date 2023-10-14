@@ -17,7 +17,7 @@ public class ItemSlot : RadioButton
 		set => SetValue(ItemImageSourceProperty, value);
 	}
 	public static readonly DependencyProperty ItemImageSourceProperty =
-		DependencyProperty.Register(nameof(ItemImageSource), typeof(ImageSource), typeof(ItemSlot), new PropertyMetadata(null));
+		DependencyProperty.Register(nameof(ItemImageSource), typeof(ImageSource), typeof(ItemSlot), new PropertyMetadata(null, (s, e) => ((ItemSlot)s).ReevaluateItemStackVisibility()));
 
 
 	public int ItemStack
@@ -26,7 +26,7 @@ public class ItemSlot : RadioButton
 		set => SetValue(ItemStackProperty, value);
 	}
 	public static readonly DependencyProperty ItemStackProperty =
-		DependencyProperty.Register(nameof(ItemStack), typeof(int), typeof(ItemSlot), new PropertyMetadata(0));
+		DependencyProperty.Register(nameof(ItemStack), typeof(int), typeof(ItemSlot), new PropertyMetadata(0, (s, e) => ((ItemSlot)s).ReevaluateItemStackVisibility()));
 
 	public Color TintColor
 	{
@@ -45,6 +45,13 @@ public class ItemSlot : RadioButton
 		DependencyProperty.Register(nameof(SelectedBorderBrush), typeof(Brush), typeof(ItemSlot),
 			new PropertyMetadata(new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x88, 0x00))));
 
+	private void ReevaluateItemStackVisibility()
+	{
+		if (ItemStack == 0 || ItemImageSource is null)
+			VisualStateManager.GoToState(this, "StackInvisible", false);
+		else
+			VisualStateManager.GoToState(this, "StackVisible", false);
+	}
 
 	public ItemSlot()
 	{

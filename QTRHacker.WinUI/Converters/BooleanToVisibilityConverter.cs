@@ -10,7 +10,6 @@ namespace QTRHacker.Converters;
 
 public class BooleanToVisibilityConverter : IValueConverter
 {
-	public static readonly BooleanToVisibilityConverter Instance = new();
 	public object Convert(object value, Type targetType, object parameter, string language)
 	{
 		if (value is not bool v)

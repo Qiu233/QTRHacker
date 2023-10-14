@@ -18,6 +18,15 @@
     Height="360"
     mc:Ignorable="d">
     <Pivot IsHeaderItemsCarouselEnabled="false" ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
+        <Pivot.Resources>
+            <DataTemplate x:Key="InventorySlotTemplate" x:DataType="vm:ItemSlotViewModel">
+                <ItemContainer>
+                    <controls:ItemSlot ItemStack="{Binding Stack}" ItemImageSource="{Binding ItemImage}" 
+                                                           Width="{Binding Size}" Height="{Binding Size}"
+                                                           GroupName="{Binding GroupName}"/>
+                </ItemContainer>
+            </DataTemplate>
+        </Pivot.Resources>
         <Pivot.HeaderTemplate>
             <DataTemplate>
                 <TextBlock Text="{Binding Header}" FontSize="16"/>
@@ -29,15 +38,6 @@
                 <helpers:TypeNameDataTemplateSelector.Templates>
                     <DataTemplate x:Key="InvPageViewModel" x:DataType="vmsp:InvPageViewModel">
                         <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
-                            <Grid.Resources>
-                                <DataTemplate x:Key="InventorySlotTemplate" x:DataType="vm:ItemSlotViewModel">
-                                    <ItemContainer>
-                                        <controls:ItemSlot ItemStack="{Binding Stack}" ItemImageSource="{Binding ItemImage}" 
-                                                           Width="{Binding Size}" Height="{Binding Size}"
-                                                           GroupName="{Binding GroupName}"/>
-                                    </ItemContainer>
-                                </DataTemplate>
-                            </Grid.Resources>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -61,6 +61,46 @@
                                 </ItemsView.Layout>
                             </ItemsView>
                             <controls:ItemSlot Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" DataContext="{Binding TrashItem}"/>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ArmorPageViewModel" x:DataType="vmsp:ArmorPageViewModel">
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ItemsView ItemsSource="{Binding Armor}" Grid.ColumnSpan="2" ItemTemplate="{StaticResource InventorySlotTemplate}">
+                                <ItemsView.Layout>
+                                    <UniformGridLayout Orientation="Horizontal" MaximumRowsOrColumns="10" MinColumnSpacing="6" MinRowSpacing="6"/>
+                                </ItemsView.Layout>
+                            </ItemsView>
+                            <ItemsView ItemsSource="{Binding Misc}" Grid.Row="1" ItemTemplate="{StaticResource InventorySlotTemplate}">
+                                <ItemsView.Layout>
+                                    <UniformGridLayout Orientation="Horizontal" MaximumRowsOrColumns="5" MinColumnSpacing="6" MinRowSpacing="6"/>
+                                </ItemsView.Layout>
+                            </ItemsView>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate x:Key="ChestPageViewModel" x:DataType="vmsp:ChestPageViewModel">
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                            <ItemsView ItemsSource="{Binding Chest}" Grid.Row="1" ItemTemplate="{StaticResource InventorySlotTemplate}">
+                                <ItemsView.Layout>
+                                    <UniformGridLayout Orientation="Horizontal" MaximumRowsOrColumns="10" MinColumnSpacing="6" MinRowSpacing="6"/>
+                                </ItemsView.Layout>
+                            </ItemsView>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate x:Key="LoadoutPageViewModel" x:DataType="vmsp:LoadoutPageViewModel">
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                            <ItemsView ItemsSource="{Binding Loadout}" Grid.Row="1" ItemTemplate="{StaticResource InventorySlotTemplate}">
+                                <ItemsView.Layout>
+                                    <UniformGridLayout Orientation="Horizontal" MaximumRowsOrColumns="10" MinColumnSpacing="6" MinRowSpacing="6"/>
+                                </ItemsView.Layout>
+                            </ItemsView>
                         </Grid>
                     </DataTemplate>
                 </helpers:TypeNameDataTemplateSelector.Templates>

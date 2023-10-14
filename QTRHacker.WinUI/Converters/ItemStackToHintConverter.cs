@@ -5,10 +5,9 @@ namespace QTRHacker.Converters;
 
 internal class ItemStackToHintConverter : IValueConverter
 {
-	public static readonly ItemStackToHintConverter Instance = new();
 	public object Convert(object value, Type targetType, object parameter, string language)
 	{
-		if (value is int v)
+        if (value is int v)
 		{
 			return v switch
 			{

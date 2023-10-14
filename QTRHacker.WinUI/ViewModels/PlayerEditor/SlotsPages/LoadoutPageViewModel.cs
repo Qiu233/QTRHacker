@@ -8,32 +8,31 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.ViewModels.PlayerEditor.SlotsPages;
 
-public class ChestPageViewModel : SlotsPageViewModel
+public class LoadoutPageViewModel : SlotsPageViewModel
 {
 	public override string Header { get; }
-	private readonly List<ItemSlotViewModel> chest = new();
-	public IReadOnlyList<ItemSlotViewModel> Chest => chest;
-	public Chest Target { get; }
-	private readonly ItemStack[] Buffer;
-	public ChestPageViewModel(string header, Chest target, Func<int, ItemSlotViewModel> slotMaker)
+	public EquipmentLoadout Target { get; }
+	private readonly List<ItemSlotViewModel> loadout = new();
+	public IReadOnlyList<ItemSlotViewModel> Loadout => loadout;
+	private readonly ItemStack[] Buffer = new ItemStack[30];
+	public LoadoutPageViewModel(string header, EquipmentLoadout target, Func<int, ItemSlotViewModel> slotMaker)
 	{
 		Header = header;
 		Target = target;
-		int len = Target.Item.Length;
-		for (int i = 0; i < len; i++)
-			chest.Add(slotMaker(i));
-		Buffer = new ItemStack[len];
+		for (int i = 0; i < 30; i++)
+			loadout.Add(slotMaker(i));
 	}
+
 	public override async Task Update()
 	{
 		// TODO: reduce update by unchanged
 		await Task.Run(() =>
 		{
-			var slots = Target.Item;
+			var slots = Target.Armor;
 			for (int i = 0; i < Buffer.Length; i++)
 				Buffer[i] = slots[i].Marshal();
 		});
-		foreach (var (item, b) in Chest.Zip(Buffer))
+		foreach (var (item, b) in Loadout.Zip(Buffer))
 			UpdateItemStack(item, b.Type, b.Stack);
 	}
 }

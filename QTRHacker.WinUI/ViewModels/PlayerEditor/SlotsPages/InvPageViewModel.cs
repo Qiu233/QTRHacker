@@ -46,8 +46,7 @@ public class InvPageViewModel : SlotsPageViewModel
 		{
 			for (int i = 0; i < Buffer.Length; i++)
 			{
-				var item = Player.Inventory[i];
-				Buffer[i] = new(item.Type, item.Stack, item.Prefix);
+				Buffer[i] = Player.Inventory[i].Marshal();
 			}
 		});
 		foreach (var item in MainInv)

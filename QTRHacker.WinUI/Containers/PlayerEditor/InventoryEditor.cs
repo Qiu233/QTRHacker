@@ -19,6 +19,7 @@ namespace QTRHacker.Containers.PlayerEditor;
 [Register<InvPageViewModel>]
 [Register<ArmorPageViewModel>]
 [Register<ChestPageViewModel>]
+[Register<LoadoutPageViewModel>]
 public partial class InventoryEditor : IContainer<InventoryEditorViewModel>
 {
 	[Factory]
