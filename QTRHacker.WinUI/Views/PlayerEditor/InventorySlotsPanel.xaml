@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:QTRHacker.Controls"
     xmlns:vm="using:QTRHacker.ViewModels.PlayerEditor"
+    xmlns:vmc="using:QTRHacker.ViewModels.Common"
     xmlns:vmsp="using:QTRHacker.ViewModels.PlayerEditor.SlotsPages"
     xmlns:ctp="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
@@ -19,7 +20,7 @@
     mc:Ignorable="d">
     <Pivot IsHeaderItemsCarouselEnabled="false" ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
         <Pivot.Resources>
-            <DataTemplate x:Key="InventorySlotTemplate" x:DataType="vm:ItemSlotViewModel">
+            <DataTemplate x:Key="InventorySlotTemplate" x:DataType="vmc:ItemSlotViewModel">
                 <ItemContainer>
                     <controls:ItemSlot ItemStack="{Binding Stack}" ItemImageSource="{Binding ItemImage}" 
                                                            Width="{Binding Size}" Height="{Binding Size}"

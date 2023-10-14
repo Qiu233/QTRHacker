@@ -1,4 +1,4 @@
-﻿namespace QTRHacker.ViewModels.PlayerEditor;
+﻿namespace QTRHacker.ViewModels.PlayerEditor.ItemProperties;
 
 public class ItemPropertyData_CheckBox : ItemPropertyData<bool>
 {

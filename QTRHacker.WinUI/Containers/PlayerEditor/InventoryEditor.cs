@@ -1,15 +1,10 @@
 ﻿using Microsoft.UI.Dispatching;
 using QTRHacker.Core.GameObjects.Terraria;
+using QTRHacker.ViewModels.Common;
 using QTRHacker.ViewModels.PlayerEditor;
 using QTRHacker.ViewModels.PlayerEditor.SlotsPages;
 using QTRHacker.Views.PlayerEditor;
 using StrongInject;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WinUIEx;
 
 namespace QTRHacker.Containers.PlayerEditor;
 

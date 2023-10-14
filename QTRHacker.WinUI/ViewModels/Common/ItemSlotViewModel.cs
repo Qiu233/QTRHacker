@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QTRHacker.ViewModels.PlayerEditor;
+namespace QTRHacker.ViewModels.Common;
 
 public partial class ItemSlotViewModel : ObservableObject
 {

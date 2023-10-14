@@ -1,6 +1,7 @@
 ﻿using QTRHacker.Assets;
 using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.Models;
+using QTRHacker.ViewModels.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

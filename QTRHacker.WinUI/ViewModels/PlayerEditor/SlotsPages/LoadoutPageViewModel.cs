@@ -1,10 +1,6 @@
 ﻿using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using QTRHacker.ViewModels.Common;
 
 namespace QTRHacker.ViewModels.PlayerEditor.SlotsPages;
 

@@ -8,14 +8,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:QTRHacker.Controls"
     xmlns:vm="using:QTRHacker.ViewModels.PlayerEditor"
+    xmlns:vmp="using:QTRHacker.ViewModels.PlayerEditor.ItemProperties"
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
     d:DataContext="{d:DesignInstance Type=vm:ItemPropertiesPanelViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d">
 
     <ItemsControl ItemsSource="{Binding ItemPropertyDatum}" VerticalAlignment="Center">
         <ItemsControl.ItemTemplateSelector>
-            <local:ItemPropertyTemplateSelector>
-                <local:ItemPropertyTemplateSelector.Templates>
+            <vmp:ItemPropertyTemplateSelector>
+                <vmp:ItemPropertyTemplateSelector.Templates>
                     <DataTemplate x:Key="DataTemplate_TextBox">
                         <ct:DockPanel MaxHeight="28">
                             <TextBox Width="80" ct:DockPanel.Dock="Right" Margin="0,0.5,0,0.5"
@@ -43,8 +44,8 @@
                             </CheckBox>
                         </Grid>
                     </DataTemplate>
-                </local:ItemPropertyTemplateSelector.Templates>
-            </local:ItemPropertyTemplateSelector>
+                </vmp:ItemPropertyTemplateSelector.Templates>
+            </vmp:ItemPropertyTemplateSelector>
         </ItemsControl.ItemTemplateSelector>
 
         <ItemsControl.ItemContainerStyle>

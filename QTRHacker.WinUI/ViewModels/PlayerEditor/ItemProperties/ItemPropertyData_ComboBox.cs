@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace QTRHacker.ViewModels.PlayerEditor;
+namespace QTRHacker.ViewModels.PlayerEditor.ItemProperties;
 
 public class ItemPropertyData_ComboBox<T> : ItemPropertyData<T> where T:unmanaged
 {

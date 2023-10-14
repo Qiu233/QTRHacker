@@ -4,7 +4,7 @@ using QTRHacker.Localization;
 using System.ComponentModel;
 using System.Reflection;
 
-namespace QTRHacker.ViewModels.PlayerEditor;
+namespace QTRHacker.ViewModels.PlayerEditor.ItemProperties;
 
 public abstract class ItemPropertyData : ObservableObject
 {

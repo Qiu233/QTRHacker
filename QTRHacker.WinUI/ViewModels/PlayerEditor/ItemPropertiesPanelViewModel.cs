@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.Localization;
+using QTRHacker.ViewModels.PlayerEditor.ItemProperties;
 using System.Collections.ObjectModel;
 
 namespace QTRHacker.ViewModels.PlayerEditor;
