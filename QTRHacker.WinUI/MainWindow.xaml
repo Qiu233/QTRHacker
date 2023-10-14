@@ -8,10 +8,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winex="using:WinUIEx"
     xmlns:assets="using:QTRHacker.Assets"
+    xmlns:pages="using:QTRHacker.Views.Pages"
     xmlns:loc="using:QTRHacker.Localization" xmlns:views="using:QTRHacker.Views"
     Width="1080"
     Height="600"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    x:Name="Self">
     <Window.SystemBackdrop>
         <DesktopAcrylicBackdrop/>
         <!--<MicaBackdrop Kind="Base"/>-->
@@ -27,18 +29,24 @@
                         Loaded="NavigationView_Loaded"
                         SelectionChanged="NavigationView_SelectionChanged" OpenPaneLength="160">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Players" Tag="QTRHacker.Views.Pages.PlayersPage">
+                <NavigationViewItem Content="Players">
+                    <NavigationViewItem.Tag>
+                        <local:NavItem PageType="pages:PlayersPage" ViewModel="PlayersPageViewModel"/>
+                    </NavigationViewItem.Tag>
                     <NavigationViewItem.Icon>
                         <ImageIcon Source="{assets:GameImageItem Type=267}"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Main Page" Tag="QTRHacker.Views.Pages.MainPage">
+                <NavigationViewItem Content="Main Page">
+                    <NavigationViewItem.Tag>
+                        <local:NavItem PageType="pages:MainPage" ViewModel="MainPageViewModel"/>
+                    </NavigationViewItem.Tag>
                     <NavigationViewItem.Icon>
                         <ImageIcon Source="{assets:GameImageItem Type=171}"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
-            <Frame x:Name="MainFrame"/>
+            <Frame x:Name="MainFrame" Navigated="MainFrame_Navigated"/>
         </NavigationView>
     </Grid>
 </winex:WindowEx>

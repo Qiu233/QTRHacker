@@ -27,7 +27,6 @@ public sealed partial class PlayersPage : Page
 	public PlayersPage()
 	{
 		this.InitializeComponent();
-		DataContext = new PlayersPageViewModel();
 	}
 
 	private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

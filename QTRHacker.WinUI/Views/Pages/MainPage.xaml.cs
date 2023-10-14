@@ -32,7 +32,6 @@ public sealed partial class MainPage : Page
 	public MainPage()
 	{
 		this.InitializeComponent();
-		this.DataContext = new MainPageViewModel();
 	}
 
 	private void Expander_Expanding(Expander sender, ExpanderExpandingEventArgs args)

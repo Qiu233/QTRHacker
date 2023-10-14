@@ -21,22 +21,10 @@ public partial class PlayersPageViewModel : PageViewModel
 	[ObservableProperty]
 	[NotifyCanExecuteChangedFor(nameof(EditInventoryCommand))]
 	private PlayerInfo? selectedPlayer;
-	private readonly DispatcherQueueTimer UpdateTimer;
-	public PlayersPageViewModel()
+
+	public PlayersPageViewModel(DispatcherQueueTimer updateTimer)
 	{
-		UpdateTimer = App.MainWindow.DispatcherQueue.CreateTimer();
-		UpdateTimer.Interval = TimeSpan.FromMilliseconds(500);
-
-		WeakEventListener<PlayersPageViewModel, DispatcherQueueTimer, object> listener = new(this);
-		UpdateTimer.Tick += listener.OnEvent;
-		listener.OnEventAction = (i, s, e) => UpdateTimer_Tick(s!, e);
-		listener.OnDetachAction = l =>
-		{
-			UpdateTimer.Tick -= listener.OnEvent;
-			UpdateTimer.Stop();
-		};
-
-		UpdateTimer.Start();
+		updateTimer.Tick += UpdateTimer_Tick;
 	}
 
 	private void UpdateTimer_Tick(DispatcherQueueTimer sender, object args)
