@@ -14,22 +14,24 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using WinUIEx;
 using Windows.Graphics;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using QTRHacker.ViewModels.PlayerEditor;
+using StrongInject;
+using QTRHacker.ViewModels.PlayerEditor.SlotsPages;
+using QTRHacker.Containers.PlayerEditor;
 
 namespace QTRHacker.Views.PlayerEditor;
 
-/// <summary>
-/// An empty window that can be used on its own or navigated to within a Frame.
-/// </summary>
+//
 public sealed partial class InventoryEditorWindow : WindowEx
 {
-	public InventoryEditorWindow()
+	private InventoryEditorViewModel ViewModel { get; }
+	public InventoryEditorWindow(InventoryEditorViewModel vm)
 	{
 		this.InitializeComponent();
 		this.ExtendsContentIntoTitleBar = true;
 		this.AppWindow.TitleBar.IconShowOptions = Microsoft.UI.Windowing.IconShowOptions.HideIconAndSystemMenu;
 		this.SetTitleBar(TitleBar);
+
+		this.ViewModel = vm;
 	}
 }

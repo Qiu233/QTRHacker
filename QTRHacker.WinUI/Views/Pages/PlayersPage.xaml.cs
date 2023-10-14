@@ -16,29 +16,22 @@ using QTRHacker.ViewModels.Pages;
 using WinUIEx;
 using QTRHacker.Views.PlayerEditor;
 using CommunityToolkit.WinUI.UI.Controls;
+using QTRHacker.Containers.PlayerEditor;
+using QTRHacker.Core;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+namespace QTRHacker.Views.Pages;
 
-namespace QTRHacker.Views.Pages
+public sealed partial class PlayersPage : Page
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class PlayersPage : Page
+	public PlayersPageViewModel ViewModel => (PlayersPageViewModel)DataContext;
+	public PlayersPage()
 	{
-		public PlayersPageViewModel ViewModel => (PlayersPageViewModel)DataContext;
-		public PlayersPage()
-		{
-			this.InitializeComponent();
-			DataContext = new PlayersPageViewModel();
-			UniformGrid g;
-		}
+		this.InitializeComponent();
+		DataContext = new PlayersPageViewModel();
+	}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			InventoryEditorWindow window = new();
-			window.Show();
-		}
+	private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+	{
+		ViewModel.EditInventoryCommand.NotifyCanExecuteChanged();
 	}
 }

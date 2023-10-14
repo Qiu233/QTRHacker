@@ -13,18 +13,29 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using QTRHacker.ViewModels.PlayerEditor;
-using QTRHacker.Controls;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace QTRHacker.Views.PlayerEditor;
 
-public sealed partial class InventorySlotsPanel : UserControl
+public sealed partial class ItemPropertiesPanel : UserControl
 {
-	public InventorySlotsPanelViewModel ViewModel => (InventorySlotsPanelViewModel)DataContext;
-	public InventorySlotsPanel()
+	public ItemPropertiesPanelViewModel ViewModel => (ItemPropertiesPanelViewModel)DataContext;
+
+	public ItemPropertiesPanel()
 	{
 		this.InitializeComponent();
+	}
+
+	private void TextBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+	{
+		if (sender is not TextBox)
+			return;
+		if (e.Key == Windows.System.VirtualKey.Enter)
+		{
+			e.Handled = true;
+			this.Focus(FocusState.Programmatic);
+		}
 	}
 }

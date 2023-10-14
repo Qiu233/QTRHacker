@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="QTRHacker.Views.PlayerEditor.ItemPropertiesPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QTRHacker.Views.PlayerEditor"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:QTRHacker.Controls"
+    xmlns:vm="using:QTRHacker.ViewModels.PlayerEditor"
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
+    d:DataContext="{d:DesignInstance Type=vm:ItemPropertiesPanelViewModel, IsDesignTimeCreatable=False}"
+    mc:Ignorable="d">
+
+    <ItemsControl ItemsSource="{Binding ItemPropertyDatum}" VerticalAlignment="Center">
+        <ItemsControl.ItemTemplateSelector>
+            <local:ItemPropertyTemplateSelector>
+                <local:ItemPropertyTemplateSelector.Templates>
+                    <DataTemplate x:Key="DataTemplate_TextBox">
+                        <ct:DockPanel MaxHeight="28">
+                            <TextBox Width="80" ct:DockPanel.Dock="Right" Margin="0,0.5,0,0.5"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center"
+                                     TextWrapping="Wrap" Text="{Binding Value, UpdateSourceTrigger=LostFocus}"
+                                     BorderThickness="0" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+                            <TextBlock Text="{Binding Tip}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </ct:DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="DataTemplate_ComboBox">
+                        <ct:DockPanel MaxHeight="28">
+                            <ComboBox Width="80" ct:DockPanel.Dock="Right" Margin="0,0.5,0,0.5" Padding="2,0,2,0" FontSize="10"
+                                      ItemsSource="{Binding Source}" DisplayMemberPath="Name"
+                                      SelectedValuePath="Value" SelectedValue="{Binding Value, Mode=TwoWay}">
+                            </ComboBox>
+                            <TextBlock Text="{Binding Tip}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            </TextBlock>
+                        </ct:DockPanel>
+                    </DataTemplate>
+                    <DataTemplate x:Key="DataTemplate_CheckBox">
+                        <Grid MaxHeight="28">
+                            <CheckBox Content="{Binding Tip}"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding Value}">
+                            </CheckBox>
+                        </Grid>
+                    </DataTemplate>
+                </local:ItemPropertyTemplateSelector.Templates>
+            </local:ItemPropertyTemplateSelector>
+        </ItemsControl.ItemTemplateSelector>
+
+        <ItemsControl.ItemContainerStyle>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="Margin" Value="4,0,4,0"></Setter>
+            </Style>
+        </ItemsControl.ItemContainerStyle>
+        
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <ct:UniformGrid Columns="{Binding Columns}" Rows="{Binding Rows}"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        
+    </ItemsControl>
+    <!--<controls:PropertyGrid Columns="2">
+        <controls:PropertyGrid.Entries>
+            <controls:PropertyEntry Name="Type"/>
+            <controls:PropertyEntry Name="Damage"/>
+            <controls:PropertyEntry Name="Stack"/>
+            <controls:PropertyEntry Name="KnockBack" Type="Float"/>
+            <controls:PropertyEntry Name="Crit"/>
+            <controls:PropertyEntry Name="Scale" Type="Float"/>
+            
+            <controls:PropertyEntry Name="BuffType"/>
+            <controls:PropertyEntry Name="BuffTime"/>
+
+            <controls:PropertyEntry Name="HealLife"/>
+            <controls:PropertyEntry Name="HealMana"/>
+
+            <controls:PropertyEntry Name="UseTime"/>
+            <controls:PropertyEntry Name="UseAnimation"/>
+
+            <controls:PropertyEntry Name="FishingPole"/>
+            <controls:PropertyEntry Name="Bait"/>
+
+            <controls:PropertyEntry Name="Shoot"/>
+            <controls:PropertyEntry Name="ShootSpeed" Type="Float"/>
+
+            <controls:PropertyEntry Name="Defense"/>
+
+            <controls:PropertyEntry Name="Pick"/>
+            <controls:PropertyEntry Name="Axe"/>
+            <controls:PropertyEntry Name="Hammer"/>
+
+            <controls:PropertyEntry Name="CreateTile"/>
+            <controls:PropertyEntry Name="PlaceStyle"/>
+            <controls:PropertyEntry Name="CreateWall"/>
+        </controls:PropertyGrid.Entries>
+    </controls:PropertyGrid>-->
+</UserControl>

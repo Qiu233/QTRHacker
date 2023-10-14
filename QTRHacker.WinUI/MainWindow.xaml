@@ -13,7 +13,8 @@
     Height="600"
     mc:Ignorable="d">
     <Window.SystemBackdrop>
-        <MicaBackdrop Kind="Base"/>
+        <DesktopAcrylicBackdrop/>
+        <!--<MicaBackdrop Kind="Base"/>-->
     </Window.SystemBackdrop>
     <Grid>
         <Grid.RowDefinitions>

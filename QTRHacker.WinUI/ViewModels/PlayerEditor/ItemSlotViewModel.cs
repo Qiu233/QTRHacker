@@ -12,14 +12,6 @@ namespace QTRHacker.ViewModels.PlayerEditor;
 public partial class ItemSlotViewModel : ObservableObject
 {
 	[ObservableProperty]
-	private int slotWidth = 50;
-
-	[ObservableProperty]
-	private double x;
-	[ObservableProperty]
-	private double y;
-
-	[ObservableProperty]
 	private ImageSource? itemImage;
 
 	[ObservableProperty]
@@ -27,6 +19,12 @@ public partial class ItemSlotViewModel : ObservableObject
 
 	[ObservableProperty]
 	private bool isSelected;
+
+	[ObservableProperty]
+	private int size = 48;
+
+	[ObservableProperty]
+	private string? groupName;
 
 	public int Index { get; }
 

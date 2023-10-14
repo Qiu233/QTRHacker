@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QTRHacker"
+    xmlns:local2="using:QTRHacker.Controls" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls">
+
+    <Style TargetType="local2:InfoBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local2:InfoBox">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <controls:DockPanel>
+                            <ContentPresenter controls:DockPanel.Dock="{TemplateBinding ContentDock}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                            <ContentPresenter Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"/>
+                        </controls:DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

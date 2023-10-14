@@ -8,64 +8,142 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:QTRHacker.Controls"
     xmlns:vm="using:QTRHacker.ViewModels.PlayerEditor"
+    xmlns:vmsp="using:QTRHacker.ViewModels.PlayerEditor.SlotsPages"
     xmlns:ctp="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:helpers="using:QTRHacker.Helpers"
     xmlns:converters="using:QTRHacker.Converters"
-    d:DataContext="{d:DesignInstance Type=vm:ItemSlotsGridViewModel, IsDesignTimeCreatable=False}"
+    d:DataContext="{d:DesignInstance Type=vm:InventorySlotsPanelViewModel, IsDesignTimeCreatable=False}"
+    Width="650"
+    Height="360"
     mc:Ignorable="d">
-    <UserControl.Resources>
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    </UserControl.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Pivot>
-            <PivotItem Header="Inventory" Padding="4,10,4,10">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <ct:UniformGrid x:Name="InvGrid" Grid.RowSpan="3" 
+    <Pivot IsHeaderItemsCarouselEnabled="false" ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
+        <Pivot.HeaderTemplate>
+            <DataTemplate>
+                <TextBlock Text="{Binding Header}" FontSize="16"/>
+            </DataTemplate>
+        </Pivot.HeaderTemplate>
+
+        <Pivot.ItemTemplateSelector>
+            <helpers:TypeNameDataTemplateSelector>
+                <helpers:TypeNameDataTemplateSelector.Templates>
+                    <DataTemplate x:Key="InvPageViewModel" x:DataType="vmsp:InvPageViewModel">
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                            <Grid.Resources>
+                                <DataTemplate x:Key="InventorySlotTemplate" x:DataType="vm:ItemSlotViewModel">
+                                    <ItemContainer>
+                                        <controls:ItemSlot ItemStack="{Binding Stack}" ItemImageSource="{Binding ItemImage}" 
+                                                           Width="{Binding Size}" Height="{Binding Size}"
+                                                           GroupName="{Binding GroupName}"/>
+                                    </ItemContainer>
+                                </DataTemplate>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <ItemsView ItemsSource="{Binding MainInv}" Grid.RowSpan="3" ItemTemplate="{StaticResource InventorySlotTemplate}">
+                                <ItemsView.Layout>
+                                    <UniformGridLayout Orientation="Horizontal" MaximumRowsOrColumns="10" MinColumnSpacing="6" MinRowSpacing="6"/>
+                                </ItemsView.Layout>
+                            </ItemsView>
+                            <ItemsView ItemsSource="{Binding SubInv}" Grid.Column="1" Grid.Row="1" ItemTemplate="{StaticResource InventorySlotTemplate}">
+                                <ItemsView.Layout>
+                                    <UniformGridLayout Orientation="Vertical" MaximumRowsOrColumns="4" MinColumnSpacing="4" MinRowSpacing="4"/>
+                                </ItemsView.Layout>
+                            </ItemsView>
+                            <controls:ItemSlot Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" DataContext="{Binding TrashItem}"/>
+                        </Grid>
+                    </DataTemplate>
+                </helpers:TypeNameDataTemplateSelector.Templates>
+            </helpers:TypeNameDataTemplateSelector>
+        </Pivot.ItemTemplateSelector>
+        <!--<PivotItem Tag="Inventory" Header="Inventory" Padding="4,10,4,10">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ct:UniformGrid x:Name="InvGrid" Grid.RowSpan="3" 
                         Columns="10" Rows="5" ColumnSpacing="6" RowSpacing="6"/>
-                    <ct:UniformGrid x:Name="InvSubGrid" Grid.Column="1" Grid.Row="1"
+                <ct:UniformGrid x:Name="InvSubGrid" Grid.Column="1" Grid.Row="1"
                         Columns="2" Rows="4" ColumnSpacing="4" RowSpacing="4"/>
-                    <controls:ItemSlot x:Name="TrashItem" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"/>
-                </Grid>
-            </PivotItem>
-            <PivotItem Header="Armors/Miscs" Padding="4,10,4,10">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <ct:UniformGrid x:Name="ArmorsGrid" Grid.ColumnSpan="2"
+                <controls:ItemSlot x:Name="TrashItem" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"/>
+            </Grid>
+        </PivotItem>
+        <PivotItem Tag="Armor" Header="Armor" Padding="4,10,4,10">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ct:UniformGrid x:Name="ArmorsGrid" Grid.ColumnSpan="2"
                                 Columns="10" Rows="3" ColumnSpacing="6" RowSpacing="6"/>
-                    <ct:UniformGrid x:Name="MiscsGrid" Grid.Row="1"
+                <ct:UniformGrid x:Name="MiscsGrid" Grid.Row="1"
                                 Columns="5" Rows="2" ColumnSpacing="6" RowSpacing="6"/>
-                </Grid>
-            </PivotItem>
-            <PivotItem Header="Piggy" Padding="4,10,4,10">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
-                    <ct:UniformGrid x:Name="PiggyGrid"
+            </Grid>
+        </PivotItem>
+        <PivotItem Tag="Piggy" Header="Piggy" Padding="4,10,4,10">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                <ct:UniformGrid x:Name="PiggyGrid"
                                 Columns="10" Rows="4" ColumnSpacing="6" RowSpacing="6"/>
-                </Grid>
-            </PivotItem>
-        </Pivot>
-    </Grid>
+            </Grid>
+        </PivotItem>
+        <PivotItem Tag="Safe" Header="Safe" Padding="4,10,4,10">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                <ct:UniformGrid x:Name="SafeGrid"
+                                Columns="10" Rows="4" ColumnSpacing="6" RowSpacing="6"/>
+            </Grid>
+        </PivotItem>
+        <PivotItem Tag="Forge" Header="Forge" Padding="4,10,4,10">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                <ct:UniformGrid x:Name="ForgeGrid"
+                                Columns="10" Rows="4" ColumnSpacing="6" RowSpacing="6"/>
+            </Grid>
+        </PivotItem>
+        <PivotItem Tag="Void Vault" Header="Void Vault" Padding="4,10,4,10">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                <ct:UniformGrid x:Name="VoidVaultGrid"
+                                Columns="10" Rows="4" ColumnSpacing="6" RowSpacing="6"/>
+            </Grid>
+        </PivotItem>
+        <PivotItem Tag="Loadout1" Header="Loadout 1" Padding="4,10,4,10">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                <ct:UniformGrid x:Name="L1Grid"
+                                Columns="10" Rows="4" ColumnSpacing="6" RowSpacing="6"/>
+            </Grid>
+        </PivotItem>
+        <PivotItem Tag="Loadout2" Header="Loadout 2" Padding="4,10,4,10">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                <ct:UniformGrid x:Name="L2Grid"
+                                Columns="10" Rows="4" ColumnSpacing="6" RowSpacing="6"/>
+            </Grid>
+        </PivotItem>
+        <PivotItem Tag="Loadout3" Header="Loadout 3" Padding="4,10,4,10">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" RowSpacing="6" ColumnSpacing="6">
+                <ct:UniformGrid x:Name="L3Grid"
+                                Columns="10" Rows="4" ColumnSpacing="6" RowSpacing="6"/>
+            </Grid>
+        </PivotItem>-->
+    </Pivot>
 </UserControl>

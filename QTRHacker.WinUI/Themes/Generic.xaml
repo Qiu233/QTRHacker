@@ -8,6 +8,7 @@
         <ResourceDictionary Source="ms-appx:///Themes/BlockEntry.xaml"/>
         <ResourceDictionary Source="ms-appx:///Themes/SpinnerDotCircle.xaml"/>
         <ResourceDictionary Source="ms-appx:///Themes/ItemSlot.xaml"/>
+        <ResourceDictionary Source="ms-appx:///Themes/PropertyGrid.xaml"/>
+        <ResourceDictionary Source="ms-appx:///Themes/InfoBox.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
 </ResourceDictionary>

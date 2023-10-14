@@ -13,19 +13,27 @@
     IsMaximizable="False"
     IsMinimizable="False"
     IsResizable="False"
-    Width="1000"
+    Width="1260"
     Height="400">
     <Window.SystemBackdrop>
-        <MicaBackdrop Kind="Base"/>
+        <DesktopAcrylicBackdrop/>
+        <!--<MicaBackdrop Kind="Base"/>-->
     </Window.SystemBackdrop>
-    <Grid>
+    <Grid VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <views:TitleBar Grid.Row="0" x:Name="TitleBar" IconSource="{assets:GameImageItem Type=990}" Title="Inventory Editor"/>
-        <local:InventorySlotsPanel Grid.Row="1" Margin="0">
-        </local:InventorySlotsPanel>
+
+        <Grid Grid.Row="1" DataContext="{x:Bind ViewModel}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <local:InventorySlotsPanel x:Name="InventorySlotsPanel" Margin="0" DataContext="{Binding InventorySlotsPanelViewModel}"/>
+            <local:ItemPropertiesPanel x:Name="ItemPropertiesPanel" Grid.Column="1" Margin="0,20,20,0" DataContext="{Binding ItemPropertiesPanelViewModel}"/>
+        </Grid>
     </Grid>
 
 </winex:WindowEx>

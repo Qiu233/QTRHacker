@@ -19,14 +19,16 @@
             <ColumnDefinition />
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <ct:DataGrid ItemsSource="{Binding Players}" AutoGenerateColumns="False" IsReadOnly="True">
+        <ct:DataGrid ItemsSource="{Binding Players}" SelectedItem="{Binding SelectedPlayer, Mode=TwoWay}" 
+                     AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
+                     SelectionChanged="DataGrid_SelectionChanged">
             <ct:DataGrid.Columns>
                 <ct:DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
                 <ct:DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
             </ct:DataGrid.Columns>
         </ct:DataGrid>
         <StackPanel Orientation="Vertical" Grid.Column="1" Spacing="3">
-            <Button Content="Edit" HorizontalAlignment="Stretch" Click="Button_Click"/>
+            <Button Content="Edit" HorizontalAlignment="Stretch" Command="{Binding EditInventoryCommand}"/>
             <Button Content="Set Mount" HorizontalAlignment="Stretch"/>
             <Button Content="Set Pet" HorizontalAlignment="Stretch"/>
         </StackPanel>
