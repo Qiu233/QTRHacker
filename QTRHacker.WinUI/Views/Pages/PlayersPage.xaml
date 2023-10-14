@@ -12,7 +12,7 @@
     xmlns:controls="using:QTRHacker.Controls"
     d:DataContext="{d:DesignInstance Type=vm:PlayersPageViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="Transparent">
 
     <Grid ColumnSpacing="2">
         <Grid.ColumnDefinitions>
@@ -22,6 +22,9 @@
         <ct:DataGrid ItemsSource="{Binding Players}" SelectedItem="{Binding SelectedPlayer, Mode=TwoWay}" 
                      AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
                      SelectionChanged="DataGrid_SelectionChanged">
+            <ct:DataGrid.Resources>
+                <Color x:Key="DataGridColumnHeaderBackgroundColor">Transparent</Color>
+            </ct:DataGrid.Resources>
             <ct:DataGrid.Columns>
                 <ct:DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
                 <ct:DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
