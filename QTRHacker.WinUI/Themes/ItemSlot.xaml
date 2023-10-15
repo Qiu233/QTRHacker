@@ -28,56 +28,44 @@
                 <TextBlock x:Name="PART_ItemStackBlock" Margin="4,0,0,2" FontSize="12" Foreground="{ThemeResource TextFillColorPrimary}"
                            Text="{Binding ItemStack, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={ThemeResource ItemStackToHintConverter}}"
                            Grid.Row="1"/>
-                <Border x:Name="PART_Border" BorderThickness="0" BorderBrush="{TemplateBinding SelectedBorderBrush}" Grid.RowSpan="2"
+                <Border x:Name="PART_Border" BorderBrush="{TemplateBinding FocusVisualPrimaryBrush}" Grid.RowSpan="2"
                         CornerRadius="{TemplateBinding CornerRadius}"/>
             </Grid>
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_MaskBorder" Storyboard.TargetProperty="Visibility">
-                                <DiscreteObjectKeyFrame Value="Collapsed"/>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
+                        <VisualState.Setters>
+                            <Setter Target="PART_MaskBorder.Visibility" Value="Collapsed"/>
+                        </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="PointerOver">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_MaskBorder" Storyboard.TargetProperty="Visibility">
-                                <DiscreteObjectKeyFrame Value="Visible"/>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
+                        <VisualState.Setters>
+                            <Setter Target="PART_MaskBorder.Visibility" Value="Visible"/>
+                        </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
                 <VisualStateGroup x:Name="CheckStates">
                     <VisualState x:Name="Checked">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="BorderThickness">
-                                <DiscreteObjectKeyFrame Value="2"/>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
+                        <VisualState.Setters>
+                            <Setter Target="PART_Border.BorderThickness" Value="2"/>
+                        </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Unchecked">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="BorderThickness">
-                                <DiscreteObjectKeyFrame Value="0"/>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
+                        <VisualState.Setters>
+                            <Setter Target="PART_Border.BorderThickness" Value="0"/>
+                        </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
                 <VisualStateGroup x:Name="StackStates">
                     <VisualState x:Name="StackVisible">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_ItemStackBlock" Storyboard.TargetProperty="Visibility">
-                                <DiscreteObjectKeyFrame Value="Visible"/>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
+                        <VisualState.Setters>
+                            <Setter Target="PART_ItemStackBlock.Visibility" Value="Visible"/>
+                        </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="StackInvisible">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_ItemStackBlock" Storyboard.TargetProperty="Visibility">
-                                <DiscreteObjectKeyFrame Value="Collapsed"/>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
+                        <VisualState.Setters>
+                            <Setter Target="PART_ItemStackBlock.Visibility" Value="Collapsed"/>
+                        </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
@@ -90,6 +78,8 @@
         <Setter Property="Width" Value="48"/>
         <Setter Property="Height" Value="48"/>
         <Setter Property="Background" Value="{ThemeResource ControlElevationBorderBrush}"/>
-        <Setter Property="SelectedBorderBrush" Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+        <Setter Property="AllowFocusOnInteraction" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
     </Style>
 </ResourceDictionary>

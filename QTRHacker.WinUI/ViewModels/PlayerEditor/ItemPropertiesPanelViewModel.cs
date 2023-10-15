@@ -65,7 +65,7 @@ public partial class ItemPropertiesPanelViewModel : ObservableObject
 		lastUpdateTask = UpdateInner(cts.Token).ContinueWith(t => cts.Dispose(), TaskContinuationOptions.OnlyOnRanToCompletion);
 	}
 
-	public object GetValue(string key) => ItemPropertyDatum.First(t => t.Key == key).Value;
+	public object GetValue(string key) => ItemPropertyDatum.First(t => t.Key == key).Value!;
 
 	public ItemPropertiesPanelViewModel()
 	{

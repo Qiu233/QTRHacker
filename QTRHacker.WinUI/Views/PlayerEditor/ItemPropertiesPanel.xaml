@@ -19,10 +19,13 @@
                 <vmp:ItemPropertyTemplateSelector.Templates>
                     <DataTemplate x:Key="DataTemplate_TextBox">
                         <ct:DockPanel MaxHeight="28">
-                            <TextBox Width="80" ct:DockPanel.Dock="Right" Margin="0,0.5,0,0.5"
+                            <Grid ct:DockPanel.Dock="Right">
+                                <Border x:Name="ErrorIndicator" BorderThickness="1" BorderBrush="Red" Visibility="{Binding HasErrors, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <TextBox Width="80" Margin="0,0.5,0,0.5"
                                      HorizontalAlignment="Left" VerticalAlignment="Center"
-                                     TextWrapping="Wrap" Text="{Binding Value, UpdateSourceTrigger=LostFocus}"
+                                     TextWrapping="Wrap" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                      BorderThickness="0" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+                            </Grid>
                             <TextBlock Text="{Binding Tip}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         </ct:DockPanel>
                     </DataTemplate>

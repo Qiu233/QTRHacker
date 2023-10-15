@@ -1,15 +1,51 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.Localization;
+using System.Collections;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace QTRHacker.ViewModels.PlayerEditor.ItemProperties;
 
-public abstract class ItemPropertyData : ObservableObject
+public abstract partial class ItemPropertyData : ObservableObject, INotifyDataErrorInfo
 {
-	public abstract object Value { get; }
+	private object? value;
+	public object? Value
+	{
+		get => value;
+		set
+		{
+			if (Validate(value) is object o)
+			{
+				HasErrors = false;
+				SetProperty(ref this.value, o);
+			}
+			else
+			{
+				HasErrors = true;
+			}
+		}
+	}
 	public abstract string Key { get; }
+	private bool hasErrors;
+	public bool HasErrors
+	{
+		get => hasErrors;
+		protected set
+		{
+			SetProperty(ref hasErrors, value);
+			OnErrorsChanged();
+		}
+	}
+
+	public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+	protected void OnErrorsChanged() => ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(null));
+
+	public IEnumerable GetErrors(string? propertyName) => new List<string>();
+
+	protected abstract object? Validate(object? raw);
+
 	public abstract Task UpdateFromItem(Item item);
 	public abstract Task UpdateToItem(Item item);
 }
@@ -21,13 +57,26 @@ public abstract partial class ItemPropertyData<T> : ItemPropertyData
 	public override string Key { get; }
 	public string Tip => LocalizationItem.Value;
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(Value))]
-	private T internalValue = default!;
-	public override object Value => InternalValue!;
+	protected override object? Validate(object? raw)
+	{
+		if (raw is null)
+			return null;
+		if (raw is T t)
+			return t;
+		try
+		{
+			if (Convert.ChangeType(raw, typeof(T)) is T t2)
+				return t2;
+		}
+		catch
+		{
+		}
+		return null;
+	}
 
 	private readonly Func<Item, T> Getter;
 	private readonly Action<Item, T> Setter;
+
 
 	public ItemPropertyData(string key)
 	{
@@ -47,12 +96,14 @@ public abstract partial class ItemPropertyData<T> : ItemPropertyData
 	}
 	public override async Task UpdateFromItem(Item item)
 	{
-		InternalValue = await Task.Run(() => Getter(item));
+		Value = await Task.Run(() => Getter(item));
 	}
 
 	public override async Task UpdateToItem(Item item)
 	{
-		var v = InternalValue;
+		if (Value is not T v)
+			return;
 		await Task.Run(() => Setter(item, v));
 	}
+
 }
