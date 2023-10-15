@@ -23,14 +23,8 @@ namespace QTRHacker.Views.Pages;
 
 public sealed partial class PlayersPage : Page
 {
-	public PlayersPageViewModel ViewModel => (PlayersPageViewModel)DataContext;
 	public PlayersPage()
 	{
 		this.InitializeComponent();
-	}
-
-	private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-	{
-		ViewModel.EditInventoryCommand.NotifyCanExecuteChanged();
 	}
 }

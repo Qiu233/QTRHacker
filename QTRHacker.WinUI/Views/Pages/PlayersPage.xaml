@@ -18,20 +18,36 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <ct:DataGrid ItemsSource="{Binding Players}" SelectedItem="{Binding SelectedPlayer, Mode=TwoWay}" 
-                     AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
-                     SelectionChanged="DataGrid_SelectionChanged">
+                     AutoGenerateColumns="False" IsReadOnly="False" SelectionMode="Single">
             <ct:DataGrid.Resources>
                 <Color x:Key="DataGridColumnHeaderBackgroundColor">Transparent</Color>
+                <Style x:Key="SubCellStyle" TargetType="ct:DataGridCell">
+                </Style>
             </ct:DataGrid.Resources>
+            <ct:DataGrid.ColumnHeaderStyle>
+                <Style TargetType="ctp:DataGridColumnHeader">
+                    <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}"/>
+                </Style>
+            </ct:DataGrid.ColumnHeaderStyle>
             <ct:DataGrid.Columns>
-                <ct:DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
-                <ct:DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <ct:DataGridTextColumn Header="ID" Binding="{Binding ID}" IsReadOnly="True" MinWidth="80"/>
+                <ct:DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" MinWidth="160"/>
+                
+                <ct:DataGridTextColumn CellStyle="{StaticResource SubCellStyle}" MinWidth="100"
+                                       Header="Max Life" Binding="{Binding MaxLife}"/>
+                <ct:DataGridTextColumn CellStyle="{StaticResource SubCellStyle}" MinWidth="100"
+                                       Header="Life" Binding="{Binding Life}"/>
+                <ct:DataGridTextColumn CellStyle="{StaticResource SubCellStyle}"
+                                       Header="X" Binding="{Binding X}" MinWidth="120"/>
+                <ct:DataGridTextColumn CellStyle="{StaticResource SubCellStyle}"
+                                       Header="Y" Binding="{Binding Y}" MinWidth="120"/>
             </ct:DataGrid.Columns>
         </ct:DataGrid>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Spacing="3">
-            <Button Content="Edit" HorizontalAlignment="Stretch" Command="{Binding EditInventoryCommand}"/>
+        <StackPanel Orientation="Vertical" Grid.Column="2" Spacing="3">
+            <Button Content="Inventory" HorizontalAlignment="Stretch" Command="{Binding EditInventoryCommand}"/>
             <Button Content="Set Mount" HorizontalAlignment="Stretch"/>
             <Button Content="Set Pet" HorizontalAlignment="Stretch"/>
         </StackPanel>

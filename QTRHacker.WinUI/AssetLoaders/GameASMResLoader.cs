@@ -15,7 +15,7 @@ public sealed class GameASMResLoader
 		foreach (var resHandle in mr.ManifestResources)
 		{
 			var res = mr.GetManifestResource(resHandle);
-			PEMemoryBlock resourceDirectory = per.GetSectionData(per.PEHeaders.CorHeader.ResourcesDirectory.RelativeVirtualAddress);
+			PEMemoryBlock resourceDirectory = per.GetSectionData(per.PEHeaders.CorHeader!.ResourcesDirectory.RelativeVirtualAddress);
 			var reader = resourceDirectory.GetReader((int)res.Offset, resourceDirectory.Length - (int)res.Offset);
 			uint size = reader.ReadUInt32();
 			Cache[mr.GetString(res.Name)] = reader.ReadBytes((int)size);

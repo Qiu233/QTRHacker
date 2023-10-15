@@ -28,8 +28,6 @@ public partial class ItemSlotViewModel : ObservableObject
 
 	public int Index { get; }
 
-	public event EventHandler? Selected;
-
 	public ItemSlotViewModel(int index)
 	{
 		Index = index;

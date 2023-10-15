@@ -55,7 +55,7 @@ public class Logging
 	{
 		lock (_lock)
 		{
-			Sections.Push(label);
+			Sections.Push(label!);
 			if (label != null)
 				LogWriter.WriteLine($"SECTION [{label}]");
 			LogWriter.Indent++;
