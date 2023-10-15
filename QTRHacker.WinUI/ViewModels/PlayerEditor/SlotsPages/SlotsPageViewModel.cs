@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using QTRHacker.Assets;
+using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.Models;
 using QTRHacker.ViewModels.Common;
 using System;
@@ -18,6 +19,10 @@ public abstract class SlotsPageViewModel : ObservableObject
 	}
 
 	public abstract Task Update();
+
+	public abstract Task<Item> GetItem(int id);
+
+	public abstract IEnumerable<ItemSlotViewModel> Slots { get; }
 
 	protected static async void UpdateItemStack(ItemSlotViewModel vm, int type, int stack)
 	{

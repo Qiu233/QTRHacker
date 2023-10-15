@@ -18,7 +18,7 @@ namespace QTRHacker.Containers.PlayerEditor;
 public partial class InventoryEditor : IContainer<InventoryEditorViewModel>
 {
 	[Factory]
-	private ItemSlotViewModel CreateSlot(int index)
+	public ItemSlotViewModel CreateSlot(int index)
 	{
 		return new ItemSlotViewModel(index)
 		{

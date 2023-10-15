@@ -15,6 +15,9 @@ public class ChestPageViewModel : SlotsPageViewModel
 	private readonly List<ItemSlotViewModel> chest = new();
 	public IReadOnlyList<ItemSlotViewModel> Chest => chest;
 	public Chest Target { get; }
+
+	public override IEnumerable<ItemSlotViewModel> Slots { get; }
+
 	private readonly ItemStack[] Buffer;
 	public ChestPageViewModel(string header, Chest target, Func<int, ItemSlotViewModel> slotMaker)
 	{
@@ -24,6 +27,7 @@ public class ChestPageViewModel : SlotsPageViewModel
 		for (int i = 0; i < len; i++)
 			chest.Add(slotMaker(i));
 		Buffer = new ItemStack[len];
+		Slots = Chest.ToList();
 	}
 	public override async Task Update()
 	{
@@ -37,4 +41,6 @@ public class ChestPageViewModel : SlotsPageViewModel
 		foreach (var (item, b) in Chest.Zip(Buffer))
 			UpdateItemStack(item, b.Type, b.Stack);
 	}
+
+	public override async Task<Item> GetItem(int id) => await Task.Run(() => Target.Item[id]);
 }

@@ -53,47 +53,12 @@
                 <Setter Property="Margin" Value="4,0,4,0"></Setter>
             </Style>
         </ItemsControl.ItemContainerStyle>
-        
+
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <ct:UniformGrid Columns="{Binding Columns}" Rows="{Binding Rows}"/>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
-        
+
     </ItemsControl>
-    <!--<controls:PropertyGrid Columns="2">
-        <controls:PropertyGrid.Entries>
-            <controls:PropertyEntry Name="Type"/>
-            <controls:PropertyEntry Name="Damage"/>
-            <controls:PropertyEntry Name="Stack"/>
-            <controls:PropertyEntry Name="KnockBack" Type="Float"/>
-            <controls:PropertyEntry Name="Crit"/>
-            <controls:PropertyEntry Name="Scale" Type="Float"/>
-            
-            <controls:PropertyEntry Name="BuffType"/>
-            <controls:PropertyEntry Name="BuffTime"/>
-
-            <controls:PropertyEntry Name="HealLife"/>
-            <controls:PropertyEntry Name="HealMana"/>
-
-            <controls:PropertyEntry Name="UseTime"/>
-            <controls:PropertyEntry Name="UseAnimation"/>
-
-            <controls:PropertyEntry Name="FishingPole"/>
-            <controls:PropertyEntry Name="Bait"/>
-
-            <controls:PropertyEntry Name="Shoot"/>
-            <controls:PropertyEntry Name="ShootSpeed" Type="Float"/>
-
-            <controls:PropertyEntry Name="Defense"/>
-
-            <controls:PropertyEntry Name="Pick"/>
-            <controls:PropertyEntry Name="Axe"/>
-            <controls:PropertyEntry Name="Hammer"/>
-
-            <controls:PropertyEntry Name="CreateTile"/>
-            <controls:PropertyEntry Name="PlaceStyle"/>
-            <controls:PropertyEntry Name="CreateWall"/>
-        </controls:PropertyGrid.Entries>
-    </controls:PropertyGrid>-->
 </UserControl>

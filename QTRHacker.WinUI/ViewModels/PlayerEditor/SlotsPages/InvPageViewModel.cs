@@ -21,6 +21,9 @@ public class InvPageViewModel : SlotsPageViewModel
 	public IReadOnlyList<ItemSlotViewModel> SubInv => subInv;
 
 	public ItemSlotViewModel TrashItem { get; }
+	public ItemSlotViewModel HoldItem { get; }
+
+	public override IEnumerable<ItemSlotViewModel> Slots { get; }
 
 	private readonly Player Player;
 
@@ -35,10 +38,12 @@ public class InvPageViewModel : SlotsPageViewModel
 			t.Size = 36;
 			subInv.Add(t);
 		}
-		TrashItem = slotMaker(58);
+		HoldItem = slotMaker(58);
+		TrashItem = slotMaker(59);
+		Slots = MainInv.Union(SubInv).Union(new ItemSlotViewModel[] { HoldItem, TrashItem }).ToList();
 	}
 
-	private readonly ItemStack[] Buffer = new ItemStack[59];
+	private readonly ItemStack[] Buffer = new ItemStack[60];
 
 	public override async Task Update()
 	{
@@ -46,9 +51,8 @@ public class InvPageViewModel : SlotsPageViewModel
 		await Task.Run(() =>
 		{
 			for (int i = 0; i < Buffer.Length; i++)
-			{
 				Buffer[i] = Player.Inventory[i].Marshal();
-			}
+			Buffer[59] = Player.TrashItem.Marshal();
 		});
 		foreach (var item in MainInv)
 		{
@@ -60,6 +64,14 @@ public class InvPageViewModel : SlotsPageViewModel
 			var gi = Buffer[item.Index];
 			UpdateItemStack(item, gi.Type, gi.Stack);
 		}
-		UpdateItemStack(TrashItem, Buffer[58].Type, Buffer[58].Stack);
+		UpdateItemStack(HoldItem, Buffer[58].Type, Buffer[58].Stack);
+		UpdateItemStack(TrashItem, Buffer[59].Type, Buffer[59].Stack);
+	}
+
+	public override async Task<Item> GetItem(int id)
+	{
+		if (id == 59)
+			return await Task.Run(() => Player.TrashItem);
+		return await Task.Run(() => Player.Inventory[id]);
 	}
 }

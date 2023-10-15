@@ -8,77 +8,51 @@ namespace QTRHacker.ViewModels.PlayerEditor.ItemProperties;
 
 public abstract class ItemPropertyData : ObservableObject
 {
+	public abstract object Value { get; }
+	public abstract string Key { get; }
+	public abstract Task UpdateFromItem(Item item);
+	public abstract Task UpdateToItem(Item item);
+}
+
+public abstract partial class ItemPropertyData<T> : ItemPropertyData
+{
 	private readonly LocalizationItem LocalizationItem;
-	private object? _Value;
-
 	public PropertyInfo ItemProperty { get; }
-	public Type PropertyType => ItemProperty.PropertyType;
-
-	public string Key { get; }
+	public override string Key { get; }
 	public string Tip => LocalizationItem.Value;
 
-	protected object? InternalValue
-	{
-		get => _Value;
-		set
-		{
-			_Value = value;
-			InternalValueChanged?.Invoke(this, new EventArgs());
-		}
-	}
-	protected event EventHandler? InternalValueChanged;
+	[ObservableProperty]
+	[NotifyPropertyChangedFor(nameof(Value))]
+	private T internalValue = default!;
+	public override object Value => InternalValue!;
 
-	public virtual void UpdateFromItem(Item item)
-	{
-		InternalValue = ItemProperty.GetValue(item);
-	}
+	private readonly Func<Item, T> Getter;
+	private readonly Action<Item, T> Setter;
 
-	public virtual void UpdateToItem(Item item)
-	{
-		ItemProperty.SetValue(item, InternalValue);
-	}
-
-	public object? GetValue() => InternalValue;
-
-	protected ItemPropertyData(string key)
+	public ItemPropertyData(string key)
 	{
 		Key = key;
 		ItemProperty = typeof(Item).GetProperty(Key)!;
-		if (ItemProperty == null)
+		if (ItemProperty is null)
 			throw new Exception($"No such property: {Key}");//TODO: replace it with a user exception
 		LocalizationItem = new LocalizationItem($"UI.ItemProperties.{Key}");
-		LocalizationItem.PropertyChanged += LocalizationItem_PropertyChanged!;
-	}
-	private void LocalizationItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
-	{
-		OnPropertyChanged(nameof(Tip));
-	}
-}
-public abstract class ItemPropertyData<T> : ItemPropertyData
-{
-	public virtual T Value
-	{
-		get => (T)InternalValue!;
-		set
-		{
-			InternalValue = value;
-			OnPropertyChanged(nameof(Value));
-		}
-	}
-
-	public ItemPropertyData(string key) : base(key)
-	{
-		InternalValue = default(T)!;
+		LocalizationItem.ValueChanged += (s, e) => OnPropertyChanged(nameof(Tip));
 		if (ItemProperty.PropertyType != typeof(T))
 			throw new Exception(
 				$"Type doesn't match. " +
 				$"Expected {typeof(T).Name}, got {ItemProperty.PropertyType.Name}. " +
 				$"Key: {key}");//TODO: replace it with a user exception
-		InternalValueChanged += ItemPropertyData_InternalValueChanged!;
+		Getter = ItemProperty.GetGetMethod()!.CreateDelegate<Func<Item, T>>();
+		Setter = ItemProperty.GetSetMethod()!.CreateDelegate<Action<Item, T>>();
+	}
+	public override async Task UpdateFromItem(Item item)
+	{
+		InternalValue = await Task.Run(() => Getter(item));
 	}
 
-	private void ItemPropertyData_InternalValueChanged(object sender, EventArgs e)
+	public override async Task UpdateToItem(Item item)
 	{
-		OnPropertyChanged(nameof(Value));
+		var v = InternalValue;
+		await Task.Run(() => Setter(item, v));
 	}
 }

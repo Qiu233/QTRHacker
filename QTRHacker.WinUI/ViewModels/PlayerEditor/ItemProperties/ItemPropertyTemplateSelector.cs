@@ -20,8 +20,6 @@ public class ItemPropertyTemplateSelector : DataTemplateSelector
 	{
 		if (item is not ItemPropertyData property)
 			throw new ArgumentOutOfRangeException(nameof(item));
-		if (container is not FrameworkElement element)
-			throw new ArgumentOutOfRangeException(nameof(container));
 
 		var match = Regex.Match(property.GetType().Name, "ItemPropertyData_([\\w]+)");
 		if (match.Success)

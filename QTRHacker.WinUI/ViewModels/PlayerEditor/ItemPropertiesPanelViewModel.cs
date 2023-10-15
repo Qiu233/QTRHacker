@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.Localization;
 using QTRHacker.ViewModels.PlayerEditor.ItemProperties;
@@ -6,43 +7,69 @@ using System.Collections.ObjectModel;
 
 namespace QTRHacker.ViewModels.PlayerEditor;
 
-public class ItemPropertiesPanelViewModel : ObservableObject
+public partial class ItemPropertiesPanelViewModel : ObservableObject
 {
 	public ObservableCollection<ItemPropertyData> ItemPropertyDatum
 	{
 		get;
 	} = new();
-	private int _Columns = 3;
+	[ObservableProperty]
+	[NotifyPropertyChangedFor(nameof(Rows))]
+	private int columns = 3;
 
 	public int Rows => (ItemPropertyDatum.Count + Columns - 1) / Columns;
 
-	public int Columns
+	//public void UpdatePropertiesFromItem(Item item)
+	//{
+	//	foreach (var prop in ItemPropertyDatum)
+	//		prop.UpdateFromItem(item);
+	//}
+
+	//public void UpdatePropertiesToItem(Item item)
+	//{
+	//	foreach (var prop in ItemPropertyDatum)
+	//		prop.UpdateToItem(item);
+	//}
+	private CancellationTokenSource? lastUpdateTaskCTS;
+	private Task? lastUpdateTask;
+
+	private Item? targetItem;
+	public Item? TargetItem
 	{
-		get => _Columns;
+		get => targetItem;
 		set
 		{
-			_Columns = value;
-			OnPropertyChanged(nameof(Columns));
-			OnPropertyChanged(nameof(Rows));
+			SetProperty(ref targetItem, value);
+			UpdateProperties();
 		}
 	}
-	public void UpdatePropertiesFromItem(Item item)
+
+	private void UpdateProperties()
 	{
-		foreach (var prop in ItemPropertyDatum)
-			prop.UpdateFromItem(item);
+		async Task UpdateInner(CancellationToken ct)
+		{
+			if (TargetItem is null)
+				return;
+			foreach (var prop in ItemPropertyDatum)
+			{
+				ct.ThrowIfCancellationRequested();
+				await prop.UpdateFromItem(TargetItem);
+			}
+		}
+		// TODO: review for CTS lifetime
+		// as per https://stackoverflow.com/a/51220106, disposal is only needed when not cancelled
+		if (lastUpdateTask is not null && !lastUpdateTask.IsCompleted &&
+			lastUpdateTaskCTS is not null && !lastUpdateTaskCTS.IsCancellationRequested)
+			lastUpdateTaskCTS.Cancel();
+		var cts = lastUpdateTaskCTS = new CancellationTokenSource();
+		lastUpdateTask = UpdateInner(cts.Token).ContinueWith(t => cts.Dispose(), TaskContinuationOptions.OnlyOnRanToCompletion);
 	}
 
-	public void UpdatePropertiesToItem(Item item)
-	{
-		foreach (var prop in ItemPropertyDatum)
-			prop.UpdateToItem(item);
-	}
-
-	public object GetValue(string key) => ItemPropertyDatum.First(t => t.Key == key).GetValue()!;
+	public object GetValue(string key) => ItemPropertyDatum.First(t => t.Key == key).Value;
 
 	public ItemPropertiesPanelViewModel()
 	{
-		ItemPropertyDatum.CollectionChanged += ItemPropertyDatum_CollectionChanged!;
+		ItemPropertyDatum.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Rows));
 
 		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Type"));
 		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Stack"));
@@ -84,12 +111,7 @@ public class ItemPropertiesPanelViewModel : ObservableObject
 		ItemPropertyDatum.Add(new ItemPropertyData_CheckBox("Accessory"));
 	}
 
-	private void ItemPropertyDatum_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-	{
-		OnPropertyChanged(nameof(Rows));
-	}
-
-	public class Prefix : ObservableObject, ILocalizationProvider
+	public sealed class Prefix : ObservableObject, ILocalizationProvider
 	{
 		public string Key { get; }
 		public byte Value { get; }
@@ -108,6 +130,7 @@ public class ItemPropertiesPanelViewModel : ObservableObject
 		{
 			Key = key;
 			Value = value;
+			LocalizationManager.RegisterLocalizationProvider(this);
 		}
 
 		public void OnCultureChanged(object sender, CultureChangedEventArgs args)

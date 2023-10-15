@@ -55,15 +55,22 @@ public class ItemSlot : RadioButton
 
 	public ItemSlot()
 	{
-		this.DefaultStyleKey = typeof(ItemSlot);
+		DefaultStyleKey = typeof(ItemSlot);
+	}
+
+	// user can re-select other items without need to release pointer first
+	protected override void OnPointerMoved(PointerRoutedEventArgs e)
+	{
+		base.OnPointerMoved(e);
+		var p = e.GetCurrentPoint(this).Properties;
+		if ((p.IsLeftButtonPressed || p.IsRightButtonPressed) && IsChecked is not true)
+			IsChecked = true;
 	}
 
 	protected override void OnPointerPressed(PointerRoutedEventArgs e)
 	{
-		base.OnPointerPressed(e);
-		//var p = e.GetCurrentPoint(this).Properties;
-		//if (!p.IsRightButtonPressed)
-		//	return;
-		IsChecked = true;
+		// don't call to base implementation, as it would capture pointer, preventing other items be re-selected
+		if (IsChecked is not true)
+			IsChecked = true;
 	}
 }

@@ -1,10 +1,11 @@
-﻿using System.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel;
 
 namespace QTRHacker.Localization;
 
-public sealed class LocalizationItem : INotifyPropertyChanged, ILocalizationProvider
+public sealed class LocalizationItem : ObservableObject, ILocalizationProvider
 {
-	public event PropertyChangedEventHandler? PropertyChanged;
+	public event EventHandler<string>? ValueChanged;
 	private readonly string Key;
 	private readonly LocalizationType Type;
 
@@ -12,7 +13,8 @@ public sealed class LocalizationItem : INotifyPropertyChanged, ILocalizationProv
 
 	public void OnCultureChanged(object sender, CultureChangedEventArgs args)
 	{
-		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
+		OnPropertyChanged(nameof(Value));
+		ValueChanged?.Invoke(this, Value);
 	}
 
 	public LocalizationItem(string key, LocalizationType type = LocalizationType.Hack)

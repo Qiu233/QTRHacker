@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
 using QTRHacker.Core.GameObjects.Terraria;
+using QTRHacker.ViewModels.Common;
 using QTRHacker.ViewModels.PlayerEditor.SlotsPages;
 using StrongInject;
 using System;
@@ -31,6 +32,10 @@ public partial class InventorySlotsPanelViewModel : ObservableObject
 	public ChestPageViewModel Forge { get; }
 	public ChestPageViewModel VoidVault { get; }
 
+	public event EventHandler<ItemSlotViewModel>? ItemSelected;
+	public void OnItemSelected(ItemSlotViewModel slot) => ItemSelected?.Invoke(this, slot);
+
+	private readonly Dictionary<ItemSlotViewModel, SlotsPageViewModel> PageDict = new();
 
 	public InventorySlotsPanelViewModel(
 		Func<InvPageViewModel> inv,
@@ -55,7 +60,11 @@ public partial class InventorySlotsPanelViewModel : ObservableObject
 		pages.Add(VoidVault);
 
 		for (int i = 0; i < p.Loadouts.Length; i++)
-			pages.Add(loadout($"Loadout {i}", p.Loadouts[i]));
+			pages.Add(loadout($"Loadout {i + 1}", p.Loadouts[i]));
+
+		foreach (var page in Pages)
+			foreach (var slot in page.Slots)
+				PageDict[slot] = page;
 
 		updater.Tick += Updater_Tick;
 		SelectedPage = InvPageViewModel;
@@ -66,5 +75,12 @@ public partial class InventorySlotsPanelViewModel : ObservableObject
 		if (SelectedPage is null)
 			return;
 		await SelectedPage.Update();
+	}
+
+	public async Task<Item> GetItemBySlotViewModel(ItemSlotViewModel slot)
+	{
+		if (!PageDict.TryGetValue(slot, out var page))
+			throw new ArgumentOutOfRangeException(nameof(slot));
+		return await page.GetItem(slot.Index);
 	}
 }
