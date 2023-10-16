@@ -13,8 +13,8 @@ internal static class AssetReader
 	public static async Task<byte[]> ReadData(string uriString)
 	{
 		Uri uri = new(uriString);
-		StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri).AsTask().ConfigureAwait(false);
-		using var stream = await file.OpenStreamForReadAsync().ConfigureAwait(false);
+		StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
+		using var stream = await file.OpenStreamForReadAsync();
 		byte[] buffer = new byte[stream.Length];
 		stream.Read(buffer);
 		return buffer;

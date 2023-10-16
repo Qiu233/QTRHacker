@@ -39,7 +39,7 @@ public class LocSet
 		LocSet set = new();
 		try
 		{
-			byte[] data = await AssetReader.ReadData($"ms-appx:///Localization/Content/{culture}.json").ConfigureAwait(false);
+			byte[] data = await AssetReader.ReadData($"ms-appx:///Localization/Content/{culture}.json");
 			string json = new StreamReader(new MemoryStream(data, false), Encoding.UTF8).ReadToEnd();
 			set.Load(json);
 		}
@@ -52,7 +52,7 @@ public class LocSet
 
 	public static async Task<LocSet> LoadFromGame(string culture)
 	{
-		byte[] data = await AssetReader.ReadData($"ms-appx:///Assets/Game/Localization.zip").ConfigureAwait(false);
+		byte[] data = await AssetReader.ReadData($"ms-appx:///Assets/Game/Localization.zip");
 		using ZipArchive z = new(new MemoryStream(data, false));
 		var es = z.Entries.Where(e => e.FullName.StartsWith($"Content.{culture}"));
 		LocSet manager = new();

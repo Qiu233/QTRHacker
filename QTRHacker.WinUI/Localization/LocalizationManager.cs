@@ -21,7 +21,7 @@ public sealed class LocalizationManager
 	public string CultureName => cultureName!;
 	private LocalizationManager(string initialCulture = "en")
 	{
-		SetCulture(initialCulture).Wait();
+		_ = SetCulture(initialCulture);
 	}
 
 	public string GetValue(string key, LocalizationType type = LocalizationType.Hack)
@@ -47,8 +47,8 @@ public sealed class LocalizationManager
 	public async Task SetCulture(string culture)
 	{
 		cultureName = culture;
-		ApplySet(CurrentHack, await LocSet.LoadFromRes(culture).ConfigureAwait(false));
-		ApplySet(CurrentGame, await LocSet.LoadFromGame(culture).ConfigureAwait(false));
+		ApplySet(CurrentHack, await LocSet.LoadFromRes(culture));
+		ApplySet(CurrentGame, await LocSet.LoadFromGame(culture));
 		CultureChanged?.Invoke(this, new CultureChangedEventArgs(culture));
 	}
 

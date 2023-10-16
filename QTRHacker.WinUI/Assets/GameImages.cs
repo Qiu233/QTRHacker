@@ -22,14 +22,14 @@ public static class GameImages
 
 	private static async Task LoadGameImages()
 	{
-		await LoadGameImage("Items").ConfigureAwait(false);
-		await LoadGameImage("NPCs").ConfigureAwait(false);
-		await LoadGameImage("Tiles").ConfigureAwait(false);
-		await LoadGameImage("Walls").ConfigureAwait(false);
+		await LoadGameImage("Items");
+		await LoadGameImage("NPCs");
+		await LoadGameImage("Tiles");
+		await LoadGameImage("Walls");
 	}
 	private static async Task LoadGameImage(string name)
 	{
-		byte[] data = await AssetReader.ReadData($"ms-appx:///Assets/GameImages/{name}.bin").ConfigureAwait(false);
+		byte[] data = await AssetReader.ReadData($"ms-appx:///Assets/GameImages/{name}.bin");
 		var imgs = BinLoader.ReadBinFromStream(new MemoryStream(data, false));
 		foreach (var img in imgs)
 		{
@@ -59,7 +59,7 @@ public static class GameImages
 	public static async Task<BitmapImage?> GetImage(string key)
 	{
 		if (!ImageDatum.Any())
-			LoadGameImages().Wait();
+			await LoadGameImages();
 		Images ??= new();
 		if (Images.TryGetValue(key, out BitmapImage? v))
 			return v;
