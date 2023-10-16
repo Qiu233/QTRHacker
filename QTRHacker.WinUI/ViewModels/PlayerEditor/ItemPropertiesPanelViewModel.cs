@@ -4,6 +4,7 @@ using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.Localization;
 using QTRHacker.ViewModels.PlayerEditor.ItemProperties;
 using System.Collections.ObjectModel;
+using Windows.Foundation.Collections;
 
 namespace QTRHacker.ViewModels.PlayerEditor;
 
@@ -33,27 +34,14 @@ public partial class ItemPropertiesPanelViewModel : ObservableObject
 	private CancellationTokenSource? lastUpdateTaskCTS;
 	private Task? lastUpdateTask;
 
-	private Item? targetItem;
-	public Item? TargetItem
-	{
-		get => targetItem;
-		set
-		{
-			SetProperty(ref targetItem, value);
-			UpdateProperties();
-		}
-	}
-
-	private void UpdateProperties()
+	private void UpdateItem()
 	{
 		async Task UpdateInner(CancellationToken ct)
 		{
-			if (TargetItem is null)
-				return;
 			foreach (var prop in ItemPropertyDatum)
 			{
 				ct.ThrowIfCancellationRequested();
-				await prop.UpdateFromItem(TargetItem);
+				await prop.UpdateFromItem();
 			}
 		}
 		// TODO: review for CTS lifetime
@@ -67,48 +55,53 @@ public partial class ItemPropertiesPanelViewModel : ObservableObject
 
 	public object GetValue(string key) => ItemPropertyDatum.First(t => t.Key == key).Value!;
 
-	public ItemPropertiesPanelViewModel()
+
+	public ItemPropertiesPanelViewModel(
+		Func<string, ItemPropertyData_TextBox<int>> intMaker,
+		Func<string, ItemPropertyData_TextBox<float>> floatMaker,
+		Func<string, ItemPropertyData_ComboBox<byte>> byteComboMaker,
+		Func<string, ItemPropertyData_CheckBox> checkBoxMaker)
 	{
 		ItemPropertyDatum.CollectionChanged += (s, e) => OnPropertyChanged(nameof(Rows));
 
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Type"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Stack"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Damage"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<float>("KnockBack"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Crit"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<float>("Scale"));
+		ItemPropertyDatum.Add(intMaker("Type"));
+		ItemPropertyDatum.Add(intMaker("Stack"));
+		ItemPropertyDatum.Add(intMaker("Damage"));
+		ItemPropertyDatum.Add(floatMaker("KnockBack"));
+		ItemPropertyDatum.Add(intMaker("Crit"));
+		ItemPropertyDatum.Add(floatMaker("Scale"));
 
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("BuffType"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("BuffTime"));
+		ItemPropertyDatum.Add(intMaker("BuffType"));
+		ItemPropertyDatum.Add(intMaker("BuffTime"));
 
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("HealLife"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("HealMana"));
+		ItemPropertyDatum.Add(intMaker("HealLife"));
+		ItemPropertyDatum.Add(intMaker("HealMana"));
 
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("UseTime"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("UseAnimation"));
+		ItemPropertyDatum.Add(intMaker("UseTime"));
+		ItemPropertyDatum.Add(intMaker("UseAnimation"));
 
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("FishingPole"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Bait"));
+		ItemPropertyDatum.Add(intMaker("FishingPole"));
+		ItemPropertyDatum.Add(intMaker("Bait"));
 
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Shoot"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<float>("ShootSpeed"));
+		ItemPropertyDatum.Add(intMaker("Shoot"));
+		ItemPropertyDatum.Add(floatMaker("ShootSpeed"));
 
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Defense"));
+		ItemPropertyDatum.Add(intMaker("Defense"));
 
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Pick"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Axe"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("Hammer"));
+		ItemPropertyDatum.Add(intMaker("Pick"));
+		ItemPropertyDatum.Add(intMaker("Axe"));
+		ItemPropertyDatum.Add(intMaker("Hammer"));
 
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("CreateTile"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("PlaceStyle"));
-		ItemPropertyDatum.Add(new ItemPropertyData_TextBox<int>("CreateWall"));
+		ItemPropertyDatum.Add(intMaker("CreateTile"));
+		ItemPropertyDatum.Add(intMaker("PlaceStyle"));
+		ItemPropertyDatum.Add(intMaker("CreateWall"));
 
-		var prefix = new ItemPropertyData_ComboBox<byte>("Prefix");
+		var prefix = byteComboMaker("Prefix");
 		Enum.GetValues<Models.UsefulPrefixes>().ToList().ForEach(
 			t => prefix.Source.Add(new Prefix(t.ToString(), (byte)t)));
 		ItemPropertyDatum.Add(prefix);
-		ItemPropertyDatum.Add(new ItemPropertyData_CheckBox("AutoReuse"));
-		ItemPropertyDatum.Add(new ItemPropertyData_CheckBox("Accessory"));
+		ItemPropertyDatum.Add(checkBoxMaker("AutoReuse"));
+		ItemPropertyDatum.Add(checkBoxMaker("Accessory"));
 	}
 
 	public sealed class Prefix : ObservableObject, ILocalizationProvider

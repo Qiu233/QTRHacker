@@ -43,7 +43,7 @@
                         <Grid MaxHeight="28">
                             <CheckBox Content="{Binding Tip}"
                                       VerticalAlignment="Center"
-                                      IsChecked="{Binding Value}">
+                                      IsChecked="{Binding Value, Mode=TwoWay}">
                             </CheckBox>
                         </Grid>
                     </DataTemplate>

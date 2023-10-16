@@ -20,6 +20,8 @@ public abstract partial class ItemPropertyData : ObservableObject, INotifyDataEr
 			{
 				HasErrors = false;
 				SetProperty(ref this.value, o);
+				if (!forwarding)
+					_ = UpdateToItem();
 			}
 			else
 			{
@@ -38,6 +40,7 @@ public abstract partial class ItemPropertyData : ObservableObject, INotifyDataEr
 			OnErrorsChanged();
 		}
 	}
+	private bool forwarding = false;
 
 	public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 	protected void OnErrorsChanged() => ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(null));
@@ -46,8 +49,30 @@ public abstract partial class ItemPropertyData : ObservableObject, INotifyDataEr
 
 	protected abstract object? Validate(object? raw);
 
-	public abstract Task UpdateFromItem(Item item);
-	public abstract Task UpdateToItem(Item item);
+	public async Task UpdateFromItem()
+	{
+		forwarding = true;
+		await UpdateFromItemOverride(SelectedItemHolder.SelectedItem);
+		forwarding = false;
+	}
+	public async Task UpdateToItem()
+	{
+		await UpdateToItemOverride(SelectedItemHolder.SelectedItem);
+	}
+	protected abstract Task UpdateFromItemOverride(Item? item);
+	protected abstract Task UpdateToItemOverride(Item? item);
+
+	private SelectedItemHolder SelectedItemHolder { get; }
+
+	protected ItemPropertyData(SelectedItemHolder holder)
+	{
+		SelectedItemHolder = holder;
+		holder.SelectedItemChanged += Holder_SelectedItemChanged; 
+		// TODO: review for delegate lifetime
+		// should we use weak event here?
+	}
+
+	private async void Holder_SelectedItemChanged(object? sender, Item? e) => await UpdateFromItem();
 }
 
 public abstract partial class ItemPropertyData<T> : ItemPropertyData
@@ -77,9 +102,9 @@ public abstract partial class ItemPropertyData<T> : ItemPropertyData
 	private readonly Func<Item, T> Getter;
 	private readonly Action<Item, T> Setter;
 
-
-	public ItemPropertyData(string key)
+	public ItemPropertyData(string key, SelectedItemHolder holder) : base(holder)
 	{
+
 		Key = key;
 		ItemProperty = typeof(Item).GetProperty(Key)!;
 		if (ItemProperty is null)
@@ -94,16 +119,18 @@ public abstract partial class ItemPropertyData<T> : ItemPropertyData
 		Getter = ItemProperty.GetGetMethod()!.CreateDelegate<Func<Item, T>>();
 		Setter = ItemProperty.GetSetMethod()!.CreateDelegate<Action<Item, T>>();
 	}
-	public override async Task UpdateFromItem(Item item)
+
+	protected override async Task UpdateFromItemOverride(Item? item)
 	{
+		if (item is null)
+			return;
 		Value = await Task.Run(() => Getter(item));
 	}
 
-	public override async Task UpdateToItem(Item item)
+	protected override async Task UpdateToItemOverride(Item? item)
 	{
-		if (Value is not T v)
+		if (Value is not T v || item is null)
 			return;
 		await Task.Run(() => Setter(item, v));
 	}
-
 }

@@ -2,7 +2,7 @@
 
 public class ItemPropertyData_CheckBox : ItemPropertyData<bool>
 {
-	public ItemPropertyData_CheckBox(string key) : base(key)
+	public ItemPropertyData_CheckBox(string key, SelectedItemHolder holder) : base(key, holder)
 	{
 	}
 }

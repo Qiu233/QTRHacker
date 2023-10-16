@@ -29,10 +29,4 @@ public sealed partial class InventorySlotsPanel : UserControl
 		this.InitializeComponent();
 	}
 
-	private void ItemSlot_Checked(object sender, RoutedEventArgs e)
-	{
-		if (sender is not ItemSlot ic || ic.DataContext is not ItemSlotViewModel slot)
-			return;
-		ViewModel.OnItemSelected(slot);
-    }
 }

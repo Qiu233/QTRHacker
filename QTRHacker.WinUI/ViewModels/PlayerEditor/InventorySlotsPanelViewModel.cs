@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.ViewModels.PlayerEditor;
 
+
 public partial class InventorySlotsPanelViewModel : ObservableObject
 {
 	private readonly ObservableCollection<SlotsPageViewModel> pages = new();
@@ -32,11 +33,7 @@ public partial class InventorySlotsPanelViewModel : ObservableObject
 	public ChestPageViewModel Forge { get; }
 	public ChestPageViewModel VoidVault { get; }
 
-	public event EventHandler<ItemSlotViewModel>? ItemSelected;
-	public void OnItemSelected(ItemSlotViewModel slot) => ItemSelected?.Invoke(this, slot);
-
 	private readonly Dictionary<ItemSlotViewModel, SlotsPageViewModel> PageDict = new();
-
 	public InventorySlotsPanelViewModel(
 		Func<InvPageViewModel> inv,
 		Func<ArmorPageViewModel> armor,
@@ -68,6 +65,7 @@ public partial class InventorySlotsPanelViewModel : ObservableObject
 
 		updater.Tick += Updater_Tick;
 		SelectedPage = InvPageViewModel;
+		InvPageViewModel.MainInv[0].IsChecked = true;
 	}
 
 	private async void Updater_Tick(DispatcherQueueTimer sender, object args)

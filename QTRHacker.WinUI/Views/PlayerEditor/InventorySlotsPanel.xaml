@@ -24,7 +24,8 @@
                 <ItemContainer>
                     <controls:ItemSlot ItemStack="{Binding Stack}" ItemImageSource="{Binding ItemImage}" 
                                        Width="{Binding Size}" Height="{Binding Size}"
-                                       GroupName="{Binding GroupName}" Checked="ItemSlot_Checked"/>
+                                       GroupName="{Binding GroupName}"
+                                       IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
                 </ItemContainer>
             </DataTemplate>
         </Pivot.Resources>
@@ -56,19 +57,19 @@
                                     <UniformGridLayout Orientation="Horizontal" MaximumRowsOrColumns="10" MinColumnSpacing="6" MinRowSpacing="6"/>
                                 </ItemsView.Layout>
                             </ItemsView>
-                            <controls:ItemSlot Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" DataContext="{Binding HoldItem}" Checked="ItemSlot_Checked"
+                            <controls:ItemSlot Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" DataContext="{Binding HoldItem}"
                                                ItemStack="{Binding Stack}" ItemImageSource="{Binding ItemImage}" 
                                                Width="{Binding Size}" Height="{Binding Size}"
-                                               GroupName="{Binding GroupName}" />
+                                               GroupName="{Binding GroupName}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
                             <ItemsView ItemsSource="{Binding SubInv}" Grid.Column="1" Grid.Row="1" ItemTemplate="{StaticResource InventorySlotTemplate}">
                                 <ItemsView.Layout>
                                     <UniformGridLayout Orientation="Vertical" MaximumRowsOrColumns="4" MinColumnSpacing="4" MinRowSpacing="4"/>
                                 </ItemsView.Layout>
                             </ItemsView>
-                            <controls:ItemSlot Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" DataContext="{Binding TrashItem}" Checked="ItemSlot_Checked"
+                            <controls:ItemSlot Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" DataContext="{Binding TrashItem}"
                                                ItemStack="{Binding Stack}" ItemImageSource="{Binding ItemImage}" 
                                                Width="{Binding Size}" Height="{Binding Size}"
-                                               GroupName="{Binding GroupName}" />
+                                               GroupName="{Binding GroupName}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
                         </Grid>
                     </DataTemplate>
                     <DataTemplate x:Key="ArmorPageViewModel" x:DataType="vmsp:ArmorPageViewModel">

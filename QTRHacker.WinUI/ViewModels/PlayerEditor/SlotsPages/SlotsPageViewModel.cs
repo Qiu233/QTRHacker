@@ -26,7 +26,6 @@ public abstract class SlotsPageViewModel : ObservableObject
 
 	protected static async void UpdateItemStack(ItemSlotViewModel vm, int type, int stack)
 	{
-		vm.ItemImage = await GameImages.GetItemImage(type);
-		vm.Stack = stack;
+		await vm.SetItem(type, stack);
 	}
 }

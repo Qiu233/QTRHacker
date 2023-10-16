@@ -45,6 +45,9 @@ public class InvPageViewModel : SlotsPageViewModel
 
 	private readonly ItemStack[] Buffer = new ItemStack[60];
 
+	// Design considerations:
+	// we can put update-related code in every single slot, and then slots will do the heavy stuff by themselves
+	// which is much more concise, but would be too bad in terms of performance
 	public override async Task Update()
 	{
 		// TODO: reduce update by unchanged
