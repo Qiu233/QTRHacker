@@ -26,13 +26,26 @@
         </Grid.RowDefinitions>
         <views:TitleBar Grid.Row="0" x:Name="TitleBar" IconSource="{assets:GameImageItem Type=990}" Title="Inventory Editor"/>
 
-        <Grid Grid.Row="1" DataContext="{x:Bind ViewModel}">
+        <Grid Grid.Row="1" DataContext="{x:Bind ViewModel}" ColumnSpacing="4">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <local:InventorySlotsPanel x:Name="InventorySlotsPanel" Margin="0" DataContext="{Binding InventorySlotsPanelViewModel}"/>
-            <local:ItemPropertiesPanel x:Name="ItemPropertiesPanel" Grid.Column="1" Margin="0,20,20,0" DataContext="{Binding ItemPropertiesPanelViewModel}"/>
+            <local:ItemPropertiesPanel x:Name="ItemPropertiesPanel" Grid.Column="1" Margin="0,60,0,0" DataContext="{Binding ItemPropertiesPanelViewModel}"/>
+            <StackPanel Orientation="Vertical" Spacing="2" Grid.Column="2" Margin="0,60,0,0">
+                <StackPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Button Content="Initialize" Command="{Binding InitializeCommand}"/>
+                <Button Content="Edit"/>
+                <Button Content="Refresh"/>
+                <Button Content="Load"/>
+                <Button Content="Save"/>
+            </StackPanel>
         </Grid>
     </Grid>
 

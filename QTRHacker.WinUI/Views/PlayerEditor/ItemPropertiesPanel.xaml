@@ -13,7 +13,7 @@
     d:DataContext="{d:DesignInstance Type=vm:ItemPropertiesPanelViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d">
 
-    <ItemsControl ItemsSource="{Binding ItemPropertyDatum}" VerticalAlignment="Center">
+    <ItemsControl ItemsSource="{Binding ItemPropertyDatum}" VerticalAlignment="Top">
         <ItemsControl.ItemTemplateSelector>
             <vmp:ItemPropertyTemplateSelector>
                 <vmp:ItemPropertyTemplateSelector.Templates>
@@ -22,9 +22,9 @@
                             <Grid ct:DockPanel.Dock="Right">
                                 <Border x:Name="ErrorIndicator" BorderThickness="1" BorderBrush="Red" Visibility="{Binding HasErrors, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                 <TextBox Width="80" Margin="0,0.5,0,0.5"
-                                     HorizontalAlignment="Left" VerticalAlignment="Center"
-                                     TextWrapping="Wrap" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     BorderThickness="0" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+                                         HorizontalAlignment="Left" VerticalAlignment="Center"
+                                         TextWrapping="Wrap" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         BorderThickness="0" PreviewKeyDown="TextBox_PreviewKeyDown" GotFocus="TextBox_GotFocus"/>
                             </Grid>
                             <TextBlock Text="{Binding Tip}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         </ct:DockPanel>

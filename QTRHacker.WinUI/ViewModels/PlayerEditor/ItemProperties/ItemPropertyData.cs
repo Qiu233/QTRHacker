@@ -10,8 +10,8 @@ namespace QTRHacker.ViewModels.PlayerEditor.ItemProperties;
 
 public abstract partial class ItemPropertyData : ObservableObject, INotifyDataErrorInfo
 {
-	private object? value;
-	public object? Value
+	private object value;
+	public object Value
 	{
 		get => value;
 		set
@@ -64,10 +64,11 @@ public abstract partial class ItemPropertyData : ObservableObject, INotifyDataEr
 
 	private SelectedItemHolder SelectedItemHolder { get; }
 
-	protected ItemPropertyData(SelectedItemHolder holder)
+	protected ItemPropertyData(SelectedItemHolder holder, object defaultValue)
 	{
+		value = defaultValue;
 		SelectedItemHolder = holder;
-		holder.SelectedItemChanged += Holder_SelectedItemChanged; 
+		holder.SelectedItemChanged += Holder_SelectedItemChanged;
 		// TODO: review for delegate lifetime
 		// should we use weak event here?
 	}
@@ -75,7 +76,7 @@ public abstract partial class ItemPropertyData : ObservableObject, INotifyDataEr
 	private async void Holder_SelectedItemChanged(object? sender, Item? e) => await UpdateFromItem();
 }
 
-public abstract partial class ItemPropertyData<T> : ItemPropertyData
+public abstract partial class ItemPropertyData<T> : ItemPropertyData where T : unmanaged
 {
 	private readonly LocalizationItem LocalizationItem;
 	public PropertyInfo ItemProperty { get; }
@@ -102,9 +103,8 @@ public abstract partial class ItemPropertyData<T> : ItemPropertyData
 	private readonly Func<Item, T> Getter;
 	private readonly Action<Item, T> Setter;
 
-	public ItemPropertyData(string key, SelectedItemHolder holder) : base(holder)
+	public ItemPropertyData(string key, SelectedItemHolder holder) : base(holder, default(T)!)
 	{
-
 		Key = key;
 		ItemProperty = typeof(Item).GetProperty(Key)!;
 		if (ItemProperty is null)

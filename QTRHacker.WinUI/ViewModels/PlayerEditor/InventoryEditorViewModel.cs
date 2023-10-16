@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using QTRHacker.Core.GameObjects.Terraria;
 using QTRHacker.ViewModels.Common;
@@ -29,9 +30,26 @@ public partial class InventoryEditorViewModel : ObservableObject
 {
 	public InventorySlotsPanelViewModel InventorySlotsPanelViewModel { get; }
 	public ItemPropertiesPanelViewModel ItemPropertiesPanelViewModel { get; }
-	public InventoryEditorViewModel(InventorySlotsPanelViewModel slotsVM, ItemPropertiesPanelViewModel propsVM)
+	public SelectedItemHolder SelectedItemHolder { get; }
+	public InventoryEditorViewModel(InventorySlotsPanelViewModel slotsVM, ItemPropertiesPanelViewModel propsVM, SelectedItemHolder holder)
 	{
 		InventorySlotsPanelViewModel = slotsVM;
 		ItemPropertiesPanelViewModel = propsVM;
+		SelectedItemHolder = holder;
 	}
+
+	[RelayCommand]
+	public async Task Initialize()
+	{
+		if (SelectedItemHolder.SelectedItem is not Item item)
+			return;
+		await Task.Run(() =>
+		{
+			var prefix = item.Prefix;
+			item.SetDefaults(item.Type);
+			item.SetPrefix(prefix);
+		});
+		await ItemPropertiesPanelViewModel.InvokeUpdate();
+	}
+
 }

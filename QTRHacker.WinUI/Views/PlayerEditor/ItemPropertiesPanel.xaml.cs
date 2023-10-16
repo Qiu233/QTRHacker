@@ -38,4 +38,11 @@ public sealed partial class ItemPropertiesPanel : UserControl
 			this.Focus(FocusState.Programmatic);
 		}
 	}
+
+	private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+	{
+		if (sender is not TextBox box)
+			return;
+		box.SelectAll();
+    }
 }

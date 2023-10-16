@@ -20,41 +20,15 @@ public partial class ItemPropertiesPanelViewModel : ObservableObject
 
 	public int Rows => (ItemPropertyDatum.Count + Columns - 1) / Columns;
 
-	//public void UpdatePropertiesFromItem(Item item)
-	//{
-	//	foreach (var prop in ItemPropertyDatum)
-	//		prop.UpdateFromItem(item);
-	//}
-
-	//public void UpdatePropertiesToItem(Item item)
-	//{
-	//	foreach (var prop in ItemPropertyDatum)
-	//		prop.UpdateToItem(item);
-	//}
-	private CancellationTokenSource? lastUpdateTaskCTS;
-	private Task? lastUpdateTask;
-
-	private void UpdateItem()
+	public async Task InvokeUpdate()
 	{
-		async Task UpdateInner(CancellationToken ct)
+		foreach (var prop in ItemPropertyDatum)
 		{
-			foreach (var prop in ItemPropertyDatum)
-			{
-				ct.ThrowIfCancellationRequested();
-				await prop.UpdateFromItem();
-			}
+			await prop.UpdateFromItem();
 		}
-		// TODO: review for CTS lifetime
-		// as per https://stackoverflow.com/a/51220106, disposal is only needed when not cancelled
-		if (lastUpdateTask is not null && !lastUpdateTask.IsCompleted &&
-			lastUpdateTaskCTS is not null && !lastUpdateTaskCTS.IsCancellationRequested)
-			lastUpdateTaskCTS.Cancel();
-		var cts = lastUpdateTaskCTS = new CancellationTokenSource();
-		lastUpdateTask = UpdateInner(cts.Token).ContinueWith(t => cts.Dispose(), TaskContinuationOptions.OnlyOnRanToCompletion);
 	}
 
-	public object GetValue(string key) => ItemPropertyDatum.First(t => t.Key == key).Value!;
-
+	public object? this[string key] => ItemPropertyDatum.FirstOrDefault(t => t.Key == key)?.Value;
 
 	public ItemPropertiesPanelViewModel(
 		Func<string, ItemPropertyData_TextBox<int>> intMaker,

@@ -46,7 +46,7 @@
                                        Header="Y" Binding="{Binding Y}" MinWidth="120"/>
             </ct:DataGrid.Columns>
         </ct:DataGrid>
-        <StackPanel Orientation="Vertical" Grid.Column="2" Spacing="3">
+        <StackPanel Orientation="Vertical" Grid.Column="2" Spacing="2">
             <Button Content="Inventory" HorizontalAlignment="Stretch" Command="{Binding EditInventoryCommand}"/>
             <Button Content="Set Mount" HorizontalAlignment="Stretch"/>
             <Button Content="Set Pet" HorizontalAlignment="Stretch"/>
