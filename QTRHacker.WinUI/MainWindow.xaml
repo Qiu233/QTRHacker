@@ -24,10 +24,17 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <views:TitleBar Grid.Row="0" x:Name="TitleBar" IconSource="{assets:GameImageItem Type=990}" Title="QTRHacker"/>
-        <NavigationView Grid.Row="1" 
+        <NavigationView Grid.Row="1"
                         IsBackEnabled="False" IsBackButtonVisible="Collapsed" IsPaneOpen="False" 
                         Loaded="NavigationView_Loaded"
                         SelectionChanged="NavigationView_SelectionChanged" OpenPaneLength="160">
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem>
+                    <NavigationViewItem.Icon>
+                        <ImageIcon Source="{assets:GameImageItem Type=903}"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Players">
                     <NavigationViewItem.Tag>

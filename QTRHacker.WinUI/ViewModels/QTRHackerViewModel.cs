@@ -12,9 +12,11 @@ public class QTRHackerViewModel : ObservableObject
 {
 	public MainPageViewModel MainPageViewModel { get; }
 	public PlayersPageViewModel PlayersPageViewModel { get; }
-	public QTRHackerViewModel(MainPageViewModel mainPage, PlayersPageViewModel playersPage)
+	public SettingsPageViewModel SettingsPageViewModel { get; }
+	public QTRHackerViewModel(MainPageViewModel mainPage, PlayersPageViewModel playersPage, SettingsPageViewModel settingsPage)
 	{
 		MainPageViewModel = mainPage;
 		PlayersPageViewModel = playersPage;
+		SettingsPageViewModel = settingsPage;
 	}
 }

@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
+using Windows.Globalization;
 
 namespace QTRHacker.Localization;
 
@@ -34,18 +35,23 @@ public class LocSet
 
 	}
 
-	public static async Task<LocSet> LoadFromRes(string culture)
+	public static async Task<LocSet> LoadFromRes(string? culture = null)
 	{
 		LocSet set = new();
 		try
 		{
-			byte[] data = await AssetReader.ReadData($"ms-appx:///Localization/Content/{culture}.json");
+			string uri;
+			if (culture is null)
+				uri = $"ms-appx:///Localization/Content.json";
+			else
+				uri = $"ms-appx:///Localization/{culture}/Content.json";
+			byte[] data = await AssetReader.ReadData(uri);
 			string json = new StreamReader(new MemoryStream(data, false), Encoding.UTF8).ReadToEnd();
 			set.Load(json);
 		}
 		catch
 		{
-			HackGlobal.Logging.Warn($"Failed to load localization file for {culture}, this should mean that the corresponding localization file is missing");
+			HackGlobal.Logging.Warn($"Failed to load localization file, this should mean that the corresponding localization file is missing");
 		}
 		return set;
 	}

@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml;
 using QTRHacker.ViewModels;
 using QTRHacker.ViewModels.Pages;
 using StrongInject;
@@ -14,6 +15,7 @@ namespace QTRHacker.Containers;
 [Register<QTRHackerViewModel>]
 [Register<MainPageViewModel>]
 [Register<PlayersPageViewModel>]
+[Register<SettingsPageViewModel>]
 public partial class QTRHacker : IContainer<QTRHackerViewModel>
 {
 	private readonly Owned<QTRHackerViewModel> owned;
@@ -24,9 +26,16 @@ public partial class QTRHacker : IContainer<QTRHackerViewModel>
 		UpdateTimer.Interval = TimeSpan.FromMilliseconds(500); // TODO: configurable
 		owned = this.Resolve();
 	}
+	private MainWindow? MainWindow { get; set; }
+	[Factory]
+	public MainWindow? GetWindow()
+	{
+		return this.MainWindow;
+	}
 	private MainWindow Show()
 	{
 		MainWindow window = new(owned.Value);
+		this.MainWindow = window;
 		var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
 		Microsoft.UI.WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
 		Microsoft.UI.Windowing.AppWindow appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);

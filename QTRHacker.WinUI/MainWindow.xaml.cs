@@ -4,10 +4,12 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using QTRHacker.Assets;
 using QTRHacker.ViewModels;
+using QTRHacker.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,6 +40,8 @@ public sealed partial class MainWindow : WindowEx
 		this.ViewModel = vm;
 	}
 
+	public Frame GetMainFrame() => MainFrame;
+
 	private void MainWindow_Closed(object sender, WindowEventArgs args)
 	{
 		Application.Current.Exit();
@@ -50,19 +54,30 @@ public sealed partial class MainWindow : WindowEx
 		v.SelectedItem = v.MenuItems.LastOrDefault();
 	}
 
-	private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+	public void NavigateToSettingsPage(NavigationTransitionInfo info)
 	{
-		if (args.IsSettingsSelected == true)
-		{
-			return;
-		}
-		if (args.SelectedItemContainer.Tag is not NavItem nav)
-			return;
+		MainFrame.Navigate(typeof(SettingsPage), new Binding() { Source = this, Path = new PropertyPath($"ViewModel.SettingsPageViewModel") }, info);
+	}
+	public void NavigateToPage(NavItem nav, NavigationTransitionInfo info)
+	{
 		Type? newPage = nav.PageType;
 		if (newPage is null)
 			return;
 		var binding = new Binding() { Source = this, Path = new PropertyPath($"ViewModel.{nav.ViewModel}") };
-		MainFrame.Navigate(newPage, binding, args.RecommendedNavigationTransitionInfo);
+		MainFrame.Navigate(newPage, binding, info);
+	}
+
+
+	private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+	{
+		if (args.IsSettingsSelected)
+		{
+			NavigateToSettingsPage(args.RecommendedNavigationTransitionInfo);
+			return;
+		}
+		if (args.SelectedItemContainer.Tag is not NavItem nav)
+			return;
+		NavigateToPage(nav, args.RecommendedNavigationTransitionInfo);
 	}
 
 	private void MainFrame_Navigated(object sender, NavigationEventArgs e)

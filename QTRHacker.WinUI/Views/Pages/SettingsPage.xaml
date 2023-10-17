@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="QTRHacker.Views.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QTRHacker.Views.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:QTRHacker.ViewModels.Pages"
+    xmlns:loc="using:QTRHacker.Localization"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=vm:SettingsPageViewModel, IsDesignTimeCreatable=False}"
+    xmlns:controls="using:QTRHacker.Controls"
+    Background="Transparent">
+
+    <ScrollViewer>
+        <StackPanel Padding="8" Orientation="Vertical" Spacing="4">
+            <controls:Block>
+                <controls:BlockEntry Header="{loc:Localization Key=Settings.Language}">
+                    <ComboBox ItemsSource="{Binding Cultures}" SelectedValue="{Binding SelectedCultureName, Mode=TwoWay}" SelectedValuePath="Name" DisplayMemberPath="NativeName" />
+                </controls:BlockEntry>
+            </controls:Block>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

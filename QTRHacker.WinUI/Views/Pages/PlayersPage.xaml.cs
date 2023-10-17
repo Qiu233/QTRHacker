@@ -18,6 +18,7 @@ using QTRHacker.Views.PlayerEditor;
 using CommunityToolkit.WinUI.UI.Controls;
 using QTRHacker.Containers.PlayerEditor;
 using QTRHacker.Core;
+using QTRHacker.Localization;
 
 namespace QTRHacker.Views.Pages;
 
@@ -27,4 +28,8 @@ public sealed partial class PlayersPage : Page
 	{
 		this.InitializeComponent();
 	}
+
+	private readonly LocalizationItem NameColumnHeaderLI = new("Pages.PlayersPage.PlayersList.Name");
+	private readonly LocalizationItem MaxLifeColumnHeaderLI = new("Pages.PlayersPage.PlayersList.MaxLife");
+	private readonly LocalizationItem LifeColumnHeaderLI = new("Pages.PlayersPage.PlayersList.Life");
 }

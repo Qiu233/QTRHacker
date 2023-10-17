@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Markup;
 
 namespace QTRHacker.Localization;
 
+[MarkupExtensionReturnType(ReturnType = typeof(string))]
 public class LocalizationExtension : MarkupExtension
 {
 	public string? Key

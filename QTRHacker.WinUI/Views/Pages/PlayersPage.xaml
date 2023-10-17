@@ -9,6 +9,7 @@
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ctp="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
     xmlns:vm="using:QTRHacker.ViewModels.Pages"
+    xmlns:loc="using:QTRHacker.Localization"
     xmlns:controls="using:QTRHacker.Controls"
     d:DataContext="{d:DesignInstance Type=vm:PlayersPageViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d"
@@ -34,12 +35,18 @@
             </ct:DataGrid.ColumnHeaderStyle>
             <ct:DataGrid.Columns>
                 <ct:DataGridTextColumn Header="ID" Binding="{Binding ID}" IsReadOnly="True" MinWidth="80"/>
-                <ct:DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" MinWidth="160"/>
-                
+                <ct:DataGridTextColumn Binding="{Binding Name}" IsReadOnly="True" MinWidth="160"
+                                       Header="{x:Bind NameColumnHeaderLI.Value}"/>
+
+
                 <ct:DataGridTextColumn CellStyle="{StaticResource SubCellStyle}" MinWidth="100"
-                                       Header="Max Life" Binding="{Binding MaxLife}"/>
+                                       Binding="{Binding MaxLife}"
+                                       Header="{x:Bind MaxLifeColumnHeaderLI.Value}"/>
+
                 <ct:DataGridTextColumn CellStyle="{StaticResource SubCellStyle}" MinWidth="100"
-                                       Header="Life" Binding="{Binding Life}"/>
+                                       Binding="{Binding Life}"
+                                       Header="{x:Bind LifeColumnHeaderLI.Value}"/>
+
                 <ct:DataGridTextColumn CellStyle="{StaticResource SubCellStyle}"
                                        Header="X" Binding="{Binding X}" MinWidth="120"/>
                 <ct:DataGridTextColumn CellStyle="{StaticResource SubCellStyle}"
@@ -47,9 +54,9 @@
             </ct:DataGrid.Columns>
         </ct:DataGrid>
         <StackPanel Orientation="Vertical" Grid.Column="2" Spacing="2">
-            <Button Content="Inventory" HorizontalAlignment="Stretch" Command="{Binding EditInventoryCommand}"/>
-            <Button Content="Set Mount" HorizontalAlignment="Stretch"/>
-            <Button Content="Set Pet" HorizontalAlignment="Stretch"/>
+            <Button Content="{loc:Localization Key=Pages.PlayersPage.Inventory}" HorizontalAlignment="Stretch" Command="{Binding EditInventoryCommand}"/>
+            <Button Content="{loc:Localization Key=Pages.PlayersPage.SetMount}" HorizontalAlignment="Stretch"/>
+            <Button Content="{loc:Localization Key=Pages.PlayersPage.SetPet}" HorizontalAlignment="Stretch"/>
         </StackPanel>
     </Grid>
 </Page>

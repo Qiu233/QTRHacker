@@ -10,7 +10,7 @@
 	<Identity
 	  Name="5013cb93-5b55-4172-987e-560aa125b4e3"
 	  Publisher="CN=Qiu"
-	  Version="1.0.0.0" />
+	  Version="20.0.0.0" />
 
 	<mp:PhoneIdentity PhoneProductId="5013cb93-5b55-4172-987e-560aa125b4e3" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

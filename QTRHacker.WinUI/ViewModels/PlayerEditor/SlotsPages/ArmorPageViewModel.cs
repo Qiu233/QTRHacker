@@ -11,8 +11,6 @@ namespace QTRHacker.ViewModels.PlayerEditor.SlotsPages;
 
 public class ArmorPageViewModel : SlotsPageViewModel
 {
-	public override string Header => "Armor";
-
 	private readonly List<ItemSlotViewModel> armor = new();
 	public IReadOnlyList<ItemSlotViewModel> Armor => armor;
 
@@ -22,7 +20,7 @@ public class ArmorPageViewModel : SlotsPageViewModel
 	public override IEnumerable<ItemSlotViewModel> Slots { get; }
 
 	private readonly Player Player;
-	public ArmorPageViewModel(Func<int, ItemSlotViewModel> slotMaker, Player p)
+	public ArmorPageViewModel(Func<int, ItemSlotViewModel> slotMaker, Player p) : base("Armor")
 	{
 		Player = p;
 		for (int i = 0; i < 30; i++)

@@ -47,7 +47,7 @@ public partial class InventorySlotsPanelViewModel : ObservableObject
 		Piggy = chest("Piggy", p.Bank);
 		Safe = chest("Safe", p.Bank2);
 		Forge = chest("Forge", p.Bank3);
-		VoidVault = chest("Void Vault", p.Bank4);
+		VoidVault = chest("VoidVault", p.Bank4);
 
 		pages.Add(InvPageViewModel);
 		pages.Add(ArmorPageViewModel);
@@ -57,7 +57,7 @@ public partial class InventorySlotsPanelViewModel : ObservableObject
 		pages.Add(VoidVault);
 
 		for (int i = 0; i < p.Loadouts.Length; i++)
-			pages.Add(loadout($"Loadout {i + 1}", p.Loadouts[i]));
+			pages.Add(loadout($"Loadout{i + 1}", p.Loadouts[i]));
 
 		foreach (var page in Pages)
 			foreach (var slot in page.Slots)

@@ -6,7 +6,6 @@ namespace QTRHacker.ViewModels.PlayerEditor.SlotsPages;
 
 public class LoadoutPageViewModel : SlotsPageViewModel
 {
-	public override string Header { get; }
 	public EquipmentLoadout Target { get; }
 	private readonly List<ItemSlotViewModel> loadout = new();
 	public IReadOnlyList<ItemSlotViewModel> Loadout => loadout;
@@ -14,9 +13,8 @@ public class LoadoutPageViewModel : SlotsPageViewModel
 	public override IEnumerable<ItemSlotViewModel> Slots { get; }
 
 	private readonly ItemStack[] Buffer = new ItemStack[30];
-	public LoadoutPageViewModel(string header, EquipmentLoadout target, Func<int, ItemSlotViewModel> slotMaker)
+	public LoadoutPageViewModel(string key, EquipmentLoadout target, Func<int, ItemSlotViewModel> slotMaker) : base(key)
 	{
-		Header = header;
 		Target = target;
 		for (int i = 0; i < 30; i++)
 			loadout.Add(slotMaker(i));

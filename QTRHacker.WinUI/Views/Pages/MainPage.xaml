@@ -12,6 +12,7 @@
     xmlns:assets="using:QTRHacker.Assets"
     xmlns:vm="using:QTRHacker.ViewModels.Pages"
     xmlns:controls="using:QTRHacker.Controls"
+    xmlns:loc="using:QTRHacker.Localization"
     d:DataContext="{d:DesignInstance Type=vm:MainPageViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d"
     Background="Transparent">
@@ -19,19 +20,23 @@
         <StackPanel Padding="8" Orientation="Vertical" Spacing="4">
             <Expander x:Name="AttachExpander" HorizontalAlignment="Stretch" Expanding="Expander_Expanding" HorizontalContentAlignment="Stretch">
                 <Expander.Header>
-                    <controls:BlockEntry Header="Attach to Terraria" Margin="10">
+                    <controls:BlockEntry Header="{loc:Localization Key=Pages.MainPage.Attach.Header}" Margin="10">
                         <controls:BlockEntry.Description>
                             <StackPanel Orientation="Vertical" Spacing="10">
                                 <TextBlock>
-                                    You can either:
+                                    <Run Text="{loc:Localization Key=Pages.MainPage.Attach.Description.1}"/>
                                     <LineBreak/>
-                                    <Run Text="&#x20;"/> 1. Drag the cross on the right side to a running <Bold>Terraria's window</Bold>, or
+                                    <Run Text="&#x20;"/> <Run Text="{loc:Localization Key=Pages.MainPage.Attach.Description.2}"/>
+                                    <Bold><Run Text="{loc:Localization Key=Pages.MainPage.Attach.Description.3}"/></Bold>
+                                    <Run Text="{loc:Localization Key=Pages.MainPage.Attach.Description.4}"/>
                                     <LineBreak/>
-                                    <Run Text="&#x20;"/> 2. Manually select a process from the list expanded below, if you know which one is.
+                                    <Run Text="&#x20;"/>
+                                    <Run Text="{loc:Localization Key=Pages.MainPage.Attach.Description.5}"/>
                                 </TextBlock>
                                 <TextBlock DataContext="{Binding AttachedTo}">
                                     <Run Text="Pid:&#009;"/> <Run Text="{Binding Pid}"/><LineBreak/>
-                                    <Run Text="Name:&#009;"/> <Run Text="{Binding Name}"/>
+                                    <Run Text="{loc:Localization Key=Pages.MainPage.Attach.Description.Name}"/>
+                                    <Run Text=":&#009;"/> <Run Text="{Binding Name}"/>
                                 </TextBlock>
                             </StackPanel>
                         </controls:BlockEntry.Description>
@@ -42,7 +47,7 @@
                     </controls:BlockEntry>
                 </Expander.Header>
                 <StackPanel Orientation="Vertical" Spacing="4">
-                    <TextBox x:Name="ProcessSearchBox" Grid.Row="0" PlaceholderText="Search here..." Text="{Binding ProcessSearchKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    <TextBox x:Name="ProcessSearchBox" Grid.Row="0" PlaceholderText="{loc:Localization Key=Pages.MainPage.Attach.Processes.Placeholder}" Text="{Binding ProcessSearchKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                              Margin="0"/>
                     <ListView x:Name="ProcessesListView" Grid.Row="1" ItemsSource="{Binding FilteredProcesses}" MaxHeight="240" MinHeight="80" HorizontalAlignment="Stretch"
                               SelectionMode="Single" ItemClick="ProcessesListView_ItemClick" IsItemClickEnabled="True"
@@ -79,10 +84,12 @@
                     </controls:BlockEntry.Icon>
                     <controls:BlockEntry.Description>
                         <TextBlock>
-                            <Run Text="Version:"/>
+                            <Run Text="{loc:Localization Key=Pages.MainPage.Version.HackVersion}"/>
+                            <Run Text=":"/>
                             <Run Text="{x:Bind qtr:App.Version}"/>
                             <LineBreak/>
-                            <Run Text="Game Version:"/>
+                            <Run Text="{loc:Localization Key=Pages.MainPage.Version.GameVersion}"/>
+                            <Run Text=":"/>
                             <Run Text="{x:Bind qtr:App.GameVersion}"/>
                         </TextBlock>
                     </controls:BlockEntry.Description>

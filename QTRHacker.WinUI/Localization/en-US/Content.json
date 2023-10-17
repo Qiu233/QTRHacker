@@ -209,5 +209,92 @@
   },
   "Tip": {
     "DragCrossToGame": "Please drag the cross to game"
+  },
+  "Settings": {
+    "Language": "Language"
+  },
+  "Pages": {
+    "MainPage": {
+      "Header": "MainPage",
+      "Attach": {
+        "Header": "Attach to Terraria",
+        "Description": {
+          "1": "You can either:",
+          "2": "1. Drag the cross on the right side to a running ",
+          "3": "Terraria's window",
+          "4": ", or",
+          "5": "2. Manually select a process from the list expanded below, if you know which one is.",
+          "Name": "Name"
+        },
+        "Processes": {
+          "Placeholder": "Search here..."
+        }
+      },
+      "Version": {
+        "HackVersion": "Version",
+        "GameVersion": "Game Version"
+      }
+    },
+    "PlayersPage": {
+      "Header": "Players",
+      "PlayersList": {
+        "Name": "Name",
+        "MaxLife": "Max Life",
+        "Life": "Life"
+      },
+      "Inventory": "Inventory",
+      "SetMount": "Set Mount",
+      "SetPet": "Set Pet"
+    }
+  },
+  "InventoryEditor": {
+    "Commands": {
+      "Initialize": "Initialize",
+      "Edit": "Edit",
+      "Refresh": "Refresh",
+      "Load": "Load",
+      "Save": "Save"
+    },
+    "SlotsTabs": {
+      "Inventory": "Inventory",
+      "Armor": "Armor",
+      "Piggy": "Piggy",
+      "Safe": "Safe",
+      "Forge": "Forge",
+      "VoidVault": "Void Vault",
+      "Loadout1": "Loadout 1",
+      "Loadout2": "Loadout 2",
+      "Loadout3": "Loadout 3"
+    },
+    "ItemProperties": {
+      "Type": "Type",
+      "Damage": "Damage",
+      "Stack": "Stack",
+      "KnockBack": "Knockback",
+      "Crit": "Crit",
+      "Scale": "Scale",
+      "BuffType": "Buff Type",
+      "BuffTime": "Buff Time",
+      "HealMana": "Heal Mana",
+      "HealLife": "Heal Life",
+      "UseTime": "Use Time",
+      "UseAnimation": "Use Anim",
+      "Defense": "Defense",
+      "FishingPole": "Fishingpole",
+      "Bait": "Bait",
+      "Shoot": "Shoot Type",
+      "ShootSpeed": "Shoot Speed",
+      "Pick": "Pick",
+      "Axe": "Axe",
+      "Hammer": "Hammer",
+      "CreateTile": "Tile Type",
+      "PlaceStyle": "Tile Style",
+      "CreateWall": "Wall Type",
+      "Prefix": "Prefix",
+      "AutoReuse": "Auto Reuse",
+      "Accessory": "Accessory",
+      "TileBoost": "Tile Boost",
+      "Mana": "Mana"
+    }
   }
 }

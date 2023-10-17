@@ -18,6 +18,7 @@ using QTRHacker.ViewModels.PlayerEditor;
 using StrongInject;
 using QTRHacker.ViewModels.PlayerEditor.SlotsPages;
 using QTRHacker.Containers.PlayerEditor;
+using Windows.UI.ViewManagement;
 
 namespace QTRHacker.Views.PlayerEditor;
 

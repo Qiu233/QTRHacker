@@ -9,17 +9,19 @@
     xmlns:winex="using:WinUIEx"
     xmlns:views="using:QTRHacker.Views"
     xmlns:assets="using:QTRHacker.Assets"
+    xmlns:loc="using:QTRHacker.Localization"
     mc:Ignorable="d"
     IsMaximizable="False"
     IsMinimizable="False"
-    IsResizable="False"
     Width="1260"
-    Height="400">
+    Height="400"
+    MinHeight="400"
+    MinWidth="800">
     <Window.SystemBackdrop>
         <DesktopAcrylicBackdrop/>
         <!--<MicaBackdrop Kind="Base"/>-->
     </Window.SystemBackdrop>
-    <Grid VerticalAlignment="Top">
+    <Grid x:Name="ContentGrid" VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
@@ -40,11 +42,11 @@
                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
                     </Style>
                 </StackPanel.Resources>
-                <Button Content="Initialize" Command="{Binding InitializeCommand}"/>
-                <Button Content="Edit"/>
-                <Button Content="Refresh"/>
-                <Button Content="Load"/>
-                <Button Content="Save"/>
+                <Button Content="{loc:Localization Key=InventoryEditor.Commands.Initialize}" Command="{Binding InitializeCommand}"/>
+                <Button Content="{loc:Localization Key=InventoryEditor.Commands.Edit}"/>
+                <Button Content="{loc:Localization Key=InventoryEditor.Commands.Refresh}"/>
+                <Button Content="{loc:Localization Key=InventoryEditor.Commands.Save}"/>
+                <Button Content="{loc:Localization Key=InventoryEditor.Commands.Load}"/>
             </StackPanel>
         </Grid>
     </Grid>

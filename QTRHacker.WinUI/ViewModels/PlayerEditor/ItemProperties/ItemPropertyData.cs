@@ -109,7 +109,7 @@ public abstract partial class ItemPropertyData<T> : ItemPropertyData where T : u
 		ItemProperty = typeof(Item).GetProperty(Key)!;
 		if (ItemProperty is null)
 			throw new Exception($"No such property: {Key}");//TODO: replace it with a user exception
-		LocalizationItem = new LocalizationItem($"UI.ItemProperties.{Key}");
+		LocalizationItem = new LocalizationItem($"InventoryEditor.ItemProperties.{Key}");
 		LocalizationItem.ValueChanged += (s, e) => OnPropertyChanged(nameof(Tip));
 		if (ItemProperty.PropertyType != typeof(T))
 			throw new Exception(

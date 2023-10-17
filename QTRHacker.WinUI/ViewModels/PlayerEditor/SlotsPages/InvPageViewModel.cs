@@ -1,5 +1,6 @@
 ﻿using QTRHacker.Assets;
 using QTRHacker.Core.GameObjects.Terraria;
+using QTRHacker.Localization;
 using QTRHacker.Models;
 using QTRHacker.ViewModels.Common;
 using System;
@@ -12,8 +13,6 @@ namespace QTRHacker.ViewModels.PlayerEditor.SlotsPages;
 
 public class InvPageViewModel : SlotsPageViewModel
 {
-	public override string Header => "Inventory";
-
 	private readonly List<ItemSlotViewModel> mainInv = new();
 	public IReadOnlyList<ItemSlotViewModel> MainInv => mainInv;
 
@@ -27,7 +26,7 @@ public class InvPageViewModel : SlotsPageViewModel
 
 	private readonly Player Player;
 
-	public InvPageViewModel(Func<int, ItemSlotViewModel> slotMaker, Player player)
+	public InvPageViewModel(Func<int, ItemSlotViewModel> slotMaker, Player player) : base("Inventory")
 	{
 		Player = player;
 		for (int i = 0; i < 50; i++)
