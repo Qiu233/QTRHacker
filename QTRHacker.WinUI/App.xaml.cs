@@ -8,6 +8,11 @@ using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Shapes;
 using QTRHacker.Assets;
 using QTRHacker.Containers;
+using QTRHacker.Localization;
+using QTRHacker.ViewModels;
+using QTRHacker.ViewModels.Settings;
+using QTRHacker.Views.Settings;
+using StrongInject;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +24,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -39,13 +45,34 @@ public partial class App : Application
 		InitializeComponent();
 	}
 
+	private Containers.QTRHacker? Hack;
+
 	/// <summary>
 	/// Invoked when the application is launched.
 	/// </summary>
 	/// <param name="args">Details about the launch request and process.</param>
-	protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+	protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
 	{
-		m_window = Containers.QTRHacker.Run();
+		Hack = new Containers.QTRHacker();
+		await Hack.Show();
+		m_window = Hack.MainWindow;
+		InitSettings();
+	}
+
+	private async void InitSettings()
+	{
+		ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+		var firstStartup = localSettings.Values["FirstStartup"];
+		if (firstStartup is not false) // on first startup, this is null, thus is not false
+		{
+			using var ownedVM = Hack!.Resolve<LanguageSelectionViewModel>();
+			SelectLanguageDialog dialog = new(ownedVM.Value)
+			{
+				XamlRoot = WindowXamlRoot
+			};
+			await dialog.ShowAsync();
+			localSettings.Values["FirstStartup"] = false;
+		}
 	}
 
 	public static bool IsAdministrator()

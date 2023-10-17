@@ -16,7 +16,7 @@
     <ScrollViewer>
         <StackPanel Padding="8" Orientation="Vertical" Spacing="4">
             <controls:Block>
-                <controls:BlockEntry Header="{loc:Localization Key=Settings.Language}">
+                <controls:BlockEntry Header="{loc:Localization Key=Settings.Language}" DataContext="{Binding LanguageSelectionViewModel}">
                     <ComboBox ItemsSource="{Binding Cultures}" SelectedValue="{Binding SelectedCultureName, Mode=TwoWay}" SelectedValuePath="Name" DisplayMemberPath="NativeName" />
                 </controls:BlockEntry>
             </controls:Block>

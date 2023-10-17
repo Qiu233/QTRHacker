@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using QTRHacker.ViewModels;
 using QTRHacker.ViewModels.Pages;
+using QTRHacker.ViewModels.Settings;
 using StrongInject;
 using System;
 using System.Collections.Generic;
@@ -12,28 +13,28 @@ using System.Threading.Tasks;
 namespace QTRHacker.Containers;
 
 
-[Register<QTRHackerViewModel>]
-[Register<MainPageViewModel>]
-[Register<PlayersPageViewModel>]
-[Register<SettingsPageViewModel>]
-public partial class QTRHacker : IContainer<QTRHackerViewModel>
+[Register<QTRHackerViewModel>(Scope.SingleInstance)]
+[Register<MainPageViewModel>(Scope.SingleInstance)]
+[Register<PlayersPageViewModel>(Scope.SingleInstance)]
+[Register<SettingsPageViewModel>(Scope.SingleInstance)]
+[Register<LanguageSelectionViewModel>(Scope.SingleInstance)]
+public partial class QTRHacker :
+	IContainer<QTRHackerViewModel>,
+	IContainer<LanguageSelectionViewModel>
 {
 	private readonly Owned<QTRHackerViewModel> owned;
 	[Instance] public DispatcherQueueTimer UpdateTimer { get; }
-	private QTRHacker()
-	{
-		UpdateTimer = DispatcherQueue.GetForCurrentThread().CreateTimer();
-		UpdateTimer.Interval = TimeSpan.FromMilliseconds(500); // TODO: configurable
-		owned = this.Resolve();
-	}
-	private MainWindow? MainWindow { get; set; }
+	public MainWindow MainWindow { get; private set; }
 	[Factory]
-	public MainWindow? GetWindow()
+	private MainWindow GetWindow()
 	{
 		return this.MainWindow;
 	}
-	private MainWindow Show()
+	public QTRHacker()
 	{
+		UpdateTimer = DispatcherQueue.GetForCurrentThread().CreateTimer();
+		UpdateTimer.Interval = TimeSpan.FromMilliseconds(500); // TODO: configurable
+		owned = this.Resolve<QTRHackerViewModel>();
 		MainWindow window = new(owned.Value);
 		this.MainWindow = window;
 		var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
@@ -50,22 +51,25 @@ public partial class QTRHacker : IContainer<QTRHackerViewModel>
 				appWindow.Move(CenteredPosition);
 			}
 		}
-		window.Closed += Window_Closed;
-		window.Activate();
+		window.AppWindow.Destroying += AppWindow_Destroying;
 		UpdateTimer.Start();
-
-		return window;
 	}
 
-	private void Window_Closed(object sender, Microsoft.UI.Xaml.WindowEventArgs args)
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns>A task completes on window's Loaded event.</returns>
+	public async Task Show()
+	{
+		MainWindow.Activate();
+		while (MainWindow.Content.XamlRoot is null)
+			await Task.Delay(100);
+	}
+
+	private void AppWindow_Destroying(Microsoft.UI.Windowing.AppWindow sender, object args)
 	{
 		UpdateTimer.Stop();
 		owned.Dispose();
 		Dispose();
-	}
-
-	public static MainWindow Run()
-	{
-		return new QTRHacker().Show();
 	}
 }

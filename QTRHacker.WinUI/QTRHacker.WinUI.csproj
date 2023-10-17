@@ -58,6 +58,7 @@
 		<None Remove="Views\PlayerEditor\InventoryEditorWindow.xaml" />
 		<None Remove="Views\PlayerEditor\InventorySlotsPanel.xaml" />
 		<None Remove="Views\PlayerEditor\ItemPropertiesPanel.xaml" />
+		<None Remove="Views\Settings\SelectLanguageDialog.xaml" />
 		<None Remove="Views\TitleBar.xaml" />
 	</ItemGroup>
 
@@ -90,6 +91,11 @@
 		<Resource Include="Assets\Misc\RainbowFonts\RainbowProj.png" />
 		<Content Include="Localization\en-US\Content.json" />
 		<Content Include="Localization\zh-CN\Content.json" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Settings\SelectLanguageDialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
 	<!-- 

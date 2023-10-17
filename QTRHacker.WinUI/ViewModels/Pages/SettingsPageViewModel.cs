@@ -11,34 +11,16 @@ using System.Threading.Tasks;
 using Windows.Globalization;
 using Microsoft.UI.Xaml.Media.Animation;
 using QTRHacker.Localization;
+using QTRHacker.ViewModels.Settings;
 
 namespace QTRHacker.ViewModels.Pages;
 
 public partial class SettingsPageViewModel : PageViewModel
 {
-	public ObservableCollection<CultureInfo> Cultures { get; } = new();
+	public LanguageSelectionViewModel LanguageSelectionViewModel { get; }
 
-	private string? selectedCultureName;
-	public string? SelectedCultureName
+	public SettingsPageViewModel(LanguageSelectionViewModel language)
 	{
-		get => selectedCultureName;
-		set
-		{
-			SetProperty(ref selectedCultureName, value);
-			if (value is null)
-				return;
-			ApplicationLanguages.PrimaryLanguageOverride = value;
-			_ = LocalizationManager.Instance.SetCulture(value);
-		}
-	}
-	public SettingsPageViewModel()
-	{
-		var languages = ApplicationLanguages.ManifestLanguages;
-		var supported = CultureInfo.GetCultures(CultureTypes.AllCultures).Where(t => languages.Contains(t.Name));
-		foreach (CultureInfo culture in supported)
-		{
-			Cultures.Add(culture);
-		}
-		selectedCultureName = ApplicationLanguages.PrimaryLanguageOverride;
+		LanguageSelectionViewModel = language;
 	}
 }

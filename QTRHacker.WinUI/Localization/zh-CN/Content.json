@@ -210,8 +210,16 @@
   "Tip": {
     "DragCrossToGame": "拖动右边准星到Terraria游戏窗口"
   },
+
+  "General": {
+    "Confirm": "确定"
+  },
   "Settings": {
-    "Language": "语言"
+    "Language": "语言",
+    "SelectLanguage": {
+      "Title": "选择语言",
+      "PopupHelp": "此弹窗仅在首次启动修改器时出现。\n之后如要切换语言请前往设置页。"
+    }
   },
   "Pages": {
     "MainPage": {

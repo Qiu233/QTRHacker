@@ -210,8 +210,16 @@
   "Tip": {
     "DragCrossToGame": "Please drag the cross to game"
   },
+
+  "General": {
+    "Confirm": "Confirm"
+  },
   "Settings": {
-    "Language": "Language"
+    "Language": "Language",
+    "SelectLanguage": {
+      "Title": "Select a language",
+      "PopupHelp": "This popup window only shows at hack's first startup.\nLanguage settings can also be changed on the settings page."
+    }
   },
   "Pages": {
     "MainPage": {

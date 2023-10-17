@@ -88,4 +88,6 @@ public sealed partial class MainWindow : WindowEx
 			return;
 		fe.SetBinding(FrameworkElement.DataContextProperty, binding);
 	}
+
+
 }
