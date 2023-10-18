@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace QTRHacker.ViewModels.Pages;
 
-public partial class PlayerInfo : ObservableObject, IEquatable<PlayerInfo>
+public partial class PlayerInfo : ObservableObject, IEquatable<PlayerInfo>, IComparable<PlayerInfo>
 {
 	public int ID { get; init; }
 	public string Name { get; init; }
@@ -88,6 +88,13 @@ public partial class PlayerInfo : ObservableObject, IEquatable<PlayerInfo>
 	{
 		if (other is null) return false;
 		return Equals(other);
+	}
+
+	public int CompareTo(PlayerInfo? other)
+	{
+		if (other is null)
+			return 1;
+		return ID - other.ID;
 	}
 }
 

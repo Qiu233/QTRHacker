@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net7.0-windows10.0.22621.0</TargetFramework>
-		<TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
+		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
 		<RootNamespace>QTRHacker</RootNamespace>
 		<AssemblyName>QTRHacker</AssemblyName>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
