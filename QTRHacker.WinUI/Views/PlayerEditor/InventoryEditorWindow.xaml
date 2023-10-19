@@ -13,15 +13,15 @@
     mc:Ignorable="d"
     IsMaximizable="False"
     IsMinimizable="False"
-    Width="1260"
+    Width="1300"
     Height="400"
     MinHeight="400"
-    MinWidth="800">
+    MinWidth="1200">
     <Window.SystemBackdrop>
         <DesktopAcrylicBackdrop/>
         <!--<MicaBackdrop Kind="Base"/>-->
     </Window.SystemBackdrop>
-    <Grid x:Name="ContentGrid" VerticalAlignment="Top">
+    <Grid x:Name="ContentGrid" VerticalAlignment="Top" Padding="4,0,4,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
@@ -31,12 +31,12 @@
         <Grid Grid.Row="1" DataContext="{x:Bind ViewModel}" ColumnSpacing="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition MinWidth="300"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <local:InventorySlotsPanel x:Name="InventorySlotsPanel" Margin="0" DataContext="{Binding InventorySlotsPanelViewModel}"/>
             <local:ItemPropertiesPanel x:Name="ItemPropertiesPanel" Grid.Column="1" Margin="0,60,0,0" DataContext="{Binding ItemPropertiesPanelViewModel}"/>
-            <StackPanel Orientation="Vertical" Spacing="2" Grid.Column="2" Margin="0,60,0,0">
+            <StackPanel Orientation="Vertical" Spacing="2" Grid.Column="2" Margin="0,60,0,0" HorizontalAlignment="Stretch">
                 <StackPanel.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                         <Setter Property="HorizontalAlignment" Value="Stretch"/>

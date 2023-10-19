@@ -54,9 +54,15 @@
             </ct:DataGrid.Columns>
         </ct:DataGrid>
         <StackPanel Orientation="Vertical" Grid.Column="2" Spacing="2">
-            <Button Content="{loc:Localization Key=Pages.PlayersPage.Inventory}" HorizontalAlignment="Stretch" Command="{Binding EditInventoryCommand}"/>
-            <Button Content="{loc:Localization Key=Pages.PlayersPage.SetMount}" HorizontalAlignment="Stretch"/>
-            <Button Content="{loc:Localization Key=Pages.PlayersPage.SetPet}" HorizontalAlignment="Stretch"/>
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="MinWidth" Value="100"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="{loc:Localization Key=Pages.PlayersPage.Inventory}" Command="{Binding EditInventoryCommand}"/>
+            <Button Content="{loc:Localization Key=Pages.PlayersPage.SetMount}" />
+            <Button Content="{loc:Localization Key=Pages.PlayersPage.SetPet}" />
         </StackPanel>
     </Grid>
 </Page>

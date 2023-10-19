@@ -36,7 +36,7 @@
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Players">
+                <NavigationViewItem Content="{loc:Localization Key=Pages.PlayersPage.Header}">
                     <NavigationViewItem.Tag>
                         <local:NavItem PageType="pages:PlayersPage" ViewModel="PlayersPageViewModel"/>
                     </NavigationViewItem.Tag>
@@ -44,7 +44,7 @@
                         <ImageIcon Source="{assets:GameImageItem Type=267}"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Main Page">
+                <NavigationViewItem Content="{loc:Localization Key=Pages.MainPage.Header}">
                     <NavigationViewItem.Tag>
                         <local:NavItem PageType="pages:MainPage" ViewModel="MainPageViewModel"/>
                     </NavigationViewItem.Tag>
