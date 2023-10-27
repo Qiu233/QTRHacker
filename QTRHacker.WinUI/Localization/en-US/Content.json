@@ -304,5 +304,39 @@
       "TileBoost": "Tile Boost",
       "Mana": "Mana"
     }
+  },
+  "Wiki": {
+    "Description": "Used to find items and NPCs.",
+    "Items": {
+      "Header": "Items",
+      "Properties": {
+        "Type": "Type",
+        "Name": "Name",
+        "Category": "Category",
+        "Rare": "Rare",
+        "Info": "Info",
+        "Details": "Details",
+        "Filter": "Filter"
+      },
+      "ItemCategories": {
+        "Others": "Others",
+        "Block": "Block",
+        "Wall": "Wall",
+        "Quest": "Quest",
+        "Head": "Head",
+        "Body": "Body",
+        "Leg": "Leg",
+        "Accessory": "Accessory",
+        "Melee": "Melee",
+        "Ranged": "Ranged",
+        "Magic": "Magic",
+        "Summon": "Summon",
+        "Buff": "Buff",
+        "Consumable": "Consumable"
+      }
+    },
+    "NPCs": {
+      "Header": "NPCs"
+    }
   }
 }

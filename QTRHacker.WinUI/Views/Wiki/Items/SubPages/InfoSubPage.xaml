@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="QTRHacker.Views.Wiki.Items.SubPages.InfoSubPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QTRHacker.Views.Wiki.Items.SubPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:QTRHacker.Controls"
+    xmlns:vm="using:QTRHacker.ViewModels.Wiki.Items"
+    xmlns:loc="using:QTRHacker.Localization"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    d:DataContext="{d:DesignInstance Type=vm:ItemInfo, IsDesignTimeCreatable=False}">
+    <Page.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyleWithoutBorderElement}">
+            <Setter Property="Padding" Value="2,0,2,0"/>
+        </Style>
+    </Page.Resources>
+    <StackPanel Spacing="2" Padding="2" Orientation="Vertical">
+        <Grid ColumnSpacing="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <controls:InfoBox TipDock="Top" Header="Icon">
+                <Viewbox Width="90" Height="78">
+                    <Image DataContext="{Binding Type, Converter={StaticResource ItemTypeToImageConverter}}"
+                           Source="{Binding Result}"
+                           Stretch="Uniform"
+                           Margin="12"/>
+                </Viewbox>
+            </controls:InfoBox>
+            <controls:InfoBox TipDock="Top" Header="Details" Grid.Column="1">
+                <StackPanel Orientation="Vertical">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Padding="6,2,6,2" Text="{loc:Localization Key=Wiki.Items.Properties.Name}"/>
+                        <TextBox Text="{Binding Name}" Grid.Column="1"/>
+                    </Grid>
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Padding="6,2,6,2" Text="{loc:Localization Key=Wiki.Items.Properties.Category}"/>
+                        <TextBox Text="{Binding Category}" Grid.Column="1"/>
+                    </Grid>
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Padding="6,2,6,2" Text="{loc:Localization Key=Wiki.Items.Properties.Rare}"/>
+                        <TextBox Text="{Binding Data.Rare}" Grid.Column="1"/>
+                    </Grid>
+                    <!--<controls:InfoBox TipDock="Left" Header="{loc:Localization Key=Wiki.Items.Properties.Name}">
+                        <TextBox TextAlignment="Right" Width="200" Text="{Binding Name}"/>
+                    </controls:InfoBox>
+                    <controls:InfoBox TipDock="Left" Header="{loc:Localization Key=Wiki.Items.Properties.Category}">
+                        <TextBox TextAlignment="Right" Width="200" Text="{Binding Category}"/>
+                    </controls:InfoBox>
+                    <controls:InfoBox TipDock="Left" Header="{loc:Localization Key=Wiki.Items.Properties.Rare}">
+                        <TextBox TextAlignment="Right" Width="200" Text="{Binding Data.Rare}"/>
+                    </controls:InfoBox>-->
+                </StackPanel>
+            </controls:InfoBox>
+        </Grid>
+        <controls:InfoBox TipDock="Left" Header="Tooltip">
+            <TextBox Text="{Binding Tooltip}"/>
+        </controls:InfoBox>
+    </StackPanel>
+</Page>

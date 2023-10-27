@@ -8,32 +8,30 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace QTRHacker.Controls;
 
+[ContentProperty(Name = nameof(Content))]
 public sealed class InfoBox : Control
 {
-	public static readonly DependencyProperty ContentDockProperty = DependencyProperty.Register(nameof(ContentDock), typeof(Dock), typeof(InfoBox), new PropertyMetadata(Dock.Right));
-	public Dock ContentDock
+	public static readonly DependencyProperty TipDockProperty =
+		DependencyProperty.Register(nameof(TipDock), typeof(Dock), typeof(InfoBox), 
+			new PropertyMetadata(Dock.Left, (s, e) =>
+			{
+				((InfoBox)s).UpdateDock();
+			}));
+	public Dock TipDock
 	{
-		get => (Dock)GetValue(ContentDockProperty);
-		set => SetValue(ContentDockProperty, value);
+		get => (Dock)GetValue(TipDockProperty);
+		set => SetValue(TipDockProperty, value);
 	}
-	public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(nameof(Header), typeof(object), typeof(InfoBox), new PropertyMetadata(null));
-	public object Header
+	public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(nameof(Header), typeof(string), typeof(InfoBox), new PropertyMetadata(null));
+	public string Header
 	{
-		get => GetValue(HeaderProperty);
+		get => (string)GetValue(HeaderProperty);
 		set => SetValue(HeaderProperty, value);
-	}
-	public static readonly DependencyProperty HeaderTemplateProperty = DependencyProperty.Register(nameof(HeaderTemplate), typeof(DataTemplate), typeof(InfoBox), new PropertyMetadata(null));
-	public DataTemplate HeaderTemplate
-	{
-		get => (DataTemplate)GetValue(HeaderTemplateProperty);
-		set => SetValue(HeaderTemplateProperty, value);
 	}
 	public static readonly DependencyProperty ContentProperty = DependencyProperty.Register(nameof(Content), typeof(object), typeof(InfoBox), new PropertyMetadata(null));
 	public object Content
@@ -46,6 +44,25 @@ public sealed class InfoBox : Control
 	{
 		get => (DataTemplate)GetValue(ContentTemplateProperty);
 		set => SetValue(ContentTemplateProperty, value);
+	}
+
+	private void UpdateDock()
+	{
+		switch (TipDock)
+		{
+			case Dock.Left:
+				VisualStateManager.GoToState(this, "TipDockLeft", false);
+				break;
+			case Dock.Top:
+				VisualStateManager.GoToState(this, "TipDockTop", false);
+				break;
+			case Dock.Right:
+				VisualStateManager.GoToState(this, "TipDockRight", false);
+				break;
+			case Dock.Bottom:
+				VisualStateManager.GoToState(this, "TipDockBottom", false);
+				break;
+		}
 	}
 
 	public InfoBox()

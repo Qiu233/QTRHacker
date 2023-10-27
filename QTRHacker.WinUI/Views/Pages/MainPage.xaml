@@ -95,6 +95,15 @@
                     </controls:BlockEntry.Description>
                 </controls:BlockEntry>
             </controls:Block>
+            
+            <controls:Block>
+                <controls:BlockEntry Header="Wiki" Description="{loc:Localization Key=Wiki.Description}">
+                    <controls:BlockEntry.Icon>
+                        <ImageIcon Source="{assets:GameImageItem Type=3628}"/>
+                    </controls:BlockEntry.Icon>
+                    <Button Content="Wiki" Command="{Binding OpenWikiCommand}"/>
+                </controls:BlockEntry>
+            </controls:Block>
 
             <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsExpanded="False" Padding="0,4,0,4">
                 <Expander.Header>

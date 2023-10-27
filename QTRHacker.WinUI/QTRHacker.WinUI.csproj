@@ -53,6 +53,7 @@
 		<None Remove="Themes\ItemSlot.xaml" />
 		<None Remove="Themes\PropertyGrid.xaml" />
 		<None Remove="Themes\SpinnerDotCircle.xaml" />
+		<None Remove="Themes\TextBox.xaml" />
 		<None Remove="Views\Pages\MainPage.xaml" />
 		<None Remove="Views\Pages\SettingsPage.xaml" />
 		<None Remove="Views\PlayerEditor\InventoryEditorWindow.xaml" />
@@ -60,12 +61,16 @@
 		<None Remove="Views\PlayerEditor\ItemPropertiesPanel.xaml" />
 		<None Remove="Views\Settings\SelectLanguageDialog.xaml" />
 		<None Remove="Views\TitleBar.xaml" />
+		<None Remove="Views\Wiki\Items\SubPages\InfoSubPage.xaml" />
+		<None Remove="Views\Wiki\Items\WikiItemsPage.xaml" />
+		<None Remove="Views\Wiki\WikiWindow.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Layout" Version="7.1.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Primitives" Version="7.1.2" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
@@ -93,9 +98,32 @@
 		<Content Include="Localization\zh-CN\Content.json" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Page Update="Themes\TextBox.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
 	  <Page Update="Views\Settings\SelectLanguageDialog.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Wiki\WikiWindow.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Wiki\Items\WikiItemsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Wiki\Items\SubPages\InfoSubPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Styles\" />
 	</ItemGroup>
 
 	<!-- 

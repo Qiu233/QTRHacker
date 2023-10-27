@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using System;
@@ -84,5 +85,11 @@ public partial class MainPageViewModel : PageViewModel
 		await HackGlobal.Initialize(pid);
 		OnPropertyChanged(nameof(AttachedTo));
 		return true;
+	}
+	[RelayCommand]
+	public static async Task OpenWiki()
+	{
+		Containers.Wiki wiki = new();
+		await wiki.Show();
 	}
 }

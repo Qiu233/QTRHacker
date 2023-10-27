@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="QTRHacker.Views.Wiki.Items.WikiItemsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QTRHacker.Views.Wiki.Items"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ctp="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
+    xmlns:loc="using:QTRHacker.Localization"
+    xmlns:vm="using:QTRHacker.ViewModels.Wiki"
+    d:DataContext="{d:DesignInstance Type=vm:WikiItemsPageViewModel, IsDesignTimeCreatable=False}"
+    mc:Ignorable="d"
+    Background="Transparent">
+    <Grid ColumnSpacing="4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <ct:DataGrid Grid.Column="0" ItemsSource="{Binding Items}" AutoGenerateColumns="False" IsReadOnly="True"
+                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <ct:DataGrid.Resources>
+                <Color x:Key="DataGridColumnHeaderBackgroundColor">Transparent</Color>
+            </ct:DataGrid.Resources>
+            <ct:DataGrid.Columns>
+                <ct:DataGridTextColumn Header="{x:Bind TypeLI.Value}" Binding="{Binding Type}"
+                                       MinWidth="80"/>
+                <ct:DataGridTextColumn Header="{x:Bind NameLI.Value}" Binding="{Binding Name}"
+                                       MinWidth="120" MaxWidth="240"/>
+                <ct:DataGridTextColumn Header="{x:Bind CategoryLI.Value}" Binding="{Binding Category}"
+                                       MinWidth="120"/>
+            </ct:DataGrid.Columns>
+        </ct:DataGrid>
+        <NavigationView Grid.Column="1" MinWidth="360"
+                        IsBackEnabled="False" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" PaneDisplayMode="Top"
+                        Loaded="NavigationView_Loaded" SelectionChanged="NavigationView_SelectionChanged"
+                        >
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="{loc:Localization Key=Wiki.Items.Properties.Info}" Tag="InfoSubPage"/>
+                <NavigationViewItem Content="{loc:Localization Key=Wiki.Items.Properties.Details}"/>
+                <NavigationViewItem Content="{loc:Localization Key=Wiki.Items.Properties.Filter}"/>
+            </NavigationView.MenuItems>
+            <Frame x:Name="MainFrame" Navigated="MainFrame_Navigated" DataContext="{Binding SelectedItem}"/>
+        </NavigationView>
+    </Grid>
+</Page>

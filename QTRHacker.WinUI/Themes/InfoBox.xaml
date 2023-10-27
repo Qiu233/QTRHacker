@@ -5,17 +5,76 @@
     xmlns:local="using:QTRHacker"
     xmlns:local2="using:QTRHacker.Controls" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls">
 
+    <ControlTemplate x:Key="InfoBox_Left" TargetType="local2:InfoBox">
+        <Grid ColumnDefinitions="Auto,*">
+            <Border Grid.Column="0"
+                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2">
+                <TextBlock Text="{TemplateBinding Header}"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"/>
+            </Border>
+            <ContentPresenter Grid.Column="1"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="InfoBox_Right" TargetType="local2:InfoBox">
+        <Grid ColumnDefinitions="*,Auto">
+            <Border Grid.Column="1"
+                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2">
+                <TextBlock Text="{TemplateBinding Header}"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"/>
+            </Border>
+            <ContentPresenter Grid.Column="0"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="InfoBox_Top" TargetType="local2:InfoBox">
+        <Grid RowDefinitions="Auto,*">
+            <Border Grid.Row="0"
+                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2">
+                <TextBlock Text="{TemplateBinding Header}"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"/>
+            </Border>
+            <ContentPresenter Grid.Row="1"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="InfoBox_Bottom" TargetType="local2:InfoBox">
+        <Grid RowDefinitions="*,Auto">
+            <Border Grid.Row="1"
+                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2">
+                <TextBlock Text="{TemplateBinding Header}"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"/>
+            </Border>
+            <ContentPresenter Grid.Row="0"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+        </Grid>
+    </ControlTemplate>
     <Style TargetType="local2:InfoBox">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{ThemeResource ControlElevationBorderBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local2:InfoBox">
-                    <Border
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
                         <controls:DockPanel>
-                            <ContentPresenter controls:DockPanel.Dock="{TemplateBinding ContentDock}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
-                            <ContentPresenter Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"/>
+                            <Border controls:DockPanel.Dock="{TemplateBinding TipDock}" 
+                                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2">
+                                <TextBlock Text="{TemplateBinding Header}"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"/>
+                            </Border>
+                            <ContentPresenter Content="{TemplateBinding Content}" 
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
                         </controls:DockPanel>
                     </Border>
                 </ControlTemplate>
