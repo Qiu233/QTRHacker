@@ -3,60 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:QTRHacker"
-    xmlns:local2="using:QTRHacker.Controls" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls">
-
-    <ControlTemplate x:Key="InfoBox_Left" TargetType="local2:InfoBox">
-        <Grid ColumnDefinitions="Auto,*">
-            <Border Grid.Column="0"
-                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2">
-                <TextBlock Text="{TemplateBinding Header}"
-                                           VerticalAlignment="Center"
-                                           TextAlignment="Center"/>
-            </Border>
-            <ContentPresenter Grid.Column="1"
-                              Content="{TemplateBinding Content}"
-                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
-        </Grid>
-    </ControlTemplate>
-    <ControlTemplate x:Key="InfoBox_Right" TargetType="local2:InfoBox">
-        <Grid ColumnDefinitions="*,Auto">
-            <Border Grid.Column="1"
-                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2">
-                <TextBlock Text="{TemplateBinding Header}"
-                                           VerticalAlignment="Center"
-                                           TextAlignment="Center"/>
-            </Border>
-            <ContentPresenter Grid.Column="0"
-                              Content="{TemplateBinding Content}"
-                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
-        </Grid>
-    </ControlTemplate>
-    <ControlTemplate x:Key="InfoBox_Top" TargetType="local2:InfoBox">
-        <Grid RowDefinitions="Auto,*">
-            <Border Grid.Row="0"
-                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2">
-                <TextBlock Text="{TemplateBinding Header}"
-                                           VerticalAlignment="Center"
-                                           TextAlignment="Center"/>
-            </Border>
-            <ContentPresenter Grid.Row="1"
-                              Content="{TemplateBinding Content}"
-                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
-        </Grid>
-    </ControlTemplate>
-    <ControlTemplate x:Key="InfoBox_Bottom" TargetType="local2:InfoBox">
-        <Grid RowDefinitions="*,Auto">
-            <Border Grid.Row="1"
-                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2">
-                <TextBlock Text="{TemplateBinding Header}"
-                                           VerticalAlignment="Center"
-                                           TextAlignment="Center"/>
-            </Border>
-            <ContentPresenter Grid.Row="0"
-                              Content="{TemplateBinding Content}"
-                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
-        </Grid>
-    </ControlTemplate>
+    xmlns:local2="using:QTRHacker.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ss="using:QTRHacker.Helpers.SharedSize">
+    
     <Style TargetType="local2:InfoBox">
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{ThemeResource ControlElevationBorderBrush}"/>
@@ -66,16 +16,46 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-                        <controls:DockPanel>
-                            <Border controls:DockPanel.Dock="{TemplateBinding TipDock}" 
-                                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2">
-                                <TextBlock Text="{TemplateBinding Header}"
-                                           VerticalAlignment="Center"
-                                           TextAlignment="Center"/>
+                        <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,*,Auto">
+                            <Border x:Name="PART_TipElement" ss:ColumnSharedSizeHelper.SharedSizeGroup="TipColumnGroup"
+                                    Background="{ThemeResource ControlElevationBorderBrush}" MinHeight="24" Padding="6,2,6,2"
+                                    Grid.Column="0" Grid.Row="1">
+                                <ContentPresenter Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                  HorizontalAlignment="Center" HorizontalContentAlignment="Center">
+                                </ContentPresenter>
                             </Border>
                             <ContentPresenter Content="{TemplateBinding Content}" 
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
-                        </controls:DockPanel>
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Grid.Column="1" Grid.Row="1"/>
+                        </Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="TipDock">
+                                <VisualState x:Name="TipDockLeft">
+                                    <VisualState.Setters>
+                                        <Setter Target="PART_TipElement.(Grid.Column)" Value="0"/>
+                                        <Setter Target="PART_TipElement.(Grid.Row)" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="TipDockRight">
+                                    <VisualState.Setters>
+                                        <Setter Target="PART_TipElement.(Grid.Column)" Value="2"/>
+                                        <Setter Target="PART_TipElement.(Grid.Row)" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="TipDockTop">
+                                    <VisualState.Setters>
+                                        <Setter Target="PART_TipElement.(Grid.Column)" Value="1"/>
+                                        <Setter Target="PART_TipElement.(Grid.Row)" Value="0"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="TipDockBottom">
+                                    <VisualState.Setters>
+                                        <Setter Target="PART_TipElement.(Grid.Column)" Value="1"/>
+                                        <Setter Target="PART_TipElement.(Grid.Row)" Value="2"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

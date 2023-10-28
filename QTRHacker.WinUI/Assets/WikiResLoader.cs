@@ -141,4 +141,5 @@ public static class WikiResLoader
 
 
 	public static Task<List<ItemData>> ItemDatum => TryLoadIfNotLoaded().ContinueWith(t => _ItemDatum);
+	public static Task<List<RecipeData>> RecipeDatum => TryLoadIfNotLoaded().ContinueWith(t => _RecipeDatum);
 }

@@ -7,15 +7,39 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:QTRHacker.Controls"
-    xmlns:vm="using:QTRHacker.ViewModels.Wiki.Items"
+    xmlns:vm="using:QTRHacker.ViewModels.Wiki"
+    xmlns:vm2="using:QTRHacker.ViewModels.Wiki.Items"
     xmlns:loc="using:QTRHacker.Localization"
+    xmlns:ss="using:QTRHacker.Helpers.SharedSize"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    d:DataContext="{d:DesignInstance Type=vm:ItemInfo, IsDesignTimeCreatable=False}">
+    d:DataContext="{d:DesignInstance Type=vm:WikiItemsPageViewModel, IsDesignTimeCreatable=False}">
     <Page.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyleWithoutBorderElement}">
             <Setter Property="Padding" Value="2,0,2,0"/>
         </Style>
+        <DataTemplate x:Key="ItemStackInfoDataTemplate" x:DataType="vm2:ItemStackInfo">
+            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                <TextBlock Text="[" Grid.Column="0"/>
+                <TextBlock Text="{Binding ItemInfo.Type}" Grid.Column="1" 
+                                                       ss:ColumnSharedSizeHelper.SharedSizeGroup="TypeColumn"
+                                                       TextAlignment="Center">
+                </TextBlock>
+                <TextBlock Grid.Column="2">
+                                                <Run Text="]&#160;"/>
+                </TextBlock>
+                <TextBlock Grid.Column="3" ss:ColumnSharedSizeHelper.SharedSizeGroup="NameColumn">
+                                                <Run Text="{Binding ItemInfo.Name}"/>
+                </TextBlock>
+                <TextBlock Grid.Column="4" ss:ColumnSharedSizeHelper.SharedSizeGroup="StarColumn">
+                                                <Run Text="&#160;*&#160;"/>
+                </TextBlock>
+                <TextBlock Grid.Column="5" ss:ColumnSharedSizeHelper.SharedSizeGroup="NumberColumn"
+                                                       TextAlignment="Right">
+                                                <Run Text="{Binding Stack}"/>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
     <StackPanel Spacing="2" Padding="2" Orientation="Vertical">
         <Grid ColumnSpacing="2">
@@ -25,40 +49,85 @@
             </Grid.ColumnDefinitions>
             <controls:InfoBox TipDock="Top" Header="Icon">
                 <Viewbox Width="90" Height="78">
-                    <Image DataContext="{Binding Type, Converter={StaticResource ItemTypeToImageConverter}}"
+                    <Image DataContext="{Binding SelectedItem.Type, Converter={StaticResource ItemTypeToImageConverter}}"
                            Source="{Binding Result}"
                            Stretch="Uniform"
                            Margin="12"/>
                 </Viewbox>
             </controls:InfoBox>
             <controls:InfoBox TipDock="Top" Header="Details" Grid.Column="1">
-                <StackPanel Orientation="Vertical">
-                    <Grid ColumnDefinitions="Auto,*">
-                        <TextBlock Padding="6,2,6,2" Text="{loc:Localization Key=Wiki.Items.Properties.Name}"/>
-                        <TextBox Text="{Binding Name}" Grid.Column="1"/>
-                    </Grid>
-                    <Grid ColumnDefinitions="Auto,*">
-                        <TextBlock Padding="6,2,6,2" Text="{loc:Localization Key=Wiki.Items.Properties.Category}"/>
-                        <TextBox Text="{Binding Category}" Grid.Column="1"/>
-                    </Grid>
-                    <Grid ColumnDefinitions="Auto,*">
-                        <TextBlock Padding="6,2,6,2" Text="{loc:Localization Key=Wiki.Items.Properties.Rare}"/>
-                        <TextBox Text="{Binding Data.Rare}" Grid.Column="1"/>
-                    </Grid>
-                    <!--<controls:InfoBox TipDock="Left" Header="{loc:Localization Key=Wiki.Items.Properties.Name}">
-                        <TextBox TextAlignment="Right" Width="200" Text="{Binding Name}"/>
+                <StackPanel Orientation="Vertical" ss:ColumnSharedSizeHelper.IsSharedSizeScope="True">
+                    <controls:InfoBox x:Name="NameInfoBox" Header="{loc:Localization Key=Wiki.Items.Properties.Name}">
+                        <TextBox Text="{Binding SelectedItem.Name}"/>
                     </controls:InfoBox>
-                    <controls:InfoBox TipDock="Left" Header="{loc:Localization Key=Wiki.Items.Properties.Category}">
-                        <TextBox TextAlignment="Right" Width="200" Text="{Binding Category}"/>
+                    <controls:InfoBox x:Name="CategoryInfoBox" Header="{loc:Localization Key=Wiki.Items.Properties.Category}">
+                        <TextBox Text="{Binding SelectedItem.Category}"/>
                     </controls:InfoBox>
-                    <controls:InfoBox TipDock="Left" Header="{loc:Localization Key=Wiki.Items.Properties.Rare}">
-                        <TextBox TextAlignment="Right" Width="200" Text="{Binding Data.Rare}"/>
-                    </controls:InfoBox>-->
+                    <controls:InfoBox x:Name="RareInfoBox" Header="{loc:Localization Key=Wiki.Items.Properties.Rare}">
+                        <TextBox Text="{Binding SelectedItem.Data.Rare}"/>
+                    </controls:InfoBox>
                 </StackPanel>
             </controls:InfoBox>
         </Grid>
-        <controls:InfoBox TipDock="Left" Header="Tooltip">
-            <TextBox Text="{Binding Tooltip}"/>
+        <controls:InfoBox TipDock="Top" Header="{loc:Localization Key=Wiki.Items.Properties.Tooltip}">
+            <TextBox Text="{Binding SelectedItem.Tooltip}" Height="60"/>
+        </controls:InfoBox>
+        <controls:InfoBox TipDock="Top">
+            <controls:InfoBox.Header>
+                <TextBlock>
+                    <Run Text="{loc:Localization Key=Wiki.Items.Properties.Recipe}"/>
+                    <Run Text="("/>
+                    <Run Text="{loc:Localization Key=Wiki.Items.Properties.From}"/>
+                    <Run Text=")"/>
+                </TextBlock>
+            </controls:InfoBox.Header>
+            <TabView Height="100" IsAddTabButtonVisible="False" TabItemsSource="{Binding SelectedItem.RecipeFroms}" TabWidthMode="SizeToContent"
+                     Padding="0" x:Name="RecipeFromTab" CanDragTabs="False" CanReorderTabs="False" SelectedItem="{Binding SelectedRecipeFrom, Mode=TwoWay}">
+                <TabView.Resources>
+                    <CornerRadius x:Key="OverlayCornerRadius">0,0,0,0</CornerRadius>
+                    <Thickness x:Key="TabViewHeaderPadding">0,0,0,0</Thickness>
+                    <!--<Thickness x:Key="TabViewSelectedItemHeaderMargin">0,0,0,0</Thickness>
+                    <Thickness x:Key="TabViewSelectedItemHeaderPadding">0,0,0,0</Thickness>
+                    <Thickness x:Key="TabViewSelectedItemBorderThickness">0,0,0,0</Thickness>-->
+                </TabView.Resources>
+                <TabView.TabItemTemplate>
+                    <DataTemplate x:DataType="vm2:RecipeFromInfo">
+                        <TabViewItem IsClosable="False" CornerRadius="0" CanDrag="False">
+                            <TabViewItem.Header>
+                                <TextBlock Text="{Binding Tab}" Padding="4,0,4,0" TextAlignment="Center"/>
+                            </TabViewItem.Header>
+                            <ListBox ss:ColumnSharedSizeHelper.IsSharedSizeScope="True" ItemsSource="{Binding RequiredItemsNotifier.Result}"
+                                     ItemTemplate="{StaticResource ItemStackInfoDataTemplate}">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Margin" Value="2,0,2,0"/>
+                                        <Setter Property="Padding" Value="6,2,6,2"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </TabViewItem>
+                    </DataTemplate>
+                </TabView.TabItemTemplate>
+            </TabView>
+        </controls:InfoBox>
+        <controls:InfoBox TipDock="Top">
+            <controls:InfoBox.Header>
+                <TextBlock>
+                    <Run Text="{loc:Localization Key=Wiki.Items.Properties.Recipe}"/>
+                    <Run Text="("/>
+                    <Run Text="{loc:Localization Key=Wiki.Items.Properties.To}"/>
+                    <Run Text=")"/>
+                </TextBlock>
+            </controls:InfoBox.Header>
+            <ListBox ss:ColumnSharedSizeHelper.IsSharedSizeScope="True" ItemTemplate="{StaticResource ItemStackInfoDataTemplate}"
+                     ItemsSource="{Binding SelectedItem.RecipeTos}" Height="100">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Margin" Value="2,0,2,0"/>
+                        <Setter Property="Padding" Value="6,2,6,2"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
         </controls:InfoBox>
     </StackPanel>
 </Page>

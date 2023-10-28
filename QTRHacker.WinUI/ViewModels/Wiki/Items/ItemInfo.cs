@@ -1,11 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using QTRHacker.Assets;
 using QTRHacker.Localization;
 using QTRHacker.Models.Wiki;
 using StrongInject;
+using System.Collections.ObjectModel;
 
 namespace QTRHacker.ViewModels.Wiki.Items;
 
+// This class is not supposed to be changed at runtime.
 public partial class ItemInfo : ObservableObject, ILocalizationProvider
 {
 	private string? tooltip;
@@ -42,7 +45,7 @@ public partial class ItemInfo : ObservableObject, ILocalizationProvider
 		OnPropertyChanged(nameof(Category));
 		string key = $"ItemTooltip.{Key}";
 		tooltip = LocalizationManager.Instance.GetValue(key, LocalizationType.Game);
-		if (tooltip == key)
+		if (tooltip == "!" + key)
 			tooltip = string.Empty;
 		OnPropertyChanged(nameof(Tooltip));
 	}
@@ -69,12 +72,21 @@ public partial class ItemInfo : ObservableObject, ILocalizationProvider
 		return result;
 	}
 
-	public static async Task<ItemInfo> Create(int type)
+	/// <summary>
+	/// This should be ThreadStatic
+	/// </summary>
+	[ThreadStatic]
+	private static Dictionary<int, ItemInfo>? itemInfos;
+
+	public static async ValueTask<ItemInfo> Create(int type)
 	{
+		itemInfos ??= new();
+		if (itemInfos.TryGetValue(type, out ItemInfo? item))
+			return item;
 		string key = await WikiResLoader.GetItemKeyFromType(type);
 		ItemData data = (await WikiResLoader.ItemDatum)[type];
 		ItemInfo info = new(type, key, data);
-		return info;
+		return itemInfos[type] = info;
 	}
 
 	private ItemInfo(int type, string key, ItemData data)
@@ -83,5 +95,40 @@ public partial class ItemInfo : ObservableObject, ILocalizationProvider
 		Key = key;
 		Data = data;
 		LocalizationManager.RegisterLocalizationProvider(this);
+
+	}
+	private bool loaded = false;
+	public ObservableCollection<RecipeFromInfo> RecipeFroms { get; } = new();
+	public ObservableCollection<ItemStackInfo> RecipeTos { get; } = new();
+
+	[RelayCommand]
+	public async Task LoadRecipes()
+	{
+		if (loaded)
+			return;
+		await LoadRecipeFroms();
+		await LoadRecipeTos();
+		loaded = true;
+	}
+
+	private async ValueTask LoadRecipeFroms()
+	{
+		var pRe = (await WikiResLoader.RecipeDatum).Where(t => t.TargetItem.Type == Type).ToList();
+		if (pRe.Any())
+			for (int i = 0; i < pRe.Count; i++)
+				RecipeFroms.Add(new RecipeFromInfo(i.ToString(), pRe[i]));
+	}
+
+	private async ValueTask LoadRecipeTos()
+	{
+		if (Type == 0)
+			return;
+		var pRe = (await WikiResLoader.RecipeDatum).Where(
+			t => t.RequiredItems!.Where(
+				y => y.Type == Type).Any()).ToList();
+		pRe.Sort((a, b) => a.TargetItem.Type - b.TargetItem.Type);
+		if (pRe.Any())
+			foreach (var item in pRe)
+				RecipeTos.Add(new ItemStackInfo(await ItemInfo.Create(item.TargetItem.Type), item.TargetItem.Stack));
 	}
 }

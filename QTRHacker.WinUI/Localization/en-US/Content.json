@@ -316,7 +316,11 @@
         "Rare": "Rare",
         "Info": "Info",
         "Details": "Details",
-        "Filter": "Filter"
+        "Filter": "Filter",
+        "Tooltip": "Tooltip",
+        "Recipe": "Recipe",
+        "To": "To",
+        "From": "From"
       },
       "ItemCategories": {
         "Others": "Others",

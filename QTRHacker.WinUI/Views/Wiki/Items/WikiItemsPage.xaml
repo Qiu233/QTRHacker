@@ -32,7 +32,7 @@
                                        MinWidth="120"/>
             </ct:DataGrid.Columns>
         </ct:DataGrid>
-        <NavigationView Grid.Column="1" MinWidth="360"
+        <NavigationView Grid.Column="1" Width="360"
                         IsBackEnabled="False" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" PaneDisplayMode="Top"
                         Loaded="NavigationView_Loaded" SelectionChanged="NavigationView_SelectionChanged"
                         >
@@ -41,7 +41,7 @@
                 <NavigationViewItem Content="{loc:Localization Key=Wiki.Items.Properties.Details}"/>
                 <NavigationViewItem Content="{loc:Localization Key=Wiki.Items.Properties.Filter}"/>
             </NavigationView.MenuItems>
-            <Frame x:Name="MainFrame" Navigated="MainFrame_Navigated" DataContext="{Binding SelectedItem}"/>
+            <Frame x:Name="MainFrame" Navigated="MainFrame_Navigated"/>
         </NavigationView>
     </Grid>
 </Page>
