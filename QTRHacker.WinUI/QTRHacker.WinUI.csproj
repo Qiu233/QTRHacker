@@ -32,39 +32,6 @@
 		<Content Remove="Assets\Misc\RainbowFonts\RainbowProj.png" />
 		<Content Remove="Assets\WikiResLoader.cs" />
 	</ItemGroup>
-	<ItemGroup>
-		<None Remove="Assets\GameImages\Items.bin" />
-		<None Remove="Assets\GameImages\NPCs.bin" />
-		<None Remove="Assets\GameImages\Tiles.bin" />
-		<None Remove="Assets\GameImages\Walls.bin" />
-		<None Remove="Assets\Game\Localization.zip" />
-		<None Remove="Assets\Game\TilesColor.json" />
-		<None Remove="Assets\Game\WikiRes.zip" />
-		<None Remove="Assets\Logo.ico" />
-		<None Remove="Assets\Logo.png" />
-		<None Remove="Assets\Misc\RainbowFonts\Example.txt" />
-		<None Remove="Assets\Misc\RainbowFonts\RainbowProj.png" />
-		<None Remove="Localization\zh-CN\Content.json" />
-		<None Remove="Localization\zh-CN\en.json" />
-		<None Remove="Themes\Block.xaml" />
-		<None Remove="Themes\BlockEntry.xaml" />
-		<None Remove="Themes\Cross.xaml" />
-		<None Remove="Themes\InfoBox.xaml" />
-		<None Remove="Themes\ItemSlot.xaml" />
-		<None Remove="Themes\PropertyGrid.xaml" />
-		<None Remove="Themes\SpinnerDotCircle.xaml" />
-		<None Remove="Themes\TextBox.xaml" />
-		<None Remove="Views\Pages\MainPage.xaml" />
-		<None Remove="Views\Pages\SettingsPage.xaml" />
-		<None Remove="Views\PlayerEditor\InventoryEditorWindow.xaml" />
-		<None Remove="Views\PlayerEditor\InventorySlotsPanel.xaml" />
-		<None Remove="Views\PlayerEditor\ItemPropertiesPanel.xaml" />
-		<None Remove="Views\Settings\SelectLanguageDialog.xaml" />
-		<None Remove="Views\TitleBar.xaml" />
-		<None Remove="Views\Wiki\Items\SubPages\InfoSubPage.xaml" />
-		<None Remove="Views\Wiki\Items\WikiItemsPage.xaml" />
-		<None Remove="Views\Wiki\WikiWindow.xaml" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
