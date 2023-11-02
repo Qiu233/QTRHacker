@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QTRHacker", "src\QTRHacker\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Launcher", "src\Launcher\Launcher.vcxproj", "{7B278763-373F-4CFE-B558-086E3F116E5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QTRHacker.WinUI", "QTRHacker.WinUI\QTRHacker.WinUI.csproj", "{73982401-DC06-4FB7-AF2C-A161FCFA20C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QTRHacker.WinUI", "src\QTRHacker.WinUI\QTRHacker.WinUI.csproj", "{73982401-DC06-4FB7-AF2C-A161FCFA20C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

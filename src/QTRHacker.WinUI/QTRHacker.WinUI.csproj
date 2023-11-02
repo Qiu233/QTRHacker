@@ -56,9 +56,6 @@
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\src\QTRHacker.Core\QTRHacker.Core.csproj" />
-	</ItemGroup>
-	<ItemGroup>
 		<Resource Include="Assets\Misc\RainbowFonts\Example.txt" />
 		<Resource Include="Assets\Misc\RainbowFonts\RainbowProj.png" />
 		<Content Include="Localization\en-US\Content.json" />
@@ -91,6 +88,9 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Styles\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
 	</ItemGroup>
 
 	<!-- 
