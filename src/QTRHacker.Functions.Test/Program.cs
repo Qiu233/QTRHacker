@@ -536,6 +536,10 @@ unsafe class Program
         ok &= RequireProperty(typeof(PatchesManager), "StrengthenVampireKnives");
         ok &= RequireSourceContains("src/QTRHacker.Patches/PlayerToggles.cs", "public static bool CoinPortalDropsBags");
         ok &= RequireSourceContains("src/QTRHacker.Patches/PlayerToggles.cs", "public static bool StrengthenVampireKnives");
+        ok &= RequireSourceContains("src/QTRHacker.Patches/PlayerToggles.cs", "(mouseX - screenWidth / 2f) / mapFullscreenScale + mapFullscreenPos.X");
+        ok &= RequireSourceContains("src/QTRHacker.Patches/PlayerToggles.cs", "(mouseY - screenHeight / 2f) / mapFullscreenScale + mapFullscreenPos.Y");
+        ok &= RequireSourceNotContains("src/QTRHacker.Patches/PlayerToggles.cs", "Main.screenWidth / 2f - Main.mouseX");
+        ok &= RequireSourceNotContains("src/QTRHacker.Patches/PlayerToggles.cs", "Main.screenHeight / 2f - Main.mouseY");
         ok &= RequireSourceContains("src/QTRHacker/Scripts/Functions/BuiltIn-2.cs", "Add<CoinPortalDropsBags>();");
         ok &= RequireSourceContains("src/QTRHacker/Scripts/Functions/BuiltIn-2.cs", "Add<StrengthenVampireKnives>();");
 
@@ -561,6 +565,16 @@ unsafe class Program
         Console.WriteLine(ok
             ? $"  OK {relativePath} contains {text}"
             : $"  FAIL {relativePath} missing {text}");
+        return ok;
+    }
+
+    private static bool RequireSourceNotContains(string relativePath, string text)
+    {
+        string path = Path.GetFullPath(relativePath);
+        bool ok = File.Exists(path) && !File.ReadAllText(path).Contains(text, StringComparison.Ordinal);
+        Console.WriteLine(ok
+            ? $"  OK {relativePath} does not contain {text}"
+            : $"  FAIL {relativePath} still contains {text}");
         return ok;
     }
 

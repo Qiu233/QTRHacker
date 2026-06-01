@@ -161,10 +161,26 @@ namespace QTRHacker.Patches
 
 			Main.mapFullscreen = false;
 			Main.mouseRightRelease = false;
-			float targetX = ((Main.screenWidth / 2f - Main.mouseX) / Main.mapFullscreenScale - Main.mapFullscreenPos.X) * 16f;
-			float targetY = ((Main.screenHeight / 2f - Main.mouseY) / Main.mapFullscreenScale - Main.mapFullscreenPos.Y) * 16f;
-			player.position.X = targetX;
-			player.position.Y = targetY;
+			player.position = GetFullscreenMapTeleportPosition(
+				Main.mouseX,
+				Main.mouseY,
+				Main.screenWidth,
+				Main.screenHeight,
+				Main.mapFullscreenScale,
+				Main.mapFullscreenPos);
+		}
+
+		internal static Vector2 GetFullscreenMapTeleportPosition(
+			int mouseX,
+			int mouseY,
+			int screenWidth,
+			int screenHeight,
+			float mapFullscreenScale,
+			Vector2 mapFullscreenPos)
+		{
+			float targetX = ((mouseX - screenWidth / 2f) / mapFullscreenScale + mapFullscreenPos.X) * 16f;
+			float targetY = ((mouseY - screenHeight / 2f) / mapFullscreenScale + mapFullscreenPos.Y) * 16f;
+			return new Vector2(targetX, targetY);
 		}
 
 		private static void KeepAllRecipesAvailable()
