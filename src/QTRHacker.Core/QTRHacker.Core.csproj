@@ -19,19 +19,27 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<ContentWithTargetPath Include="..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>QTRHacker.Patches.dll</TargetPath>
-		</ContentWithTargetPath>
-		<UpToDateCheckBuilt Include="$(OutputPath)QTRHacker.Patches.dll" Original="..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll" />
-	</ItemGroup>
-	
-	<ItemGroup>
+		<ProjectReference Include="..\QHackCLR\QHackCLR.vcxproj" />
 		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
 		<ProjectReference Include="..\QTRHacker.Patches\QTRHacker.Patches.csproj">
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 		</ProjectReference>
 	</ItemGroup>
+
+	<Target Name="CopyQTRHackerPatches" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+		<ItemGroup>
+			<QTRHackerPatchesOutput Include="..\QTRHacker.Patches\bin\x86\$(Configuration)\QTRHacker.Patches.dll"
+				Condition="Exists('..\QTRHacker.Patches\bin\x86\$(Configuration)\QTRHacker.Patches.dll')" />
+			<QTRHackerPatchesOutput Include="..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll"
+				Condition="Exists('..\QTRHacker.Patches\bin\$(Configuration)\QTRHacker.Patches.dll')" />
+		</ItemGroup>
+		<Copy
+			SourceFiles="@(QTRHackerPatchesOutput)"
+			DestinationFolder="$(OutputPath)"
+			SkipUnchangedFiles="true"
+			ContinueOnError="WarnAndContinue"
+			Condition="'@(QTRHackerPatchesOutput)' != ''" />
+	</Target>
 
 	<ItemGroup>
 		<None Update="GameObjects\Terraria\Item.ps.tt">

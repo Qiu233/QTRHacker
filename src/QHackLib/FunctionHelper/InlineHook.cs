@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace QHackLib.FunctionHelper
@@ -154,12 +155,13 @@ namespace QHackLib.FunctionHelper
 		/// Only available for hooks whose <see cref="HookParameters.IsOnce"/> is true.
 		/// </summary>
 		/// <returns>true if detached successfully</returns>
-		public bool WaitToDetach()
+		public bool WaitToDetach(int timeout = Timeout.Infinite)
 		{
 			if (!Parameters.IsOnce)
 				throw new InvalidOperationException("Not a once hook.");
 			HookInfo hook = GetHookInfo();
-			while (Context.DataAccess.Read<int>(hook.Address_OnceFlag) != 0) { }
+			if (!SpinWait.SpinUntil(() => Context.DataAccess.Read<int>(hook.Address_OnceFlag) == 0, timeout))
+				return false;
 			return Detach();
 		}
 
@@ -211,14 +213,21 @@ namespace QHackLib.FunctionHelper
 			return result;
 		}
 
-		public static bool HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, uint size = 4096)
+		public static bool HookOnce(QHackContext Context, AssemblyCode code, nuint targetAddr, uint size = 4096, int timeout = 5000)
 		{
 			var hook = new InlineHook(Context, code, new HookParameters(targetAddr, size, true, true));
 			if (!hook.Attach())
 				return false;
-			if (!hook.WaitToDetach())
+			if (!hook.WaitToDetach(timeout))
+			{
+				hook.Dispose();
 				return false;
-			hook.WaitToDispose();
+			}
+			if (!Task.Run(hook.WaitToDispose).Wait(timeout))
+			{
+				hook.Dispose();
+				return false;
+			}
 			return true;
 		}
 

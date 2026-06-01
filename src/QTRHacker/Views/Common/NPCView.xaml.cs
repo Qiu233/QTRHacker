@@ -127,7 +127,7 @@ namespace QTRHacker.Views.Common
 
 			var list = new List<ImageSource>();
 			Frames[type] = list;
-			int fs = GameConstants.NPCFrameCount[type];
+			int fs = GameConstants.GetNPCFrameCount(type);
 			int height = (bi.PixelHeight) / fs;
 			int max = 20;
 			for (int j = 0; j < fs; j++)

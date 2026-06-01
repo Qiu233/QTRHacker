@@ -130,7 +130,22 @@ public class DirectFunctionsPageViewModel : PagePanelViewModel
 		{
 			var box = tab.Content as FunctionsBox;
 			foreach (var item in box.ViewModel.Functions)
+			{
+				if (item.IsEnabled && item.CanDisable && HackGlobal.IsActive)
+				{
+					try
+					{
+						item.Enable(HackGlobal.GameContext);
+					}
+					catch (Exception e)
+					{
+						HackGlobal.Logging.Error($"Failed to restore enabled function: [{item.Name}]({item.GetType().FullName})");
+						HackGlobal.Logging.Exception(e);
+						item.IsEnabled = false;
+					}
+				}
 				item.OnLoaded();
+			}
 		}
 	}
 

@@ -19,7 +19,9 @@ public class NPCInfo : ViewModelBase, ILocalizationProvider
 	{
 		Type = type;
 		Key = WikiResLoader.GetNPCKeyFromType(Type);
-		Data = WikiResLoader.NPCDatum[Type];
+		Data = type >= 0 && type < WikiResLoader.NPCDatum.Count
+			? WikiResLoader.NPCDatum[Type]
+			: new NPCData { Type = type, Width = 32, Height = 48, KnockBackResist = 1f };
 		LocalizationManager.RegisterLocalizationProvider(this);
 	}
 

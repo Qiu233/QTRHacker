@@ -101,6 +101,9 @@ namespace QHackCLR {
 		ClrModule::~ClrModule() {
 			delete Data;
 		}
+		ClrRuntime^ ClrModule::Runtime::get() {
+			return ModuleHelper->AppDomain->Runtime;
+		}
 
 		IMetaDataImport* ClrModule::MetadataImport::get() {
 			return ModuleHelper->GetMetadataImport(this);
@@ -133,6 +136,8 @@ namespace QHackCLR {
 				this->ModuleHelper->SOSDac->TraverseModuleMap(type, NativeHandle, func, nullptr);
 			}
 			catch (Exception^) {}
+			GC::KeepAlive(del);
+			GC::KeepAlive(ano);
 			Generic::List<ClrType^>^ types = gcnew Generic::List<ClrType^>();
 			for each (auto mt in holder)
 				types->Add(this->ModuleHelper->TypeFactory->GetClrType(UIntPtr(mt)));
@@ -244,11 +249,17 @@ namespace QHackCLR {
 			}
 			return m_Fields;
 		}
-		Generic::IReadOnlyList<ClrMethod^>^ ClrType::MethodsInVTable::get() {
+		Generic::IReadOnlyList<ClrMethod^>^ ClrType::Methods::get() {
 			if (m_Methods == nullptr) {
-				m_Methods = Enumerable::ToList(TypeHelper->EnumerateVTableMethods(this));
+				m_Methods = Enumerable::ToList(TypeHelper->EnumerateMethods(this));
 			}
 			return m_Methods;
+		}
+		Generic::IReadOnlyList<ClrMethod^>^ ClrType::MethodsInVTable::get() {
+			if (m_VTableMethods == nullptr) {
+				m_VTableMethods = Enumerable::ToList(TypeHelper->EnumerateVTableMethods(this));
+			}
+			return m_VTableMethods;
 		}
 
 		Generic::IEnumerable<ClrStaticField^>^ ClrType::EnumerateStaticFields() {
@@ -355,15 +366,101 @@ namespace QHackCLR {
 		}
 
 
-		ClrMethod::ClrMethod(IMethodHelper^ helper, nuint handle) : ClrEntity(handle) {
+		ClrMethod::ClrMethod(IMethodHelper^ helper, nuint handle)
+			: ClrMethod(helper, nullptr, 0, handle) {
+		}
+		ClrMethod::ClrMethod(IMethodHelper^ helper, ClrType^ declaringType, int mdToken, nuint handle) : ClrEntity(handle) {
 			MethodHelper = helper;
+			m_DeclaringType = declaringType;
+			m_MDToken = mdToken;
 			Data = new DacpMethodDescData;
+			m_MethodDataResult = E_FAIL;
+			m_RepresentativeEntryResult = E_FAIL;
+			m_RepresentativeEntryAddress = UIntPtr::Zero;
+			m_NativeCodeAddress = UIntPtr::Zero;
 			try {
-				helper->SOSDac->GetMethodDescData(NativeHandle, 0, Data, 0, nullptr, nullptr);
+				ULONG neededRejitData = 0;
+				m_MethodDataResult = helper->SOSDac->GetMethodDescData(NativeHandle, 0, Data, 0, nullptr, &neededRejitData);
 			}
 			catch (Exception^) {}
 
 			m_Signature = DacHelpers::SOSHelpers::GetMethodDescName(helper->SOSDac, NativeHandle);
+		}
+		UIntPtr ClrMethod::ResolveNativeCode() {
+			if (m_NativeCodeAddress != UIntPtr::Zero)
+				return m_NativeCodeAddress;
+			try {
+				ClrModule^ module = m_DeclaringType != nullptr ? m_DeclaringType->Module : nullptr;
+				CLRDATA_ADDRESS modulePtr = module != nullptr ? module->NativeHandle : Data->ModulePtr;
+				int tokenToFind = m_MDToken != 0 ? m_MDToken : Data->MDToken;
+				IXCLRDataAppDomain* appDomain = module != nullptr
+					? module->Runtime->AppDomain->DataAppDomain
+					: nullptr;
+				IXCLRDataModule* dataModule = nullptr;
+				ISOSDacInterface* sos = MethodHelper->SOSDac;
+				if (modulePtr != 0 && tokenToFind != 0 && appDomain != nullptr &&
+					SUCCEEDED(sos->GetModule(modulePtr, &dataModule)) && dataModule != nullptr) {
+					IXCLRDataMethodDefinition* def = nullptr;
+					if (SUCCEEDED(dataModule->GetMethodDefinitionByToken(tokenToFind, &def)) && def != nullptr) {
+						CLRDATA_ADDRESS entry = 0;
+						m_RepresentativeEntryResult = def->GetRepresentativeEntryAddress(&entry);
+						m_RepresentativeEntryAddress = UIntPtr(entry);
+
+						CLRDATA_ENUM handle = 0;
+						if (SUCCEEDED(def->StartEnumInstances(appDomain, &handle))) {
+							IXCLRDataMethodInstance* inst = nullptr;
+							while (def->EnumInstance(&handle, &inst) == S_OK && inst != nullptr) {
+								CLRDATA_ADDRESS_RANGE extent = {};
+								CLRDATA_ENUM extentHandle = 0;
+								if (SUCCEEDED(inst->StartEnumExtents(&extentHandle))) {
+									while (inst->EnumExtent(&extentHandle, &extent) == S_OK) {
+										if (extent.startAddress != 0 && extent.endAddress > extent.startAddress) {
+											DacpCodeHeaderData codeHeader = {};
+											if (SUCCEEDED(sos->GetCodeHeaderData(extent.startAddress, &codeHeader)) &&
+												codeHeader.MethodDescPtr == NativeHandle) {
+												m_NativeCodeAddress = UIntPtr(extent.startAddress);
+												break;
+											}
+										}
+									}
+									inst->EndEnumExtents(extentHandle);
+								}
+
+								if (m_NativeCodeAddress == UIntPtr::Zero) {
+									ULONG32 rangesNeeded = 0;
+									inst->GetAddressRangesByILOffset(0, 0, &rangesNeeded, nullptr);
+									if (rangesNeeded > 0) {
+										CLRDATA_ADDRESS_RANGE* ranges = new CLRDATA_ADDRESS_RANGE[rangesNeeded];
+										if (SUCCEEDED(inst->GetAddressRangesByILOffset(0, rangesNeeded, &rangesNeeded, ranges))) {
+											for (ULONG32 i = 0; i < rangesNeeded; i++) {
+												if (ranges[i].startAddress != 0 && ranges[i].endAddress > ranges[i].startAddress) {
+													DacpCodeHeaderData codeHeader = {};
+													if (SUCCEEDED(sos->GetCodeHeaderData(ranges[i].startAddress, &codeHeader)) &&
+														codeHeader.MethodDescPtr == NativeHandle) {
+														m_NativeCodeAddress = UIntPtr(ranges[i].startAddress);
+														break;
+													}
+												}
+											}
+										}
+										delete[] ranges;
+									}
+								}
+
+								inst->Release();
+								inst = nullptr;
+								if (m_NativeCodeAddress != UIntPtr::Zero)
+									break;
+							}
+							def->EndEnumInstances(handle);
+						}
+						def->Release();
+					}
+					dataModule->Release();
+				}
+			}
+			catch (Exception^) {}
+			return m_NativeCodeAddress;
 		}
 		ClrMethod::~ClrMethod() {
 			delete Data;

@@ -252,6 +252,7 @@ namespace QHackCLR {
 		public:
 			property String^ Name { String^ get() { return m_Name; } }
 			property String^ FileName { String^ get() { return m_FileName; } }
+			property ClrRuntime^ Runtime { ClrRuntime^ get(); }
 			ClrModule(IModuleHelper^ helper, nuint handle);
 			~ClrModule();
 
@@ -273,6 +274,7 @@ namespace QHackCLR {
 			ClrType^ m_ComponentType;
 			Generic::IReadOnlyList<ClrField^>^ m_Fields;
 			Generic::IReadOnlyList<ClrMethod^>^ m_Methods;
+			Generic::IReadOnlyList<ClrMethod^>^ m_VTableMethods;
 			CorElementType GetCorElementType();
 		protected:
 			initonly ITypeHelper^ TypeHelper;
@@ -391,6 +393,9 @@ namespace QHackCLR {
 			property Generic::IReadOnlyList<ClrField^>^ Fields {
 				Generic::IReadOnlyList<ClrField^>^ get();
 			}
+			property Generic::IReadOnlyList<ClrMethod^>^ Methods {
+				Generic::IReadOnlyList<ClrMethod^>^ get();
+			}
 			property Generic::IReadOnlyList<ClrMethod^>^ MethodsInVTable {
 				Generic::IReadOnlyList<ClrMethod^>^ get();
 			}
@@ -476,7 +481,13 @@ namespace QHackCLR {
 		private:
 			initonly String^ m_Signature;
 			initonly MethodAttributes m_Attributes;
+			initonly int m_MDToken;
+			initonly int m_MethodDataResult;
+			int m_RepresentativeEntryResult;
+			UIntPtr m_RepresentativeEntryAddress;
+			UIntPtr m_NativeCodeAddress;
 			ClrType^ m_DeclaringType;
+			UIntPtr ResolveNativeCode();
 		protected:
 			initonly IMethodHelper^ MethodHelper;
 		internal:
@@ -496,22 +507,64 @@ namespace QHackCLR {
 
 			virtual property int MDToken {
 				int get() sealed {
-					return Data->MDToken;
+					return m_MDToken != 0 ? m_MDToken : Data->MDToken;
 				}
 			}
 
 			ClrMethod(IMethodHelper^ helper, nuint handle);
+			ClrMethod(IMethodHelper^ helper, ClrType^ declaringType, int mdToken, nuint handle);
 			~ClrMethod();
 
 			property ClrType^ DeclaringType {
 				ClrType^ get();
+			}
+			property bool HasNativeCode {
+				bool get() {
+					return Data->bHasNativeCode != 0;
+				}
+			}
+			property int MethodDataResult {
+				int get() {
+					return m_MethodDataResult;
+				}
+			}
+			property int RepresentativeEntryResult {
+				int get() {
+					return m_RepresentativeEntryResult;
+				}
+			}
+			[NativeInteger]
+			property UIntPtr RepresentativeEntryAddress {
+				UIntPtr get() {
+					return m_RepresentativeEntryAddress;
+				}
+			}
+			[NativeInteger]
+			property UIntPtr ResolvedNativeCodeAddress {
+				UIntPtr get() {
+					return m_NativeCodeAddress;
+				}
+			}
+			[NativeInteger]
+			property UIntPtr AddressOfNativeCodeSlot {
+				UIntPtr get() {
+					return UIntPtr(Data->AddressOfNativeCodeSlot);
+				}
+			}
+			[NativeInteger]
+			property UIntPtr MethodTable {
+				UIntPtr get() {
+					return UIntPtr(Data->MethodTablePtr);
+				}
 			}
 			[NativeInteger]
 			property UIntPtr NativeCode {
 				UIntPtr get() {
 					if (Data->NativeCodeAddr == -1)//this field is sign extended hence would cause exception on getting -1
 						return UIntPtr(UIntPtr::Size == 4 ? (unsigned int)(-1) : (unsigned long long) - 1);
-					return UIntPtr(Data->NativeCodeAddr);
+					if (Data->NativeCodeAddr != 0)
+						return UIntPtr(Data->NativeCodeAddr);
+					return ResolveNativeCode();
 				}
 			}
 			property String^ Name {

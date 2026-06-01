@@ -64,7 +64,10 @@ public class FunctionButton : ToggleButton
 	protected override void OnClick()
 	{
 		if (!IsCheckable)
+		{
 			FunctionEnabling?.Invoke(this, EventArgs.Empty);
+			return;
+		}
 		if (!IsChecked.GetValueOrDefault())
 			FunctionEnabling?.Invoke(this, EventArgs.Empty);
 		else

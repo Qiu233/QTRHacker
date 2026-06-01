@@ -11,6 +11,8 @@ namespace QHackCLR {
 		static bool CorElementTypeIsObjectReference(CorElementType cet);
 	public:
 		static String^ GetJitHelperFunctionName(ISOSDacInterface* sosDac, UIntPtr addr);
+		static String^ DescribeCodeAddress(ISOSDacInterface* sosDac, UIntPtr addr);
+		static UIntPtr GetMethodStartAddress(ISOSDacInterface* sosDac, UIntPtr addr);
 	};
 
 	ref class QHackCLRException : Exception {

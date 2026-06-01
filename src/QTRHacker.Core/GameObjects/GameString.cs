@@ -43,7 +43,15 @@ public class GameString : GameObjectArrayV<char>
 			AssemblySnippet.FromConstructString(ctx.HContext, addr, resAddr)
 		});
 		var thread = ctx.RunOnManagedThread(asm);
-		if (!Task.Run(() => thread.WaitToDispose()).Wait(2000))//won't forcefully dispose because that would cause game crashing
+		if (thread == null)
+		{
+			// Fallback: code was injected via RunByHookUpdate, wait a bit for it to execute
+			if (!Task.Run(() => System.Threading.Thread.Sleep(500)).Wait(2000))
+			{
+				throw new Exception("Failed to create string object");
+			}
+		}
+		else if (!Task.Run(() => thread.WaitToDispose()).Wait(2000))//won't forcefully dispose because that would cause game crashing
 		{
 			throw new Exception("Failed to create string object");
 		}

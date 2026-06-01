@@ -18,7 +18,7 @@ namespace QTRHacker.Patches
 		}
 		static AutoFishing()
 		{
-			HooksDef.DoUpdateHook.Pre += DoUpdateHook_Pre;
+			Boot.OnGameUpdate += DoUpdateHook_Pre;
 		}
 #pragma warning disable IDE0044 // Add readonly modifier
 		private static AutoFishingMode Mode = AutoFishingMode.Disabled;
@@ -41,6 +41,7 @@ namespace QTRHacker.Patches
 
 		private static void DoUpdateHook_Pre()
 		{
+			ReadSharedState();
 			if (Mode == AutoFishingMode.Disabled)
 				return;
 
@@ -102,7 +103,7 @@ namespace QTRHacker.Patches
 			}
 
 			if (PlayerInput.MouseInfo.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed
-				&& !did && Ready && Main.hasFocus && InsideScreen(PlayerInput.MouseInfo.X, PlayerInput.MouseInfo.Y))
+				&& !did && Ready && GameFocusHelper.HasFocus && InsideScreen(PlayerInput.MouseInfo.X, PlayerInput.MouseInfo.Y))
 			{
 				Ready = false;
 			}
@@ -113,6 +114,14 @@ namespace QTRHacker.Patches
 				UseItem(); // cast
 				did = true;
 			}
+		}
+
+		private static unsafe void ReadSharedState()
+		{
+			PatchState.State* state = PatchState.Shared;
+			Mode = (AutoFishingMode)state->AutoFishing_Mode;
+			CratesOnly = PatchState.GetBool(state->AutoFishing_CratesOnly);
+			QuestItemsOnly = PatchState.GetBool(state->AutoFishing_QuestItemsOnly);
 		}
 
 		private static bool InsideScreen(int x, int y)

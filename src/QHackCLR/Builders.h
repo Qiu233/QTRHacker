@@ -74,6 +74,7 @@ namespace QHackCLR {
 				property DataTargets::DataAccess^ DataAccess { DataTargets::DataAccess^ get(); }
 				property IClrObjectHelper^ ClrObjectHelper { IClrObjectHelper^ get(); }
 				System::Collections::Generic::IEnumerable<Common::ClrField^>^ EnumerateFields(Common::ClrType^ type);
+				System::Collections::Generic::IEnumerable<Common::ClrMethod^>^ EnumerateMethods(Common::ClrType^ type);
 				System::Collections::Generic::IEnumerable<Common::ClrMethod^>^ EnumerateVTableMethods(Common::ClrType^ type);
 				Common::ClrModule^ GetModule(UIntPtr handle);
 			};
@@ -145,6 +146,7 @@ namespace QHackCLR {
 			virtual IMetaDataImport* GetMetadataImport(Common::ClrModule^ module) sealed;
 			virtual UIntPtr GetStaticFieldAddress(Common::ClrStaticField^ field) sealed;
 			virtual System::Collections::Generic::IEnumerable<Common::ClrField^>^ EnumerateFields(Common::ClrType^ type) sealed;
+			virtual System::Collections::Generic::IEnumerable<Common::ClrMethod^>^ EnumerateMethods(Common::ClrType^ type) sealed;
 			virtual System::Collections::Generic::IEnumerable<Common::ClrMethod^>^ EnumerateVTableMethods(Common::ClrType^ type) sealed;
 
 			virtual bool GetFieldProps(Common::ClrType^ parentType, int token, String^% name, FieldAttributes% attributes) sealed;

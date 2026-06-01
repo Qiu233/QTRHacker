@@ -153,17 +153,61 @@ namespace QHackCLR {
 			}
 			return fields;
 		}
+
+		Generic::IEnumerable<Common::ClrMethod^>^ RuntimeBuilder::EnumerateMethods(Common::ClrType^ type) {
+			List<Common::ClrMethod^>^ methods = gcnew List<Common::ClrMethod^>();
+			IMetaDataImport* import = type->Module->MetadataImport;
+			if (import == nullptr)
+				return methods;
+
+			HCORENUM enumerator = nullptr;
+			mdMethodDef tokens[64];
+			ULONG fetched = 0;
+			do
+			{
+				HRESULT hr = import->EnumMethods(&enumerator, type->MDToken, tokens, 64, &fetched);
+				if (FAILED(hr))
+					break;
+
+				for (ULONG i = 0; i < fetched; i++)
+				{
+					CLRDATA_ADDRESS methodDesc = 0;
+					if (FAILED(SOSDac->GetMethodDescFromToken(type->Module->NativeHandle, tokens[i], &methodDesc)))
+						continue;
+					if (methodDesc == 0)
+						continue;
+					methods->Add(gcnew Common::ClrMethod(this, type, tokens[i], UIntPtr(methodDesc)));
+				}
+			} while (fetched > 0);
+
+			if (enumerator != nullptr)
+				import->CloseEnum(enumerator);
+			return methods;
+		}
+
 		Generic::IEnumerable<Common::ClrMethod^>^ RuntimeBuilder::EnumerateVTableMethods(Common::ClrType^ type) {
 			auto mt = type->NativeHandle;
 			DacpMethodTableData mtData;
 			SOSDac->GetMethodTableData(mt, &mtData);
 			List<Common::ClrMethod^>^ methods = gcnew List<Common::ClrMethod^>();
-			for (int i = 0; i < mtData.wNumMethods; i++)
+
+			// Use wNumVtableSlots (total VTable slots including inherited) not wNumMethods
+			// (only methods declared by this type). Methods at inherited slots are missed
+			// when iterating only up to wNumMethods.
+			int totalSlots = mtData.wNumVtableSlots;
+			if (totalSlots == 0)
+				totalSlots = mtData.wNumMethods;
+
+			for (int i = 0; i < totalSlots; i++)
 			{
 				CLRDATA_ADDRESS slot;
 				DacpCodeHeaderData chdata;
 				SOSDac->GetMethodTableSlot(mt, i, &slot);
+				if (slot == 0)
+					continue; // Skip empty VTable slots (methods not yet JIT-compiled)
 				auto hr = SOSDac->GetCodeHeaderData(slot, &chdata);
+				if (FAILED(hr) || chdata.MethodDescPtr == 0)
+					continue; // Skip slots where code header can't be retrieved
 				methods->Add(gcnew Common::ClrMethod(this, UIntPtr(chdata.MethodDescPtr)));
 			}
 			return methods;

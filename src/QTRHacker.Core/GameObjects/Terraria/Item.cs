@@ -1,6 +1,7 @@
 ﻿using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.Memory;
+using QTRHacker.Core.GameObjects.ValueTypeRedefs.Xna;
 
 namespace QTRHacker.Core.GameObjects.Terraria;
 
@@ -52,9 +53,9 @@ public partial class Item : Entity
 		Context.RunByHookUpdate(
 			new HackMethod(Context.HContext,
 				Context.GameModuleHelper.GetClrMethodBySignature("Terraria.Item",
-				"Terraria.Item.NewItem(Terraria.DataStructures.IEntitySource, Int32, Int32, Int32, Int32, Int32, Int32, Boolean, Int32, Boolean)"))
+				"Terraria.Item.NewItem(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, Int32, Int32, Boolean, Int32, Boolean)"))
 			.Call(null)
-			.Call(true, null, ret.AllocationBase, new object[] { 0, X, Y, Width, Height, Type, Stack, noBroadcast, pfix, noGrabDelay }));
+			.Call(true, null, ret.AllocationBase, new object[] { 0, new Vector2(X, Y), new Vector2(Width, Height), Type, Stack, noBroadcast, pfix, noGrabDelay }));
 
 		return Context.HContext.DataAccess.Read<int>(ret.AllocationBase);
 	}

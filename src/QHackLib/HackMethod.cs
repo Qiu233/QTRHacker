@@ -24,7 +24,8 @@ namespace QHackLib
 
 		public AssemblyCode Call(bool regProtection, nuint? thisPtr, nuint? retBuf, nuint? userEax, object[] args)
 		{
-			return AssemblySnippet.FromClrCall(InternalClrMethod.NativeCode, regProtection, thisPtr, retBuf, userEax, args);
+			nuint nativeCode = Context.GetCLRHelper(InternalClrMethod.DeclaringType.Module.Name).GetNativeCode(InternalClrMethod);
+			return AssemblySnippet.FromClrCall(nativeCode, regProtection, thisPtr, retBuf, userEax, args);
 		}
 		public HackMethodCall Call(nuint? thisPtr)
 		{

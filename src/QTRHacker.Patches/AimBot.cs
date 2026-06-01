@@ -30,7 +30,7 @@ namespace QTRHacker.Patches
 		public static bool HostilePlayersOnly = true;
 		static AimBot()
 		{
-			HooksDef.DoUpdateHook.Pre += DoUpdateHook_Pre;
+			Boot.OnGameUpdate += DoUpdateHook_Pre;
 		}
 
 		private static Entity GetTarget()
@@ -56,9 +56,10 @@ namespace QTRHacker.Patches
 
 		private static void DoUpdateHook_Pre()
 		{
+			ReadSharedState();
 			if (Mode == AimBotMode.Disabled)
 				return;
-			if (!Main.hasFocus)
+			if (!GameFocusHelper.HasFocus)
 				return;
 			Entity p = GetTarget();
 			if (p is null)
@@ -83,6 +84,17 @@ namespace QTRHacker.Patches
 			var mousePos = bulletStart - Main.screenPosition + 128 * Vector2.Normalize(playerToTargetDst);
 			PlayerInput.MouseX = (int)Math.Round(mousePos.X);
 			PlayerInput.MouseY = (int)Math.Round(mousePos.Y);
+		}
+
+		private static unsafe void ReadSharedState()
+		{
+			PatchState.State* state = PatchState.Shared;
+			Mode = (AimBotMode)state->AimBot_Mode;
+			TargetedPlayerIndex = state->AimBot_TargetedPlayerIndex;
+			MaxDistance_NPC = state->AimBot_MaxDistance_NPC;
+			HostileNPCsOnly = PatchState.GetBool(state->AimBot_HostileNPCsOnly);
+			MaxDistance_Player = state->AimBot_MaxDistance_Player;
+			HostilePlayersOnly = PatchState.GetBool(state->AimBot_HostilePlayersOnly);
 		}
 
 		private static Vector2 Calculate(Vector2 targetPos, Vector2 playerPos, Vector2 targetV, float bulletV)

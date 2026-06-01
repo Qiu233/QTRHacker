@@ -154,10 +154,14 @@ public class GameContext : IDisposable
 		set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "dayTime", value);
 	}
 
+	/// <summary>
+	/// Terraria 1.4.5.6: fastForwardTime was renamed to fastForwardTimeToDawn.
+	/// Setting fastForwardTimeToDawn=true triggers the sundial effect (fast forward to dawn).
+	/// </summary>
 	public bool FastForwardTime
 	{
-		get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "fastForwardTime");
-		set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "fastForwardTime", value);
+		get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "fastForwardTimeToDawn");
+		set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "fastForwardTimeToDawn", value);
 	}
 
 	public bool PumpkinMoon
@@ -180,6 +184,28 @@ public class GameContext : IDisposable
 	{
 		get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "eclipse");
 		set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "eclipse", value);
+	}
+
+	public bool Sandstorm
+	{
+		get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.GameContent.Events.Sandstorm", "Happening");
+		set => GameModuleHelper.SetStaticFieldValue("Terraria.GameContent.Events.Sandstorm", "Happening", value);
+	}
+
+	public bool LanternNight
+	{
+		get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.GameContent.Events.LanternNight", "ManualLanterns");
+		set
+		{
+			if (value != LanternNight)
+				Patches.ToggleLanternNight();
+		}
+	}
+
+	public bool SlimeRain
+	{
+		get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "slimeRain");
+		set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "slimeRain", value);
 	}
 
 	public double Time
@@ -223,6 +249,12 @@ public class GameContext : IDisposable
 	/// <param name="codeToRun"></param>
 	/// <param name="size"></param>
 	/// <returns></returns>
+	/// <summary>
+	/// Runs code on a managed thread via Task.Run. If the BCL methods needed for
+	/// managed thread creation aren't JIT-compiled, falls back to RunByHookUpdate.
+	/// </summary>
+	/// <returns>RemoteThread if managed thread was used, or null if fallback was used.
+	/// Callers that receive null should NOT call WaitToDispose on the result.</returns>
 	public RemoteThread RunOnManagedThread(AssemblyCode codeToRun, uint size = 0x1000)
 	{
 		using MemoryAllocation alloc = new(HContext, size);
@@ -231,10 +263,22 @@ public class GameContext : IDisposable
 		alloc.Write<short>(0, (uint)bs.Length);
 		RemoteThread re = RemoteThread.Create(HContext, codeToRun);
 
-		RunByHookUpdate(AssemblySnippet.StartManagedThread(
+		var managedThreadSnippet = AssemblySnippet.StartManagedThread(
 				HContext,
 				re.CodeAddress,
-				alloc.AllocationBase));
+				alloc.AllocationBase);
+
+		if (managedThreadSnippet == null)
+		{
+			// StartManagedThread failed (BCL methods not JIT-compiled).
+			// Fallback: run the code via RunByHookUpdate (injected into Update).
+			// Dispose the unused RemoteThread to avoid dangling resource.
+			re.Dispose();
+			RunByHookUpdate(codeToRun, size);
+			return null; // Signal to caller that fallback was used
+		}
+
+		RunByHookUpdate(managedThreadSnippet);
 
 		return re;
 	}
@@ -242,11 +286,24 @@ public class GameContext : IDisposable
 	public bool RunByHookUpdate(AssemblyCode codeToRun, uint size = 0x1000)
 	{
 		System.Threading.Monitor.Enter(LOCK_UPDATE);
-		bool v = InlineHook.HookOnce(
-				HContext, codeToRun,
-				GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update"), size);
-		System.Threading.Monitor.Exit(LOCK_UPDATE);
-		return v;
+		try
+		{
+			var protectedCode = AssemblySnippet.FromCode(new AssemblyCode[] {
+				(Instruction)"push ecx",
+				(Instruction)"push edx",
+				codeToRun,
+				(Instruction)"pop edx",
+				(Instruction)"pop ecx",
+			});
+			bool v = InlineHook.HookOnce(
+					HContext, protectedCode,
+					TerrariaHookPoints.GetMainUpdateAddress(this), size, 5000);
+			return v;
+		}
+		finally
+		{
+			System.Threading.Monitor.Exit(LOCK_UPDATE);
+		}
 	}
 	private CLRHelper _GameModuleHelper;
 	public CLRHelper GameModuleHelper => _GameModuleHelper ??= HContext.CLRHelpers.First(t
@@ -257,7 +314,18 @@ public class GameContext : IDisposable
 
 	public static GameContext OpenGame(Process process)
 	{
-		return new GameContext(process);
+		var context = new GameContext(process);
+		context.DisableAutoPauseForTools();
+		return context;
+	}
+
+	private void DisableAutoPauseForTools()
+	{
+		try
+		{
+			GameModuleHelper.SetStaticFieldValue("Terraria.Main", "autoPause", false);
+		}
+		catch { }
 	}
 
 	public void Dispose()
@@ -282,6 +350,9 @@ public class GameContext : IDisposable
 
 		nuint pData = stream.IP; stream.Write(data, (uint)data.Length);
 		nuint pTypeStr = stream.IP; stream.WriteWCHARArray(typeName);
+		nuint pAssemblyResult = stream.IP; stream.Write<nuint>(0);
+		nuint pTypeResult = stream.IP; stream.Write<nuint>(0);
+		nuint pInstanceResult = stream.IP; stream.Write<nuint>(0);
 		nuint byteMT = HContext.Runtime.BaseClassLibrary.GetTypeByName("System.Byte").ClrHandle;
 		nuint jitHelper_typeof = JitHelpersManager.GetJitHelperAddress("CORINFO_HELP_TYPEHANDLE_TO_RUNTIMETYPE");
 		// The key is to find this jit helper, so we can create an array of bytes.
@@ -290,14 +361,14 @@ public class GameContext : IDisposable
 		// which contradicts the source code of coreclr.
 		// The only reason I can think of is that legacy clr is a bit more tricky in this way.
 
-		nuint arrayCreateInstance = HContext.BCLHelper.GetClrMethodBySignature("System.Array",
-			"System.Array.CreateInstance(System.Type, Int32)").NativeCode;
-		nuint load = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
-			"System.Reflection.Assembly.Load(Byte[])").NativeCode;
-		nuint getType = HContext.BCLHelper.GetClrMethodBySignature("System.Reflection.Assembly",
-			"System.Reflection.Assembly.GetType(System.String)").NativeCode;
-		nuint createInstance = HContext.BCLHelper.GetClrMethodBySignature("System.Activator",
-			"System.Activator.CreateInstance(System.Type)").NativeCode;
+		nuint arrayCreateInstance = HContext.BCLHelper.GetFunctionAddress("System.Array",
+			m => m.Signature == "System.Array.CreateInstance(System.Type, Int32)");
+		nuint load = HContext.BCLHelper.GetFunctionAddress("System.Reflection.Assembly",
+			m => m.Signature == "System.Reflection.Assembly.Load(Byte[])");
+		nuint getType = HContext.BCLHelper.GetFunctionAddress("System.Reflection.Assembly",
+			m => m.Signature == "System.Reflection.Assembly.GetType(System.String)");
+		nuint createInstance = HContext.BCLHelper.GetFunctionAddress("System.Activator",
+			m => m.Signature == "System.Activator.CreateInstance(System.Type)");
 
 		var thCode = AssemblySnippet.FromCode(
 			new AssemblyCode[] {
@@ -322,16 +393,66 @@ public class GameContext : IDisposable
 				// LOOP END
 				(Instruction)$"mov ecx, esi",
 				(Instruction)$"call {load}",
+				(Instruction)$"mov [{pAssemblyResult}], eax",
 				(Instruction)$"push eax",
 				AssemblySnippet.FromConstructString(HContext, pTypeStr),
 				(Instruction)$"mov edx, eax",
 				(Instruction)$"pop ecx",
 				(Instruction)$"call {getType}",
+				(Instruction)$"mov [{pTypeResult}], eax",
 				(Instruction)$"mov ecx, eax",
 				(Instruction)$"call {createInstance}",
+				(Instruction)$"mov [{pInstanceResult}], eax",
 		});
-		bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(5000);
+		bool result = RunByHookUpdate(thCode, (uint)data.Length + 0x1000);
 		Flush();
-		return result;
+		return result
+			&& HContext.DataAccess.Read<nuint>(pAssemblyResult) != 0
+			&& HContext.DataAccess.Read<nuint>(pTypeResult) != 0
+			&& HContext.DataAccess.Read<nuint>(pInstanceResult) != 0;
+	}
+
+	public unsafe bool LoadAssemblyFrom(string assemblyFile, string typeName)
+	{
+		string fullPath = Path.GetFullPath(assemblyFile);
+		int allocSize = (fullPath.Length + typeName.Length + 4) * 2 + 0x1000;
+		using MemoryAllocation alloc = new(HContext, (uint)allocSize);
+		var stream = new RemoteMemorySpan(HContext, alloc.AllocationBase, (int)alloc.AllocationSize).GetStream();
+
+		nuint pAssemblyPath = stream.IP; stream.WriteWCHARArray(fullPath);
+		nuint pTypeStr = stream.IP; stream.WriteWCHARArray(typeName);
+		nuint pAssemblyResult = stream.IP; stream.Write<nuint>(0);
+		nuint pTypeResult = stream.IP; stream.Write<nuint>(0);
+		nuint pInstanceResult = stream.IP; stream.Write<nuint>(0);
+
+		nuint loadFrom = HContext.BCLHelper.GetFunctionAddress("System.Reflection.Assembly",
+			m => m.Signature == "System.Reflection.Assembly.LoadFrom(System.String)");
+		nuint getType = HContext.BCLHelper.GetFunctionAddress("System.Reflection.Assembly",
+			m => m.Signature == "System.Reflection.Assembly.GetType(System.String)");
+		nuint createInstance = HContext.BCLHelper.GetFunctionAddress("System.Activator",
+			m => m.Signature == "System.Activator.CreateInstance(System.Type)");
+
+		var thCode = AssemblySnippet.FromCode(
+			new AssemblyCode[] {
+				AssemblySnippet.FromConstructString(HContext, pAssemblyPath),
+				(Instruction)$"mov ecx, eax",
+				(Instruction)$"call {loadFrom}",
+				(Instruction)$"mov [{pAssemblyResult}], eax",
+				(Instruction)$"push eax",
+				AssemblySnippet.FromConstructString(HContext, pTypeStr),
+				(Instruction)$"mov edx, eax",
+				(Instruction)$"pop ecx",
+				(Instruction)$"call {getType}",
+				(Instruction)$"mov [{pTypeResult}], eax",
+				(Instruction)$"mov ecx, eax",
+				(Instruction)$"call {createInstance}",
+				(Instruction)$"mov [{pInstanceResult}], eax",
+		});
+		bool result = RunByHookUpdate(thCode, (uint)allocSize);
+		Flush();
+		return result
+			&& HContext.DataAccess.Read<nuint>(pAssemblyResult) != 0
+			&& HContext.DataAccess.Read<nuint>(pTypeResult) != 0
+			&& HContext.DataAccess.Read<nuint>(pInstanceResult) != 0;
 	}
 }

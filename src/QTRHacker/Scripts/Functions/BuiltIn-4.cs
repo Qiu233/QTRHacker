@@ -88,6 +88,45 @@ public class TogglePumpkinMoon : EventFunction
 	public override void Enable(GameContext ctx) => ctx.PumpkinMoon = !ctx.PumpkinMoon;
 }
 
+public class ToggleSandstorm : EventFunction
+{
+	public override void ApplyLocalization(string culture)
+	{
+		Name = culture switch
+		{
+			"zh" => "开/关 沙尘暴",
+			_ => "Enable/Disable Sandstorm",
+		};
+	}
+	public override void Enable(GameContext ctx) => ctx.Sandstorm = !ctx.Sandstorm;
+}
+
+public class ToggleLanternNight : EventFunction
+{
+	public override void ApplyLocalization(string culture)
+	{
+		Name = culture switch
+		{
+			"zh" => "开/关 灯笼夜",
+			_ => "Enable/Disable Lantern Night",
+		};
+	}
+	public override void Enable(GameContext ctx) => ctx.Patches.ToggleLanternNight();
+}
+
+public class ToggleSlimeRain : EventFunction
+{
+	public override void ApplyLocalization(string culture)
+	{
+		Name = culture switch
+		{
+			"zh" => "开/关 史莱姆雨",
+			_ => "Enable/Disable Slime Rain",
+		};
+	}
+	public override void Enable(GameContext ctx) => ctx.SlimeRain = !ctx.SlimeRain;
+}
+
 
 public class BuiltIn_4 : FunctionCategory
 {
@@ -102,5 +141,8 @@ public class BuiltIn_4 : FunctionCategory
 		Add<ToggleEclipse>();
 		Add<ToggleSnowMoon>();
 		Add<TogglePumpkinMoon>();
+		Add<ToggleSandstorm>();
+		Add<ToggleLanternNight>();
+		Add<ToggleSlimeRain>();
 	}
 }

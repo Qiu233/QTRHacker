@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using QTRHacker.Core;
 using QTRHacker.Models.Wiki;
 using System.IO;
 using System.IO.Compression;
@@ -53,6 +54,7 @@ public static class WikiResLoader
 		NPCDatum.Clear();
 		using (var u = new StreamReader(z.GetEntry("NPCInfo.json").Open()))
 			NPCDatum.AddRange(JsonConvert.DeserializeObject<List<NPCData>>(u.ReadToEnd()));
+		EnsureNPCDataCapacity(GameConstants.MaxNPCTypesFallback);
 	}
 
 	private static void LoadItemDatum(ZipArchive z)
@@ -73,13 +75,52 @@ public static class WikiResLoader
 			ItemDatum.AddRange(JsonConvert.DeserializeObject<List<ItemData>>(u.ReadToEnd()));
 		using (var u = new StreamReader(z.GetEntry("RecipeInfo.json").Open()))
 			RecipeDatum.AddRange(JsonConvert.DeserializeObject<List<RecipeData>>(u.ReadToEnd()));
+		EnsureItemDataCapacity(GameConstants.MaxItemTypesFallback);
+	}
+
+	private static void EnsureItemDataCapacity(int count)
+	{
+		for (int type = ItemDatum.Count; type < count; type++)
+		{
+			string key = $"UnknownItem_{type}";
+			ItemTypes[key] = type;
+			ItemKeys[type] = key;
+			ItemDatum.Add(new ItemData
+			{
+				Type = type,
+				MaxStack = 1,
+				HeadSlot = -1,
+				BodySlot = -1,
+				LegSlot = -1,
+				CreateTile = -1,
+				CreateWall = -1,
+				PlaceStyle = -1
+			});
+		}
+	}
+
+	private static void EnsureNPCDataCapacity(int count)
+	{
+		for (int type = NPCDatum.Count; type < count; type++)
+		{
+			string key = $"UnknownNPC_{type}";
+			NPCTypes[key] = type;
+			NPCKeys[type] = key;
+			NPCDatum.Add(new NPCData
+			{
+				Type = type,
+				Width = 32,
+				Height = 48,
+				KnockBackResist = 1f
+			});
+		}
 	}
 
 	public static string GetItemKeyFromType(int type)
 	{
 		if (ItemKeys.TryGetValue(type, out string v))
 			return v;
-		return "Unknown";
+		return $"UnknownItem_{type}";
 	}
 
 	public static int GetItemTypeFromKey(string key)
@@ -93,7 +134,7 @@ public static class WikiResLoader
 	{
 		if (NPCKeys.TryGetValue(type, out string v))
 			return v;
-		return "Unknown";
+		return $"UnknownNPC_{type}";
 	}
 
 	public static int GetNPCTypeFromKey(string key)

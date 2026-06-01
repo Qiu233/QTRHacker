@@ -1,9 +1,25 @@
-﻿namespace QTRHacker.Core;
+using System;
+
+namespace QTRHacker.Core;
 
 public static class GameConstants
 {
-	public const int MaxItemTypes = 5456;
-	public static int[] NPCFrameCount = new int[688]
+	/// <summary>
+	/// Terraria 1.4.5.6: ItemID.Count = 6147, NPCID.Count = 697
+	/// </summary>
+	public const int MaxItemTypesFallback = 6147;
+	public const int MaxNPCTypesFallback = 697;
+	public const int MaxNPCFrameCountFallback = MaxNPCTypesFallback;
+
+	public static int GetMaxItemTypes(GameContext ctx)
+	{
+		return MaxItemTypesFallback;
+	}
+
+	private static int[] _npcFrameCount;
+	private static readonly object _npcLock = new();
+
+	private static readonly int[] NpcFrameCountData = new int[688]
 	{
 		1, 2, 2, 3, 6, 2, 2, 1, 1, 1,
 		1, 1, 1, 1, 1, 1, 2, 25, 23, 25,
@@ -75,4 +91,31 @@ public static class GameConstants
 		14, 6, 6, 6, 6, 6, 2, 4, 14, 14,
 		14, 14, 14, 14, 14, 1, 1, 13
 	};
+
+	public static int GetNPCFrameCount(int type)
+	{
+		if (type < NpcFrameCountData.Length)
+			return NpcFrameCountData[type];
+
+		lock (_npcLock)
+		{
+			if (_npcFrameCount == null)
+			{
+				_npcFrameCount = new int[NpcFrameCountData.Length + 256];
+				Array.Copy(NpcFrameCountData, _npcFrameCount, NpcFrameCountData.Length);
+				for (int i = NpcFrameCountData.Length; i < _npcFrameCount.Length; i++)
+					_npcFrameCount[i] = 1;
+			}
+			if (type < _npcFrameCount.Length)
+				return _npcFrameCount[type];
+
+			int newSize = type + 256;
+			var newArr = new int[newSize];
+			Array.Copy(_npcFrameCount, newArr, _npcFrameCount.Length);
+			for (int i = _npcFrameCount.Length; i < newSize; i++)
+				newArr[i] = 1;
+			_npcFrameCount = newArr;
+			return 1;
+		}
+	}
 }

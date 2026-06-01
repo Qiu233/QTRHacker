@@ -62,8 +62,12 @@ namespace QHackLib
 		}
 
 
-		public HackMethodCall GetMethodCall(string sig) => new HackMethod(Context, Type.MethodsInVTable.First(t => t.Signature == sig)).Call(BaseAddress);
-		public HackMethodCall GetMethodCall(Func<ClrMethod, bool> filter) => new HackMethod(Context, Type.MethodsInVTable.First(t => filter(t))).Call(BaseAddress);
+		public HackMethodCall GetMethodCall(string sig) => GetMethodCall(t => t.Signature == sig);
+		public HackMethodCall GetMethodCall(Func<ClrMethod, bool> filter)
+		{
+			ClrMethod method = Context.GetCLRHelper(Type.Module.Name).GetClrMethod(Type.Name, t => filter(t));
+			return new HackMethod(Context, method).Call(BaseAddress);
+		}
 
 	}
 }

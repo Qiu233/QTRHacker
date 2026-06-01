@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -14,26 +16,85 @@ namespace QTRHacker.Patches
 	{
 		public static readonly string Version = "1.1.0.0";
 		public static bool Initialized = false;
+		public static event Action OnGameUpdate;
 		public static event Action<SpriteBatch> OnGameDraw;
+		private static bool GameLayerInstalled = false;
+		private static System.Windows.Forms.Timer UpdateTimer = null;
 		static Boot()
 		{
 			if (Initialized)
 				return;
 			try
 			{
-				LoadAll();
+				RuntimeHelpers.RunClassConstructor(typeof(PatchState).TypeHandle);
+				InitializePatchTypes();
+
+				StartUpdateTimer();
+				EnsureGameInterfaceLayer();
 				Initialized = true;
+			}
+			catch (Exception e)
+			{
+				File.WriteAllText("./QTRHacker.Patches.boot.log", $"{e.GetType()}:{e.Message}\n{e.StackTrace}\n");
+			}
+		}
+		private static void InitializePatchTypes()
+		{
+			RuntimeHelpers.RunClassConstructor(typeof(AimBot).TypeHandle);
+			RuntimeHelpers.RunClassConstructor(typeof(AutoFishing).TypeHandle);
+			RuntimeHelpers.RunClassConstructor(typeof(WorldPainter).TypeHandle);
+		}
+		private static void StartUpdateTimer()
+		{
+			if (UpdateTimer != null)
+				return;
 
-				HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("QTRHacker.Patches");
-				harmony.PatchAll();
+			UpdateTimer = new System.Windows.Forms.Timer
+			{
+				Interval = 15
+			};
+			UpdateTimer.Tick += delegate
+			{
+				try
+				{
+					EnsureGameInterfaceLayer();
+					RunPatchUpdate();
+				}
+				catch (Exception e)
+				{
+					File.AppendAllText("./QTRHacker.Patches.Exceptions.log", $"{e.GetType()}:{e.Message}\n{e.StackTrace}\n");
+				}
+			};
+			UpdateTimer.Start();
+		}
 
-				List<GameInterfaceLayer> layers =
-					typeof(Main).GetField("_gameInterfaceLayers", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(Main.instance) as List<GameInterfaceLayer>;
+		private static void EnsureGameInterfaceLayer()
+		{
+			if (GameLayerInstalled)
+				return;
+
+			try
+			{
+				if (Main.instance == null)
+					return;
+
+				FieldInfo field = typeof(Main).GetField("_gameInterfaceLayers", BindingFlags.NonPublic | BindingFlags.Instance);
+				if (field == null)
+					return;
+
+				List<GameInterfaceLayer> layers = field.GetValue(Main.instance) as List<GameInterfaceLayer>;
+				if (layers == null)
+					return;
+
+				layers.RemoveAll(t => t.Name == "QTRHacker: Game");
 				int index = layers.FindIndex(t => t.Name == "Vanilla: Mouse Text");
+				if (index < 0)
+					index = layers.Count;
 				layers.Insert(index, new LegacyGameInterfaceLayer("QTRHacker: Game", delegate
 				{
 					try
 					{
+						RunPatchUpdate();
 						OnGameDraw?.Invoke(Main.spriteBatch);
 					}
 					catch (Exception e)
@@ -42,17 +103,19 @@ namespace QTRHacker.Patches
 					}
 					return true;
 				}, InterfaceScaleType.Game));
+				GameLayerInstalled = true;
 			}
 			catch (Exception e)
 			{
-				File.WriteAllText("./QTRHacker.Patches.boot.log", $"{e.GetType()}:{e.Message}\n{e.StackTrace}\n");
+				File.AppendAllText("./QTRHacker.Patches.boot.log", $"{e.GetType()}:{e.Message}\n{e.StackTrace}\n");
 			}
 		}
-		static void LoadAll()
+
+		private static void RunPatchUpdate()
 		{
-			var asm = System.Reflection.Assembly.GetExecutingAssembly();
-			foreach (var type in asm.DefinedTypes)
-				System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+			OnGameUpdate?.Invoke();
+			PlayerToggles.Apply();
+			RuntimeActions.ApplyQueuedActions();
 		}
 	}
 }

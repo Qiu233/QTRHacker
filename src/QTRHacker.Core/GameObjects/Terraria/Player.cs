@@ -23,10 +23,13 @@ public partial class Player : Entity
 	public const int BUFF_MAX_COUNT = 22;
 	public const int MAX_PLAYER = 256;
 
-	public void AddBuff(int type, int time, bool quiet = true, bool foodHack = false)
+	public void AddBuff(int type, int time, bool quiet = true)
 	{
-		Context.RunByHookUpdate(TypedInternalObject.GetMethodCall("Terraria.Player.AddBuff(Int32, Int32, Boolean, Boolean)")
-			.Call(true, null, null, new object[] { type, time, quiet, foodHack }));
+		// Terraria 1.4.5.6: AddBuff signature changed from (Int32, Int32, Boolean, Boolean)
+		// to (Int32, Int32, Boolean) - the foodHack parameter was removed.
+		// The third param is now 'fromNetPvP' instead of 'quiet'. Pass false for normal buff time.
+		Context.RunByHookUpdate(TypedInternalObject.GetMethodCall("Terraria.Player.AddBuff(Int32, Int32, Boolean)")
+			.Call(true, null, null, new object[] { type, time, false }));
 	}
 
 	public void SaveInventory(Stream s)

@@ -13,7 +13,7 @@
     <ProjectGuid>{4944FB86-95C2-4F45-BD72-29917A65E997}</ProjectGuid>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CLRSupport>NetCore</CLRSupport>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <RootNamespace>QHackCLR</RootNamespace>
     <TargetFramework>net7.0</TargetFramework>
     <CharacterSet>Unicode</CharacterSet>

@@ -14,5 +14,10 @@ public class ActionOnManagedThread
 		Size = size;
 	}
 
+	/// <summary>
+	/// Executes the code. Returns null if the managed thread path failed and
+	/// fallback to RunByHookUpdate was used. Callers should null-check before
+	/// calling WaitToDispose.
+	/// </summary>
 	public QHackLib.FunctionHelper.RemoteThread Execute() => Context.RunOnManagedThread(Code, Size);
 }

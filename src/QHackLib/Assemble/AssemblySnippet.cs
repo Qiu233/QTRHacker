@@ -161,12 +161,24 @@ namespace QHackLib.Assemble
 		#region Thread
 		public static AssemblySnippet StartManagedThread(QHackContext ctx, nuint lpCodeAddr, nuint lpwStrName_System_Action)
 		{
-			nuint getTypeMethod = ctx.BCLHelper.GetFunctionAddress("System.Type",
-				t => t.Signature == "System.Type.GetType(System.String)");
-			nuint getPtrMethod = ctx.BCLHelper.GetFunctionAddress("System.Runtime.InteropServices.Marshal",
-				t => t.Signature == "System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(IntPtr, System.Type)");
-			nuint taskRunMethod = ctx.BCLHelper.GetFunctionAddress("System.Threading.Tasks.Task",
-				t => t.Signature == "System.Threading.Tasks.Task.Run(System.Action)");
+			nuint getTypeMethod = 0, getPtrMethod = 0, taskRunMethod = 0;
+			try
+			{
+				getTypeMethod = ctx.BCLHelper.GetFunctionAddress("System.Type",
+					t => t.Signature == "System.Type.GetType(System.String)");
+				getPtrMethod = ctx.BCLHelper.GetFunctionAddress("System.Runtime.InteropServices.Marshal",
+					t => t.Signature == "System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(IntPtr, System.Type)");
+				taskRunMethod = ctx.BCLHelper.GetFunctionAddress("System.Threading.Tasks.Task",
+					t => t.Signature == "System.Threading.Tasks.Task.Run(System.Action)");
+			}
+			catch
+			{
+				// BCL methods not found via VTable (not yet JIT-compiled).
+				// Return null to signal that StartManagedThread cannot work.
+				return null;
+			}
+			if (getTypeMethod == 0 || getPtrMethod == 0 || taskRunMethod == 0)
+				return null;
 			return FromCode(
 					new AssemblyCode[] {
 						(Instruction)"pushad",

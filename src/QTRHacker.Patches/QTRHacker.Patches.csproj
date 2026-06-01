@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+		<PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.45" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -43,5 +43,6 @@
 			<CopyLocal>False</CopyLocal>
 			<Private>False</Private>
 		</Reference>
+		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 </Project>

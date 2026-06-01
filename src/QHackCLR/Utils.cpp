@@ -1,5 +1,7 @@
 #include "pre.h"
 #include "Utils.h"
+#include "DacpStructs.h"
+#include "DacHelpers.h"
 
 using namespace System;
 namespace QHackCLR {
@@ -70,5 +72,32 @@ namespace QHackCLR {
 		sosDac->GetJitHelperFunctionName(naddr, needed, static_cast<unsigned char*>(ptr), &needed);
 		int index = Array::IndexOf(buffer, (unsigned char)0);
 		return System::Text::Encoding::UTF8->GetString(buffer, 0, index >= 0 ? index : buffer->Length);
+	}
+
+	String^ Utils::DescribeCodeAddress(ISOSDacInterface* sosDac, UIntPtr addr)
+	{
+		auto naddr = addr.ToUInt64();
+		DacpCodeHeaderData codeHeader = {};
+		HRESULT hr = sosDac->GetCodeHeaderData(naddr, &codeHeader);
+		CLRDATA_ADDRESS md = 0;
+		HRESULT mdHr = sosDac->GetMethodDescPtrFromIP(naddr, &md);
+		String^ name = md != 0 ? DacHelpers::SOSHelpers::GetMethodDescName(sosDac, md) : nullptr;
+		String^ result = "ip=0x" + naddr.ToString("X");
+		result += ", codeHr=0x" + ((int)hr).ToString("X8");
+		result += ", start=0x" + codeHeader.MethodStart.ToString("X");
+		result += ", size=0x" + codeHeader.MethodSize.ToString("X");
+		result += ", md=0x" + md.ToString("X");
+		result += ", mdHr=0x" + ((int)mdHr).ToString("X8");
+		result += ", headerMd=0x" + codeHeader.MethodDescPtr.ToString("X");
+		result += ", name=" + (name == nullptr ? "<null>" : name);
+		return result;
+	}
+
+	UIntPtr Utils::GetMethodStartAddress(ISOSDacInterface* sosDac, UIntPtr addr)
+	{
+		DacpCodeHeaderData codeHeader = {};
+		if (FAILED(sosDac->GetCodeHeaderData(addr.ToUInt64(), &codeHeader)))
+			return UIntPtr::Zero;
+		return UIntPtr(codeHeader.MethodStart);
 	}
 }

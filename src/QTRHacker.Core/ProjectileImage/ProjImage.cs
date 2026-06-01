@@ -1,5 +1,5 @@
 ﻿using QHackLib.Assemble;
-using QHackLib.Memory;
+using QTRHacker.Core.GameObjects.Terraria;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -69,49 +69,24 @@ public class ProjImage : IEmmitable
 
 	public void Emit(GameContext context, MPointF Location)
 	{
-		using MemoryAllocation alloc = new(context.HContext, 32 * (uint)Projs.Count + 64);
-		RemoteMemoryStream stream = new(context.HContext, alloc.AllocationBase, 0);
-		stream.Write<long>(Projs.Count);//8 bytes
-
-		byte[] bs = new byte[12];
-		for (int i = 0; i < Projs.Count; i++)
-		{
-			stream.Write(Projs[i].ProjType);//4
-			stream.Write(Location.X + Projs[i].Location.X);//4
-			stream.Write(Location.Y + Projs[i].Location.Y);//4
-			stream.Write(Projs[i].Speed.X);//4
-			stream.Write(Projs[i].Speed.Y);//4
-
-			stream.Write(bs, (uint)bs.Length);
-		}
 		AssemblySnippet snippet = AssemblySnippet.FromCode(
 			new AssemblyCode[] {
 				(Instruction)$"pushad",
-				(Instruction)$"mov ebx,{alloc.AllocationBase}",
 		});
-		snippet.Content.Add(AssemblySnippet.Loop(
-				AssemblySnippet.FromCode(
-					new AssemblyCode[] {
-						(Instruction)$"mov eax,[esp]",		//i
-						(Instruction)$"shl eax,5",			//*32
-						(Instruction)$"lea eax,[ebx+8+eax]",
-
-						(Instruction)$"xor ecx,ecx",		//SpawnSource:IProjectileSource
-						(Instruction)$"push [eax+4]",	//X:float
-						(Instruction)$"push [eax+8]",		//Y:float
-						(Instruction)$"push [eax+12]",		//SpeedX:float
-						(Instruction)$"push [eax+16]",		//SpeedY:float
-						(Instruction)$"mov edx,[eax]",			//Type:int
-						(Instruction)$"push 0",				//Damage:int
-						(Instruction)$"push 0",				//KnockBack:float
-						(Instruction)$"push {context.MyPlayerIndex}",//Owner:int
-						(Instruction)$"push 0",				//ai0:float
-						(Instruction)$"push 0",				//ai1:float
-						(Instruction)$"push 0",				//ai2:float
-						(Instruction)$"call {context.GameModuleHelper.GetClrMethodBySignature("Terraria.Projectile", "Terraria.Projectile.NewProjectile(Terraria.DataStructures.IEntitySource, Single, Single, Single, Single, Int32, Int32, Single, Int32, Single, Single, Single)").NativeCode}",
-
-			}),
-			Projs.Count, true));
+		foreach (var proj in Projs)
+		{
+			snippet.Content.Add(Projectile.NewProjectileCode(
+				context,
+				null,
+				Location.X + proj.Location.X,
+				Location.Y + proj.Location.Y,
+				proj.Speed.X,
+				proj.Speed.Y,
+				proj.ProjType,
+				0,
+				0f,
+				context.MyPlayerIndex));
+		}
 		snippet.Content.Add((Instruction)"popad");
 		context.RunByHookUpdate(snippet);
 	}

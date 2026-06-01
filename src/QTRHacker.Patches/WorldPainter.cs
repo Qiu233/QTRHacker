@@ -51,7 +51,7 @@ namespace QTRHacker.Patches
 		private static Vector2 BeginPos, EndPos;
 		private static Vector2 BrushBeginPos;
 		private static STile[,] ClipBoard;
-		private static readonly Texture2D magicPixel;
+		private static Texture2D magicPixel;
 
 		[DllImport("kernel32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -62,11 +62,8 @@ namespace QTRHacker.Patches
 
 		static WorldPainter()
 		{
-			HooksDef.DoUpdateHook.Pre += DoUpdateHook_Pre;
+			Boot.OnGameUpdate += DoUpdateHook_Pre;
 			Boot.OnGameDraw += Boot_OnGameDraw;
-
-			magicPixel = new Texture2D(Main.instance.GraphicsDevice, 1, 1);
-			magicPixel.SetData(new Color[] { new Color(255, 255, 255) });
 		}
 
 		private static Color ProcessColor(Color newColor, float R, float G, float B, float A)
@@ -120,6 +117,7 @@ namespace QTRHacker.Patches
 
 		private static void Boot_OnGameDraw(SpriteBatch batch)
 		{
+			EnsureMagicPixel(batch);
 			if (Main.gameMenu || Main.playerInventory)
 				return;
 			if (Dropping)
@@ -181,6 +179,16 @@ namespace QTRHacker.Patches
 				batch.Draw(magicPixel, dPos + Vector2.UnitY * 16f * Size.Y, value, color * scale, 0f, Vector2.Zero, new Vector2(16f * Size.X, 2f), SpriteEffects.None, 0f);
 			}
 		}
+
+		private static void EnsureMagicPixel(SpriteBatch batch)
+		{
+			if (magicPixel != null || batch?.GraphicsDevice == null)
+				return;
+
+			magicPixel = new Texture2D(batch.GraphicsDevice, 1, 1);
+			magicPixel.SetData(new Color[] { new Color(255, 255, 255) });
+		}
+
 		private static bool InsideScreen()
 		{
 			return Main.mouseX > 0 && Main.mouseY > 0 && Main.mouseX < Main.screenWidth && Main.mouseY < Main.screenHeight;
@@ -227,7 +235,7 @@ namespace QTRHacker.Patches
 			bool rightUp = Mouse.GetState().RightButton != ButtonState.Pressed && LastRightPressed && LastFocus && inside;
 			LastLeftPressed = Mouse.GetState().LeftButton == ButtonState.Pressed;
 			LastRightPressed = Mouse.GetState().RightButton == ButtonState.Pressed;
-			LastFocus = Main.hasFocus;
+			LastFocus = GameFocusHelper.HasFocus;
 			if (rightUp)
 			{
 				Dropping = false;

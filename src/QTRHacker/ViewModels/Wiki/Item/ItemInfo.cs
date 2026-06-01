@@ -60,7 +60,19 @@ public class ItemInfo : ViewModelBase, ILocalizationProvider
 	{
 		Type = type;
 		Key = WikiResLoader.GetItemKeyFromType(Type);
-		Data = WikiResLoader.ItemDatum[Type];
+		Data = type >= 0 && type < WikiResLoader.ItemDatum.Count
+			? WikiResLoader.ItemDatum[Type]
+			: new ItemData
+			{
+				Type = type,
+				MaxStack = 1,
+				HeadSlot = -1,
+				BodySlot = -1,
+				LegSlot = -1,
+				CreateTile = -1,
+				CreateWall = -1,
+				PlaceStyle = -1
+			};
 		LocalizationManager.RegisterLocalizationProvider(this);
 	}
 }

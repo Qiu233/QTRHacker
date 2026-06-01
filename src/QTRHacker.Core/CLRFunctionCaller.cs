@@ -15,7 +15,7 @@ public class CLRFunctionCaller
 
 	public static void Call(GameContext Context, ClrMethod method, params object[] args)
 	{
-		Call(Context, method.NativeCode, args);
+		Call(Context, Context.HContext.GetCLRHelper(method.DeclaringType.Module.Name).GetNativeCode(method), args);
 	}
 
 	public static void Call(GameContext Context, nuint targetAddr, params object[] args)
