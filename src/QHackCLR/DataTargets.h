@@ -137,6 +137,34 @@ namespace QHackCLR {
 		public ref class DataAccess {
 		private:
 			HANDLE m_ProcessHandle;
+			static int ValidateBuffer(Array^ buffer, unsigned int length, unsigned int elementSize) {
+				if (buffer == nullptr)
+					throw gcnew ArgumentNullException("buffer");
+				if (length > (unsigned int)buffer->Length || length > Int32::MaxValue / elementSize)
+					throw gcnew ArgumentOutOfRangeException("length");
+				return (int)(length * elementSize);
+			}
+			static void ThrowMemoryError(String^ operation, nuint addr, unsigned int length, int error) {
+				throw gcnew IOException(String::Format("{0} failed at 0x{1:X} ({2} bytes, Win32 error {3}).",
+					operation, addr.ToUInt64(), length, error), HRESULT_FROM_WIN32(error));
+			}
+			generic<typename T> where T : value class
+				static void ValidateValueType() {
+				if (RuntimeHelpers::IsReferenceOrContainsReferences<T>())
+					throw gcnew ArgumentException("Memory access requires a value type without managed references.", "T");
+				}
+		internal:
+			// DAC probes unreadable addresses as part of normal operation. Keep HRESULT failures
+			// inside that callback; public memory access must report failures to its caller.
+			bool TryRead(nuint addr, void* buffer, unsigned int length) {
+				SIZE_T transferred = 0;
+				bool success = ReadProcessMemory(m_ProcessHandle, addr.ToPointer(), buffer, length, &transferred);
+				if (success && transferred != length) {
+					SetLastError(ERROR_PARTIAL_COPY);
+					return false;
+				}
+				return success;
+			}
 		public:
 			DataAccess(nuint handle) {
 				m_ProcessHandle = handle.ToPointer();
@@ -148,25 +176,45 @@ namespace QHackCLR {
 			}
 			[MethodImpl(MethodImplOptions::AggressiveInlining)]
 			bool Read(nuint addr, void* buffer, __int32 length) {
-				return ReadProcessMemory(m_ProcessHandle, addr.ToPointer(), buffer, length, 0);
+				if (length < 0)
+					throw gcnew ArgumentOutOfRangeException("length");
+				if (length == 0)
+					return true;
+				if (buffer == nullptr)
+					throw gcnew ArgumentNullException("buffer");
+				if (!TryRead(addr, buffer, length))
+					ThrowMemoryError("ReadProcessMemory", addr, length, GetLastError());
+				return true;
 			}
 			[MethodImpl(MethodImplOptions::AggressiveInlining)]
 			bool Write(nuint addr, void* buffer, unsigned __int32 length) {
-				return WriteProcessMemory(m_ProcessHandle, addr.ToPointer(), buffer, length, 0);
+				if (length == 0)
+					return true;
+				if (buffer == nullptr)
+					throw gcnew ArgumentNullException("buffer");
+				SIZE_T transferred = 0;
+				if (!WriteProcessMemory(m_ProcessHandle, addr.ToPointer(), buffer, length, &transferred))
+					ThrowMemoryError("WriteProcessMemory", addr, length, GetLastError());
+				if (transferred != length)
+					ThrowMemoryError("WriteProcessMemory", addr, length, ERROR_PARTIAL_COPY);
+				return true;
 			}
 
 			generic<typename T> where T : value class[MethodImpl(MethodImplOptions::AggressiveInlining)]
 				bool Read(nuint addr, void* pData) {
+				ValidateValueType<T>();
 				return Read(addr, pData, sizeof(T));
 			}
 			generic<typename T> where T : value class[MethodImpl(MethodImplOptions::AggressiveInlining)]
 				bool Write(nuint addr, void* pValue) {
+				ValidateValueType<T>();
 				return Write(addr, pValue, sizeof(T));
 			}
 
 		private:
 			generic<typename T> where T : value class
 				bool ReadGeneric1(nuint addr, [Out] T% value) {
+				ValidateValueType<T>();
 				pin_ptr<T> ptr = &value;
 				return Read<T>(addr, ptr);
 			}
@@ -178,6 +226,7 @@ namespace QHackCLR {
 			}
 			generic<typename T> where T : value class
 				bool WriteGeneric(nuint addr, T value) {
+				ValidateValueType<T>();
 				pin_ptr<T> ptr = &value;
 				return Write(addr, ptr, sizeof(T));
 			}
@@ -199,6 +248,9 @@ namespace QHackCLR {
 			[MethodImpl(MethodImplOptions::AggressiveInlining)]
 			bool Read(nuint addr, array<byte>^ buffer, unsigned __int32 length)
 			{
+				ValidateBuffer(buffer, length, 1);
+				if (length == 0)
+					return true;
 				pin_ptr<byte> ptr = &buffer[0];
 				return Read(addr, ptr, length);
 			}
@@ -206,6 +258,9 @@ namespace QHackCLR {
 			[MethodImpl(MethodImplOptions::AggressiveInlining)]
 			bool Write(nuint addr, array<byte>^ buffer, unsigned __int32 length)
 			{
+				ValidateBuffer(buffer, length, 1);
+				if (length == 0)
+					return true;
 				pin_ptr<byte> ptr = &buffer[0];
 				return Write(addr, ptr, length);
 			}
@@ -214,19 +269,29 @@ namespace QHackCLR {
 				[MethodImpl(MethodImplOptions::AggressiveInlining)]
 			bool Read(nuint addr, array<T>^ buffer, unsigned __int32 length)
 			{
+				ValidateValueType<T>();
+				int byteCount = ValidateBuffer(buffer, length, sizeof(T));
+				if (length == 0)
+					return true;
 				pin_ptr<T> ptr = &buffer[0];
-				return Read(addr, ptr, length * sizeof(T));
+				return Read(addr, ptr, byteCount);
 			}
 
 			generic<typename T> where T : value class
 				[MethodImpl(MethodImplOptions::AggressiveInlining)]
 			bool Write(nuint addr, array<T>^ buffer, unsigned __int32 length)
 			{
+				ValidateValueType<T>();
+				int byteCount = ValidateBuffer(buffer, length, sizeof(T));
+				if (length == 0)
+					return true;
 				pin_ptr<T> ptr = &buffer[0];
-				return Write(addr, ptr, length * sizeof(T));
+				return Write(addr, ptr, byteCount);
 			}
 
 			array<byte>^ ReadBytes(nuint addr, unsigned __int32 length) {
+				if (length > Int32::MaxValue)
+					throw gcnew ArgumentOutOfRangeException("length");
 				array<byte>^ bs = gcnew array<byte>(length);
 				if (length == 0)
 					return bs;
@@ -235,6 +300,8 @@ namespace QHackCLR {
 				return bs;
 			}
 			void WriteBytes(nuint addr, array<byte>^ data) {
+				if (data == nullptr)
+					throw gcnew ArgumentNullException("data");
 				if (data->Length == 0)
 					return;
 				pin_ptr<byte> ptr = &data[0];
@@ -256,6 +323,8 @@ namespace QHackCLR {
 			Object^ Read(Type^ type, nuint addr)
 			{
 				using namespace System::Reflection;
+				if (type == nullptr)
+					throw gcnew ArgumentNullException("type");
 				if (!type->IsValueType)
 					throw gcnew ArgumentException("Not a ValueType");
 				auto method = GetType()->GetMethod("ReadGeneric2", BindingFlags::Instance | BindingFlags::NonPublic)->MakeGenericMethod(type);
@@ -266,6 +335,8 @@ namespace QHackCLR {
 			void Write(nuint addr, Object^ value)
 			{
 				using namespace System::Reflection;
+				if (value == nullptr)
+					throw gcnew ArgumentNullException("value");
 				Type^ type = value->GetType();
 				if (!type->IsValueType)
 					throw gcnew ArgumentException("Not a ValueType");

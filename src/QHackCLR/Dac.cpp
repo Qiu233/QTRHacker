@@ -130,7 +130,7 @@ namespace QHackCLR {
 			// Desktop CLR sign-extends some x86 addresses above 2 GiB. DAC uses
 			// a 64-bit address even when both the controller and target are x86.
 			UIntPtr nativeAddress = UIntPtr::Size == 4 ? UIntPtr((unsigned int)address) : UIntPtr(address);
-			bool success = this->m_DataTarget->DataAccess->Read(nativeAddress, buffer, bytesRequested);
+			bool success = this->m_DataTarget->DataAccess->TryRead(nativeAddress, buffer, bytesRequested);
 			*bytesRead = success ? bytesRequested : 0;
 			return success ? S_OK : E_FAIL;
 		}

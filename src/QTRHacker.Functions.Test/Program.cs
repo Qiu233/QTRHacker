@@ -24,8 +24,28 @@ unsafe class Program
 {
 	public static unsafe int GetOffset(GameContext context, string module, string type, string field) => (int)context.HContext.GetCLRHelper(module).GetInstanceFieldOffset(type, field) + sizeof(nuint);
 	public static unsafe int GetOffset(GameContext context, string type, string field) => (int)context.GameModuleHelper.GetInstanceFieldOffset(type, field) + sizeof(nuint);
+	[STAThread]
 	unsafe static void Main(string[] args)
 	{
+		if (args.Length > 0 && args[0] == "--verify-inline-hook")
+		{
+			if (args.Length != 2)
+				throw new ArgumentException("Usage: --verify-inline-hook <QHackCLR.TestTarget.exe>");
+			InlineHookChecks.Verify(args[1]);
+			return;
+		}
+		if (args.Length > 0 && args[0] == "--verify-game-attach")
+		{
+			GameAttachChecks.Verify();
+			return;
+		}
+		if (args.Length > 0 && args[0] == "--verify-clr")
+		{
+			if (args.Length != 2)
+				throw new ArgumentException("Usage: --verify-clr <QHackCLR.TestTarget.exe>");
+			ClrChecks.Verify(args[1]);
+			return;
+		}
 		if (args.Length > 0 && args[0] == "--verify-aobscan")
 		{
 			AobscanChecks.Verify();

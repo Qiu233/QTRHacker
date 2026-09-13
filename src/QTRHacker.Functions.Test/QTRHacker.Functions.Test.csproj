@@ -6,6 +6,7 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<UseWPF>true</UseWPF>
 		<PlatformTarget>x86</PlatformTarget>
 		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
 	</PropertyGroup>
@@ -13,6 +14,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
 		<ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
+		<ProjectReference Include="..\QTRHacker\QTRHacker.csproj" />
+		<ProjectReference Include="..\QHackCLR.TestTarget\QHackCLR.TestTarget.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
 	</ItemGroup>
 
 </Project>

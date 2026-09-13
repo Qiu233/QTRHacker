@@ -144,10 +144,9 @@ namespace QHackLib.FunctionHelper
 			return true;
 		}
 
-		private HookInfo GetHookInfo() => Context.DataAccess.Read<HookInfo>(
-				Parameters.TargetAddress +
-				(uint)(Context.DataAccess.Read<int>(Parameters.TargetAddress + 1)
-				+ 5 - HookInfo.HeaderSize));
+		// The target contains its original instructions again after WaitToDetach.
+		// This instance owns the allocation, so its header remains available until disposal.
+		private HookInfo GetHookInfo() => Context.DataAccess.Read<HookInfo>(MemoryAllocation.AllocationBase);
 
 		/// <summary>
 		/// Waits to detach until the code is executed at least once.<br/>

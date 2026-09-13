@@ -38,15 +38,15 @@
                 <local:PlayerPropertiesEditor DataContext="{Binding PlayerPropertiesEditorViewModel}"/>
             </TabItem>
             <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Loadout1}"
-                     IsSelected="{Binding VoidVaultViewModel.Updating, Mode=OneWayToSource}">
+                     IsSelected="{Binding Loadout1ViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor DataContext="{Binding Loadout1ViewModel}"/>
             </TabItem>
             <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Loadout2}"
-                     IsSelected="{Binding VoidVaultViewModel.Updating, Mode=OneWayToSource}">
+                     IsSelected="{Binding Loadout2ViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor DataContext="{Binding Loadout2ViewModel}"/>
             </TabItem>
             <TabItem Header="{l:Localization UI.PlayerEditorWindowTabs.Loadout3}"
-                     IsSelected="{Binding VoidVaultViewModel.Updating, Mode=OneWayToSource}">
+                     IsSelected="{Binding Loadout3ViewModel.Updating, Mode=OneWayToSource}">
                 <local:ItemSlotsEditor DataContext="{Binding Loadout3ViewModel}"/>
             </TabItem>
         </TabControl>

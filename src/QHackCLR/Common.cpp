@@ -6,6 +6,7 @@
 #include "Utils.h"
 #include <msclr/lock.h>
 using namespace QHackCLR;
+using QHackCLR::DacHelpers::GlobalHelpers;
 
 namespace QHackCLR {
 	namespace Common {
@@ -21,6 +22,8 @@ namespace QHackCLR {
 		ClrAppDomain^ ClrRuntime::AppDomain::get() {
 			if (m_AppDomain == nullptr) {
 				auto domains = DacHelpers::SOSHelpers::GetAppDomainList(this->DacLibrary->SOSDac);
+				if (domains->Length == 0)
+					throw gcnew InvalidOperationException("The target CLR has no application domain.");
 				m_AppDomain = this->RuntimeHelper->GetAppDomain(UIntPtr(domains[0]));
 			}
 			return m_AppDomain;
@@ -48,7 +51,7 @@ namespace QHackCLR {
 		ClrHeap::ClrHeap(ClrRuntime^ runtime, IHeapHelper^ helper) {
 			this->m_Runtime = runtime;
 			DacpUsefulGlobalsData tables;
-			helper->SOSDac->GetUsefulGlobals(&tables);
+			GlobalHelpers::Check(helper->SOSDac->GetUsefulGlobals(&tables), "GetUsefulGlobals");
 
 			m_FreeType = helper->TypeFactory->GetClrType(UIntPtr(tables.FreeMethodTable));
 			m_ObjectType = helper->TypeFactory->GetClrType(UIntPtr(tables.ObjectMethodTable));
@@ -61,12 +64,15 @@ namespace QHackCLR {
 			AppDomainHelper = helper;
 			m_Name = DacHelpers::SOSHelpers::GetAppDomainName(helper->SOSDac, NativeHandle);
 
-			Data = new DacpAppDomainData;
-			helper->SOSDac->GetAppDomainData(NativeHandle, Data);
+			DacHelpers::NativeData<DacpAppDomainData> data;
+			GlobalHelpers::Check(helper->SOSDac->GetAppDomainData(NativeHandle, data.get()), "GetAppDomainData");
 
-			IXCLRDataAppDomain* dataAppDomain;
-			helper->DacLibrary->ClrDataProcess->GetAppDomainByUniqueID(Data->dwId, &dataAppDomain);
+			IXCLRDataAppDomain* dataAppDomain = nullptr;
+			GlobalHelpers::Check(helper->DacLibrary->ClrDataProcess->GetAppDomainByUniqueID(data.get()->dwId, &dataAppDomain), "GetAppDomainByUniqueID");
+			if (dataAppDomain == nullptr)
+				throw gcnew InvalidOperationException("DAC returned no application domain.");
 			DataAppDomain = dataAppDomain;
+			Data = data.release();
 		}
 		ClrAppDomain::~ClrAppDomain() {
 			delete Data;
@@ -83,20 +89,36 @@ namespace QHackCLR {
 
 		ClrModule::ClrModule(IModuleHelper^ helper, nuint handle) : ClrEntity(handle) {
 			ModuleHelper = helper;
-			IXCLRDataModule* dataModule;
-			helper->SOSDac->GetModule(NativeHandle, &dataModule);
-
-			ULONG32 len;
-			wchar_t name[1024];
-
-			dataModule->GetName(1024, &len, name);
-			m_Name = gcnew String(name);
-
-			dataModule->GetFileName(1024, &len, name);
-			m_FileName = gcnew String(name);
-
-			Data = new DacpModuleData;
-			helper->SOSDac->GetModuleData(NativeHandle, Data);
+			DacHelpers::NativeData<DacpModuleData> data;
+			GlobalHelpers::Check(helper->SOSDac->GetModuleData(NativeHandle, data.get()), "GetModuleData");
+			IXCLRDataModule* dataModule = nullptr;
+			GlobalHelpers::Check(helper->SOSDac->GetModule(NativeHandle, &dataModule), "GetModule");
+			if (dataModule == nullptr)
+				throw gcnew InvalidOperationException("DAC returned no module.");
+			try {
+				auto name = gcnew array<Char>(32768);
+				pin_ptr<Char> ptr = &name[0];
+				ULONG32 len = 0;
+				GlobalHelpers::Check(dataModule->GetName(name->Length, &len, ptr), "GetModuleName");
+				if (len > (unsigned int)name->Length)
+					throw gcnew InvalidOperationException("DAC module name exceeds the buffer.");
+				m_Name = gcnew String(ptr);
+				name[0] = 0;
+				auto result = dataModule->GetFileName(name->Length, &len, ptr);
+				// Reflection modules can have no file name; the module itself was validated above.
+				if (result == E_FAIL && data.get()->bIsReflection)
+					m_FileName = String::Empty;
+				else {
+					GlobalHelpers::Check(result, "GetModuleFileName");
+					if (len > (unsigned int)name->Length)
+						throw gcnew InvalidOperationException("DAC module file name exceeds the buffer.");
+					m_FileName = gcnew String(ptr);
+				}
+				Data = data.release();
+			}
+			finally {
+				dataModule->Release();
+			}
 		}
 		ClrModule::~ClrModule() {
 			delete Data;
@@ -129,10 +151,8 @@ namespace QHackCLR {
 			ano->Types = holder;
 			AddType_Del^ del = gcnew AddType_Del(ano, &Anonymous_1::Add);
 			MODULEMAPTRAVERSE func = static_cast<MODULEMAPTRAVERSE>(Marshal::GetFunctionPointerForDelegate(del).ToPointer());
-			try {
-				this->ModuleHelper->SOSDac->TraverseModuleMap(type, NativeHandle, func, nullptr);
-			}
-			catch (Exception^) {}
+			GlobalHelpers::Check(this->ModuleHelper->SOSDac->TraverseModuleMap(type, NativeHandle, func, nullptr), "TraverseModuleMap");
+			GC::KeepAlive(del);
 			Generic::List<ClrType^>^ types = gcnew Generic::List<ClrType^>();
 			for each (auto mt in holder)
 				types->Add(this->ModuleHelper->TypeFactory->GetClrType(UIntPtr(mt)));
@@ -161,13 +181,20 @@ namespace QHackCLR {
 		}
 
 		int ClrType::GetLength(nuint objRef) {
+			// GameString also uses this length slot through HackObject.GetArrayLength.
+			if (!IsArray && ElementType != CorElementType::ELEMENT_TYPE_STRING)
+				throw gcnew InvalidOperationException("Not an array or a string.");
+			if (objRef == UIntPtr::Zero)
+				throw gcnew ArgumentNullException("objRef");
 			return TypeHelper->DataAccess->Read<int>(objRef + sizeof(UIntPtr));
 		}
 
 		int ClrType::GetLength(nuint objRef, int dimension) {
 			int rank = Rank;
-			if (dimension >= rank)
-				throw gcnew ArgumentOutOfRangeException();
+			if (dimension < 0 || dimension >= rank)
+				throw gcnew ArgumentOutOfRangeException("dimension");
+			if (objRef == UIntPtr::Zero)
+				throw gcnew ArgumentNullException("objRef");
 			if (ElementType == CorElementType::ELEMENT_TYPE_SZARRAY)//SZArray
 				return GetLength(objRef);
 			return TypeHelper->DataAccess->Read<int>(objRef + (sizeof(UIntPtr) * 2 + 4 * dimension));
@@ -175,9 +202,11 @@ namespace QHackCLR {
 
 		int ClrType::GetLowerBound(nuint objRef, int dimension) {
 			int rank = Rank;
-			if (dimension >= rank)
-				throw gcnew ArgumentOutOfRangeException();
-			if (rank == 1)
+			if (dimension < 0 || dimension >= rank)
+				throw gcnew ArgumentOutOfRangeException("dimension");
+			if (objRef == UIntPtr::Zero)
+				throw gcnew ArgumentNullException("objRef");
+			if (ElementType == CorElementType::ELEMENT_TYPE_SZARRAY)
 				return 0;
 			return TypeHelper->DataAccess->Read<int>(objRef + (sizeof(UIntPtr) * 2 + 4 * (rank + dimension)));
 		}
@@ -187,11 +216,9 @@ namespace QHackCLR {
 
 			m_Name = DacHelpers::SOSHelpers::GetMethodTableName(helper->SOSDac, NativeHandle);
 
-			Data = new DacpMethodTableData;
-			try {
-				helper->SOSDac->GetMethodTableData(NativeHandle, Data);
-			}
-			catch (Exception^) {}
+			DacHelpers::NativeData<DacpMethodTableData> data;
+			GlobalHelpers::Check(helper->SOSDac->GetMethodTableData(NativeHandle, data.get()), "GetMethodTableData");
+			Data = data.release();
 		}
 		ClrType::~ClrType() {
 			delete Data;
@@ -300,19 +327,18 @@ namespace QHackCLR {
 			m_DeclaringType = decType;
 			FieldHelper = helper;
 
-			Data = new DacpFieldDescData;
-			try {
-				helper->SOSDac->GetFieldDescData(NativeHandle, Data);
-			}
-			catch (Exception^) {}
+			DacHelpers::NativeData<DacpFieldDescData> data;
+			GlobalHelpers::Check(helper->SOSDac->GetFieldDescData(NativeHandle, data.get()), "GetFieldDescData");
 
-			m_Type = helper->TypeFactory->GetClrType(UIntPtr(Data->MTOfType));
+			m_Type = helper->TypeFactory->GetClrType(UIntPtr(data.get()->MTOfType));
 
 			String^ name;
 			FieldAttributes attr;
-			helper->GetFieldProps(decType, Data->mb, name, attr);
+			if (!helper->GetFieldProps(decType, data.get()->mb, name, attr))
+				throw gcnew InvalidOperationException("Could not read field metadata.");
 			m_Name = name;
 			m_Attributes = attr;
+			Data = data.release();
 		}
 		ClrField::~ClrField() {
 			delete Data;
@@ -357,13 +383,11 @@ namespace QHackCLR {
 
 		ClrMethod::ClrMethod(IMethodHelper^ helper, nuint handle) : ClrEntity(handle) {
 			MethodHelper = helper;
-			Data = new DacpMethodDescData;
-			try {
-				helper->SOSDac->GetMethodDescData(NativeHandle, 0, Data, 0, nullptr, nullptr);
-			}
-			catch (Exception^) {}
+			DacHelpers::NativeData<DacpMethodDescData> data;
+			GlobalHelpers::Check(helper->SOSDac->GetMethodDescData(NativeHandle, 0, data.get(), 0, nullptr, nullptr), "GetMethodDescData");
 
 			m_Signature = DacHelpers::SOSHelpers::GetMethodDescName(helper->SOSDac, NativeHandle);
+			Data = data.release();
 		}
 		ClrMethod::~ClrMethod() {
 			delete Data;
@@ -392,12 +416,11 @@ namespace QHackCLR {
 
 		ClrObject::ClrObject(ClrType^ type, nuint address) : AddressableTypedEntity(type->ClrObjectHelper, address) {
 			m_Type = type;
-			Data = new DacpObjectData;
-			try {
-				type->ClrObjectHelper->SOSDac->GetObjectData(address.ToUInt64(), Data);
-			}
-			catch(Exception^) {
-			}
+			DacHelpers::NativeData<DacpObjectData> data;
+			// A null object is a supported wrapper (IsNullPtr), not a failed DAC lookup.
+			if (address != UIntPtr::Zero)
+				GlobalHelpers::Check(type->ClrObjectHelper->SOSDac->GetObjectData(address.ToUInt64(), data.get()), "GetObjectData");
+			Data = data.release();
 		}
 
 		bool ClrObject::IsArray::get() {

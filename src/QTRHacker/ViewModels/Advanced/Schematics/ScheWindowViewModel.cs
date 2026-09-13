@@ -34,8 +34,10 @@ public class ScheWindowViewModel : ViewModelBase
 		{
 			tiles = value;
 			OnPropertyChanged(nameof(Tiles));
+			OnPropertyChanged(nameof(HasTiles));
 		}
 	}
+	public bool HasTiles => Tiles is { Length: > 0 };
 
 	public DispatcherTimer UpdateTimer { get; }
 
@@ -60,11 +62,16 @@ public class ScheWindowViewModel : ViewModelBase
 	}
 	public static void SelectBrush()
 	{
+		var clipboard = HackGlobal.GameContext.Patches.WorldPainter_ClipBoard;
+		if (clipboard.BaseAddress == 0 || clipboard.Length == 0)
+			return;
 		HackGlobal.GameContext.Patches.WorldPainter_EyeDropperActive = false;
 		HackGlobal.GameContext.Patches.WorldPainter_BrushActive = true;
 	}
 	public static void Save(PatchesManager.STile[,] tiles)
 	{
+		if (tiles == null || tiles.Length == 0)
+			return;
 		SaveFileDialog dialog = new();
 		dialog.Filter = "Schematics files (*.sche)|*.sche";
 		dialog.InitialDirectory = Path.GetFullPath(DIR);
@@ -111,6 +118,8 @@ public class ScheWindowViewModel : ViewModelBase
 	{
 		lock (_UpdateLock)
 		{
+			if (!HasTiles)
+				return;
 			int width = Tiles.GetLength(0);
 			int height = Tiles.GetLength(1);
 			PatchesManager.STile[,] data = new PatchesManager.STile[width, height];
@@ -124,6 +133,8 @@ public class ScheWindowViewModel : ViewModelBase
 	{
 		lock (_UpdateLock)
 		{
+			if (!HasTiles)
+				return;
 			int width = Tiles.GetLength(0);
 			int height = Tiles.GetLength(1);
 			PatchesManager.STile[,] data = new PatchesManager.STile[width, height];
@@ -224,13 +235,22 @@ public class ScheWindowViewModel : ViewModelBase
 		UpdateTimer?.Stop();
 	}
 
-	private static (int Width, int Height, PatchesManager.STile[] Data) GetDataFromGame()
+	private static PatchesManager.STile[,] GetDataFromGame()
 	{
 		var tiles = HackGlobal.GameContext.Patches.WorldPainter_ClipBoard;
+		// No clipboard exists initially or while the first selection corner is being chosen.
+		if (tiles.BaseAddress == 0)
+			return null;
 		int width = tiles.GetLength(0);
 		int height = tiles.GetLength(1);
+		if (width == 0 || height == 0)
+			return null;
 		var data = tiles.GetAllElements();
-		return (width, height, data);
+		PatchesManager.STile[,] targetData = new PatchesManager.STile[width, height];
+		for (int i = 0; i < width; i++)
+			for (int j = 0; j < height; j++)
+				targetData[i, j] = data[i * height + j];
+		return targetData;
 	}
 
 	private void UpdateTimer_Tick(object sender, EventArgs e)
@@ -239,12 +259,7 @@ public class ScheWindowViewModel : ViewModelBase
 		{
 			if (!HackGlobal.IsActive || !HackGlobal.GameContext.Patches.IsInitialized)
 				return;
-			(int width, int height, var data) = GetDataFromGame();
-			PatchesManager.STile[,] targetData = new PatchesManager.STile[width, height];
-			for (int i = 0; i < width; i++)
-				for (int j = 0; j < height; j++)
-					targetData[i, j] = data[i * height + j];
-			Tiles = targetData;
+			Tiles = GetDataFromGame();
 		}
 	}
 }

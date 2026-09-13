@@ -19,10 +19,10 @@
             </StackPanel.Resources>
             <Button Content="{l:Localization UI.Sches.Arrow}" Command="{Binding EnableArrowCommand}"/>
             <Button Content="{l:Localization UI.Sches.EyeDropper}" Command="{Binding EnableEyeDropperCommand}"/>
-            <Button Content="{l:Localization UI.Sches.Brush}" Command="{Binding EnableBrushCommand}"/>
-            <Button Content="{l:Localization UI.Sches.FlipH}" Command="{Binding FlipH}"/>
-            <Button Content="{l:Localization UI.Sches.FlipV}" Command="{Binding FlipV}"/>
-            <Button Content="{l:Localization UI.Save}" Command="{Binding SaveCommand}"/>
+            <Button Content="{l:Localization UI.Sches.Brush}" Command="{Binding EnableBrushCommand}" IsEnabled="{Binding HasTiles}"/>
+            <Button Content="{l:Localization UI.Sches.FlipH}" Command="{Binding FlipH}" IsEnabled="{Binding HasTiles}"/>
+            <Button Content="{l:Localization UI.Sches.FlipV}" Command="{Binding FlipV}" IsEnabled="{Binding HasTiles}"/>
+            <Button Content="{l:Localization UI.Save}" Command="{Binding SaveCommand}" IsEnabled="{Binding HasTiles}"/>
             <Button Content="{l:Localization UI.Load}" Command="{Binding LoadCommand}"/>
             <!--Button Content="{l:Localization UI.Sches.LoadImage}" Command="{Binding LoadImageCommand}"/-->
         </StackPanel>

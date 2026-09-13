@@ -451,25 +451,39 @@ namespace QHackCLR {
 
 			unsigned __int32 GetArrayElementOffset(nuint objRef, array<int>^ indices)
 			{
+				if (!IsArray)
+					throw gcnew InvalidOperationException("Not an array.");
+				if (indices == nullptr)
+					throw gcnew ArgumentNullException("indices");
 				int rank = Rank;
 				if (indices->Length != rank)
 					throw gcnew ArgumentException("Rank does not match");
-				if (ElementType == CorElementType::ELEMENT_TYPE_SZARRAY)
-					return sizeof(UIntPtr) * 2 + (indices[0] * ComponentSize);
-				int offset = 0;
+				unsigned __int64 offset = 0;
 				for (int i = 0; i < rank; i++)
 				{
-					int currentValueOffset = indices[i] - GetLowerBound(objRef, i);
-					if (currentValueOffset >= GetLength(objRef, i))
-						throw gcnew ArgumentOutOfRangeException();
-					offset *= GetLength(objRef, i);
+					int length = GetLength(objRef, i);
+					__int64 currentValueOffset = (__int64)indices[i] - GetLowerBound(objRef, i);
+					if (currentValueOffset < 0 || currentValueOffset >= length)
+						throw gcnew ArgumentOutOfRangeException("indices");
+					offset *= length;
 					offset += currentValueOffset;
+					if (offset > UInt32::MaxValue)
+						throw gcnew OverflowException("Array element offset exceeds the supported range.");
 				}
-				return sizeof(UIntPtr) * 2 + (8 * rank) + (offset * ComponentSize);
+				unsigned __int64 header = sizeof(UIntPtr) * 2;
+				if (ElementType != CorElementType::ELEMENT_TYPE_SZARRAY)
+					header += 8 * rank;
+				if (ComponentSize == 0 || offset > (UInt32::MaxValue - header) / ComponentSize)
+					throw gcnew OverflowException("Array element offset exceeds the supported range.");
+				return (unsigned int)(header + offset * ComponentSize);
 			}
 
 			UIntPtr GetArrayElementAddress(nuint objRef, array<int>^ indices) {
-				return objRef + GetArrayElementOffset(objRef, indices);
+				unsigned int offset = GetArrayElementOffset(objRef, indices);
+				unsigned __int64 maxAddress = UIntPtr::Size == 4 ? UInt32::MaxValue : UInt64::MaxValue;
+				if (objRef.ToUInt64() > maxAddress - offset)
+					throw gcnew OverflowException("Array element address exceeds the target address space.");
+				return objRef + offset;
 			}
 		};
 		public ref class ClrMethod : public ClrEntity, IHasMetaData {

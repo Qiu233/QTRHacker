@@ -93,10 +93,8 @@ namespace QHackCLR {
 				if (AppDomain == nullptr)
 					return UIntPtr::Zero;
 				DacpModuleData data;
-				if (FAILED(SOSDac->GetModuleData(module->NativeHandle, &data)))
-					return UIntPtr::Zero;
-				if (FAILED(SOSDac->GetDomainLocalModuleDataFromAppDomain(AppDomain->NativeHandle, (int)data.dwModuleID, &dlmd)))
-					return UIntPtr::Zero;
+				DacHelpers::GlobalHelpers::Check(SOSDac->GetModuleData(module->NativeHandle, &data), "GetModuleData");
+				DacHelpers::GlobalHelpers::Check(SOSDac->GetDomainLocalModuleDataFromAppDomain(AppDomain->NativeHandle, (int)data.dwModuleID, &dlmd), "GetDomainLocalModuleDataFromAppDomain");
 				if (!shared && !IsInitialized(&dlmd, (int)type->MDToken))
 					return UIntPtr::Zero;
 
@@ -107,8 +105,7 @@ namespace QHackCLR {
 			}
 			else
 			{
-				if (FAILED(SOSDac->GetDomainLocalModuleDataFromModule(module->NativeHandle, &dlmd)))
-					return UIntPtr::Zero;
+				DacHelpers::GlobalHelpers::Check(SOSDac->GetDomainLocalModuleDataFromModule(module->NativeHandle, &dlmd), "GetDomainLocalModuleDataFromModule");
 			}
 			if (Utils::CorElementTypeIsPrimitive(field->ElementType))
 				return UIntPtr(dlmd.pNonGCStaticDataStart + field->Offset);
@@ -118,33 +115,49 @@ namespace QHackCLR {
 
 		bool RuntimeBuilder::GetFieldProps(Common::ClrType^ parentType, int token, String^% name, FieldAttributes% attributes) {
 			IMetaDataImport* import = parentType->Module->MetadataImport;
-			DWORD attr;
-			ULONG needed;
-			if (import == nullptr || FAILED(import->GetFieldProps(token, nullptr, nullptr, 0, &needed, &attr, nullptr, nullptr, nullptr, nullptr, nullptr)))
-			{
-				name = nullptr;
-				attributes = static_cast<FieldAttributes>(0);
-				return false;
+			if (import == nullptr)
+				throw gcnew InvalidOperationException("DAC returned no metadata import.");
+			try {
+				DWORD attr = 0;
+				ULONG needed = 0;
+				DacHelpers::GlobalHelpers::Check(import->GetFieldProps(token, nullptr, nullptr, 0, &needed, &attr, nullptr, nullptr, nullptr, nullptr, nullptr), "GetFieldProps");
+				if (needed == 0 || needed > Int32::MaxValue)
+					throw gcnew InvalidOperationException("Metadata returned an invalid field name length.");
+				auto buffer = gcnew array<Char>(needed);
+				pin_ptr<Char> ptr = &buffer[0];
+				DacHelpers::GlobalHelpers::Check(import->GetFieldProps(token, nullptr, ptr, needed, &needed, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr), "GetFieldProps");
+				if (needed == 0 || needed > (unsigned int)buffer->Length)
+					throw gcnew InvalidOperationException("Field name changed while reading.");
+				name = gcnew String(ptr, 0, (int)needed - 1);
+				attributes = static_cast<FieldAttributes>(attr);
+				return true;
 			}
-			attributes = static_cast<FieldAttributes>(attr);
-			wchar_t* buffer = new wchar_t[needed];
-			import->GetFieldProps(token, nullptr, buffer, needed, &needed, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
-			name = gcnew String(buffer);
-			delete[] buffer;
-			return true;
+			finally {
+				import->Release();
+			}
 		}
 
 		Generic::IEnumerable<Common::ClrField^>^ RuntimeBuilder::EnumerateFields(Common::ClrType^ type) {
 			DacpMethodTableFieldData info;
-			SOSDac->GetMethodTableFieldData(type->NativeHandle, &info);
+			DacHelpers::GlobalHelpers::Check(SOSDac->GetMethodTableFieldData(type->NativeHandle, &info), "GetMethodTableFieldData");
 			List<Common::ClrField^>^ fields = gcnew List<Common::ClrField^>();
+			int inheritedCount = 0;
+			if (type->BaseType != nullptr) {
+				DacpMethodTableFieldData parentInfo;
+				DacHelpers::GlobalHelpers::Check(SOSDac->GetMethodTableFieldData(type->BaseType->NativeHandle, &parentInfo), "GetMethodTableFieldData(parent)");
+				inheritedCount = parentInfo.wNumInstanceFields;
+			}
+			if (info.wNumInstanceFields < inheritedCount)
+				throw gcnew InvalidOperationException("DAC returned inconsistent field counts.");
+			int fieldCount = info.wNumInstanceFields - inheritedCount + info.wNumStaticFields;
 			auto field = info.FirstField;
-			while (field != 0)
+			// NextField is pointer arithmetic, not a null-terminated linked list.
+			for (int i = 0; i < fieldCount; i++)
 			{
+				if (field == 0)
+					throw gcnew InvalidOperationException("DAC returned no field descriptor before the end of the field list.");
 				DacpFieldDescData data;
-				if (FAILED(SOSDac->GetFieldDescData(field, &data))) {
-					break;
-				}
+				DacHelpers::GlobalHelpers::Check(SOSDac->GetFieldDescData(field, &data), "GetFieldDescData");
 				if (data.bIsStatic != 0)
 					fields->Add(gcnew Common::ClrStaticField(type, this, UIntPtr(field)));
 				else
@@ -156,14 +169,16 @@ namespace QHackCLR {
 		Generic::IEnumerable<Common::ClrMethod^>^ RuntimeBuilder::EnumerateVTableMethods(Common::ClrType^ type) {
 			auto mt = type->NativeHandle;
 			DacpMethodTableData mtData;
-			SOSDac->GetMethodTableData(mt, &mtData);
+			DacHelpers::GlobalHelpers::Check(SOSDac->GetMethodTableData(mt, &mtData), "GetMethodTableData");
 			List<Common::ClrMethod^>^ methods = gcnew List<Common::ClrMethod^>();
 			for (int i = 0; i < mtData.wNumMethods; i++)
 			{
-				CLRDATA_ADDRESS slot;
+				CLRDATA_ADDRESS slot = 0;
 				DacpCodeHeaderData chdata;
-				SOSDac->GetMethodTableSlot(mt, i, &slot);
-				auto hr = SOSDac->GetCodeHeaderData(slot, &chdata);
+				DacHelpers::GlobalHelpers::Check(SOSDac->GetMethodTableSlot(mt, i, &slot), "GetMethodTableSlot");
+				DacHelpers::GlobalHelpers::Check(SOSDac->GetCodeHeaderData(slot, &chdata), "GetCodeHeaderData");
+				if (chdata.MethodDescPtr == 0)
+					throw gcnew InvalidOperationException("DAC returned no method descriptor for a method slot.");
 				methods->Add(gcnew Common::ClrMethod(this, UIntPtr(chdata.MethodDescPtr)));
 			}
 			return methods;
