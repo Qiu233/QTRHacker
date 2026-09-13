@@ -422,7 +422,7 @@ namespace QHackCLR {
 			CLR_TYPE_PROP(IsInterface, Interface);
 
 			CLR_TYPE_PROP(IsImport, Import);
-			CLR_TYPE_PROP(IsSerializable, Serializable);
+			//CLR_TYPE_PROP(IsSerializable, Serializable);
 			CLR_TYPE_PROP(IsWindowsRuntime, WindowsRuntime);
 
 			CLR_TYPE_PROP(IsAnsiClass, AnsiClass);

@@ -27,7 +27,7 @@
     <RootNamespace>Launcher</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <ConfigurationType>Application</ConfigurationType>
     <OutDir>$(SolutionDir)bin\Launcher\$(Platform)_$(Configuration)\</OutDir>
     <TargetName>QTRHacker</TargetName>

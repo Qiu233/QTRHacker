@@ -1,7 +1,6 @@
 #pragma once
 using namespace System;
 using namespace System::Runtime::CompilerServices;
-using namespace Microsoft::CodeAnalysis;
 
 namespace Microsoft {
 	namespace CodeAnalysis {
@@ -11,14 +10,18 @@ namespace Microsoft {
 		};
 	}
 }
+
 namespace System {
 	namespace Runtime {
 		namespace CompilerServices {
-			[CompilerGenerated]
-			[Embedded]
-			ref class IsUnmanagedAttribute sealed : Attribute
-			{
-			};
+			using namespace Microsoft::CodeAnalysis;
+
+			// Now this class has been defined, so we don't have to define it again.
+			// [CompilerGenerated]
+			// [Embedded]
+			// ref class IsUnmanagedAttribute sealed : Attribute
+			// {
+			// };
 
 			[CompilerGenerated]
 			[Embedded]

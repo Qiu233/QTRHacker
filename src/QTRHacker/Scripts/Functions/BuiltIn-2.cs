@@ -93,7 +93,7 @@ public class SuperGrabRange : BaseFunction
 	}
 	public override void Enable(GameContext ctx)
 	{
-		nuint a = ctx.GameModuleHelper["Terraria.Player", "GetItemGrabRange"];
+		nuint a = ctx.GameModuleHelper.GetClrMethodBySignature("Terraria.Player", "Terraria.Player.GetItemGrabRange(Terraria.Item)").NativeCode;
 		if (Read<byte>(ctx, a) == 0xE9)
 			return;
 		InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
@@ -103,7 +103,7 @@ public class SuperGrabRange : BaseFunction
 	}
 	public override void Disable(GameContext ctx)
 	{
-		nuint a = ctx.GameModuleHelper["Terraria.Player", "GetItemGrabRange"];
+		nuint a = ctx.GameModuleHelper.GetClrMethodBySignature("Terraria.Player", "Terraria.Player.GetItemGrabRange(Terraria.Item)").NativeCode;
 		InlineHook.FreeHook(ctx.HContext, a);
 		IsEnabled = false;
 	}
@@ -122,7 +122,7 @@ public class BonusTwoSlots : BaseFunction
 	}
 	public override void Enable(GameContext ctx)
 	{
-		nuint a = ctx.GameModuleHelper["Terraria.Player", "IsAValidEquipmentSlotForIteration"];
+		nuint a = ctx.GameModuleHelper.GetClrMethodBySignature("Terraria.Player", "Terraria.Player.IsItemSlotUnlockedAndUsable(Int32)").NativeCode;
 		if (Read<byte>(ctx, a) == 0xE9)
 			return;
 		InlineHook.Hook(ctx.HContext,
@@ -133,7 +133,7 @@ public class BonusTwoSlots : BaseFunction
 	}
 	public override void Disable(GameContext ctx)
 	{
-		nuint a = ctx.GameModuleHelper["Terraria.Player", "IsAValidEquipmentSlotForIteration"];
+		nuint a = ctx.GameModuleHelper.GetClrMethodBySignature("Terraria.Player", "Terraria.Player.IsItemSlotUnlockedAndUsable(Int32)").NativeCode;
 		InlineHook.FreeHook(ctx.HContext, a);
 		IsEnabled = false;
 	}
@@ -241,28 +241,17 @@ public class EnableAllRecipes : BaseFunction
 			case "en":
 			default:
 				Name = "Enable All Recipes";
-				Tooltip = "Actually not all, only 3000 recipes are enabled.";
 				break;
 		}
 	}
 	public override void Enable(GameContext ctx)
 	{
-		var helper = ctx.GameModuleHelper;
-		Write<byte>(ctx,
-			helper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
-			0xC3);
-		helper.SetStaticFieldValue("Terraria.Main", "numAvailableRecipes", 3000);
-		var array = new GameObjectArrayV<int>(ctx, helper.GetStaticHackObject("Terraria.Main", "availableRecipe"));
-		int len = array.Length;
-		for (int i = 0; i < len; i++)
-			array[i] = i;
+		ctx.Patches.SetAllRecipesEnabled(true);
 		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
-		Write<byte>(ctx,
-			ctx.GameModuleHelper.GetFunctionAddress("Terraria.Recipe", "FindRecipes"),
-			0x55);
+		ctx.Patches.SetAllRecipesEnabled(false);
 		IsEnabled = false;
 	}
 }

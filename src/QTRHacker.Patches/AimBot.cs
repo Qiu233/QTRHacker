@@ -58,7 +58,7 @@ namespace QTRHacker.Patches
 		{
 			if (Mode == AimBotMode.Disabled)
 				return;
-			if (!Main.hasFocus)
+			if (!Terraria.FocusHelper.IsSelectedApplication)
 				return;
 			Entity p = GetTarget();
 			if (p is null)

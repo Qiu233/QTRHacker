@@ -219,14 +219,12 @@ public class InfiniteAmmo : BaseFunction
 	}
 	public override void Enable(GameContext ctx)
 	{
-		AobReplace(ctx, "FF 88 B0 00 00 00 8B 45 E0 83 B8", "90 90 90 90 90 90");//dec dword ptr [eax+0xB0]\nmov eax,[ebp-0x20]\ncmp
-		AobReplace(ctx, "FF 89 B0 00 00 00 8B 45 0C 8B 55 F4", "90 90 90 90 90 90");//dec dword ptr [ecx+0xB0]\nmov eax,[ebp+0xC]\nmov edx[ebp-0xC]
+		ctx.Patches.InfiniteAmmo_Enabled = true;
 		IsEnabled = true;
 	}
 	public override void Disable(GameContext ctx)
 	{
-		AobReplace(ctx, "90 90 90 90 90 90 8B 45 E0 83 B8", "FF 88 B0 00 00 00");
-		AobReplace(ctx, "90 90 90 90 90 90 8B 45 0C 8B 55 F4", "FF 89 B0 00 00 00");
+		ctx.Patches.InfiniteAmmo_Enabled = false;
 		IsEnabled = false;
 	}
 }

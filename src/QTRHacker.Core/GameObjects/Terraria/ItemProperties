@@ -1,4 +1,4 @@
-﻿		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "color               "); #>
+		<# PROPERTY_VIRTUAL("ValueTypeRedefs.Xna.Color", "color               "); #>
 		<# PROPERTY_ARRAYV_VIRTUAL("ValueTypeRedefs.Xna.Color", "_phaseColors        "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "accessory           "); #>
 		<# PROPERTY_VIRTUAL("bool      ", "autoReuse           "); #>
@@ -99,6 +99,7 @@
 		<# PROPERTY_VIRTUAL("int       ", "tileBoost           "); #>
 		<# PROPERTY_VIRTUAL("int       ", "tileWand            "); #>
 		<# PROPERTY_VIRTUAL("int       ", "tooltipContext      "); #>
+		<# PROPERTY_VIRTUAL("int       ", "tooltipSlot         "); #>
 		<# PROPERTY_VIRTUAL("int       ", "treasureGrabRange   "); #>
 		<# PROPERTY_VIRTUAL("int       ", "type                "); #>
 		<# PROPERTY_VIRTUAL("int       ", "useAmmo             "); #>

@@ -1,14 +1,31 @@
 ﻿using QHackLib;
 using QHackLib.Assemble;
 using QHackLib.Memory;
+using System.Runtime.InteropServices;
+using QTRHacker.Core.GameObjects.ValueTypeRedefs.Xna;
 
 namespace QTRHacker.Core.GameObjects.Terraria;
 
 /// <summary>
 /// Wrapper for Terraria.Item
 /// </summary>
-public partial class Item : Entity
+public partial class Item : GameObject
 {
+	// Nullable<Vector2> is a 12-byte value on Terraria's x86 CLR. Boxing a
+	// null Vector2? would pass a single null pointer and unbalance the stack.
+	[StructLayout(LayoutKind.Sequential)]
+	private struct OptionalVector2
+	{
+		public int HasValue;
+		public Vector2 Value;
+
+		public OptionalVector2(Vector2? value)
+		{
+			HasValue = value.HasValue ? 1 : 0;
+			Value = value.GetValueOrDefault();
+		}
+	}
+
 	public Item(GameContext ctx, HackObject obj) : base(ctx, obj)
 	{
 	}
@@ -45,17 +62,27 @@ public partial class Item : Entity
 
 
 	public static int NewItem(GameContext Context, int X, int Y, int Width, int Height, int Type, int Stack = 1,
-		bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false)
+		bool noBroadcast = false, int pfix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null)
 	{
 		using MemoryAllocation ret = new(Context.HContext);
 
 		Context.RunByHookUpdate(
 			new HackMethod(Context.HContext,
 				Context.GameModuleHelper.GetClrMethodBySignature("Terraria.Item",
-				"Terraria.Item.NewItem(Terraria.DataStructures.IEntitySource, Int32, Int32, Int32, Int32, Int32, Int32, Boolean, Int32, Boolean)"))
+				"Terraria.Item.NewItem(Terraria.DataStructures.IEntitySource, Int32, Int32, Int32, Int32, Int32, Int32, Boolean, Int32, Terraria.NewItemOwnership, System.Nullable`1<Microsoft.Xna.Framework.Vector2>, NewItemModifier)"))
 			.Call(null)
-			.Call(true, null, ret.AllocationBase, new object[] { 0, X, Y, Width, Height, Type, Stack, noBroadcast, pfix, noGrabDelay }));
+			.Call(true, null, ret.AllocationBase, new object[] { 0, X, Y, Width, Height, Type, Stack, noBroadcast, pfix, (int)ownership, new OptionalVector2(velocity), 0 }));
 
 		return Context.HContext.DataAccess.Read<int>(ret.AllocationBase);
+	}
+
+	public static void RequestNewItem(GameContext context, Vector2 center, int type, int stack = 1,
+		int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null)
+	{
+		context.RunByHookUpdate(new HackMethod(context.HContext,
+			context.GameModuleHelper.GetClrMethodBySignature("Terraria.Item",
+				"Terraria.Item.RequestNewItem(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Int32, Int32, Int32, Terraria.NewItemOwnership, System.Nullable`1<Microsoft.Xna.Framework.Vector2>, NewItemModifier)"))
+			.Call(null)
+			.Call(true, null, null, new object[] { 0, center, type, stack, prefix, (int)ownership, new OptionalVector2(velocity), 0 }));
 	}
 }

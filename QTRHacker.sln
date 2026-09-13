@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameDataExporter", "src\GameDataExporter\GameDataExporter.csproj", "{6BE8BB89-E7E0-49D6-BEAC-02CF09E7627F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameWikiResExporter", "src\GameWikiResExporter\GameWikiResExporter.csproj", "{D9A413D0-824A-4F54-AB2C-7082F88CF40D}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QHackCLR", "src\QHackCLR\QHackCLR.vcxproj", "{4944FB86-95C2-4F45-BD72-29917A65E997}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QHackLib", "src\QHackLib\QHackLib.csproj", "{61EA2FEE-9135-4855-B699-EB74731F57A4}"
@@ -32,6 +34,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9A413D0-824A-4F54-AB2C-7082F88CF40D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D9A413D0-824A-4F54-AB2C-7082F88CF40D}.Debug|x64.Build.0 = Debug|Any CPU
+		{D9A413D0-824A-4F54-AB2C-7082F88CF40D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D9A413D0-824A-4F54-AB2C-7082F88CF40D}.Debug|x86.Build.0 = Debug|Any CPU
+		{D9A413D0-824A-4F54-AB2C-7082F88CF40D}.Release|x64.ActiveCfg = Release|Any CPU
+		{D9A413D0-824A-4F54-AB2C-7082F88CF40D}.Release|x64.Build.0 = Release|Any CPU
+		{D9A413D0-824A-4F54-AB2C-7082F88CF40D}.Release|x86.ActiveCfg = Release|Any CPU
+		{D9A413D0-824A-4F54-AB2C-7082F88CF40D}.Release|x86.Build.0 = Release|Any CPU
 		{6BE8BB89-E7E0-49D6-BEAC-02CF09E7627F}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{6BE8BB89-E7E0-49D6-BEAC-02CF09E7627F}.Debug|x64.Build.0 = Debug|Any CPU
 		{6BE8BB89-E7E0-49D6-BEAC-02CF09E7627F}.Debug|x86.ActiveCfg = Debug|Any CPU

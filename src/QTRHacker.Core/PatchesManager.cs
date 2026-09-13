@@ -1,5 +1,6 @@
 ﻿using QTRHacker.Core.GameObjects;
 using System;
+using QHackLib.Assemble;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -59,6 +60,25 @@ public sealed class PatchesManager
 
 	public GameObjectArray2DV<STile> WorldPainter_ClipBoard
 		=> new(Context, PatchHelper.GetStaticHackObject("QTRHacker.Patches.WorldPainter", "ClipBoard"));
+
+	public void SetAllRecipesEnabled(bool enabled)
+	{
+		Init();
+		if (!Context.RunByHookUpdate(AssemblySnippet.FromClrCall(
+			PatchHelper.GetFunctionAddress("QTRHacker.Patches.RecipeUnlocks", "SetEnabled"),
+			true, null, null, null, new object[] { enabled })))
+			throw new InvalidOperationException("Couldn't update recipe unlocks");
+	}
+
+	public bool InfiniteAmmo_Enabled
+	{
+		get => PatchHelper.GetStaticFieldValue<bool>("QTRHacker.Patches.AmmoConsumption", "Enabled");
+		set
+		{
+			Init();
+			PatchHelper.SetStaticFieldValue("QTRHacker.Patches.AmmoConsumption", "Enabled", value);
+		}
+	}
 
 	public bool WorldPainter_EyeDropperActive
 	{

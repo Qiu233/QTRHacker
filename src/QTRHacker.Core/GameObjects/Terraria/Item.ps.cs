@@ -19,7 +19,7 @@ namespace QTRHacker.Core.GameObjects.Terraria
 	set => InternalObject.color = value;
 }		public virtual GameObjectArrayV<ValueTypeRedefs.Xna.Color> PhaseColors
 {
-	get => new GameObjectArrayV<ValueTypeRedefs.Xna.Color>(Context, InternalObject._phaseColors); 
+	get => new GameObjectArrayV<ValueTypeRedefs.Xna.Color>(Context, InternalObject._phaseColors);
 	set => InternalObject._phaseColors = value.InternalObject;
 }		public virtual bool Accessory
 {
@@ -163,11 +163,11 @@ namespace QTRHacker.Core.GameObjects.Terraria
 	set => InternalObject.wornArmor = value;
 }		public virtual GameObjectArrayV<bool> Claw
 {
-	get => new GameObjectArrayV<bool>(Context, InternalObject.claw); 
+	get => new GameObjectArrayV<bool>(Context, InternalObject.claw);
 	set => InternalObject.claw = value.InternalObject;
 }		public virtual GameObjectArrayV<bool> Staff
 {
-	get => new GameObjectArrayV<bool>(Context, InternalObject.staff); 
+	get => new GameObjectArrayV<bool>(Context, InternalObject.staff);
 	set => InternalObject.staff = value.InternalObject;
 }		public virtual byte Dye
 {
@@ -417,6 +417,10 @@ namespace QTRHacker.Core.GameObjects.Terraria
 {
 	get => InternalObject.tooltipContext;
 	set => InternalObject.tooltipContext = value;
+}		public virtual int TooltipSlot
+{
+	get => InternalObject.tooltipSlot;
+	set => InternalObject.tooltipSlot = value;
 }		public virtual int TreasureGrabRange
 {
 	get => InternalObject.treasureGrabRange;
@@ -451,19 +455,19 @@ namespace QTRHacker.Core.GameObjects.Terraria
 	set => InternalObject.width = value;
 }		public virtual GameObjectArrayV<int> BodyType
 {
-	get => new GameObjectArrayV<int>(Context, InternalObject.bodyType); 
+	get => new GameObjectArrayV<int>(Context, InternalObject.bodyType);
 	set => InternalObject.bodyType = value.InternalObject;
 }		public virtual GameObjectArrayV<int> CachedItemSpawnsByType
 {
-	get => new GameObjectArrayV<int>(Context, InternalObject.cachedItemSpawnsByType); 
+	get => new GameObjectArrayV<int>(Context, InternalObject.cachedItemSpawnsByType);
 	set => InternalObject.cachedItemSpawnsByType = value.InternalObject;
 }		public virtual GameObjectArrayV<int> HeadType
 {
-	get => new GameObjectArrayV<int>(Context, InternalObject.headType); 
+	get => new GameObjectArrayV<int>(Context, InternalObject.headType);
 	set => InternalObject.headType = value.InternalObject;
 }		public virtual GameObjectArrayV<int> LegType
 {
-	get => new GameObjectArrayV<int>(Context, InternalObject.legType); 
+	get => new GameObjectArrayV<int>(Context, InternalObject.legType);
 	set => InternalObject.legType = value.InternalObject;
 }		public virtual sbyte BackSlot
 {

@@ -20,13 +20,13 @@ public partial class Player : Entity
 	public const int DYE_MAX_COUNT = 10;
 	public const int MISC_MAX_COUNT = 5;
 	public const int MISCDYE_MAX_COUNT = 5;
-	public const int BUFF_MAX_COUNT = 22;
+	public const int BUFF_MAX_COUNT = GameConstants.MaxPlayerBuffs;
 	public const int MAX_PLAYER = 256;
 
-	public void AddBuff(int type, int time, bool quiet = true, bool foodHack = false)
+	public void AddBuff(int type, int time, bool fromNetPvP = false)
 	{
-		Context.RunByHookUpdate(TypedInternalObject.GetMethodCall("Terraria.Player.AddBuff(Int32, Int32, Boolean, Boolean)")
-			.Call(true, null, null, new object[] { type, time, quiet, foodHack }));
+		Context.RunByHookUpdate(TypedInternalObject.GetMethodCall("Terraria.Player.AddBuff(Int32, Int32, Boolean)")
+			.Call(true, null, null, new object[] { type, time, fromNetPvP }));
 	}
 
 	public void SaveInventory(Stream s)

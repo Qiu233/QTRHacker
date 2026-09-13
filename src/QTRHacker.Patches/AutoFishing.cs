@@ -102,7 +102,7 @@ namespace QTRHacker.Patches
 			}
 
 			if (PlayerInput.MouseInfo.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed
-				&& !did && Ready && Main.hasFocus && InsideScreen(PlayerInput.MouseInfo.X, PlayerInput.MouseInfo.Y))
+				&& !did && Ready && Terraria.FocusHelper.IsSelectedApplication && InsideScreen(PlayerInput.MouseInfo.X, PlayerInput.MouseInfo.Y))
 			{
 				Ready = false;
 			}

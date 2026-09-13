@@ -227,7 +227,7 @@ namespace QTRHacker.Patches
 			bool rightUp = Mouse.GetState().RightButton != ButtonState.Pressed && LastRightPressed && LastFocus && inside;
 			LastLeftPressed = Mouse.GetState().LeftButton == ButtonState.Pressed;
 			LastRightPressed = Mouse.GetState().RightButton == ButtonState.Pressed;
-			LastFocus = Main.hasFocus;
+			LastFocus = Terraria.FocusHelper.IsSelectedApplication;
 			if (rightUp)
 			{
 				Dropping = false;

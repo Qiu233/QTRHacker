@@ -156,8 +156,8 @@ public class GameContext : IDisposable
 
 	public bool FastForwardTime
 	{
-		get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "fastForwardTime");
-		set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "fastForwardTime", value);
+		get => GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "fastForwardTimeToDawn");
+		set => GameModuleHelper.SetStaticFieldValue("Terraria.Main", "fastForwardTimeToDawn", value);
 	}
 
 	public bool PumpkinMoon

@@ -1,5 +1,6 @@
 ﻿using QHackLib.Assemble;
 using QHackLib.Memory;
+using QTRHacker.Core.GameObjects.Terraria;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -108,7 +109,8 @@ public class ProjImage : IEmmitable
 						(Instruction)$"push 0",				//ai0:float
 						(Instruction)$"push 0",				//ai1:float
 						(Instruction)$"push 0",				//ai2:float
-						(Instruction)$"call {context.GameModuleHelper.GetClrMethodBySignature("Terraria.Projectile", "Terraria.Projectile.NewProjectile(Terraria.DataStructures.IEntitySource, Single, Single, Single, Single, Int32, Int32, Single, Int32, Single, Single, Single)").NativeCode}",
+						(Instruction)$"push 0",                //modifier:NewProjectileModifier
+						(Instruction)$"call {context.GameModuleHelper.GetClrMethodBySignature("Terraria.Projectile", Projectile.NewProjectileSignature).NativeCode}",
 
 			}),
 			Projs.Count, true));

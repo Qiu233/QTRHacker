@@ -66,8 +66,8 @@ public virtual GameString <#= newName #>_obj
 	{
 #>public virtual <#= type #> <#= newName #>
 {
-	get => new(Context, InternalObject.<#= name #>); 
-	set => InternalObject.<#= name #> = value.InternalObject; 
+	get => new(Context, InternalObject.<#= name #>);
+	set => InternalObject.<#= name #> = value.InternalObject;
 }<#+
 	}
 }
@@ -97,7 +97,7 @@ private void SKELETON_MANAGED_ARR_GET_SET(string inner, string netType, string n
 	name = name.Trim();
 #>public virtual <#= netType #><<#= inner #>> <#= newName #>
 {
-	get => new <#= netType #><<#= inner #>>(Context, InternalObject.<#= name #>); 
+	get => new <#= netType #><<#= inner #>>(Context, InternalObject.<#= name #>);
 	set => InternalObject.<#= name #> = value.InternalObject;
 }<#+
 }
