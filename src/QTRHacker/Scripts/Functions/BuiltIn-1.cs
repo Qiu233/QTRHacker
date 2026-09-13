@@ -7,9 +7,9 @@ using static QTRHacker.Scripts.ScriptHelper;
 using System.Windows;
 
 namespace QTRHacker.Scripts.Functions;
-public class CreativeMenu : BaseFunction
+public class CreativeMenu : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.CreativeMenu;
 	public override void ApplyLocalization(string culture)
 	{
 		switch (culture)
@@ -24,18 +24,6 @@ public class CreativeMenu : BaseFunction
 				Tooltip = "Force journey mode menu enbaled";
 				break;
 		}
-	}
-	public override void Enable(GameContext ctx)
-	{
-		int off = GetOffset(ctx, "Terraria.Player", "difficulty");
-		AobReplace(ctx, $"80 B8 {AobscanHelper.GetMByteCode(off)} 03 74", $"80 B8 {AobscanHelper.GetMByteCode(off)} 03 EB");
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		int off = GetOffset(ctx, "Terraria.Player", "difficulty");
-		AobReplace(ctx, $"80 B8 {AobscanHelper.GetMByteCode(off)} 03 EB", $"80 B8 {AobscanHelper.GetMByteCode(off)} 03 74");
-		IsEnabled = false;
 	}
 }
 public class UnlockAllDuplications : BaseFunction
@@ -95,9 +83,9 @@ public class UnlockAllDuplications : BaseFunction
 	}
 }
 
-public class InfiniteLife : BaseFunction
+public class InfiniteLife : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.InfiniteLife;
 	public override void ApplyLocalization(string culture)
 	{
 		switch (culture)
@@ -113,23 +101,11 @@ public class InfiniteLife : BaseFunction
 				break;
 		}
 	}
-	public override void Enable(GameContext ctx)
-	{
-		int off = GetOffset(ctx, "Terraria.Player", "statLife");
-		AobReplace(ctx, $"29 82 {AobscanHelper.GetMByteCode(off)} 83 7D", $"01 82 {AobscanHelper.GetMByteCode(off)} 83 7D");
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		int off = GetOffset(ctx, "Terraria.Player", "statLife");
-		AobReplace(ctx, $"01 82 {AobscanHelper.GetMByteCode(off)} 83 7D", $"29 82 {AobscanHelper.GetMByteCode(off)} 83 7D");
-		IsEnabled = false;
-	}
 }
 
-public class InfiniteMana : BaseFunction
+public class InfiniteMana : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.InfiniteMana;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -138,25 +114,11 @@ public class InfiniteMana : BaseFunction
 			_ => "Infinite Mana",
 		};
 	}
-	public override void Enable(GameContext ctx)
-	{
-		int off = GetOffset(ctx, "Terraria.Player", "statMana");
-		AobReplaceASM(ctx, $"sub [esi+{off}],edi", $"add [esi+{off}],edi");
-		AobReplaceASM(ctx, $"sub [esi+{off}],eax", $"add [esi+{off}],eax");
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		int off = GetOffset(ctx, "Terraria.Player", "statMana");
-		AobReplaceASM(ctx, $"add [esi+{off}],edi", $"sub [esi+{off}],edi");
-		AobReplaceASM(ctx, $"add [esi+{off}],eax", $"sub [esi+{off}],eax");
-		IsEnabled = false;
-	}
 }
 
-public class InfiniteOxygen : BaseFunction
+public class InfiniteOxygen : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.InfiniteOxygen;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -165,23 +127,11 @@ public class InfiniteOxygen : BaseFunction
 			_ => "Infinite Oxygen",
 		};
 	}
-	public override void Enable(GameContext ctx)
-	{
-		int off = GetOffset(ctx, "Terraria.Player", "breath");
-		AobReplaceASM(ctx, $"dec dword ptr [eax+{off}]\ncmp dword ptr [eax+{off}],0", $"inc dword ptr [eax+{off}]");
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		int off = GetOffset(ctx, "Terraria.Player", "breath");
-		AobReplaceASM(ctx, $"inc dword ptr [eax+{off}]\ncmp dword ptr [eax+{off}],0", $"dec dword ptr [eax+{off}]");
-		IsEnabled = false;
-	}
 }
 
-public class InfiniteMinion : BaseFunction
+public class InfiniteMinion : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.InfiniteMinion;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -189,20 +139,6 @@ public class InfiniteMinion : BaseFunction
 			"zh" => "无限召唤物",
 			_ => "Infinite Minion",
 		};
-	}
-	public override void Enable(GameContext ctx)
-	{
-		int offA = GetOffset(ctx, "Terraria.Player", "maxMinions");
-		int offB = GetOffset(ctx, "Terraria.Player", "maxTurrets");
-		AobReplaceASM(ctx, $"mov dword ptr [esi+{offA}],1\nmov dword ptr [esi+{offB}],1", $"mov dword ptr [esi+{offA}],9999\nmov dword ptr [esi+{offB}],9999");
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		int offA = GetOffset(ctx, "Terraria.Player", "maxMinions");
-		int offB = GetOffset(ctx, "Terraria.Player", "maxTurrets");
-		AobReplaceASM(ctx, $"mov dword ptr [esi+{offA}],9999\nmov dword ptr [esi+{offB}],9999", $"mov dword ptr [esi+{offA}],1\nmov dword ptr [esi+{offB}],1");
-		IsEnabled = false;
 	}
 }
 
@@ -229,9 +165,9 @@ public class InfiniteAmmo : BaseFunction
 	}
 }
 
-public class InfiniteFlyTime : BaseFunction
+public class InfiniteFlyTime : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.InfiniteFlyTime;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -239,20 +175,6 @@ public class InfiniteFlyTime : BaseFunction
 			"zh" => "无限飞行时间",
 			_ => "Infinite Fly Time",
 		};
-	}
-	public override void Enable(GameContext ctx)
-	{
-		int off1 = GetOffset(ctx, "Terraria.Player", "wingTime");
-		int off2 = GetOffset(ctx, "Terraria.Player", "empressBrooch");
-		AobReplace(ctx, $"D9 99 {AobscanHelper.GetMByteCode(off1)} 80 B9 {AobscanHelper.GetMByteCode(off2)} 00", "90 90 90 90 90 90");
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		int off1 = GetOffset(ctx, "Terraria.Player", "wingTime");
-		int off2 = GetOffset(ctx, "Terraria.Player", "empressBrooch");
-		AobReplace(ctx, $"90 90 90 90 90 90 80 B9 {AobscanHelper.GetMByteCode(off2)} 00", $"D9 99 {AobscanHelper.GetMByteCode(off1)}");
-		IsEnabled = false;
 	}
 }
 
@@ -294,9 +216,9 @@ public class ImmuneToDebuffs : BaseFunction
 	}
 }
 
-public class HighLight : BaseFunction
+public class HighLight : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.HighLight;
 	public override void ApplyLocalization(string culture)
 	{
 		switch (culture)
@@ -311,30 +233,6 @@ public class HighLight : BaseFunction
 				Tooltip = "Please set Video -> Lighting to \"Color\"";
 				break;
 		}
-	}
-	public override void Enable(GameContext ctx)
-	{
-		nuint[] a = Aobscan(
-			ctx,
-			@"C7 ** ** ******** D9 07 D9 45 F0 DF F1 DD D8 7A").ToArray();
-		if (!a.Any())
-			return;
-		InlineHook.Hook(ctx.HContext,
-			AssemblySnippet.FromASMCode(
-				@"mov dword ptr[ebp-0x10],0x3F800000
-mov dword ptr[ebp-0x14],0x3F800000
-mov dword ptr[ebp-0x18],0x3F800000"
-),
-				new HookParameters(a[0] + 7, 0x1000));
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		nuint[] a = Aobscan(ctx, "C7 ** ** ******** E9 ** ** ** ** DF F1 DD D8 7A").ToArray();
-		if (!a.Any())
-			return;
-		InlineHook.FreeHook(ctx.HContext, a[0] + 7);
-		IsEnabled = false;
 	}
 }
 

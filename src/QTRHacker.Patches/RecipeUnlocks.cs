@@ -32,9 +32,16 @@ namespace QTRHacker.Patches
 			}
 		}
 
-		[HarmonyPatch(typeof(Recipe), nameof(Recipe.HowManyTimesCanRecipeBeCrafted), new[] { typeof(Recipe.RequiredItemEntry[]) })]
+		[HarmonyPatch]
 		private static class CraftableCount
 		{
+			// Keep the nested array type in IL: ILRepack 2.0.18 corrupts its
+			// serialized type name when it is stored in a custom attribute.
+			private static System.Reflection.MethodBase TargetMethod()
+			{
+				return AccessTools.Method(typeof(Recipe), nameof(Recipe.HowManyTimesCanRecipeBeCrafted), new[] { typeof(Recipe.RequiredItemEntry[]) });
+			}
+
 			private static bool Prefix(ref int __result)
 			{
 				if (!Enabled)

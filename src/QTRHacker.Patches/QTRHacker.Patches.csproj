@@ -9,7 +9,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="..\QTRHacker.Core\GameplayFeature.cs" Link="GameplayFeature.cs" />
 		<PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+		<PackageReference Include="Lib.Harmony" Version="2.4.2" PrivateAssets="all" ExcludeAssets="runtime" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -25,11 +27,6 @@
 		</Reference>
 		<Reference Include="Microsoft.Xna.Framework.Graphics">
 			<HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath>
-			<CopyLocal>False</CopyLocal>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="0Harmony">
-			<HintPath>$(SolutionDir)refdlls\0Harmony.dll</HintPath>
 			<CopyLocal>False</CopyLocal>
 			<Private>False</Private>
 		</Reference>

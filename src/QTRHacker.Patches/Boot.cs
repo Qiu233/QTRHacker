@@ -22,7 +22,6 @@ namespace QTRHacker.Patches
 			try
 			{
 				LoadAll();
-				Initialized = true;
 
 				HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("QTRHacker.Patches");
 				harmony.PatchAll();
@@ -42,6 +41,7 @@ namespace QTRHacker.Patches
 					}
 					return true;
 				}, InterfaceScaleType.Game));
+				Initialized = true;
 			}
 			catch (Exception e)
 			{
@@ -52,7 +52,9 @@ namespace QTRHacker.Patches
 		{
 			var asm = System.Reflection.Assembly.GetExecutingAssembly();
 			foreach (var type in asm.DefinedTypes)
-				System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+				// Initialize our callbacks, not the merged dependency's internal types.
+				if (type.Namespace != null && type.Namespace.StartsWith("QTRHacker.Patches", StringComparison.Ordinal))
+					System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 		}
 	}
 }

@@ -2,6 +2,9 @@
 using System;
 using QHackLib.Assemble;
 using System.IO;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
 namespace QTRHacker.Core;
@@ -43,6 +46,8 @@ public sealed class PatchesManager
 	}
 	public QHackLib.CLRHelper PatchHelper => Context.HContext.GetCLRHelper("QTRHacker.Patches");
 	public GameContext Context { get; }
+	private readonly object patchLock = new();
+	private Task<bool> initialization;
 	public PatchesManager(GameContext context)
 	{
 		Context = context;
@@ -52,10 +57,63 @@ public sealed class PatchesManager
 
 	public void Init()
 	{
-		if (IsInitialized)
-			return;
-		if (!Context.LoadAssemblyAsBytes(Path.GetFullPath("./QTRHacker.Patches.dll"), "QTRHacker.Patches.Boot"))
-			throw new InvalidOperationException("Couldn't load patches");
+		lock (patchLock)
+		{
+			if (Context.GameProcess.HasExited)
+				throw new InvalidOperationException("Terraria has exited.");
+			if (initialization == null && !IsInitialized)
+			{
+				// A dedicated worker also avoids thread-pool starvation when several
+				// function buttons are waiting for this same initialization lock.
+				initialization = Task.Factory.StartNew(() => Context.LoadAssemblyAsBytes(
+					Path.Combine(AppContext.BaseDirectory, "QTRHacker.Patches.dll"), "QTRHacker.Patches.Boot"),
+					CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+			}
+			if (initialization != null && !initialization.Wait(30000))
+				throw new TimeoutException("Patch loading is still in progress. Resume the game and retry; the existing load will be reused.");
+			if (initialization != null && !initialization.GetAwaiter().GetResult())
+				throw new InvalidOperationException("Couldn't load patches");
+			if (!IsInitialized)
+				throw new InvalidOperationException("The patch assembly could not be found after loading it.");
+			if (!PatchHelper.GetStaticFieldValue<bool>("QTRHacker.Patches.Boot", "Initialized"))
+				throw new InvalidOperationException("Patch initialization failed. See QTRHacker.Patches.boot.log in the game directory.");
+		}
+	}
+
+	public void SetGameplayFeature(GameplayFeature feature, bool enabled)
+	{
+		// Different function buttons run on different worker threads. Keep the
+		// load, remote call and shared result read in the same critical section.
+		lock (patchLock)
+		{
+			Init();
+			const string type = "QTRHacker.Patches.GameplayPatches";
+			if (PatchHelper.GetClrType(type)?.GetStaticFieldByName("RequestId") == null)
+				throw new InvalidOperationException("The game has an older patch assembly loaded. Restart Terraria before using the updated features.");
+			int previous = PatchHelper.GetStaticFieldValue<int>(type, "RequestId");
+			if (previous != PatchHelper.GetStaticFieldValue<int>(type, "CompletedRequestId"))
+				throw new InvalidOperationException("A gameplay feature request is still pending. Resume the game and try again.");
+			int request = unchecked(previous + 1);
+			PatchHelper.SetStaticFieldValue(type, "RequestedFeature", (int)feature);
+			PatchHelper.SetStaticFieldValue(type, "RequestedEnabled", enabled);
+			// Publish after the payload. The managed update callback publishes its
+			// completion ID only after updating the flags and error fields.
+			PatchHelper.SetStaticFieldValue(type, "RequestId", request);
+			var wait = Stopwatch.StartNew();
+			while (PatchHelper.GetStaticFieldValue<int>(type, "CompletedRequestId") != request)
+			{
+				if (Context.GameProcess.HasExited)
+					throw new InvalidOperationException("Terraria exited while updating gameplay features.");
+				if (wait.ElapsedMilliseconds > 15000)
+					throw new TimeoutException("The game has not processed the feature request. Resume the game before retrying.");
+				Thread.Sleep(10);
+			}
+			if (!PatchHelper.GetStaticFieldValue<bool>(type, "LastChangeSucceeded"))
+			{
+				var error = new GameString(Context, PatchHelper.GetStaticHackObject(type, "LastError"));
+				throw new InvalidOperationException($"Couldn't update {feature}: {error}");
+			}
+		}
 	}
 
 	public GameObjectArray2DV<STile> WorldPainter_ClipBoard

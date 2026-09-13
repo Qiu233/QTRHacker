@@ -119,7 +119,7 @@ namespace QHackLib
 		[DllImport("kernel32.dll")]
 		internal static extern nuint OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
 
-		[DllImport("kernel32.dll")]
+		[DllImport("kernel32.dll", SetLastError = true)]
 		internal static extern nuint VirtualAllocEx(
 			nuint hProcess,
 			nuint lpAddress,

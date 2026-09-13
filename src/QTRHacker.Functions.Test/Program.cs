@@ -26,6 +26,16 @@ unsafe class Program
 	public static unsafe int GetOffset(GameContext context, string type, string field) => (int)context.GameModuleHelper.GetInstanceFieldOffset(type, field) + sizeof(nuint);
 	unsafe static void Main(string[] args)
 	{
+		if (args.Length > 0 && args[0] == "--verify-aobscan")
+		{
+			AobscanChecks.Verify();
+			return;
+		}
+		if (args.Length > 0 && args[0] == "--gameplay-feature")
+		{
+			GameplayFeatureChecks.Run(args.Skip(1).ToArray());
+			return;
+		}
 		if (args.Length > 0 && args[0] == "--verify-game-compatibility")
 		{
 			GameCompatibility.Verify(args.Length > 1 ? args[1] : ".");

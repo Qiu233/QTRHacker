@@ -241,12 +241,10 @@ public class GameContext : IDisposable
 
 	public bool RunByHookUpdate(AssemblyCode codeToRun, uint size = 0x1000)
 	{
-		System.Threading.Monitor.Enter(LOCK_UPDATE);
-		bool v = InlineHook.HookOnce(
+		lock (LOCK_UPDATE)
+			return InlineHook.HookOnce(
 				HContext, codeToRun,
 				GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update"), size);
-		System.Threading.Monitor.Exit(LOCK_UPDATE);
-		return v;
 	}
 	private CLRHelper _GameModuleHelper;
 	public CLRHelper GameModuleHelper => _GameModuleHelper ??= HContext.CLRHelpers.First(t
@@ -277,11 +275,16 @@ public class GameContext : IDisposable
 	public unsafe bool LoadAssemblyAsBytes(string assemblyFile, string typeName)
 	{
 		byte[] data = File.ReadAllBytes(assemblyFile);
-		using MemoryAllocation alloc = new(HContext, (uint)data.Length + 64);
+		byte[] typeNameBytes = Encoding.Unicode.GetBytes(typeName + '\0');
+		using MemoryAllocation alloc = new(HContext, checked((uint)(data.Length + typeNameBytes.Length)));
 		var stream = new RemoteMemorySpan(HContext, alloc.AllocationBase, (int)alloc.AllocationSize).GetStream();
 
-		nuint pData = stream.IP; stream.Write(data, (uint)data.Length);
-		nuint pTypeStr = stream.IP; stream.WriteWCHARArray(typeName);
+		nuint pData = stream.IP;
+		if (!stream.Write(data, (uint)data.Length))
+			throw new IOException("Couldn't write the patch assembly into the game.");
+		nuint pTypeStr = stream.IP;
+		if (!stream.Write(typeNameBytes, (uint)typeNameBytes.Length))
+			throw new IOException("Couldn't write the patch entry type into the game.");
 		nuint byteMT = HContext.Runtime.BaseClassLibrary.GetTypeByName("System.Byte").ClrHandle;
 		nuint jitHelper_typeof = JitHelpersManager.GetJitHelperAddress("CORINFO_HELP_TYPEHANDLE_TO_RUNTIMETYPE");
 		// The key is to find this jit helper, so we can create an array of bytes.
@@ -301,6 +304,7 @@ public class GameContext : IDisposable
 
 		var thCode = AssemblySnippet.FromCode(
 			new AssemblyCode[] {
+				(Instruction)"pushad",
 				(Instruction)$"mov ecx, {byteMT}",
 				(Instruction)$"call {jitHelper_typeof}",
 				(Instruction)$"mov ecx, eax",
@@ -329,9 +333,12 @@ public class GameContext : IDisposable
 				(Instruction)$"call {getType}",
 				(Instruction)$"mov ecx, eax",
 				(Instruction)$"call {createInstance}",
+				(Instruction)"popad",
 		});
-		bool result = Task.Run(() => RunOnManagedThread(thCode).WaitToDispose()).Wait(5000);
+		// Keep the DLL bytes and type-name buffer alive until the remote call
+		// finishes. Timing out here used to free memory still used by the loader.
+		RunOnManagedThread(thCode).WaitToDispose();
 		Flush();
-		return result;
+		return true;
 	}
 }

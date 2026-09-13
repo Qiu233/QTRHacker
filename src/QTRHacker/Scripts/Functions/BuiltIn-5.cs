@@ -1,13 +1,9 @@
-using QHackLib.Memory;
-using QHackLib.Assemble;
-using QHackLib.FunctionHelper;
 using QTRHacker.Core;
-using static QTRHacker.Scripts.ScriptHelper;
 
 namespace QTRHacker.Scripts.Functions;
-public class SuperRange : BaseFunction
+public class SuperRange : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.SuperRange;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -16,40 +12,11 @@ public class SuperRange : BaseFunction
 			_ => "Super range",
 		};
 	}
-	public override void Enable(GameContext ctx)
-	{
-		nuint a = Aobscan(
-			ctx,
-			"C7 05 ******** 05000000 C7 05 ******** 04000000 A1").FirstOrDefault();
-		if (a == 0)
-			return;
-		nuint b = a + 6;
-		nuint c = a + 16;
-		int v = 0x1000;
-		Write<int>(ctx, b, v);
-		Write<int>(ctx, c, v);
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		nuint a = Aobscan(
-			ctx,
-			"C7 05 ******** 00100000 C7 05 ******** 00100000 A1").FirstOrDefault();
-		if (a == 0)
-			return;
-		nuint b = a + 6;
-		nuint c = a + 16;
-		int v1 = 5;
-		int v2 = 4;
-		Write<int>(ctx, b, v1);
-		Write<int>(ctx, c, v2);
-		IsEnabled = false;
-	}
 }
 
-public class FastTileAndWallPlacingSpeed : BaseFunction
+public class FastTileAndWallPlacingSpeed : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.FastTileAndWallPlacingSpeed;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -58,42 +25,12 @@ public class FastTileAndWallPlacingSpeed : BaseFunction
 			_ => "Super Fast Tile/Wall Placing Speed",
 		};
 	}
-	public override void Enable(GameContext ctx)
-	{
-		int offA = GetOffset(ctx, "Terraria.Player", "wallSpeed");
-		int offB = GetOffset(ctx, "Terraria.Player", "tileSpeed");
-		nuint a = Aobscan(
-			ctx,
-			$"D9 E8 D9 9E {AobscanHelper.GetMByteCode(offA)} D9 E8 D9 9E {AobscanHelper.GetMByteCode(offB)} 88 96").FirstOrDefault();
-		if (a == 0) return;
-
-		InlineHook.Hook(ctx.HContext,
-			AssemblySnippet.FromASMCode(
-			$"mov dword ptr [esi+{offA})],0x41200000"),
-			new HookParameters(a, 4096, false, false));
-
-		InlineHook.Hook(ctx.HContext,
-			AssemblySnippet.FromASMCode(
-			$"mov dword ptr [esi+{offB}],0x41200000"),
-			new HookParameters(a + 8, 4096, false, false));
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		nuint a = Aobscan(
-			ctx,
-			"E9 ******** 90 90 90 E9 ******** 90 90 90 88 96").FirstOrDefault();
-		if (a == 0) return;
-		InlineHook.FreeHook(ctx.HContext, a);
-		InlineHook.FreeHook(ctx.HContext, a + 8);
-		IsEnabled = false;
-	}
 }
 
 
-public class MachanicalRuler : BaseFunction
+public class MachanicalRuler : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.MachanicalRuler;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -107,36 +44,11 @@ public class MachanicalRuler : BaseFunction
 			_ => "Show grids",
 		};
 	}
-	public override void Enable(GameContext ctx)
-	{
-		int offA = GetOffset(ctx, "Terraria.Player", "rulerGrid");
-		int offB = GetOffset(ctx, "Terraria.Player", "rulerLine");
-		nuint a = Aobscan(
-			ctx,
-			$"88 96 {AobscanHelper.GetMByteCode(offA)} C6 86 {AobscanHelper.GetMByteCode(offB)} 01").FirstOrDefault();
-		if (a == 0)
-			return;
-		InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
-			$"mov byte ptr [esi+{offA}],0x1"),
-			new HookParameters(a, 4096, false, false));
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		int offB = GetOffset(ctx, "Terraria.Player", "rulerLine");
-		nuint a = Aobscan(
-			   ctx,
-			   $"E9 ******** 90 C6 86 {AobscanHelper.GetMByteCode(offB)} 01").FirstOrDefault();
-		if (a == 0)
-			return;
-		InlineHook.FreeHook(ctx.HContext, a);
-		IsEnabled = false;
-	}
 }
 
-public class MachanicalLens : BaseFunction
+public class MachanicalLens : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.MachanicalLens;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -149,31 +61,6 @@ public class MachanicalLens : BaseFunction
 			"zh" => "显示电线",
 			_ => "Show wires",
 		};
-	}
-	public override void Enable(GameContext ctx)
-	{
-		int offA = GetOffset(ctx, "Terraria.Player", "InfoAccMechShowWires");
-		int offB = GetOffset(ctx, "Terraria.Player", "accJarOfSouls");
-		nuint a = Aobscan(
-			ctx,
-			$"88 96 {AobscanHelper.GetMByteCode(offA)} 88 96 {AobscanHelper.GetMByteCode(offB)}").FirstOrDefault();
-		if (a == 0)
-			return;
-		InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
-			$"mov byte ptr [esi+{offA}],0x1"),
-			new HookParameters(a, 4096, false, false));
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		int offB = GetOffset(ctx, "Terraria.Player", "accJarOfSouls");
-		nuint a = Aobscan(
-			   ctx,
-			   $"E9 ******** 90 88 96 {AobscanHelper.GetMByteCode(offB)}").FirstOrDefault();
-		if (a == 0)
-			return;
-		InlineHook.FreeHook(ctx.HContext, a);
-		IsEnabled = false;
 	}
 }
 

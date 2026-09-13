@@ -2,13 +2,12 @@ using QHackLib.Memory;
 using QHackLib.Assemble;
 using QHackLib.FunctionHelper;
 using QTRHacker.Core;
-using QTRHacker.Core.GameObjects;
 using static QTRHacker.Scripts.ScriptHelper;
 
 namespace QTRHacker.Scripts.Functions;
-public class SlowFall : BaseFunction
+public class SlowFall : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.SlowFall;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -17,35 +16,11 @@ public class SlowFall : BaseFunction
 			_ => "Slow falling",
 		};
 	}
-	public override void Enable(GameContext ctx)
-	{
-		int offA = GetOffset(ctx, "Terraria.Player", "slowFall");
-		int offB = GetOffset(ctx, "Terraria.Player", "findTreasure");
-		nuint a = Aobscan(
-			ctx,
-			$"88 96 {AobscanHelper.GetMByteCode(offA)} 88 96 {AobscanHelper.GetMByteCode(offB)}").FirstOrDefault();
-		if (a == 0)
-			return;
-		InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
-			$"mov dword ptr [esi+{offA}],1"),
-			new HookParameters(a, 4096, false, false));
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		nuint a = Aobscan(
-			ctx,
-			$"E9 ******** 90 88 96 {AobscanHelper.GetMByteCode(GetOffset(ctx, "Terraria.Player", "findTreasure"))}").FirstOrDefault();
-		if (a == 0)
-			return;
-		InlineHook.FreeHook(ctx.HContext, a);
-		IsEnabled = false;
-	}
 }
 
-public class FastSpeed : BaseFunction
+public class FastSpeed : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.FastSpeed;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -53,30 +28,6 @@ public class FastSpeed : BaseFunction
 			"zh" => "加快移动速度",
 			_ => "Super Fast Speed",
 		};
-	}
-	public override void Enable(GameContext ctx)
-	{
-		int offA = GetOffset(ctx, "Terraria.Player", "moveSpeed");
-		int offB = GetOffset(ctx, "Terraria.Player", "boneArmor");
-		nuint a = Aobscan(
-			ctx,
-			$"D9 E8 D9 9E {AobscanHelper.GetMByteCode(offA)} 88 96 {AobscanHelper.GetMByteCode(offB)}").FirstOrDefault();
-		if (a == 0)
-			return;
-		InlineHook.Hook(ctx.HContext, AssemblySnippet.FromASMCode(
-			$"mov dword ptr [esi+{offA}],0x41A00000"),
-			new HookParameters(a, 0x1000, false, false));
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		int offB = GetOffset(ctx, "Terraria.Player", "boneArmor");
-		nuint a = Aobscan(
-			ctx,
-			$"E9 ******** 90 90 90 88 96 {AobscanHelper.GetMByteCode(offB)}").FirstOrDefault();
-		if (a == 0) return;
-		InlineHook.FreeHook(ctx.HContext, a);
-		IsEnabled = false;
 	}
 }
 
@@ -139,9 +90,9 @@ public class BonusTwoSlots : BaseFunction
 	}
 }
 
-public class CoinPortalDropsBags : BaseFunction
+public class CoinPortalDropsBags : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.CoinPortalDropsBags;
 	public override void ApplyLocalization(string culture)
 	{
 		switch (culture)
@@ -157,47 +108,11 @@ public class CoinPortalDropsBags : BaseFunction
 				break;
 		}
 	}
-	public override void Enable(GameContext ctx)
-	{
-		nuint a = AobscanASM(
-			ctx,
-			@"push 0
-push 0
-push 0x49
-push 1
-push 0
-push 0
-push 0
-push 0").FirstOrDefault();
-		if (a == 0)
-			return;
-		a += 2 * 5;
-		InlineHook.Hook(ctx.HContext,
-			AssemblySnippet.FromASMCode(
-			"mov dword ptr [esp+8],3332"),
-			new HookParameters(a, 4096, false, false));
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		nuint a = AobscanASM(
-				ctx,
-				@"push 0
-push 0
-push 0x49
-push 1
-push 0").FirstOrDefault();
-		if (a == 0)
-			return;
-		a += 2 * 5;
-		InlineHook.FreeHook(ctx.HContext, a);
-		IsEnabled = false;
-	}
 }
 
-public class FishCratesOnly : BaseFunction
+public class FishCratesOnly : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.FishCratesOnly;
 	public override void ApplyLocalization(string culture)
 	{
 		Name = culture switch
@@ -205,26 +120,6 @@ public class FishCratesOnly : BaseFunction
 			"zh" => "只钓板条箱",
 			_ => "Fish Crates only",
 		};
-	}
-	public override void Enable(GameContext ctx)
-	{
-		nuint a = Aobscan(
-			ctx,
-			"8B 45 0C C6 00 00 8B 45 08 C6 00 00 B9").FirstOrDefault();
-		if (a == 0)
-			return;
-		Write<byte>(ctx, a + 11, 1);
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		nuint a = Aobscan(
-			ctx,
-			"8B 45 0C C6 00 00 8B 45 08 C6 00 01 B9").FirstOrDefault();
-		if (a == 0)
-			return;
-		Write<byte>(ctx, a + 11, 0);
-		IsEnabled = false;
 	}
 }
 
@@ -256,9 +151,9 @@ public class EnableAllRecipes : BaseFunction
 	}
 }
 
-public class StrengthenVampireKnives : BaseFunction
+public class StrengthenVampireKnives : GameplayFeatureFunction
 {
-	public override bool CanDisable => true;
+	protected override GameplayFeature Feature => GameplayFeature.StrengthenVampireKnives;
 	public override void ApplyLocalization(string culture)
 	{
 		switch (culture)
@@ -273,26 +168,6 @@ public class StrengthenVampireKnives : BaseFunction
 				Tooltip = "Shoots in all directions";
 				break;
 		}
-	}
-	public override void Enable(GameContext ctx)
-	{
-		nuint a = Aobscan(
-			ctx,
-			"81 F9 21060000").FirstOrDefault();
-		if (a == 0)
-			return;
-		ctx.HContext.DataAccess.Write<int>(a + 18, 100);
-		IsEnabled = true;
-	}
-	public override void Disable(GameContext ctx)
-	{
-		nuint a = AobscanHelper.Aobscan(
-			ctx.HContext.Handle,
-			"81 F9 21060000").FirstOrDefault();
-		if (a == 0)
-			return;
-		ctx.HContext.DataAccess.Write<int>(a + 18, 4);
-		IsEnabled = false;
 	}
 }
 

@@ -20,6 +20,9 @@ namespace QHackLib.Memory
 		{
 			Context = ctx;
 			AllocationBase = Alloc(ctx.Handle, size);
+			if (AllocationBase == 0)
+				throw new System.ComponentModel.Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error(),
+					$"Could not allocate {size} bytes in the target process.");
 			AllocationSize = size;
 		}
 
@@ -75,7 +78,8 @@ namespace QHackLib.Memory
 		public static MemoryAllocation Alloc(QHackContext ctx, uint size = 0x1000) => new(ctx, size);
 
 		public static nuint Alloc(nuint handle, uint size) => NativeFunctions.VirtualAllocEx(handle, 0, size,
-				NativeFunctions.AllocationType.MEM_COMMIT, NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
+				NativeFunctions.AllocationType.MEM_RESERVE | NativeFunctions.AllocationType.MEM_COMMIT,
+				NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE);
 		public static bool Free(nuint handle, nuint addr) => NativeFunctions.VirtualFreeEx(handle, addr, 0);
 	}
 }

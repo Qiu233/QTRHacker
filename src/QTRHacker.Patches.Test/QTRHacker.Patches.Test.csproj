@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<PlatformTarget>x86</PlatformTarget>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="..\GameWikiResExporter\GameRuntime.cs" Link="GameRuntime.cs" />
+		<ProjectReference Include="..\QTRHacker.Patches\QTRHacker.Patches.csproj" AdditionalProperties="SolutionDir=$(MSBuildThisFileDirectory)..\..\" />
+		<ProjectReference Include="..\GameWikiResExporter\GameWikiResExporter.csproj" />
+		<Reference Include="Terraria"><HintPath>..\..\gamerefs\Terraria.exe</HintPath><Private>false</Private></Reference>
+		<Reference Include="Microsoft.Xna.Framework"><HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath></Reference>
+		<Reference Include="Microsoft.Xna.Framework.Game"><HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath></Reference>
+		<Reference Include="Microsoft.Xna.Framework.Graphics"><HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath></Reference>
+	</ItemGroup>
+	<!-- Match Terraria's x86 address space so tests can exercise JIT code above 2 GB. -->
+	<UsingTask TaskName="MarkLargeAddressAware" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup><Executable ParameterType="System.String" Required="true" /></ParameterGroup>
+		<Task>
+			<Using Namespace="System.IO" />
+			<Code Type="Fragment" Language="cs"><![CDATA[
+				using (var stream = File.Open(Executable, FileMode.Open, FileAccess.ReadWrite))
+				using (var reader = new BinaryReader(stream))
+				using (var writer = new BinaryWriter(stream))
+				{
+					stream.Position = 0x3c;
+					int pe = reader.ReadInt32();
+					stream.Position = pe + 22;
+					ushort flags = reader.ReadUInt16();
+					stream.Position = pe + 22;
+					writer.Write((ushort)(flags | 0x20));
+				}
+			]]></Code>
+		</Task>
+	</UsingTask>
+	<Target Name="EnableLargeAddressTests" AfterTargets="Build">
+		<MarkLargeAddressAware Executable="$(TargetPath)" />
+	</Target>
+</Project>

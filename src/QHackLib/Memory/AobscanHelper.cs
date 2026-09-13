@@ -1,171 +1,139 @@
-﻿using QHackCLR.DataTargets;
 using QHackLib.Assemble;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace QHackLib.Memory
+namespace QHackLib.Memory;
+
+public unsafe static class AobscanHelper
 {
-	public unsafe static class AobscanHelper
+	internal static readonly int SIZE_MBI = sizeof(NativeFunctions.MEMORY_BASIC_INFORMATION);
+	private const int ChunkSize = 1024 * 1024;
+
+	public static string GetMByteCode(int i) => $"{i & 0xFF:X2}{(i >> 8) & 0xFF:X2}{(i >> 16) & 0xFF:X2}{(i >> 24) & 0xFF:X2}";
+
+	public static byte[] GetHexCodeFromString(string str)
 	{
-		internal static readonly int SIZE_MBI = sizeof(NativeFunctions.MEMORY_BASIC_INFORMATION);
+		var (bytes, masks) = Parse(str);
+		if (masks.Any(mask => mask != 0xFF))
+			throw new ArgumentException("Replacement bytes cannot contain wildcards.", nameof(str));
+		return bytes;
+	}
 
-		public static string GetMByteCode(int i) => $"{i & 0xFF:X2}{(i >> 8) & 0xFF:X2}{(i >> 16) & 0xFF:X2}{(i >> 24) & 0xFF:X2}";
-
-		private static byte Ctoh(char hex) => hex switch
+	private static (byte[] Bytes, byte[] Masks) Parse(string pattern)
+	{
+		ArgumentNullException.ThrowIfNull(pattern);
+		string hex = string.Concat(pattern.Where(c => !char.IsWhiteSpace(c)));
+		if (hex.Length == 0 || hex.Length % 2 != 0)
+			throw new ArgumentException("A hex pattern must contain a nonzero, even number of nibbles.", nameof(pattern));
+		byte[] bytes = new byte[hex.Length / 2];
+		byte[] masks = new byte[bytes.Length];
+		for (int i = 0; i < hex.Length; i++)
 		{
-			>= '0' and <= '9' => (byte)(hex - '0'),
-			>= 'A' and <= 'F' => (byte)(hex - 'A' + 10),
-			>= 'a' and <= 'f' => (byte)(hex - 'a' + 10),
-			_ => 0
-		};
-
-		public static byte[] GetHexCodeFromString(string str)
-		{
-			var src = str.Where(c => !char.IsWhiteSpace(c)).Select(c => Ctoh(c));
-			return (src.Count() % 2) == 0
-				? src.Where((c, i) => i % 2 == 0).Zip(src.Where((c, i) => i % 2 == 1), (i, j) => (byte)((i * 0x10) + j)).ToArray()
-				: throw new ArgumentException("Not a valid hex string. A hex string should have a even length.", nameof(str));
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool Match(ReadOnlySpan<byte> src, ReadOnlySpan<byte> sub)
-		{
-			for (int i = 0; i < src.Length; i++)
-				if (src[i] != sub[i])
-					return false;
-			return true;
-		}
-
-		public static bool Match(ReadOnlySpan<byte> src, string sub)
-		{
-			for (int i = 0; i < src.Length; i++)
-				if (src[i] != sub[i])
-					return false;
-			return true;
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool Search(ReadOnlySpan<byte> src, ReadOnlySpan<byte> sub, ref int pos)
-		{
-			int bLen = sub.Length;
-			int len = src.Length - sub.Length;
-			for (; pos < len; pos++)
-				if (Match(src.Slice(pos, bLen), sub))
-					return true;
-			return false;
-		}
-
-		public static IEnumerable<nuint> AobscanASM(nuint handle, string asm) => Aobscan(handle, Assembler.Assemble(asm, 0));
-
-		public static IEnumerable<nuint> AobscanMatch(nuint handle, string hexCode)
-		{
-			int i = 0;
-			Dictionary<int, byte> pattern = new();
-			List<int> match = new();
-			foreach (var c in hexCode)
+			char c = hex[i];
+			if (c is '*' or '?') continue;
+			int value = c switch
 			{
-				if (c == ' ') continue;
-				else if (c == '*')
-					match.Add(i++);
-				else
-					pattern[i++] = Convert.ToByte(c.ToString(), 16);
-			}
-			return AobscanMatch(handle, pattern, match);
+				>= '0' and <= '9' => c - '0',
+				>= 'A' and <= 'F' => c - 'A' + 10,
+				>= 'a' and <= 'f' => c - 'a' + 10,
+				_ => throw new ArgumentException($"Invalid hex digit '{c}'.", nameof(pattern))
+			};
+			int shift = i % 2 == 0 ? 4 : 0;
+			bytes[i / 2] |= (byte)(value << shift);
+			masks[i / 2] |= (byte)(0xF << shift);
 		}
+		return (bytes, masks);
+	}
 
-		private static IEnumerable<nuint> AobscanMatch(nuint handle, Dictionary<int, byte> pattern, List<int> match)
+	public static bool Match(ReadOnlySpan<byte> src, ReadOnlySpan<byte> sub) => src.SequenceEqual(sub);
+	public static bool Match(ReadOnlySpan<byte> src, string sub)
+	{
+		var (bytes, masks) = Parse(sub);
+		return src.Length == bytes.Length && Matches(src, bytes, masks);
+	}
+
+	public static bool Search(ReadOnlySpan<byte> src, ReadOnlySpan<byte> sub, ref int pos)
+	{
+		if (sub.IsEmpty) throw new ArgumentException("An empty pattern cannot be scanned.", nameof(sub));
+		if (pos < 0) throw new ArgumentOutOfRangeException(nameof(pos));
+		for (; pos <= src.Length - sub.Length; pos++)
+			if (src.Slice(pos, sub.Length).SequenceEqual(sub)) return true;
+		return false;
+	}
+
+	private static bool Matches(ReadOnlySpan<byte> src, byte[] bytes, byte[] masks)
+	{
+		for (int i = 0; i < bytes.Length; i++)
+			if ((src[i] & masks[i]) != bytes[i]) return false;
+		return true;
+	}
+
+	public static IEnumerable<nuint> AobscanASM(nuint handle, string asm) => Aobscan(handle, Assembler.Assemble(asm, 0));
+	public static IEnumerable<nuint> AobscanMatch(nuint handle, string hexCode) => Aobscan(handle, hexCode);
+	public static IEnumerable<nuint> Aobscan(nuint handle, string src)
+	{
+		var (bytes, masks) = Parse(src);
+		return Scan(handle, bytes, masks);
+	}
+
+	public static IEnumerable<nuint> Aobscan(nuint handle, byte[] aob)
+	{
+		ArgumentNullException.ThrowIfNull(aob);
+		if (aob.Length == 0) throw new ArgumentException("An empty pattern cannot be scanned.", nameof(aob));
+		return Scan(handle, aob, Enumerable.Repeat((byte)0xFF, aob.Length).ToArray());
+	}
+
+	private static List<nuint> Scan(nuint handle, byte[] pattern, byte[] masks)
+	{
+		List<nuint> result = new();
+		byte[] buffer = ArrayPool<byte>.Shared.Rent(checked(ChunkSize + pattern.Length - 1));
+		int carry = 0;
+		nuint nextRead = 0;
+		try
 		{
-			List<nuint> result = new();
-			Traverse(handle, mbi =>
+			nuint address = 0;
+			while (NativeFunctions.VirtualQueryEx(handle, address, out var mbi, SIZE_MBI) == SIZE_MBI && mbi.RegionSize != 0)
 			{
-				if (!mbi.Protect.HasFlag(NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE)
-				|| !mbi.State.HasFlag(NativeFunctions.AllocationType.MEM_COMMIT))
-					return;
-				byte[] va = ArrayPool<byte>.Shared.Rent((int)mbi.RegionSize);
-				NativeFunctions.ReadProcessMemory(handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
-				int pos = 0;
-				while (SearchMatch(va, pattern, match, ref pos))
+				uint protection = (uint)mbi.Protect;
+				uint access = protection & 0xFF;
+				// JIT code may be RX, RWX or executable copy-on-write. Never read
+				// guard/no-access pages or inspect bytes outside the actual read.
+				bool readableCode = access is 0x20 or 0x40 or 0x80;
+				if (mbi.State == NativeFunctions.AllocationType.MEM_COMMIT && readableCode && (protection & 0x100) == 0)
 				{
-					result.Add(mbi.BaseAddress + (uint)pos);
-					pos += (pattern.Count + match.Count + 1) / 2;
+					for (nuint offset = 0; offset < mbi.RegionSize;)
+					{
+						nuint current = mbi.BaseAddress + offset;
+						if (current != nextRead) carry = 0;
+						int requested = (int)Math.Min((ulong)(mbi.RegionSize - offset), (ulong)ChunkSize);
+						nuint bytesRead = 0;
+						fixed (byte* data = buffer)
+							NativeFunctions.ReadProcessMemory(handle, current, data + carry, (uint)requested, (nuint)(&bytesRead));
+						int validLength = carry + (int)bytesRead;
+						for (int pos = 0; pos <= validLength - pattern.Length; pos++)
+							if (Matches(buffer.AsSpan(pos, pattern.Length), pattern, masks))
+								result.Add(current - (uint)carry + (uint)pos);
+						// Keep enough bytes for matches crossing chunks or adjacent
+						// readable regions, including overlapping matches.
+						carry = Math.Min(pattern.Length - 1, validLength);
+						buffer.AsSpan(validLength - carry, carry).CopyTo(buffer);
+						nextRead = current + bytesRead;
+						if (bytesRead != (nuint)requested) carry = 0;
+						offset += (uint)requested;
+					}
 				}
-				ArrayPool<byte>.Shared.Return(va);
-			});
-			return result;
-		}
-		private static bool SearchMatch(byte[] v, Dictionary<int, byte> pattern, List<int> match, ref int pos)
-		{
-			var vs = v.SelectMany(t => new byte[] { (byte)(t >> 4), (byte)(t & 0xF) }).ToArray();
-
-			int alen = vs.Length;
-			int blen = pattern.Count + match.Count;
-
-			for (int i = pos * 2; i < alen - blen; i += 2)
-			{
-				int j = 0;
-				for (; j < blen; j++)
-				{
-					byte t = vs[i + j];
-					if (match.Contains(j) || t == pattern[j])
-						continue;
-					break;
-				}
-				pos = i / 2;
-				if (j == blen)
-					return true;
-			}
-			return false;
-		}
-
-		public static IEnumerable<nuint> Aobscan(nuint handle, string src)
-		{
-			if (src.Contains('*'))
-				return AobscanMatch(handle, src);
-			return Aobscan(handle, GetHexCodeFromString(src));
-		}
-
-		public static IEnumerable<nuint> Aobscan(nuint handle, byte[] aob)
-		{
-			List<nuint> result = new();
-			Traverse(handle, mbi =>
-			{
-				if (!mbi.Protect.HasFlag(NativeFunctions.ProtectionType.PAGE_EXECUTE_READWRITE)
-				|| !mbi.State.HasFlag(NativeFunctions.AllocationType.MEM_COMMIT))
-				{
-					return;
-				}
-				byte[] va = ArrayPool<byte>.Shared.Rent((int)mbi.RegionSize);
-				NativeFunctions.ReadProcessMemory(handle, mbi.BaseAddress, va, mbi.RegionSize, 0);
-				int pos = 0;
-				while (Search(va, aob, ref pos))
-				{
-					result.Add(mbi.BaseAddress + (uint)pos);
-					pos += aob.Length;
-				}
-				ArrayPool<byte>.Shared.Return(va);
-			});
-			return result;
-		}
-
-		private static void Traverse(nuint handle, MemoryTraverse traverse)
-		{
-			nuint addr = 0;
-			while (true)
-			{
-				if (NativeFunctions.VirtualQueryEx(handle, addr, out NativeFunctions.MEMORY_BASIC_INFORMATION mbi, SIZE_MBI) != SIZE_MBI
-					|| mbi.RegionSize == 0)
-					break;
-				traverse(mbi);
-				addr = mbi.BaseAddress + mbi.RegionSize;
+				else carry = 0;
+				nuint next = mbi.BaseAddress + mbi.RegionSize;
+				if (next <= address) break;
+				address = next;
 			}
 		}
-
-		private delegate void MemoryTraverse(NativeFunctions.MEMORY_BASIC_INFORMATION mbi);
+		finally
+		{
+			ArrayPool<byte>.Shared.Return(buffer);
+		}
+		return result;
 	}
 }

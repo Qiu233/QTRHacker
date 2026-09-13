@@ -13,6 +13,7 @@
 | `GameDataExporter` / `GameWikiResExporter` | 从游戏提取字段清单和 Wiki 资源 |
 | `Launcher` | 启动随压缩包附带的 .NET 运行时 |
 | `QTRHacker.Functions.Test` | 手动游戏操作实验及版本兼容性检查 |
+| `QTRHacker.Patches.Test` | 独立进程中的游戏补丁行为回归检查 |
 
 修改尽量落在所属层。界面交互留在 WPF 项目，游戏相关行为放在 Core 或 Patches；底层库不依赖界面。先提取已经重复的逻辑，再根据实际调用需求增加抽象。
 
@@ -40,5 +41,7 @@
 普通代码变更先验证 `Debug | x86` 构建，再检查受影响的操作。涉及本轮公共界面代码时，至少检查：属性通知名称、命令实例是否稳定、Wiki 搜索/反选/重置、中文和英文切换，以及先打开 Wiki 后连接游戏的命令状态。
 
 `QTRHacker.Functions.Test` 的默认入口会修改游戏物品。版本核对使用明确的 `--verify-game-compatibility` 参数，命令及覆盖范围见 Core 游戏对象说明。
+
+修改 AOB 扫描或内置功能补丁时，运行扫描回归和独立进程补丁检查；命令、覆盖范围及实机检查方式见 [游戏功能补丁回归检查](src/QTRHacker.Patches.Test/README.md)。
 
 发布流程在 Visual Studio 中运行，输出到 `bin/Publish/Vanilla`。之后运行 `scripts/Pack.ps1` 或 `scripts/Pack-WithRuntime.ps1` 打包已有文件；打包脚本不负责构建。版本以主项目的 `Version` 为准，`bin`、`obj`、运行时缓存和压缩包不纳入版本控制。
