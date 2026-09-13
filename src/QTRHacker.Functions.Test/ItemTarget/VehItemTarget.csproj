@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net48</TargetFramework><LangVersion>latest</LangVersion>
+    <PlatformTarget>x86</PlatformTarget><AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>$(MSBuildThisFileDirectory)..\..\..\bin\veh-join\$(Configuration)\</OutputPath>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\GameWikiResExporter\GameRuntime.cs" Link="GameRuntime.cs" />
+    <ProjectReference Include="..\..\GameWikiResExporter\GameWikiResExporter.csproj" />
+    <Reference Include="Terraria"><HintPath>..\..\..\gamerefs\Terraria.exe</HintPath><Private>false</Private></Reference>
+    <Reference Include="Microsoft.Xna.Framework"><HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

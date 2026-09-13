@@ -27,6 +27,35 @@ unsafe class Program
 	[STAThread]
 	unsafe static void Main(string[] args)
 	{
+		if (args.Length > 0 && args[0] == "--stress-live-items")
+		{
+			LiveItemChecks.Run(args.Skip(1).ToArray());
+			return;
+		}
+		if (args.Length > 0 && args[0] == "--verify-veh-items-window")
+		{
+			VehItemChecks.VerifyWindow(args.Skip(1).ToArray());
+			return;
+		}
+		if (args.Length > 0 && args[0] == "--verify-veh-items")
+		{
+			VehItemChecks.Verify(args.Skip(1).ToArray());
+			return;
+		}
+		if (args.Length > 0 && args[0] == "--verify-veh-join")
+		{
+			if (args.Length > 2)
+				throw new ArgumentException("Usage: --verify-veh-join [VehJoinTarget.exe]");
+			VehJoinChecks.Verify(args.Length == 2 ? args[1] : Path.Combine(AppContext.BaseDirectory, "VehJoinTarget.exe"));
+			return;
+		}
+		if (args.Length > 0 && args[0] == "--veh-join-controller")
+		{
+			if (args.Length != 3)
+				throw new ArgumentException("Internal VEH fixture controller requires target and report paths.");
+			VehJoinChecks.RunController(args[1], args[2]);
+			return;
+		}
 		if (args.Length > 0 && args[0] == "--verify-inline-hook")
 		{
 			if (args.Length != 2)

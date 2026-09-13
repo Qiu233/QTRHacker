@@ -12,6 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="ItemTarget\**\*.cs" />
 		<ProjectReference Include="..\QHackLib\QHackLib.csproj" />
 		<ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
 		<ProjectReference Include="..\QTRHacker\QTRHacker.csproj" />
