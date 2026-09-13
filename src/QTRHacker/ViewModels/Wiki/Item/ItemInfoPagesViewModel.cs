@@ -1,117 +1,44 @@
-﻿using QTRHacker.Assets;
+using System.Collections.ObjectModel;
+using QTRHacker.Assets;
 using QTRHacker.Commands;
 using QTRHacker.Core;
 using QTRHacker.Localization;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace QTRHacker.ViewModels.Wiki.Item;
 
-public class ItemInfoPagesViewModel : ViewModelBase, ILocalizationProvider
+public class ItemInfoPagesViewModel : WikiFilterViewModel<ItemCategoryFilter>, ILocalizationProvider
 {
 	private string value;
-	private int selectedRecipeFrom = 0;
+	private int selectedRecipeFrom;
 	private ItemStackInfo selectedRecipeTo;
 	private ItemInfo itemInfo;
-	private string keyword = "";
-	private string keywordInput = "";
-	private bool isFilterSuspended;
-	private readonly RelayCommand getItemStackCommand;
-	private readonly RelayCommand jumpToCommand;
 
 	public string Value => value;
 	public ObservableCollection<RecipeFromInfo> RecipeFroms { get; } = new();
 	public ObservableCollection<ItemStackInfo> RecipeTos { get; } = new();
-	public ObservableCollection<ItemCategoryFilter> CategoryFilters { get; } = new();
 	public int SelectedRecipeFrom
 	{
 		get => selectedRecipeFrom;
-		set
-		{
-			selectedRecipeFrom = value;
-			OnPropertyChanged(nameof(SelectedRecipeFrom));
-		}
+		set => SetProperty(ref selectedRecipeFrom, value);
 	}
 	public ItemStackInfo SelectedRecipeTo
 	{
 		get => selectedRecipeTo;
-		set
-		{
-			selectedRecipeTo = value;
-			OnPropertyChanged(nameof(SelectedRecipeTo));
-		}
+		set => SetProperty(ref selectedRecipeTo, value);
 	}
 	public ItemInfo ItemInfo
 	{
 		get => itemInfo;
 		set
 		{
-			itemInfo = value;
-			OnPropertyChanged(nameof(ItemInfo));
-			InitData();
-		}
-	}
-	public string Keyword
-	{
-		get => keyword;
-		set
-		{
-			keyword = value;
-			OnPropertyChanged(nameof(Keyword));
-			KeywordChanged?.Invoke(this, EventArgs.Empty);
-		}
-	}
-	public string KeywordInput
-	{
-		get => keywordInput;
-		set
-		{
-			keywordInput = value;
-			OnPropertyChanged(nameof(KeywordInput));
-		}
-	}
-	public bool IsFilterSuspended
-	{
-		get => isFilterSuspended;
-		set
-		{
-			isFilterSuspended = value;
-			OnPropertyChanged(nameof(FilterSuspended));
-			if (isFilterSuspended)
-				FilterSuspended?.Invoke(this, EventArgs.Empty);
-			else
-				FilterResumed?.Invoke(this, EventArgs.Empty);
+			if (SetProperty(ref itemInfo, value))
+				InitData();
 		}
 	}
 
-	//TODO: make these command internal field
-	public ICommand ApplyKeyword => new RelayCommand(o => true, o =>
-	{
-		Keyword = KeywordInput;
-	});
-	public ICommand ReverseSelection => new RelayCommand(o => true, o =>
-	{
-		IsFilterSuspended = true;
-		foreach (var filter in CategoryFilters)
-			filter.IsSelected = !filter.IsSelected;
-		IsFilterSuspended = false;
-	});
-	public ICommand ResetFilter => new RelayCommand(o => true, o =>
-	{
-		IsFilterSuspended = true;
-		foreach (var filter in CategoryFilters)
-			filter.IsSelected = true;
-		keyword = "";
-		IsFilterSuspended = false;
-	});
+	public RelayCommand GetItemStackCommand { get; }
+	public RelayCommand JumpToCommand { get; }
 
-	public RelayCommand GetItemStackCommand => getItemStackCommand;
-	public RelayCommand JumpToCommand => jumpToCommand;
-
-	public event EventHandler KeywordChanged;
-	public event EventHandler ItemCategoryFilterSelectedChanged;
-	public event EventHandler FilterSuspended;
-	public event EventHandler FilterResumed;
 	public event EventHandler<JumpToItemEventArgs> JumpToItem;
 
 	public void InitData()
@@ -161,27 +88,21 @@ public class ItemInfoPagesViewModel : ViewModelBase, ILocalizationProvider
 	}
 
 	public ItemInfoPagesViewModel()
+		: base(Enum.GetValues<ItemCategory>().Select(category => new ItemCategoryFilter(category)))
 	{
-		getItemStackCommand = new HackCommand(o =>
+		GetItemStackCommand = new HackCommand(o =>
 		{
 			if (o is not ItemStackInfo stack)
 				return;
 			HackGlobal.GameContext.AddItemStackToInv(stack.ItemInfo.Type, stack.Stack);
 		});
-		jumpToCommand = new RelayCommand(o => true, o =>
+		JumpToCommand = new RelayCommand(o =>
 		{
 			if (o is not ItemStackInfo stack)
 				return;
 			JumpToItem?.Invoke(this, new JumpToItemEventArgs(stack.ItemInfo));
 		});
 
-		var values = Enum.GetValues<ItemCategory>();
-		foreach (var cate in values)
-		{
-			var filter = new ItemCategoryFilter(cate);
-			filter.SelectedChanged += (s, e) => ItemCategoryFilterSelectedChanged?.Invoke(s, e);
-			CategoryFilters.Add(filter);
-		}
 		LocalizationManager.RegisterLocalizationProvider(this);
 	}
 }

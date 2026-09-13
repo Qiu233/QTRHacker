@@ -1,5 +1,5 @@
-﻿using QTRHacker.EventManagers;
 using System.Windows;
+using QTRHacker.EventManagers;
 
 namespace QTRHacker.ViewModels.PagePanels;
 
@@ -11,30 +11,18 @@ public class PagePanelViewModel : ViewModelBase, IWeakEventListener
 	public bool IsSelected
 	{
 		get => isSelected;
-		set
-		{
-			isSelected = value;
-			OnPropertyChanged(nameof(IsSelected));
-		}
+		set => SetProperty(ref isSelected, value);
 	}
 
 	public bool IsEnabled
 	{
 		get => isEnabled;
-		set
-		{
-			isEnabled = value;
-			OnPropertyChanged(nameof(IsEnabled));
-		}
-	}
-
-	public PagePanelViewModel()
-	{
+		set => SetProperty(ref isEnabled, value);
 	}
 
 	public void RegisterHackInitEvent()
 	{
-		isEnabled = false;
+		IsEnabled = false;
 		HackInitializedEventManager.AddListener(this);
 	}
 

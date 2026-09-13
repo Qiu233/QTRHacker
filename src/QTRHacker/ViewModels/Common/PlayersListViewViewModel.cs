@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -16,20 +16,12 @@ public class PlayersListViewViewModel : ViewModelBase
 	public double IDColumnWidth
 	{
 		get => idColumnWidth;
-		set
-		{
-			idColumnWidth = value;
-			OnPropertyChanged(nameof(IDColumnWidth));
-		}
+		set => SetProperty(ref idColumnWidth, value);
 	}
 	public double NameColumnWidth
 	{
 		get => nameColumnWidth;
-		set
-		{
-			nameColumnWidth = value;
-			OnPropertyChanged(nameof(IDColumnWidth));
-		}
+		set => SetProperty(ref nameColumnWidth, value);
 	}
 
 	public ObservableCollection<PlayerInfo> Players { get; } = new();
@@ -39,9 +31,8 @@ public class PlayersListViewViewModel : ViewModelBase
 		get => selectedPlayerInfo;
 		set
 		{
-			selectedPlayerInfo = value;
-			OnPropertyChanged(nameof(SelectedPlayerInfo));
-			SelectedPlayerInfoChanged?.Invoke(this, selectedPlayerInfo);
+			if (SetProperty(ref selectedPlayerInfo, value))
+				SelectedPlayerInfoChanged?.Invoke(this, selectedPlayerInfo);
 		}
 	}
 	public DispatcherTimer PlayerUpdate { get; }

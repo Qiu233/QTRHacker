@@ -1,7 +1,7 @@
-﻿using QTRHacker.Assets;
+using System.Collections.ObjectModel;
+using QTRHacker.Assets;
 using QTRHacker.Commands;
 using QTRHacker.Core;
-using System.Collections.ObjectModel;
 
 namespace QTRHacker.ViewModels.Wiki.Item;
 
@@ -17,40 +17,30 @@ public class ItemPageViewModel : ViewModelBase
 		get => selectedItemInfo;
 		set
 		{
-			selectedItemInfo = value;
-			OnPropertyChanged(nameof(SelectedItemInfo));
-			SelectedItemInfoChanged?.Invoke(this, EventArgs.Empty);
+			if (SetProperty(ref selectedItemInfo, value))
+				SelectedItemInfoChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 
 	public int SelectedItemIndex
 	{
 		get => selectedItemIndex;
-		set
-		{
-			selectedItemIndex = value;
-			OnPropertyChanged(nameof(SelectedItemIndex));
-		}
+		set => SetProperty(ref selectedItemIndex, value);
 	}
 
 	public event EventHandler SelectedItemInfoChanged;
 	public ItemInfoPagesViewModel ItemInfoPagesViewModel { get; }
 
-	private readonly RelayCommand addOneCommand;
-	private readonly RelayCommand addMaxCommand;
-	public RelayCommand AddOneCommand => addOneCommand;
-	public RelayCommand AddMaxCommand => addMaxCommand;
+	public RelayCommand AddOneCommand { get; }
+	public RelayCommand AddMaxCommand { get; }
 
 	public ItemPageViewModel()
 	{
-		addOneCommand = new HackCommand(o => AddSelectedItemToGame_One());
-		addMaxCommand = new HackCommand(o => AddSelectedItemToGame_Max());
+		AddOneCommand = new HackCommand(o => AddSelectedItemToGame_One());
+		AddMaxCommand = new HackCommand(o => AddSelectedItemToGame_Max());
 
 		ItemInfoPagesViewModel = new ItemInfoPagesViewModel();
-		ItemInfoPagesViewModel.FilterResumed += (s, e) => UpdateFilter();
-		ItemInfoPagesViewModel.CategoryFilters.CollectionChanged += (s, e) => UpdateFilter();
-		ItemInfoPagesViewModel.KeywordChanged += (s, e) => UpdateFilter();
-		ItemInfoPagesViewModel.ItemCategoryFilterSelectedChanged += (s, e) => UpdateFilter();
+		ItemInfoPagesViewModel.FilterChanged += (s, e) => UpdateFilter();
 		ItemInfoPagesViewModel.JumpToItem += ItemInfoPagesViewModel_JumpToItem;
 		SelectedItemInfoChanged += ItemPageViewModel_SelectedItemInfoChanged;
 
@@ -125,12 +115,11 @@ public class ItemPageViewModel : ViewModelBase
 				!item.Tooltip.Contains(kw, StringComparison.OrdinalIgnoreCase))
 				continue;
 			var cate = item.GetItemCategory();
-			var flags = ItemInfoPagesViewModel.CategoryFilters
-				.Where(t => t.IsSelected)
-				.Select(t => (t.Category != ItemCategory.Others && cate.HasFlag(t.Category)) ||
-							(t.Category == ItemCategory.Others && cate == ItemCategory.Others))
-				.ToList();
-			if (!flags.Any(t => t))
+			bool matchesCategory = ItemInfoPagesViewModel.CategoryFilters.Any(filter =>
+				filter.IsSelected && (filter.Category == ItemCategory.Others
+					? cate == ItemCategory.Others
+					: cate.HasFlag(filter.Category)));
+			if (!matchesCategory)
 				continue;
 			Items.Add(item);
 		}

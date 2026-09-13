@@ -1,6 +1,6 @@
-﻿using QTRHacker.Assets;
-using QTRHacker.Commands;
 using System.Collections.ObjectModel;
+using QTRHacker.Assets;
+using QTRHacker.Commands;
 
 namespace QTRHacker.ViewModels.Wiki.NPC;
 
@@ -15,27 +15,22 @@ public class NPCPageViewModel : ViewModelBase
 		get => selectedNPCInfo;
 		set
 		{
-			selectedNPCInfo = value;
-			OnPropertyChanged(nameof(SelectedNPCInfo));
-			SelectedNPCInfoChanged?.Invoke(this, EventArgs.Empty);
+			if (SetProperty(ref selectedNPCInfo, value))
+				SelectedNPCInfoChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 	public NPCInfoPagesViewModel NPCInfoPagesViewModel { get; }
 	public event EventHandler SelectedNPCInfoChanged;
 
-	private readonly RelayCommand addOneCommand;
-	public RelayCommand AddOneCommand => addOneCommand;
+	public RelayCommand AddOneCommand { get; }
 
 	public NPCPageViewModel()
 	{
-		addOneCommand = new RelayCommand(o => HackGlobal.IsActive, o => AddSelectedNPCToGame());
+		AddOneCommand = new HackCommand(o => AddSelectedNPCToGame());
 
 		NPCInfoPagesViewModel = new NPCInfoPagesViewModel();
-		NPCInfoPagesViewModel.FilterResumed += (s, e) => UpdateFilter();
-		NPCInfoPagesViewModel.CategoryFilters.CollectionChanged += (s, e) => UpdateFilter();
-		NPCInfoPagesViewModel.KeywordChanged += (s, e) => UpdateFilter();
-		NPCInfoPagesViewModel.NPCCategoryFilterSelectedChanged += (s, e) => UpdateFilter();
-		SelectedNPCInfoChanged += NPCPageViewModel_SelectedNPCInfoChanged; ;
+		NPCInfoPagesViewModel.FilterChanged += (s, e) => UpdateFilter();
+		SelectedNPCInfoChanged += NPCPageViewModel_SelectedNPCInfoChanged;
 
 		for (int i = 1; i < WikiResLoader.NPCDatum.Count; i++)
 			Items.Add(new NPCInfo(i));
@@ -70,12 +65,11 @@ public class NPCPageViewModel : ViewModelBase
 			if (!item.Name.Contains(kw, StringComparison.OrdinalIgnoreCase))
 				continue;
 			var cate = item.GetNPCCategory();
-			var flags = NPCInfoPagesViewModel.CategoryFilters
-				.Where(t => t.IsSelected)
-				.Select(t => (t.Category != NPCCategory.Others && cate.HasFlag(t.Category)) ||
-							(t.Category == NPCCategory.Others && cate == NPCCategory.Others))
-				.ToList();
-			if (!flags.Any(t => t))
+			bool matchesCategory = NPCInfoPagesViewModel.CategoryFilters.Any(filter =>
+				filter.IsSelected && (filter.Category == NPCCategory.Others
+					? cate == NPCCategory.Others
+					: cate.HasFlag(filter.Category)));
+			if (!matchesCategory)
 				continue;
 			Items.Add(item);
 		}

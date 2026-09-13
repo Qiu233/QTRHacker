@@ -1,0 +1,35 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = tab
+indent_size = 4
+tab_width = 4
+
+[*.cs]
+dotnet_sort_system_directives_first = true
+csharp_using_directive_placement = outside_namespace:suggestion
+csharp_style_namespace_declarations = file_scoped:suggestion
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+
+[*.{xaml,json,yml,yaml}]
+indent_style = space
+indent_size = 4
+
+[*.{md,ps1}]
+indent_style = space
+indent_size = 4
+
+[*.md]
+trim_trailing_whitespace = false
+
+# The source of these files is the T4 template and its *Properties input.
+[*.ps.cs]
+generated_code = true
+
+# Windows PowerShell 5.1 needs a BOM when a script contains non-ASCII text.
+[*.ps1]
+charset = utf-8-bom
