@@ -352,6 +352,7 @@ public class PlayersPageViewModel : PagePanelViewModel
 		{
 			Type = type;
 			Key = key;
+			LocalizationManager.RegisterLocalizationProvider(this);
 		}
 		public void OnCultureChanged(object sender, CultureChangedEventArgs args)
 		{
@@ -370,6 +371,7 @@ public class PlayersPageViewModel : PagePanelViewModel
 			Type = type;
 			BuffType = buffType;
 			Key = key;
+			LocalizationManager.RegisterLocalizationProvider(this);
 		}
 
 		public void OnCultureChanged(object sender, CultureChangedEventArgs args)

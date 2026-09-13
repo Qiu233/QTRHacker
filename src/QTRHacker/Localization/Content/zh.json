@@ -1,6 +1,19 @@
 {
   "Name": "简体中文",
   "UI": {
+    "Settings": {
+      "Title": "设置",
+      "AutoSave": "你的偏好设置会自动保存。",
+      "Appearance": "外观与语言",
+      "Language": "界面语言",
+      "SystemLanguage": "跟随系统",
+      "AppearanceHint": "主题与语言切换后立即生效。",
+      "Refresh": "数据刷新",
+      "ItemRefresh": "物品与装备编辑器",
+      "PlayersRefresh": "玩家列表",
+      "ToolsRefresh": "建筑、自瞄与自动钓鱼窗口",
+      "RefreshHint": "间隔越短，刷新越频繁。修改在重启程序后生效。"
+    },
     "Appearance": {
       "Theme": "主题",
       "Dark": "深色",

@@ -18,15 +18,7 @@ public partial class MainWindow : MWindow
 		Instance = this;
 		HackGlobal.LoadConfig();
 		Themes.ThemeManager.Apply(HackGlobal.Config.Theme);
-		if (!HackGlobal.Config.ForceEnglish)
-		{
-#if DEBUG
-#else
-		LocalizationManager.Instance.SetCulture(System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName);
-#endif
-		}
-		else
-			LocalizationManager.Instance.SetCulture("en");
+		LocalizationManager.Instance.ApplyLanguage(HackGlobal.Config.Language);
 
 		InitializeComponent();
 

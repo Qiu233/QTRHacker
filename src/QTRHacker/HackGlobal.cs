@@ -62,7 +62,10 @@ public static class HackGlobal
 			_Config = new CFG_QTRHacker();
 			SaveConfig();
 		}
-		_Config = JsonConvert.DeserializeObject<CFG_QTRHacker>(File.ReadAllText(FILE_CONFIG));
+		_Config = JsonConvert.DeserializeObject<CFG_QTRHacker>(File.ReadAllText(FILE_CONFIG)) ?? new CFG_QTRHacker();
+		if (_Config.Language is not ("system" or "en" or "zh"))
+			_Config.Language = _Config.ForceEnglish ? "en" : "system";
+		_Config.ForceEnglish = _Config.Language == "en";
 		SaveConfig();
 	}
 

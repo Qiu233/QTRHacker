@@ -4,7 +4,7 @@
     </UserControl.Resources>
     <Grid Margin="12,8">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.22*"/>
+            <ColumnDefinition Width="0.84*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Border Style="{StaticResource QTRHacker.Card}" Padding="12,20" Margin="0,0,20,0">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <local:ItemSlotsGrid x:Name="ItemSlotsPanel" DataContext="{Binding ItemSlotsGridViewModel}" VerticalAlignment="Top">
                     <local:ItemSlotsGrid.ItemContextMenu>
                         <ContextMenu>
@@ -27,8 +27,8 @@
         <Border Grid.Column="1" Style="{StaticResource QTRHacker.Card}" Padding="16">
             <DockPanel>
                 <TextBlock DockPanel.Dock="Top" Text="{l:Localization UI.Properties}" Style="{StaticResource QTRHacker.SectionTitle}"/>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <local:ItemPropertiesPanel x:Name="ItemPropertiesPanel" DataContext="{Binding ItemPropertiesPanelViewModel}" VerticalAlignment="Top"/>
+                <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <local:ItemPropertiesPanel x:Name="ItemPropertiesPanel" DataContext="{Binding ItemPropertiesPanelViewModel}" MinWidth="576" VerticalAlignment="Top"/>
                 </ScrollViewer>
             </DockPanel>
         </Border>

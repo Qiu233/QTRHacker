@@ -10,7 +10,7 @@ public class ItemPropertiesPanelViewModel : ViewModelBase
 	{
 		get;
 	} = new();
-	private int _Columns = 2;
+	private int _Columns = 3;
 
 	public int Rows => (ItemPropertyDatum.Count + Columns - 1) / Columns;
 
@@ -106,6 +106,7 @@ public class ItemPropertiesPanelViewModel : ViewModelBase
 		{
 			Key = key;
 			Value = value;
+			LocalizationManager.RegisterLocalizationProvider(this);
 		}
 
 		public void OnCultureChanged(object sender, CultureChangedEventArgs args)

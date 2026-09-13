@@ -52,6 +52,16 @@ public sealed class LocalizationManager
 		ApplySet(CurrentGame, LocSet.LoadFromGame(culture));
 		CultureChanged?.Invoke(this, new CultureChangedEventArgs(culture));
 	}
+
+	public void ApplyLanguage(string language)
+	{
+		string requestedCulture = language == "system"
+			? System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+			: language;
+		string culture = requestedCulture == "zh" ? "zh" : "en";
+		if (CultureName != culture)
+			SetCulture(culture);
+	}
 	private static LocalizationManager _Instance;
 	private string cultureName;
 

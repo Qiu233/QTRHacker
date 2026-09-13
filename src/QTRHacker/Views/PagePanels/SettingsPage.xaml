@@ -1,0 +1,89 @@
+<UserControl x:Class="QTRHacker.Views.PagePanels.SettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:QTRHacker.Localization">
+    <UserControl.Resources>
+        <Style x:Key="SettingName" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource Theme.Text}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+        </Style>
+        <Style x:Key="SettingsHint" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource Theme.Secondary}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <DataTemplate x:Key="IntervalTemplate">
+            <TextBlock Text="{Binding StringFormat={}{0} ms}"/>
+        </DataTemplate>
+    </UserControl.Resources>
+    <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+            <TextBlock Text="{l:Localization UI.Settings.Title}" Style="{StaticResource QTRHacker.PageTitle}"/>
+            <TextBlock Text="{l:Localization UI.Settings.AutoSave}" Style="{StaticResource SettingsHint}" Margin="0,-8,0,20"/>
+            <Border Style="{StaticResource QTRHacker.Card}" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{l:Localization UI.Settings.Appearance}" Style="{StaticResource QTRHacker.SectionTitle}"/>
+                    <Grid Margin="0,4,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="220"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{l:Localization UI.Appearance.Theme}" Style="{StaticResource SettingName}"/>
+                        <ComboBox x:Name="ThemeSelector" Grid.Column="1" SelectedValuePath="Tag" SelectedValue="{Binding Theme, Mode=TwoWay}">
+                            <ComboBoxItem Tag="Dark" Content="{l:Localization UI.Appearance.Dark}"/>
+                            <ComboBoxItem Tag="Light" Content="{l:Localization UI.Appearance.Light}"/>
+                        </ComboBox>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="220"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{l:Localization UI.Settings.Language}" Style="{StaticResource SettingName}"/>
+                        <ComboBox x:Name="LanguageSelector" Grid.Column="1" SelectedValuePath="Tag" SelectedValue="{Binding Language, Mode=TwoWay}">
+                            <ComboBoxItem Tag="system" Content="{l:Localization UI.Settings.SystemLanguage}"/>
+                            <ComboBoxItem Tag="zh" Content="简体中文"/>
+                            <ComboBoxItem Tag="en" Content="English"/>
+                        </ComboBox>
+                    </Grid>
+                    <TextBlock Text="{l:Localization UI.Settings.AppearanceHint}" Style="{StaticResource SettingsHint}" Margin="0,16,0,0"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource QTRHacker.Card}" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="{l:Localization UI.Settings.Refresh}" Style="{StaticResource QTRHacker.SectionTitle}"/>
+                    <Grid Margin="0,4,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="220"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{l:Localization UI.Settings.ItemRefresh}" Style="{StaticResource SettingName}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding RefreshIntervals}" ItemTemplate="{StaticResource IntervalTemplate}"
+                                  SelectedItem="{Binding ItemUpdateInterval, Mode=TwoWay}"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="220"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{l:Localization UI.Settings.PlayersRefresh}" Style="{StaticResource SettingName}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding RefreshIntervals}" ItemTemplate="{StaticResource IntervalTemplate}"
+                                  SelectedItem="{Binding PlayersListUpdateInterval, Mode=TwoWay}"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="220"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{l:Localization UI.Settings.ToolsRefresh}" Style="{StaticResource SettingName}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding RefreshIntervals}" ItemTemplate="{StaticResource IntervalTemplate}"
+                                  SelectedItem="{Binding SchesUpdateInterval, Mode=TwoWay}"/>
+                    </Grid>
+                    <TextBlock Text="{l:Localization UI.Settings.RefreshHint}" Style="{StaticResource SettingsHint}" Margin="0,16,0,0"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

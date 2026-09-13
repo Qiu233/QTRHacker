@@ -1,6 +1,19 @@
 {
   "Name": "English",
   "UI": {
+    "Settings": {
+      "Title": "Settings",
+      "AutoSave": "Your preferences are saved automatically.",
+      "Appearance": "Appearance and language",
+      "Language": "Display language",
+      "SystemLanguage": "Follow system",
+      "AppearanceHint": "Theme and language changes take effect immediately.",
+      "Refresh": "Data refresh",
+      "ItemRefresh": "Item and equipment editors",
+      "PlayersRefresh": "Player lists",
+      "ToolsRefresh": "Schematics, Aimbot and Fishing Bot",
+      "RefreshHint": "Shorter intervals refresh more often. Changes take effect after restarting the application."
+    },
     "Appearance": {
       "Theme": "Theme",
       "Dark": "Dark",

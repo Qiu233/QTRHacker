@@ -4,25 +4,12 @@ namespace QTRHacker.ViewModels;
 
 public sealed class MainWindowViewModel : ViewModelBase
 {
-	public string Theme
-	{
-		get => Themes.ThemeManager.CurrentTheme;
-		set
-		{
-			if (Theme == value)
-				return;
-			Themes.ThemeManager.Apply(value);
-			HackGlobal.Config.Theme = Theme;
-			HackGlobal.SaveConfig();
-			OnPropertyChanged();
-		}
-	}
-
 	public DirectFunctionsPageViewModel DirectFunctionsPageViewModel { get; }
 	public PlayersPageViewModel PlayersPageViewModel { get; }
 	public AdvancedPageViewModel AdvancedPageViewModel { get; }
 	public AboutPageViewModel AboutPageViewModel { get; }
 	public MainPageViewModel MainPageViewModel { get; }
+	public SettingsPageViewModel SettingsPageViewModel { get; }
 	public MainWindowViewModel()
 	{
 		PlayersPageViewModel = new();
@@ -34,6 +21,7 @@ public sealed class MainWindowViewModel : ViewModelBase
 		AdvancedPageViewModel.RegisterHackInitEvent();
 
 		AboutPageViewModel = new();
+		SettingsPageViewModel = new();
 
 		MainPageViewModel = new();
 		MainPageViewModel.IsSelected = true;

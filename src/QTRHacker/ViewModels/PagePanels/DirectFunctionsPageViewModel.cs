@@ -14,7 +14,7 @@ using QTRHacker.Core;
 
 namespace QTRHacker.ViewModels.PagePanels;
 
-public class DirectFunctionsPageViewModel : PagePanelViewModel
+public class DirectFunctionsPageViewModel : PagePanelViewModel, ILocalizationProvider
 {
 	public const string PATH_FUNCS = "./Content/Scripts";
 
@@ -98,7 +98,9 @@ public class DirectFunctionsPageViewModel : PagePanelViewModel
 		TabItems.Clear();
 		foreach (FunctionCategory group in Functions)
 		{
-			var itemsControl = GetOrCreateTab(group[LocalizationManager.Instance.CultureName]).Content as FunctionsBox;
+			var tab = GetOrCreateTab(group[LocalizationManager.Instance.CultureName]);
+			tab.Tag ??= group;
+			var itemsControl = tab.Content as FunctionsBox;
 			var manager = RemoteDataManager<bool>.Create(HackGlobal.GameContext, SHA256.HashData(Encoding.UTF8.GetBytes(group.Category)));
 			int index = 0;
 			foreach (var func in group)
@@ -136,9 +138,19 @@ public class DirectFunctionsPageViewModel : PagePanelViewModel
 
 	public DirectFunctionsPageViewModel()
 	{
+		LocalizationManager.RegisterLocalizationProvider(this);
 		if (!Directory.Exists(PATH_FUNCS))
 		{
 			Directory.CreateDirectory(PATH_FUNCS);
+		}
+	}
+
+	public void OnCultureChanged(object sender, CultureChangedEventArgs args)
+	{
+		foreach (var tab in TabItems)
+		{
+			if (tab.Tag is FunctionCategory category)
+				tab.Header = category[args.Name] ?? category["en"] ?? category.Category;
 		}
 	}
 }

@@ -9,7 +9,7 @@
                             <ColumnDefinition Width="184"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TabPanel IsItemsHost="True" Margin="10,80,10,106" VerticalAlignment="Top"/>
+                        <TabPanel IsItemsHost="True" Margin="10,80,10,24" VerticalAlignment="Top"/>
                         <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Column="1" ContentSource="SelectedContent" Margin="28,24"/>
                     </Grid>
                 </ControlTemplate>
@@ -78,17 +78,23 @@
                 </TabItem.Header>
                 <pagepanels:MainPage/>
             </TabItem>
+            <TabItem DataContext="{Binding SettingsPageViewModel}" Style="{StaticResource MainWindowTabItem}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="18" Height="18" Margin="2,0,12,0">
+                            <Path Width="24" Height="24"
+                                  Data="M 9 3 L 15 3 L 16 6 L 19 7 L 22 11 L 20 14 L 20 17 L 16 20 L 13 19 L 10 21 L 6 19 L 5 16 L 2 13 L 4 9 L 7 8 Z M 16 12 A 4 4 0 1 1 8 12 A 4 4 0 1 1 16 12"
+                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TabItem}}" StrokeThickness="1.5"/>
+                        </Viewbox>
+                        <TextBlock Text="{l:Localization UI.Settings.Title}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <pagepanels:SettingsPage/>
+            </TabItem>
         </TabControl>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,22,0,0">
             <TextBlock Text="QTRHacker" FontSize="19" FontWeight="SemiBold"/>
             <TextBlock Text="TERRARIA" FontSize="10" Foreground="{DynamicResource Theme.Secondary}" Margin="1,5,0,0"/>
-        </StackPanel>
-        <StackPanel Width="144" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,20">
-            <TextBlock Text="{l:Localization UI.Appearance.Theme}" FontSize="12" Foreground="{DynamicResource Theme.Secondary}" Margin="0,0,0,7"/>
-            <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Theme, Mode=TwoWay}">
-                <ComboBoxItem Tag="Dark" Content="{l:Localization UI.Appearance.Dark}"/>
-                <ComboBoxItem Tag="Light" Content="{l:Localization UI.Appearance.Light}"/>
-            </ComboBox>
         </StackPanel>
     </Grid>
 </controls:MWindow>

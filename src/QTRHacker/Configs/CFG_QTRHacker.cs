@@ -7,4 +7,5 @@ public sealed class CFG_QTRHacker
 	public int SchesUpdateInterval = 500;
 	public bool ForceEnglish = false;
 	public string Theme = "Dark";
+	public string Language; // A missing value is migrated from ForceEnglish when loading older configs.
 }
