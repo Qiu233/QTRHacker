@@ -1,0 +1,72 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:QTRHacker.Controls">
+    <SolidColorBrush x:Key="Theme.Background" Color="#F3F3F3"/>
+    <SolidColorBrush x:Key="Theme.CrossForeground" Color="Black"/>
+    <SolidColorBrush x:Key="Theme.Navigation" Color="#EBEBEB"/>
+    <SolidColorBrush x:Key="Theme.Panel" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Theme.Raised" Color="#F9F9F9"/>
+    <SolidColorBrush x:Key="Theme.Input" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Theme.Hover" Color="#EAEAEA"/>
+    <SolidColorBrush x:Key="Theme.Pressed" Color="#DDDDDD"/>
+    <SolidColorBrush x:Key="Theme.Border" Color="#D2D2D2"/>
+    <SolidColorBrush x:Key="Theme.SubtleBorder" Color="#E5E5E5"/>
+    <SolidColorBrush x:Key="Theme.Text" Color="#1B1B1B"/>
+    <SolidColorBrush x:Key="Theme.Secondary" Color="#616161"/>
+    <SolidColorBrush x:Key="Theme.Disabled" Color="#8C8C8C"/>
+    <SolidColorBrush x:Key="Theme.Accent" Color="#0067C0"/>
+    <SolidColorBrush x:Key="Theme.AccentText" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Theme.Selection" Color="#E5F0FA"/>
+    <SolidColorBrush x:Key="Theme.Error" Color="#C42B1C"/>
+    <SolidColorBrush x:Key="Theme.Wash" Color="#08000000"/>
+    <SolidColorBrush x:Key="QTRHacker.Common.Foreground" Color="#1B1B1B"/>
+    <SolidColorBrush x:Key="QTRHacker.Common.Foreground.Inverse" Color="#F3F3F3"/>
+    <SolidColorBrush x:Key="QTRHacker.TextBox.Background" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="QTRHacker.StripButton.Background" Color="#F9F9F9"/>
+    <SolidColorBrush x:Key="QTRHacker.StripButton.BackMouseHover" Color="#EAEAEA"/>
+    <SolidColorBrush x:Key="QTRHacker.StripButton.BackMousePressed" Color="#DDDDDD"/>
+    <SolidColorBrush x:Key="QTRHacker.StripButton.BackDisabled" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="QTRHacker.StripButton.ForeDisabled" Color="#8C8C8C"/>
+    <SolidColorBrush x:Key="QTRHacker.Light.Content.Foreground" Color="#1B1B1B"/>
+    <SolidColorBrush x:Key="QTRHacker.Light.Tip.Foreground" Color="#616161"/>
+    <SolidColorBrush x:Key="QTRHacker.Error" Color="#C42B1C"/>
+    <SolidColorBrush x:Key="QTRHacker.SoftWhite" Color="#1B1B1B"/>
+    <SolidColorBrush x:Key="TabItem.Background.Selected" Color="#E5F0FA"/>
+    <SolidColorBrush x:Key="TabItem.Background" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="TabControl.Background" Color="#F3F3F3"/>
+    <SolidColorBrush x:Key="TabControl.Background.Header" Color="#F3F3F3"/>
+    <SolidColorBrush x:Key="QTRHacker.Common.WhiteMusk.O20" Color="#20000000"/>
+    <SolidColorBrush x:Key="QTRHacker.Common.WhiteMusk.O30" Color="#30000000"/>
+    <SolidColorBrush x:Key="QTRHacker.Common.WhiteMusk.O40" Color="#40000000"/>
+    <SolidColorBrush x:Key="QTRHacker.Common.WhiteMusk.O60" Color="#60000000"/>
+    <SolidColorBrush x:Key="QTRHacker.Common.WhiteMusk.O80" Color="#80000000"/>
+    <SolidColorBrush x:Key="QTRHacker.Common.WhiteMusk.OC0" Color="#C0000000"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="#1B1B1B"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#1B1B1B"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.GrayTextBrushKey}" Color="#8C8C8C"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E5F0FA"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#1B1B1B"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#E5F0FA"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#1B1B1B"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.MenuBrushKey}" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.MenuTextBrushKey}" Color="#1B1B1B"/>
+    <Color x:Key="Theme.BackgroundColor">#F3F3F3</Color>
+    <Color x:Key="Theme.NavigationColor">#EBEBEB</Color>
+    <Color x:Key="Theme.PanelColor">#FFFFFF</Color>
+    <Color x:Key="Theme.RaisedColor">#F9F9F9</Color>
+    <Color x:Key="Theme.InputColor">#FFFFFF</Color>
+    <Color x:Key="Theme.HoverColor">#EAEAEA</Color>
+    <Color x:Key="Theme.PressedColor">#DDDDDD</Color>
+    <Color x:Key="Theme.BorderColor">#D2D2D2</Color>
+    <Color x:Key="Theme.SubtleBorderColor">#E5E5E5</Color>
+    <Color x:Key="Theme.TextColor">#1B1B1B</Color>
+    <Color x:Key="Theme.SecondaryColor">#616161</Color>
+    <Color x:Key="Theme.DisabledColor">#8C8C8C</Color>
+    <Color x:Key="Theme.AccentColor">#0067C0</Color>
+    <Color x:Key="Theme.AccentTextColor">#FFFFFF</Color>
+    <Color x:Key="Theme.SelectionColor">#E5F0FA</Color>
+    <Color x:Key="Theme.ErrorColor">#C42B1C</Color>
+    <Color x:Key="Theme.WashColor">#08000000</Color>
+</ResourceDictionary>

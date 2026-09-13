@@ -1,4 +1,4 @@
-﻿using QTRHacker.Assets;
+using QTRHacker.Assets;
 using QTRHacker.Commands;
 using QTRHacker.Controls;
 using QTRHacker.Localization;
@@ -9,7 +9,6 @@ using QTRHacker.Views.Common;
 using QTRHacker.Views.PlayerEditor;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace QTRHacker.ViewModels.PagePanels;
 
@@ -91,7 +90,7 @@ public class PlayersPageViewModel : PagePanelViewModel
 		window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 		window.Title = "Mount";
 		window.MinimizeBox = false;
-		Grid grid = new();
+		Grid grid = new() { Margin = new Thickness(20) };
 		window.Content = grid;
 
 		grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
@@ -100,16 +99,13 @@ public class PlayersPageViewModel : PagePanelViewModel
 		grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
 
 		Label tip = new();
-		tip.Foreground = new SolidColorBrush(Colors.White);
 		tip.Content = $"{LocalizationManager.Instance.GetValue("UI.Type")}:";
 		grid.Children.Add(tip);
 		Grid.SetColumn(tip, 0);
 
 		ComboBox box = new();
-		box.Width = 160;
+		box.Width = 220;
 		box.VerticalContentAlignment = VerticalAlignment.Center;
-		box.Background = new SolidColorBrush(Color.FromArgb(20, 200, 200, 200));
-		box.Foreground = new SolidColorBrush(Color.FromRgb(20, 20, 20));
 		grid.Children.Add(box);
 		Grid.SetColumn(box, 1);
 
@@ -117,8 +113,8 @@ public class PlayersPageViewModel : PagePanelViewModel
 		box.DisplayMemberPath = "Name";
 
 		Button btn = new();
-		btn.Foreground = new SolidColorBrush(Colors.White);
-		btn.Padding = new Thickness(2);
+		btn.MinWidth = 80;
+		btn.Margin = new Thickness(12, 0, 0, 0);
 		btn.Content = LocalizationManager.Instance.GetValue("UI.Confirm");
 		grid.Children.Add(btn);
 		Grid.SetColumn(btn, 2);
@@ -143,7 +139,7 @@ public class PlayersPageViewModel : PagePanelViewModel
 		window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 		window.Title = "Pet";
 		window.MinimizeBox = false;
-		Grid grid = new();
+		Grid grid = new() { Margin = new Thickness(20) };
 		window.Content = grid;
 
 		grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
@@ -152,16 +148,13 @@ public class PlayersPageViewModel : PagePanelViewModel
 		grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
 
 		Label tip = new();
-		tip.Foreground = new SolidColorBrush(Colors.White);
 		tip.Content = $"{LocalizationManager.Instance.GetValue("UI.Type")}:";
 		grid.Children.Add(tip);
 		Grid.SetColumn(tip, 0);
 
 		ComboBox box = new();
-		box.Width = 160;
+		box.Width = 220;
 		box.VerticalContentAlignment = VerticalAlignment.Center;
-		box.Background = new SolidColorBrush(Color.FromArgb(20, 200, 200, 200));
-		box.Foreground = new SolidColorBrush(Color.FromRgb(20, 20, 20));
 		grid.Children.Add(box);
 		Grid.SetColumn(box, 1);
 
@@ -169,8 +162,8 @@ public class PlayersPageViewModel : PagePanelViewModel
 		box.DisplayMemberPath = "Name";
 
 		Button btn = new();
-		btn.Foreground = new SolidColorBrush(Colors.White);
-		btn.Padding = new Thickness(2);
+		btn.MinWidth = 80;
+		btn.Margin = new Thickness(12, 0, 0, 0);
 		btn.Content = LocalizationManager.Instance.GetValue("UI.Confirm");
 		grid.Children.Add(btn);
 		Grid.SetColumn(btn, 2);
@@ -195,7 +188,7 @@ public class PlayersPageViewModel : PagePanelViewModel
 		window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 		window.Title = "Buff";
 		window.MinimizeBox = false;
-		Grid grid = new();
+		Grid grid = new() { Margin = new Thickness(20) };
 		window.Content = grid;
 
 		grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
@@ -205,22 +198,19 @@ public class PlayersPageViewModel : PagePanelViewModel
 		grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
 
 		Label tip1 = new();
-		tip1.Foreground = new SolidColorBrush(Colors.White);
 		tip1.Content = $"{LocalizationManager.Instance.GetValue("UI.Type")}:";
 		grid.Children.Add(tip1);
 		Grid.SetColumn(tip1, 0);
 
 		TextBox box1 = new();
 		box1.Text = "5";
-		box1.Width = 160;
+		box1.Width = 200;
+		box1.Margin = new Thickness(0, 0, 0, 8);
 		box1.VerticalContentAlignment = VerticalAlignment.Center;
-		box1.Background = new SolidColorBrush(Color.FromArgb(20, 255, 255, 255));
-		box1.Foreground = new SolidColorBrush(Colors.White);
 		grid.Children.Add(box1);
 		Grid.SetColumn(box1, 1);
 
 		Label tip2 = new();
-		tip2.Foreground = new SolidColorBrush(Colors.White);
 		tip2.Content = $"{LocalizationManager.Instance.GetValue("UI.Time")}:";
 		grid.Children.Add(tip2);
 		Grid.SetColumn(tip2, 0);
@@ -228,17 +218,15 @@ public class PlayersPageViewModel : PagePanelViewModel
 
 		TextBox box2 = new();
 		box2.Text = "3600";
-		box2.Width = 160;
+		box2.Width = 200;
 		box2.VerticalContentAlignment = VerticalAlignment.Center;
-		box2.Background = new SolidColorBrush(Color.FromArgb(20, 255, 255, 255));
-		box2.Foreground = new SolidColorBrush(Colors.White);
 		grid.Children.Add(box2);
 		Grid.SetColumn(box2, 1);
 		Grid.SetRow(box2, 1);
 
 		Button btn = new();
-		btn.Foreground = new SolidColorBrush(Colors.White);
-		btn.Padding = new Thickness(2);
+		btn.MinWidth = 80;
+		btn.Margin = new Thickness(12, 0, 0, 0);
 		btn.Content = LocalizationManager.Instance.GetValue("UI.Confirm");
 		grid.Children.Add(btn);
 		Grid.SetColumn(btn, 2);
@@ -390,4 +378,3 @@ public class PlayersPageViewModel : PagePanelViewModel
 		}
 	}
 }
-

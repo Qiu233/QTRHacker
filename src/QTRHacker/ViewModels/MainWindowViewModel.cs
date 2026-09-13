@@ -4,6 +4,20 @@ namespace QTRHacker.ViewModels;
 
 public sealed class MainWindowViewModel : ViewModelBase
 {
+	public string Theme
+	{
+		get => Themes.ThemeManager.CurrentTheme;
+		set
+		{
+			if (Theme == value)
+				return;
+			Themes.ThemeManager.Apply(value);
+			HackGlobal.Config.Theme = Theme;
+			HackGlobal.SaveConfig();
+			OnPropertyChanged();
+		}
+	}
+
 	public DirectFunctionsPageViewModel DirectFunctionsPageViewModel { get; }
 	public PlayersPageViewModel PlayersPageViewModel { get; }
 	public AdvancedPageViewModel AdvancedPageViewModel { get; }

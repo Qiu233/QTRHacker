@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="QTRHacker.Views.Wiki.Item.ItemWikiTabPage"
+<UserControl x:Class="QTRHacker.Views.Wiki.Item.ItemWikiTabPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,14 +6,14 @@
              xmlns:local="clr-namespace:QTRHacker.Views.Wiki.Item"
              xmlns:l="clr-namespace:QTRHacker.Localization"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Padding="3">
+             d:DesignHeight="450" d:DesignWidth="800" Padding="8">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="470"/>
         </Grid.ColumnDefinitions>
-        <ListView x:Name="ItemsListView" Grid.Column="0" Focusable="False" Width="500"
-                  BorderBrush="#808080" BorderThickness="1"
+        <ListView x:Name="ItemsListView" Grid.Column="0" Focusable="False"
+                  BorderBrush="{DynamicResource Theme.Border}" BorderThickness="1"
                   ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItemInfo}" 
                   SelectedIndex="{Binding SelectedItemIndex, Mode=TwoWay}"
                   SelectionChanged="ItemsListView_SelectionChanged">
@@ -47,8 +47,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <TabControl Grid.Column="1" Margin="3,0,0,0" Width="360"
-                    DataContext="{Binding ItemInfoPagesViewModel}" Background="#C8C8C8">
+        <TabControl Grid.Column="1" Margin="20,0,0,0"
+                    DataContext="{Binding ItemInfoPagesViewModel}" Background="{DynamicResource Theme.Panel}">
             <TabItem Header="{l:Localization UI.ItemInfo}">
                 <local:ItemInfoSubPage/>
             </TabItem>

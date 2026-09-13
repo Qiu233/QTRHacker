@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using QTRHacker.Configs;
 using QTRHacker.Core;
 using QTRHacker.Core.ProjectileImage;
@@ -117,7 +117,7 @@ public static class HackGlobal
 			Placement = PlacementMode.Center
 		};
 		ProgressBar bar = new();
-		bar.Foreground = new SolidColorBrush(Colors.DarkGray);
+		bar.SetResourceReference(ProgressBar.ForegroundProperty, "Theme.Accent");
 		bar.IsIndeterminate = true;
 		bar.Width = 300;
 		bar.Height = 40;

@@ -1,51 +1,94 @@
-﻿<controls:MWindow 
-    x:Class="QTRHacker.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:QTRHacker"
-    xmlns:controls="clr-namespace:QTRHacker.Controls"
-    xmlns:pagepanels="clr-namespace:QTRHacker.Views.PagePanels"
-    xmlns:l="clr-namespace:QTRHacker.Localization"
-    mc:Ignorable="d"
-    WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" SnapsToDevicePixels="True" UseLayoutRounding="True"
-    MinimizeBox="True"
-    >
+<controls:MWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:QTRHacker" xmlns:controls="clr-namespace:QTRHacker.Controls" xmlns:pagepanels="clr-namespace:QTRHacker.Views.PagePanels" xmlns:l="clr-namespace:QTRHacker.Localization" x:Class="QTRHacker.MainWindow" mc:Ignorable="d" WindowStartupLocation="CenterScreen" Width="1000" Height="700" SnapsToDevicePixels="True" UseLayoutRounding="True" MinimizeBox="True">
     <Grid>
+        <Border Width="184" HorizontalAlignment="Left" Background="{DynamicResource Theme.Navigation}"/>
         <TabControl x:Name="MainTabControl" TabStripPlacement="Left">
+            <TabControl.Template>
+                <ControlTemplate TargetType="TabControl">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="184"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TabPanel IsItemsHost="True" Margin="10,80,10,106" VerticalAlignment="Top"/>
+                        <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Column="1" ContentSource="SelectedContent" Margin="28,24"/>
+                    </Grid>
+                </ControlTemplate>
+            </TabControl.Template>
             <TabControl.Resources>
                 <Style x:Key="MainWindowTabItem" TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
                     <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
                     <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
-                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="MinHeight" Value="42"/>
+                    <Setter Property="Margin" Value="0,0,0,4"/>
                 </Style>
             </TabControl.Resources>
-            <TabItem DataContext="{Binding PlayersPageViewModel}"
-                     Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.Player}">
+            <TabItem DataContext="{Binding PlayersPageViewModel}" Style="{StaticResource MainWindowTabItem}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="18" Height="18" Margin="2,0,12,0">
+                            <Path Width="24" Height="24" Data="M 6 18 C 6 13 18 13 18 18 M 16 7 A 4 4 0 1 1 8 7 A 4 4 0 1 1 16 7" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TabItem}}" StrokeThickness="1.5"/>
+                        </Viewbox>
+                        <TextBlock Text="{l:Localization UI.Player}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <pagepanels:PlayersPage x:Name="PlayersPage"/>
             </TabItem>
-            <TabItem DataContext="{Binding DirectFunctionsPageViewModel}"
-                     Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.DirectFunction}">
+            <TabItem DataContext="{Binding DirectFunctionsPageViewModel}" Style="{StaticResource MainWindowTabItem}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="18" Height="18" Margin="2,0,12,0">
+                            <Path Width="24" Height="24" Data="M 4 6 L 20 6 M 4 12 L 20 12 M 4 18 L 20 18 M 8 3 L 8 9 M 16 9 L 16 15 M 10 15 L 10 21" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TabItem}}" StrokeThickness="1.5"/>
+                        </Viewbox>
+                        <TextBlock Text="{l:Localization UI.DirectFunction}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <pagepanels:DirectFunctionsPage/>
             </TabItem>
-            <TabItem DataContext="{Binding AdvancedPageViewModel}"
-                     Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.Advanced}">
+            <TabItem DataContext="{Binding AdvancedPageViewModel}" Style="{StaticResource MainWindowTabItem}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="18" Height="18" Margin="2,0,12,0">
+                            <Path Width="24" Height="24" Data="M 5 5 L 10 5 L 10 10 L 5 10 Z M 14 5 L 19 5 L 19 10 L 14 10 Z M 5 14 L 10 14 L 10 19 L 5 19 Z M 14 14 L 19 14 L 19 19 L 14 19 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TabItem}}" StrokeThickness="1.5"/>
+                        </Viewbox>
+                        <TextBlock Text="{l:Localization UI.Advanced}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <pagepanels:AdvancedPage/>
             </TabItem>
-            <TabItem DataContext="{Binding AboutPageViewModel}"
-                     Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.About}">
+            <TabItem DataContext="{Binding AboutPageViewModel}" Style="{StaticResource MainWindowTabItem}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="18" Height="18" Margin="2,0,12,0">
+                            <Path Width="24" Height="24" Data="M 12 3 A 9 9 0 1 1 11.99 3 M 12 10 L 12 17 M 12 6 L 12 7" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TabItem}}" StrokeThickness="1.5"/>
+                        </Viewbox>
+                        <TextBlock Text="{l:Localization UI.About}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <pagepanels:AboutPage/>
             </TabItem>
-            <TabItem DataContext="{Binding MainPageViewModel}" 
-                     Style="{StaticResource MainWindowTabItem}"
-                     Header="{l:Localization UI.MainPage}">
+            <TabItem DataContext="{Binding MainPageViewModel}" Style="{StaticResource MainWindowTabItem}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="18" Height="18" Margin="2,0,12,0">
+                            <Path Width="24" Height="24" Data="M 12 2 L 12 7 M 12 17 L 12 22 M 2 12 L 7 12 M 17 12 L 22 12 M 18 12 A 6 6 0 1 1 6 12 A 6 6 0 1 1 18 12" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TabItem}}" StrokeThickness="1.5"/>
+                        </Viewbox>
+                        <TextBlock Text="{l:Localization UI.MainPage}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <pagepanels:MainPage/>
             </TabItem>
         </TabControl>
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,22,0,0">
+            <TextBlock Text="QTRHacker" FontSize="19" FontWeight="SemiBold"/>
+            <TextBlock Text="TERRARIA" FontSize="10" Foreground="{DynamicResource Theme.Secondary}" Margin="1,5,0,0"/>
+        </StackPanel>
+        <StackPanel Width="144" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,20">
+            <TextBlock Text="{l:Localization UI.Appearance.Theme}" FontSize="12" Foreground="{DynamicResource Theme.Secondary}" Margin="0,0,0,7"/>
+            <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Theme, Mode=TwoWay}">
+                <ComboBoxItem Tag="Dark" Content="{l:Localization UI.Appearance.Dark}"/>
+                <ComboBoxItem Tag="Light" Content="{l:Localization UI.Appearance.Light}"/>
+            </ComboBox>
+        </StackPanel>
     </Grid>
 </controls:MWindow>

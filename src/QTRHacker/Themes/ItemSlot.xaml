@@ -1,43 +1,27 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    xmlns:controls="clr-namespace:QTRHacker.Controls"
-                    xmlns:converters="clr-namespace:QTRHacker.Converters"
-                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    mc:Ignorable="d"
-                    >
-    <ControlTemplate x:Key="ItemSlotTemplate" TargetType="{x:Type controls:ItemSlot}">
-        <Border Padding="0" Background="{TemplateBinding Background}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:QTRHacker.Controls" xmlns:converters="clr-namespace:QTRHacker.Converters">
+    <ControlTemplate x:Key="ItemSlotTemplate" TargetType="controls:ItemSlot">
+        <Border x:Name="Surface" CornerRadius="6" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="{DynamicResource Theme.Border}">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Border x:Name="PART_MaskBorder" BorderThickness="0" Background="#10FFFFFF" Visibility="Hidden" Grid.RowSpan="2"/>
-                <Grid Margin="10" Grid.RowSpan="2">
-                    <Image x:Name="PART_ItemImage" Stretch="Uniform" Source="{TemplateBinding ItemImageSource}"/>
-                </Grid>
-                <TextBlock Margin="4,0,0,2" FontSize="12"
-                    Text="{TemplateBinding ItemStack, Converter={x:Static converters:ItemStackToHintConverter.Instance}}" Grid.Row="1"/>
-                <Border x:Name="PART_Border" BorderThickness="0" BorderBrush="{TemplateBinding SelectedBorderBrush}" Grid.RowSpan="2"/>
+                <Border x:Name="PART_MaskBorder" CornerRadius="5" Background="{DynamicResource Theme.Wash}" Visibility="Hidden"/>
+                <Image x:Name="PART_ItemImage" Source="{TemplateBinding ItemImageSource}" Stretch="Uniform" Margin="8" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                <TextBlock Text="{TemplateBinding ItemStack, Converter={x:Static converters:ItemStackToHintConverter.Instance}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3,0,4,2" FontSize="11" Foreground="{DynamicResource Theme.Text}"/>
+                <Border x:Name="PART_Border" CornerRadius="5" BorderThickness="0" BorderBrush="{TemplateBinding SelectedBorderBrush}"/>
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsChecked" Value="True">
                 <Setter TargetName="PART_Border" Property="BorderThickness" Value="2"/>
-            </Trigger>
-            <Trigger Property="IsChecked" Value="False">
-                <Setter TargetName="PART_Border" Property="BorderThickness" Value="0"/>
+                <Setter TargetName="Surface" Property="Background" Value="{DynamicResource Theme.Selection}"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="PART_MaskBorder" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="Surface" Property="BorderBrush" Value="{DynamicResource Theme.Accent}"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <Style TargetType="{x:Type controls:ItemSlot}">
+    <Style TargetType="controls:ItemSlot">
         <Setter Property="Template" Value="{StaticResource ItemSlotTemplate}"/>
-        <Setter Property="Padding" Value="2"/>
+        <Setter Property="SelectedBorderBrush" Value="{DynamicResource Theme.Accent}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     </Style>
 </ResourceDictionary>

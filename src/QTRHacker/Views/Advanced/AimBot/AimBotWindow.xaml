@@ -1,4 +1,4 @@
-﻿<controls:MWindow xmlns:controls="clr-namespace:QTRHacker.Controls"
+<controls:MWindow xmlns:controls="clr-namespace:QTRHacker.Controls"
                   x:Class="QTRHacker.Views.Advanced.AimBot.AimBotWindow"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,21 +8,21 @@
                   xmlns:l="clr-namespace:QTRHacker.Localization"
                   xmlns:commonViews="clr-namespace:QTRHacker.Views.Common"
                   mc:Ignorable="d"
-                  Title="Aimbot" Height="240" Width="400"
+                  Title="Aimbot" Height="430" Width="780"
                   Loaded="MWindow_Loaded">
     <controls:MWindow.Resources>
-        <Style TargetType="TextBox">
+        <Style TargetType="TextBox" BasedOn="{StaticResource QTRHacker.TextBoxStyle}">
                 <Setter Property="Margin" Value="0,1,0,1"/>
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="TextAlignment" Value="Center"/>
-                <Setter Property="Foreground" Value="{StaticResource QTRHacker.SoftWhite}"/>
-                <Setter Property="CaretBrush" Value="{StaticResource QTRHacker.SoftWhite}"/>
-                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="Foreground" Value="{DynamicResource QTRHacker.SoftWhite}"/>
+                <Setter Property="CaretBrush" Value="{DynamicResource QTRHacker.SoftWhite}"/>
+                <Setter Property="FontSize" Value="14"/>
                 <Style.Triggers>
                     <Trigger Property="IsFocused" Value="True">
-                        <Setter Property="BorderBrush" Value="White"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource Theme.Border}"/>
                     </Trigger>
                     <Trigger Property="IsFocused" Value="False">
                         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -31,11 +31,11 @@
             </Style>
             <Style TargetType="TextBlock">
                 <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Foreground" Value="{StaticResource QTRHacker.SoftWhite}"/>
-                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="Foreground" Value="{DynamicResource QTRHacker.SoftWhite}"/>
+                <Setter Property="FontSize" Value="14"/>
             </Style>
     </controls:MWindow.Resources>
-    <Grid>
+    <Grid Margin="16">
         <TabControl TabStripPlacement="Left">
             <TabItem Header="{l:Localization UI.AimBot.Disabled}" IsSelected="{Binding Disabled, Mode=TwoWay}">
                 <StackPanel Orientation="Vertical">
@@ -61,8 +61,8 @@
                         </Grid>
                         <CheckBox Content="{l:Localization UI.AimBot.HostilesOnly}"
                                   FlowDirection="LeftToRight" VerticalContentAlignment="Center"
-                                  FontSize="22" HorizontalAlignment="Left"
-                                  Foreground="{StaticResource QTRHacker.SoftWhite}"
+                                  FontSize="14" HorizontalAlignment="Left"
+                                  Foreground="{DynamicResource QTRHacker.SoftWhite}"
                                   IsChecked="{Binding HostileNPCsOnly}"/>
                     </StackPanel>
                 </Border>
@@ -86,8 +86,8 @@
                         </Grid>
                         <CheckBox Content="{l:Localization UI.AimBot.HostilesOnly}"
                                   FlowDirection="LeftToRight" VerticalContentAlignment="Center"
-                                  FontSize="22" HorizontalAlignment="Left"
-                                  Foreground="{StaticResource QTRHacker.SoftWhite}"
+                                  FontSize="14" HorizontalAlignment="Left"
+                                  Foreground="{DynamicResource QTRHacker.SoftWhite}"
                                   IsChecked="{Binding HostilePlayersOnly}"/>
                     </StackPanel>
                 </Border>

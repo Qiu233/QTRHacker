@@ -1,4 +1,4 @@
-﻿<controls:MWindow x:Class="QTRHacker.Views.Wiki.WikiWindow"
+<controls:MWindow x:Class="QTRHacker.Views.Wiki.WikiWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,9 +8,9 @@
         xmlns:wiki_NPC="clr-namespace:QTRHacker.Views.Wiki.NPC"
         xmlns:local="clr-namespace:QTRHacker.Views.Wiki"
         mc:Ignorable="d"
-        Title="Wiki" Height="540" SizeToContent="Width">
-    <Grid>
-        <TabControl Background="#30FFFFFF">
+        Title="Wiki" Width="1120" Height="740">
+    <Grid Margin="16">
+        <TabControl Background="{DynamicResource Theme.Wash}">
             <TabItem Header="Items">
                 <wiki_Item:ItemWikiTabPage DataContext="{Binding ItemPageViewModel}"/>
             </TabItem>

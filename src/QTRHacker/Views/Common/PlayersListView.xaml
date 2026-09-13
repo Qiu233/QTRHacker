@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="QTRHacker.Views.Common.PlayersListView"
+<UserControl x:Class="QTRHacker.Views.Common.PlayersListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,7 @@
              d:DesignHeight="200" d:DesignWidth="200">
     <Grid>
         <ListView x:Name="PlayersList" FontSize="15" Grid.Column="0" Focusable="False" BorderThickness="0"
-                  Foreground="Black" ItemsSource="{Binding Players}" Background="#404040" SelectedItem="{Binding SelectedPlayerInfo}">
+                  Foreground="{DynamicResource Theme.Text}" ItemsSource="{Binding Players}" Background="{DynamicResource Theme.Panel}" SelectedItem="{Binding SelectedPlayerInfo}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" Width="{Binding IDColumnWidth}"/>

@@ -1,4 +1,4 @@
-﻿<controls:MWindow x:Class="QTRHacker.Views.Advanced.RainbowFonts.OpenWindow"
+<controls:MWindow x:Class="QTRHacker.Views.Advanced.RainbowFonts.OpenWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,8 +7,8 @@
         xmlns:controls="clr-namespace:QTRHacker.Controls"
         xmlns:l="clr-namespace:QTRHacker.Localization"
         mc:Ignorable="d"
-        Title="{l:Localization UI.RainbowFonts.Open}" Width="500" SizeToContent="Height" WindowStartupLocation="CenterScreen">
-    <Grid>
+        Title="{l:Localization UI.RainbowFonts.Open}" Width="760" SizeToContent="Height" WindowStartupLocation="CenterScreen">
+    <Grid Margin="16">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -16,10 +16,10 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <ListView ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}" Height="240" Margin="2,0,0,0"
-                  Grid.Column="0" BorderThickness="1" BorderBrush="#40FFFFFF">
+                  Grid.Column="0" BorderThickness="1" BorderBrush="{DynamicResource Theme.SubtleBorder}">
         </ListView>
         <ListView ItemsSource="{Binding Characters}" SelectedItem="{Binding SelectedCharacter}" Height="240" Margin="2,0,0,0"
-                  Grid.Column="1" DisplayMemberPath="Character" BorderThickness="1" BorderBrush="#40FFFFFF">
+                  Grid.Column="1" DisplayMemberPath="Character" BorderThickness="1" BorderBrush="{DynamicResource Theme.SubtleBorder}">
         </ListView>
         <local:RainbowFontPreviewer Grid.Column="2" Image="{Binding Image}" Margin="2,0,0,0">
         </local:RainbowFontPreviewer>

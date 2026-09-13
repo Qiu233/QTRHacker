@@ -1,6 +1,11 @@
-﻿{
+{
   "Name": "简体中文",
   "UI": {
+    "Appearance": {
+      "Theme": "主题",
+      "Dark": "深色",
+      "Light": "浅色"
+    },
     "DirectFunction": "基础功能",
     "MainPage": "主页",
     "Advanced": "高级",

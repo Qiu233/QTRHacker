@@ -1,93 +1,75 @@
-﻿<UserControl x:Class="QTRHacker.Views.PagePanels.FunctionsBox"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:QTRHacker.Views.PagePanels"
-             xmlns:scripts="clr-namespace:QTRHacker.Scripts"
-             xmlns:controls="clr-namespace:QTRHacker.Controls"
-             xmlns:converters="clr-namespace:QTRHacker.Converters"
-             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-             mc:Ignorable="d">
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:QTRHacker.Views.PagePanels" xmlns:scripts="clr-namespace:QTRHacker.Scripts" xmlns:controls="clr-namespace:QTRHacker.Controls" xmlns:converters="clr-namespace:QTRHacker.Converters" xmlns:sys="clr-namespace:System;assembly=System.Runtime" x:Class="QTRHacker.Views.PagePanels.FunctionsBox" mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="{x:Type controls:FunctionButton}">
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type controls:FunctionButton}">
-                        <Grid>
-                            <DockPanel>
-                                <Ellipse x:Name="PART_Ellipse"
-                                         DockPanel.Dock="Right" Fill="Transparent" StrokeThickness="1"
-                                         Stroke="#909090" Margin="3"
-                                         Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
-                                    <Ellipse.Visibility>
-                                        <Binding Path="CanDisable" Converter="{x:Static converters:BoolToVisibilityConverter.Instance}">
-                                            <Binding.ConverterParameter>
+                        <Grid MinHeight="46" Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="36"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="54"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel VerticalAlignment="Center">
+                                <Button x:Name="PART_TooltipButton" Content="?" Width="24" Height="24" MinHeight="24" Padding="0" Foreground="{DynamicResource Theme.Secondary}" Background="Transparent" BorderThickness="0" PreviewMouseDown="PART_TooltipButton_PreviewMouseDown" Focusable="False"/>
+                                <Popup IsOpen="{Binding IsMouseOver, Mode=OneWay, ElementName=PART_TooltipButton}" Placement="Right" AllowsTransparency="True">
+                                    <Border CornerRadius="6" Background="{DynamicResource Theme.Raised}" BorderBrush="{DynamicResource Theme.Border}" BorderThickness="1" Padding="14" MaxWidth="340">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Foreground="{DynamicResource Theme.Text}" Margin="0,0,0,6"/>
+                                            <TextBlock Text="{Binding Tooltip}" TextWrapping="Wrap" Foreground="{DynamicResource Theme.Secondary}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
+                            </StackPanel>
+                            <Grid Grid.Column="1">
+                                <ProgressBar Maximum="{TemplateBinding ProgressMaximum}" Value="{TemplateBinding ProgressValue}" Margin="0,4" IsIndeterminate="{TemplateBinding HasProgress, Converter={x:Static converters:InvertBoolConverter.Instance}}" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource Theme.Selection}">
+                                    <ProgressBar.Visibility>
+                                        <TemplateBinding Property="IsProgressing" Converter="{x:Static converters:BoolToVisibilityConverter.Instance}">
+                                            <TemplateBindingExtension.ConverterParameter>
                                                 <sys:Boolean>False</sys:Boolean>
-                                            </Binding.ConverterParameter>
-                                        </Binding>
-                                    </Ellipse.Visibility>
-                                </Ellipse>
-                                <Border DockPanel.Dock="Left" BorderThickness="0" BorderBrush="#05FFFFFF" Margin="0">
-                                    <StackPanel>
-                                        <Button x:Name="PART_TooltipButton" Content="?" Foreground="#AAAAAA" Padding="5,0,5,0" PreviewMouseDown="PART_TooltipButton_PreviewMouseDown"
-                                                VerticalAlignment="Center" HorizontalAlignment="Center" Focusable="False" BorderThickness="0">
-                                        </Button>
-                                        <Popup IsOpen="{Binding IsMouseOver, Mode=OneWay, ElementName=PART_TooltipButton}" AllowsTransparency="True">
-                                            <Border Background="#505050">
-                                                <TextBlock>
-                                                    <Run Foreground="White">
-                                                        <Run.Text>
-                                                            <Binding Path="Name" StringFormat="{}{0}:"/>
-                                                        </Run.Text>
-                                                    </Run>
-                                                    <LineBreak/>
-                                                    <Run>
-                                                        <Run.Text>
-                                                            <Binding Path="Tooltip"/>
-                                                        </Run.Text>
-                                                    </Run>
-                                                </TextBlock>
-                                            </Border>
-                                        </Popup>
-                                    </StackPanel>
-                                </Border>
-                                <Grid>
-                                    <ProgressBar Maximum="{TemplateBinding ProgressMaximum}" Value="{TemplateBinding ProgressValue}" Margin="0,1,0,1"
-                                                 IsIndeterminate="{TemplateBinding HasProgress, Converter={x:Static converters:InvertBoolConverter.Instance}}"
-                                                 Background="Transparent" BorderThickness="0"
-                                                 Foreground="#20FFFFFF">
-                                        <ProgressBar.Visibility>
-                                            <TemplateBinding Property="IsProgressing" Converter="{x:Static converters:BoolToVisibilityConverter.Instance}">
-                                                <TemplateBindingExtension.ConverterParameter>
-                                                    <sys:Boolean>False</sys:Boolean>
-                                                </TemplateBindingExtension.ConverterParameter>
-                                            </TemplateBinding>
-                                        </ProgressBar.Visibility>
-                                    </ProgressBar>
-                                    <ContentPresenter VerticalAlignment="Center" Margin="2,0,0,0" ToolTip="{TemplateBinding Content}">
-                                        <ContentPresenter.Resources>
-                                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-                                            </Style>
-                                        </ContentPresenter.Resources>
-                                    </ContentPresenter>
-                                </Grid>
-                            </DockPanel>
-                            <Border x:Name="PART_Mask" Background="Transparent" Visibility="Collapsed"/>
+                                            </TemplateBindingExtension.ConverterParameter>
+                                        </TemplateBinding>
+                                    </ProgressBar.Visibility>
+                                </ProgressBar>
+                                <ContentPresenter VerticalAlignment="Center" Margin="4,0,10,0" ToolTip="{TemplateBinding Content}">
+                                    <ContentPresenter.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                        </Style>
+                                    </ContentPresenter.Resources>
+                                </ContentPresenter>
+                            </Grid>
+                            <Border x:Name="ToggleTrack" Grid.Column="2" Width="34" Height="18" CornerRadius="9" VerticalAlignment="Center" Background="{DynamicResource Theme.Input}" BorderBrush="{DynamicResource Theme.Secondary}" BorderThickness="1">
+                                <Border.Visibility>
+                                    <Binding Path="CanDisable" Converter="{x:Static converters:BoolToVisibilityConverter.Instance}">
+                                        <Binding.ConverterParameter>
+                                            <sys:Boolean>False</sys:Boolean>
+                                        </Binding.ConverterParameter>
+                                    </Binding>
+                                </Border.Visibility>
+                                <Ellipse x:Name="ToggleThumb" Width="10" Height="10" Fill="{DynamicResource Theme.Secondary}" HorizontalAlignment="Left" Margin="3,0"/>
+                            </Border>
+                            <Path x:Name="RunArrow" Grid.Column="2" Data="M 0 0 L 5 5 L 0 10" Stroke="{DynamicResource Theme.Secondary}" StrokeThickness="1.5" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+                            <Border x:Name="PART_Mask" Grid.ColumnSpan="3" Background="Transparent" Visibility="Collapsed" CornerRadius="5"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="PART_Ellipse" Property="Shape.Fill" Value="#20FF20"/>
+                                <Setter TargetName="ToggleTrack" Property="Background" Value="{DynamicResource Theme.Accent}"/>
+                                <Setter TargetName="ToggleTrack" Property="BorderBrush" Value="{DynamicResource Theme.Accent}"/>
+                                <Setter TargetName="ToggleThumb" Property="Fill" Value="{DynamicResource Theme.AccentText}"/>
+                                <Setter TargetName="ToggleThumb" Property="HorizontalAlignment" Value="Right"/>
                             </Trigger>
-                            <Trigger Property="Button.IsPressed" Value="True">
-                                <Setter TargetName="PART_Mask" Property="Control.Visibility" Value="Visible"/>
-                                <Setter TargetName="PART_Mask" Property="Control.Background" Value="#10FFFFFF"/>
+                            <Trigger Property="IsCheckable" Value="False">
+                                <Setter TargetName="RunArrow" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="PART_Mask" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="PART_Mask" Property="Background" Value="{DynamicResource Theme.Wash}"/>
                             </Trigger>
                             <Trigger Property="IsProgressing" Value="True">
-                                <Setter TargetName="PART_Mask" Property="Control.Visibility" Value="Visible"/>
-                                <Setter TargetName="PART_Mask" Property="Control.Background" Value="#08FFFFFF"/>
+                                <Setter TargetName="PART_Mask" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="PART_Mask" Property="Background" Value="{DynamicResource Theme.Wash}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -100,21 +82,13 @@
             <ItemsControl ItemsSource="{Binding Functions}" Focusable="False">
                 <ItemsControl.Resources>
                     <DataTemplate DataType="{x:Type scripts:BaseFunction}">
-                        <Border x:Name="PART_Border" BorderThickness="1" BorderBrush="Transparent" SnapsToDevicePixels="True">
-                            <controls:FunctionButton Content="{Binding Name}" 
-                                                     FunctionEnabling="FunctionButton_FunctionEnabling" 
-                                                     FunctionDisabling="FunctionButton_FunctionDisabling"
-                                                     Foreground="{StaticResource QTRHacker.Common.Foreground}" 
-                                                     IsCheckable="{Binding CanDisable}" IsChecked="{Binding IsEnabled}"
-                                                     IsProgressing="{Binding IsProgressing}"
-                                                     HasProgress="{Binding HasProgress}"
-                                                     ProgressValue="{Binding Progress}"
-                                                     ProgressMaximum="100"/>
+                        <Border x:Name="PART_Border" CornerRadius="5" Margin="0,0,0,4" BorderThickness="1" BorderBrush="Transparent" SnapsToDevicePixels="True">
+                            <controls:FunctionButton Content="{Binding Name}" FunctionEnabling="FunctionButton_FunctionEnabling" FunctionDisabling="FunctionButton_FunctionDisabling" Foreground="{DynamicResource QTRHacker.Common.Foreground}" IsCheckable="{Binding CanDisable}" IsChecked="{Binding IsEnabled}" IsProgressing="{Binding IsProgressing}" HasProgress="{Binding HasProgress}" ProgressValue="{Binding Progress}" ProgressMaximum="100"/>
                         </Border>
                         <DataTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="PART_Border" Property="Control.BorderBrush" Value="#606060"></Setter>
-                                <Setter TargetName="PART_Border" Property="Control.Background" Value="#10FFFFFF"></Setter>
+                                <Setter TargetName="PART_Border" Property="Control.BorderBrush" Value="{DynamicResource Theme.Border}"/>
+                                <Setter TargetName="PART_Border" Property="Control.Background" Value="{DynamicResource Theme.Wash}"/>
                             </Trigger>
                         </DataTemplate.Triggers>
                     </DataTemplate>

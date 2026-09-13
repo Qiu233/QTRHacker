@@ -1,23 +1,23 @@
-﻿<UserControl x:Class="QTRHacker.Views.PagePanels.AdvancedPage"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:QTRHacker.Views.PagePanels"
-             xmlns:af="clr-namespace:QTRHacker.ViewModels.Advanced"
-             mc:Ignorable="d" 
-             Width="360" Height="400">
-    <ItemsControl ItemsSource="{Binding Functions}" Focusable="False">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel Orientation="Vertical"/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate DataType="{x:Type af:AdvancedFunction}">
-                <Button Content="{Binding Name}" Command="{Binding RunCommand}" Style="{StaticResource QTRHacker.StripButtonStyle}"
-                        Margin="2,0,2,2"/>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:QTRHacker.Controls" xmlns:l="clr-namespace:QTRHacker.Localization" x:Class="QTRHacker.Views.PagePanels.AdvancedPage">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="{l:Localization UI.Advanced}" Style="{StaticResource QTRHacker.PageTitle}"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding Functions}" Focusable="False">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Command="{Binding RunCommand}" Margin="0,0,0,10" Padding="20,18" HorizontalContentAlignment="Stretch">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Name}" FontSize="15" VerticalAlignment="Center"/>
+                                <Path Grid.Column="1" Data="M 0 0 L 5 5 L 0 10" Stroke="{DynamicResource Theme.Secondary}" StrokeThickness="1.4" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>

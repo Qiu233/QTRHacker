@@ -1,83 +1,42 @@
-﻿<UserControl x:Class="QTRHacker.Views.PlayerEditor.ItemPropertiesPanel"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor"
-             xmlns:l="clr-namespace:QTRHacker.Localization"
-             xmlns:models="clr-namespace:QTRHacker.Models"
-             xmlns:converters="clr-namespace:QTRHacker.Converters"
-             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-             mc:Ignorable="d" 
-             d:DesignHeight="320" d:DesignWidth="300">
-    <ItemsControl SnapsToDevicePixels="True" UseLayoutRounding="True" ItemsSource="{Binding ItemPropertyDatum}"
-                  ItemTemplateSelector="{x:Static local:ItemPropertyTemplateSelector.Instance}" VerticalAlignment="Center">
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:l="clr-namespace:QTRHacker.Localization" xmlns:local="clr-namespace:QTRHacker.Views.PlayerEditor" xmlns:common="clr-namespace:QTRHacker.Common" x:Class="QTRHacker.Views.PlayerEditor.ItemPropertiesPanel">
+    <ItemsControl ItemsSource="{Binding ItemPropertyDatum}" ItemTemplateSelector="{x:Static local:ItemPropertyTemplateSelector.Instance}" VerticalAlignment="Top">
         <ItemsControl.Resources>
             <DataTemplate x:Key="DataTemplate_TextBox">
-                <DockPanel MaxHeight="20">
-                    <TextBox Width="70" DockPanel.Dock="Right" Margin="0,0.5,0,0.5" Padding="3,0,3,0"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" 
-                             BorderThickness="0" Background="#585858" Foreground="{StaticResource QTRHacker.Light.Content.Foreground}">
+                <Grid Height="34">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="82"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Tip}" Margin="0,0,6,0" FontSize="12" VerticalAlignment="Center" Foreground="{DynamicResource Theme.Secondary}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Tip}"/>
+                    <TextBox Grid.Column="1" Padding="7,4" MinHeight="28" FontSize="12" VerticalAlignment="Center">
                         <TextBox.Text>
                             <Binding Path="Value" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True"/>
                         </TextBox.Text>
-                        <TextBox.Triggers>
-                            <EventTrigger RoutedEvent="GotFocus">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color" Duration="0:0:0">
-                                            <DiscreteColorKeyFrame Value="#626262" KeyTime="0:0:0"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="LostFocus">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color" Duration="0:0:0">
-                                            <DiscreteColorKeyFrame Value="#585858" KeyTime="0:0:0"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </TextBox.Triggers>
                     </TextBox>
-                    <TextBlock Text="{Binding Tip}" Margin="2,0,2,0"
-                               HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{StaticResource QTRHacker.Light.Tip.Foreground}"/>
-
-                </DockPanel>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="DataTemplate_ComboBox">
-                <DockPanel MaxHeight="20">
-                    <ComboBox Width="70" DockPanel.Dock="Right" FontSize="10"
-                              ItemsSource="{Binding Source}" DisplayMemberPath="Name"
-                              SelectedValuePath="Value" SelectedValue="{Binding Value, Mode=TwoWay}">
-                    </ComboBox>
-                    <TextBlock Text="{Binding Tip}" Margin="2,0,2,0"
-                               HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{StaticResource QTRHacker.Light.Tip.Foreground}"/>
-
-                </DockPanel>
+                <Grid Height="34">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Tip}" Margin="0,0,6,0" FontSize="12" VerticalAlignment="Center" Foreground="{DynamicResource Theme.Secondary}"/>
+                    <ComboBox Grid.Column="1" FontSize="12" MinHeight="28" ItemsSource="{Binding Source}" DisplayMemberPath="Name" SelectedValuePath="Value" SelectedValue="{Binding Value, Mode=TwoWay}"/>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="DataTemplate_CheckBox">
-                <Grid MaxHeight="70">
-                    <CheckBox Content="{Binding Tip}" 
-                              VerticalContentAlignment="Center" 
-                              Foreground="{StaticResource QTRHacker.Light.Content.Foreground}"
-                              IsChecked="{Binding Value}">
-                    </CheckBox>
-                </Grid>
+                <CheckBox Content="{Binding Tip}" IsChecked="{Binding Value}" FontSize="12" MinHeight="34"/>
             </DataTemplate>
         </ItemsControl.Resources>
         <ItemsControl.ItemContainerStyle>
-            <Style>
-                <Setter Property="Control.Margin" Value="4,0,4,0"></Setter>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="Margin" Value="4,0"/>
             </Style>
         </ItemsControl.ItemContainerStyle>
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <UniformGrid Columns="{Binding Columns}" Rows="{Binding Rows}">
-
-                </UniformGrid>
+                <UniformGrid Columns="{Binding Columns}" Rows="{Binding Rows}"/>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
     </ItemsControl>

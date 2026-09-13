@@ -6,4 +6,5 @@ public sealed class CFG_QTRHacker
 	public int PlayersListUpdateInterval = 500;
 	public int SchesUpdateInterval = 500;
 	public bool ForceEnglish = false;
+	public string Theme = "Dark";
 }

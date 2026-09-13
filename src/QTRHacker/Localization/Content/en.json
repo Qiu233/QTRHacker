@@ -1,6 +1,11 @@
-﻿{
+{
   "Name": "English",
   "UI": {
+    "Appearance": {
+      "Theme": "Theme",
+      "Dark": "Dark",
+      "Light": "Light"
+    },
     "DirectFunction": "Functions",
     "MainPage": "Main Page",
     "Advanced": "Advanced",

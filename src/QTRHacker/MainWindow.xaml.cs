@@ -17,6 +17,7 @@ public partial class MainWindow : MWindow
 	{
 		Instance = this;
 		HackGlobal.LoadConfig();
+		Themes.ThemeManager.Apply(HackGlobal.Config.Theme);
 		if (!HackGlobal.Config.ForceEnglish)
 		{
 #if DEBUG
