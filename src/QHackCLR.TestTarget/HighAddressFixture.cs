@@ -19,6 +19,7 @@ public class HighAddressProbe
 
 internal static class HighAddressFixture
 {
+	public static int[] HighArray;
 	[StructLayout(LayoutKind.Sequential)]
 	private struct MemoryInformation
 	{
@@ -67,8 +68,20 @@ internal static class HighAddressFixture
 				if (((Func<int>)Delegate.CreateDelegate(typeof(Func<int>), type.GetMethod("ReadValue")))() != 42)
 					throw new InvalidOperationException("Loaded probe did not initialize.");
 			}
-			Console.WriteLine(Process.GetCurrentProcess().Id);
-			Console.ReadLine();
+			// Force a new LOH segment, beyond any low-address segments reserved at
+			// CLR startup. Keep this real managed object stable for DAC queries.
+			HighArray = new int[8 * 1024 * 1024];
+			HighArray[0] = 55;
+			HighArray[HighArray.Length - 1] = 77;
+			var pin = GCHandle.Alloc(HighArray, GCHandleType.Pinned);
+			try
+			{
+				if (unchecked((uint)pin.AddrOfPinnedObject().ToInt32()) < 0x80000000u)
+					throw new InvalidOperationException("Fixture did not produce a high-address array.");
+				Console.WriteLine(Process.GetCurrentProcess().Id);
+				Console.ReadLine();
+			}
+			finally { pin.Free(); }
 		}
 		finally
 		{

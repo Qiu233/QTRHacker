@@ -1,6 +1,7 @@
 #include "DataTargets.h"
 #include "Builders.h"
 #include "Dac.h"
+#include "DacHelpers.h"
 #include "Utils.h"
 #include <psapi.h>
 
@@ -60,7 +61,7 @@ namespace QHackCLR {
 		}
 
 		Common::ClrRuntime^ ClrInfo::CreateRuntime() {
-			return (gcnew QHackCLR::Builders::RuntimeBuilder(this, gcnew Dac::DacLibrary(DataTarget, DacPath, RuntimeBase.ToUInt64())))->Runtime;
+			return (gcnew QHackCLR::Builders::RuntimeBuilder(this, gcnew Dac::DacLibrary(DataTarget, DacPath, DacHelpers::GlobalHelpers::ToDacAddress(RuntimeBase))))->Runtime;
 		}
 	}
 }

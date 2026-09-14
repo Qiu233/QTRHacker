@@ -1,4 +1,5 @@
 using QHackLib;
+using QHackCLR.Common;
 using QHackCLR.DataTargets;
 using System;
 using System.Diagnostics;
@@ -66,6 +67,16 @@ internal static class DacAddressChecks
 					if (method.NativeCode >= 0x80000000u) highMethods++;
 				}
 				if (probes != 512 || highTypes == 0 || highMethods == 0) throw new InvalidOperationException($"Fixture coverage differs: probes={probes}, high types={highTypes}, high methods={highMethods}.");
+				var fixture = modules.Select(m => m.GetTypeByName("QHackCLR.TestTarget.HighAddressFixture")).Single(t => t != null);
+				nuint arrayAddress = context.DataAccess.Read<nuint>(fixture.GetStaticFieldByName("HighArray").GetAddress());
+				if (arrayAddress < 0x80000000u) throw new InvalidOperationException("Array is not above 2 GiB.");
+				var arrayType = context.Runtime.RuntimeHelper.TypeFactory.GetClrType(context.DataAccess.Read<nuint>(arrayAddress));
+				using var array = new ClrObject(arrayType, arrayAddress);
+				if (array.GetLength() != 8 * 1024 * 1024 ||
+					array.ReadArrayElement<int>(new[] { 0 }) != 55 ||
+					array.ReadArrayElement<int>(new[] { array.GetLength() - 1 }) != 77)
+					throw new InvalidOperationException("High-address DAC object data or array contents differ.");
+				Console.WriteLine($"PASS: GetObjectData and first/last elements for array at 0x{arrayAddress:X8}.");
 				Console.WriteLine($"PASS {(pass == 0 ? "attach" : "flush")}: {modules.Length} modules; high modules={modules.Count(m => m.ClrHandle >= 0x80000000u)}, types={highTypes}, methods={highMethods}; primitive/reference statics and instance types valid.");
 				if (pass == 0) context.Flush();
 			}
@@ -89,10 +100,14 @@ internal static class DacAddressChecks
 		if (UIntPtr.Size != 4) throw new InvalidOperationException("Run this regression with the x86 test runner.");
 		var convert = typeof(DataTarget).Assembly.GetType("QHackCLR.DacHelpers.GlobalHelpers", true)
 			.GetMethod("ToNativeAddress", BindingFlags.Public | BindingFlags.Static);
+		var toDac = convert.DeclaringType.GetMethod("ToDacAddress", BindingFlags.Public | BindingFlags.Static);
 		foreach (ulong address in new[] { 0UL, 0x7FFFFFFFUL, 0x80000000UL, 0xFFFFFFFFUL, 0xFFFFFFFF80000000UL, ulong.MaxValue })
 		{
 			var actual = (UIntPtr)convert.Invoke(null, new object[] { address });
 			if (actual.ToUInt32() != unchecked((uint)address)) throw new InvalidOperationException($"DAC address 0x{address:X16} changed its low bits.");
+			ulong extended = (ulong)toDac.Invoke(null, new object[] { actual });
+			if (extended != unchecked((ulong)(long)(int)(uint)address))
+				throw new InvalidOperationException($"Pointer 0x{actual:X8} was not sign-extended for DAC.");
 		}
 		foreach (ulong address in new[] { 0x100000000UL, 0x180000000UL, 0xFFFFFFFF7FFFFFFFUL, 0xFFFFFFFF00000000UL })
 		{

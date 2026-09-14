@@ -101,7 +101,7 @@ namespace QHackCLR {
 			virtual property CLRDATA_ADDRESS NativeHandle {
 				[MethodImpl(MethodImplOptions::AggressiveInlining)]
 				CLRDATA_ADDRESS get() sealed {
-					return m_ClrHandle.ToUInt64();
+					return DacHelpers::GlobalHelpers::ToDacAddress(m_ClrHandle);
 				}
 			}
 		public:

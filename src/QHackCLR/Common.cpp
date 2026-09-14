@@ -419,7 +419,7 @@ namespace QHackCLR {
 			DacHelpers::NativeData<DacpObjectData> data;
 			// A null object is a supported wrapper (IsNullPtr), not a failed DAC lookup.
 			if (address != UIntPtr::Zero)
-				GlobalHelpers::Check(type->ClrObjectHelper->SOSDac->GetObjectData(address.ToUInt64(), data.get()), "GetObjectData");
+				GlobalHelpers::Check(type->ClrObjectHelper->SOSDac->GetObjectData(GlobalHelpers::ToDacAddress(address), data.get()), "GetObjectData");
 			Data = data.release();
 		}
 

@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace QTRHacker.Functions.Test;
 
@@ -36,6 +37,12 @@ internal static unsafe class ClrChecks
 			using var target = new DataTarget(process.Id);
 			var runtime = target.ClrVersions[0].CreateRuntime();
 			var builder = (RuntimeBuilder)runtime.RuntimeHelper;
+			var heap = runtime.Heap;
+			if (heap.FreeType.Name != "Free" || heap.ObjectType.Name != "System.Object" ||
+				heap.StringType.Name != "System.String" || heap.ExceptionType.Name != "System.Exception")
+				throw new InvalidOperationException("CLR heap globals could not be resolved.");
+			if (runtime.BaseClassLibrary.GetTypeByName("System.Byte") == null)
+				throw new InvalidOperationException("Patch loader's System.Byte lookup failed.");
 			var module = runtime.AppDomain.Modules.Single(m => m.Name == "QHackCLR.TestTarget");
 			var type = module.GetTypeByName("QHackCLR.TestTarget.FixtureState");
 			if (type is null)
@@ -48,6 +55,7 @@ internal static unsafe class ClrChecks
 			if (!derived.Fields.Any(f => f.Name == "ThreadLocal"))
 				throw new InvalidOperationException("Thread-static field was not enumerated.");
 			VerifyStrings(process);
+			VerifyPatchInitializationError(process);
 			Throws<InvalidOperationException>(() => derived.GetLength(
 				target.DataAccess.Read<nuint>(type.GetStaticFieldByName("Derived").GetAddress())));
 
@@ -135,6 +143,21 @@ internal static unsafe class ClrChecks
 			string converted = value;
 			if (value.GetValue() != expected || value.ToString() != expected || converted != expected || GameString.GetString(obj) != expected)
 				throw new InvalidOperationException("GameString read or conversion changed the string contents.");
+		}
+	}
+
+	private static void VerifyPatchInitializationError(Process process)
+	{
+		using var context = GameContext.OpenGame(process);
+		var expected = new COMException("Fixture DAC failure", unchecked((int)0x80070057));
+		var load = Task.FromException<bool>(expected);
+		typeof(PatchesManager).GetField("initialization", BindingFlags.Instance | BindingFlags.NonPublic)
+			.SetValue(context.Patches, load);
+		for (int i = 0; i < 2; i++)
+		{
+			try { context.Patches.Init(); }
+			catch (COMException actual) when (ReferenceEquals(actual, expected)) { continue; }
+			throw new InvalidOperationException("Patch initialization hid or retried a failed load.");
 		}
 	}
 

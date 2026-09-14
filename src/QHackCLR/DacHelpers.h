@@ -27,6 +27,14 @@ namespace QHackCLR {
 		ref class GlobalHelpers abstract sealed {
 
 		public:
+			static CLRDATA_ADDRESS ToDacAddress(UIntPtr address) {
+				// CLRDATA_ADDRESS requires sign extension for a 32-bit target.
+				// Zero extension is accepted by some SOS methods, but not all.
+				if (UIntPtr::Size == 4)
+					return static_cast<CLRDATA_ADDRESS>(static_cast<__int64>(static_cast<int>(address.ToUInt32())));
+				return address.ToUInt64();
+			}
+
 			static UIntPtr ToNativeAddress(CLRDATA_ADDRESS address) {
 				// CLRDATA_ADDRESS is always 64-bit; the DAC contract sign-extends
 				// smaller target pointers. QHackCLR requires matching architectures.
@@ -46,19 +54,24 @@ namespace QHackCLR {
 					throw gcnew System::Runtime::InteropServices::COMException(
 						operation + " failed (HRESULT 0x" + result.ToString("X8") + ").", result);
 			}
+
+			static void Check(HRESULT result, String^ operation, CLRDATA_ADDRESS address, String^ stage) {
+				if (FAILED(result))
+					Check(result, operation + " at 0x" + address.ToString("X16") + " (" + stage + ")");
+			}
 		};
 		ref class SOSHelpers abstract sealed {
 		public:
 #define GET_STRING_ADDR_PROB_U(name, func, addrName) \
 static String^ name(ISOSDacInterface* SOSDac, CLRDATA_ADDRESS addrName) {\
 	unsigned int needed = 0;\
-	GlobalHelpers::Check(SOSDac->func(addrName, 0, nullptr, &needed), #func);\
+	GlobalHelpers::Check(SOSDac->func(addrName, 0, nullptr, &needed), #func, addrName, "name length");\
 	if (needed <= 1)\
 		return nullptr;\
 	if (needed > Int32::MaxValue) throw gcnew OverflowException("DAC name is too long.");\
 	array<Char>^ buffer = gcnew array<Char>(needed);\
 	pin_ptr<Char> ptr = &buffer[0];\
-	GlobalHelpers::Check(SOSDac->func(addrName, needed, static_cast<wchar_t*>(ptr), &needed), #func);\
+	GlobalHelpers::Check(SOSDac->func(addrName, needed, static_cast<wchar_t*>(ptr), &needed), #func, addrName, "name contents");\
 	if (needed == 0 || needed > (unsigned int)buffer->Length) throw gcnew InvalidOperationException("DAC name changed while reading.");\
 	return gcnew String(static_cast<wchar_t*>(ptr), 0, (int)needed - 1);\
 }

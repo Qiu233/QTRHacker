@@ -69,10 +69,22 @@ public sealed class PatchesManager
 					Path.Combine(AppContext.BaseDirectory, "QTRHacker.Patches.dll"), "QTRHacker.Patches.Boot"),
 					CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 			}
-			if (initialization != null && !initialization.Wait(30000))
-				throw new TimeoutException("Patch loading is still in progress. Resume the game and retry; the existing load will be reused.");
-			if (initialization != null && !initialization.GetAwaiter().GetResult())
-				throw new InvalidOperationException("Couldn't load patches");
+			if (initialization != null)
+			{
+				bool loaded;
+				try
+				{
+					// Preserve the original exception and its DAC call stack. WaitAsync
+					// only times out the wait; the same remote load remains in progress.
+					loaded = initialization.WaitAsync(TimeSpan.FromSeconds(30)).GetAwaiter().GetResult();
+				}
+				catch (TimeoutException) when (!initialization.IsCompleted)
+				{
+					throw new TimeoutException("Patch loading is still in progress. Resume the game and retry; the existing load will be reused.");
+				}
+				if (!loaded)
+					throw new InvalidOperationException("Couldn't load patches");
+			}
 			if (!IsInitialized)
 				throw new InvalidOperationException("The patch assembly could not be found after loading it.");
 			if (!PatchHelper.GetStaticFieldValue<bool>("QTRHacker.Patches.Boot", "Initialized"))
