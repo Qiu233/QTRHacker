@@ -1,4 +1,4 @@
-﻿using QHackCLR.Common;
+using QHackCLR.Common;
 using QHackCLR.DataTargets;
 using QHackLib;
 using QHackLib.Assemble;
@@ -27,6 +27,25 @@ unsafe class Program
 	[STAThread]
 	unsafe static void Main(string[] args)
 	{
+		if (args.Length == 0 || args[0] == "--diagnose")
+		{
+			Environment.ExitCode = FieldDiagnostics.Run(args.Skip(1).ToArray());
+			return;
+		}
+		if (args.Length > 0 && args[0] == "--verify-process-exit")
+		{
+			if (args.Length != 2)
+				throw new ArgumentException("Usage: --verify-process-exit <QHackCLR.TestTarget.exe>");
+			ProcessExitChecks.Verify(args[1]);
+			return;
+		}
+		if (args.Length > 0 && args[0] == "--verify-clr-high-addresses")
+		{
+			if (args.Length != 2)
+				throw new ArgumentException("Usage: --verify-clr-high-addresses <QHackCLR.TestTarget.exe>");
+			DacAddressChecks.Verify(args[1]);
+			return;
+		}
 		if (args.Length > 0 && args[0] == "--stress-live-items")
 		{
 			LiveItemChecks.Run(args.Skip(1).ToArray());
@@ -90,6 +109,8 @@ unsafe class Program
 			GameCompatibility.Verify(args.Length > 1 ? args[1] : ".");
 			return;
 		}
+		if (args.Length != 1 || args[0] != "--manual-item")
+			throw new ArgumentException("Unknown command. Use --diagnose for customer diagnostics.");
 		using GameContext ctx = GameContext.OpenGame(Process.GetProcessesByName("Terraria")[0]);
 		//ctx.Patches.WorldPainter_BrushActive = true;
 		ctx.MyPlayer.Inventory[0].SetDefaults(3063);

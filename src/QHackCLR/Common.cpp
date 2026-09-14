@@ -24,7 +24,7 @@ namespace QHackCLR {
 				auto domains = DacHelpers::SOSHelpers::GetAppDomainList(this->DacLibrary->SOSDac);
 				if (domains->Length == 0)
 					throw gcnew InvalidOperationException("The target CLR has no application domain.");
-				m_AppDomain = this->RuntimeHelper->GetAppDomain(UIntPtr(domains[0]));
+				m_AppDomain = this->RuntimeHelper->GetAppDomain(GlobalHelpers::ToNativeAddress(domains[0]));
 			}
 			return m_AppDomain;
 		}
@@ -53,11 +53,11 @@ namespace QHackCLR {
 			DacpUsefulGlobalsData tables;
 			GlobalHelpers::Check(helper->SOSDac->GetUsefulGlobals(&tables), "GetUsefulGlobals");
 
-			m_FreeType = helper->TypeFactory->GetClrType(UIntPtr(tables.FreeMethodTable));
-			m_ObjectType = helper->TypeFactory->GetClrType(UIntPtr(tables.ObjectMethodTable));
+			m_FreeType = helper->TypeFactory->GetClrType(GlobalHelpers::ToNativeAddress(tables.FreeMethodTable));
+			m_ObjectType = helper->TypeFactory->GetClrType(GlobalHelpers::ToNativeAddress(tables.ObjectMethodTable));
 
-			m_StringType = helper->TypeFactory->GetClrType(UIntPtr(tables.StringMethodTable));
-			m_ExceptionType = helper->TypeFactory->GetClrType(UIntPtr(tables.ExceptionMethodTable));
+			m_StringType = helper->TypeFactory->GetClrType(GlobalHelpers::ToNativeAddress(tables.StringMethodTable));
+			m_ExceptionType = helper->TypeFactory->GetClrType(GlobalHelpers::ToNativeAddress(tables.ExceptionMethodTable));
 		}
 
 		ClrAppDomain::ClrAppDomain(IAppDomainHelper^ helper, nuint handle) : ClrEntity(handle) {
@@ -155,7 +155,7 @@ namespace QHackCLR {
 			GC::KeepAlive(del);
 			Generic::List<ClrType^>^ types = gcnew Generic::List<ClrType^>();
 			for each (auto mt in holder)
-				types->Add(this->ModuleHelper->TypeFactory->GetClrType(UIntPtr(mt)));
+				types->Add(this->ModuleHelper->TypeFactory->GetClrType(GlobalHelpers::ToNativeAddress(mt)));
 			return types;
 		}
 
@@ -247,13 +247,13 @@ namespace QHackCLR {
 
 		ClrModule^ ClrType::Module::get() {
 			if (m_Module == nullptr) {
-				m_Module = TypeHelper->GetModule(UIntPtr(Data->Module));
+				m_Module = TypeHelper->GetModule(GlobalHelpers::ToNativeAddress(Data->Module));
 			}
 			return m_Module;
 		}
 		ClrType^ ClrType::BaseType::get() {
 			if (m_BaseType == nullptr) {
-				m_BaseType = TypeHelper->TypeFactory->GetClrType(UIntPtr(Data->ParentMethodTable));
+				m_BaseType = TypeHelper->TypeFactory->GetClrType(GlobalHelpers::ToNativeAddress(Data->ParentMethodTable));
 			}
 			return m_BaseType;
 		}
@@ -330,7 +330,7 @@ namespace QHackCLR {
 			DacHelpers::NativeData<DacpFieldDescData> data;
 			GlobalHelpers::Check(helper->SOSDac->GetFieldDescData(NativeHandle, data.get()), "GetFieldDescData");
 
-			m_Type = helper->TypeFactory->GetClrType(UIntPtr(data.get()->MTOfType));
+			m_Type = helper->TypeFactory->GetClrType(GlobalHelpers::ToNativeAddress(data.get()->MTOfType));
 
 			String^ name;
 			FieldAttributes attr;
@@ -395,7 +395,7 @@ namespace QHackCLR {
 
 		ClrType^ ClrMethod::DeclaringType::get() {
 			if (m_DeclaringType == nullptr)
-				m_DeclaringType = MethodHelper->TypeFactory->GetClrType(UIntPtr(Data->MethodTablePtr));
+				m_DeclaringType = MethodHelper->TypeFactory->GetClrType(GlobalHelpers::ToNativeAddress(Data->MethodTablePtr));
 			return m_DeclaringType;
 		}
 

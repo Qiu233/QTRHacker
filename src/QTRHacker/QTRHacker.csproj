@@ -11,7 +11,7 @@
 		<ProduceReferenceAssemblies>false</ProduceReferenceAssemblies>
 		<ApplicationIcon>Icon.ico</ApplicationIcon>
 		<SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-		<Version>15.1.0.0</Version>
+		<Version>15.2.0.0</Version>
 		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<UseAppHost>true</UseAppHost>
@@ -75,4 +75,5 @@
 		<ProjectReference Include="..\QTRHacker.Core\QTRHacker.Core.csproj" />
 	</ItemGroup>
 
+	<Import Project="..\..\build\LargeAddressAware.targets" />
 </Project>

@@ -27,6 +27,20 @@ namespace QHackCLR {
 		ref class GlobalHelpers abstract sealed {
 
 		public:
+			static UIntPtr ToNativeAddress(CLRDATA_ADDRESS address) {
+				// CLRDATA_ADDRESS is always 64-bit; the DAC contract sign-extends
+				// smaller target pointers. QHackCLR requires matching architectures.
+				// Accept zero-extended pointers too, but do not truncate invalid values.
+				if (UIntPtr::Size == 4) {
+					unsigned int low = static_cast<unsigned int>(address);
+					CLRDATA_ADDRESS extended = static_cast<CLRDATA_ADDRESS>(static_cast<__int64>(static_cast<int>(low)));
+					if (address != low && address != extended)
+						throw gcnew OverflowException("DAC address 0x" + address.ToString("X16") + " does not fit an x86 pointer.");
+					return UIntPtr(low);
+				}
+				return UIntPtr(address);
+			}
+
 			static void Check(HRESULT result, String^ operation) {
 				if (FAILED(result))
 					throw gcnew System::Runtime::InteropServices::COMException(

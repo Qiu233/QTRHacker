@@ -7,6 +7,8 @@ Run after publishing in Visual Studio. Defaults are relative to this script,
 not the current working directory. Creates bin/Publish/<version>.zip.
 Use Pack-WithRuntime.ps1 for the portable .NET 8 desktop runtime package.
 ZIP entry names use UTF-8; file contents are copied without text conversion.
+Enables LAA on the staged execution host: QTRHacker.exe, or dotnet/dotnet.exe
+when bundling the runtime. Original publish files and runtime caches are untouched.
 .EXAMPLE
 .\scripts\Pack.ps1
 #>
@@ -174,6 +176,11 @@ try {
         # Only replace the staged apphost. The original Vanilla output is untouched.
         Copy-Item -LiteralPath $LauncherPath -Destination (Join-Path $payload 'QTRHacker.exe') -Force
     }
+
+    # The runtime package's Launcher only starts dotnet.exe; LAA belongs on the
+    # process actually hosting the CLR. Also handle older non-LAA publish output.
+    $executionHost = if ($WithRuntime) { Join-Path $runtimeRoot 'dotnet.exe' } else { Join-Path $payload 'QTRHacker.exe' }
+    & (Join-Path $PSScriptRoot 'Set-LargeAddressAware.ps1') -Path $executionHost
 
     Write-Host "Creating $archivePath"
     [IO.Compression.ZipFile]::CreateFromDirectory($payload, $temporaryArchive,

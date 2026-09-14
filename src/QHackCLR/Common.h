@@ -2,6 +2,7 @@
 #include "pre.h"
 #include "defs.h"
 #include "DacpStructs.h"
+#include "DacHelpers.h"
 
 using namespace System;
 using namespace System::Linq;
@@ -523,9 +524,7 @@ namespace QHackCLR {
 			[NativeInteger]
 			property UIntPtr NativeCode {
 				UIntPtr get() {
-					if (Data->NativeCodeAddr == -1)//this field is sign extended hence would cause exception on getting -1
-						return UIntPtr(UIntPtr::Size == 4 ? (unsigned int)(-1) : (unsigned long long) - 1);
-					return UIntPtr(Data->NativeCodeAddr);
+					return DacHelpers::GlobalHelpers::ToNativeAddress(Data->NativeCodeAddr);
 				}
 			}
 			property String^ Name {

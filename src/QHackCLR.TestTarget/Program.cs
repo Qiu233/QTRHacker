@@ -30,8 +30,13 @@ public class DerivedFixture : BaseFixture
 
 internal static class Program
 {
-	private static void Main()
+	private static void Main(string[] args)
 	{
+		if (args.Length == 1 && args[0] == "--high-addresses")
+		{
+			HighAddressFixture.Run();
+			return;
+		}
 		FixtureState.Matrix.SetValue(55, -2, 5);
 		FixtureState.Matrix.SetValue(77, -1, 7);
 		FixtureState.NonVector.SetValue(88, -3);

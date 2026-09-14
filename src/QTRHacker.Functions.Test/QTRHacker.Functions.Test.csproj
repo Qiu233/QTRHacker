@@ -10,6 +10,11 @@
 		<PlatformTarget>x86</PlatformTarget>
 		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(PublishSingleFile)' == 'true' and '$(DiagnosticAppHostSourcePath)' != ''">
+		<AppHostSourcePath>$(DiagnosticAppHostSourcePath)</AppHostSourcePath>
+		<AppHostRelativeDotNet>dotnet</AppHostRelativeDotNet>
+		<AppHostDotNetSearch>AppRelative;Global</AppHostDotNetSearch>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<Compile Remove="ItemTarget\**\*.cs" />
@@ -19,4 +24,17 @@
 		<ProjectReference Include="..\QHackCLR.TestTarget\QHackCLR.TestTarget.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
 	</ItemGroup>
 
+	<!-- Publish only the diagnostic runner inside the EXE. Use the DLLs already
+	     present in the customer's modifier directory, including mixed-mode QHackCLR. -->
+	<Target Name="UseInstalledDiagnosticDependencies" BeforeTargets="_ComputeFilesToBundle"
+			Condition="'$(PublishSingleFile)' == 'true'">
+		<ItemGroup>
+			<ResolvedFileToPublish Update="@(ResolvedFileToPublish)"
+					Condition="!$([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').StartsWith('QTRHacker.Functions.Test.'))">
+				<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
+
+	<Import Project="..\..\build\LargeAddressAware.targets" />
 </Project>

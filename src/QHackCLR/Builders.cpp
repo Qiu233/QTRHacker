@@ -66,7 +66,7 @@ namespace QHackCLR {
 			for each (auto assembly in assemblies) {
 				auto modules = DacHelpers::SOSHelpers::GetAssemblyModuleList(SOSDac, appDomain->NativeHandle, assembly);
 				for each (auto module in modules) {
-					res->Add(GetModule(UIntPtr(module)));
+					res->Add(GetModule(DacHelpers::GlobalHelpers::ToNativeAddress(module)));
 				}
 			}
 			return res;
@@ -74,7 +74,7 @@ namespace QHackCLR {
 
 		bool RuntimeBuilder::IsInitialized(DacpDomainLocalModuleData* data, int token) {
 			CLRDATA_ADDRESS flagsAddr = (data->pClassData + (token & ~0x02000000u) - 1);
-			byte flags = this->DataAccess->Read<byte>(UIntPtr(flagsAddr));
+			byte flags = this->DataAccess->Read<byte>(DacHelpers::GlobalHelpers::ToNativeAddress(flagsAddr));
 			return (flags & 1) != 0;
 		}
 
@@ -99,18 +99,18 @@ namespace QHackCLR {
 					return UIntPtr::Zero;
 
 				if (Utils::CorElementTypeIsPrimitive(field->ElementType))
-					return UIntPtr(dlmd.pNonGCStaticDataStart + field->Offset);
+					return DacHelpers::GlobalHelpers::ToNativeAddress(dlmd.pNonGCStaticDataStart + field->Offset);
 				else
-					return UIntPtr(dlmd.pGCStaticDataStart + field->Offset);
+					return DacHelpers::GlobalHelpers::ToNativeAddress(dlmd.pGCStaticDataStart + field->Offset);
 			}
 			else
 			{
 				DacHelpers::GlobalHelpers::Check(SOSDac->GetDomainLocalModuleDataFromModule(module->NativeHandle, &dlmd), "GetDomainLocalModuleDataFromModule");
 			}
 			if (Utils::CorElementTypeIsPrimitive(field->ElementType))
-				return UIntPtr(dlmd.pNonGCStaticDataStart + field->Offset);
+				return DacHelpers::GlobalHelpers::ToNativeAddress(dlmd.pNonGCStaticDataStart + field->Offset);
 			else
-				return UIntPtr(dlmd.pGCStaticDataStart + field->Offset);
+				return DacHelpers::GlobalHelpers::ToNativeAddress(dlmd.pGCStaticDataStart + field->Offset);
 		}
 
 		bool RuntimeBuilder::GetFieldProps(Common::ClrType^ parentType, int token, String^% name, FieldAttributes% attributes) {
@@ -159,9 +159,9 @@ namespace QHackCLR {
 				DacpFieldDescData data;
 				DacHelpers::GlobalHelpers::Check(SOSDac->GetFieldDescData(field, &data), "GetFieldDescData");
 				if (data.bIsStatic != 0)
-					fields->Add(gcnew Common::ClrStaticField(type, this, UIntPtr(field)));
+					fields->Add(gcnew Common::ClrStaticField(type, this, DacHelpers::GlobalHelpers::ToNativeAddress(field)));
 				else
-					fields->Add(gcnew Common::ClrInstanceField(type, this, UIntPtr(field)));
+					fields->Add(gcnew Common::ClrInstanceField(type, this, DacHelpers::GlobalHelpers::ToNativeAddress(field)));
 				field = data.NextField;
 			}
 			return fields;
@@ -179,7 +179,7 @@ namespace QHackCLR {
 				DacHelpers::GlobalHelpers::Check(SOSDac->GetCodeHeaderData(slot, &chdata), "GetCodeHeaderData");
 				if (chdata.MethodDescPtr == 0)
 					throw gcnew InvalidOperationException("DAC returned no method descriptor for a method slot.");
-				methods->Add(gcnew Common::ClrMethod(this, UIntPtr(chdata.MethodDescPtr)));
+				methods->Add(gcnew Common::ClrMethod(this, DacHelpers::GlobalHelpers::ToNativeAddress(chdata.MethodDescPtr)));
 			}
 			return methods;
 		}

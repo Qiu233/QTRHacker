@@ -1,0 +1,12 @@
+<Project>
+  <!-- Patch the generated apphost, not the managed DLL or the SDK's template.
+       Publish needs its own hook, including when invoked with NoBuild. -->
+  <Target Name="EnableLargeAddressAwareAfterBuild" AfterTargets="Build"
+          Condition="'$(OS)' == 'Windows_NT' and '$(DesignTimeBuild)' != 'true' and '$(UseAppHost)' == 'true' and '$(PlatformTarget)' == 'x86'">
+    <Exec Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildThisFileDirectory)..\scripts\Set-LargeAddressAware.ps1&quot; -Path &quot;$(TargetDir)$(AssemblyName).exe&quot;" />
+  </Target>
+  <Target Name="EnableLargeAddressAwareAfterPublish" AfterTargets="Publish"
+          Condition="'$(OS)' == 'Windows_NT' and '$(UseAppHost)' == 'true' and '$(PlatformTarget)' == 'x86'">
+    <Exec Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildThisFileDirectory)..\scripts\Set-LargeAddressAware.ps1&quot; -Path &quot;$(PublishDir)$(AssemblyName).exe&quot;" />
+  </Target>
+</Project>
