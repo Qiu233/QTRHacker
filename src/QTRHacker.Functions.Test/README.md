@@ -1,16 +1,28 @@
 # 自动诊断与 VEH join 原型
 
-无参数运行现在执行自动诊断：附加并读取游戏状态，检查补丁大小的内存分配/读写/释放，再调用现有的揭示地图与基础补丁加载。不会调用 VEH 原型。需要游戏已进入世界，期间不要同时操作其他修改器功能。
+无参数运行现在诊断“解锁所有研究”：附加并读取游戏状态，记录研究方法的实际签名，执行一次安装目录中 `UnlockAllDuplications.Enable`，并在返回后继续观测 30 秒。需要游戏已进入世界，关闭/折叠旅行模式菜单，期间不要同时操作其他修改器功能。
 
-用户将诊断程序放进修改器目录，双击 QTRHacker.Functions.Test.exe，再发回同目录的 QTRHacker-Diagnostic-*.log。没有菜单或命令行操作。揭示地图测试会改变地图探索记录。
+用户将诊断包覆盖到修改器目录，双击 QTRHacker.Functions.Test.exe，再发回同目录的 QTRHacker-Diagnostic-*.log。没有菜单或命令行操作。测试会改变研究进度；本次修复位于 `QTRHacker.dll`，发包时需包含修复后的 DLL，否则诊断仍执行旧版功能。
 
-日志实时写入，包含步骤时间、异常树与 Win32 错误码、独立进程句柄的存活/退出状态、退出码、内存状况及组件版本/哈希。观察线程不调用 DAC、不附加调试器；调用卡住或游戏退出时也会记录状态，120 秒后结束诊断，不强行释放仍在执行的远程调用内存。进程状态是离散观测，不能保证捕获两次观测之间的精确先后关系。
+日志实时写入，包含步骤时间、异常树与 Win32 错误码、独立进程句柄的存活/退出状态、退出码、内存状况及组件版本/哈希。也记录研究对象地址和 `LastEditId`，观测期间沿当前引用读取，不发起 DAC 查询。研究数据并非一致快照，进度变化不代表全部成功。诊断进程的托管未处理异常和未观察任务异常会尽量写入日志；原生致命错误可能只能留下最后一条记录。
 
-开发用 --diagnose --once [--pid PID] 只附加读取，不执行地图、补丁加载或分配测试。原来的背包短代码移到显式 --manual-item。
+`LastEditId` 是修改计数，不是已解锁条目数；重复注册已完成的研究可能不会改变它。`result=3` 也包括游戏提前退出导致观测中止的情况，需结合游戏退出码和用户反馈判断，不能直接当作游戏崩溃。
+
+观察线程不调用 DAC、不附加调试器；调用卡住或游戏退出时也会记录状态，120 秒后结束诊断，不强行释放仍在执行的远程调用内存。旧版入口可能在两秒后返回而后台仍在运行，因此诊断不会因入口返回立即关闭连接。进程状态是离散观测，不能保证捕获两次观测之间的精确先后关系。
+
+开发用 --diagnose --once [--pid PID] 只附加读取，不执行解锁。原来的背包短代码移到显式 --manual-item。
+
+`--verify-research-call` 在本机独立汇编接收器上执行正式功能生成的循环，检查全部物品 ID、`amount=9999`、`teammateName=null` 和栈平衡，不需要启动游戏。x86 托管参数按从左到右顺序压栈，见 [CLR ABI](https://github.com/dotnet/runtime/blob/main/docs/design/coreclr/botr/clr-abi.md#calling-convention-specifics-for-x86)。该测试验证传参，不代替游戏中的 GC、线程与研究效果验证。
+
+`--verify-map-call` 执行正式揭示地图功能生成的汇编，验证最小有效范围和小/中/大世界的每个坐标、亮度、栈与寄存器恢复。扫描范围与游戏 `WorldMap.UnlockMapSection` 一致，避开四周 40 格；`MapHelper.GetBackgroundType` 会读取附近地图格，不能从世界边缘开始调用。此检查不启动游戏，不代替地图渲染与远程执行验证。
+
+`--verify-clr-call-arguments` 验证 x86 的 `UInt32`、`UIntPtr`、`IntPtr` 参数在寄存器和栈中保留完整位模式，覆盖 `0x7FFFFFFF`、`0x80000000`、`0xFFFFFFFF`，以及 `this`、返回缓冲区和普通有符号参数。还按字符串构造器的传参形状读取实际分配在 2 GiB 以上的字符串缓冲区。使用启用 LAA 的 `QTRHacker.Functions.Test.exe` 运行；不连接游戏。
 
 --verify-process-exit <QHackCLR.TestTarget.exe> 使用独立测试进程，对照存活进程、已释放地址、已关闭句柄及退出后保留的句柄。本机对照中，退出后保留句柄会同时产生分配错误 5 和读取错误 299；存活进程的失效地址也能产生 299，因此仅凭原截图不能排除游戏先退出。
 
 QHackCLR 附加时的地址溢出回归另见 [DacAddressChecks.md](DacAddressChecks.md)。
+
+`--verify-clr` 还验证按名称定位普通类型时，不依赖整个模块的类型列表：人为让完整枚举报错，单独查找远程线程所需的四个 BCL 类型仍应成功；目标查询自身的错误仍需抛出。也检查嵌套类型、未加载类型、不存在的类型与元数据接口引用释放。实现先用 [FindTypeDefByName](https://learn.microsoft.com/en-us/dotnet/core/unmanaged-api/metadata/interfaces/imetadataimport-findtypedefbyname-method) 定位定义，再用 SOS `GetMethodDescFromToken` 的 TypeDef 分支取已加载类型地址（见 [DAC 实现](https://github.com/dotnet/coreclr/blob/abbb8f685929c7aeaa087dae46fedc1bc2af4b17/src/debug/daccess/request.cpp)）。这是对故障传播路径的回归检查，不是用户机器上原始 DAC 失败的复现。
 
 VEH 验证入口使用独立的 x86 测试进程；另有 `--stress-live-items` 对运行中的游戏测试旧 flag。常驻原生 VEH 在 [Native/VehJoin.h](Native/VehJoin.h)，只识别已登记地址、线程和执行状态，修改异常上下文的 EIP 后发布完成，再返回 `EXCEPTION_CONTINUE_EXECUTION`。
 

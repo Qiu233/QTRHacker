@@ -36,7 +36,10 @@ namespace QHackLib.Assemble
 				{
 					if ((type == typeof(nuint) || type == typeof(nint)) &&
 						(sizeof(nuint) == 4))
-						processedUserArgs.Add((uint)(nuint)arg);
+						// Unbox each native integer as its actual type; preserve all
+						// address bits, including the high bit of an x86 IntPtr.
+						processedUserArgs.Add(arg is nuint address
+							? unchecked((uint)address) : unchecked((uint)(nint)arg));
 					else
 						processedUserArgs.Add(arg);//normal
 				}
@@ -117,7 +120,9 @@ namespace QHackLib.Assemble
 					}
 					else
 					{
-						int value = Convert.ToInt32(arg);
+						// x86 registers/stack slots carry 32 bits. UInt32 includes
+						// addresses above 2 GiB and must not use checked numeric conversion.
+						int value = arg is uint bits ? unchecked((int)bits) : Convert.ToInt32(arg);
 						if (reg < 2)
 						{
 							snippet.Content.Add((Instruction)SetReg(reg++ == 0 ? "ecx" : "edx", value));

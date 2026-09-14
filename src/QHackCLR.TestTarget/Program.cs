@@ -18,7 +18,10 @@ public class FixtureState
 	public static string Text = "Player \u6d4b\u8bd5\0\ud83c\udf0d";
 	public static string EmptyText = string.Empty;
 	public virtual int UncompiledMethod() => Counter + 1;
+	public class NestedLookupFixture { public static int Value = 73; }
 }
+
+public class UnloadedLookupFixture { }
 
 public class BaseFixture { public int Inherited = 1; }
 public class DerivedFixture : BaseFixture
@@ -42,6 +45,11 @@ internal static class Program
 		FixtureState.NonVector.SetValue(88, -3);
 		FixtureState.NonVector.SetValue(99, -2);
 		DerivedFixture.ThreadLocal = 4;
+		FixtureState.NestedLookupFixture.Value = 73;
+		GC.KeepAlive(typeof(Type).TypeHandle);
+		GC.KeepAlive(typeof(Marshal).TypeHandle);
+		GC.KeepAlive(typeof(System.Threading.Tasks.Task).TypeHandle);
+		GC.KeepAlive(typeof(Action).TypeHandle);
 		var arrays = new Array[] { FixtureState.Vector, FixtureState.Empty, FixtureState.Matrix, FixtureState.NonVector };
 		var pins = new GCHandle[arrays.Length];
 		for (int i = 0; i < arrays.Length; i++)

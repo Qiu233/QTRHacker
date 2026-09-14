@@ -1,8 +1,7 @@
-using QHackLib.Memory;
+using QHackLib;
 using QTRHacker.Core;
 using QTRHacker.Scripts.Functions;
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -22,8 +21,15 @@ internal static class FieldDiagnostics
 	{
 		Console.OutputEncoding = new UTF8Encoding(false);
 		using var session = new DiagnosticSession();
-		Console.WriteLine("正在自动诊断。完成后，将程序旁的 QTRHacker-Diagnostic-*.log 文件发回即可。");
+		Console.WriteLine("正在诊断“解锁所有研究”。请保持游戏在世界中，并关闭旅行模式菜单。");
+		Console.WriteLine("完成后，将程序旁的 QTRHacker-Diagnostic-*.log 文件发回即可。");
 		Console.WriteLine("输出文件：" + session.OutputPath);
+		UnhandledExceptionEventHandler unhandled = (_, e) => session.Error(
+			$"diagnostic process unhandled; terminating={e.IsTerminating}",
+			e.ExceptionObject as Exception ?? new Exception(Convert.ToString(e.ExceptionObject)));
+		EventHandler<UnobservedTaskExceptionEventArgs> unobserved = (_, e) => session.Error("unobserved background task", e.Exception);
+		AppDomain.CurrentDomain.UnhandledException += unhandled;
+		TaskScheduler.UnobservedTaskException += unobserved;
 		int result = 1;
 		try
 		{
@@ -71,12 +77,10 @@ internal static class FieldDiagnostics
 			if (completion.Task.IsCompleted)
 			{
 				result = completion.Task.Result ? 0 : 1;
-				// Capture exits immediately following a successful remote-call return.
-				if (!once) for (int i = 0; i < 25 && !session.HasExited; i++) Thread.Sleep(200);
 			}
 			else
 			{
-				session.Log("调用尚未返回：" + (session.HasExited ? "游戏进程已退出。" : "已达到 120 秒诊断时限。"), true);
+				session.Log("诊断尚未完成：" + (session.HasExited ? "游戏进程已退出，执行或后续观测已中止。" : "已达到 120 秒诊断时限。"), true);
 				// Do not abort the remote call or dispose a context still in use.
 				// Ending this diagnostic process does not kill or suspend Terraria.
 				result = 3;
@@ -85,7 +89,12 @@ internal static class FieldDiagnostics
 			if (session.HasExited) result = 3;
 		}
 		catch (Exception ex) { session.Error("diagnostic startup", ex); }
-		finally { session.Log($"FINISHED result={result}; output={session.OutputPath}", true); }
+		finally
+		{
+			session.Log($"FINISHED result={result}; output={session.OutputPath}", true);
+			AppDomain.CurrentDomain.UnhandledException -= unhandled;
+			TaskScheduler.UnobservedTaskException -= unobserved;
+		}
 		return result;
 	}
 
@@ -105,7 +114,7 @@ internal static class FieldDiagnostics
 	{
 		session.Snapshot("ATTACH BEGIN");
 		var context = GameContext.OpenGame(process);
-		bool pendingPatchLoad = false;
+		bool callStarted = false;
 		try
 		{
 			session.Snapshot("ATTACH OK", context.HContext.Handle);
@@ -113,24 +122,55 @@ internal static class FieldDiagnostics
 			if (!fieldsValid) throw new InvalidOperationException("读取游戏状态失败，后续调用已跳过。");
 			if (readOnly) return;
 			if (context.GameModuleHelper.GetStaticFieldValue<bool>("Terraria.Main", "gameMenu") ||
-				context.Map.BaseAddress == 0 || context.MaxTilesX <= 0 || context.MaxTilesY <= 0)
+				context.MaxTilesX <= 0 || context.MaxTilesY <= 0)
 				throw new InvalidOperationException("游戏尚未进入世界，后续调用已跳过。进入世界后重新运行即可。");
-			AllocationProbe(session, context);
+			HackObject menu = context.GameModuleHelper.GetStaticHackObject("Terraria.Main", "CreativeMenu");
+			bool menuEnabled = ((HackValue)menu.InternalGetMember("<Enabled>k__BackingField")).InternalConvert<bool>();
+			session.Log($"CREATIVE MENU reference=0x{menu.BaseAddress:X}; enabled={menuEnabled}");
+			if (menuEnabled)
+				throw new InvalidOperationException("请先关闭/折叠旅行模式菜单后重新运行。本次没有执行解锁。");
+			Action<string> research = null;
+			Try(session, "research observation setup", () => research = CreateResearchObserver(session, context));
+			Try(session, "RegisterItemSacrifice signature", () =>
+			{
+				var method = context.GameModuleHelper.GetClrMethod(
+					"Terraria.GameContent.Creative.ItemsSacrificedUnlocksTracker", "RegisterItemSacrifice");
+				session.Log($"RESEARCH METHOD signature={method.Signature}; MethodDesc=0x{method.ClrHandle:X}; NativeCode=0x{method.NativeCode:X}");
+			});
+			foreach (string name in new[] { "System.Type", "System.Runtime.InteropServices.Marshal", "System.Threading.Tasks.Task", "System.Action" })
+				Try(session, "remote thread prerequisite " + name, () =>
+				{
+					var type = context.HContext.BCLHelper.GetClrType(name)
+						?? throw new InvalidOperationException("Required BCL type is not loaded: " + name);
+					session.Log($"BCL PREREQUISITE {name}; MethodTable=0x{type.ClrHandle:X}; TypeDef=0x{type.MDToken:X8}");
+				});
+			research?.Invoke("before call");
 			// Resume a game that pauses when losing focus to the diagnostic console.
 			bool focused = SetForegroundWindow(process.MainWindowHandle);
 			session.Log($"GAME FOREGROUND requested: success={focused}");
-			session.Log("开始测试现有的揭示地图功能（会揭示地图），随后测试基础补丁加载。", true);
+			session.Log("开始执行一次现有的“解锁所有研究”（会改变研究进度），随后继续观测 30 秒。", true);
 			_ = System.IO.Packaging.PackUriHelper.UriSchemePack;
-			var reveal = new RevealTheWholeMap();
-			session.Snapshot("REVEAL MAP BEGIN", context.HContext.Handle);
-			reveal.Enable(context);
-			session.Snapshot("REVEAL MAP RETURNED", context.HContext.Handle);
-			session.Snapshot("PATCH LOAD BEGIN", context.HContext.Handle);
-			pendingPatchLoad = true;
-			context.Patches.Init();
-			pendingPatchLoad = false;
-			session.Snapshot("PATCH LOAD RETURNED", context.HContext.Handle);
-			session.Log("调用均已返回。此结果只表示调用返回，功能效果需结合游戏表现。", true);
+			var unlock = new UnlockAllDuplications();
+			session.Snapshot("UNLOCK RESEARCH BEGIN", context.HContext.Handle);
+			callStarted = true;
+			try
+			{
+				unlock.Enable(context);
+				session.Snapshot("UNLOCK RESEARCH ENABLE RETURNED", context.HContext.Handle);
+				session.Log("功能入口已返回，继续观测游戏状态与研究数据。", true);
+			}
+			finally
+			{
+				// Older installed builds can return while their Task is still running.
+				// Observe after success or failure, without disposing a handle still in use.
+				for (int i = 0; i < 30 && !session.HasExited; i++)
+				{
+					research?.Invoke("after call " + i + "s");
+					Thread.Sleep(1000);
+				}
+				session.Snapshot("UNLOCK RESEARCH OBSERVATION END", context.HContext.Handle);
+			}
+			session.Log("观测结束。入口返回或进程存活不等于所有研究已经解锁，请结合研究数据与游戏表现判断。", true);
 		}
 		catch (Exception ex)
 		{
@@ -141,8 +181,10 @@ internal static class FieldDiagnostics
 		}
 		finally
 		{
-			// Init can throw a timeout while its worker still uses this handle.
-			if (!pendingPatchLoad) context.Dispose();
+			// No completion/join handle is exposed by the production function. Keep
+			// this context alive until process exit instead of closing a live call's handle.
+			if (!callStarted) context.Dispose();
+			GC.KeepAlive(context);
 		}
 	}
 
@@ -156,49 +198,47 @@ internal static class FieldDiagnostics
 			session.Log($"PLAYERS reference=0x{players.BaseAddress:X}");
 			session.Log($"PLAYERS length={players.Length}");
 		});
-		valid &= Try(session, "map", () => session.Log($"MAP reference=0x{context.Map.BaseAddress:X}; refreshMap={context.RefreshMap}"));
-		Try(session, "patch status", () => session.Log($"PATCH alreadyLoaded={context.Patches.IsInitialized}"));
 		Try(session, "Update address", () => session.Log($"METHOD Terraria.Main.Update=0x{context.GameModuleHelper.GetFunctionAddress("Terraria.Main", "Update"):X}"));
-		Try(session, "UpdateLighting address", () => session.Log($"METHOD Terraria.Map.WorldMap.UpdateLighting=0x{context.GameModuleHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting"):X}"));
 		return valid;
 	}
 
-	private static void AllocationProbe(DiagnosticSession session, GameContext context)
+	private static Action<string> CreateResearchObserver(DiagnosticSession session, GameContext context)
 	{
-		string path = Path.Combine(AppContext.BaseDirectory, "QTRHacker.Patches.dll");
-		uint size = checked((uint)(new FileInfo(path).Length + Encoding.Unicode.GetByteCount("QTRHacker.Patches.Boot\0")));
-		session.Log($"ALLOC BEGIN: size={size}; reserve+commit; PAGE_EXECUTE_READWRITE (same as production)");
-		nuint address = MemoryAllocation.Alloc(context.HContext.Handle, size);
-		int error = address == 0 ? Marshal.GetLastWin32Error() : 0;
-		session.Snapshot("allocation returned", context.HContext.Handle);
-		session.Log($"ALLOC RESULT: address=0x{address:X}; NativeErrorCode={error}");
-		if (address == 0) throw new Win32Exception(error, $"Could not allocate {size} bytes in the target process.");
-		try
+		var helper = context.GameModuleHelper;
+		nuint playerIndexSlot = helper.GetStaticFieldAddress("Terraria.Main", "myPlayer");
+		nuint playersSlot = helper.GetStaticFieldAddress("Terraria.Main", "player");
+		var creative = helper.GetClrType("Terraria.Player").GetInstanceFieldByName("creativeTracker");
+		var sacrifices = creative.Type.GetInstanceFieldByName("ItemSacrifices");
+		var editId = sacrifices.Type.GetInstanceFieldByName("<LastEditId>k__BackingField");
+		uint creativeOffset = 4 + creative.Offset, sacrificesOffset = 4 + sacrifices.Offset, editOffset = 4 + editId.Offset;
+		var data = context.HContext.DataAccess;
+		// Resolve metadata before the production Task starts. Observation uses only
+		// ReadProcessMemory, follows current roots, and never races a DAC query/Flush.
+		return stage => Try(session, "research snapshot " + stage, () =>
 		{
-			var data = context.HContext.DataAccess;
-			foreach (uint offset in new[] { 0U, size - 4 })
-			{
-				data.Write(address + offset, 0x13572468);
-				int value = data.Read<int>(address + offset);
-				if (value != 0x13572468) throw new IOException($"Round-trip mismatch at 0x{address + offset:X}.");
-				session.Log($"ROUNDTRIP address=0x{address + offset:X}; bytes=4; OK");
-			}
-		}
-		finally
+			int index = data.Read<int>(playerIndexSlot);
+			nuint players = Reference(playersSlot);
+			int length = data.Read<int>(players + 4);
+			if (index < 0 || index >= length) throw new InvalidOperationException("Player index changed outside the player array.");
+			nuint player = Reference(players + 8 + checked((uint)index * 4));
+			nuint tracker = Reference(player + creativeOffset);
+			nuint items = Reference(tracker + sacrificesOffset);
+			session.Log($"RESEARCH {stage}: playerIndex={index}; player=0x{player:X}; creativeTracker=0x{tracker:X}; ItemSacrifices=0x{items:X}; LastEditId={data.Read<int>(items + editOffset)}");
+		});
+		nuint Reference(nuint slot)
 		{
-			bool freed = MemoryAllocation.Free(context.HContext.Handle, address);
-			int freeError = freed ? 0 : Marshal.GetLastWin32Error();
-			session.Log($"FREE address=0x{address:X}; success={freed}; NativeErrorCode={freeError}");
-			if (!freed) session.Error("allocation probe cleanup", new Win32Exception(freeError));
+			nuint value = data.Read<nuint>(slot);
+			if (value == 0) throw new InvalidOperationException($"Research reference at 0x{slot:X} is null.");
+			return value;
 		}
 	}
 
 	private static void Metadata(DiagnosticSession session)
 	{
+		session.Log($"SCENARIO unlock-all-research; calls=1; observeAfterReturn=30s; totalLimit=120s; runnerMvid={typeof(FieldDiagnostics).Module.ModuleVersionId}");
 		session.Log($"TOOL {typeof(FieldDiagnostics).Assembly.FullName}; OS={RuntimeInformation.OSDescription}; OSArch={RuntimeInformation.OSArchitecture}; ProcessArch={RuntimeInformation.ProcessArchitecture}; Runtime={RuntimeInformation.FrameworkDescription}; RuntimeDir={RuntimeEnvironment.GetRuntimeDirectory()}");
 		if (IntPtr.Size != 4) throw new PlatformNotSupportedException("Use the bundled x86 runtime.");
-		string runnerDll = Path.Combine(AppContext.BaseDirectory, "QTRHacker.Functions.Test.dll");
-		Try(session, "runner", () => FileMetadata(session, File.Exists(runnerDll) ? runnerDll : Environment.ProcessPath));
+		Try(session, "runner host", () => FileMetadata(session, Environment.ProcessPath));
 		foreach (string name in new[] { "QHackCLR.dll", "QHackLib.dll", "QTRHacker.Core.dll", "QTRHacker.dll", "QTRHacker.Patches.dll", "Ijwhost.dll", "keystone.dll" })
 			Try(session, "file " + name, () => FileMetadata(session, Path.Combine(AppContext.BaseDirectory, name)));
 	}

@@ -4,6 +4,8 @@ using QHackCLR.DataTargets;
 using QTRHacker.Core;
 using QTRHacker.Core.GameObjects;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -44,6 +46,7 @@ internal static unsafe class ClrChecks
 			if (runtime.BaseClassLibrary.GetTypeByName("System.Byte") == null)
 				throw new InvalidOperationException("Patch loader's System.Byte lookup failed.");
 			var module = runtime.AppDomain.Modules.Single(m => m.Name == "QHackCLR.TestTarget");
+			VerifyTypeLookup(runtime, module, target.DataAccess);
 			var type = module.GetTypeByName("QHackCLR.TestTarget.FixtureState");
 			if (type is null)
 				throw new InvalidOperationException("Fixture type was not found.");
@@ -109,7 +112,7 @@ internal static unsafe class ClrChecks
 			if (!process.WaitForExit(5000))
 				throw new TimeoutException("CLR fixture did not exit.");
 			Throws<IOException>(() => vector.GetLength());
-			Console.WriteLine("CLR checks passed: strings, memory errors, array bounds, DAC failures, metadata references, Flush, and target exit.");
+			Console.WriteLine("CLR checks passed: targeted type lookup, strings, memory errors, array bounds, DAC failures, metadata references, Flush, and target exit.");
 
 			ClrObject GetArray(string name)
 			{
@@ -126,6 +129,53 @@ internal static unsafe class ClrChecks
 					process.Kill();
 			}
 		}
+	}
+
+	private static void VerifyTypeLookup(ClrRuntime runtime, ClrModule module, DataAccess data)
+	{
+		var typesCache = typeof(ClrModule).GetField("m_DefinedTypes", BindingFlags.Instance | BindingFlags.NonPublic);
+		var bcl = runtime.BaseClassLibrary;
+		object cachedBcl = typesCache.GetValue(bcl), cachedModule = typesCache.GetValue(module);
+		try
+		{
+			// Simulate failure in unrelated type materialization. A precise lookup
+			// must succeed while complete enumeration continues to report the error.
+			typesCache.SetValue(bcl, new FailingTypeList());
+			typesCache.SetValue(module, new FailingTypeList());
+			Throws<COMException>(() => bcl.DefinedTypes.ToArray());
+			foreach (string name in new[] { "System.Type", "System.Runtime.InteropServices.Marshal", "System.Threading.Tasks.Task", "System.Action" })
+				if (bcl.GetTypeByName(name)?.Name != name)
+					throw new InvalidOperationException("Remote thread prerequisite lookup failed: " + name);
+			var nested = module.GetTypeByName("QHackCLR.TestTarget.FixtureState+NestedLookupFixture");
+			if (nested == null) throw new InvalidOperationException("Nested type lookup failed.");
+			Equal(73, data.Read<int>(nested.GetStaticFieldByName("Value").GetAddress()), "nested type static value");
+			if (module.GetTypeByName("QHackCLR.TestTarget.NoSuchType") != null ||
+				module.GetTypeByName("QHackCLR.TestTarget.UnloadedLookupFixture") != null)
+				throw new InvalidOperationException("Missing or unloaded type was returned as loaded.");
+			// Metadata imports are caller-owned on both success and not-found paths.
+			int references = GetDacReferenceCount(runtime);
+			for (int i = 0; i < 100; i++)
+			{
+				bcl.GetTypeByName("System.Type");
+				module.GetTypeByName("QHackCLR.TestTarget.NoSuchType");
+			}
+			Equal(references, GetDacReferenceCount(runtime), "DAC references after targeted type lookups");
+			Throws<COMException>(() => module.DefinedTypes.ToArray());
+		}
+		finally
+		{
+			typesCache.SetValue(bcl, cachedBcl);
+			typesCache.SetValue(module, cachedModule);
+		}
+	}
+
+	private sealed class FailingTypeList : IReadOnlyList<ClrType>
+	{
+		public int Count => throw Failure();
+		public ClrType this[int index] => throw Failure();
+		public IEnumerator<ClrType> GetEnumerator() => throw Failure();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		private static COMException Failure() => new("Simulated unrelated type lookup failure.", unchecked((int)0x80070057));
 	}
 
 	private static void VerifyStrings(Process process)

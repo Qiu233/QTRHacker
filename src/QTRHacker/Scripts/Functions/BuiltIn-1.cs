@@ -58,24 +58,31 @@ public class UnlockAllDuplications : BaseFunction
 			return;
 		}
 		HackObject c = ctx.MyPlayer.InternalObject.creativeTracker.ItemSacrifices;
-		nuint addr = ctx.GameModuleHelper
-			.GetFunctionAddress("Terraria.GameContent.Creative.ItemsSacrificedUnlocksTracker",
-			"RegisterItemSacrifice");
-		var code = AssemblySnippet.FromCode(new AssemblyCode[] {
+		var method = ctx.GameModuleHelper.GetClrMethodBySignature(
+			"Terraria.GameContent.Creative.ItemsSacrificedUnlocksTracker",
+			"Terraria.GameContent.Creative.ItemsSacrificedUnlocksTracker.RegisterItemSacrifice(Int32, Int32, System.String)");
+		if (c.BaseAddress == 0 || method.NativeCode == 0 || method.NativeCode == nuint.MaxValue)
+			throw new InvalidOperationException("The research tracker or RegisterItemSacrifice entry is unavailable.");
+		// The UI already runs Enable on a worker. Keep completion/errors in this
+		// call instead of leaving an unobserved Task running after two seconds.
+		ctx.RunOnManagedThread(BuildUnlockCode(c.BaseAddress, method.NativeCode)).WaitToDispose();
+	}
+
+	internal static AssemblyCode BuildUnlockCode(nuint tracker, nuint target)
+	{
+		return AssemblySnippet.FromCode(new AssemblyCode[] {
 				AssemblySnippet.Loop(
 					AssemblySnippet.FromCode(new AssemblyCode[] {
-						(Instruction)$"mov ecx, {c.BaseAddress}",
+						(Instruction)$"mov ecx, {tracker}",
 						(Instruction)$"mov edx, [esp]",
+						// Managed x86 pushes stack arguments left to right: amount,
+						// then teammateName. The current method pops both on return.
 						(Instruction)$"push 9999",
-						(Instruction)$"call {addr}",
+						(Instruction)$"push 0",
+						(Instruction)$"call {target}",
 					}),
 					GameConstants.MaxItemTypes, true)
 			});
-		var task = Task.Run(() => ctx.RunOnManagedThread(code).WaitToDispose());
-		if (!task.Wait(2000))
-		{
-			//TODO: abort the task
-		}
 	}
 	public override void Disable(GameContext ctx)
 	{

@@ -64,6 +64,10 @@ public class BurnAllPlayers : BaseFunction
 
 public class RevealTheWholeMap : BaseFunction
 {
+	// WorldMap.BlackEdgeWidth. MapHelper's background lookup samples nearby
+	// map cells without bounds checks; vanilla UnlockMapSection skips this border.
+	private const int MapBorder = 40;
+
 	public override bool CanDisable => false;
 	public override void ApplyLocalization(string culture)
 	{
@@ -79,6 +83,26 @@ public class RevealTheWholeMap : BaseFunction
 	}
 	public override void Enable(GameContext ctx)
 	{
+		var map = ctx.Map;
+		if (map.BaseAddress == 0)
+			throw new InvalidOperationException("The world map is unavailable.");
+		int width = ctx.MaxTilesX, height = ctx.MaxTilesY;
+		if (width > (int)map.InternalObject.MaxWidth || height > (int)map.InternalObject.MaxHeight)
+			throw new InvalidOperationException("World dimensions exceed the map buffer.");
+		nuint target = ctx.GameModuleHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting");
+		if (!ctx.RunByHookUpdate(BuildRevealCode(map.BaseAddress, target, width, height)))
+			throw new InvalidOperationException("Could not execute the map reveal hook.");
+		ctx.RefreshMap = true;
+	}
+
+	internal static AssemblySnippet BuildRevealCode(nuint map, nuint target, int width, int height)
+	{
+		if (map == 0 || target == 0 || target == nuint.MaxValue)
+			throw new InvalidOperationException("The world map or UpdateLighting entry is unavailable.");
+		if (width <= 2 * MapBorder)
+			throw new ArgumentOutOfRangeException(nameof(width), "World dimensions must include the map border.");
+		if (height <= 2 * MapBorder)
+			throw new ArgumentOutOfRangeException(nameof(height), "World dimensions must include the map border.");
 		AssemblySnippet asm = AssemblySnippet.FromEmpty();
 		asm.Content.Add(Instruction.Create("push ecx"));
 		asm.Content.Add(Instruction.Create("push edx"));
@@ -88,19 +112,21 @@ public class RevealTheWholeMap : BaseFunction
 					AssemblySnippet.FromCode(
 						new AssemblyCode[] {
 							(Instruction)"mov edx, [esp+4]",
-							(Instruction)"push [esp]",
+							(Instruction)$"add edx, {MapBorder}",
+							(Instruction)"mov eax, [esp]",
+							(Instruction)$"add eax, {MapBorder}",
+							(Instruction)"push eax",
 							(Instruction)"push 255",
 							AssemblySnippet.FromClrCall(
-								ctx.GameModuleHelper.GetFunctionAddress("Terraria.Map.WorldMap", "UpdateLighting"), false, ctx.Map.BaseAddress, null, null,
+								target, false, map, null, null,
 								Array.Empty<object>())
 						}),
-					ctx.MaxTilesY, false),
-				ctx.MaxTilesX, false));
+					height - 2 * MapBorder, false),
+				width - 2 * MapBorder, false));
 		asm.Content.Add(Instruction.Create("pop edx"));
 		asm.Content.Add(Instruction.Create("pop ecx"));
 
-		ctx.RunByHookUpdate(asm);
-		ctx.RefreshMap = true;
+		return asm;
 	}
 }
 

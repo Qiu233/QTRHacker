@@ -173,6 +173,38 @@ namespace QHackCLR {
 		}
 
 		ClrType^ ClrModule::GetTypeByName(String^ name) {
+			if (String::IsNullOrEmpty(name))
+				return nullptr;
+			// Resolve ordinary definitions by metadata identity. Building DefinedTypes
+			// first makes a lookup depend on every unrelated MethodTable in the module.
+			// Keep the old display-name lookup for constructed/escaped type names.
+			if (name->IndexOfAny(gcnew array<Char> { '[', '*', '&', '\\' }) < 0) {
+				IMetaDataImport* import = MetadataImport;
+				mdTypeDef token = mdTypeDefNil;
+				try {
+					for each (String^ part in name->Split('+')) {
+						pin_ptr<const wchar_t> nativeName = PtrToStringChars(part);
+						mdTypeDef found = mdTypeDefNil;
+						HRESULT result = import->FindTypeDefByName(nativeName, token, &found);
+						if (result == static_cast<HRESULT>(0x80131130)) // CLDB_E_RECORD_NOTFOUND
+							return nullptr;
+						GlobalHelpers::Check(result, "FindTypeDefByName(" + name + ")");
+						token = found;
+					}
+				}
+				finally {
+					import->Release();
+				}
+				CLRDATA_ADDRESS methodTable = 0;
+				// Despite its name, SOS GetMethodDescFromToken also supports TypeDef:
+				// it returns that definition's loaded TypeHandle, or zero if not loaded.
+				GlobalHelpers::Check(ModuleHelper->SOSDac->GetMethodDescFromToken(NativeHandle, token, &methodTable),
+					"GetMethodDescFromToken(TypeDef " + name + ")");
+				if (methodTable == 0)
+					return nullptr;
+				auto type = ModuleHelper->TypeFactory->GetClrType(GlobalHelpers::ToNativeAddress(methodTable));
+				return type->Name == name ? type : nullptr;
+			}
 			for each (ClrType ^ type in DefinedTypes) {
 				if (type->Name == name)
 					return type;

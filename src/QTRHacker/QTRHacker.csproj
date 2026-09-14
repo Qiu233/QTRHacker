@@ -11,7 +11,7 @@
 		<ProduceReferenceAssemblies>false</ProduceReferenceAssemblies>
 		<ApplicationIcon>Icon.ico</ApplicationIcon>
 		<SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-		<Version>15.2.0.0</Version>
+		<Version>15.3.0.0</Version>
 		<OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<UseAppHost>true</UseAppHost>

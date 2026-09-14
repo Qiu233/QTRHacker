@@ -32,6 +32,21 @@ unsafe class Program
 			Environment.ExitCode = FieldDiagnostics.Run(args.Skip(1).ToArray());
 			return;
 		}
+		if (args.Length == 1 && args[0] == "--verify-research-call")
+		{
+			ResearchCallChecks.Verify();
+			return;
+		}
+		if (args.Length == 1 && args[0] == "--verify-map-call")
+		{
+			MapCallChecks.Verify();
+			return;
+		}
+		if (args.Length == 1 && args[0] == "--verify-clr-call-arguments")
+		{
+			ClrCallArgumentChecks.Verify();
+			return;
+		}
 		if (args.Length > 0 && args[0] == "--verify-process-exit")
 		{
 			if (args.Length != 2)
